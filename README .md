@@ -4,7 +4,7 @@
 
 A free, open-source web app to learn and compare vocabulary across multiple languages simultaneously — including classical languages and regional dialects.
 
-👉 **[Try it live](https://farmaciadellastazione-tech.github.io/linguaequiz)**
+👉 **[Try it live](https://farmaciadellastazione-tech.github.io/vecigagi)**
 
 ---
 
