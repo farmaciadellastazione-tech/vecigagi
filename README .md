@@ -4,7 +4,7 @@
 
 A free, open-source web app to learn and compare vocabulary across multiple languages simultaneously — including classical languages and regional dialects.
 
-👉 **[Try it live](https://farmaciadellastazione-tech.github.io/vecigagi)**
+👉 **[Try it live](https://linguaequiz.com)**
 
 ---
 
@@ -37,7 +37,7 @@ A free, open-source web app to learn and compare vocabulary across multiple lang
 | Spezzino | 397 | La Spezia dialect (Liguria) |
 | Interlingua | 317 | International auxiliary language (IALA) |
 | Genoese | 62 | Ligurian dialect |
-| Carrarese | 38 | Carrara dialect |
+| Carrarino | 38 | Carrara dialect |
 
 ---
 
