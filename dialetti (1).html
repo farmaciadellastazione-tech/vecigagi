@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contribuisci un dialetto — LinguaeQuiz</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --border: #22222e;
+    --accent: #6366f1;
+    --accent2: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --sp: #0ea5e9;
+    --ge: #10b981;
+    --cr: #f97316;
+    --new: #a855f7;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .logo span { color: var(--accent); }
+  .subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    flex: 1;
+  }
+  .stats-badge {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* Main */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  /* Intro */
+  .intro {
+    background: linear-gradient(135deg, #1e1b4b 0%, #13131a 100%);
+    border: 1px solid #3730a3;
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 32px;
+  }
+  .intro h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(90deg, #818cf8, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .intro p {
+    color: #94a3b8;
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  /* Filters */
+  .filters {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+    align-items: center;
+  }
+  .filter-group { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filter-label { font-size: 12px; color: var(--muted); margin-right: 4px; align-self: center; }
+
+  .chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .chip:hover { border-color: var(--accent); color: white; }
+  .chip.active { background: var(--accent); border-color: var(--accent); color: white; }
+  .chip.sp.active { background: var(--sp); border-color: var(--sp); }
+  .chip.ge.active { background: var(--ge); border-color: var(--ge); }
+  .chip.cr.active { background: var(--cr); border-color: var(--cr); }
+  .chip.new-dialect { border-style: dashed; }
+
+  input[type="text"].search {
+    flex: 1;
+    min-width: 200px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 14px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  input[type="text"].search:focus { border-color: var(--accent); }
+
+  /* Custom dialect input */
+  .custom-dialect {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--new);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .custom-dialect.visible { display: block; }
+  .custom-dialect label { font-size: 13px; color: var(--muted); display: block; margin-bottom: 8px; }
+  .custom-dialect input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+  }
+  .custom-dialect input:focus { border-color: var(--new); }
+
+  /* Progress bar */
+  .progress-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .prog-item { text-align: center; }
+  .prog-num { font-size: 24px; font-weight: 700; }
+  .prog-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .prog-num.compiled { color: var(--accent2); }
+  .prog-num.missing { color: var(--accent); }
+  .prog-bar-wrap { flex: 1; min-width: 200px; }
+  .prog-track { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.3s; }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  thead th {
+    background: var(--surface);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 73px;
+    z-index: 10;
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:hover { background: rgba(99,102,241,0.04); }
+  td {
+    padding: 10px 16px;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+  .td-it { font-weight: 600; color: white; }
+  .td-en { color: var(--muted); font-size: 13px; }
+  .td-existing {
+    color: #94a3b8;
+    font-style: italic;
+    font-size: 13px;
+  }
+  .td-existing.has-value { color: #4ade80; font-style: normal; }
+
+  .td-input-wrap { position: relative; }
+  .td-input {
+    width: 100%;
+    min-width: 140px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 5px 8px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.15s;
+  }
+  .td-input:focus {
+    background: var(--surface);
+    border-color: var(--accent);
+  }
+  .td-input.filled {
+    background: rgba(99,102,241,0.08);
+    border-color: rgba(99,102,241,0.3);
+    color: #a5b4fc;
+  }
+  .td-input::placeholder { color: #374151; }
+
+  .tema-badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* Submit area */
+  .submit-area {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    z-index: 50;
+  }
+  .submit-count {
+    flex: 1;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .submit-count strong { color: var(--accent2); }
+  .btn-submit {
+    background: linear-gradient(135deg, var(--accent), #8b5cf6);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn-submit:hover { opacity: 0.9; }
+  .btn-submit:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .btn-clear {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-clear:hover { border-color: var(--muted); color: var(--text); }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.visible { display: flex; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal h2 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .modal p { color: var(--muted); font-size: 14px; margin-bottom: 16px; line-height: 1.5; }
+  .modal textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    color: var(--text);
+    font-family: 'Space Grotesk', monospace;
+    font-size: 13px;
+    resize: vertical;
+    min-height: 200px;
+    outline: none;
+  }
+  .modal-actions { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+  .btn-copy {
+    background: var(--accent2);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-weight: 600;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .btn-close {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  /* Add word */
+  .add-word-section {
+    margin: 20px 0 100px;
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .add-word-section h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .add-word-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+  .add-word-field { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 140px; }
+  .add-word-field label { font-size: 11px; color: var(--muted); }
+  .add-word-field input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .add-word-field input:focus { border-color: var(--accent); }
+  .btn-add-word {
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn-add-word:hover { background: var(--accent); color: white; }
+  .added-words-list { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .added-word-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(99,102,241,0.08);
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .added-word-item .it { font-weight: 600; color: white; }
+  .added-word-item .arrow { color: var(--muted); }
+  .added-word-item .tr { color: #a5b4fc; }
+  .added-word-item .remove { margin-left: auto; color: var(--muted); cursor: pointer; font-size: 16px; }
+  .added-word-item .remove:hover { color: #ef4444; }
+
+  @media (max-width: 640px) {
+    main { padding: 16px; }
+    .intro { padding: 20px; }
+    .intro h1 { font-size: 20px; }
+    thead th { top: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="https://linguaequiz.com" class="logo">🌍 Linguae<span>Quiz</span></a>
+    <span class="subtitle">Contribuisci i tuoi dialetti</span>
+    <span class="stats-badge" id="stats-badge">Caricamento…</span>
+  </div>
+</header>
+
+<main>
+  <div class="intro">
+    <h1>⚓ Salva il tuo dialetto</h1>
+    <p>Aiutaci a preservare i dialetti della Liguria, Lunigiana e Versilia. Scegli il tuo dialetto, cerca le parole italiane che conosci e inserisci la traduzione. Quando hai finito, clicca <strong>Invia contributi</strong> — le traduzioni verranno aggiunte al vocabolario di LinguaeQuiz.</p>
+  </div>
+
+  <!-- Filtri -->
+  <div class="filters">
+    <span class="filter-label">Dialetto:</span>
+    <div class="filter-group" id="dialect-chips">
+      <div class="chip sp active" data-dialect="sp" onclick="setDialect('sp',this)">⚓ Spezzino</div>
+      <div class="chip ge" data-dialect="ge" onclick="setDialect('ge',this)">🏛️ Genovese</div>
+      <div class="chip cr" data-dialect="cr" onclick="setDialect('cr',this)">🪨 Carrarino</div>
+      <div class="chip new-dialect" data-dialect="new" onclick="setDialect('new',this)">✨ Altro dialetto…</div>
+    </div>
+    <span class="filter-label" style="margin-left:8px">Cerca:</span>
+    <input type="text" class="search" id="search" placeholder="Filtra parole…" oninput="renderTable()">
+    <div class="filter-group">
+      <div class="chip active" data-missing="all" onclick="setMissing('all',this)">Tutte</div>
+      <div class="chip" data-missing="missing" onclick="setMissing('missing',this)">Solo mancanti</div>
+    </div>
+  </div>
+
+  <!-- Dialetto personalizzato -->
+  <div class="custom-dialect" id="custom-dialect-box">
+    <label>Nome del tuo dialetto (es. "Massese", "Cinque Terre", "Levantese"…)</label>
+    <input type="text" id="custom-dialect-name" placeholder="Inserisci il nome del dialetto" oninput="updateCustomDialect()">
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-bar" id="progress-bar">
+    <div class="prog-item">
+      <div class="prog-num missing" id="prog-missing">–</div>
+      <div class="prog-label">Mancanti</div>
+    </div>
+    <div class="prog-item">
+      <div class="prog-num compiled" id="prog-compiled">0</div>
+      <div class="prog-label">Compilati ora</div>
+    </div>
+    <div class="prog-bar-wrap">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px" id="prog-label-text"></div>
+      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- Tabella -->
+  <div class="table-wrap">
+    <table id="vocab-table">
+      <thead>
+        <tr>
+          <th style="width:200px;cursor:pointer" onclick="sortBy('it')" title="Ordina per italiano">Italiano <span id="sort-it">↑</span></th>
+          <th style="width:160px;cursor:pointer" onclick="sortBy('en')" title="Ordina per inglese">Inglese <span id="sort-en"></span></th>
+          <th style="width:100px;cursor:pointer" onclick="sortBy('tema')" title="Ordina per tema">Tema <span id="sort-tema"></span></th>
+          <th id="col-existing" style="width:180px">Già presente</th>
+          <th id="col-new" style="width:200px">✏️ La tua traduzione</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+  </div>
+  <!-- Aggiungi parola mancante -->
+  <div class="add-word-section">
+    <h3>➕ Aggiungi una parola non presente nella lista</h3>
+    <div class="add-word-row">
+      <div class="add-word-field">
+        <label>Parola italiana</label>
+        <input type="text" id="add-it" placeholder="es. acciuga">
+      </div>
+      <div class="add-word-field">
+        <label>Inglese (opzionale)</label>
+        <input type="text" id="add-en" placeholder="es. anchovy">
+      </div>
+      <div class="add-word-field">
+        <label id="add-dialect-label">Traduzione dialettale</label>
+        <input type="text" id="add-tr" placeholder="es. anciöa">
+      </div>
+      <button class="btn-add-word" onclick="addCustomWord()">+ Aggiungi</button>
+    </div>
+    <div class="added-words-list" id="added-words-list"></div>
+  </div>
+</main>
+
+<!-- Submit bar -->
+<div class="submit-area">
+  <div class="submit-count">
+    Traduzioni inserite: <strong id="count-filled">0</strong>
+  </div>
+  <button class="btn-clear" onclick="clearAll()">Cancella tutto</button>
+  <button class="btn-submit" id="btn-submit" onclick="openModal()" disabled>
+    📤 Invia contributi
+  </button>
+</div>
+
+<!-- Modal invio -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2>📤 Invia i tuoi contributi</h2>
+    <p>Copia il testo qui sotto e incollalo nel campo <strong>"Traduzioni (formato lista)"</strong> del form. Puoi anche usare il pulsante per aprire il form direttamente.</p>
+    <textarea id="modal-text" readonly></textarea>
+    <div class="modal-actions">
+      <button class="btn-close" onclick="closeModal()">Annulla</button>
+      <button class="btn-copy" onclick="copyAndOpen()">📋 Copia e apri form →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Dati vocabolario (generati da LinguaeQuiz) ──────────────────────────────
+const VOCAB = [{"it":"abbazia","en":"abbey","sp":"abadìa","ge":"","cr":"","tema":"luoghi"},{"it":"incidente","en":"accident","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"indirizzo","en":"address","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"impaurito","en":"afraid","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"fa","en":"ago","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"allarme/sveglia","en":"alarm","sp":"","ge":"","cr":"","tema":"casa"},{"it":"quasi","en":"almost","sp":"squasi","ge":"","cr":"","tema":"dialogo"},{"it":"solo","en":"alone","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"già","en":"already","sp":"zà","ge":"","cr":"","tema":"dialogo"},{"it":"anche","en":"also","sp":"anca, assì, essì, nicò, ènca","ge":"","cr":"","tema":"dialogo"},{"it":"arrabbiato","en":"angry","sp":"aragià","ge":"","cr":"","tema":"aggettivi"},{"it":"formica","en":"ant","sp":"formìgoa","ge":"","cr":"","tema":"animali"},{"it":"appuntamento","en":"appointment","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"poltrona","en":"armchair","sp":"","ge":"","cr":"","tema":"casa"},{"it":"addormentato","en":"asleep","sp":"adormì","ge":"","cr":"","tema":"aggettivi"},{"it":"batteria/pila","en":"battery","sp":"","ge":"","cr":"","tema":"casa"},{"it":"principiante","en":"beginner","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"appartenere","en":"belong","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"prendere in prestito","en":"borrow","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"entrambi","en":"both","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"pugilato/boxe","en":"boxing","sp":"","ge":"","cr":"","tema":"sport"},{"it":"secchio","en":"bucket","sp":"stagnòn, sécia, possadòa","ge":"","cr":"","tema":"casa"},{"it":"bruciare","en":"burn","sp":"brusae","ge":"","cr":"","tema":"verbi"},{"it":"occupato","en":"busy","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"macellaio","en":"butcher","sp":"maselào","ge":"","cr":"","tema":"mestieri"},{"it":"canarino","en":"canary","sp":"","ge":"","cr":"","tema":"animali"},{"it":"mensa","en":"canteen","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"attento","en":"careful","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"tappeto/moquette","en":"carpet","sp":"","ge":"","cr":"","tema":"casa"},{"it":"campionato","en":"championship","sp":"","ge":"","cr":"","tema":"sport"},{"it":"farmacista","en":"chemist","sp":"spessiào","ge":"","cr":"","tema":"mestieri"},{"it":"chimica","en":"chemistry","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"ciliegia","en":"cherry","sp":"siéza","ge":"","cr":"","tema":"cibo"},{"it":"nuvoloso","en":"cloudy","sp":"","ge":"","cr":"","tema":"natura"},{"it":"comodo","en":"comfortable","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"angolo","en":"corner","sp":"canto","ge":"","cr":"","tema":"luoghi"},{"it":"tosse","en":"cough","sp":"tòssa","ge":"","cr":"","tema":"salute"},{"it":"affollato","en":"crowded","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"crociera","en":"cruise","sp":"","ge":"","cr":"","tema":"viaggi"},{"it":"mobiletto/armadio","en":"cupboard","sp":"","ge":"","cr":"","tema":"casa"},{"it":"danni","en":"damage","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"pericoloso","en":"dangerous","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"grado","en":"degree","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"squisito","en":"delicious","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"diamante","en":"diamond","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"sporco","en":"dirty","sp":"lédo","ge":"","cr":"","tema":"aggettivi"},{"it":"scoprire","en":"discover","sp":"descrovie, scrovie, descciòde","ge":"","cr":"","tema":"verbi"},{"it":"campanello","en":"doorbell","sp":"canpanìn","ge":"","cr":"","tema":"casa"},{"it":"sogno/sognare","en":"dream","sp":"sòmio","ge":"","cr":"","tema":"verbi"},{"it":"guidare","en":"drive","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"ubriaco","en":"drunk","sp":"enbriàgo, ciòco, lüstro","ge":"","cr":"","tema":"aggettivi"},{"it":"anatra","en":"duck","sp":"","ge":"","cr":"","tema":"animali"},{"it":"durante","en":"during","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"guadagnare","en":"earn","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"Pasqua","en":"easter","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"elettricista","en":"electrician","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"vuoto","en":"empty","sp":"vèito","ge":"","cr":"","tema":"aggettivi"},{"it":"motore","en":"engine","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"ingegnere","en":"engineer","sp":"anzegnéo, enzento","ge":"","cr":"","tema":"mestieri"},{"it":"abbastanza","en":"enough","sp":"abasta, assè","ge":"","cr":"","tema":"dialogo"},{"it":"busta","en":"envelope","sp":"envelòpe, bùsta","ge":"","cr":"","tema":"dialogo"},{"it":"ogni/tutti","en":"every","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"esattamente","en":"exactly","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"scusare","en":"excuse","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"aspettarsi/prevedere","en":"expect","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"costoso","en":"expensive","sp":"caestiòso","ge":"","cr":"","tema":"aggettivi"},{"it":"spiegare","en":"explain","sp":"desccigae, desvogiae (aprire cose arrotola-","ge":"","cr":"","tema":"verbi"},{"it":"fabbrica","en":"factory","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"grasso","en":"fat","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"preferito","en":"favourite","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"nutrire","en":"feed","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"recinzione","en":"fence","sp":"ciodénda","ge":"","cr":"","tema":"casa"},{"it":"riempire","en":"fill","sp":"areencie, reencie","ge":"","cr":"","tema":"verbi"},{"it":"bandiera","en":"flag","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"appartamento","en":"flat","sp":"quartéo","ge":"","cr":"","tema":"luoghi"},{"it":"volo","en":"flight","sp":"svolo","ge":"","cr":"","tema":"viaggi"},{"it":"correntemente","en":"fluently","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"nebbioso","en":"foggy","sp":"","ge":"","cr":"","tema":"natura"},{"it":"straniero","en":"foreign","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"modulo","en":"form","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"fresco","en":"fresh","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"cordiale/socievole","en":"friendly","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"mobili","en":"furniture","sp":"","ge":"","cr":"","tema":"casa"},{"it":"gioco/partita","en":"game","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"fantasma","en":"ghost","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"arma da fuoco","en":"gun","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"martello","en":"hammer","sp":"martèo","ge":"","cr":"","tema":"casa"},{"it":"succedere","en":"happen","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"felicità","en":"happiness","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"mal di testa","en":"headache","sp":"","ge":"","cr":"","tema":"salute"},{"it":"riscaldamento","en":"heating","sp":"","ge":"","cr":"","tema":"casa"},{"it":"pesante","en":"heavy","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"casco","en":"helmet","sp":"","ge":"","cr":"","tema":"sport"},{"it":"miele","en":"honey","sp":"méo","ge":"","cr":"","tema":"cibo"},{"it":"lavori domestici","en":"housework","sp":"","ge":"","cr":"","tema":"casa"},{"it":"fretta/affrettarsi","en":"hurry","sp":"sprèssa,füria","ge":"","cr":"","tema":"verbi"},{"it":"strumento","en":"instrument","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"colloquio/intervista","en":"interview","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"ferro da stiro","en":"iron","sp":"","ge":"","cr":"","tema":"casa"},{"it":"marmellata","en":"jam","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"vasetto/barattolo","en":"jar","sp":"","ge":"","cr":"","tema":"casa"},{"it":"unirsi a","en":"join","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"viaggio","en":"journey","sp":"","ge":"","cr":"","tema":"viaggi"},{"it":"succo","en":"juice","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"maglione","en":"jumper","sp":"magion","ge":"","cr":"","tema":"vestiti"},{"it":"regno","en":"kingdom","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"bussare/picchiare","en":"knock","sp":"picae","ge":"","cr":"","tema":"verbi"},{"it":"scala a pioli","en":"ladder","sp":"","ge":"","cr":"","tema":"casa"},{"it":"ultimo/scorso","en":"last","sp":"ürtimo, daredéo","ge":"","cr":"","tema":"dialogo"},{"it":"tardi/in ritardo","en":"late","sp":"tardio, tardiòto","ge":"","cr":"","tema":"dialogo"},{"it":"prestare","en":"lend","sp":"enprestae, anprestae, areméte","ge":"","cr":"","tema":"verbi"},{"it":"bugiardo","en":"liar","sp":"bosàrdo","ge":"","cr":"","tema":"dialogo"},{"it":"vivace","en":"lively","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"soggiorno","en":"living room","sp":"","ge":"","cr":"","tema":"casa"},{"it":"solitario","en":"lonely","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"fortuna","en":"luck","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"bagagli","en":"luggage","sp":"","ge":"","cr":"","tema":"viaggi"},{"it":"rivista","en":"magazine","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"sposare","en":"marry","sp":"sposae, maidae","ge":"","cr":"","tema":"verbi"},{"it":"maschera","en":"mask","sp":"màscoa","ge":"","cr":"","tema":"dialogo"},{"it":"partita/incontro","en":"match","sp":"partìa","ge":"","cr":"","tema":"sport"},{"it":"pasto","en":"meal","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"riunione/incontro","en":"meeting","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"mezzo/centro","en":"middle","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"mezzanotte","en":"midnight","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"scimmia","en":"monkey","sp":"","ge":"","cr":"","tema":"animali"},{"it":"umore","en":"mood","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"baffi","en":"moustache","sp":"mostassi, bafi","ge":"","cr":"","tema":"corpo"},{"it":"molto","en":"much","sp":"assè, der bèo, bén bén","ge":"","cr":"","tema":"dialogo"},{"it":"fungo","en":"mushroom","sp":"fünzo","ge":"","cr":"","tema":"cibo"},{"it":"collo","en":"neck","sp":"","ge":"","cr":"","tema":"corpo"},{"it":"nipote di zii","en":"nephew","sp":"","ge":"","cr":"","tema":"famiglia"},{"it":"giornale","en":"newspaper","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"rumore","en":"noise","sp":"rümoe, ciòco","ge":"","cr":"","tema":"dialogo"},{"it":"chiassoso","en":"noisy","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"nord","en":"north","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"via da","en":"off","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"spesso","en":"often","sp":"spésso","ge":"","cr":"","tema":"dialogo"},{"it":"una volta","en":"once","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"pagina","en":"page","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"pittore","en":"painter","sp":"pitoe","ge":"","cr":"","tema":"mestieri"},{"it":"pittura/dipinto","en":"painting","sp":"pitüa","ge":"","cr":"","tema":"arte"},{"it":"paio/coppia","en":"pair","sp":"pao","ge":"","cr":"","tema":"dialogo"},{"it":"pagare","en":"pay","sp":"pagae","ge":"","cr":"","tema":"verbi"},{"it":"profumo","en":"perfume","sp":"prefümo,aigoa d’odoe","ge":"","cr":"","tema":"dialogo"},{"it":"animale domestico","en":"pet","sp":"","ge":"","cr":"","tema":"animali"},{"it":"benzina","en":"petrol","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"figura/quadro","en":"picture","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"pipa/tubo","en":"pipe","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"pianeta","en":"planet","sp":"","ge":"","cr":"","tema":"natura"},{"it":"giocare/suonare","en":"play","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"contento/lieto","en":"pleased","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"tasca","en":"pocket","sp":"staca, saca, catàna","ge":"","cr":"","tema":"vestiti"},{"it":"educato","en":"polite","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"piscina","en":"pool","sp":"","ge":"","cr":"","tema":"sport"},{"it":"cartolina","en":"postcard","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"esercitarsi","en":"practise","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"premere","en":"press","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"carino/grazioso","en":"pretty","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"produrre","en":"produce","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"burattino","en":"puppet","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"coda/fila","en":"queue","sp":"coa","ge":"","cr":"","tema":"dialogo"},{"it":"corse/gare","en":"racing","sp":"","ge":"","cr":"","tema":"sport"},{"it":"raramente","en":"rarely","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"raggiungere","en":"reach","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"accorgersi/rendersi conto","en":"realise","sp":"ascòrzese","ge":"","cr":"","tema":"verbi"},{"it":"ricevere","en":"receive","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"rifiutare","en":"refuse","sp":"refiidae, refiitae","ge":"","cr":"","tema":"verbi"},{"it":"parente","en":"relative","sp":"","ge":"","cr":"","tema":"famiglia"},{"it":"riparare","en":"repair","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"cronista/reporter","en":"reporter","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"cavalcare/andare in","en":"ride","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"rapinare/derubare","en":"rob","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"rapinatore","en":"robber","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"rapina","en":"robbery","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"scortese","en":"rude","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"corridore","en":"runner","sp":"","ge":"","cr":"","tema":"sport"},{"it":"vela","en":"sailing","sp":"véa","ge":"","cr":"","tema":"sport"},{"it":"stipendio","en":"salary","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"salato","en":"salty","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"sabbia","en":"sand","sp":"aéna","ge":"","cr":"","tema":"natura"},{"it":"forbici","en":"scissors","sp":"tesòa","ge":"","cr":"","tema":"casa"},{"it":"vendere","en":"sell","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"mandare","en":"send","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"frase","en":"sentence","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"grave/serio","en":"serious","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"pecora","en":"sheep","sp":"pégoa","ge":"","cr":"","tema":"animali"},{"it":"ripiano/scaffale","en":"shelf","sp":"","ge":"","cr":"","tema":"casa"},{"it":"conchiglia","en":"shell","sp":"","ge":"","cr":"","tema":"natura"},{"it":"splendere/brillare","en":"shine","sp":"miae","ge":"","cr":"","tema":"verbi"},{"it":"sparare","en":"shoot","sp":"spaàe","ge":"","cr":"","tema":"verbi"},{"it":"mostrare/spettacolo","en":"show","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"doccia","en":"shower","sp":"","ge":"","cr":"","tema":"casa"},{"it":"sciocco/stupido","en":"silly","sp":"belinon, badaàco,belighè,tananò,besügo,semelòn,pomelòn,barloco","ge":"","cr":"","tema":"aggettivi"},{"it":"da/da quando","en":"since","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"cantante","en":"singer","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"celibe/nubile","en":"single","sp":"zitelon","ge":"","cr":"","tema":"dialogo"},{"it":"taglia/dimensione","en":"size","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"odorare/odore","en":"smell","sp":"odoae","ge":"","cr":"","tema":"verbi"},{"it":"sorridere/sorriso","en":"smile","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"fumare/fumo","en":"smoke","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"serpente","en":"snake","sp":"","ge":"","cr":"","tema":"animali"},{"it":"qualcuno","en":"somebody","sp":"quarchedün, quarcudün","ge":"","cr":"","tema":"dialogo"},{"it":"qualcosa","en":"something","sp":"quarcò","ge":"","cr":"","tema":"dialogo"},{"it":"qualche volta","en":"sometimes","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"da qualche parte","en":"somewhere","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"spiacente/dispiaciuto","en":"sorry","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"suono/sembrare","en":"sound","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"sud","en":"south","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"spendere/trascorrere","en":"spend","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"primavera","en":"spring","sp":"","ge":"","cr":"","tema":"natura"},{"it":"piazza/quadrato","en":"square","sp":"ciassa","ge":"","cr":"","tema":"luoghi"},{"it":"francobollo","en":"stamp","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"restare","en":"stay","sp":"restae/arestae","ge":"","cr":"","tema":"verbi"},{"it":"rubare","en":"steal","sp":"arobae, robae","ge":"","cr":"","tema":"verbi"},{"it":"rigido","en":"stiff","sp":"sténco, rédeno","ge":"","cr":"","tema":"aggettivi"},{"it":"temporale","en":"storm","sp":"","ge":"","cr":"","tema":"natura"},{"it":"estraneo/sconosciuto","en":"stranger","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"sciopero/colpire","en":"strike","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"bloccato","en":"stuck","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"proporre/suggerire","en":"suggest","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"scottatura solare","en":"sunburn","sp":"","ge":"","cr":"","tema":"salute"},{"it":"soleggiato","en":"sunny","sp":"soigià","ge":"","cr":"","tema":"natura"},{"it":"abbronzatura","en":"suntan","sp":"","ge":"","cr":"","tema":"salute"},{"it":"navigare/fare surf","en":"surf","sp":"","ge":"","cr":"","tema":"sport"},{"it":"sorpreso","en":"surprised","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"nuotatore","en":"swimmer","sp":"","ge":"","cr":"","tema":"sport"},{"it":"coda","en":"tail","sp":"coa","ge":"","cr":"","tema":"animali"},{"it":"rubinetto","en":"tap","sp":"bronzin, griléto","ge":"","cr":"","tema":"casa"},{"it":"tatuaggio","en":"tattoo","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"denti","en":"teeth","sp":"","ge":"","cr":"","tema":"corpo"},{"it":"ladro","en":"thief","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"assetato","en":"thirsty","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"gettare/lanciare","en":"throw","sp":"zetae","ge":"","cr":"","tema":"verbi"},{"it":"biglietto/multa","en":"ticket","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"cravatta","en":"tie","sp":"crovàta","ge":"","cr":"","tema":"vestiti"},{"it":"volte","en":"times","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"stanco","en":"tired","sp":"straco","ge":"","cr":"","tema":"aggettivi"},{"it":"titolo","en":"title","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"insieme","en":"together","sp":"rèdo (di cose); (di persone) mànega,","ge":"","cr":"","tema":"dialogo"},{"it":"stasera","en":"tonight","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"attrezzo/strumento","en":"tool","sp":"","ge":"","cr":"","tema":"casa"},{"it":"mal di denti","en":"toothache","sp":"","ge":"","cr":"","tema":"salute"},{"it":"spazzolino da denti","en":"toothbrush","sp":"","ge":"","cr":"","tema":"casa"},{"it":"dentifricio","en":"toothpaste","sp":"","ge":"","cr":"","tema":"casa"},{"it":"giocattolo","en":"toy","sp":"zègo","ge":"","cr":"","tema":"dialogo"},{"it":"addestramento/allenamento","en":"training","sp":"","ge":"","cr":"","tema":"sport"},{"it":"tradurre","en":"translate","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"viaggio/gita","en":"trip","sp":"","ge":"","cr":"","tema":"viaggi"},{"it":"pantaloni","en":"trousers","sp":"braghe","ge":"","cr":"","tema":"vestiti"},{"it":"tromba","en":"trumpet","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"verità","en":"truth","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"girare/svolta","en":"turn","sp":"zia, brilae","ge":"","cr":"","tema":"verbi"},{"it":"due volte","en":"twice","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"pneumatico/gomma","en":"tyre","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"scomodo","en":"uncomfortable","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"insolito","en":"unusual","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"turbato","en":"upset","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"utile","en":"useful","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"solito","en":"usual","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"di solito","en":"usually","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"cameriera","en":"waitress","sp":"canbeéa","ge":"","cr":"","tema":"mestieri"},{"it":"portafogli","en":"wallet","sp":"","ge":"","cr":"","tema":"vestiti"},{"it":"guerra","en":"war","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"lavare","en":"wash","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"tempo","en":"weather","sp":"","ge":"","cr":"","tema":"natura"},{"it":"nozze/matrimonio","en":"wedding","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"fine settimana","en":"weekend","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"bagnato","en":"wet","sp":"bagno","ge":"","cr":"","tema":"aggettivi"},{"it":"ruota","en":"wheel","sp":"rèda","ge":"","cr":"","tema":"dialogo"},{"it":"se","en":"whether","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"mentre","en":"while","sp":"enmentre, ’nmentre","ge":"","cr":"","tema":"dialogo"},{"it":"ventoso","en":"windy","sp":"","ge":"","cr":"","tema":"natura"},{"it":"con","en":"with","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"senza","en":"without","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"meraviglioso","en":"wonderful","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"legno/bosco","en":"wood","sp":"","ge":"","cr":"","tema":"natura"},{"it":"lana","en":"wool","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"preoccuparsi","en":"worry","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"peggiore","en":"worse","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"scrittore","en":"writer","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"sbagliato","en":"wrong","sp":"sbagià","ge":"","cr":"","tema":"aggettivi"},{"it":"giovane","en":"young","sp":"zove,zòvena","ge":"","cr":"","tema":"aggettivi"},{"it":"madre","en":"mother","sp":"mae","ge":"mæ","cr":"Mà","tema":"famiglia"},{"it":"padre","en":"father","sp":"pà, pae,","ge":"pæ","cr":"Pà","tema":"famiglia"},{"it":"fratello","en":"brother","sp":"frè","ge":"fræ","cr":"","tema":"famiglia"},{"it":"sorella","en":"sister","sp":"soèla","ge":"sêu","cr":"","tema":"famiglia"},{"it":"figlio","en":"son","sp":"figio","ge":"figgio","cr":"","tema":"famiglia"},{"it":"nonna","en":"grandmother","sp":"nona","ge":"","cr":"Nòna","tema":"famiglia"},{"it":"nonno","en":"grandfather","sp":"nono","ge":"","cr":"Nonò","tema":"famiglia"},{"it":"bambino","en":"child","sp":"ninìn","ge":"bocia","cr":"M'nin","tema":"famiglia"},{"it":"ragazzo","en":"boy","sp":"fante, fantassén, bardassén, garsén, guar-","ge":"figé","cr":"Fant","tema":"famiglia"},{"it":"ragazza","en":"girl","sp":"fantèla, fante","ge":"figétta","cr":"Fanta","tema":"famiglia"},{"it":"marito","en":"husband","sp":"maì","ge":"màrito","cr":"","tema":"famiglia"},{"it":"moglie","en":"wife","sp":"mogée","ge":"móglie","cr":"","tema":"famiglia"},{"it":"zio","en":"uncle","sp":"zìo/barba","ge":"bàrba","cr":"","tema":"famiglia"},{"it":"zia","en":"aunt","sp":"séa/làla","ge":"bàrba féminn-a","cr":"","tema":"famiglia"},{"it":"suocero","en":"father-in-law","sp":"sèsoo","ge":"sêueo","cr":"","tema":"famiglia"},{"it":"nuora","en":"daughter-in-law","sp":"nèa","ge":"nêua","cr":"Nèa","tema":"famiglia"},{"it":"cognato","en":"brother-in-law","sp":"cognà","ge":"cognòu","cr":"","tema":"famiglia"},{"it":"neonato","en":"newborn","sp":"petüsso","ge":"neônòu","cr":"","tema":"famiglia"},{"it":"medico","en":"doctor","sp":"médego, médegòn","ge":"","cr":"Dotòr","tema":"mestieri"},{"it":"cuoco","en":"cook","sp":"chègo","ge":"","cr":"","tema":"mestieri"},{"it":"cameriere","en":"waiter","sp":"canbeéo","ge":"","cr":"","tema":"mestieri"},{"it":"panettiere","en":"baker","sp":"panatéo, panadéo, paneréo","ge":"","cr":"","tema":"mestieri"},{"it":"barbiere","en":"barber","sp":"barbéo","ge":"","cr":"","tema":"mestieri"},{"it":"muratore","en":"bricklayer","sp":"müadoe, massacàn","ge":"","cr":"","tema":"mestieri"},{"it":"falegname","en":"carpenter","sp":"bancaà","ge":"","cr":"","tema":"mestieri"},{"it":"pescatore","en":"fisherman","sp":"pescadoe","ge":"","cr":"","tema":"mestieri"},{"it":"cane","en":"dog","sp":"can","ge":"","cr":"","tema":"animali"},{"it":"gatto","en":"cat","sp":"gato","ge":"","cr":"","tema":"animali"},{"it":"uccello","en":"bird","sp":"osèo","ge":"","cr":"","tema":"animali"},{"it":"pesce","en":"fish","sp":"","ge":"","cr":"","tema":"animali"},{"it":"cavallo","en":"horse","sp":"cavalo","ge":"","cr":"","tema":"animali"},{"it":"coniglio","en":"rabbit","sp":"conigio","ge":"cunìggio","cr":"Cunìggi","tema":"animali"},{"it":"gallina","en":"hen","sp":"gaìna","ge":"gàinn-a","cr":"","tema":"animali"},{"it":"mucca","en":"cow","sp":"","ge":"","cr":"","tema":"animali"},{"it":"maiale","en":"pig","sp":"","ge":"","cr":"","tema":"animali"},{"it":"lupo","en":"wolf","sp":"lovo, Ioo, lòpa","ge":"lêuvo","cr":"","tema":"animali"},{"it":"cinghiale","en":"wild boar","sp":"singhiale","ge":"","cr":"","tema":"animali"},{"it":"gabbiano","en":"seagull","sp":"ochin de mae","ge":"gàbian","cr":"","tema":"animali"},{"it":"aragosta","en":"lobster","sp":"ragostena","ge":"","cr":"","tema":"animali"},{"it":"acqua","en":"water","sp":"àigoa","ge":"","cr":"","tema":"natura"},{"it":"sole","en":"sun","sp":"sò","ge":"","cr":"","tema":"natura"},{"it":"luna","en":"moon","sp":"","ge":"","cr":"","tema":"natura"},{"it":"pioggia","en":"rain","sp":"àigoa","ge":"","cr":"","tema":"natura"},{"it":"vento","en":"wind","sp":"","ge":"","cr":"","tema":"natura"},{"it":"mare","en":"sea","sp":"mae","ge":"","cr":"","tema":"natura"},{"it":"montagna","en":"mountain","sp":"","ge":"","cr":"","tema":"natura"},{"it":"fiore","en":"flower","sp":"fiòo","ge":"","cr":"","tema":"natura"},{"it":"albero","en":"tree","sp":"àrbeo","ge":"","cr":"","tema":"natura"},{"it":"neve","en":"snow","sp":"","ge":"","cr":"","tema":"natura"},{"it":"ghiaccio","en":"ice","sp":"","ge":"","cr":"Ghiàz'","tema":"natura"},{"it":"fuoco","en":"fire","sp":"fègo","ge":"","cr":"Fòk","tema":"natura"},{"it":"rosmarino","en":"rosemary","sp":"resomaìn","ge":"reusmæn","cr":"","tema":"natura"},{"it":"basilico","en":"basil","sp":"basèrco, basìrco","ge":"baxaicò","cr":"","tema":"natura"},{"it":"zafferano","en":"saffron","sp":"safràn","ge":"zaffaràn","cr":"","tema":"natura"},{"it":"pane","en":"bread","sp":"","ge":"","cr":"Pan","tema":"cibo"},{"it":"latte","en":"milk","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"uovo","en":"egg","sp":"èvo","ge":"","cr":"","tema":"cibo"},{"it":"mela","en":"apple","sp":"pomo","ge":"pómmo","cr":"","tema":"cibo"},{"it":"pomodoro","en":"tomato","sp":"pomata","ge":"tomâta","cr":"","tema":"cibo"},{"it":"carne","en":"meat","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"riso","en":"rice","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"pasta","en":"pasta","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"anguria","en":"watermelon","sp":"süca fetosa, patèca","ge":"","cr":"Cocòmbla","tema":"cibo"},{"it":"fragola","en":"strawberry","sp":"moèo, morèo","ge":"mòroa","cr":"","tema":"cibo"},{"it":"aglio","en":"garlic","sp":"àgio","ge":"","cr":"","tema":"cibo"},{"it":"cipolla","en":"onion","sp":"siòla, sigòla","ge":"","cr":"Cipòda","tema":"cibo"},{"it":"carciofo","en":"artichoke","sp":"articiòco","ge":"","cr":"","tema":"cibo"},{"it":"melanzana","en":"aubergine","sp":"meinzàna,","ge":"","cr":"M'rlinzàna","tema":"cibo"},{"it":"focaccia","en":"focaccia","sp":"fugassa","ge":"","cr":"Fugazìna","tema":"cibo"},{"it":"testa","en":"head","sp":"","ge":"","cr":"","tema":"corpo"},{"it":"occhio","en":"eye","sp":"òcio","ge":"","cr":"Oc","tema":"corpo"},{"it":"orecchio","en":"ear","sp":"oecia","ge":"","cr":"","tema":"corpo"},{"it":"bocca","en":"mouth","sp":"boca","ge":"","cr":"","tema":"corpo"},{"it":"naso","en":"nose","sp":"","ge":"","cr":"","tema":"corpo"},{"it":"mano","en":"hand","sp":"","ge":"","cr":"","tema":"corpo"},{"it":"piede","en":"foot","sp":"pé","ge":"pê","cr":"","tema":"corpo"},{"it":"braccio","en":"arm","sp":"brasso","ge":"bràsso","cr":"","tema":"corpo"},{"it":"gamba","en":"leg","sp":"","ge":"","cr":"","tema":"corpo"},{"it":"cuore","en":"heart","sp":"chèe","ge":"chêu","cr":"","tema":"corpo"},{"it":"schiena","en":"back","sp":"schéna, schéne","ge":"schénn-a","cr":"","tema":"corpo"},{"it":"ginocchio","en":"knee","sp":"zenòcio","ge":"zenogio","cr":"","tema":"corpo"},{"it":"gomito","en":"elbow","sp":"gomedo","ge":"","cr":"Gòm't","tema":"corpo"},{"it":"fegato","en":"liver","sp":"figaéto","ge":"","cr":"","tema":"corpo"},{"it":"polmone","en":"lung","sp":"pümòn, pimòn, pormòn","ge":"","cr":"","tema":"corpo"},{"it":"dolore","en":"pain","sp":"","ge":"","cr":"","tema":"salute"},{"it":"febbre","en":"fever","sp":"fréve, frévia","ge":"","cr":"","tema":"salute"},{"it":"raffreddore","en":"cold","sp":"rafredoe, massüco, ciamiüro","ge":"","cr":"Cimùr","tema":"salute"},{"it":"nausea","en":"nausea","sp":"angossa","ge":"","cr":"","tema":"salute"},{"it":"allergia","en":"allergy","sp":"","ge":"","cr":"","tema":"salute"},{"it":"ricetta","en":"prescription","sp":"","ge":"","cr":"","tema":"salute"},{"it":"farmaco","en":"medicine","sp":"","ge":"","cr":"","tema":"salute"},{"it":"sciroppo","en":"syrup","sp":"","ge":"","cr":"","tema":"salute"},{"it":"compressa","en":"tablet","sp":"ciapeleta","ge":"","cr":"","tema":"salute"},{"it":"capsula","en":"capsule","sp":"ciapeleta","ge":"","cr":"","tema":"salute"},{"it":"pomata","en":"ointment","sp":"","ge":"","cr":"","tema":"salute"},{"it":"cerotto","en":"plaster","sp":"seòto","ge":"","cr":"","tema":"salute"},{"it":"crampo","en":"cramp","sp":"sgranfio, granfio","ge":"","cr":"","tema":"salute"},{"it":"livido","en":"bruise","sp":"negron","ge":"","cr":"N'ròn","tema":"salute"},{"it":"pressione","en":"blood pressure","sp":"","ge":"","cr":"","tema":"salute"},{"it":"diabete","en":"diabetes","sp":"","ge":"","cr":"","tema":"salute"},{"it":"antibiotico","en":"antibiotic","sp":"","ge":"","cr":"","tema":"salute"},{"it":"antinfiammatorio","en":"anti-inflammatory","sp":"","ge":"","cr":"","tema":"salute"},{"it":"camicia","en":"shirt","sp":"camisa","ge":"","cr":"Camisa","tema":"vestiti"},{"it":"scarpe","en":"shoes","sp":"","ge":"","cr":"","tema":"vestiti"},{"it":"gonna","en":"skirt","sp":"","ge":"","cr":"Gonèla","tema":"vestiti"},{"it":"cappotto","en":"coat","sp":"","ge":"","cr":"","tema":"vestiti"},{"it":"grembiule","en":"apron","sp":"scosà","ge":"","cr":"Grembiàle","tema":"vestiti"},{"it":"casa","en":"house","sp":"ca","ge":"","cr":"Cà","tema":"casa"},{"it":"cucina","en":"kitchen","sp":"","ge":"","cr":"","tema":"casa"},{"it":"finestra","en":"window","sp":"barcòn","ge":"","cr":"","tema":"casa"},{"it":"porta","en":"door","sp":"pòrte","ge":"","cr":"","tema":"casa"},{"it":"cucchiaio","en":"spoon","sp":"cüciao","ge":"","cr":"Cuciàr","tema":"casa"},{"it":"forchetta","en":"fork","sp":"forcìna","ge":"","cr":"Furzìna","tema":"casa"},{"it":"coltello","en":"knife","sp":"cotèo","ge":"","cr":"Cultèd","tema":"casa"},{"it":"bicchiere","en":"glass","sp":"gòto","ge":"","cr":"Bicèr","tema":"casa"},{"it":"specchio","en":"mirror","sp":"specio","ge":"","cr":"","tema":"casa"},{"it":"coperta","en":"blanket","sp":"","ge":"","cr":"Coltròn","tema":"casa"},{"it":"cassettiera","en":"chest of drawers","sp":"comò","ge":"","cr":"Cantaràn","tema":"casa"},{"it":"scuola","en":"school","sp":"schèa","ge":"","cr":"","tema":"luoghi"},{"it":"ospedale","en":"hospital","sp":"spedào","ge":"","cr":"","tema":"luoghi"},{"it":"farmacia","en":"pharmacy","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"supermercato","en":"supermarket","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"chiesa","en":"church","sp":"gese","ge":"","cr":"","tema":"luoghi"},{"it":"piazza","en":"square","sp":"ciassa","ge":"","cr":"","tema":"luoghi"},{"it":"mercato","en":"market","sp":"mercà","ge":"","cr":"","tema":"luoghi"},{"it":"porto","en":"port","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"molo","en":"pier","sp":"mòo","ge":"","cr":"","tema":"luoghi"},{"it":"essere","en":"be","sp":"èsse","ge":"","cr":"","tema":"verbi"},{"it":"avere","en":"have","sp":"avée","ge":"","cr":"","tema":"verbi"},{"it":"andare","en":"go","sp":"andae","ge":"","cr":"","tema":"verbi"},{"it":"venire","en":"come","sp":"vegnìe","ge":"","cr":"","tema":"verbi"},{"it":"mangiare","en":"eat","sp":"mangiae","ge":"","cr":"Magnàr","tema":"verbi"},{"it":"bere","en":"drink","sp":"beve","ge":"","cr":"","tema":"verbi"},{"it":"dormire","en":"sleep","sp":"dormie, polae","ge":"","cr":"","tema":"verbi"},{"it":"parlare","en":"speak","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"pensare","en":"think","sp":"apensae, pensae","ge":"","cr":"","tema":"verbi"},{"it":"lavorare","en":"work","sp":"travagiae, lavoae","ge":"","cr":"","tema":"verbi"},{"it":"volare","en":"fly","sp":"svoae","ge":"vêuâ","cr":"","tema":"verbi"},{"it":"ridere","en":"laugh","sp":"arìdese","ge":"rî","cr":"","tema":"verbi"},{"it":"piangere","en":"cry","sp":"cianze, sgnarae, ragnae","ge":"","cr":"","tema":"verbi"},{"it":"sognare","en":"dream","sp":"asomiasse, somiasse","ge":"","cr":"","tema":"verbi"},{"it":"nascondere","en":"hide","sp":"asconde","ge":"ascónde","cr":"","tema":"verbi"},{"it":"rimanere","en":"stay","sp":"","ge":"","cr":"A'rmanèr","tema":"verbi"},{"it":"arrabbiarsi","en":"get angry","sp":"aragiasse","ge":"","cr":"","tema":"verbi"},{"it":"starnutire","en":"sneeze","sp":"stranüdae","ge":"stramuî","cr":"","tema":"verbi"},{"it":"grande","en":"big","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"piccolo","en":"small","sp":"pecenìn","ge":"","cr":"","tema":"aggettivi"},{"it":"buono","en":"good","sp":"bon","ge":"","cr":"","tema":"aggettivi"},{"it":"cattivo","en":"bad","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"nuovo","en":"new","sp":"nèvo","ge":"","cr":"","tema":"aggettivi"},{"it":"vecchio","en":"old","sp":"vècio","ge":"","cr":"","tema":"aggettivi"},{"it":"importante","en":"important","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"nostalgia","en":"longing","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"figlia","en":"daughter","sp":"figia","ge":"","cr":"","tema":"famiglia"},{"it":"terra","en":"earth","sp":"","ge":"","cr":"","tema":"natura"},{"it":"pietra","en":"stone","sp":"préa","ge":"","cr":"","tema":"natura"},{"it":"cielo","en":"sky","sp":"","ge":"","cr":"","tema":"natura"},{"it":"stella","en":"star","sp":"stéa","ge":"","cr":"","tema":"natura"},{"it":"sangue","en":"blood","sp":"","ge":"","cr":"","tema":"corpo"},{"it":"vedere","en":"see","sp":"vede","ge":"","cr":"","tema":"verbi"},{"it":"dire","en":"say","sp":"die","ge":"","cr":"","tema":"verbi"},{"it":"fare","en":"do","sp":"fae","ge":"","cr":"","tema":"verbi"},{"it":"sapere","en":"know","sp":"savée","ge":"","cr":"","tema":"verbi"},{"it":"amare","en":"love","sp":"voree ben","ge":"","cr":"","tema":"verbi"},{"it":"scrivere","en":"write","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"leggere","en":"read","sp":"lèze","ge":"","cr":"","tema":"verbi"},{"it":"combattere","en":"fight","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"governare","en":"govern","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"vivere","en":"live","sp":"vive","ge":"","cr":"","tema":"verbi"},{"it":"morire","en":"die","sp":"moie","ge":"","cr":"","tema":"verbi"},{"it":"bello","en":"beautiful","sp":"bèo, bèlo, f. bèla","ge":"","cr":"","tema":"aggettivi"},{"it":"brutto","en":"ugly","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"libero","en":"free","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"saggio","en":"wise","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"coraggioso","en":"brave","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"giusto","en":"just","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"vero","en":"true","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"mortale","en":"mortal","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"città","en":"city","sp":"sità","ge":"","cr":"","tema":"luoghi"},{"it":"tempio","en":"temple","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"teatro","en":"theatre","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"agorà/foro","en":"forum","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"patria","en":"homeland","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"anima/animo","en":"soul","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"virtù","en":"virtue","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"destino/fato","en":"fate","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"gloria","en":"glory","sp":"gròia","ge":"","cr":"","tema":"aggettivi"},{"it":"legge","en":"law","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"natura","en":"nature","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"filosofia","en":"philosophy","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"democrazia","en":"democracy","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"1ª declinazione (es. rosa)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"2ª declinazione (es. servus)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"3ª declinazione (es. rex)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"nominativo (soggetto)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"genitivo (complemento di specificazione)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"dativo (complemento di termine)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"accusativo (complemento oggetto)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"ablativo (vari complementi)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"vocativo (allocuzione)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"io amo (1ª coniug. lat.)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"tu ami","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"egli/ella ama","en":"","sp":"ama","ge":"","cr":"","tema":"grammatica"},{"it":"noi amiamo","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"voi amate","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"essi amano","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"io era / ero (imperfetto)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"io fui / ho amato (perfetto)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"modo congiuntivo (che io ami)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"infinito presente attivo","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"participio presente attivo","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"articolo determinativo masch. (il)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"articolo determinativo femm. (la)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"articolo determinativo neutro (lo)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"pronome relativo (che / il quale)","en":"","sp":"","ge":"","cr":"","tema":"grammatica"},{"it":"Conosci te stesso","en":"","sp":"","ge":"","cr":"","tema":"citazioni"},{"it":"Il tempo vola","en":"","sp":"","ge":"","cr":"","tema":"citazioni"},{"it":"Sono venuto, ho visto, ho vinto","en":"","sp":"","ge":"","cr":"","tema":"citazioni"},{"it":"La vita è breve, l'arte è lunga","en":"","sp":"","ge":"","cr":"","tema":"citazioni"},{"it":"Penso dunque sono","en":"","sp":"","ge":"","cr":"","tema":"citazioni"},{"it":"Nella misura, sta la virtù","en":"","sp":"","ge":"","cr":"","tema":"citazioni"},{"it":"L'uomo è la misura di tutte le cose","en":"","sp":"","ge":"","cr":"","tema":"citazioni"},{"it":"So di non sapere","en":"","sp":"","ge":"","cr":"","tema":"citazioni"},{"it":"Niente di nuovo sotto il sole","en":"","sp":"","ge":"","cr":"","tema":"citazioni"},{"it":"Carpe diem (cogli l'attimo)","en":"","sp":"","ge":"","cr":"","tema":"citazioni"},{"it":"uno","en":"one","sp":"in, en","ge":"","cr":"","tema":"numeri"},{"it":"due","en":"two","sp":"doi, doa","ge":"","cr":"","tema":"numeri"},{"it":"tre","en":"three","sp":"trèi","ge":"","cr":"","tema":"numeri"},{"it":"quattro","en":"four","sp":"quatro","ge":"","cr":"","tema":"numeri"},{"it":"cinque","en":"five","sp":"sìnque","ge":"","cr":"","tema":"numeri"},{"it":"sei","en":"six","sp":"sei","ge":"","cr":"","tema":"numeri"},{"it":"sette","en":"seven","sp":"sete","ge":"","cr":"","tema":"numeri"},{"it":"otto","en":"eight","sp":"òto","ge":"","cr":"","tema":"numeri"},{"it":"nove","en":"nine","sp":"nève","ge":"","cr":"","tema":"numeri"},{"it":"dieci","en":"ten","sp":"déze","ge":"","cr":"","tema":"numeri"},{"it":"cento","en":"hundred","sp":"sénto","ge":"","cr":"","tema":"numeri"},{"it":"mille","en":"thousand","sp":"mile","ge":"","cr":"","tema":"numeri"},{"it":"Come posso aiutarla?","en":"How can I help you?","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"Ha la ricetta?","en":"Do you have a prescription?","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"Dove fa male?","en":"Where does it hurt?","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"zero","en":"zero","sp":"zèo","ge":"","cr":"","tema":"numeri"},{"it":"undici","en":"eleven","sp":"ünze","ge":"","cr":"","tema":"numeri"},{"it":"dodici","en":"twelve","sp":"doze","ge":"","cr":"","tema":"numeri"},{"it":"quindici","en":"fifteen","sp":"chìnze","ge":"","cr":"","tema":"numeri"},{"it":"venti","en":"twenty","sp":"vìnti","ge":"","cr":"","tema":"numeri"},{"it":"lunedì","en":"Monday","sp":"lünedì","ge":"","cr":"","tema":"giorni"},{"it":"martedì","en":"Tuesday","sp":"martedì","ge":"","cr":"","tema":"giorni"},{"it":"mercoledì","en":"Wednesday","sp":"marcordì","ge":"","cr":"","tema":"giorni"},{"it":"giovedì","en":"Thursday","sp":"zògia","ge":"","cr":"","tema":"giorni"},{"it":"venerdì","en":"Friday","sp":"vernardì","ge":"","cr":"","tema":"giorni"},{"it":"sabato","en":"Saturday","sp":"sabo","ge":"","cr":"","tema":"giorni"},{"it":"domenica","en":"Sunday","sp":"domenega","ge":"","cr":"","tema":"giorni"},{"it":"gennaio","en":"January","sp":"zenào","ge":"","cr":"","tema":"mesi"},{"it":"febbraio","en":"February","sp":"frevào","ge":"","cr":"","tema":"mesi"},{"it":"marzo","en":"March","sp":"marso","ge":"","cr":"","tema":"mesi"},{"it":"aprile","en":"April","sp":"arvì","ge":"","cr":"","tema":"mesi"},{"it":"maggio","en":"May","sp":"mazo","ge":"","cr":"","tema":"mesi"},{"it":"giugno","en":"June","sp":"zügno","ge":"","cr":"","tema":"mesi"},{"it":"luglio","en":"July","sp":"lügio","ge":"","cr":"","tema":"mesi"},{"it":"agosto","en":"August","sp":"agosto","ge":"","cr":"","tema":"mesi"},{"it":"settembre","en":"September","sp":"setenbre","ge":"","cr":"","tema":"mesi"},{"it":"ottobre","en":"October","sp":"otobre","ge":"","cr":"","tema":"mesi"},{"it":"novembre","en":"November","sp":"novenbre","ge":"","cr":"","tema":"mesi"},{"it":"dicembre","en":"December","sp":"dezenbre","ge":"","cr":"","tema":"mesi"},{"it":"bue","en":"ox","sp":"bè","ge":"","cr":"","tema":"animali"},{"it":"lucertola","en":"lizard","sp":"léssoa","ge":"","cr":"","tema":"animali"},{"it":"ramarro","en":"green lizard","sp":"lighèo, lügaè","ge":"","cr":"","tema":"animali"},{"it":"pipistrello","en":"bat","sp":"rato penüo, parpagiòn","ge":"","cr":"","tema":"animali"},{"it":"faina","en":"beech marten","sp":"foìn","ge":"","cr":"","tema":"animali"},{"it":"donnola","en":"weasel","sp":"bèloa","ge":"","cr":"","tema":"animali"},{"it":"leone","en":"lion","sp":"lion","ge":"","cr":"","tema":"animali"},{"it":"medusa","en":"jellyfish","sp":"carnàssa","ge":"","cr":"","tema":"animali"},{"it":"granchio","en":"crab","sp":"faélo, grìtoa","ge":"","cr":"","tema":"animali"},{"it":"cavalluccio marino","en":"seahorse","sp":"cavaleto de mae","ge":"","cr":"","tema":"animali"},{"it":"riccio di mare","en":"sea urchin","sp":"zìn","ge":"","cr":"","tema":"animali"},{"it":"scorpione","en":"scorpion","sp":"tanàgia","ge":"","cr":"","tema":"animali"},{"it":"cervo volante","en":"stag beetle","sp":"tanagion","ge":"","cr":"","tema":"animali"},{"it":"cavalletta","en":"grasshopper","sp":"catainéta","ge":"","cr":"","tema":"animali"},{"it":"cimice","en":"bug","sp":"sìmesa","ge":"","cr":"","tema":"animali"},{"it":"tafano","en":"horsefly","sp":"tavàn","ge":"","cr":"","tema":"animali"},{"it":"libellula","en":"dragonfly","sp":"libèrboa, carcasiico, massaprete, cavaòci","ge":"","cr":"","tema":"animali"},{"it":"lucciola","en":"firefly","sp":"nìssoa, lüssega","ge":"","cr":"","tema":"animali"},{"it":"zecca","en":"tick","sp":"sétega","ge":"","cr":"","tema":"animali"},{"it":"orata","en":"sea bream","sp":"oà","ge":"","cr":"","tema":"animali"},{"it":"branzino","en":"sea bass","sp":"lovasso","ge":"","cr":"","tema":"animali"},{"it":"ghiozzo","en":"goby","sp":"ghigiòn","ge":"","cr":"","tema":"animali"},{"it":"muggine","en":"mullet","sp":"müzeno","ge":"","cr":"","tema":"animali"},{"it":"sgombro","en":"mackerel","sp":"lasèrto","ge":"","cr":"","tema":"animali"},{"it":"pupilla","en":"pupil","sp":"fantinéta","ge":"","cr":"","tema":"corpo"},{"it":"mignolo","en":"little finger","sp":"meninèo: minindo","ge":"","cr":"","tema":"corpo"},{"it":"pollice","en":"thumb","sp":"dido grosso, sàca pioci","ge":"","cr":"","tema":"corpo"},{"it":"torace","en":"chest","sp":"casseta","ge":"","cr":"","tema":"corpo"},{"it":"ombelico","en":"navel","sp":"lopìn, onbrisàlo","ge":"","cr":"","tema":"corpo"},{"it":"scapola","en":"shoulder blade","sp":"paéta da sc-cena/paéta da s'cena","ge":"","cr":"","tema":"corpo"},{"it":"colonna vertebrale","en":"spine","sp":"filon dea schena","ge":"","cr":"","tema":"corpo"},{"it":"grembo","en":"lap","sp":"scòso","ge":"","cr":"","tema":"corpo"},{"it":"zigomo","en":"cheekbone","sp":"pométi","ge":"","cr":"","tema":"corpo"},{"it":"varicella","en":"chickenpox","sp":"voatìn","ge":"","cr":"","tema":"salute"},{"it":"raucedine","en":"hoarseness","sp":"ràntega","ge":"","cr":"","tema":"salute"},{"it":"tosse secca","en":"dry cough","sp":"bèssega","ge":"","cr":"","tema":"salute"},{"it":"dissenteria","en":"dysentery","sp":"caghéta","ge":"","cr":"","tema":"salute"},{"it":"prurito","en":"itching","sp":"smangiànsa","ge":"","cr":"","tema":"salute"},{"it":"infarto","en":"heart attack","sp":"sc-ciopon/s'ciopon","ge":"","cr":"","tema":"salute"},{"it":"fiatone","en":"breathlessness","sp":"pantàsso","ge":"","cr":"","tema":"salute"},{"it":"foruncolo","en":"boil","sp":"ciavèo","ge":"","cr":"","tema":"salute"},{"it":"cardigan","en":"cardigan","sp":"rebèca","ge":"","cr":"","tema":"vestiti"},{"it":"orecchini","en":"earrings","sp":"pendìn","ge":"","cr":"","tema":"vestiti"},{"it":"bottone","en":"button","sp":"pomèo, animeta","ge":"","cr":"","tema":"vestiti"},{"it":"giacca","en":"jacket","sp":"giaché","ge":"","cr":"","tema":"vestiti"},{"it":"canottiera","en":"vest","sp":"pelisson","ge":"","cr":"","tema":"vestiti"},{"it":"cavatappi","en":"corkscrew","sp":"tiabüssòn","ge":"","cr":"","tema":"casa"},{"it":"piatto","en":"plate","sp":"tondo","ge":"","cr":"","tema":"casa"},{"it":"tegame","en":"pan","sp":"tiàn","ge":"","cr":"","tema":"casa"},{"it":"barattolo","en":"jar","sp":"bolàco","ge":"","cr":"","tema":"casa"},{"it":"tovagliolo","en":"napkin","sp":"toagìn, picagéta","ge":"","cr":"","tema":"casa"},{"it":"occhiali","en":"glasses","sp":"specéti, barìcole","ge":"","cr":"","tema":"casa"},{"it":"comodino","en":"bedside table","sp":"ghirindón","ge":"","cr":"","tema":"casa"},{"it":"cassetto","en":"drawer","sp":"tiéto","ge":"","cr":"","tema":"casa"},{"it":"appendiabiti","en":"coat hanger","sp":"ométo","ge":"","cr":"","tema":"casa"},{"it":"grattugia","en":"grater","sp":"gràtoa","ge":"","cr":"","tema":"casa"},{"it":"scodella","en":"bowl","sp":"zàta","ge":"","cr":"","tema":"casa"},{"it":"scure","en":"axe","sp":"picosso","ge":"","cr":"","tema":"casa"},{"it":"spaccanoci","en":"nutcracker","sp":"sacanosi","ge":"","cr":"","tema":"casa"},{"it":"rozzo","en":"coarse","sp":"gréso, marzòco","ge":"","cr":"","tema":"aggettivi"},{"it":"svelto","en":"quick","sp":"asvèrto, svèrto, scodìncio, alèsto","ge":"","cr":"","tema":"aggettivi"},{"it":"leggero","en":"light","sp":"legéo, Iégio. lengéo","ge":"","cr":"","tema":"aggettivi"},{"it":"ghiotto","en":"greedy","sp":"giòto,goòn,lecardòn","ge":"","cr":"","tema":"aggettivi"},{"it":"selvatico","en":"wild","sp":"servadego","ge":"","cr":"","tema":"aggettivi"},{"it":"insipido","en":"bland","sp":"desapìto","ge":"","cr":"","tema":"aggettivi"},{"it":"piccante","en":"spicy","sp":"apüto","ge":"","cr":"","tema":"aggettivi"},{"it":"pieno","en":"full","sp":"cén","ge":"","cr":"","tema":"aggettivi"},{"it":"appallottolare","en":"roll up","sp":"abalotoae","ge":"","cr":"","tema":"verbi"},{"it":"punzecchiare","en":"poke","sp":"besigiae","ge":"","cr":"","tema":"verbi"},{"it":"spintonare","en":"shove","sp":"spüncionae","ge":"","cr":"","tema":"verbi"},{"it":"solleticare","en":"tickle","sp":"beletegae","ge":"","cr":"","tema":"verbi"},{"it":"comprare","en":"buy","sp":"catae","ge":"","cr":"","tema":"verbi"},{"it":"rincorrere","en":"chase","sp":"score","ge":"","cr":"","tema":"verbi"},{"it":"rompere","en":"break","sp":"ronpie, scossae, stocae,","ge":"","cr":"","tema":"verbi"},{"it":"cadere","en":"fall","sp":"caie","ge":"","cr":"","tema":"verbi"},{"it":"sciogliere","en":"dissolve","sp":"siòlie","ge":"","cr":"","tema":"verbi"},{"it":"dar di matto","en":"go crazy","sp":"smatezae","ge":"","cr":"","tema":"verbi"},{"it":"spostare","en":"move","sp":"tramüdae","ge":"","cr":"","tema":"verbi"},{"it":"trenta","en":"thirty","sp":"","ge":"","cr":"","tema":"numeri"},{"it":"cinquanta","en":"fifty","sp":"","ge":"","cr":"","tema":"numeri"},{"it":"secondo","en":"second","sp":"","ge":"","cr":"","tema":"numeri"},{"it":"terzo","en":"third","sp":"","ge":"","cr":"","tema":"numeri"},{"it":"euro","en":"euro","sp":"","ge":"","cr":"","tema":"valute"},{"it":"dollaro","en":"dollar","sp":"","ge":"","cr":"","tema":"valute"},{"it":"sterlina","en":"pound","sp":"","ge":"","cr":"","tema":"valute"},{"it":"yen","en":"yen","sp":"","ge":"","cr":"","tema":"valute"},{"it":"won","en":"won","sp":"","ge":"","cr":"","tema":"valute"},{"it":"prezzo","en":"price","sp":"prèssio","ge":"","cr":"","tema":"valute"},{"it":"sconto","en":"discount","sp":"","ge":"","cr":"","tema":"valute"},{"it":"totale","en":"total","sp":"","ge":"","cr":"","tema":"valute"},{"it":"resto","en":"change","sp":"","ge":"","cr":"","tema":"valute"},{"it":"ricevuta","en":"receipt","sp":"","ge":"","cr":"","tema":"valute"},{"it":"contanti","en":"cash","sp":"","ge":"","cr":"","tema":"valute"},{"it":"rimborso","en":"refund","sp":"","ge":"","cr":"","tema":"valute"},{"it":"assicurazione","en":"insurance","sp":"","ge":"","cr":"","tema":"valute"},{"it":"ticket sanitario","en":"co-payment","sp":"","ge":"","cr":"","tema":"valute"},{"it":"mal di stomaco","en":"stomachache","sp":"","ge":"","cr":"","tema":"sintomi"},{"it":"mal di gola","en":"sore throat","sp":"","ge":"","cr":"","tema":"sintomi"},{"it":"vomito","en":"vomiting","sp":"","ge":"","cr":"","tema":"sintomi"},{"it":"diarrea","en":"diarrhoea","sp":"caghéta, cagaròn","ge":"","cr":"","tema":"sintomi"},{"it":"stitichezza","en":"constipation","sp":"","ge":"","cr":"","tema":"sintomi"},{"it":"stanchezza","en":"fatigue","sp":"","ge":"","cr":"","tema":"sintomi"},{"it":"gonfiore","en":"swelling","sp":"","ge":"","cr":"","tema":"sintomi"},{"it":"bruciore","en":"burning","sp":"brusoe","ge":"","cr":"","tema":"sintomi"},{"it":"eruzione cutanea","en":"skin rash","sp":"","ge":"","cr":"","tema":"sintomi"},{"it":"palpitazioni","en":"palpitations","sp":"","ge":"","cr":"","tema":"sintomi"},{"it":"insonnia","en":"insomnia","sp":"","ge":"","cr":"","tema":"sintomi"},{"it":"tachicardia","en":"tachycardia","sp":"","ge":"","cr":"","tema":"sintomi"},{"it":"ipotensione","en":"low blood pressure","sp":"","ge":"","cr":"","tema":"sintomi"},{"it":"gocce","en":"drops","sp":"","ge":"","cr":"","tema":"farmaci"},{"it":"antidolorifico","en":"painkiller","sp":"","ge":"","cr":"","tema":"farmaci"},{"it":"antistaminico","en":"antihistamine","sp":"","ge":"","cr":"","tema":"farmaci"},{"it":"antipiretico","en":"antipyretic","sp":"","ge":"","cr":"","tema":"farmaci"},{"it":"antiacido","en":"antacid","sp":"","ge":"","cr":"","tema":"farmaci"},{"it":"probiotico","en":"probiotic","sp":"","ge":"","cr":"","tema":"farmaci"},{"it":"integratore","en":"supplement","sp":"","ge":"","cr":"","tema":"farmaci"},{"it":"dosaggio","en":"dosage","sp":"","ge":"","cr":"","tema":"farmaci"},{"it":"effetto collaterale","en":"side effect","sp":"","ge":"","cr":"","tema":"farmaci"},{"it":"scadenza","en":"expiry date","sp":"","ge":"","cr":"","tema":"farmaci"},{"it":"controindicazione","en":"contraindication","sp":"","ge":"","cr":"","tema":"farmaci"},{"it":"interazione","en":"drug interaction","sp":"","ge":"","cr":"","tema":"farmaci"},{"it":"principio attivo","en":"active ingredient","sp":"","ge":"","cr":"","tema":"farmaci"},{"it":"asma","en":"asthma","sp":"","ge":"","cr":"","tema":"patologie"},{"it":"artrite","en":"arthritis","sp":"","ge":"","cr":"","tema":"patologie"},{"it":"osteoporosi","en":"osteoporosis","sp":"","ge":"","cr":"","tema":"patologie"},{"it":"anemia","en":"anaemia","sp":"","ge":"","cr":"","tema":"patologie"},{"it":"eczema","en":"eczema","sp":"","ge":"","cr":"","tema":"patologie"},{"it":"psoriasi","en":"psoriasis","sp":"","ge":"","cr":"","tema":"patologie"},{"it":"ipotiroidismo","en":"hypothyroidism","sp":"","ge":"","cr":"","tema":"patologie"},{"it":"colesterolo alto","en":"high cholesterol","sp":"","ge":"","cr":"","tema":"patologie"},{"it":"crema","en":"cream","sp":"","ge":"","cr":"","tema":"cosmetica"},{"it":"shampoo","en":"shampoo","sp":"","ge":"","cr":"","tema":"cosmetica"},{"it":"deodorante","en":"deodorant","sp":"","ge":"","cr":"","tema":"cosmetica"},{"it":"spazzolino","en":"toothbrush","sp":"","ge":"","cr":"","tema":"cosmetica"},{"it":"sapone","en":"soap","sp":"saòn, savòn","ge":"","cr":"","tema":"cosmetica"},{"it":"crema solare","en":"sunscreen","sp":"","ge":"","cr":"","tema":"cosmetica"},{"it":"idratante","en":"moisturiser","sp":"","ge":"","cr":"","tema":"cosmetica"},{"it":"termometro","en":"thermometer","sp":"","ge":"","cr":"","tema":"cosmetica"},{"it":"siringa","en":"syringe","sp":"","ge":"","cr":"","tema":"cosmetica"},{"it":"benda","en":"bandage","sp":"binda","ge":"","cr":"","tema":"cosmetica"},{"it":"garza","en":"gauze","sp":"","ge":"","cr":"","tema":"cosmetica"},{"it":"misuratore di pressione","en":"blood pressure monitor","sp":"","ge":"","cr":"","tema":"cosmetica"},{"it":"glucometro","en":"glucometer","sp":"","ge":"","cr":"","tema":"cosmetica"},{"it":"una volta al giorno","en":"once a day","sp":"","ge":"","cr":"","tema":"istruzioni"},{"it":"due volte al giorno","en":"twice a day","sp":"","ge":"","cr":"","tema":"istruzioni"},{"it":"tre volte al giorno","en":"three times a day","sp":"","ge":"","cr":"","tema":"istruzioni"},{"it":"prima dei pasti","en":"before meals","sp":"","ge":"","cr":"","tema":"istruzioni"},{"it":"dopo i pasti","en":"after meals","sp":"","ge":"","cr":"","tema":"istruzioni"},{"it":"con acqua","en":"with water","sp":"","ge":"","cr":"","tema":"istruzioni"},{"it":"a stomaco vuoto","en":"on an empty stomach","sp":"","ge":"","cr":"","tema":"istruzioni"},{"it":"conservare in frigorifero","en":"keep refrigerated","sp":"","ge":"","cr":"","tema":"istruzioni"},{"it":"È allergico a qualcosa?","en":"Are you allergic to anything?","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"Sta prendendo altri farmaci?","en":"Are you taking any other medication?","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"Da quanto tempo ha questi sintomi?","en":"How long have you had these symptoms?","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"Prenda una compressa tre volte al giorno","en":"Take one tablet three times a day","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"Torni se non migliora","en":"Come back if it doesn't improve","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"Questo farmaco può dare sonnolenza","en":"This medicine may cause drowsiness","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"Ha una tessera sanitaria?","en":"Do you have a health card?","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"Il farmaco è esaurito, posso ordinarlo","en":"The medicine is out of stock, I can order it","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"rosso","en":"red","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"blu","en":"blue","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"verde","en":"green","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"giallo","en":"yellow","sp":"zalo","ge":"","cr":"","tema":"aggettivi"},{"it":"bianco","en":"white","sp":"gianco","ge":"","cr":"","tema":"aggettivi"},{"it":"nero","en":"black","sp":"negro","ge":"","cr":"","tema":"aggettivi"},{"it":"arancione","en":"orange","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"viola","en":"purple","sp":"vièa","ge":"","cr":"","tema":"aggettivi"},{"it":"grigio","en":"grey","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"rosa","en":"pink","sp":"rèsa","ge":"","cr":"","tema":"aggettivi"},{"it":"felice","en":"happy","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"triste","en":"sad","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"spaventato","en":"scared","sp":"spaventà","ge":"","cr":"","tema":"aggettivi"},{"it":"annoiato","en":"bored","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"orgoglioso","en":"proud","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"geloso","en":"jealous","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"aeroporto","en":"airport","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"stazione","en":"station","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"albergo","en":"hotel","sp":"arbergo, locanda","ge":"","cr":"","tema":"luoghi"},{"it":"ristorante","en":"restaurant","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"museo","en":"museum","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"spiaggia","en":"beach","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"biglietto","en":"ticket","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"passaporto","en":"passport","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"dogana","en":"customs","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"estate","en":"summer","sp":"","ge":"","cr":"","tema":"natura"},{"it":"autunno","en":"autumn","sp":"","ge":"","cr":"","tema":"natura"},{"it":"inverno","en":"winter","sp":"","ge":"","cr":"","tema":"natura"},{"it":"telefono","en":"phone","sp":"","ge":"","cr":"","tema":"casa"},{"it":"computer","en":"computer","sp":"","ge":"","cr":"","tema":"casa"},{"it":"internet","en":"internet","sp":"","ge":"","cr":"","tema":"casa"},{"it":"messaggio","en":"message","sp":"","ge":"","cr":"","tema":"casa"},{"it":"fotografia","en":"photo","sp":"","ge":"","cr":"","tema":"casa"},{"it":"applicazione","en":"app","sp":"","ge":"","cr":"","tema":"casa"},{"it":"parola chiave","en":"password","sp":"","ge":"","cr":"","tema":"casa"},{"it":"alto","en":"tall","sp":"àoto, èrto","ge":"","cr":"","tema":"aggettivi"},{"it":"basso","en":"short/low","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"lungo","en":"long","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"corto","en":"short","sp":"cürto","ge":"","cr":"","tema":"aggettivi"},{"it":"veloce","en":"fast","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"lento","en":"slow","sp":"pòta mòla","ge":"","cr":"","tema":"aggettivi"},{"it":"caldo","en":"hot","sp":"caodo","ge":"","cr":"","tema":"aggettivi"},{"it":"freddo","en":"cold","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"facile","en":"easy","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"difficile","en":"difficult","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"necessario","en":"necessary","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"possibile","en":"possible","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"impossibile","en":"impossible","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"capire","en":"understand","sp":"capìe","ge":"","cr":"","tema":"verbi"},{"it":"imparare","en":"learn","sp":"enpaae, anpaae,","ge":"","cr":"","tema":"verbi"},{"it":"insegnare","en":"teach","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"cercare","en":"search","sp":"sercae","ge":"","cr":"","tema":"verbi"},{"it":"trovare","en":"find","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"aprire","en":"open","sp":"arvie","ge":"","cr":"","tema":"verbi"},{"it":"chiudere","en":"close","sp":"sarae","ge":"","cr":"","tema":"verbi"},{"it":"sperare","en":"hope","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"credere","en":"believe","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"ricordare","en":"remember","sp":"sovegnie, arecordae","ge":"","cr":"","tema":"verbi"},{"it":"dimenticare","en":"forget","sp":"scordae, desmentegae, descordasse","ge":"","cr":"","tema":"verbi"},{"it":"aiutare","en":"help","sp":"aidae, agiütae, giütae","ge":"","cr":"","tema":"verbi"},{"it":"chiedere","en":"ask","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"rispondere","en":"answer","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"animale","en":"animal","sp":"animào","ge":"","cr":"","tema":"natura"},{"it":"pianta","en":"plant","sp":"cianta,","ge":"","cr":"","tema":"natura"},{"it":"paese","en":"country","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"lingua","en":"language","sp":"léngoa","ge":"","cr":"","tema":"luoghi"},{"it":"mondo","en":"world","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"storia","en":"history","sp":"istòia, stoìa,","ge":"","cr":"","tema":"luoghi"},{"it":"pace","en":"peace","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"governo","en":"government","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"economia","en":"economy","sp":"conomia","ge":"","cr":"","tema":"luoghi"},{"it":"maestro","en":"teacher","sp":"maìstro","ge":"","cr":"","tema":"mestieri"},{"it":"soldato","en":"soldier","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"re","en":"king","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"filosofo","en":"philosopher","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"poeta","en":"poet","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"oratore","en":"orator","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"schiavo","en":"slave","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"bosco","en":"forest","sp":"","ge":"","cr":"","tema":"natura"},{"it":"fiume","en":"river","sp":"","ge":"","cr":"","tema":"natura"},{"it":"isola","en":"island","sp":"","ge":"","cr":"","tema":"natura"},{"it":"ombra","en":"shadow","sp":"","ge":"","cr":"","tema":"natura"},{"it":"tuono","en":"thunder","sp":"tròn","ge":"","cr":"","tema":"natura"},{"it":"tempesta","en":"storm","sp":"","ge":"","cr":"","tema":"natura"},{"it":"eterno","en":"eternal","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"sacro","en":"sacred","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"antico","en":"ancient","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"divino","en":"divine","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"umano","en":"human","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"vincere","en":"win","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"correre","en":"run","sp":"tapelae","ge":"","cr":"","tema":"verbi"},{"it":"costruire","en":"build","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"pregare","en":"pray","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"comandare","en":"","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"giudicare","en":"","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"libro","en":"book","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"penna","en":"pen","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"quaderno","en":"notebook","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"classe","en":"classroom","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"università","en":"university","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"biblioteca","en":"library","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"esame","en":"exam","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"voto","en":"grade","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"diploma","en":"diploma","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"calcio","en":"football","sp":"caosso","ge":"","cr":"","tema":"verbi"},{"it":"nuoto","en":"swimming","sp":"nèdo","ge":"","cr":"","tema":"verbi"},{"it":"corsa","en":"running","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"pallacanestro","en":"basketball","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"tennis","en":"tennis","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"pallavolo","en":"volleyball","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"ciclismo","en":"cycling","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"ginnastica","en":"gymnastics","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"rugby","en":"rugby","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"boxe","en":"boxing","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"sci","en":"skiing","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"atletica","en":"athletics","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"arrampicata","en":"climbing","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"golf","en":"golf","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"arti marziali","en":"martial arts","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"allenamento","en":"training","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"squadra","en":"team","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"arbitro","en":"referee","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"vincitore","en":"winner","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"stadio","en":"stadium","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"musica","en":"music","sp":"","ge":"","cr":"","tema":"casa"},{"it":"canzone","en":"song","sp":"","ge":"","cr":"","tema":"casa"},{"it":"chitarra","en":"guitar","sp":"","ge":"","cr":"","tema":"casa"},{"it":"pianoforte","en":"piano","sp":"","ge":"","cr":"","tema":"casa"},{"it":"violino","en":"violin","sp":"","ge":"","cr":"","tema":"casa"},{"it":"concerto","en":"concert","sp":"","ge":"","cr":"","tema":"casa"},{"it":"orchestra","en":"orchestra","sp":"","ge":"","cr":"","tema":"casa"},{"it":"ritmo","en":"rhythm","sp":"","ge":"","cr":"","tema":"casa"},{"it":"lavoro","en":"work","sp":"travagio, lavòo","ge":"","cr":"","tema":"mestieri"},{"it":"ufficio","en":"office","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"riunione","en":"meeting","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"capo","en":"boss","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"collega","en":"colleague","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"contratto","en":"contract","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"impresa","en":"company","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"curriculum","en":"CV","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"avvocato","en":"lawyer","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"pilota","en":"pilot","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"insegnante","en":"teacher","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"infermiere","en":"nurse","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"architetto","en":"architect","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"programmatore","en":"programmer","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"giornalista","en":"journalist","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"pompiere","en":"firefighter","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"poliziotto","en":"police officer","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"autista","en":"driver","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"agricoltore","en":"farmer","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"scientiato","en":"scientist","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"artista","en":"artist","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"commerciante","en":"merchant","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"contabile","en":"accountant","sp":"","ge":"","cr":"","tema":"mestieri"},{"it":"macchina","en":"car","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"autobus","en":"bus","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"treno","en":"train","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"aereo","en":"plane","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"barca","en":"boat","sp":"barca","ge":"","cr":"","tema":"luoghi"},{"it":"bicicletta","en":"bicycle","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"metropolitana","en":"subway","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"taxi","en":"taxi","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"autostrada","en":"motorway","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"nuvola","en":"cloud","sp":"","ge":"","cr":"","tema":"natura"},{"it":"nebbia","en":"fog","sp":"garbìn","ge":"","cr":"","tema":"natura"},{"it":"grandine","en":"hail","sp":"granzèa","ge":"","cr":"","tema":"natura"},{"it":"fulmine","en":"lightning","sp":"","ge":"","cr":"","tema":"natura"},{"it":"arcobaleno","en":"rainbow","sp":"arco","ge":"","cr":"","tema":"natura"},{"it":"uragano","en":"hurricane","sp":"","ge":"","cr":"","tema":"natura"},{"it":"siccità","en":"drought","sp":"","ge":"","cr":"","tema":"natura"},{"it":"temperatura","en":"temperature","sp":"","ge":"","cr":"","tema":"natura"},{"it":"umido","en":"humid","sp":"ümeo","ge":"","cr":"","tema":"natura"},{"it":"secco","en":"dry","sp":"","ge":"","cr":"","tema":"natura"},{"it":"allerta meteo","en":"weather warning","sp":"","ge":"","cr":"","tema":"natura"},{"it":"previsioni","en":"forecast","sp":"","ge":"","cr":"","tema":"natura"},{"it":"terremoto","en":"earthquake","sp":"taramòto","ge":"","cr":"","tema":"natura"},{"it":"alluvione","en":"flood","sp":"","ge":"","cr":"","tema":"natura"},{"it":"schermo","en":"screen","sp":"","ge":"","cr":"","tema":"casa"},{"it":"tastiera","en":"keyboard","sp":"","ge":"","cr":"","tema":"casa"},{"it":"password","en":"password","sp":"","ge":"","cr":"","tema":"casa"},{"it":"rete","en":"network","sp":"ré","ge":"","cr":"","tema":"casa"},{"it":"social","en":"social media","sp":"","ge":"","cr":"","tema":"casa"},{"it":"fotocamera","en":"camera","sp":"","ge":"","cr":"","tema":"casa"},{"it":"caricatore","en":"charger","sp":"cargadoe","ge":"","cr":"","tema":"casa"},{"it":"aggiornamento","en":"update","sp":"","ge":"","cr":"","tema":"casa"},{"it":"imbarazzato","en":"embarrassed","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"entusiasta","en":"enthusiastic","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"solo/solitario","en":"lonely","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"colpevole","en":"guilty","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"fiducioso","en":"confident","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"nostalgico","en":"nostalgic","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"deluso","en":"disappointed","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"ansioso","en":"anxious","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"indifferente","en":"indifferent","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"elefante","en":"elephant","sp":"lefante","ge":"","cr":"","tema":"animali"},{"it":"tigre","en":"tiger","sp":"","ge":"","cr":"","tema":"animali"},{"it":"orso","en":"bear","sp":"","ge":"","cr":"","tema":"animali"},{"it":"giraffa","en":"giraffe","sp":"","ge":"","cr":"","tema":"animali"},{"it":"delfino","en":"dolphin","sp":"darfin","ge":"","cr":"","tema":"animali"},{"it":"aquila","en":"eagle","sp":"","ge":"","cr":"","tema":"animali"},{"it":"coccodrillo","en":"crocodile","sp":"","ge":"","cr":"","tema":"animali"},{"it":"pinguino","en":"penguin","sp":"","ge":"","cr":"","tema":"animali"},{"it":"balena","en":"whale","sp":"","ge":"","cr":"","tema":"animali"},{"it":"banana","en":"banana","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"uva","en":"grape","sp":"üa","ge":"","cr":"","tema":"cibo"},{"it":"limone","en":"lemon","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"pesca","en":"peach","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"ananas","en":"pineapple","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"cocco","en":"coconut","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"mango","en":"mango","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"patata","en":"potato","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"carota","en":"carrot","sp":"gnifra","ge":"","cr":"","tema":"cibo"},{"it":"spinaci","en":"spinach","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"zucchine","en":"courgette","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"peperone","en":"pepper","sp":"pevéon","ge":"","cr":"","tema":"cibo"},{"it":"broccoli","en":"broccoli","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"colazione","en":"breakfast","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"pranzo","en":"lunch","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"cena","en":"dinner","sp":"sena","ge":"","cr":"","tema":"cibo"},{"it":"sapore","en":"flavour","sp":"savòe","ge":"","cr":"","tema":"cibo"},{"it":"dolce","en":"sweet","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"amaro","en":"bitter","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"ingrediente","en":"ingredient","sp":"","ge":"","cr":"","tema":"cibo"},{"it":"letto","en":"bed","sp":"","ge":"","cr":"","tema":"casa"},{"it":"sedia","en":"chair","sp":"caréga, scrana","ge":"","cr":"","tema":"casa"},{"it":"tavolo","en":"table","sp":"tòa","ge":"","cr":"","tema":"casa"},{"it":"bagno","en":"bathroom","sp":"","ge":"","cr":"","tema":"casa"},{"it":"salotto","en":"living room","sp":"","ge":"","cr":"","tema":"casa"},{"it":"lampada","en":"lamp","sp":"lampadìn","ge":"","cr":"","tema":"casa"},{"it":"tappeto","en":"carpet","sp":"","ge":"","cr":"","tema":"casa"},{"it":"Italia","en":"Italy","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"Francia","en":"France","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"Germania","en":"Germany","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"Spagna","en":"Spain","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"Europa","en":"Europe","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"Africa","en":"Africa","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"Asia","en":"Asia","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"America","en":"America","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"confine","en":"border","sp":"tèrmo","ge":"","cr":"","tema":"luoghi"},{"it":"capitale","en":"capital","sp":"","ge":"","cr":"","tema":"luoghi"},{"it":"dente","en":"tooth","sp":"","ge":"","cr":"","tema":"corpo"},{"it":"capello","en":"hair","sp":"cavèo","ge":"","cr":"","tema":"corpo"},{"it":"pelle","en":"skin","sp":"","ge":"","cr":"","tema":"corpo"},{"it":"osso","en":"bone","sp":"","ge":"","cr":"","tema":"corpo"},{"it":"muscolo","en":"muscle","sp":"","ge":"","cr":"","tema":"corpo"},{"it":"rene","en":"kidney","sp":"rén","ge":"","cr":"","tema":"corpo"},{"it":"libertà","en":"freedom","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"giustizia","en":"justice","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"speranza","en":"hope","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"paura","en":"fear","sp":"paüa","ge":"","cr":"","tema":"aggettivi"},{"it":"sogno","en":"dream","sp":"sòmio","ge":"","cr":"","tema":"aggettivi"},{"it":"coscienza","en":"conscience","sp":"cossensia","ge":"","cr":"","tema":"aggettivi"},{"it":"memoria","en":"memory","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"saggezza","en":"wisdom","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"arrivare","en":"","sp":"arivae","ge":"","cr":"","tema":"verbi"},{"it":"cenare","en":"","sp":"senae","ge":"","cr":"","tema":"verbi"},{"it":"conoscere","en":"","sp":"cognosse","ge":"","cr":"","tema":"verbi"},{"it":"coprire","en":"","sp":"crovie","ge":"","cr":"","tema":"verbi"},{"it":"costare","en":"","sp":"costae","ge":"","cr":"","tema":"verbi"},{"it":"cucire","en":"","sp":"cüsìe","ge":"","cr":"","tema":"verbi"},{"it":"cuocere","en":"","sp":"chése","ge":"","cr":"","tema":"verbi"},{"it":"dare","en":"","sp":"dae","ge":"","cr":"","tema":"verbi"},{"it":"durare","en":"","sp":"düae","ge":"","cr":"","tema":"verbi"},{"it":"entrare","en":"","sp":"entrae","ge":"","cr":"","tema":"verbi"},{"it":"evitare / scansare","en":"","sp":"sghindae","ge":"","cr":"","tema":"verbi"},{"it":"fumare","en":"","sp":"fümae","ge":"","cr":"","tema":"verbi"},{"it":"godere","en":"","sp":"gode, cinciasse","ge":"","cr":"","tema":"verbi"},{"it":"guardare","en":"","sp":"amiae, miae, meae, ociae, lümae","ge":"","cr":"","tema":"verbi"},{"it":"marcire","en":"","sp":"marsìe","ge":"","cr":"","tema":"verbi"},{"it":"nascere","en":"","sp":"nasse","ge":"","cr":"","tema":"verbi"},{"it":"partire","en":"","sp":"partie","ge":"","cr":"","tema":"verbi"},{"it":"piacere","en":"","sp":"piasée","ge":"","cr":"","tema":"verbi"},{"it":"prendere","en":"","sp":"piae, ciapae","ge":"","cr":"","tema":"verbi"},{"it":"scivolare","en":"","sp":"sghigiae, svaàe","ge":"","cr":"","tema":"verbi"},{"it":"sentire","en":"","sp":"sentìe","ge":"","cr":"","tema":"verbi"},{"it":"stare","en":"","sp":"stae","ge":"","cr":"","tema":"verbi"},{"it":"tornare","en":"","sp":"tornae","ge":"","cr":"","tema":"verbi"},{"it":"urlare / sbraitare","en":"","sp":"sbragiae","ge":"","cr":"","tema":"verbi"},{"it":"vestire","en":"","sp":"vestie","ge":"","cr":"","tema":"verbi"},{"it":"mettere","en":"","sp":"méte","ge":"","cr":"","tema":"verbi"},{"it":"donna","en":"woman","sp":"","ge":"","cr":"","tema":"famiglia"},{"it":"mese","en":"month","sp":"","ge":"","cr":"","tema":"numeri"},{"it":"potere","en":"can/kan","sp":"podée","ge":"","cr":"","tema":"verbi"},{"it":"domani","en":"tomorrow","sp":"","ge":"","cr":"","tema":"numeri"},{"it":"oggi","en":"today","sp":"anchè","ge":"","cr":"","tema":"numeri"},{"it":"sempre","en":"always","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"mai","en":"never","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"forse","en":"maybe","sp":"fòrsi","ge":"","cr":"","tema":"aggettivi"},{"it":"adesso","en":"now","sp":"adèssa, adèsso","ge":"","cr":"","tema":"aggettivi"},{"it":"qui","en":"here","sp":"chì","ge":"","cr":"","tema":"aggettivi"},{"it":"là","en":"there","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"bene","en":"well","sp":"ben","ge":"","cr":"","tema":"aggettivi"},{"it":"grazie","en":"thank you","sp":"grassie","ge":"","cr":"","tema":"dialogo"},{"it":"prego","en":"you're welcome","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"scusa","en":"sorry","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"certo","en":"certain","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"forte","en":"strong","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"debole","en":"weak","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"aperto","en":"open","sp":"ravèrto, avèrto","ge":"","cr":"","tema":"aggettivi"},{"it":"chiuso","en":"closed","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"pulito","en":"clean","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"rumoroso","en":"noisy","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"silenzioso","en":"quiet","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"ricco","en":"rich","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"povero","en":"poor","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"anziano","en":"elderly","sp":"","ge":"","cr":"","tema":"aggettivi"},{"it":"alzarsi","en":"get up","sp":"stae sü, issasse","ge":"","cr":"","tema":"verbi"},{"it":"sedersi","en":"sit down","sp":"setarse","ge":"","cr":"","tema":"verbi"},{"it":"uscire","en":"exit","sp":"sortie, nessie, renessie (u. di nuovo)","ge":"","cr":"","tema":"verbi"},{"it":"portare","en":"carry","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"aspettare","en":"wait","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"giocare","en":"play","sp":"zügae","ge":"","cr":"","tema":"verbi"},{"it":"cantare","en":"sing","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"ballare","en":"dance","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"cucinare","en":"cook","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"pulire","en":"clean","sp":"polie, netezae, strügiae","ge":"","cr":"","tema":"verbi"},{"it":"spendere","en":"spend","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"descrivere","en":"describe","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"scegliere","en":"choose","sp":"sèrne","ge":"","cr":"","tema":"verbi"},{"it":"decidere","en":"decide","sp":"","ge":"","cr":"","tema":"verbi"},{"it":"cambiare","en":"change","sp":"cangiae","ge":"","cr":"","tema":"verbi"},{"it":"nipote","en":"grandchild","sp":"névo, nèssa","ge":"","cr":"","tema":"famiglia"},{"it":"cugino","en":"cousin","sp":"","ge":"","cr":"","tema":"famiglia"},{"it":"viso","en":"face","sp":"","ge":"","cr":"","tema":"corpo"},{"it":"spalla","en":"shoulder","sp":"","ge":"","cr":"","tema":"corpo"},{"it":"dito","en":"finger","sp":"dido, didi, dida, dite, dide","ge":"","cr":"","tema":"corpo"},{"it":"stomaco","en":"stomach","sp":"stèmego","ge":"","cr":"","tema":"corpo"},{"it":"cappello","en":"hat","sp":"capèo","ge":"","cr":"","tema":"vestiti"},{"it":"vestito","en":"dress","sp":"","ge":"","cr":"","tema":"vestiti"},{"it":"impermeabile","en":"raincoat","sp":"","ge":"","cr":"","tema":"vestiti"},{"it":"cintura","en":"belt","sp":"sentüa","ge":"","cr":"","tema":"vestiti"},{"it":"calzini","en":"socks","sp":"caossin","ge":"","cr":"","tema":"vestiti"},{"it":"guanti","en":"gloves","sp":"","ge":"","cr":"","tema":"vestiti"},{"it":"sciarpa","en":"scarf","sp":"ménoa, mémoa","ge":"","cr":"","tema":"vestiti"},{"it":"essere se stessi","en":"be yourself","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"avere tempo","en":"have time","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"farlo / farcela","en":"do it","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"dire di sì","en":"say yes","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"andare a casa","en":"go home","sp":"andae a ca","ge":"","cr":"","tema":"dialogo"},{"it":"avere senso","en":"make sense","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"sapere che","en":"know that","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"pensarla così","en":"think so","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"fare attenzione","en":"take care","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"a presto","en":"see you","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"volerlo","en":"want it","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"usarlo","en":"use it","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"arrendersi","en":"give up","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"dimmi","en":"tell me","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"funzionare","en":"work out","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"chiamami","en":"call me","sp":"ciamame","ge":"","cr":"","tema":"dialogo"},{"it":"riprovare","en":"try again","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"aver bisogno di aiuto","en":"need help","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"sentirsi bene","en":"feel good","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"migliorare","en":"become better","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"andare via ora","en":"leave now","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"metterlo qui","en":"put it here","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"significare","en":"mean that","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"continuare","en":"keep going","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"fammi sapere","en":"let me know","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"iniziare ora","en":"begin now","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"sembrare ok","en":"seem fine","sp":"paée bon","ge":"","cr":"","tema":"dialogo"},{"it":"aiutami","en":"help me","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"stare al gioco","en":"play along","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"arrivare in ritardo","en":"run late","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"andare avanti","en":"move on","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"vivere qui","en":"live here","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"crederti","en":"believe you","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"portarlo","en":"bring it","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"succedere spesso","en":"happen often","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"perderlo","en":"lose it","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"prestare attenzione","en":"pay attention","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"incontrarsi di nuovo","en":"meet again","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"includimi","en":"include me","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"continuare più tardi","en":"continue later","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"fissare obiettivi","en":"set goals","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"imparare in fretta","en":"learn fast","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"cambiare piani","en":"change plans","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"fare strada","en":"lead the way","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"capire quello","en":"understand that","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"osservare attentamente","en":"watch closely","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"seguimi","en":"follow me","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"fermarsi qui","en":"stop here","sp":"fermete chi","ge":"","cr":"","tema":"dialogo"},{"it":"creare qualcosa","en":"create something","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"parlare chiaramente","en":"speak clearly","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"leggere di più","en":"read more","sp":"lèze de ciü","ge":"","cr":"","tema":"dialogo"},{"it":"passare tempo","en":"spend time","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"crescere","en":"grow up","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"aprirsi / andarsene","en":"open up","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"vincere di nuovo","en":"win again","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"insegnarmi","en":"teach me","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"essere te stesso","en":"be yourself","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"fallo","en":"do it","sp":"fota","ge":"","cr":"","tema":"dialogo"},{"it":"dire sì","en":"say yes","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"tornare a casa","en":"go home","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"fa' attenzione","en":"take care","sp":"ocio","ge":"","cr":"","tema":"dialogo"},{"it":"usare","en":"use it","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"continua","en":"keep going","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"credere in te","en":"believe you","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"portalo","en":"bring it","sp":"","ge":"","cr":"","tema":"dialogo"},{"it":"fermati qui","en":"stop here","sp":"fermete chi","ge":"","cr":"","tema":"dialogo"},{"it":"tredici","en":"","sp":"treze","ge":"","cr":"Tredz","tema":"numeri"},{"it":"quattordici","en":"","sp":"","ge":"","cr":"Quatordz","tema":"numeri"},{"it":"diciassette","en":"","sp":"","ge":"","cr":"Dizisseta","tema":"numeri"},{"it":"diciotto","en":"","sp":"","ge":"","cr":"Dizot","tema":"numeri"},{"it":"diciannove","en":"","sp":"","ge":"","cr":"Dizinovi","tema":"numeri"},{"it":"ventuno","en":"","sp":"","ge":"","cr":"Vintun","tema":"numeri"},{"it":"ventidue","en":"","sp":"","ge":"","cr":"Vintido","tema":"numeri"},{"it":"ventiquattro","en":"","sp":"","ge":"","cr":"Vintiquatr","tema":"numeri"},{"it":"venticinque","en":"","sp":"","ge":"","cr":"Vintizinqui","tema":"numeri"},{"it":"ventinove","en":"","sp":"","ge":"","cr":"Vintinovi","tema":"numeri"},{"it":"trentuno","en":"","sp":"","ge":"","cr":"Trentun","tema":"numeri"},{"it":"trentatre","en":"","sp":"","ge":"","cr":"Trentatre","tema":"numeri"},{"it":"quaranta","en":"","sp":"","ge":"","cr":"Quaranta","tema":"numeri"},{"it":"quarantadue","en":"","sp":"","ge":"","cr":"Quarantado","tema":"numeri"},{"it":"quarantaquattro","en":"","sp":"","ge":"","cr":"Quarantaquatr","tema":"numeri"},{"it":"quarantasei","en":"","sp":"","ge":"","cr":"Quarantase","tema":"numeri"},{"it":"quarantasette","en":"","sp":"","ge":"","cr":"Quarantasseta","tema":"numeri"},{"it":"quarantotto","en":"","sp":"","ge":"","cr":"Quarantot","tema":"numeri"},{"it":"cinquantadue","en":"","sp":"","ge":"","cr":"Zinquantado","tema":"numeri"},{"it":"cinquantacinque","en":"","sp":"","ge":"","cr":"Zinquantazinqui","tema":"numeri"},{"it":"sessanta","en":"","sp":"","ge":"","cr":"Sessanta","tema":"numeri"},{"it":"sessantasei","en":"","sp":"","ge":"","cr":"Sessantasseta","tema":"numeri"},{"it":"sessantanove","en":"","sp":"","ge":"","cr":"Sessantanovi","tema":"numeri"},{"it":"settantadue","en":"","sp":"","ge":"","cr":"Settantado","tema":"numeri"},{"it":"settantacinque","en":"","sp":"","ge":"","cr":"Settantazinqui","tema":"numeri"},{"it":"settantasette","en":"","sp":"","ge":"","cr":"Settantasseta","tema":"numeri"},{"it":"ottantaquattro","en":"","sp":"","ge":"","cr":"Ottantaquatr","tema":"numeri"},{"it":"ottantotto","en":"","sp":"","ge":"","cr":"Otantot","tema":"numeri"},{"it":"novanta","en":"","sp":"","ge":"","cr":"Novanta","tema":"numeri"},{"it":"tronco d'albero","en":"","sp":"","ge":"","cr":"tronch d'albr","tema":"natura"},{"it":"cipresso","en":"","sp":"arsiprèsso, aosiprèsso","ge":"","cr":"cipress","tema":"natura"},{"it":"palo","en":"","sp":"pào, pèrtega, pendla, scaòcio","ge":"","cr":"pal","tema":"natura"},{"it":"nido","en":"","sp":"","ge":"","cr":"nid","tema":"natura"},{"it":"frescura","en":"","sp":"","ge":"","cr":"frschezza","tema":"natura"},{"it":"monte","en":"","sp":"monte, brico","ge":"","cr":"mont","tema":"natura"},{"it":"pianura","en":"","sp":"cianüa","ge":"","cr":"pian","tema":"natura"},{"it":"colore","en":"","sp":"coloe","ge":"","cr":"color","tema":"natura"},{"it":"prato","en":"","sp":"prado","ge":"","cr":"prat","tema":"natura"},{"it":"rondine","en":"","sp":"rondanìna","ge":"","cr":"rondin","tema":"natura"},{"it":"ramo","en":"","sp":"rama, ramo","ge":"","cr":"ram","tema":"natura"},{"it":"pesco","en":"","sp":"pèrsego","ge":"","cr":"pesch","tema":"natura"},{"it":"marmo","en":"","sp":"màrmeo","ge":"","cr":"marm","tema":"natura"},{"it":"merlo","en":"","sp":"","ge":"","cr":"merl","tema":"animali"},{"it":"fringuello","en":"","sp":"frangoèo","ge":"","cr":"fringued","tema":"animali"},{"it":"cavatore","en":"","sp":"","ge":"","cr":"cavator","tema":"mestieri"},{"it":"fatica","en":"","sp":"fatiga","ge":"","cr":"fatica","tema":"mestieri"},{"it":"monumento","en":"","sp":"","ge":"","cr":"monument","tema":"mestieri"},{"it":"tetto","en":"","sp":"técio","ge":"","cr":"tec","tema":"casa"},{"it":"comignolo","en":"","sp":"","ge":"","cr":"camin ner","tema":"casa"},{"it":"antenna","en":"","sp":"lanténa","ge":"","cr":"antena","tema":"casa"},{"it":"strada","en":"","sp":"strade","ge":"","cr":"via","tema":"luoghi"},{"it":"ferrovia","en":"","sp":"","ge":"","cr":"ferovia","tema":"luoghi"},{"it":"cava","en":"","sp":"","ge":"","cr":"cava","tema":"luoghi"},{"it":"fischiare","en":"","sp":"fis ciae,fisciae","ge":"","cr":"frisciar","tema":"verbi"},{"it":"spuntare","en":"","sp":"","ge":"","cr":"spuntar","tema":"verbi"},{"it":"saltellare","en":"","sp":"","ge":"","cr":"saltdar","tema":"verbi"},{"it":"vestirsi","en":"","sp":"","ge":"","cr":"vstins","tema":"verbi"},{"it":"camminare","en":"","sp":"caminae","ge":"","cr":"caminr","tema":"verbi"},{"it":"bagnarsi","en":"","sp":"","ge":"","cr":"bagnar","tema":"verbi"},{"it":"dimostrare","en":"","sp":"","ge":"","cr":"dimostr","tema":"verbi"},{"it":"diverso","en":"","sp":"","ge":"","cr":"diferent","tema":"aggettivi"},{"it":"bravo","en":"","sp":"brao, bravo","ge":"","cr":"brav","tema":"aggettivi"},{"it":"gigantesco","en":"","sp":"","ge":"","cr":"gigantesch","tema":"aggettivi"},{"it":"sudore","en":"","sp":"","ge":"","cr":"sudor","tema":"corpo"},{"it":"anima","en":"","sp":"","ge":"","cr":"anma","tema":"corpo"},{"it":"fiamma","en":"","sp":"lanpa","ge":"","cr":"fiama","tema":"natura"},{"it":"fumo","en":"","sp":"füme","ge":"","cr":"fum","tema":"natura"},{"it":"tramontana","en":"","sp":"","ge":"","cr":"tramontana","tema":"natura"},{"it":"grano","en":"","sp":"","ge":"","cr":"gran","tema":"natura"},{"it":"orto","en":"","sp":"","ge":"","cr":"ort","tema":"natura"},{"it":"castagna","en":"","sp":"","ge":"","cr":"castagna","tema":"natura"},{"it":"fico","en":"","sp":"figo","ge":"","cr":"fich","tema":"natura"},{"it":"noce","en":"","sp":"nose","ge":"","cr":"noza","tema":"natura"},{"it":"vigna","en":"","sp":"","ge":"","cr":"vigna","tema":"natura"},{"it":"ginestra","en":"","sp":"zenestra, basapreti","ge":"","cr":"ginestra","tema":"natura"},{"it":"crisantemo","en":"","sp":"","ge":"","cr":"crisantemi","tema":"natura"},{"it":"sasso","en":"","sp":"ciapòn","ge":"","cr":"sass","tema":"natura"},{"it":"fontana","en":"","sp":"","ge":"","cr":"fontana","tema":"natura"},{"it":"capra","en":"","sp":"crava","ge":"","cr":"capra","tema":"animali"},{"it":"passero","en":"","sp":"pàssoa","ge":"","cr":"pasra","tema":"animali"},{"it":"lumaca","en":"","sp":"lumaga","ge":"","cr":"lumacon","tema":"animali"},{"it":"rana","en":"","sp":"","ge":"","cr":"arnoç","tema":"animali"},{"it":"asino","en":"","sp":"ase","ge":"","cr":"asn","tema":"animali"},{"it":"polenta","en":"","sp":"polénte","ge":"","cr":"polenta","tema":"cibo"},{"it":"vino","en":"","sp":"","ge":"","cr":"vin","tema":"cibo"},{"it":"caffe","en":"","sp":"","ge":"","cr":"cafe","tema":"cibo"},{"it":"farina","en":"","sp":"","ge":"","cr":"farina","tema":"cibo"},{"it":"zucchino","en":"","sp":"","ge":"","cr":"zuched","tema":"cibo"},{"it":"paiolo","en":"","sp":"pato, paoéto, bronzo, lavèio","ge":"","cr":"paiol","tema":"cibo"},{"it":"fiasco","en":"","sp":"","ge":"","cr":"flasch","tema":"cibo"},{"it":"occhi","en":"","sp":"oci","ge":"","cr":"oci","tema":"corpo"},{"it":"gambe","en":"","sp":"","ge":"","cr":"gambe","tema":"corpo"},{"it":"spalle","en":"","sp":"","ge":"","cr":"spale","tema":"corpo"},{"it":"figli","en":"","sp":"figi","ge":"","cr":"fioli","tema":"famiglia"},{"it":"suocera","en":"","sp":"","ge":"","cr":"sozra","tema":"famiglia"},{"it":"nipoti","en":"","sp":"","ge":"","cr":"npoti","tema":"famiglia"},{"it":"camino","en":"","sp":"fümaiè","ge":"","cr":"camin","tema":"casa"},{"it":"scala","en":"","sp":"scàa","ge":"","cr":"scalin","tema":"casa"},{"it":"madia","en":"","sp":"mastra","ge":"","cr":"madia","tema":"casa"},{"it":"padella","en":"","sp":"","ge":"","cr":"padela","tema":"casa"},{"it":"borsa","en":"","sp":"saca","ge":"","cr":"borsa","tema":"casa"},{"it":"sacco","en":"","sp":"","ge":"","cr":"sach","tema":"casa"},{"it":"filo","en":"","sp":"fio","ge":"","cr":"fil","tema":"casa"},{"it":"balcone","en":"","sp":"","ge":"","cr":"balcon","tema":"luoghi"},{"it":"cantina","en":"","sp":"","ge":"","cr":"cantina","tema":"luoghi"},{"it":"mulino","en":"","sp":"","ge":"","cr":"mulin","tema":"luoghi"},{"it":"carreggiata","en":"","sp":"","ge":"","cr":"carareza","tema":"luoghi"},{"it":"giardino","en":"","sp":"","ge":"","cr":"zardin","tema":"luoghi"},{"it":"gridare","en":"","sp":"sbragiae, grida, tarocae","ge":"","cr":"sgrid","tema":"verbi"},{"it":"suonare","en":"","sp":"","ge":"","cr":"son","tema":"verbi"},{"it":"abbellire","en":"","sp":"","ge":"","cr":"ablir","tema":"verbi"},{"it":"soffiare","en":"","sp":"bofae","ge":"","cr":"bufar","tema":"verbi"},{"it":"scappare","en":"","sp":"scapae","ge":"","cr":"scpar","tema":"verbi"},{"it":"sempliciotto","en":"","sp":"gagio","ge":"","cr":"nechepeed","tema":"aggettivi"},{"it":"pigro","en":"","sp":"pégio","ge":"","cr":"mlenson","tema":"aggettivi"},{"it":"furbo","en":"","sp":"","ge":"","cr":"fur","tema":"aggettivi"},{"it":"avaro","en":"","sp":"avaòn","ge":"","cr":"avaron","tema":"aggettivi"},{"it":"chiacchierone","en":"","sp":"ciaceon","ge":"","cr":"ciacrar","tema":"aggettivi"},{"it":"astuto","en":"","sp":"entevisto","ge":"","cr":"acut","tema":"aggettivi"},{"it":"magro","en":"","sp":"","ge":"","cr":"magr","tema":"aggettivi"},{"it":"contento","en":"","sp":"","ge":"","cr":"content","tema":"aggettivi"},{"it":"allampanato","en":"","sp":"lüngagnòn, pertegòn","ge":"","cr":"alampanat","tema":"aggettivi"},{"it":"mattina","en":"","sp":"","ge":"","cr":"matina","tema":"giorni"},{"it":"sera","en":"","sp":"","ge":"","cr":"sera","tema":"giorni"},{"it":"notte","en":"","sp":"","ge":"","cr":"note","tema":"giorni"},{"it":"giorno","en":"","sp":"","ge":"","cr":"zornata","tema":"giorni"}];
+
+const TEMI_LABEL = {
+  famiglia:"👨‍👩‍👧 Famiglia", cibo:"🍕 Cibo", animali:"🐾 Animali",
+  corpo:"💪 Corpo", casa:"🏠 Casa", natura:"🌿 Natura",
+  luoghi:"📍 Luoghi", verbi:"⚡ Verbi", aggettivi:"🎨 Aggettivi",
+  numeri:"🔢 Numeri", mestieri:"👷 Mestieri", dialogo:"💬 Dialogo",
+  sport:"⚽ Sport", salute:"🏥 Salute", vestiti:"👗 Vestiti",
+  viaggi:"✈️ Viaggi", mesi:"📅 Mesi", giorni:"📅 Giorni",
+};
+
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSd2ECP2fVhtwWSThQlsZtsu1GFJFqeemO6mCb-PQCZHRI5sqQ/viewform";
+
+let currentDialect = 'sp';
+let sortCol = 'it';
+let sortDir = 1; // 1=asc, -1=desc
+let customDialectName = '';
+let showMissing = 'all';
+let contributions = {}; // {it_word: translation}
+
+const DIALECT_NAMES = {sp:'Spezzino', ge:'Genovese', cr:'Carrarino'};
+const DIALECT_COL = {sp:'sp', ge:'ge', cr:'cr'};
+
+function setDialect(d, el) {
+  currentDialect = d;
+  document.querySelectorAll('#dialect-chips .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('custom-dialect-box').classList.toggle('visible', d === 'new');
+  contributions = {};
+  renderTable();
+  updateProgress();
+  updateStats();
+}
+
+function updateCustomDialect() {
+  customDialectName = document.getElementById('custom-dialect-name').value.trim();
+}
+
+function setMissing(val, el) {
+  showMissing = val;
+  document.querySelectorAll('[data-missing]').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderTable();
+}
+
+function getDialectName() {
+  return currentDialect === 'new' ? (customDialectName || 'Nuovo dialetto') : DIALECT_NAMES[currentDialect];
+}
+
+function sortBy(col) {
+  if (sortCol === col) sortDir *= -1;
+  else { sortCol = col; sortDir = 1; }
+  // Update header indicators
+  ['it','en','tema'].forEach(c => {
+    const el = document.getElementById('sort-'+c);
+    if (el) el.textContent = c === sortCol ? (sortDir === 1 ? '↑' : '↓') : '';
+  });
+  VOCAB.sort((a,b) => {
+    const va = (a[col]||'').toLowerCase();
+    const vb = (b[col]||'').toLowerCase();
+    return va.localeCompare(vb, 'it') * sortDir;
+  });
+  renderTable();
+}
+
+function renderTable() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const col = DIALECT_COL[currentDialect];
+  const isNew = currentDialect === 'new';
+
+  // Update column headers
+  document.getElementById('col-existing').textContent = isNew ? '—' : `Già in ${getDialectName()}`;
+  document.getElementById('col-new').textContent = `✏️ ${getDialectName()}`;
+
+  let rows = VOCAB.filter(e => {
+    if (q.length >= 2 && !e.it.toLowerCase().includes(q) && !e.en.toLowerCase().includes(q)) return false;
+    if (showMissing === 'missing' && !isNew && e[col]) return false;
+    return true;
+  });
+
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = '';
+
+  rows.forEach(e => {
+    const existing = isNew ? '' : (e[col] || '');
+    const contributed = contributions[e.it] || '';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="td-it">${e.it}</td>
+      <td class="td-en">${e.en}</td>
+      <td><span class="tema-badge">${TEMI_LABEL[e.tema]||e.tema||'–'}</span></td>
+      <td class="td-existing ${existing?'has-value':''}">${existing||'—'}</td>
+      <td class="td-input-wrap">
+        <input type="text" class="td-input ${contributed?'filled':''}"
+          placeholder="Scrivi qui…"
+          value="${contributed}"
+          data-it="${e.it}"
+          oninput="onInput(this)"
+          onfocus="this.parentElement.parentElement.style.background='rgba(99,102,241,0.06)'"
+          onblur="this.parentElement.parentElement.style.background=''">
+      </td>`;
+    tbody.appendChild(tr);
+  });
+
+  updateStats();
+}
+
+function onInput(input) {
+  const key = input.dataset.it;
+  const val = input.value.trim();
+  if (val) {
+    contributions[key] = val;
+    input.classList.add('filled');
+  } else {
+    delete contributions[key];
+    input.classList.remove('filled');
+  }
+  updateProgress();
+  updateSubmit();
+}
+
+function updateProgress() {
+  const col = DIALECT_COL[currentDialect];
+  const isNew = currentDialect === 'new';
+  const missing = isNew ? VOCAB.length : VOCAB.filter(e => !e[col]).length;
+  const filled = Object.keys(contributions).length;
+  const pct = missing > 0 ? Math.round(filled / missing * 100) : 0;
+
+  document.getElementById('prog-missing').textContent = missing;
+  document.getElementById('prog-compiled').textContent = filled;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label-text').textContent =
+    `${getDialectName()} — ${filled} di ${missing} parole mancanti compilate (${pct}%)`;
+}
+
+function updateStats() {
+  const col = DIALECT_COL[currentDialect];
+  const isNew = currentDialect === 'new';
+  const total = VOCAB.length;
+  const present = isNew ? 0 : VOCAB.filter(e => e[col]).length;
+  document.getElementById('stats-badge').textContent =
+    isNew ? `${total} parole` : `${getDialectName()}: ${present}/${total} parole`;
+}
+
+function updateSubmit() {
+  const n = Object.keys(contributions).length + extraWords.length;
+  document.getElementById('count-filled').textContent = n;
+  document.getElementById('btn-submit').disabled = n === 0;
+}
+
+function clearAll() {
+  if (!confirm('Cancellare tutte le traduzioni inserite?')) return;
+  contributions = {};
+  extraWords = [];
+  document.querySelectorAll('.td-input').forEach(i => {
+    i.value = '';
+    i.classList.remove('filled');
+  });
+  renderExtraWords();
+  updateProgress();
+  updateSubmit();
+}
+
+function openModal() {
+  const dialect = getDialectName();
+  const lines = Object.entries(contributions)
+    .map(([it, tr]) => `${it}: ${tr}`)
+    .join('\n');
+  const extraLines = extraWords.map(e => `[NUOVO] ${e.it}${e.en?' ('+e.en+')':''}: ${e.tr}`).join('\n');
+  const allLines = [lines, extraLines].filter(Boolean).join('\n\n--- PAROLE NUOVE ---\n');
+  const text = `DIALETTO: ${dialect}\nDATA: ${new Date().toLocaleDateString('it-IT')}\n\n${allLines}`;
+  document.getElementById('modal-text').value = text;
+  document.getElementById('modal').classList.add('visible');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('visible');
+}
+
+function copyAndOpen() {
+  const text = document.getElementById('modal-text').value;
+  navigator.clipboard.writeText(text).then(() => {
+    window.open(FORM_URL, '_blank');
+    closeModal();
+  }).catch(() => {
+    alert('Copia manualmente il testo, poi apri il form.');
+    window.open(FORM_URL, '_blank');
+  });
+}
+
+// ── Parole extra aggiunte dall'utente ──────────────────────────────────────
+let extraWords = []; // [{it, en, tr}]
+
+function addCustomWord() {
+  const it = document.getElementById('add-it').value.trim();
+  const en = document.getElementById('add-en').value.trim();
+  const tr = document.getElementById('add-tr').value.trim();
+  if (!it || !tr) { alert('Inserisci almeno la parola italiana e la traduzione.'); return; }
+  // Check not already in vocab
+  const exists = VOCAB.find(e => e.it.toLowerCase() === it.toLowerCase());
+  if (exists) {
+    alert(`"${it}" è già nel vocabolario. Cercala nella tabella sopra.`);
+    return;
+  }
+  // Check not already added
+  if (extraWords.find(e => e.it.toLowerCase() === it.toLowerCase())) {
+    alert(`"${it}" è già stata aggiunta.`);
+    return;
+  }
+  extraWords.push({it, en, tr});
+  document.getElementById('add-it').value = '';
+  document.getElementById('add-en').value = '';
+  document.getElementById('add-tr').value = '';
+  renderExtraWords();
+  updateSubmit();
+}
+
+function removeExtra(idx) {
+  extraWords.splice(idx, 1);
+  renderExtraWords();
+  updateSubmit();
+}
+
+function renderExtraWords() {
+  const list = document.getElementById('added-words-list');
+  list.innerHTML = extraWords.map((e, i) => `
+    <div class="added-word-item">
+      <span class="it">${e.it}</span>
+      ${e.en ? `<span class="arrow">·</span><span style="color:var(--muted);font-size:12px">${e.en}</span>` : ''}
+      <span class="arrow">→</span>
+      <span class="tr">${e.tr}</span>
+      <span class="remove" onclick="removeExtra(${i})">×</span>
+    </div>
+  `).join('');
+}
+
+// Ordina alfabeticamente per italiano
+VOCAB.sort((a,b) => a.it.localeCompare(b.it, 'it'));
+
+// Init
+renderTable();
+updateProgress();
+updateStats();
+</script>
+</body>
+</html>
