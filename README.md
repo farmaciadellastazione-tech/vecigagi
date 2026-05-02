@@ -142,7 +142,7 @@ Translation errors are likely, especially in less common languages and dialects.
 Contributions are particularly welcome for:
 
 - 🇷🇴 **Romanian** and 🇦🇱 **Albanian** — recently added, vocabulary still to be populated. Native speakers from the La Spezia community especially welcome.
-- 🏖️ **Manarolese** and 🏛️ **Genoese** — endangered Ligurian dialects with limited documentation.
+- 🏖️ **Manarolese** and 🏛️ **Genovese** —and all endangered Ligurian and Lunigiana dialects with limited documentation.
 - 🏛 **Latin** and 🏺 **Ancient Greek** — current entries were generated with AI assistance and are provisional. Contributions from classicists and philologists would be especially valuable.
 - 🌐 **Interlingua** — community language with active speakers worldwide.
 
