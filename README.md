@@ -121,8 +121,8 @@ To use the AI-assisted Free Sentence mode, you'll need an API key from one of th
 No build step required:
 
 ```bash
-git clone https://github.com/dinostorti/linguaequiz.git
-cd linguaequiz
+git clone https://github.com/farmaciadellastazione-tech/vecigagi.git
+cd vecigagi
 python3 -m http.server 8000
 # open http://localhost:8000
 ```
