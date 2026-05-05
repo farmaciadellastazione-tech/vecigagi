@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>LinguaeQuiz Editor</title>
+<style>
+  :root {
+    --primary: #1e40af;
+    --primary-light: #3b82f6;
+    --accent: #dc2626;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --border: #e2e8f0;
+    --text: #1e293b;
+    --muted: #64748b;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --amber: #d97706;
+    --amber-light: #fef3c7;
+    --purple: #7c3aed;
+    --purple-light: #ede9fe;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; }
+  header { background: var(--card-bg); border-bottom: 2px solid var(--border); padding: 0.8rem 1rem; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+  h1 { margin: 0 0 0.6rem; font-size: 1.25rem; color: var(--primary); display: flex; align-items: center; gap: 0.4rem; }
+  .controls { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: flex-end; }
+  .controls label { font-size: 0.78rem; color: var(--muted); display: flex; flex-direction: column; gap: 0.2rem; font-weight: 500; }
+  .controls label.inline { flex-direction: row; align-items: center; gap: 0.4rem; padding-bottom: 0.4rem; }
+  select, input[type=text] { padding: 0.45rem 0.65rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.92rem; background: white; color: var(--text); }
+  input[type=text] { min-width: 200px; }
+  input[type=text]#search { min-width: 240px; }
+  .btn { padding: 0.5rem 0.9rem; border: none; border-radius: 6px; cursor: pointer; font-size: 0.88rem; font-weight: 500; transition: background 0.15s; white-space: nowrap; }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: var(--primary-light); }
+  .btn-success { background: #24292f; color: white; }
+  .btn-success:hover { background: #4a4f54; }
+  .btn-secondary { background: white; color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: #f1f5f9; }
+  .btn-ai { background: var(--purple); color: white; }
+  .btn-ai:hover { background: #6d28d9; }
+  .btn-danger { background: var(--accent); color: white; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .stats { font-size: 0.82rem; color: var(--muted); margin-left: auto; }
+  main { padding: 1rem; max-width: 1500px; margin: 0 auto 5rem; }
+  table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  th { text-align: left; padding: 0.55rem 0.6rem; background: #f1f5f9; font-size: 0.75rem; text-transform: uppercase; color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--border); position: sticky; top: var(--header-h, 138px); z-index: 5; }
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { background: #e2e8f0; color: var(--primary); }
+  th.sorted { color: var(--primary); background: #e0e7ff; }
+  th .sort-arrow { display: inline-block; margin-left: 0.2rem; opacity: 0.6; font-size: 0.7rem; }
+  td { padding: 0.35rem 0.55rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:hover { background: #f8fafc; }
+  tr.modified { background: #fefce8; }
+  tr.modified:hover { background: #fef9c3; }
+  tr.new-row { background: var(--green-light); }
+  tr.new-row:hover { background: #bbf7d0; }
+  td input { width: 100%; padding: 0.4rem 0.55rem; border: 1px solid transparent; border-radius: 4px; background: transparent; font-size: 0.93rem; font-family: inherit; }
+  td input:hover { background: white; border-color: var(--border); }
+  td input:focus { background: white; border-color: var(--primary-light); outline: none; box-shadow: 0 0 0 2px rgba(59,130,246,0.15); }
+  td.it-cell, td.lang-cell { position: relative; }
+  td.it-cell input { font-weight: 500; color: var(--text); }
+  td.lang-cell input { color: var(--primary); font-weight: 500; }
+  td.lang2-cell input { color: var(--muted); font-weight: 500; }
+  .alt-badge {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--amber-light);
+    color: #92400e;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    pointer-events: none;
+    border: 1px solid #fde68a;
+  }
+  .slash-badge {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--purple-light);
+    color: var(--purple);
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 0.1rem 0.3rem;
+    border-radius: 4px;
+    pointer-events: none;
+    border: 1px solid #c4b5fd;
+    letter-spacing: 0.02em;
+  }
+  /* Quando entrambi i badge sono presenti, slash a destra, alt-badge spostato a sinistra */
+  td.lang-cell .slash-badge + .alt-badge,
+  td.lang2-cell .slash-badge + .alt-badge { right: 4.2rem; }
+  td.it-cell input, td.lang-cell input, td.lang2-cell input { padding-right: 2.4rem; }
+  td.tema-cell input, td.livello-cell input { color: var(--muted); font-size: 0.85rem; }
+  .row-actions { display: flex; gap: 0.15rem; white-space: nowrap; }
+  .icon-btn { background: none; border: none; cursor: pointer; padding: 0.3rem 0.4rem; border-radius: 4px; font-size: 0.95rem; opacity: 0.55; transition: all 0.12s; }
+  .icon-btn:hover { opacity: 1; background: #f1f5f9; }
+  .icon-btn.danger:hover { background: #fee2e2; }
+  .icon-btn.ai:hover { background: var(--purple-light); }
+  .icon-btn.ai-pending { animation: pulse 1.2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+  .empty-cell input { background: #fff7ed !important; }
+  .footer-bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--card-bg); border-top: 2px solid var(--border); padding: 0.7rem 1rem; display: flex; gap: 0.5rem; align-items: center; box-shadow: 0 -2px 6px rgba(0,0,0,0.06); flex-wrap: wrap; z-index: 20; }
+  .footer-bar .stats { margin-left: auto; }
+  .badge { display: inline-block; padding: 0.1rem 0.45rem; border-radius: 4px; font-size: 0.74rem; font-weight: 600; background: #e0e7ff; color: var(--primary); }
+  .badge-empty { background: var(--amber-light); color: #b45309; }
+  .badge-new { background: var(--green-light); color: var(--green); }
+  #pagination { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; padding: 0.8rem 0; }
+  #pagination button { padding: 0.3rem 0.6rem; }
+  .help { padding: 0.7rem 1rem; background: #fffbeb; border-left: 3px solid #f59e0b; margin: 0 0 1rem; border-radius: 4px; font-size: 0.86rem; color: #92400e; }
+  .help.error { background: #fef2f2; border-left-color: var(--accent); color: #991b1b; }
+  .help.success { background: #f0fdf4; border-left-color: var(--green); color: #166534; }
+  .help.info { background: #eff6ff; border-left-color: var(--primary-light); color: #1e3a8a; }
+  .legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.78rem; color: var(--muted); margin-top: 0.5rem; }
+  .legend span { display: flex; align-items: center; gap: 0.3rem; }
+  .legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .row-status { font-size: 1rem; text-align: center; }
+  /* Modal AI config */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; border-radius: 12px; padding: 1.5rem; max-width: 500px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+  .modal h2 { margin: 0 0 0.5rem; font-size: 1.15rem; color: var(--primary); }
+  .modal p { margin: 0.4rem 0; font-size: 0.9rem; color: var(--text); }
+  .modal label { display: block; margin: 0.8rem 0 0.3rem; font-size: 0.85rem; font-weight: 500; color: var(--text); }
+  .modal input, .modal select { width: 100%; padding: 0.5rem 0.7rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.92rem; }
+  .modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1.2rem; }
+  .ai-status { display: inline-block; font-size: 0.78rem; padding: 0.15rem 0.5rem; border-radius: 4px; background: var(--purple-light); color: var(--purple); margin-left: 0.5rem; }
+  .ai-status.off { background: #f1f5f9; color: var(--muted); }
+  /* Duplicati */
+  .dup-group { border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.8rem; margin-bottom: 0.7rem; background: #fafbfc; }
+  .dup-group-safe { border-left: 4px solid var(--green); }
+  .dup-group-sinonimi { border-left: 4px solid var(--accent); background: #fef9f9; }
+  .dup-conflitti { background: #fff; border: 1px dashed #fca5a5; padding: 0.4rem 0.7rem; border-radius: 6px; margin-bottom: 0.5rem; }
+  .dup-group h3 { margin: 0 0 0.5rem; font-size: 0.95rem; color: var(--primary); }
+  .dup-row { display: flex; gap: 0.5rem; align-items: flex-start; padding: 0.5rem; border: 1px solid var(--border); border-radius: 6px; background: white; margin-bottom: 0.4rem; font-size: 0.85rem; }
+  .dup-row.recommended { border-color: var(--green); background: var(--green-light); }
+  .dup-row .dup-fields { flex: 1; min-width: 0; }
+  .dup-row .dup-fields code { background: rgba(0,0,0,0.05); padding: 1px 5px; border-radius: 3px; font-size: 0.82rem; word-break: break-word; }
+  .dup-row .dup-actions { display: flex; gap: 0.3rem; flex-shrink: 0; }
+  .dup-row .dup-meta { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+  .dup-empty { color: var(--muted); font-style: italic; text-align: center; padding: 2rem; }
+  @media (max-width: 700px) {
+    th { display: none; }
+    table, tbody, tr, td { display: block; width: 100%; }
+    tr { padding: 0.6rem; border-bottom: 2px solid var(--border); }
+    td { padding: 0.25rem 0; border-bottom: none; }
+    td::before { content: attr(data-label); font-size: 0.7rem; text-transform: uppercase; color: var(--muted); display: block; margin-top: 0.3rem; font-weight: 600; }
+    .footer-bar { padding: 0.6rem; gap: 0.4rem; }
+    .footer-bar .btn { font-size: 0.82rem; padding: 0.45rem 0.7rem; }
+    .footer-bar .stats { width: 100%; margin: 0; text-align: center; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>📝 LinguaeQuiz Editor <span id="ai-indicator" class="ai-status off">AI: off</span></h1>
+  <div class="controls">
+    <label>Lingua principale
+      <select id="lang-select"></select>
+    </label>
+    <label>Lingua secondaria
+      <select id="lang2-select"><option value="">— nessuna —</option></select>
+    </label>
+    <label>Tema
+      <select id="tema-select"><option value="">tutti</option></select>
+    </label>
+    <label>Livello
+      <select id="livello-select">
+        <option value="">tutti</option>
+        <option>A1</option><option>A2</option><option>B1</option><option>B2</option>
+      </select>
+    </label>
+    <label>Cerca
+      <input type="text" id="search" placeholder="cerca italiano o lingua...">
+    </label>
+    <label class="inline">
+      <input type="checkbox" id="only-empty"> solo da tradurre
+    </label>
+    <button class="btn btn-secondary" onclick="apriConfigAI()" title="Configura AI">⚙️ AI</button>
+    <span class="stats" id="stats"></span>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--green-light);border:1px solid #86efac"></i> nuova voce</span>
+    <span><i style="background:#fefce8;border:1px solid #fde68a"></i> modificata</span>
+    <span><i style="background:#fff7ed;border:1px solid #fed7aa"></i> da tradurre</span>
+    <span>💡 separa traduzioni alternative con <code style="background:var(--amber-light);padding:0 4px;border-radius:3px">|</code></span>
+  </div>
+</header>
+
+<main>
+  <div class="help" id="help-msg"></div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:32px" title="Stato">·</th>
+        <th class="sortable" data-sort="it" style="width:24%">Italiano <span class="sort-arrow"></span></th>
+        <th class="sortable" data-sort="lang" id="lang-th" style="width:24%">Lingua <span class="sort-arrow"></span></th>
+        <th class="sortable" data-sort="lang2" id="lang2-th" style="width:18%; display:none">Sec. <span class="sort-arrow"></span></th>
+        <th class="sortable" data-sort="tema" style="width:14%">Tema <span class="sort-arrow"></span></th>
+        <th class="sortable" data-sort="livello" style="width:7%">Liv. <span class="sort-arrow"></span></th>
+        <th style="width:9%">Pron. TTS</th>
+        <th style="width:90px"></th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <div id="pagination"></div>
+</main>
+
+<div class="footer-bar">
+  <button class="btn btn-primary" onclick="aggiungiVoce()">➕ Nuova voce</button>
+  <button class="btn btn-ai" onclick="completaConAI()" id="btn-ai-batch" title="Completa con AI tutte le voci filtrate vuote">✨ Completa con AI</button>
+  <button class="btn btn-secondary" onclick="apriDuplicati()" title="Trova e gestisci voci duplicate">🔍 Duplicati</button>
+  <button id="btn-gh-save" class="btn btn-success" onclick="salvaSuGitHub()">☁️ Salva su GitHub</button>
+  <button class="btn btn-secondary" onclick="scaricaCopia()" title="Scarica index.html localmente">💾 Scarica</button>
+  <button class="btn btn-secondary" onclick="reimpostaToken()" title="Cambia token GitHub">🔑</button>
+  <span class="stats" id="footer-stats"></span>
+</div>
+
+<!-- Modal config AI -->
+<div class="modal-overlay" id="ai-modal">
+  <div class="modal">
+    <h2>⚙️ Configurazione AI</h2>
+    <p style="color:var(--muted); font-size:0.85rem">L'AI viene usata per: tradurre voci mancanti, suggerire tema e livello (A1-B2) per nuove voci. La chiave API resta solo in questo browser (localStorage).</p>
+    <label>Provider
+      <select id="ai-provider">
+        <option value="">— disabilitato —</option>
+        <option value="groq">Groq (consigliato, gratuito)</option>
+        <option value="gemini">Google Gemini</option>
+        <option value="anthropic">Anthropic Claude</option>
+        <option value="openai">OpenAI</option>
+      </select>
+    </label>
+    <label>API Key
+      <input type="text" id="ai-key" placeholder="Incolla qui la tua chiave API">
+    </label>
+    <p style="font-size:0.78rem; color:var(--muted); margin-top:0.6rem">
+      <strong>Dove ottenere una chiave gratuita:</strong><br>
+      • Groq: <span style="user-select:all">console.groq.com/keys</span><br>
+      • Gemini: <span style="user-select:all">aistudio.google.com/apikey</span>
+    </p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="chiudiConfigAI()">Annulla</button>
+      <button class="btn btn-primary" onclick="salvaConfigAI()">Salva</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal duplicati -->
+<div class="modal-overlay" id="dup-modal">
+  <div class="modal" style="max-width: 760px;">
+    <h2>🔍 Voci duplicate</h2>
+    <p style="color:var(--muted); font-size:0.85rem">Voci con lo stesso italiano (ignorando maiuscole e spazi). Per ogni gruppo, scegli quale tenere e cancella le altre. Il salvataggio è effettivo solo dopo "☁️ Salva su GitHub".</p>
+    <div id="dup-list" style="max-height: 60vh; overflow-y: auto; margin-top: 0.8rem;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="dedupaAutomatico()" title="Fonde automaticamente tutti i gruppi senza conflitti">🧹 Dedupa automaticamente</button>
+      <button class="btn btn-secondary" onclick="chiudiDuplicati()">Chiudi</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==========================================================================
+// CONFIGURAZIONE GITHUB (invariata)
+// ==========================================================================
+const GH_OWNER = 'farmaciadellastazione-tech';
+const GH_REPO  = 'vecigagi';
+const GH_BRANCH = 'main';
+const GH_PATH = 'index.html';
+const GH_TOKEN_KEY = 'gh_pat_vecigagi';
+
+const BLOCK_START_RE = /^\s*const VOCABOLARIO_DEFAULT = \[/m;
+
+// ==========================================================================
+// LINGUE
+// ==========================================================================
+const LINGUE = [
+  { code:'mn',  name:'Manarolese',   bcp47:'it-IT' },
+  { code:'sp',  name:'Spezzino',     bcp47:'it-IT' },
+  { code:'ge',  name:'Genovese',     bcp47:'it-IT' },
+  { code:'cr',  name:'Carrarino',    bcp47:'it-IT' },
+  { code:'en',  name:'Inglese',      bcp47:'en-GB' },
+  { code:'fr',  name:'Francese',     bcp47:'fr-FR' },
+  { code:'es',  name:'Spagnolo',     bcp47:'es-ES' },
+  { code:'de',  name:'Tedesco',      bcp47:'de-DE' },
+  { code:'pt',  name:'Portoghese',   bcp47:'pt-PT' },
+  { code:'ru',  name:'Russo',        bcp47:'ru-RU' },
+  { code:'ca',  name:'Catalano',     bcp47:'ca-ES' },
+  { code:'ko',  name:'Coreano',      bcp47:'ko-KR' },
+  { code:'ar',  name:'Arabo',        bcp47:'ar-SA' },
+  { code:'zh',  name:'Cinese',       bcp47:'zh-CN' },
+  { code:'ja',  name:'Giapponese',   bcp47:'ja-JP' },
+  { code:'ia',  name:'Interlingua',  bcp47:'it-IT' },
+  { code:'la',  name:'Latino',       bcp47:'it-IT' },
+  { code:'grc', name:'Greco antico', bcp47:'el-GR' },
+];
+
+// Dialetti che usano la convenzione "trascrizioneTTS/grafiaTradizionale"
+// (TTS legge la parte sinistra; l'app mostra la parte destra)
+const DIALETTI_TTS_ITA = ['mn', 'sp', 'ge', 'cr'];
+
+const PAGE_SIZE = 50;
+
+// ==========================================================================
+// STATO GLOBALE
+// ==========================================================================
+let vocabolario = [];
+let originalSourceFile = null;
+let originalSourceSha = null;
+let currentLang = 'mn';
+let currentLang2 = '';            // NEW: lingua secondaria opzionale
+let currentTema = '';
+let currentLivello = '';
+let currentSearch = '';
+let onlyEmpty = false;
+let currentPage = 1;
+let modifiedKeys = new Set();
+let newKeys = new Set();
+let originalKeysByEntry = new Map();
+
+// Ordinamento (NEW)
+let sortKey = 'lang';      // it | lang | lang2 | tema | livello
+let sortDir = 'asc';        // asc | desc
+
+// AI config (NEW)
+const AI_KEY_LS = 'lq_ai_config';
+let aiConfig = null; // { provider: 'groq'|'gemini'|'anthropic'|'openai', key: '...' }
+
+// ==========================================================================
+// AVVIO
+// ==========================================================================
+window.addEventListener('DOMContentLoaded', init);
+
+async function init() {
+  caricaConfigAI();
+  popolaSelectLingue();
+  attaccaListener();
+  attivaHeaderHeightTracking();
+  await caricaIndexDaGitHub();
+}
+
+// Misura dinamicamente l'altezza dell'header sticky e la espone come CSS var.
+// Risolve il bug per cui le prime righe della tabella finivano sotto l'header
+// (top: 138px hardcoded non corrispondeva all'altezza reale, che varia con
+// il wrapping dei controlli su mobile/desktop).
+function attivaHeaderHeightTracking() {
+  const header = document.querySelector('header');
+  if (!header) return;
+  const aggiorna = () => {
+    const h = header.offsetHeight;
+    document.documentElement.style.setProperty('--header-h', h + 'px');
+  };
+  aggiorna();
+  if (window.ResizeObserver) {
+    new ResizeObserver(aggiorna).observe(header);
+  } else {
+    window.addEventListener('resize', aggiorna);
+  }
+  // Anche al load delle font/immagini l'altezza può cambiare
+  window.addEventListener('load', aggiorna);
+}
+
+function popolaSelectLingue() {
+  const sel = document.getElementById('lang-select');
+  const sel2 = document.getElementById('lang2-select');
+  LINGUE.forEach(l => {
+    const opt = document.createElement('option');
+    opt.value = l.code;
+    opt.textContent = l.name + ' ('+l.code+')';
+    sel.appendChild(opt);
+    const opt2 = opt.cloneNode(true);
+    sel2.appendChild(opt2);
+  });
+  sel.value = currentLang;
+}
+
+function attaccaListener() {
+  document.getElementById('lang-select').addEventListener('change', e => {
+    currentLang = e.target.value;
+    currentPage = 1;
+    mostraBannerDialetto();
+    render();
+  });
+  document.getElementById('lang2-select').addEventListener('change', e => {
+    currentLang2 = e.target.value;
+    document.getElementById('lang2-th').style.display = currentLang2 ? '' : 'none';
+    currentPage = 1;
+    mostraBannerDialetto();
+    render();
+  });
+  document.getElementById('tema-select').addEventListener('change', e => {
+    currentTema = e.target.value;
+    currentPage = 1;
+    render();
+  });
+  document.getElementById('livello-select').addEventListener('change', e => {
+    currentLivello = e.target.value;
+    currentPage = 1;
+    render();
+  });
+  document.getElementById('search').addEventListener('input', e => {
+    currentSearch = e.target.value.toLowerCase().trim();
+    currentPage = 1;
+    render();
+  });
+  document.getElementById('only-empty').addEventListener('change', e => {
+    onlyEmpty = e.target.checked;
+    currentPage = 1;
+    render();
+  });
+
+  // Header click → ordinamento
+  document.querySelectorAll('th.sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const k = th.dataset.sort;
+      if (sortKey === k) sortDir = (sortDir === 'asc' ? 'desc' : 'asc');
+      else { sortKey = k; sortDir = 'asc'; }
+      render();
+    });
+  });
+}
+
+// ==========================================================================
+// CARICA index.html DA GITHUB (invariato)
+// ==========================================================================
+function fetchTimeout(url, opts, ms) {
+  ms = ms || 20000;
+  const ctrl = new AbortController();
+  const tid = setTimeout(()=>ctrl.abort('timeout'), ms);
+  return fetch(url, Object.assign({}, opts, { signal: ctrl.signal }))
+    .finally(()=>clearTimeout(tid));
+}
+
+async function caricaIndexDaGitHub() {
+  setHelp('⏳ Carico l\'ultima versione di index.html da GitHub...', 'info');
+  try {
+    const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?ref=${GH_BRANCH}`;
+    const token = localStorage.getItem(GH_TOKEN_KEY);
+    const headers = { 'Accept': 'application/vnd.github+json' };
+    if (token) headers['Authorization'] = 'Bearer '+token;
+
+    const res = await fetchTimeout(apiUrl, { headers }, 25000);
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+    const meta = await res.json();
+    originalSourceSha = meta.sha;
+
+    const b64 = meta.content.replace(/\n/g, '');
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i=0; i<bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    originalSourceFile = new TextDecoder('utf-8').decode(bytes);
+
+    vocabolario = estraiVocabolario(originalSourceFile);
+    if (!vocabolario.length) throw new Error('VOCABOLARIO_DEFAULT vuoto o non trovato');
+
+    originalKeysByEntry.clear();
+    vocabolario.forEach(v => {
+      originalKeysByEntry.set(rowKey(v), new Set(Object.keys(v)));
+    });
+
+    popolaTemiSelect();
+    setHelp(`✅ Caricate <strong>${vocabolario.length}</strong> voci. Modifica i campi e clicca <strong>☁️ Salva su GitHub</strong> quando hai finito.`, 'success');
+    render();
+  } catch (err) {
+    console.error(err);
+    setHelp('❌ Errore caricamento da GitHub: '+err.message+'<br>Riprova tra qualche secondo.', 'error');
+  }
+}
+
+function estraiVocabolario(src) {
+  const m = BLOCK_START_RE.exec(src);
+  if (!m) throw new Error('Marcatore "const VOCABOLARIO_DEFAULT = [" non trovato');
+  const start = m.index + m[0].length;
+
+  let depth = 1;
+  let i = start;
+  let inStr = false, esc = false, q = null;
+  while (i < src.length) {
+    const c = src[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (c === '\\') esc = true;
+      else if (c === q) inStr = false;
+    } else {
+      if (c === '"' || c === '\'') { inStr = true; q = c; }
+      else if (c === '[') depth++;
+      else if (c === ']') { depth--; if (depth === 0) break; }
+    }
+    i++;
+  }
+  if (depth !== 0) throw new Error('Parentesi quadre non bilanciate');
+  const arrayBody = src.slice(start, i);
+
+  const code = '['+arrayBody+']';
+  let arr;
+  try {
+    arr = (new Function('return ' + code))();
+  } catch (e) {
+    throw new Error('Impossibile parsare VOCABOLARIO_DEFAULT: ' + e.message);
+  }
+  if (!Array.isArray(arr)) throw new Error('VOCABOLARIO_DEFAULT non è un array');
+  return arr;
+}
+
+function popolaTemiSelect() {
+  const temi = new Set();
+  vocabolario.forEach(v => { if (v.tema) temi.add(v.tema); });
+  const sel = document.getElementById('tema-select');
+  // Pulisci opzioni esistenti tranne "tutti"
+  sel.innerHTML = '<option value="">tutti</option>';
+  Array.from(temi).sort((a,b)=>a.localeCompare(b,'it')).forEach(t => {
+    const o = document.createElement('option');
+    o.value = t; o.textContent = t;
+    sel.appendChild(o);
+  });
+}
+
+// ==========================================================================
+// RENDER
+// ==========================================================================
+function setHelp(html, kind) {
+  const el = document.getElementById('help-msg');
+  el.className = 'help' + (kind ? ' '+kind : '');
+  el.innerHTML = html;
+  el.style.display = html ? 'block' : 'none';
+}
+
+// Mostra un avviso quando la lingua selezionata è un dialetto
+function mostraBannerDialetto() {
+  const dialPrincipale = DIALETTI_TTS_ITA.includes(currentLang);
+  const dialSec = currentLang2 && DIALETTI_TTS_ITA.includes(currentLang2);
+  if (dialPrincipale || dialSec) {
+    const nomi = [];
+    if (dialPrincipale) nomi.push(LINGUE.find(l=>l.code===currentLang).name);
+    if (dialSec) nomi.push(LINGUE.find(l=>l.code===currentLang2).name);
+    setHelp(
+      `📣 <strong>Convenzione dialetti</strong> (${nomi.join(', ')}): scrivi <code style="background:var(--purple-light);padding:0 4px;border-radius:3px">trascrizione_TTS<strong>/</strong>grafia_tradizionale</code>. ` +
+      `Es. <code style="background:var(--purple-light);padding:0 4px;border-radius:3px">tintüüa/tintüa</code> — il TTS legge "tintüüa" (con grafia italianizzata che simula il suono dialettale), all'utente viene mostrato "tintüa" (grafia corretta). ` +
+      `Se manca la <code>/</code>, lo stesso valore viene usato per entrambi.`,
+      'info'
+    );
+  }
+}
+
+function rowKey(v) { return (v.it||'').toLowerCase().trim(); }
+
+// "Visible" = parte prima del | (per ordinamento e ricerca leggibile)
+function visiblePart(s) {
+  if (!s) return '';
+  const i = s.indexOf('|');
+  return (i === -1 ? s : s.slice(0,i)).trim();
+}
+
+// Normalizza una traduzione (parte visibile) per il CONFRONTO fra duplicati:
+// - prende solo la parte visibile (prima del |)
+// - separa le varianti su "," (convenzione attuale per pronunce/grafie alternative)
+// - trim di ogni variante, rimuove vuoti, lowercase, ordina alfabeticamente
+// - rifonde con ", " come separatore canonico
+// Esempi:
+//   "pà, pae,"   -> "pae, pà"
+//   "pae, pà"    -> "pae, pà"
+//   "  PAE ,pà " -> "pae, pà"
+// NON modifica MAI i dati salvati: è usato solo per il confronto in analizzaConflitti.
+function normalizzaVarianti(s) {
+  if (!s) return '';
+  return visiblePart(String(s))
+    .split(',')
+    .map(x => x.trim().toLowerCase())
+    .filter(x => x.length > 0)
+    .sort()
+    .join(', ');
+}
+
+function filtroVoci() {
+  return vocabolario.filter(v => {
+    if (currentTema && v.tema !== currentTema) return false;
+    if (currentLivello && v.livello !== currentLivello) return false;
+    if (onlyEmpty && (v[currentLang] || '').trim() !== '') return false;
+    if (currentSearch) {
+      const it = (v.it||'').toLowerCase();
+      const lang = (v[currentLang]||'').toLowerCase();
+      const lang2 = currentLang2 ? (v[currentLang2]||'').toLowerCase() : '';
+      if (!it.includes(currentSearch) && !lang.includes(currentSearch) && !lang2.includes(currentSearch)) return false;
+    }
+    return true;
+  });
+}
+
+function ordinaVoci(arr) {
+  const k = sortKey;
+  const dir = sortDir === 'asc' ? 1 : -1;
+  const getter = (v) => {
+    if (k === 'it') return visiblePart(v.it).toLowerCase();
+    if (k === 'lang') return visiblePart(v[currentLang] || '').toLowerCase();
+    if (k === 'lang2') return visiblePart(v[currentLang2] || '').toLowerCase();
+    if (k === 'tema') return (v.tema||'').toLowerCase();
+    if (k === 'livello') return (v.livello||'').toLowerCase();
+    return '';
+  };
+  return arr.slice().sort((a,b) => {
+    const va = getter(a), vb = getter(b);
+    // Le voci vuote vanno SEMPRE in fondo, indipendentemente da asc/desc
+    if (!va && !vb) {
+      // tie-break su italiano per stabilità
+      const ai = visiblePart(a.it).toLowerCase(), bi = visiblePart(b.it).toLowerCase();
+      return ai.localeCompare(bi, 'it');
+    }
+    if (!va) return 1;
+    if (!vb) return -1;
+    const cmp = va.localeCompare(vb, 'it');
+    if (cmp !== 0) return cmp * dir;
+    // tie-break stabile su italiano
+    return visiblePart(a.it).toLowerCase().localeCompare(visiblePart(b.it).toLowerCase(), 'it');
+  });
+}
+
+function aggiornaSortIndicators() {
+  document.querySelectorAll('th.sortable').forEach(th => {
+    const arrow = th.querySelector('.sort-arrow');
+    th.classList.remove('sorted');
+    if (th.dataset.sort === sortKey) {
+      th.classList.add('sorted');
+      arrow.textContent = sortDir === 'asc' ? '▲' : '▼';
+    } else {
+      arrow.textContent = '';
+    }
+  });
+}
+
+function render() {
+  const langInfo = LINGUE.find(l => l.code === currentLang);
+  const lang2Info = currentLang2 ? LINGUE.find(l => l.code === currentLang2) : null;
+  document.getElementById('lang-th').firstChild.textContent = (langInfo ? langInfo.name : currentLang) + ' ';
+  if (lang2Info) {
+    document.getElementById('lang2-th').firstChild.textContent = lang2Info.name + ' ';
+  }
+  aggiornaSortIndicators();
+
+  const filtrate = ordinaVoci(filtroVoci());
+  const totalPages = Math.max(1, Math.ceil(filtrate.length / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = totalPages;
+  const startIdx = (currentPage - 1) * PAGE_SIZE;
+  const slice = filtrate.slice(startIdx, startIdx + PAGE_SIZE);
+
+  const tbody = document.getElementById('rows');
+  tbody.innerHTML = '';
+  slice.forEach(v => {
+    const tr = document.createElement('tr');
+    const key = rowKey(v);
+    const isEmpty = !(v[currentLang]||'').trim();
+    const isNew = newKeys.has(key);
+    const isMod = modifiedKeys.has(key);
+    if (isNew) tr.className = 'new-row';
+    else if (isMod) tr.className = 'modified';
+
+    const itHidden = (v.it||'').includes('|') ? (v.it.split('|').length - 1) : 0;
+    const langHidden = (v[currentLang]||'').includes('|') ? (v[currentLang].split('|').length - 1) : 0;
+    const lang2Hidden = currentLang2 && (v[currentLang2]||'').includes('|') ? (v[currentLang2].split('|').length - 1) : 0;
+
+    // Convenzione dialetti: la "/" separa trascrizione TTS (sinistra) e grafia tradizionale (destra)
+    const isLangDialetto = DIALETTI_TTS_ITA.includes(currentLang);
+    const isLang2Dialetto = currentLang2 && DIALETTI_TTS_ITA.includes(currentLang2);
+    const langValRaw = v[currentLang]||'';
+    const langHasSlash = isLangDialetto && langValRaw.split('|')[0].includes('/');
+    const lang2ValRaw = currentLang2 ? (v[currentLang2]||'') : '';
+    const lang2HasSlash = isLang2Dialetto && lang2ValRaw.split('|')[0].includes('/');
+
+    const langTooltip = isLangDialetto
+      ? `Convenzione dialetto: scrivi <trascrizione_TTS>/<grafia_tradizionale>. Es. "tintüüa/tintüa". Usa | per alternative.`
+      : 'Usa | per alternative';
+    const lang2Tooltip = isLang2Dialetto
+      ? `Convenzione dialetto: scrivi <trascrizione_TTS>/<grafia_tradizionale>. Usa | per alternative.`
+      : 'Usa | per alternative';
+
+    const statusIcon = isNew ? '🆕' : (isEmpty ? '⚠️' : (isMod ? '✏️' : '✓'));
+    const statusTitle = isNew ? 'Nuova voce' : (isEmpty ? 'Da tradurre' : (isMod ? 'Modificata' : 'OK'));
+
+    let html = `
+      <td class="row-status" title="${statusTitle}">${statusIcon}</td>
+      <td class="it-cell" data-label="Italiano"><input type="text" value="${escapeAttr(v.it||'')}" data-field="it" title="Usa | per traduzioni alternative">${itHidden ? `<span class="alt-badge" title="${itHidden} alt. nascoste">+${itHidden}</span>` : ''}</td>
+      <td class="lang-cell ${isEmpty?'empty-cell':''}" data-label="${langInfo.name}"><input type="text" value="${escapeAttr(v[currentLang]||'')}" data-field="${currentLang}" placeholder="(da tradurre)" title="${langTooltip}">${langHasSlash ? `<span class="slash-badge" title="TTS/grafia">TTS/⌨</span>` : ''}${langHidden ? `<span class="alt-badge" title="${langHidden} alt. nascoste">+${langHidden}</span>` : ''}</td>
+    `;
+    if (currentLang2) {
+      const isEmpty2 = !(v[currentLang2]||'').trim();
+      html += `<td class="lang2-cell ${isEmpty2?'empty-cell':''}" data-label="${lang2Info.name}"><input type="text" value="${escapeAttr(v[currentLang2]||'')}" data-field="${currentLang2}" placeholder="(da tradurre)" title="${lang2Tooltip}">${lang2HasSlash ? `<span class="slash-badge" title="TTS/grafia">TTS/⌨</span>` : ''}${lang2Hidden ? `<span class="alt-badge" title="${lang2Hidden} alt. nascoste">+${lang2Hidden}</span>` : ''}</td>`;
+    }
+    html += `
+      <td class="tema-cell" data-label="Tema"><input type="text" value="${escapeAttr(v.tema||'')}" data-field="tema" list="temi-list"></td>
+      <td class="livello-cell" data-label="Livello"><input type="text" value="${escapeAttr(v.livello||'')}" data-field="livello" list="livelli-list"></td>
+      <td data-label="Pron. TTS"><input type="text" value="${escapeAttr(v.pron||'')}" data-field="pron" placeholder="—"></td>
+      <td class="row-actions">
+        <button class="icon-btn ai" onclick="aiCompletaRiga(this)" title="Completa con AI">✨</button>
+        <button class="icon-btn" onclick="ttsRow(this)" title="Pronuncia">🔊</button>
+        <button class="icon-btn danger" onclick="cancellaVoce(this)" title="Cancella">🗑️</button>
+      </td>
+    `;
+    tr.innerHTML = html;
+    tr.dataset.key = key;
+    tr._voce = v; // riferimento diretto all'oggetto voce (sicuro anche con duplicati)
+    tr.querySelectorAll('input').forEach(inp => {
+      inp.addEventListener('input', () => onCellEdit(tr, v, inp));
+    });
+    tbody.appendChild(tr);
+  });
+
+  // datalist per autocomplete tema/livello
+  ensureDatalists();
+
+  // Stats
+  const tot = vocabolario.length;
+  const totVuote = vocabolario.filter(v => !(v[currentLang]||'').trim()).length;
+  const modCount = modifiedKeys.size + newKeys.size;
+  document.getElementById('stats').innerHTML = `<strong>${tot}</strong> voci · <span class="badge-empty badge">${totVuote}</span> da tradurre in ${langInfo.name}`;
+  document.getElementById('footer-stats').innerHTML =
+    modCount ? `<span class="badge">${modCount}</span> modifiche non salvate` : '<em>nessuna modifica</em>';
+
+  renderPagination(filtrate.length, totalPages);
+}
+
+function ensureDatalists() {
+  let dl = document.getElementById('temi-list');
+  if (!dl) {
+    dl = document.createElement('datalist');
+    dl.id = 'temi-list';
+    document.body.appendChild(dl);
+  }
+  const temi = new Set();
+  vocabolario.forEach(v => { if (v.tema) temi.add(v.tema); });
+  dl.innerHTML = Array.from(temi).sort().map(t => `<option value="${escapeAttr(t)}">`).join('');
+
+  let dl2 = document.getElementById('livelli-list');
+  if (!dl2) {
+    dl2 = document.createElement('datalist');
+    dl2.id = 'livelli-list';
+    dl2.innerHTML = '<option value="A1"><option value="A2"><option value="B1"><option value="B2">';
+    document.body.appendChild(dl2);
+  }
+}
+
+function renderPagination(totalItems, totalPages) {
+  const el = document.getElementById('pagination');
+  if (totalPages <= 1) { el.innerHTML = `<span style="color:var(--muted); font-size:0.85rem">${totalItems} voci visualizzate</span>`; return; }
+  el.innerHTML = '';
+  const info = document.createElement('span');
+  info.style.color = 'var(--muted)';
+  info.style.fontSize = '0.85rem';
+  info.textContent = `Pagina ${currentPage}/${totalPages} · ${totalItems} voci`;
+  el.appendChild(info);
+
+  const mk = (label, page, disabled) => {
+    const b = document.createElement('button');
+    b.className = 'btn btn-secondary';
+    b.textContent = label;
+    b.disabled = disabled;
+    b.onclick = () => { currentPage = page; render(); window.scrollTo(0,0); };
+    return b;
+  };
+  el.appendChild(mk('« prima', 1, currentPage===1));
+  el.appendChild(mk('‹', currentPage-1, currentPage===1));
+  el.appendChild(mk('›', currentPage+1, currentPage===totalPages));
+  el.appendChild(mk('ultima »', totalPages, currentPage===totalPages));
+}
+
+function escapeAttr(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ==========================================================================
+// EDITING
+// ==========================================================================
+function onCellEdit(tr, voce, input) {
+  const field = input.dataset.field;
+  const val = input.value;
+  voce[field] = val;
+  const key = rowKey(voce);
+  if (!newKeys.has(key)) modifiedKeys.add(key);
+  if (!tr.classList.contains('new-row')) tr.classList.add('modified');
+
+  // Aggiorna badge alternative nascoste
+  if (field === 'it' || field === currentLang || field === currentLang2) {
+    const cell = input.parentElement;
+    const oldBadge = cell.querySelector('.alt-badge');
+    if (oldBadge) oldBadge.remove();
+    const hidden = val.includes('|') ? val.split('|').length - 1 : 0;
+    if (hidden > 0) {
+      const span = document.createElement('span');
+      span.className = 'alt-badge';
+      span.title = `${hidden} alt. nascoste`;
+      span.textContent = '+' + hidden;
+      cell.appendChild(span);
+    }
+  }
+
+  // Aggiorna slash-badge (convenzione dialetti TTS/grafia)
+  if (field === currentLang || field === currentLang2) {
+    const cell = input.parentElement;
+    const oldSlash = cell.querySelector('.slash-badge');
+    if (oldSlash) oldSlash.remove();
+    const isDialetto = DIALETTI_TTS_ITA.includes(field);
+    const visiblePartLocal = val.split('|')[0];
+    if (isDialetto && visiblePartLocal.includes('/')) {
+      const span = document.createElement('span');
+      span.className = 'slash-badge';
+      span.title = 'TTS/grafia: a sinistra il TTS legge, a destra l\'utente vede';
+      span.textContent = 'TTS/⌨';
+      cell.appendChild(span);
+    }
+  }
+
+  // Aggiorna stato vuoto/pieno della cella lingua
+  if (field === currentLang) {
+    const cell = input.parentElement;
+    if (val.trim()) cell.classList.remove('empty-cell');
+    else cell.classList.add('empty-cell');
+  }
+  if (field === currentLang2 && currentLang2) {
+    const cell = input.parentElement;
+    if (val.trim()) cell.classList.remove('empty-cell');
+    else cell.classList.add('empty-cell');
+  }
+
+  // Stato icona riga
+  const statusCell = tr.querySelector('.row-status');
+  if (statusCell) {
+    const isEmpty = !(voce[currentLang]||'').trim();
+    if (newKeys.has(key)) statusCell.textContent = '🆕';
+    else if (isEmpty) statusCell.textContent = '⚠️';
+    else statusCell.textContent = '✏️';
+  }
+
+  const modCount = modifiedKeys.size + newKeys.size;
+  document.getElementById('footer-stats').innerHTML =
+    modCount ? `<span class="badge">${modCount}</span> modifiche non salvate` : '<em>nessuna modifica</em>';
+}
+
+async function aggiungiVoce() {
+  const it = prompt('Italiano (richiesto):');
+  if (!it || !it.trim()) return;
+  const itTrim = it.trim();
+  if (vocabolario.some(v => (v.it||'').toLowerCase().trim() === itTrim.toLowerCase())) {
+    alert('Esiste già una voce con questo italiano.');
+    return;
+  }
+
+  const voce = { tema: '', livello: '', it: itTrim };
+
+  // Se AI è configurata, prova a riempire automaticamente tema/livello + traduzione
+  if (aiConfig && aiConfig.provider && aiConfig.key) {
+    const isDialetto = DIALETTI_TTS_ITA.includes(currentLang);
+    const langName_ = LINGUE.find(l=>l.code===currentLang).name;
+    let messaggio;
+    if (isDialetto) {
+      messaggio = `Vuoi che l'AI suggerisca solo tema e livello per "${itTrim}"?\n\n` +
+        `(La traduzione in ${langName_} NON viene chiesta all'AI: i dialetti vanno scritti a mano per garantire la grafia corretta e la convenzione "trascrizione_TTS/grafia_tradizionale".)`;
+    } else {
+      messaggio = `Vuoi che l'AI suggerisca tema, livello e traduzione in ${langName_}?`;
+    }
+    if (confirm(messaggio)) {
+      setHelp('✨ AI sta classificando la voce...', 'info');
+      try {
+        // Se la lingua corrente è un dialetto, chiediamo all'AI solo classificazione
+        // (passiamo comunque un linguaggio "neutro" come l'inglese per avere il campo translations valido,
+        //  ma poi non lo applichiamo alla voce)
+        const langForAI = isDialetto ? ['en'] : [currentLang];
+        const sugg = await aiClassificaERTraducici(itTrim, langForAI);
+        if (sugg.tema) voce.tema = sugg.tema;
+        if (sugg.livello) voce.livello = sugg.livello;
+        if (!isDialetto && sugg.translations && sugg.translations[currentLang]) {
+          voce[currentLang] = sugg.translations[currentLang];
+        }
+        if (isDialetto) {
+          setHelp(`✨ AI ha proposto: tema="${voce.tema}", livello="${voce.livello}". Inserisci tu la traduzione ${langName_} a mano.`, 'success');
+        } else {
+          setHelp(`✨ AI ha proposto: tema="${voce.tema}", livello="${voce.livello}", ${currentLang}="${voce[currentLang]||'(vuoto)'}"`, 'success');
+        }
+      } catch (e) {
+        setHelp('⚠️ AI non disponibile: '+e.message+' — la voce è stata aggiunta con campi vuoti.', 'error');
+      }
+    }
+  }
+
+  if (!voce.tema) voce.tema = prompt('Tema (es. "casa", "verbi", "dialetti"):') || 'dialetti';
+  if (!voce.livello) voce.livello = prompt('Livello (A1/A2/B1/B2):') || 'A2';
+
+  vocabolario.unshift(voce);
+  newKeys.add(rowKey(voce));
+  popolaTemiSelect();
+  currentPage = 1;
+  render();
+  window.scrollTo(0, 0);
+}
+
+function cancellaVoce(btn) {
+  const tr = btn.closest('tr');
+  const v = tr._voce; // riferimento diretto all'oggetto voce (non per chiave!)
+  if (!v) return;
+  const idx = vocabolario.indexOf(v);
+  if (idx < 0) return;
+
+  // Avvisa se ci sono altre voci con lo stesso italiano (caso duplicati)
+  const key = rowKey(v);
+  const altreConStessoIt = vocabolario.filter(x => x !== v && rowKey(x) === key).length;
+  let msg = `Cancellare la voce "${v.it}"?\n\nQuesta operazione sarà permanente al prossimo salvataggio.`;
+  if (altreConStessoIt > 0) {
+    msg += `\n\n⚠️ Esistono altre ${altreConStessoIt} voci con lo stesso italiano. Verrà cancellata SOLO questa specifica riga.`;
+  }
+  if (!confirm(msg)) return;
+
+  vocabolario.splice(idx, 1);
+  // Pulisci modifiedKeys/newKeys solo se NON ci sono altre voci con la stessa chiave
+  if (altreConStessoIt === 0) {
+    modifiedKeys.delete(key);
+    newKeys.delete(key);
+  }
+  render();
+}
+
+// ==========================================================================
+// AI INTEGRATION
+// ==========================================================================
+function caricaConfigAI() {
+  try {
+    const raw = localStorage.getItem(AI_KEY_LS);
+    if (raw) aiConfig = JSON.parse(raw);
+  } catch(e) { aiConfig = null; }
+  aggiornaIndicatoreAI();
+}
+
+function aggiornaIndicatoreAI() {
+  const el = document.getElementById('ai-indicator');
+  if (aiConfig && aiConfig.provider && aiConfig.key) {
+    el.textContent = 'AI: ' + aiConfig.provider;
+    el.classList.remove('off');
+  } else {
+    el.textContent = 'AI: off';
+    el.classList.add('off');
+  }
+}
+
+function apriConfigAI() {
+  document.getElementById('ai-modal').classList.add('open');
+  document.getElementById('ai-provider').value = (aiConfig && aiConfig.provider) || '';
+  document.getElementById('ai-key').value = (aiConfig && aiConfig.key) || '';
+}
+
+function chiudiConfigAI() {
+  document.getElementById('ai-modal').classList.remove('open');
+}
+
+function salvaConfigAI() {
+  const provider = document.getElementById('ai-provider').value;
+  const key = document.getElementById('ai-key').value.trim();
+  if (!provider) {
+    aiConfig = null;
+    localStorage.removeItem(AI_KEY_LS);
+  } else {
+    if (!key) { alert('Inserisci una chiave API o seleziona "disabilitato"'); return; }
+    aiConfig = { provider, key };
+    localStorage.setItem(AI_KEY_LS, JSON.stringify(aiConfig));
+  }
+  aggiornaIndicatoreAI();
+  chiudiConfigAI();
+}
+
+function langName(code) {
+  const l = LINGUE.find(x=>x.code===code);
+  return l ? l.name : code;
+}
+
+// Costruzione prompt: input italiano (+ contesto) → JSON con tema/livello/traduzioni
+function buildAIPrompt(italianTerm, langCodes, contextSamples) {
+  const langList = langCodes.map(c => `${c} (${langName(c)})`).join(', ');
+  const targetHaDialetto = langCodes.some(c => DIALETTI_TTS_ITA.includes(c));
+
+  // Se ci sono dialetti tra i target, prendi esempi mirati che mostrino la convenzione "/"
+  let dialettoContext = '';
+  if (targetHaDialetto) {
+    const dialCode = langCodes.find(c => DIALETTI_TTS_ITA.includes(c));
+    const samplesDialetto = vocabolario
+      .filter(v => v[dialCode] && String(v[dialCode]).includes('/'))
+      .slice(0, 6)
+      .map(v => ({ it: v.it, [dialCode]: v[dialCode] }));
+    if (samplesDialetto.length) {
+      dialettoContext = `\n\nESEMPI DI CONVENZIONE DIALETTO con "/" (per ${dialCode}):\n` +
+        samplesDialetto.map(s => JSON.stringify(s)).join('\n') +
+        `\nNota: la parte PRIMA della "/" è una trascrizione italianizzata che pilota la voce TTS italiana per ottenere il suono dialettale; la parte DOPO è la grafia tradizionale corretta. Usala solo se il suono richiede una trascrizione speciale; altrimenti scrivi una sola forma senza "/".`;
+    }
+  }
+
+  let context = '';
+  if (contextSamples && contextSamples.length) {
+    context = '\n\nEsempi dal vocabolario esistente (per stile e formato):\n' +
+      contextSamples.slice(0,6).map(s => JSON.stringify(s)).join('\n');
+  }
+
+  return `Sei un assistente per un quiz di vocabolario multilingue italiano. Per il termine italiano "${italianTerm}", fornisci:
+1. Una traduzione concisa (1-3 parole) in ognuna di queste lingue: ${langList}
+2. Una classificazione del livello CEFR: A1 (base), A2 (elementare), B1 (intermedio), B2 (intermedio-superiore)
+3. Un tema (categoria semantica, es: "casa", "cibo", "verbi", "famiglia", "lavoro", "natura", "corpo", "tempo", "viaggi", "saluti", "dialetti", "numeri")
+
+Per i dialetti italiani (mn=manarolese, sp=spezzino, ge=genovese, cr=carrarino) usa la grafia tradizionale. Per "manarolese" usa la varietà di Manarola (Cinque Terre).${dialettoContext}
+
+Rispondi SOLO con un oggetto JSON valido in questo formato esatto, senza markdown o testo aggiuntivo:
+{"tema":"...", "livello":"A1|A2|B1|B2", "translations":{"${langCodes[0]}":"..."${langCodes.length>1?', "'+langCodes[1]+'":"..."':''}}}${context}`;
+}
+
+async function aiClassificaERTraducici(italianTerm, langCodes) {
+  if (!aiConfig || !aiConfig.provider || !aiConfig.key) {
+    throw new Error('AI non configurata. Apri ⚙️ AI per configurarla.');
+  }
+  // Raccogli esempi di contesto: 5 voci con tema/livello/traduzione presente nelle stesse lingue
+  const samples = vocabolario
+    .filter(v => v.tema && v.livello && langCodes.every(c => v[c]))
+    .slice(0, 8)
+    .map(v => {
+      const o = { it: v.it, tema: v.tema, livello: v.livello };
+      langCodes.forEach(c => o[c] = v[c]);
+      return o;
+    });
+  const prompt = buildAIPrompt(italianTerm, langCodes, samples);
+
+  let text;
+  if (aiConfig.provider === 'groq') {
+    text = await callGroq(prompt);
+  } else if (aiConfig.provider === 'gemini') {
+    text = await callGemini(prompt);
+  } else if (aiConfig.provider === 'anthropic') {
+    text = await callAnthropic(prompt);
+  } else if (aiConfig.provider === 'openai') {
+    text = await callOpenAI(prompt);
+  } else {
+    throw new Error('Provider AI sconosciuto: ' + aiConfig.provider);
+  }
+
+  // Estrai JSON (l'AI a volte aggiunge testo o markdown)
+  let parsed;
+  try {
+    const cleaned = text.replace(/```json|```/g, '').trim();
+    const m = cleaned.match(/\{[\s\S]*\}/);
+    parsed = JSON.parse(m ? m[0] : cleaned);
+  } catch(e) {
+    throw new Error('Risposta AI non in JSON: ' + text.slice(0,200));
+  }
+  return parsed;
+}
+
+async function callGroq(prompt) {
+  const res = await fetchTimeout('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + aiConfig.key,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: 'llama-3.3-70b-versatile',
+      messages: [{ role:'user', content: prompt }],
+      temperature: 0.3,
+      response_format: { type: 'json_object' }
+    })
+  }, 30000);
+  if (!res.ok) throw new Error('Groq HTTP '+res.status+': '+await res.text());
+  const data = await res.json();
+  return data.choices[0].message.content;
+}
+
+async function callGemini(prompt) {
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + encodeURIComponent(aiConfig.key);
+  const res = await fetchTimeout(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.3, responseMimeType: 'application/json' }
+    })
+  }, 30000);
+  if (!res.ok) throw new Error('Gemini HTTP '+res.status+': '+await res.text());
+  const data = await res.json();
+  return data.candidates[0].content.parts[0].text;
+}
+
+async function callAnthropic(prompt) {
+  const res = await fetchTimeout('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'x-api-key': aiConfig.key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: 'claude-3-5-haiku-20241022',
+      max_tokens: 500,
+      messages: [{ role:'user', content: prompt }]
+    })
+  }, 30000);
+  if (!res.ok) throw new Error('Anthropic HTTP '+res.status+': '+await res.text());
+  const data = await res.json();
+  return data.content[0].text;
+}
+
+async function callOpenAI(prompt) {
+  const res = await fetchTimeout('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer ' + aiConfig.key,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      model: 'gpt-4o-mini',
+      messages: [{ role:'user', content: prompt }],
+      temperature: 0.3,
+      response_format: { type: 'json_object' }
+    })
+  }, 30000);
+  if (!res.ok) throw new Error('OpenAI HTTP '+res.status+': '+await res.text());
+  const data = await res.json();
+  return data.choices[0].message.content;
+}
+
+// AI per singola riga
+async function aiCompletaRiga(btn) {
+  if (!aiConfig || !aiConfig.provider || !aiConfig.key) {
+    if (confirm('AI non configurata. Vuoi configurarla ora?')) apriConfigAI();
+    return;
+  }
+  const tr = btn.closest('tr');
+  const v = tr._voce; // riferimento diretto (sicuro con duplicati)
+  if (!v) return;
+  if (!v.it || !v.it.trim()) { alert('Compila prima il campo italiano.'); return; }
+
+  // Decidi quali campi completare
+  const langsToTranslate = [];
+  if (!(v[currentLang]||'').trim()) langsToTranslate.push(currentLang);
+  if (currentLang2 && !(v[currentLang2]||'').trim()) langsToTranslate.push(currentLang2);
+
+  // Avviso speciale se uno dei target è un dialetto
+  const dialettiTarget = langsToTranslate.filter(c => DIALETTI_TTS_ITA.includes(c));
+  if (dialettiTarget.length > 0) {
+    const nomi = dialettiTarget.map(c => LINGUE.find(l=>l.code===c).name).join(', ');
+    if (!confirm(
+      `⚠️ ATTENZIONE: stai per usare l'AI per generare una traduzione in dialetto (${nomi}).\n\n` +
+      `Le AI generaliste hanno scarsa conoscenza dei dialetti regionali e potrebbero produrre traduzioni inventate o nella grafia sbagliata.\n\n` +
+      `La convenzione richiede il formato "trascrizione_TTS/grafia_tradizionale" (es. "tintüüa/tintüa") che l'AI difficilmente conoscerà bene.\n\n` +
+      `Procedere comunque? (Sarà tua responsabilità verificare il risultato a vista prima di salvare)`
+    )) return;
+  }
+
+  btn.classList.add('ai-pending');
+  btn.disabled = true;
+  setHelp(`✨ AI sta elaborando "${v.it}"...`, 'info');
+
+  // Se la voce ha già tutto, ricalcola comunque tema/livello come ricontrollo? No: chiedi conferma.
+  if (langsToTranslate.length === 0 && v.tema && v.livello) {
+    btn.classList.remove('ai-pending');
+    btn.disabled = false;
+    if (!confirm('Questa voce sembra già completa. Vuoi comunque chiedere all\'AI di rivedere tema/livello?')) return;
+    btn.classList.add('ai-pending');
+    btn.disabled = true;
+  }
+
+  try {
+    const langs = langsToTranslate.length ? langsToTranslate : [currentLang];
+    const sugg = await aiClassificaERTraducici(visiblePart(v.it), langs);
+
+    let changed = false;
+    if (sugg.tema && !v.tema) { v.tema = sugg.tema; changed = true; }
+    if (sugg.livello && !v.livello && /^[AB][12]$/.test(sugg.livello)) { v.livello = sugg.livello; changed = true; }
+    if (sugg.translations) {
+      Object.keys(sugg.translations).forEach(c => {
+        if (!(v[c]||'').trim() && sugg.translations[c]) {
+          v[c] = sugg.translations[c];
+          changed = true;
+        }
+      });
+    }
+
+    if (changed) {
+      if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v));
+      popolaTemiSelect();
+      render();
+      setHelp(`✨ AI: aggiornato "${v.it}" — tema: ${v.tema || '?'}, livello: ${v.livello || '?'}, ${langs.map(c=>c+'='+(v[c]||'?')).join(', ')}`, 'success');
+    } else {
+      setHelp('ℹ️ AI: nessuna modifica applicata.', 'info');
+    }
+  } catch(e) {
+    setHelp('❌ Errore AI: ' + e.message, 'error');
+  } finally {
+    btn.classList.remove('ai-pending');
+    btn.disabled = false;
+  }
+}
+
+// AI in batch su tutte le voci filtrate vuote
+async function completaConAI() {
+  if (!aiConfig || !aiConfig.provider || !aiConfig.key) {
+    if (confirm('AI non configurata. Vuoi configurarla ora?')) apriConfigAI();
+    return;
+  }
+  const filtrate = filtroVoci();
+  const daCompletare = filtrate.filter(v => !(v[currentLang]||'').trim() || !v.tema || !v.livello);
+  if (!daCompletare.length) {
+    alert('Nessuna voce da completare nelle voci attualmente filtrate.');
+    return;
+  }
+  const max = Math.min(daCompletare.length, 30); // limite di sicurezza per call/costi
+
+  // Avviso speciale se il batch tocca un dialetto
+  const targetDialetti = [];
+  if (DIALETTI_TTS_ITA.includes(currentLang)) targetDialetti.push(LINGUE.find(l=>l.code===currentLang).name);
+  if (currentLang2 && DIALETTI_TTS_ITA.includes(currentLang2)) targetDialetti.push(LINGUE.find(l=>l.code===currentLang2).name);
+  if (targetDialetti.length > 0) {
+    if (!confirm(
+      `⚠️ ATTENZIONE: il batch include una lingua DIALETTALE (${targetDialetti.join(', ')}).\n\n` +
+      `L'AI ha conoscenza limitata e inaffidabile dei dialetti regionali. È molto probabile che produca traduzioni inventate o nella grafia sbagliata.\n\n` +
+      `Per i dialetti è fortemente raccomandato inserire le traduzioni a mano o tramite un parlante nativo.\n\n` +
+      `Procedere comunque con il batch AI?`
+    )) return;
+  }
+
+  if (!confirm(`Completare con AI ${max} voce/i (di ${daCompletare.length} totali da completare)?\n\nVerranno inviate ${max} richieste a ${aiConfig.provider}.`)) return;
+
+  const btn = document.getElementById('btn-ai-batch');
+  btn.disabled = true;
+  const origLabel = btn.textContent;
+  let ok = 0, ko = 0;
+  for (let i = 0; i < max; i++) {
+    const v = daCompletare[i];
+    btn.textContent = `✨ ${i+1}/${max}...`;
+    setHelp(`✨ AI: ${i+1}/${max} — "${v.it}"`, 'info');
+    try {
+      const langs = [currentLang];
+      if (currentLang2 && !(v[currentLang2]||'').trim()) langs.push(currentLang2);
+      const sugg = await aiClassificaERTraducici(visiblePart(v.it), langs);
+      if (sugg.tema && !v.tema) v.tema = sugg.tema;
+      if (sugg.livello && !v.livello && /^[AB][12]$/.test(sugg.livello)) v.livello = sugg.livello;
+      if (sugg.translations) {
+        Object.keys(sugg.translations).forEach(c => {
+          if (!(v[c]||'').trim() && sugg.translations[c]) v[c] = sugg.translations[c];
+        });
+      }
+      if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v));
+      ok++;
+    } catch(e) {
+      console.error('AI batch error su', v.it, e);
+      ko++;
+    }
+    // piccolo delay per evitare rate limit
+    await new Promise(r=>setTimeout(r, 250));
+  }
+  popolaTemiSelect();
+  render();
+  btn.textContent = origLabel;
+  btn.disabled = false;
+  setHelp(`✨ AI completata: ${ok} ok, ${ko} errori. Ricorda di salvare con ☁️.`, ok && !ko ? 'success' : (ko ? 'error' : 'info'));
+}
+
+// ==========================================================================
+// GESTIONE DUPLICATI
+// ==========================================================================
+// Trova gruppi di voci con lo stesso italiano (case-insensitive, trim).
+// Considera anche il caso "autunno" vs "Autunno" vs " autunno ".
+// Ritorna array di gruppi: [ { key, indici: [idx1, idx2,...] }, ... ]
+function trovaDuplicati() {
+  const map = new Map(); // chiave normalizzata -> array di indici
+  vocabolario.forEach((v, idx) => {
+    const k = (v.it || '').toLowerCase().trim();
+    if (!k) return; // ignora voci senza italiano
+    if (!map.has(k)) map.set(k, []);
+    map.get(k).push(idx);
+  });
+  const groups = [];
+  map.forEach((indici, key) => {
+    if (indici.length > 1) groups.push({ key, indici });
+  });
+  // Ordina alfabeticamente
+  groups.sort((a, b) => a.key.localeCompare(b.key, 'it'));
+  return groups;
+}
+
+// Conta quanti campi "significativi" ha una voce (più alto = più completa)
+function punteggioCompletezza(v) {
+  let score = 0;
+  if (v.tema && v.tema.trim()) score += 2;
+  if (v.livello && v.livello.trim()) score += 2;
+  // Conta traduzioni non vuote (esclude tema, livello, it, pron)
+  Object.keys(v).forEach(k => {
+    if (k === 'tema' || k === 'livello' || k === 'it' || k === 'pron') return;
+    if (v[k] && String(v[k]).trim()) score += 1;
+  });
+  return score;
+}
+
+// Costruisce un riassunto leggibile di una voce
+function riassuntoVoce(v) {
+  const tradotte = [];
+  Object.keys(v).forEach(k => {
+    if (k === 'tema' || k === 'livello' || k === 'it' || k === 'pron') return;
+    if (v[k] && String(v[k]).trim()) {
+      tradotte.push(`<code>${escapeAttr(k)}: ${escapeAttr(visiblePart(v[k]))}</code>`);
+    }
+  });
+  const meta = [];
+  if (v.tema) meta.push('<strong>tema:</strong> ' + escapeAttr(v.tema));
+  if (v.livello) meta.push('<strong>livello:</strong> ' + escapeAttr(v.livello));
+  return {
+    tradotte: tradotte.length ? tradotte.join(' ') : '<span style="color:var(--muted)">— nessuna traduzione —</span>',
+    meta: meta.length ? meta.join(' · ') : '<span style="color:var(--muted)">— senza tema/livello —</span>',
+    nTrad: tradotte.length
+  };
+}
+
+let dupGroupsCache = []; // cache per riferirsi agli indici dopo la cancellazione
+
+function apriDuplicati() {
+  dupGroupsCache = trovaDuplicati();
+  document.getElementById('dup-modal').classList.add('open');
+  renderDuplicati();
+}
+
+function chiudiDuplicati() {
+  document.getElementById('dup-modal').classList.remove('open');
+}
+
+// Analizza i conflitti tra voci di un gruppo: ritorna un array di campi
+// dove almeno due voci hanno valori diversi non vuoti.
+// Es. [{ campo:"en", valori:[{idx:0,val:"understand"},{idx:2,val:"get it"}] }, ...]
+function analizzaConflitti(indici) {
+  const conflitti = [];
+  // Raccogli tutti i campi presenti in qualsiasi voce del gruppo
+  const tuttiCampi = new Set();
+  indici.forEach(i => {
+    Object.keys(vocabolario[i]).forEach(k => {
+      if (k === 'it') return; // it è uguale per definizione
+      tuttiCampi.add(k);
+    });
+  });
+
+  tuttiCampi.forEach(campo => {
+    // tema e livello non sono mai conflitti: vengono unificati in dedupaAutomatico
+    // con la regola "valore più frequente" (vedi scegliTemaCanonico, scegliLivelloCanonico).
+    if (campo === 'tema' || campo === 'livello') return;
+    // Mappa idx → valore non vuoto
+    const valori = [];
+    indici.forEach(i => {
+      const val = vocabolario[i][campo];
+      if (val !== undefined && val !== null && String(val).trim() !== '') {
+        // Confronta sulla parte visibile (prima del |) per non flaggare differenze su sinonimi nascosti
+        valori.push({ idx: i, val: String(val), visible: visiblePart(String(val)) });
+      }
+    });
+    // Conflitto se ci sono almeno due valori distinti (parte visibile, normalizzata
+    // sulle varianti separate da virgola — così "pà, pae," e "pae, pà" non sono in conflitto)
+    if (valori.length >= 2) {
+      const distinti = new Set(valori.map(v => normalizzaVarianti(v.visible)));
+      if (distinti.size >= 2) {
+        conflitti.push({ campo, valori });
+      }
+    }
+  });
+  return conflitti;
+}
+
+function renderDuplicati() {
+  const list = document.getElementById('dup-list');
+  // Ricalcola da zero (perché gli indici possono essere cambiati dopo cancellazioni)
+  dupGroupsCache = trovaDuplicati();
+  if (!dupGroupsCache.length) {
+    list.innerHTML = '<div class="dup-empty">✅ Nessun duplicato trovato.</div>';
+    return;
+  }
+
+  // Classifica i gruppi: sicuri (no conflitti) vs sinonimi (con conflitti)
+  let nSicuri = 0, nSinonimi = 0;
+  dupGroupsCache.forEach(g => {
+    g._conflitti = analizzaConflitti(g.indici);
+    if (g._conflitti.length === 0) nSicuri++; else nSinonimi++;
+  });
+
+  let html = `<p style="font-size:0.85rem; color:var(--text); margin: 0 0 0.8rem; line-height:1.5;">
+    <strong>${dupGroupsCache.length}</strong> gruppi trovati: 
+    <span style="color:var(--green); font-weight:600">${nSicuri} sicuri da fondere</span> · 
+    <span style="color:var(--accent); font-weight:600">${nSinonimi} potenziali sinonimi</span>
+    <br><small style="color:var(--muted)">I gruppi marcati 🟢 hanno campi complementari (fusione = solo accorpamento, nessuna perdita). I gruppi 🔴 hanno campi con valori diversi (fusione = perdita di varianti, probabilmente sono voci sinonime intenzionali).</small>
+  </p>`;
+
+  dupGroupsCache.forEach((gruppo, gIdx) => {
+    const conflitti = gruppo._conflitti;
+    const haSinonimi = conflitti.length > 0;
+
+    // Trova la voce con più campi compilati (per consigliare)
+    let bestIdx = gruppo.indici[0];
+    let bestScore = -1;
+    gruppo.indici.forEach(i => {
+      const s = punteggioCompletezza(vocabolario[i]);
+      if (s > bestScore) { bestScore = s; bestIdx = i; }
+    });
+
+    html += `<div class="dup-group ${haSinonimi ? 'dup-group-sinonimi' : 'dup-group-safe'}" data-group="${gIdx}">`;
+    const tipoEtichetta = haSinonimi 
+      ? `<span style="color:var(--accent)">🔴 Possibili sinonimi (${conflitti.length} ${conflitti.length===1?'campo in conflitto':'campi in conflitto'})</span>`
+      : `<span style="color:var(--green)">🟢 Sicuro da fondere</span>`;
+    html += `<h3>📂 "${escapeAttr(vocabolario[gruppo.indici[0]].it)}" — ${gruppo.indici.length} voci · ${tipoEtichetta}</h3>`;
+
+    // Se ci sono conflitti, mostra il dettaglio
+    if (haSinonimi) {
+      html += `<div class="dup-conflitti">
+        <strong style="color:var(--accent); font-size:0.82rem;">⚠️ Campi con valori diversi (la fusione perderebbe queste varianti):</strong>
+        <ul style="margin:0.3rem 0 0.5rem 1.2rem; padding:0; font-size:0.82rem;">`;
+      conflitti.forEach(c => {
+        const elenco = c.valori.map(v => `<code style="background:#fee2e2; padding:1px 4px; border-radius:3px;">${escapeAttr(v.visible)}</code>`).join(' ≠ ');
+        html += `<li><strong>${escapeAttr(c.campo)}:</strong> ${elenco}</li>`;
+      });
+      html += `</ul>
+        <p style="font-size:0.82rem; color:var(--muted); margin:0.4rem 0 0;">
+          Probabilmente queste sono voci <em>intenzionalmente distinte</em> per esprimere significati o registri diversi (es. "capire" come verbo astratto vs. "capire" colloquiale = "get it"). 
+          <strong>Il pulsante "fondi" è disabilitato.</strong> Se confermi che sono davvero duplicati da accorpare, usa il 🗑️ per cancellare quella che vuoi rimuovere — sarai responsabile della scelta.
+        </p>
+      </div>`;
+    }
+
+    gruppo.indici.forEach(i => {
+      const v = vocabolario[i];
+      const r = riassuntoVoce(v);
+      const isBest = (i === bestIdx);
+      html += `
+        <div class="dup-row ${isBest && !haSinonimi ? 'recommended' : ''}" data-idx="${i}">
+          <div class="dup-fields">
+            <div>${r.tradotte}</div>
+            <div class="dup-meta">${r.meta} · ${r.nTrad} traduzion${r.nTrad===1?'e':'i'} ${isBest && !haSinonimi ? '· <strong style="color:var(--green)">consigliata</strong>' : ''}</div>
+          </div>
+          <div class="dup-actions">
+            ${haSinonimi
+              ? `<button class="btn btn-secondary" disabled title="Fusione disabilitata: questo gruppo ha conflitti. Usa il cestino se vuoi cancellare.">⇒ fondi</button>
+                 <button class="btn btn-danger" onclick="cancellaDup(${i})" title="Cancella questa voce">🗑️</button>`
+              : (isBest 
+                ? '<button class="btn btn-secondary" disabled title="È la voce più completa, non cancellabile da qui">✓ tieni</button>'
+                : `<button class="btn btn-secondary" onclick="fondiInBest(${i}, ${bestIdx})" title="Copia i campi non vuoti di questa voce nella voce consigliata, poi cancella questa">⇒ fondi</button>
+                   <button class="btn btn-danger" onclick="cancellaDup(${i})" title="Cancella questa voce">🗑️</button>`
+              )
+            }
+          </div>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+  });
+
+  list.innerHTML = html;
+}
+
+function cancellaDup(idx) {
+  const v = vocabolario[idx];
+  if (!v) return;
+  const key = rowKey(v);
+
+  // Verifica se questa voce è in un gruppo "sinonimi" (con conflitti)
+  const altre = vocabolario.filter((x, i) => i !== idx && rowKey(x) === key);
+  let warningSinonimi = '';
+  if (altre.length > 0) {
+    const allIndici = [];
+    vocabolario.forEach((x, i) => { if (rowKey(x) === key) allIndici.push(i); });
+    const conflitti = analizzaConflitti(allIndici);
+    if (conflitti.length > 0) {
+      const elenco = conflitti.map(c => {
+        const valQuesta = (v[c.campo]||'').toString().trim();
+        return valQuesta ? `  • ${c.campo}: "${visiblePart(valQuesta)}"` : null;
+      }).filter(Boolean);
+      if (elenco.length) {
+        warningSinonimi = `\n\n⚠️ ATTENZIONE — questa voce è in un gruppo SINONIMI. ` +
+          `Cancellandola perderai questi valori unici (presenti SOLO in questa voce o diversi dalle altre):\n` +
+          elenco.join('\n') +
+          `\n\nSe queste varianti ti servono, NON cancellare.`;
+      }
+    }
+  }
+
+  if (!confirm(`Cancellare questa occorrenza di "${v.it}"?\n\nDettagli: ${riassuntoVoce(v).meta}${warningSinonimi}\n\nLa cancellazione sarà permanente al prossimo salvataggio su GitHub.`)) return;
+  vocabolario.splice(idx, 1);
+  // Pulisci stato modificato/nuovo solo se non c'è più nessuna voce con quella chiave
+  const ancoraPresente = vocabolario.some(x => rowKey(x) === key);
+  if (!ancoraPresente) {
+    modifiedKeys.delete(key);
+    newKeys.delete(key);
+  } else {
+    if (!newKeys.has(key)) modifiedKeys.add(key);
+  }
+  renderDuplicati();
+  render();
+}
+
+// Fonde i campi non vuoti dalla voce idxFrom nella voce idxTo, poi cancella idxFrom
+function fondiInBest(idxFrom, idxTo) {
+  const vFrom = vocabolario[idxFrom];
+  const vTo = vocabolario[idxTo];
+  if (!vFrom || !vTo) return;
+
+  // Calcola quali campi verrebbero copiati
+  const campiCopiati = [];
+  Object.keys(vFrom).forEach(k => {
+    if (k === 'it') return; // mai sovrascrivere it
+    const valFrom = vFrom[k];
+    const valTo = vTo[k];
+    const haContenutoFrom = valFrom !== undefined && valFrom !== null && String(valFrom).trim() !== '';
+    const haContenutoTo = valTo !== undefined && valTo !== null && String(valTo).trim() !== '';
+    if (haContenutoFrom && !haContenutoTo) {
+      campiCopiati.push(`${k}: "${visiblePart(valFrom)}"`);
+    }
+  });
+
+  let msg = `Fondere questa voce nella voce consigliata?\n\n`;
+  if (campiCopiati.length) {
+    msg += `Verranno copiati questi campi (oggi vuoti nella consigliata):\n  • ${campiCopiati.join('\n  • ')}\n\n`;
+  } else {
+    msg += `Nessun campo nuovo da copiare (la voce consigliata è già più completa).\n\n`;
+  }
+  msg += `Poi questa voce verrà cancellata.`;
+
+  if (!confirm(msg)) return;
+
+  // Esegui la copia
+  Object.keys(vFrom).forEach(k => {
+    if (k === 'it') return;
+    const valFrom = vFrom[k];
+    const valTo = vTo[k];
+    const haContenutoFrom = valFrom !== undefined && valFrom !== null && String(valFrom).trim() !== '';
+    const haContenutoTo = valTo !== undefined && valTo !== null && String(valTo).trim() !== '';
+    if (haContenutoFrom && !haContenutoTo) {
+      vTo[k] = valFrom;
+    }
+  });
+
+  // Marca la voce destinazione come modificata
+  const keyTo = rowKey(vTo);
+  if (!newKeys.has(keyTo)) modifiedKeys.add(keyTo);
+
+  // Cancella la voce sorgente
+  vocabolario.splice(idxFrom, 1);
+  renderDuplicati();
+  render();
+}
+
+// Sceglie il tema canonico per un gruppo di voci duplicate.
+// Regola: valore più frequente. Tie-break: scarta 'dialetti' se in gioco;
+// tra i restanti, vince quello con MENO voci a livello globale (per bilanciare).
+// Le voci con tema vuoto NON votano. Se nessuna ha tema, ritorna null.
+function scegliTemaCanonico(voci) {
+  const conteggi = new Map();
+  voci.forEach(v => {
+    const t = (v.tema || '').trim();
+    if (!t) return;
+    conteggi.set(t, (conteggi.get(t) || 0) + 1);
+  });
+  if (!conteggi.size) return null;
+
+  // Trova il massimo
+  let maxCount = 0;
+  conteggi.forEach(c => { if (c > maxCount) maxCount = c; });
+  const candidati = [...conteggi.entries()].filter(([,c]) => c === maxCount).map(([t]) => t);
+
+  if (candidati.length === 1) return candidati[0];
+
+  // Tie-break: scarta 'dialetti' se ce ne sono altri
+  let pool = candidati;
+  if (pool.length > 1 && pool.includes('dialetti')) {
+    const senzaDialetti = pool.filter(t => t !== 'dialetti');
+    if (senzaDialetti.length > 0) pool = senzaDialetti;
+  }
+  if (pool.length === 1) return pool[0];
+
+  // Tie-break ulteriore: vince il tema con MENO voci nel vocabolario globale
+  const popolazione = new Map();
+  pool.forEach(t => popolazione.set(t, 0));
+  vocabolario.forEach(v => {
+    const t = (v.tema || '').trim();
+    if (popolazione.has(t)) popolazione.set(t, popolazione.get(t) + 1);
+  });
+  let bestTema = pool[0];
+  let bestPop = popolazione.get(bestTema);
+  pool.forEach(t => {
+    const p = popolazione.get(t);
+    if (p < bestPop) { bestTema = t; bestPop = p; }
+  });
+  return bestTema;
+}
+
+// Sceglie il livello canonico per un gruppo di voci duplicate.
+// Regola: valore più frequente. Tie-break: vince il livello PIÙ BASSO
+// (A1 < A2 < B1 < B2 < C1 < C2). Le voci con livello vuoto non votano.
+function scegliLivelloCanonico(voci) {
+  const conteggi = new Map();
+  voci.forEach(v => {
+    const l = (v.livello || '').trim();
+    if (!l) return;
+    conteggi.set(l, (conteggi.get(l) || 0) + 1);
+  });
+  if (!conteggi.size) return null;
+
+  let maxCount = 0;
+  conteggi.forEach(c => { if (c > maxCount) maxCount = c; });
+  const candidati = [...conteggi.entries()].filter(([,c]) => c === maxCount).map(([l]) => l);
+
+  if (candidati.length === 1) return candidati[0];
+
+  // Tie-break: livello più basso. Ordine canonico CEFR.
+  const ORDINE = ['A1','A2','B1','B2','C1','C2'];
+  candidati.sort((a, b) => {
+    const ia = ORDINE.indexOf(a); const ib = ORDINE.indexOf(b);
+    // Livelli non standard finiscono in coda mantenendo ordine alfabetico
+    if (ia === -1 && ib === -1) return a.localeCompare(b);
+    if (ia === -1) return 1;
+    if (ib === -1) return -1;
+    return ia - ib;
+  });
+  return candidati[0];
+}
+
+// Dedup automatico: per ogni gruppo di duplicati SENZA conflitti reali sui campi
+// lingua, fonde tutto in un'unica voce. Tema e livello sono SEMPRE unificati per
+// maggioranza (con i tie-break sopra), anche se la voce-leader aveva valori diversi.
+// I gruppi con conflitti veri sui campi lingua restano invariati.
+function dedupaAutomatico() {
+  const groups = trovaDuplicati();
+  if (!groups.length) {
+    alert('✅ Nessun duplicato da dedupare.');
+    return;
+  }
+
+  // Per ogni gruppo, calcola se è fondibile automaticamente
+  // (analizzaConflitti già esclude tema e livello, quindi conflitti = solo campi lingua)
+  const fondibili = groups.filter(g => analizzaConflitti(g.indici).length === 0);
+  const conConflitti = groups.length - fondibili.length;
+
+  if (!fondibili.length) {
+    alert(`Nessun gruppo è fondibile automaticamente.\n\n${conConflitti} gruppi hanno conflitti reali sui campi lingua e vanno gestiti a mano.`);
+    return;
+  }
+
+  let msg = `Fondere automaticamente ${fondibili.length} grupp${fondibili.length===1?'o':'i'} di duplicati?\n\n`;
+  msg += `Per ogni gruppo:\n`;
+  msg += `  • viene tenuta la voce più completa (più traduzioni)\n`;
+  msg += `  • i campi lingua non vuoti delle altre vengono copiati in essa\n`;
+  msg += `  • tema e livello vengono unificati per maggioranza fra le voci del gruppo\n\n`;
+  if (conConflitti > 0) {
+    msg += `⚠️ ${conConflitti} gruppo/i con conflitti reali sui campi lingua NON verranno toccati.\n\n`;
+  }
+  msg += `Ricorda di salvare con ☁️ dopo.`;
+  if (!confirm(msg)) return;
+
+  let fusi = 0;
+  fondibili.forEach(g => {
+    const voci = g.indici.map(i => vocabolario[i]);
+
+    // Scegli la voce-leader: quella con punteggio di completezza più alto.
+    let best = voci[0];
+    let bestScore = punteggioCompletezza(best);
+    for (let i = 1; i < voci.length; i++) {
+      const s = punteggioCompletezza(voci[i]);
+      if (s > bestScore) { best = voci[i]; bestScore = s; }
+    }
+
+    // Calcola tema e livello canonici PRIMA di fondere (così la maggioranza
+    // si basa su tutte le voci originali, non sulla leader già modificata).
+    const temaCanonico = scegliTemaCanonico(voci);
+    const livelloCanonico = scegliLivelloCanonico(voci);
+
+    // Fondi i campi lingua delle altre voci nella leader (solo se vuoti nella leader)
+    voci.forEach(v => {
+      if (v === best) return;
+      Object.keys(v).forEach(k => {
+        if (k === 'it') return;
+        if (k === 'tema' || k === 'livello') return; // gestiti a parte
+        const valFrom = v[k];
+        const valTo = best[k];
+        const haContenutoFrom = valFrom !== undefined && valFrom !== null && String(valFrom).trim() !== '';
+        const haContenutoTo = valTo !== undefined && valTo !== null && String(valTo).trim() !== '';
+        if (haContenutoFrom && !haContenutoTo) {
+          best[k] = valFrom;
+        }
+      });
+      const idx = vocabolario.indexOf(v);
+      if (idx >= 0) vocabolario.splice(idx, 1);
+    });
+
+    // Applica tema/livello canonici alla leader (sovrascrive sempre, se non null)
+    if (temaCanonico !== null) best.tema = temaCanonico;
+    if (livelloCanonico !== null) best.livello = livelloCanonico;
+    // Se erano null (nessuna voce del gruppo aveva un valore), restano vuoti:
+    // l'utente potrà riempirli col pulsante "✨ Completa con AI".
+
+    if (!newKeys.has(rowKey(best))) modifiedKeys.add(rowKey(best));
+    fusi++;
+  });
+
+  popolaTemiSelect();
+  setHelp(`🧹 Dedup automatico: ${fusi} gruppi fusi. ${conConflitti>0?conConflitti+' con conflitti restano da gestire a mano. ':''}Ricorda di salvare con ☁️.`, 'success');
+  renderDuplicati();
+  render();
+}
+
+
+let _voicesReady = false;
+function _initVoices() {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.getVoices();
+  if ('onvoiceschanged' in window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = () => { _voicesReady = true; };
+  }
+  _voicesReady = window.speechSynthesis.getVoices().length > 0;
+}
+_initVoices();
+
+function _pickVoice(bcp47) {
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices.length) return null;
+  let v = voices.find(x => x.lang === bcp47);
+  if (v) return v;
+  const pref = bcp47.split('-')[0].toLowerCase();
+  return voices.find(x => (x.lang||'').toLowerCase().startsWith(pref)) || null;
+}
+
+function ttsRow(btn) {
+  const tr = btn.closest('tr');
+  const langInput = tr.querySelector('input[data-field="'+currentLang+'"]');
+  const pronInput = tr.querySelector('input[data-field="pron"]');
+  const testo = (pronInput && pronInput.value.trim()) || (langInput && visiblePart(langInput.value)) || '';
+  if (!testo) return;
+  if (!window.speechSynthesis) { alert('TTS non supportato'); return; }
+  window.speechSynthesis.cancel();
+  setTimeout(() => {
+    const u = new SpeechSynthesisUtterance(testo);
+    const langInfo = LINGUE.find(l => l.code === currentLang);
+    u.lang = langInfo ? langInfo.bcp47 : 'it-IT';
+    u.rate = 0.85;
+    const v = _pickVoice(u.lang);
+    if (v) u.voice = v;
+    window.speechSynthesis.speak(u);
+  }, 80);
+}
+
+// ==========================================================================
+// SERIALIZZAZIONE / SALVATAGGIO (invariato)
+// ==========================================================================
+const KEY_ORDER = ['tema','livello','it','en','fr','es','de','pt','ru','ca','sp','mn','cr','ge','ko','ar','zh','ja','ia','la','grc','pron'];
+
+function serializzaVoce(v) {
+  const parts = [];
+  const origKeys = originalKeysByEntry.get(rowKey(v)) || new Set();
+  KEY_ORDER.forEach(k => {
+    const val = v[k];
+    const hasValue = val !== undefined && val !== null && val !== '';
+    const wasOriginal = origKeys.has(k);
+    if (hasValue) {
+      parts.push(`${k}:${JSON.stringify(val)}`);
+    } else if (wasOriginal && val !== undefined) {
+      parts.push(`${k}:""`);
+    }
+  });
+  Object.keys(v).forEach(k => {
+    if (!KEY_ORDER.includes(k) && !k.startsWith('_') && v[k] !== undefined && v[k] !== '') {
+      parts.push(`${k}:${JSON.stringify(v[k])}`);
+    }
+  });
+  return '{ ' + parts.join(', ') + ' }';
+}
+
+function ricostruisciSorgente() {
+  if (!originalSourceFile) throw new Error('Sorgente originale non caricato');
+
+  const m = BLOCK_START_RE.exec(originalSourceFile);
+  if (!m) throw new Error('Marcatore "const VOCABOLARIO_DEFAULT = [" non trovato nel sorgente');
+  const start = m.index + m[0].length;
+
+  let depth = 1, i = start, inStr = false, esc = false, q = null;
+  while (i < originalSourceFile.length) {
+    const c = originalSourceFile[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (c === '\\') esc = true;
+      else if (c === q) inStr = false;
+    } else {
+      if (c === '"' || c === '\'') { inStr = true; q = c; }
+      else if (c === '[') depth++;
+      else if (c === ']') { depth--; if (depth === 0) break; }
+    }
+    i++;
+  }
+  if (depth !== 0) throw new Error('Parentesi non bilanciate, abort');
+
+  const lines = vocabolario.map(v => '      ' + serializzaVoce(v) + ',');
+  const newBody = '\n      // ── VOCABOLARIO (gestito tramite edit.html) ──────────────────────────\n' + lines.join('\n') + '\n    ';
+
+  return originalSourceFile.slice(0, start) + newBody + originalSourceFile.slice(i);
+}
+
+function scaricaCopia() {
+  let nuovoSrc;
+  try { nuovoSrc = ricostruisciSorgente(); }
+  catch (e) { alert('Errore: ' + e.message); return; }
+  const blob = new Blob([nuovoSrc], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'index.html';
+  a.click();
+}
+
+async function salvaSuGitHub() {
+  let token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!token) {
+    token = prompt('Incolla qui il tuo Personal Access Token GitHub.\nIl token deve avere permesso "Contents: Read and write" sulla repo "vecigagi".\nVerrà salvato solo in questo browser.');
+    if (!token) return;
+    token = token.trim();
+    if (!token.startsWith('github_pat_') && !token.startsWith('ghp_')) {
+      if (!confirm('Il token non sembra avere il formato GitHub atteso. Continuo lo stesso?')) return;
+    }
+    localStorage.setItem(GH_TOKEN_KEY, token);
+  }
+
+  const tot = vocabolario.length;
+  const modCount = modifiedKeys.size + newKeys.size;
+  if (!modCount) {
+    if (!confirm('Nessuna modifica registrata. Vuoi salvare comunque?')) return;
+  }
+  if (!confirm(`Stai per scrivere ${tot} voci su GitHub (modifiche/aggiunte: ${modCount}).\n\nLa repo "vecigagi/index.html" verrà sovrascritta.\n\nProcedere?`)) return;
+
+  const btn = document.getElementById('btn-gh-save');
+  const orig = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '⏳ Salvataggio...';
+  let success = false;
+
+  try {
+    const nuovoSrc = ricostruisciSorgente();
+
+    const apiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`;
+    const headers = {
+      'Authorization': 'Bearer ' + token,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28'
+    };
+
+    const getRes = await fetchTimeout(apiBase + '?ref=' + GH_BRANCH, { headers }, 20000);
+    if (!getRes.ok) {
+      if (getRes.status === 401) {
+        if (confirm('Token rifiutato (401). Cancello il token salvato?')) localStorage.removeItem(GH_TOKEN_KEY);
+      }
+      throw new Error('GET fallito (' + getRes.status + '): ' + await getRes.text());
+    }
+    const meta = await getRes.json();
+    const sha = meta.sha;
+
+    const bytes = new TextEncoder().encode(nuovoSrc);
+    let bin = '';
+    for (let j = 0; j < bytes.length; j++) bin += String.fromCharCode(bytes[j]);
+    const b64 = btoa(bin);
+
+    const putBody = {
+      message: `Aggiornamento vocabolario da edit.html (${tot} voci, ${modCount} modifiche)`,
+      content: b64,
+      branch: GH_BRANCH,
+      sha: sha
+    };
+
+    const putRes = await fetchTimeout(apiBase, {
+      method: 'PUT',
+      headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }),
+      body: JSON.stringify(putBody)
+    }, 60000);
+
+    if (!putRes.ok) {
+      if (putRes.status === 401) {
+        if (confirm('Token rifiutato (401). Cancello il token salvato?')) localStorage.removeItem(GH_TOKEN_KEY);
+      }
+      throw new Error('PUT fallito (' + putRes.status + '): ' + await putRes.text());
+    }
+
+    originalSourceFile = nuovoSrc;
+    originalSourceSha = (await putRes.json()).content.sha;
+    modifiedKeys.clear();
+    newKeys.clear();
+    success = true;
+
+    btn.textContent = '✅ Salvato!';
+    setHelp('✅ Salvataggio riuscito! GitHub Pages aggiornerà linguaequiz.com fra 1-2 minuti.', 'success');
+    setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 3000);
+    render();
+  } catch (err) {
+    console.error('[GH] Errore:', err);
+    alert('Errore salvataggio:\n\n' + err.message);
+  } finally {
+    if (!success) {
+      btn.textContent = orig;
+      btn.disabled = false;
+    }
+  }
+}
+
+function reimpostaToken() {
+  if (confirm('Cancellare il token GitHub salvato in questo browser?\nDovrai reincollarlo al prossimo salvataggio.')) {
+    localStorage.removeItem(GH_TOKEN_KEY);
+    alert('Token rimosso.');
+  }
+}
+</script>
+</body>
+</html>
