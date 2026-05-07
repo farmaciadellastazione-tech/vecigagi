@@ -1636,6 +1636,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO (gestito tramite edit.html) ──────────────────────────
+      { tema:"numeri", livello:"A1", it:"nove", sp:"néve", mn:"néve" },
       { tema:"cibo", livello:"A1", it:"burro", en:"butter", fr:"beurre", es:"mantequilla", de:"Butter", pt:"manteiga", ru:"масло", ca:"mantega", sp:"buro", mn:"buru", ko:"버터", la:"butyrum", grc:"βούτυρον" },
       { tema:"natura", livello:"A1", it:"collina", en:"hill", fr:"colline", es:"colina", de:"Hügel", pt:"colina", ru:"холм", ca:"turó", ko:"언덕", ar:"تلة", zh:"小山", ja:"丘", grc:"λόφος" },
       { tema:"salute", livello:"B1", it:"influenza", en:"influenza", fr:"influence", es:"gripe", de:"Influenza", pt:"gripe", ru:"грипп", ca:"grip", ko:"인플루엔자", ar:"إنفلونزا", zh:"流感", ja:"インフルエンザ", ia:"influenza", la:"influentia", grc:"ἐπινοία" },
@@ -1925,7 +1926,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"B1", it:"focaccia", en:"focaccia", fr:"focaccia", es:"focaccia", de:"Focaccia", pt:"focaccia", sp:"fugassa", cr:"Fugazìna", ko:"포카치아", ar:"فوكاتشيا", zh:"佛卡夏", ja:"フォカッチャ" },
       { tema:"corpo", livello:"A1", it:"orecchio|orecchia", en:"ear", fr:"oreille", es:"oreja", de:"Ohr", pt:"ouvido", ru:"ухо", ca:"orella", sp:"oecia", ko:"귀", ar:"أذن", zh:"耳朵", ja:"耳" },
       { tema:"salute", livello:"B1", it:"farmaco", en:"medicine", fr:"médicament", es:"medicamento", de:"Medikament", pt:"medicamento", ru:"лекарство", ca:"medicament|fàrmac", ko:"약", ar:"دواء", zh:"药", ja:"薬" },
-      { tema:"salute", livello:"B1", it:"cerotto", en:"plaster", fr:"pansement", es:"tirita", de:"Pflaster", pt:"curativo", sp:"seòto", ko:"반창고", ar:"لاصق طبي", zh:"创可贴", ja:"絆創膏" },
+      { tema:"salute", livello:"B1", it:"cerotto", en:"plaster", fr:"pansement", es:"tirita", de:"Pflaster", pt:"curativo", sp:"seòto", mn:"seotu", ko:"반창고", ar:"لاصق طبي", zh:"创可贴", ja:"絆創膏" },
       { tema:"salute", livello:"B1", it:"crampo", en:"cramp", fr:"crampe", es:"calambre", de:"Krampf", pt:"cãibra|caibra", sp:"sgranfio, granfio", ko:"경련", ar:"تشنج", zh:"抽筋", ja:"けいれん" },
       { tema:"salute", livello:"B2", it:"pressione", en:"blood pressure", fr:"tension", es:"presión", de:"Blutdruck", pt:"pressão|pressao", ko:"혈압", ar:"ضغط الدم", zh:"血压", ja:"血圧", ia:"pression" },
       { tema:"salute", livello:"B2", it:"diabete", en:"diabetes", fr:"diabète", es:"diabetes", de:"Diabetes", pt:"diabetes", ko:"당뇨병", ar:"السكري", zh:"糖尿病", ja:"糖尿病", ia:"diabete" },
@@ -1997,7 +1998,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A1", it:"piccolo", en:"small", fr:"petit", es:"pequeño", de:"klein", pt:"pequeno", ru:"маленький", ca:"petit", sp:"pecenìn", ko:"작은", ar:"صغير", zh:"小", ja:"小さい", ia:"parve", la:"parvus", grc:"μικρός" },
       { tema:"aggettivi", livello:"A2", it:"bello|bella", en:"beautiful", fr:"beau", es:"bello", de:"schön", pt:"bonito", ru:"красивый", ca:"bonic|bell", sp:"bèo| bèlo|bèla", mn:"belu|bela", ko:"아름다운", ar:"جميل", zh:"美丽", ja:"美しい", ia:"belle", la:"pulcher", grc:"καλός" },
       { tema:"aggettivi", livello:"A1", it:"brutto", en:"ugly", fr:"laid", es:"feo", de:"hässlich", pt:"feio", ru:"некрасивый|некрасиво", ca:"lleig", sp:"bruto", mn:"bruttu", ko:"못생긴", ar:"قبيح", zh:"丑", ja:"醜い", ia:"fede", la:"turpis", grc:"αἰσχρός" },
-      { tema:"aggettivi", livello:"A1", it:"libero", en:"free", fr:"libre", es:"libre", de:"frei", pt:"livre", ru:"свободный", ca:"lliure", sp:"quatro, quattro", mn:"", ko:"자유로운", ar:"حر", zh:"自由", ja:"自由な", ia:"libere", la:"liber", grc:"ἐλεύθερος" },
+      { tema:"aggettivi", livello:"A1", it:"libero", en:"free", fr:"libre", es:"libre", de:"frei", pt:"livre", ru:"свободный", ca:"lliure", sp:"quaatro/quatro", mn:"quatru", ko:"자유로운", ar:"حر", zh:"自由", ja:"自由な", ia:"libere", la:"liber", grc:"ἐλεύθερος" },
       { tema:"aggettivi", livello:"A2", it:"saggio", en:"wise", fr:"sage", es:"sabio", de:"weise", pt:"sábio|sabio", ko:"현명한", ar:"حكيم", zh:"聪明", ja:"賢い", ia:"sage", la:"sapiens", grc:"σοφός" },
       { tema:"aggettivi", livello:"A2", it:"giusto", en:"just", fr:"juste", es:"justo", de:"gerecht", pt:"justo", ru:"правильный", ca:"correcte|just", sp:"zigoèla", mn:"", ko:"공정한", ar:"عادل", zh:"公正", ja:"正しい", ia:"juste", la:"iustus", grc:"δίκαιος" },
       { tema:"aggettivi", livello:"B1", it:"vero", en:"true", fr:"vrai", es:"verdadero", de:"wahr", pt:"verdadeiro", ru:"настоящий|правдивый", ca:"veritable|cert", ko:"진실된", ar:"حقيقي", zh:"真实", ja:"真実の", ia:"ver", la:"verus", grc:"ἀληθής" },
@@ -2035,15 +2036,15 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"citazioni", livello:"B2", it:"So di non sapere", la:"Scio me nescire", grc:"Οἶδα οὐκ εἰδώς" },
       { tema:"citazioni", livello:"B2", it:"Niente di nuovo sotto il sole", la:"Nihil novi sub sole", grc:"Οὐδὲν νέον ὑπὸ τὸν ἥλιον" },
       { tema:"citazioni", livello:"B2", it:"Carpe diem (cogli l'attimo)", la:"Carpe diem", grc:"Δρέπε τὴν ἡμέραν" },
-      { tema:"numeri", livello:"A1", it:"uno", en:"one", fr:"un", es:"uno", de:"ein|eins", pt:"um", ru:"один", ca:"un", sp:"ün", ko:"일", ar:"واحد", zh:"一", ja:"一", ia:"un|uno", la:"unus", grc:"εἷς" },
-      { tema:"numeri", livello:"A1", it:"due|2", en:"two", fr:"deux", es:"dos", de:"zwei", pt:"dois", ru:"два", ca:"dos", sp:"doi, doa", cr:"Do", ko:"이", ar:"اثنان", zh:"二", ja:"二", ia:"duo", la:"duo", grc:"δύο" },
-      { tema:"numeri", livello:"A1", it:"tre|3", en:"three", fr:"trois", es:"tres", de:"drei", pt:"três|tres", ru:"три", ca:"tres", sp:"trèi", cr:"Tre", ko:"삼", ar:"ثلاثة", zh:"三", ja:"三", ia:"tres", la:"tres", grc:"τρεῖς" },
+      { tema:"numeri", livello:"A1", it:"uno", en:"one", fr:"un", es:"uno", de:"ein|eins", pt:"um", ru:"один", ca:"un", sp:"ün", mn:"ün", ko:"일", ar:"واحد", zh:"一", ja:"一", ia:"un|uno", la:"unus", grc:"εἷς" },
+      { tema:"numeri", livello:"A1", it:"due|2", en:"two", fr:"deux", es:"dos", de:"zwei", pt:"dois", ru:"два", ca:"dos", sp:"doi, doa", mn:"dùi", cr:"Do", ko:"이", ar:"اثنان", zh:"二", ja:"二", ia:"duo", la:"duo", grc:"δύο" },
+      { tema:"numeri", livello:"A1", it:"tre|3", en:"three", fr:"trois", es:"tres", de:"drei", pt:"três|tres", ru:"три", ca:"tres", sp:"trèi", mn:"tree", cr:"Tre", ko:"삼", ar:"ثلاثة", zh:"三", ja:"三", ia:"tres", la:"tres", grc:"τρεῖς" },
       { tema:"numeri", livello:"A1", it:"quattro|4", en:"four", fr:"quatre", es:"cuatro", de:"vier", pt:"quatro", ru:"четыре", ca:"quatre", sp:"quatro, quattro", cr:"Quatr", ko:"사", ar:"أربعة", zh:"四", ja:"四", ia:"quatro", la:"quattuor" },
-      { tema:"numeri", livello:"A1", it:"cinque|5", en:"five", fr:"cinq", es:"cinco", de:"fünf", pt:"cinco", ru:"пять", ca:"cinc", sp:"sìnque", cr:"Zinqui", ko:"오", ar:"خمسة", zh:"五", ja:"五", ia:"cinque", la:"quinque", grc:"πέντε" },
-      { tema:"numeri", livello:"A1", it:"sei|6", en:"six", fr:"six", es:"seis", de:"sechs", pt:"seis", ru:"шесть", ca:"sis", sp:"sei", cr:"Se", ko:"육", ar:"ستة", zh:"六", ja:"六", ia:"sex", la:"sex", grc:"ἕξ" },
-      { tema:"numeri", livello:"A1", it:"sette|7", en:"seven", fr:"sept", es:"siete", de:"sieben", pt:"sete", ru:"семь", ca:"set", sp:"sete", mn:"zénaaa/zénaa", cr:"Séta", ko:"칠", ar:"سبعة", zh:"七", ja:"七", ia:"septe", la:"septem", grc:"ἑπτά" },
-      { tema:"numeri", livello:"A1", it:"otto", en:"eight", fr:"huit", es:"ocho", de:"acht", pt:"oito", ru:"восемь", ca:"vuit", sp:"òto", cr:"", ko:"팔", ar:"ثمانية", zh:"八", ja:"八", ia:"octo", la:"octo", grc:"ὀκτώ" },
-      { tema:"mesi", livello:"A1", it:"dieci|10", en:"ten", fr:"dix", es:"diez", de:"zehn", pt:"dez", ru:"десять", ca:"deu", sp:"déze", mn:"frévaa", cr:"Diezi", ko:"십", ar:"عشرة", zh:"十", ja:"十", ia:"dece", la:"decem", grc:"δέκα" },
+      { tema:"numeri", livello:"A1", it:"cinque|5", en:"five", fr:"cinq", es:"cinco", de:"fünf", pt:"cinco", ru:"пять", ca:"cinc", sp:"sìnque", mn:"sinque", cr:"Zinqui", ko:"오", ar:"خمسة", zh:"五", ja:"五", ia:"cinque", la:"quinque", grc:"πέντε" },
+      { tema:"numeri", livello:"A1", it:"sei|6", en:"six", fr:"six", es:"seis", de:"sechs", pt:"seis", ru:"шесть", ca:"sis", sp:"sei", mn:"sciei", cr:"Se", ko:"육", ar:"ستة", zh:"六", ja:"六", ia:"sex", la:"sex", grc:"ἕξ" },
+      { tema:"numeri", livello:"A1", it:"sette|7", en:"seven", fr:"sept", es:"siete", de:"sieben", pt:"sete", ru:"семь", ca:"set", sp:"sete", mn:"sete", cr:"Séta", ko:"칠", ar:"سبعة", zh:"七", ja:"七", ia:"septe", la:"septem", grc:"ἑπτά" },
+      { tema:"numeri", livello:"A1", it:"otto", en:"eight", fr:"huit", es:"ocho", de:"acht", pt:"oito", ru:"восемь", ca:"vuit", sp:"òto", mn:"otu", cr:"", ko:"팔", ar:"ثمانية", zh:"八", ja:"八", ia:"octo", la:"octo", grc:"ὀκτώ" },
+      { tema:"mesi", livello:"A1", it:"dieci|10", en:"ten", fr:"dix", es:"diez", de:"zehn", pt:"dez", ru:"десять", ca:"deu", sp:"déze", mn:"dièze", cr:"Diezi", ko:"십", ar:"عشرة", zh:"十", ja:"十", ia:"dece", la:"decem", grc:"δέκα" },
       { tema:"numeri", livello:"A2", it:"mille", en:"one thousand|thousand", fr:"mille", es:"mil", de:"tausend", pt:"mil", ru:"тысяча", ca:"mil", sp:"mile", ko:"천", ar:"ألف", zh:"千", ja:"千", ia:"mille", la:"mille", grc:"χίλιοι" },
       { tema:"cibo", livello:"A2", it:"carne", en:"meat", fr:"viande", es:"carne", de:"Fleisch", pt:"carne", ru:"мясо", ca:"carn", sp:"", mn:"carna", cr:"", ko:"고기", ar:"لحم", zh:"肉", ja:"肉", ia:"carne" },
       { tema:"cibo", livello:"A1", it:"pasta", en:"pasta", fr:"pâtes", es:"pasta", de:"Nudeln", pt:"massa", ru:"паста|макароны", ca:"pasta", sp:"", cr:"", ko:"파스타", ar:"معكرونة", zh:"意面", ja:"パスタ", ia:"pasta" },
@@ -2106,7 +2107,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"sciogliere", en:"dissolve", fr:"dissoudre", es:"disolver", de:"auflösen", pt:"dissolver", sp:"siòlie", ia:"disfacer" },
       { tema:"dialetti", livello:"A2", it:"presto", en:"soon", fr:"bientôt", es:"pronto", de:"bald", pt:"cedo", sp:"fito", ia:"presto" },
       { tema:"dialetti", livello:"A1", it:"accanto", en:"next to", fr:"à côté", es:"al lado", de:"daneben", pt:"ao lado", sp:"de costa", mn:"acantu", ia:"apud" },
-      { tema:"numeri", livello:"A2", it:"cinquanta|50", en:"fifty", fr:"cinquante", es:"cincuenta", de:"fünfzig", pt:"cinquenta", ru:"пятьдесят", ca:"cinquanta", cr:"Zinquanta", ko:"오십", ar:"خمسون", zh:"五十", ja:"五十" },
+      { tema:"numeri", livello:"A2", it:"cinquanta|50", en:"fifty", fr:"cinquante", es:"cincuenta", de:"fünfzig", pt:"cinquenta", ru:"пятьдесят", ca:"cinquanta", sp:"sinquanta", mn:"sinquanta", cr:"Zinquanta", ko:"오십", ar:"خمسون", zh:"五十", ja:"五十" },
       { tema:"numeri", livello:"A1", it:"cento|100", en:"one hundred|hundred", fr:"cent", es:"cien", de:"hundert", pt:"cem", ru:"сто", ca:"cent", sp:"sénto", ko:"백", ar:"مئة", zh:"一百|百", ja:"百" },
       { tema:"numeri", livello:"A2", it:"secondo", en:"second", fr:"deuxième", es:"segundo", de:"zweite", pt:"segundo", ko:"두 번째", ar:"الثاني", zh:"第二", ja:"二番目", ia:"secunde" },
       { tema:"vestiti", livello:"A1", it:"terzo", en:"third", fr:"troisième", es:"tercero", de:"dritte", pt:"terceiro", ru:"небо", ca:"cel", cr:"", ko:"세 번째", ar:"الثالث", zh:"第三", ja:"三番目", ia:"tertie", la:"lacerna", grc:"ἀντίλυπος" },
@@ -2516,7 +2517,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A1", it:"tavola", en:"table", fr:"table", es:"mesa", de:"Tisch", pt:"mesa", ru:"стол|трапеза", ca:"taula", sp:"tòa/toa", la:"mensa", grc:"τράπεζα" },
       { tema:"dialetti", livello:"A2", it:"tavolata", en:"dinner party", fr:"tablée", es:"tablada", de:"Tafelrunde", pt:"tablada", sp:"toà/toa", ia:"tabulata" },
       { tema:"dialetti", livello:"A2", it:"sugo di carne", en:"meat sauce", fr:"sauce de viande", es:"salsa de carne", de:"Fleischsoße", pt:"molho de carne", sp:"tóco" },
-      { tema:"dialetti", livello:"A1", it:"undici", en:"eleven", fr:"onze", es:"once", de:"elf", pt:"onze", ru:"одиннадцать", ca:"onze", sp:"ünze", mn:"zetu/zètu" },
+      { tema:"dialetti", livello:"A1", it:"undici", en:"eleven", fr:"onze", es:"once", de:"elf", pt:"onze", ru:"одиннадцать", ca:"onze", sp:"ünze", mn:"ünze" },
       { tema:"dialetti", livello:"A2", it:"piatto fondo", en:"soup plate", fr:"assiette creuse", es:"plato hondo", de:"Suppenteller", pt:"prato fundo", sp:"zàta" },
       { tema:"verbi", livello:"A2", it:"conoscere", sp:"cognosse", ia:"cognoscer" },
       { tema:"verbi", livello:"A2", it:"cuocere", en:"cook", fr:"cuire", sp:"chése" },
@@ -2844,7 +2845,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 36;
+const VOC_VERSION = 37;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
@@ -8698,7 +8699,6 @@ function SchermataSceltaMultipla({
   aiSettings,
   stats,
   setStats,
-  t,
   onHome
 }) {
   const SK_SM = "qml_v10_sm"; // {nScelte, nDom, corrette}
@@ -8767,11 +8767,11 @@ function SchermataSceltaMultipla({
     const nuoveCarte = [];
     for (let i = 0; i < nDomReali; i++) {
       const entry = shuffled[i];
-      const corretta = formaDisplay(entry[lA.codice], lA.codice);
+      const corretta = soloVisibile(entry[lA.codice]);
       // Distrattori: altre entry con traduzione diversa (e non vuota — già garantito da `cand`)
-      const altri = cand.filter(e => formaDisplay(e[lA.codice], lA.codice) !== corretta).sort(() => Math.random() - 0.5).slice(0, st.nScelte - 1);
+      const altri = cand.filter(e => soloVisibile(e[lA.codice]) !== corretta).sort(() => Math.random() - 0.5).slice(0, st.nScelte - 1);
       if (altri.length < st.nScelte - 1) continue; // non abbastanza distrattori unici
-      const scelte = [corretta, ...altri.map(e => formaDisplay(e[lA.codice], lA.codice))].sort(() => Math.random() - 0.5);
+      const scelte = [corretta, ...altri.map(e => soloVisibile(e[lA.codice]))].sort(() => Math.random() - 0.5);
       nuoveCarte.push({
         entry,
         linguaPrompt: lP,
@@ -8875,15 +8875,6 @@ function SchermataSceltaMultipla({
     setStato(nuovoStato);
     generaCarte(nuovoStato);
   }
-  // Enter: avanza se risposta già data
-  useEffect(() => {
-    function handleKey(e) {
-      if (e.key !== "Enter") return;
-      if (risposta) avanti();
-    }
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [risposta, indice, carte.length]);
   if (!carte.length) return /*#__PURE__*/React.createElement("div", {
     className: "min-h-screen bg-black flex items-center justify-center p-6"
   }, erroreSetup ? /*#__PURE__*/React.createElement("div", {
@@ -8917,7 +8908,7 @@ function SchermataSceltaMultipla({
     className: "text-center"
   }, /*#__PURE__*/React.createElement("span", {
     className: "text-zinc-600 text-xs"
-  }, "\uD83C\uDFAF ", t.sceltamultipla), /*#__PURE__*/React.createElement("div", {
+  }, "\uD83C\uDFAF Scelta multipla"), /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-zinc-700"
   }, stato.nScelte, " scelte \xB7 ", stato.nDom, " domande")), /*#__PURE__*/React.createElement("span", {
     className: "text-zinc-500 text-sm"
@@ -10354,7 +10345,6 @@ function App() {
     aiSettings: aiSettings,
     stats: stats,
     setStats: setStats,
-    t: t,
     onHome: () => setSchermata("home")
   });
   if (schermata === "fraseLibera") return /*#__PURE__*/React.createElement(SchermataFraseLibera, {
