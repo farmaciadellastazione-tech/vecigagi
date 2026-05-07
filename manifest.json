@@ -1,0 +1,25 @@
+{
+  "name": "LinguaeQuiz",
+  "short_name": "LinguaeQuiz",
+  "description": "Free multilingual vocabulary quiz with spaced repetition. Practice 15+ languages.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#0a1828",
+  "orientation": "portrait",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
