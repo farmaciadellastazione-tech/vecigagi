@@ -1636,6 +1636,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO (gestito tramite edit.html) ──────────────────────────
+      { tema:"tempo", livello:"A1", it:"Natale", sp:"Nadae|Nadà", mn:"Nadaa" },
+      { tema:"comunicazione", livello:"A1", it:"voce", mn:"guza" },
       { tema:"natura", livello:"B1", it:"milione|un milione", mn:"migliun|un migliun" },
       { tema:"numeri", livello:"B1", it:"centomila", sp:"sentomila", mn:"sentumila" },
       { tema:"numeri", livello:"B1", it:"diecimila", sp:"dézemila", mn:"dièzemila" },
@@ -1711,7 +1713,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A2", it:"tappeto/moquette", en:"carpet", fr:"tapis|moquette", es:"alfombra|moqueta", de:"Teppich", pt:"tapete|alcatifa", ru:"ковёр", ca:"catifa" },
       { tema:"mestieri", livello:"B1", it:"farmacista", en:"chemist", fr:"pharmacien", es:"farmacéutico", de:"Apotheker", pt:"farmacêutico", ru:"фармацевт|аптекарь", ca:"farmacèutic", sp:"spessiào" },
       { tema:"dialogo", livello:"B1", it:"chimica", en:"chemistry", fr:"chimie", es:"química", de:"Chemie", pt:"química", ru:"химия", ca:"química" },
-      { tema:"famiglia", livello:"A2", it:"ciliegia", en:"cherry", fr:"cerise", es:"cereza", de:"Kirsche", pt:"cereja", ru:"вишня|черешня", ca:"cirera", sp:"siéza", ia:"asino" },
+      { tema:"famiglia", livello:"A2", it:"ciliegia", en:"cherry", fr:"cerise", es:"cereza", de:"Kirsche", pt:"cereja", ru:"вишня|черешня", ca:"cirera", sp:"siéza", mn:"seierza", ia:"asino" },
       { tema:"aggettivi", livello:"A2", it:"comodo", en:"comfortable", fr:"confortable", es:"cómodo", de:"bequem", pt:"confortável", ru:"удобный", ca:"còmode" },
       { tema:"luoghi", livello:"A2", it:"angolo", en:"corner", fr:"coin|angle", es:"esquina|rincón", de:"Ecke", pt:"canto|esquina", ru:"угол", ca:"racó|cantonada", sp:"canto", mn:"cantu" },
       { tema:"aggettivi", livello:"B1", it:"affollato", en:"crowded", fr:"bondé", es:"abarrotado", de:"überfüllt", pt:"lotado", ru:"переполненный", ca:"ple de gent" },
@@ -1954,7 +1956,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"vestiti", livello:"A1", it:"scarpe", en:"shoes", fr:"chaussures", es:"zapatos", de:"Schuhe", pt:"sapatos", ru:"туфли", ca:"sabates", ko:"신발", ar:"حذاء", zh:"鞋子", ja:"靴" },
       { tema:"vestiti", livello:"A2", it:"gonna", en:"skirt", fr:"jupe", es:"falda", de:"Rock", pt:"saia", ru:"юбка", ca:"faldilla", sp:"braghe", cr:"Gonèla", ko:"치마", ar:"تنورة", zh:"裙子", ja:"スカート", ia:"gonna" },
       { tema:"vestiti", livello:"A2", it:"cappotto", en:"coat", fr:"manteau", es:"abrigo", de:"Mantel", pt:"casaco", ru:"пальто", ca:"abric", ko:"코트", ar:"معطف", zh:"外套", ja:"コート", ia:"cappotto" },
-      { tema:"dialogo", livello:"A1", it:"grembiule", en:"apron", fr:"tablier", es:"delantal", de:"Schürze", pt:"avental", ru:"труба", ca:"trompeta", sp:"scosà", cr:"Grembiàle", ko:"앞치마", ar:"مريلة", zh:"围裙", ja:"エプロン", ia:"gremial" },
+      { tema:"dialogo", livello:"A1", it:"grembiule", en:"apron", fr:"tablier", es:"delantal", de:"Schürze", pt:"avental", ru:"труба", ca:"trompeta", sp:"scosà", mn:"scozà", cr:"Grembiàle", ko:"앞치마", ar:"مريلة", zh:"围裙", ja:"エプロン", ia:"gremial" },
       { tema:"casa", livello:"A1", it:"finestra", en:"window", fr:"fenêtre", es:"ventana", de:"Fenster", pt:"janela", ru:"окно", ca:"finestra", sp:"barcòn", ko:"창문", ar:"نافذة", zh:"窗户", ja:"窓", ia:"tapete", la:"tapete", grc:"τάπης" },
       { tema:"luoghi", livello:"A1", it:"cucchiaio", en:"spoon", fr:"cuillère", es:"cuchara", de:"Löffel", pt:"colher", sp:"cüciao", cr:"Cuciàr", ko:"숟가락", ar:"ملعقة", zh:"勺子", ja:"スプーン", ia:"coclear", la:"Italia", grc:"Ἰταλία" },
       { tema:"casa", livello:"A1", it:"coltello", en:"knife", fr:"couteau", es:"cuchillo", de:"Messer", pt:"faca", ca:"ganivet", sp:"cotèo", cr:"Cultèd", ko:"칼", ar:"سكين", zh:"刀", ja:"ナイフ", ia:"cultello", la:"Hispania", grc:"Ἱσπανία" },
@@ -2091,7 +2093,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"corpo", livello:"B1", it:"ombelico", en:"navel", fr:"nombril", es:"ombligo", de:"Nabel", pt:"umbigo", sp:"lopìn| onbrisàlo" },
       { tema:"corpo", livello:"B1", it:"scapola", en:"shoulder blade", fr:"omoplate", es:"escápula", de:"Schulterblatt", pt:"escápula|escapula", sp:"paéta da sc-cena/paéta da s'cena", ia:"scapula" },
       { tema:"corpo", livello:"B1", it:"colonna vertebrale", en:"spine", fr:"colonne vertébrale", es:"columna vertebral", de:"Wirbelsäule", pt:"coluna vertebral", ca:"columna vertebral", sp:"filon dea schena", zh:"脊柱", ja:"脊柱" },
-      { tema:"corpo", livello:"B1", it:"grembo", en:"lap", fr:"giron", es:"regazo", de:"Schoß", pt:"colo", ru:"колени (лоно)", ca:"falda|giron", sp:"scòso", ia:"gremio" },
+      { tema:"corpo", livello:"B1", it:"grembo", en:"lap", fr:"giron", es:"regazo", de:"Schoß", pt:"colo", ru:"колени (лоно)", ca:"falda|giron", sp:"scòso", mn:"scozu", ia:"gremio" },
       { tema:"corpo", livello:"B1", it:"zigomo", en:"cheekbone", fr:"pommette", es:"pómulo", de:"Wangenknochen", pt:"maçã do rosto|maca do rosto", sp:"pométi", ia:"zygoma" },
       { tema:"salute", livello:"A2", it:"tosse secca", en:"dry cough", fr:"toux sèche", es:"tos seca", de:"trockener Husten", pt:"tosse seca", sp:"bèssega" },
       { tema:"salute", livello:"B1", it:"dissenteria", en:"dysentery", fr:"dysenterie", es:"disentería", de:"Ruhr", pt:"disenteria", sp:"caghéta" },
@@ -2244,10 +2246,10 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mesi", livello:"A1", it:"ottobre", en:"October", fr:"octobre", es:"octubre", de:"Oktober", pt:"outubro", ru:"ottobre", ca:"octubre", sp:"otobre", mn:"utuvéu", ko:"10월", ar:"أكتوبر", zh:"十月", ja:"10月", ia:"octobre", la:"October", grc:"Ὀκτώβριος" },
       { tema:"mesi", livello:"A1", it:"novembre", en:"November", fr:"novembre", es:"noviembre", de:"November", pt:"novembro", ru:"novembre", ca:"novembre", sp:"novenbre", mn:"nuembre", cr:"", ko:"11월", ar:"نوفمبر", zh:"十一月", ja:"11月", ia:"novembre", la:"November", grc:"Νοέμβριος" },
       { tema:"mesi", livello:"A1", it:"dicembre", en:"December", fr:"décembre", es:"diciembre", de:"Dezember", pt:"dezembro", ru:"dicembre", ca:"desembre", sp:"dezenbre", mn:"dezembre", cr:"Dizembr", ko:"12월", ar:"ديسمبر", zh:"十二月", ja:"12月", ia:"decembre", la:"December", grc:"Δεκέμβριος" },
-      { tema:"natura", livello:"A1", it:"primavera", en:"spring", fr:"printemps", es:"primavera", de:"Frühling", pt:"primavera", ru:"весна", ca:"primavera", cr:"primavera", ko:"봄", ar:"ربيع", zh:"春天", ja:"春", ia:"primavera", la:"ver", grc:"ἔαρ" },
-      { tema:"natura", livello:"A1", it:"estate", en:"summer", fr:"été", es:"verano", de:"Sommer", pt:"verão|verao", ru:"лето", ca:"estiu", sp:"nose", cr:"", ko:"여름", ar:"صيف", zh:"夏天", ja:"夏", ia:"estate", la:"aestas", grc:"θέρος" },
-      { tema:"tempo", livello:"A1", it:"autunno", en:"autumn", fr:"automne", es:"otoño", de:"Herbst", pt:"outono", ru:"осень", ca:"tardor", sp:"chèe", mn:"autunu", cr:"autùn", ko:"가을", ar:"خريف", zh:"秋天", ja:"秋", ia:"autumno", la:"autumnus", grc:"φθινόπωρον" },
-      { tema:"natura", livello:"A1", it:"inverno", en:"winter", fr:"hiver", es:"invierno", de:"Winter", pt:"inverno", ru:"inverno", ca:"hivern", cr:"nnvern/nvern", ko:"겨울", ar:"شتاء", zh:"冬天", ja:"冬", ia:"hiberno", la:"hiems", grc:"χειμών" },
+      { tema:"natura", livello:"A1", it:"primavera", en:"spring", fr:"printemps", es:"primavera", de:"Frühling", pt:"primavera", ru:"весна", ca:"primavera", sp:"primavea", mn:"primavea", cr:"primavera", ko:"봄", ar:"ربيع", zh:"春天", ja:"春", ia:"primavera", la:"ver", grc:"ἔαρ" },
+      { tema:"natura", livello:"A1", it:"estate", en:"summer", fr:"été", es:"verano", de:"Sommer", pt:"verão|verao", ru:"лето", ca:"estiu", sp:"estade", mn:"estada", cr:"", ko:"여름", ar:"صيف", zh:"夏天", ja:"夏", ia:"estate", la:"aestas", grc:"θέρος" },
+      { tema:"tempo", livello:"A1", it:"autunno", en:"autumn", fr:"automne", es:"otoño", de:"Herbst", pt:"outono", ru:"осень", ca:"tardor", sp:"autuno", mn:"autunu", cr:"autùn", ko:"가을", ar:"خريف", zh:"秋天", ja:"秋", ia:"autumno", la:"autumnus", grc:"φθινόπωρον" },
+      { tema:"natura", livello:"A1", it:"inverno", en:"winter", fr:"hiver", es:"invierno", de:"Winter", pt:"inverno", ru:"inverno", ca:"hivern", sp:"inverno", mn:"invernu", cr:"nnvern/nvern", ko:"겨울", ar:"شتاء", zh:"冬天", ja:"冬", ia:"hiberno", la:"hiems", grc:"χειμών" },
       { tema:"animali", livello:"A1", it:"telefono", en:"phone", fr:"téléphone", es:"teléfono", de:"Telefon", pt:"telefone", ru:"телефон", ca:"telèfon", sp:"crava", ko:"전화", ar:"هاتف", zh:"电话", ja:"電話", ia:"telephono", la:"telephonium", grc:"τηλέφωνο" },
       { tema:"casa", livello:"A1", it:"computer", en:"computer", fr:"ordinateur", es:"ordenador", de:"Computer", pt:"computador", ru:"компьютер", ca:"ordinador", sp:"", mn:"", ko:"컴퓨터", ar:"حاسوب", zh:"电脑", ja:"パソコン", ia:"computator", la:"computatrum", grc:"ὑπολογιστής" },
       { tema:"luoghi", livello:"A2", it:"messaggio", en:"message", fr:"message", es:"mensaje", de:"Nachricht", pt:"mensagem", ru:"сообщение", ca:"missatge", ko:"메시지", ar:"رسالة", zh:"消息", ja:"メッセージ", ia:"message", la:"nuntius", grc:"μήνυμα" },
@@ -2610,7 +2612,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"famiglia", livello:"A2", it:"figlio", en:"son", fr:"fils", es:"hijo", de:"Sohn", pt:"filho", ru:"сын", ca:"fill", sp:"figio", cr:"", ko:"아들", ar:"ابن", zh:"儿子", ja:"息子", ia:"filio", la:"filius", grc:"υἱός" },
       { tema:"famiglia", livello:"A2", it:"cugino", en:"cousin", fr:"cousin", es:"primo", de:"Cousin", pt:"primo", ru:"двоюродный брат", ca:"cosí", ko:"사촌", ar:"ابن عم", zh:"表兄弟", ja:"いとこ", ia:"cousino", la:"patrueles", grc:"ξάδελφος" },
       { tema:"famiglia", livello:"A2", it:"zia", en:"aunt", fr:"tante", es:"tía", de:"Tante", pt:"tia", ru:"тётя", ca:"tia", sp:"séa|làla", cr:"", ko:"이모", ar:"عمة", zh:"", ja:"", ia:"tante", la:"amita", grc:"θεία" },
-      { tema:"giorni", livello:"A1", it:"testa", en:"head", fr:"tête", es:"cabeza", de:"Kopf", pt:"cabeça|cabeca", ru:"голова", ca:"cap", sp:"figio", mn:"sbraitaaa/sbraitaa", cr:"", ko:"머리", ar:"رأس", zh:"头", ja:"頭", ia:"testa", la:"caput", grc:"κεφαλή" },
+      { tema:"giorni", livello:"A1", it:"testa", en:"head", fr:"tête", es:"cabeza", de:"Kopf", pt:"cabeça|cabeca", ru:"голова", ca:"cap", sp:"testa", mn:"testa", cr:"", ko:"머리", ar:"رأس", zh:"头", ja:"頭", ia:"testa", la:"caput", grc:"κεφαλή" },
       { tema:"corpo", livello:"A1", it:"naso", en:"nose", fr:"nez", es:"nariz", de:"Nase", pt:"nariz", ru:"нос", ca:"nas", ko:"코", ar:"أنف", zh:"鼻子", ja:"鼻", ia:"naso", la:"nasus", grc:"ῥίς" },
       { tema:"farmaci", livello:"A1", it:"dito", en:"finger", fr:"doigt", es:"dedo", de:"Finger", pt:"dedo", ru:"палец", ca:"dit", sp:"dido, didi, dida, dite, dide", ko:"손가락", ar:"إصبع", zh:"手指", ja:"指", ia:"digito", la:"digitus", grc:"δάκτυλος" },
       { tema:"corpo", livello:"A2", it:"cuore", en:"heart", fr:"cœur", es:"corazón", de:"Herz", pt:"coração|coracao", ru:"сердце", ca:"cor", sp:"chèe", ko:"심장", ar:"قلب", zh:"心脏", ja:"心臓", ia:"corde", la:"cor", grc:"καρδία" },
@@ -2638,7 +2640,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"arrivare in ritardo", en:"run late", fr:"être en retard", es:"llegar tarde", de:"zu spät sein", pt:"atrasar" },
       { tema:"numeri", livello:"A1", it:"credere in te", en:"believe you", fr:"te croire", es:"creer en ti", de:"dir glauben", pt:"acreditar em você|acreditar em voce", ru:"отвечать", ca:"respondre", cr:"" },
       { tema:"natura", livello:"A1", it:"portalo", en:"bring it", fr:"apporte-le", es:"tráelo", de:"bring es", pt:"traga isso", sp:"rondanìna", cr:"" },
-      { tema:"natura", livello:"A2", it:"prestare attenzione", en:"pay attention", fr:"faire attention", es:"prestar atención", de:"aufpassen", pt:"prestar atenção|prestar atencao", sp:"rama, ramo", cr:"" },
+      { tema:"natura", livello:"A2", it:"prestare attenzione", en:"pay attention", fr:"faire attention", es:"prestar atención", de:"aufpassen", pt:"prestar atenção|prestar atencao", sp:"", cr:"" },
       { tema:"dialogo", livello:"A1", it:"incontrarsi di nuovo", en:"meet again", fr:"se revoir", es:"volver a encontrarse", de:"sich wiedersehen", pt:"nos encontrarmos de novo", cr:"" },
       { tema:"dialogo", livello:"B1", it:"imparare in fretta", en:"learn fast", fr:"apprendre vite", es:"aprender rápido", de:"schnell lernen", pt:"aprender rápido|aprender rapido" },
       { tema:"dialogo", livello:"B1", it:"cambiare piani", en:"change plans", fr:"changer de plans", es:"cambiar planes", de:"Pläne ändern", pt:"mudar planos", sp:"" },
@@ -2862,7 +2864,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 38;
+const VOC_VERSION = 39;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
