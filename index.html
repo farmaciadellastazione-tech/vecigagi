@@ -1655,7 +1655,6 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO (gestito tramite edit.html) ──────────────────────────
       { tema:"cibo", livello:"A1", it:"burro", en:"butter", fr:"beurre", es:"mantequilla", de:"Butter", pt:"manteiga", ru:"масло", ca:"mantega", sp:"buro", mn:"buru", ko:"버터", la:"butyrum", grc:"βούτυρον" },
-      { tema:"aggettivi", livello:"A2", en:"funny", fr:"amusing", es:"divertido", de:"lustig", pt:"divertido", ca:"divertit", ia:"divertente", la:"iucundus", grc:"ἡδύς" },
       { tema:"natura", livello:"A1", it:"collina", en:"hill", fr:"colline", es:"colina", de:"Hügel", pt:"colina", ru:"холм", ca:"turó", ko:"언덕", ar:"تلة", zh:"小山", ja:"丘", grc:"λόφος" },
       { tema:"salute", livello:"B1", it:"influenza", en:"influenza", fr:"influence", es:"gripe", de:"Influenza", pt:"gripe", ru:"грипп", ca:"grip", ko:"인플루엔자", ar:"إنفلونزا", zh:"流感", ja:"インフルエンザ", ia:"influenza", la:"influentia", grc:"ἐπινοία" },
       { tema:"aggettivi", livello:"B1", it:"coraggioso", en:"brave", fr:"courageux", es:"valiente", de:"mutig", pt:"corajoso", ca:"valent" },
@@ -1926,7 +1925,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mestieri", livello:"B1", it:"macellaio", en:"butcher", fr:"boucher", es:"carnicero", de:"Metzger", pt:"açougueiro|acougueiro", sp:"maselào", ko:"정육점", ar:"جزار", zh:"屠夫", ja:"肉屋", ia:"macellero" },
       { tema:"mestieri", livello:"B1", it:"falegname", en:"carpenter", fr:"menuisier", es:"carpintero", de:"Tischler", pt:"marceneiro", sp:"bancaà", ko:"목수", ar:"نجار", zh:"木匠", ja:"大工" },
       { tema:"mestieri", livello:"B1", it:"pescatore", en:"fisherman", fr:"pêcheur", es:"pescador", de:"Fischer", pt:"pescador", sp:"pescadoe", ko:"어부", ar:"صياد", zh:"渔民", ja:"漁師" },
-      { tema:"salute", livello:"A1", it:"gatto", en:"cat", fr:"chat", es:"gato", de:"Katze", pt:"gato", ru:"кошка", ca:"gat", sp:"gato", mn:"gatu", cr:"pantafi", ko:"고양이", ar:"قطة", zh:"猫", ja:"猫" },
+      { tema:"salute", livello:"A1", it:"gatto", en:"cat", fr:"chat", es:"gato", de:"Katze", pt:"gato", ru:"кошка", ca:"gat", sp:"gato", mn:"gatu", cr:"", ko:"고양이", ar:"قطة", zh:"猫", ja:"猫" },
       { tema:"animali", livello:"A1", it:"cavallo", en:"horse", fr:"cheval", es:"caballo", de:"Pferd", pt:"cavalo", ru:"лошадь", ca:"cavall", sp:"cavalo", ko:"말", ar:"حصان", zh:"马", ja:"馬", ia:"cavallo" },
       { tema:"insulti", livello:"A2", it:"coniglio", en:"rabbit", fr:"lapin", es:"conejo", de:"Kaninchen", pt:"coelho", ru:"кролик", ca:"conill", sp:"conigio", mn:"gagiu", cr:"Cunìggi", ge:"cunìggio", ko:"토끼", ar:"أرنب", zh:"兔子", ja:"ウサギ" },
       { tema:"animali", livello:"A2", it:"gallina", en:"hen", fr:"poule", es:"gallina", de:"Huhn", pt:"galinha", sp:"gaìna", mn:"gagina", ge:"gàinn-a", ko:"닭", ar:"دجاجة", zh:"鸡", ja:"鶏", ia:"gallina" },
@@ -1968,17 +1967,17 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A1", it:"mangiare", en:"eat", fr:"manger", es:"comer", de:"essen", pt:"comer", ru:"есть|кушать", ca:"menjar", sp:"mangiae", cr:"Magnàr", ko:"먹다", ar:"يأكل", zh:"吃", ja:"食べる", ia:"parlar" },
       { tema:"verbi", livello:"A1", it:"ridere", en:"laugh", fr:"rire", es:"reír", de:"lachen", pt:"rir", ru:"смеяться", ca:"riure", sp:"arìdese", ge:"rî", ko:"웃다", ar:"يضحك", zh:"笑", ja:"笑う", ia:"rider" },
       { tema:"verbi", livello:"B1", it:"sognare", en:"dream", fr:"rêver", es:"soñar", de:"träumen", pt:"sonhar", sp:"asomiasse, somiasse", ko:"꿈꾸다", ar:"يحلم", zh:"做梦", ja:"夢を見る" },
-      { tema:"verbi", livello:"B1", it:"nascondere", en:"hide", fr:"cacher", es:"esconder", de:"verstecken", pt:"esconder", sp:"asconde", cr:"ablir", ge:"ascónde", ko:"숨기다", ar:"يخفي", zh:"藏", ja:"隠す", ia:"celar" },
+      { tema:"verbi", livello:"B1", it:"nascondere", en:"hide", fr:"cacher", es:"esconder", de:"verstecken", pt:"esconder", sp:"asconde", cr:"", ge:"ascónde", ko:"숨기다", ar:"يخفي", zh:"藏", ja:"隠す", ia:"celar" },
       { tema:"verbi", livello:"A2", it:"rimanere", en:"stay", fr:"rester", es:"quedarse", de:"bleiben", pt:"ficar", sp:"faòssa", cr:"A'rmanèr", ko:"머물다", ar:"يبقى", zh:"留", ja:"留まる", ia:"remaner" },
       { tema:"verbi", livello:"B1", it:"arrabbiarsi", en:"get angry", fr:"se fâcher|se mettre en colère", es:"enfadarse", de:"sich ärgern", pt:"ficar zangado |zangar-se", ca:"enfadar-se", sp:"aragiasse |vegnie ràgia", ko:"화내다", ar:"يغضب", zh:"生气", ja:"怒る", ia:"irar se", la:"irasci" },
       { tema:"animali", livello:"B1", it:"starnutire", en:"sneeze", fr:"éternuer", es:"estornudar", de:"niesen", pt:"espirrar", sp:"stranüdae", cr:"", ge:"stramuî", ko:"재채기하다", ar:"يعطس", zh:"打喷嚏", ja:"くしゃみする", ia:"sternutar" },
       { tema:"aggettivi", livello:"A1", it:"nuovo", en:"new", fr:"nouveau", es:"nuevo", de:"neu", pt:"novo", ru:"новый", ca:"nou", sp:"nèvo", ko:"새", ar:"جديد", zh:"新", ja:"新しい" },
       { tema:"animali", livello:"A1", it:"vecchio", en:"old", fr:"vieux", es:"viejo", de:"alt", pt:"velho", ru:"старый", ca:"vell", sp:"vècio", ko:"오래된", ar:"قديم", zh:"旧", ja:"古い" },
       { tema:"aggettivi", livello:"B1", it:"nostalgia", en:"longing", fr:"nostalgie", es:"nostalgia", de:"Sehnsucht", pt:"saudade", ko:"그리움", ar:"حنين", zh:"思乡", ja:"郷愁", ia:"nostalgia" },
-      { tema:"animali", livello:"A2", it:"rospo", en:"toad", fr:"crapaud", es:"sapo", de:"Kröte", pt:"sapo", ru:"жаба", ca:"gripau", sp:"bagio", cr:"Bòda", ko:"두꺼비", ar:"علجوم", zh:"蟾蜍", ja:"ヒキガエル" },
-      { tema:"dialetti", livello:"B1", it:"coccole", en:"cuddles", fr:"câlins", es:"mimos", de:"Schmusen", pt:"carinhos", ca:"mimoses", sp:"gnòri", cr:"Creki", ko:"애정", ar:"دلال", zh:"拥抱", ja:"甘え" },
+      { tema:"animali", livello:"A2", it:"rospo", en:"toad", fr:"crapaud", es:"sapo", de:"Kröte", pt:"sapo", ru:"жаба", ca:"gripau", sp:"bagio", cr:"", ko:"두꺼비", ar:"علجوم", zh:"蟾蜍", ja:"ヒキガエル" },
+      { tema:"dialetti", livello:"B1", it:"coccole", en:"cuddles", fr:"câlins", es:"mimos", de:"Schmusen", pt:"carinhos", ca:"mimoses", sp:"gnòri", cr:"", ko:"애정", ar:"دلال", zh:"拥抱", ja:"甘え" },
       { tema:"vestiti", livello:"A1", it:"fratello", en:"brother", fr:"frère", es:"hermano", de:"Bruder", pt:"irmão|irmao", ru:"брат", ca:"germà", sp:"frè", ge:"fræ", ko:"형|남동생", ar:"أخ", zh:"兄弟", ja:"兄|弟", ia:"fratre", la:"frater", grc:"ἀδελφός" },
-      { tema:"famiglia", livello:"A1", it:"sorella", en:"sister", fr:"sœur", es:"hermana", de:"Schwester", pt:"irmã|irma", ru:"sorella", ca:"germana", sp:"soèla", cr:"Pà", ge:"pæ", ko:"언니|여동생", ar:"أخت", zh:"姐妹", ja:"姉|妹", ia:"soror", la:"soror", grc:"ἀδελφή" },
+      { tema:"famiglia", livello:"A1", it:"sorella", en:"sister", fr:"sœur", es:"hermana", de:"Schwester", pt:"irmã|irma", ru:"sorella", ca:"germana", sp:"soèla", cr:"", ge:"pæ", ko:"언니|여동생", ar:"أخت", zh:"姐妹", ja:"姉|妹", ia:"soror", la:"soror", grc:"ἀδελφή" },
       { tema:"giorni", livello:"A1", it:"figlia", en:"daughter", fr:"fille", es:"hija", de:"Tochter", pt:"filha", ru:"дочь", ca:"filla", sp:"figia", ko:"딸", ar:"ابنة", zh:"女儿", ja:"娘", ia:"filia", la:"filia", grc:"θυγάτηρ" },
       { tema:"famiglia", livello:"A1", it:"nonno", en:"grandfather", fr:"grand-père", es:"abuelo", de:"Großvater|Opa", pt:"avô|avo", ru:"nonno", ca:"avi", sp:"nono", cr:"Nono", ko:"할아버지", ar:"جد", zh:"祖父|爷爷", ja:"祖父", ia:"avo", la:"avus", grc:"πάππος" },
       { tema:"famiglia", livello:"A1", it:"nonna", en:"grandmother", fr:"grand-mère", es:"abuela", de:"Oma|Großmutter", pt:"avó|avo", ru:"бабушка", ca:"àvia", sp:"nona", mn:"", cr:"nona", ko:"할머니", ar:"جدة", zh:"奶奶", ia:"avia", la:"avia", grc:"τήθη" },
@@ -1989,7 +1988,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A1", it:"sole", en:"sun", fr:"soleil", es:"sol", de:"Sonne", pt:"sol", ru:"солнце", ca:"sol", sp:"sò", cr:"sol", ko:"태양", ar:"شمس", zh:"太阳", ja:"太陽", ia:"sol", la:"sol", grc:"ἥλιος" },
       { tema:"famiglia", livello:"A1", it:"luna", en:"moon", fr:"lune", es:"luna", de:"Mond", pt:"lua", ru:"луна", ca:"lluna", sp:"sèsoo", ge:"sêueo", ko:"달", ar:"قمر", zh:"月亮", ja:"月", ia:"luna", la:"luna", grc:"σελήνη" },
       { tema:"natura", livello:"A1", it:"mare", en:"sea", fr:"mer", es:"mar", de:"Meer", pt:"mar", ru:"море", ca:"mar", sp:"mae", mn:"", cr:"", ko:"바다", ar:"بحر", zh:"海", ja:"海", ia:"mar", la:"mare", grc:"θάλασσα" },
-      { tema:"famiglia", livello:"A1", it:"fuoco", en:"fire", fr:"feu", es:"fuego", de:"Feuer", pt:"fogo", ru:"огонь", ca:"foc", sp:"fègo", mn:"", cr:"vec", ge:"neônòu", ko:"불", ar:"نار", zh:"火", ja:"火", ia:"foco", la:"ignis", grc:"πῦρ" },
+      { tema:"famiglia", livello:"A1", it:"fuoco", en:"fire", fr:"feu", es:"fuego", de:"Feuer", pt:"fogo", ru:"огонь", ca:"foc", sp:"fègo", mn:"", cr:"", ge:"neônòu", ko:"불", ar:"نار", zh:"火", ja:"火", ia:"foco", la:"ignis", grc:"πῦρ" },
       { tema:"mestieri", livello:"A2", it:"albero", en:"tree", fr:"arbre", es:"árbol", de:"Baum", pt:"árvore|arvore", ru:"дерево", ca:"arbre", sp:"àrbeo", mn:"arbéu", ko:"나무", ar:"شجرة", zh:"树", ja:"木", ia:"arbore", la:"arbor", grc:"δένδρον" },
       { tema:"natura", livello:"A2", it:"cielo", en:"sky", fr:"ciel", es:"cielo", de:"Himmel", pt:"céu|ceu", ru:"небо", ca:"cel", sp:"figo", mn:"sciié/scié", cr:"zel", ge:"zaffaràn", ko:"하늘", ar:"سماء", zh:"天空", ja:"空", ia:"celo", la:"caelum", grc:"οὐρανός" },
       { tema:"natura", livello:"B1", it:"stella", en:"star", fr:"étoile", es:"estrella", de:"Stern", pt:"estrela", ru:"звезда", ca:"estrella", sp:"stéa", cr:"stela", ko:"별", ar:"نجمة", zh:"星星", ja:"星", ia:"stella", la:"stella", grc:"ἀστήρ" },
@@ -1998,14 +1997,14 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"corpo", livello:"A1", it:"bocca", en:"mouth", fr:"bouche", es:"boca", de:"Mund", pt:"boca", ru:"рот", ca:"boca", sp:"boca", mn:"buca", cr:"boca", ge:"pê", ko:"입", ar:"فم", zh:"嘴", ja:"口", ia:"bucca", la:"os", grc:"στόμα" },
       { tema:"corpo", livello:"A1", it:"braccio", en:"arm", fr:"bras", es:"brazo", de:"Arm", pt:"braço|braco", ru:"рука", ca:"braç", sp:"brasso", mn:"brassu", ge:"bràsso", ko:"팔", ar:"ذراع", zh:"手臂", ja:"腕", ia:"bracio", la:"brachium", grc:"βραχίων" },
       { tema:"salute", livello:"A1", it:"sangue", en:"blood", fr:"sang", es:"sangre", de:"Blut", pt:"sangue", ru:"соль", ca:"sal", sp:"ciapeleta", cr:"sangu", ko:"피", ar:"دم", zh:"血", ja:"血", ia:"sanguine", la:"sanguis", grc:"αἷμα" },
-      { tema:"vestiti", livello:"A1", it:"essere", en:"be", fr:"être", es:"ser|estar", de:"sein", pt:"ser|estar", ru:"быть", ca:"ser|estar", sp:"èsse", cr:"camin", ko:"이다|있다", ar:"يكون", zh:"是", ja:"", ia:"esser", la:"esse", grc:"εἶναι" },
+      { tema:"vestiti", livello:"A1", it:"essere", en:"be", fr:"être", es:"ser|estar", de:"sein", pt:"ser|estar", ru:"быть", ca:"ser|estar", sp:"èsse", cr:"", ko:"이다|있다", ar:"يكون", zh:"是", ja:"", ia:"esser", la:"esse", grc:"εἶναι" },
       { tema:"verbi", livello:"A1", it:"venire", en:"come", fr:"venir", es:"venir", de:"kommen", pt:"vir", ru:"приходить", ca:"venir", sp:"vegnìe", cr:"venir", ko:"오다", ar:"يأتي", zh:"来", ja:"来る", ia:"venir", la:"venire", grc:"ἔρχεσθαι" },
-      { tema:"verbi", livello:"A1", it:"vedere", en:"see", fr:"voir", es:"ver", de:"sehen", pt:"ver", ru:"видеть", ca:"veure", sp:"vede", cr:"gambe", ko:"보다", ar:"يرى", zh:"看", ja:"見る", ia:"vider", la:"videre", grc:"ὁρᾶν" },
+      { tema:"verbi", livello:"A1", it:"vedere", en:"see", fr:"voir", es:"ver", de:"sehen", pt:"ver", ru:"видеть", ca:"veure", sp:"vede", cr:"", ko:"보다", ar:"يرى", zh:"看", ja:"見る", ia:"vider", la:"videre", grc:"ὁρᾶν" },
       { tema:"verbi", livello:"A1", it:"dire", en:"say", fr:"dire", es:"decir", de:"sagen", pt:"dizer", ru:"говорить|сказать", ca:"dir", sp:"die", mn:"dì", cr:"dì", ko:"말하다", ar:"يقول", zh:"说", ja:"言う", ia:"dicer", la:"dicere", grc:"λέγειν" },
-      { tema:"cibo", livello:"A1", it:"fare", en:"do", fr:"faire", es:"hacer", de:"machen", pt:"fazer", ru:"делать", ca:"fer", sp:"fae", cr:"acut", ko:"하다", ar:"يفعل", zh:"做", ja:"する", ia:"facer", la:"facere", grc:"ποιεῖν" },
-      { tema:"verbi", livello:"A1", it:"sapere", en:"know", fr:"savoir", es:"saber", de:"wissen", pt:"saber", ru:"знать", ca:"saber", sp:"savée", mn:"andaaa/andaa", cr:"andar", ko:"알다", ar:"يعرف", zh:"知道", ja:"知る", ia:"saper", la:"scire", grc:"εἰδέναι" },
+      { tema:"cibo", livello:"A1", it:"fare", en:"do", fr:"faire", es:"hacer", de:"machen", pt:"fazer", ru:"делать", ca:"fer", sp:"fae", cr:"", ko:"하다", ar:"يفعل", zh:"做", ja:"する", ia:"facer", la:"facere", grc:"ποιεῖν" },
+      { tema:"verbi", livello:"A1", it:"sapere", en:"know", fr:"savoir", es:"saber", de:"wissen", pt:"saber", ru:"знать", ca:"saber", sp:"savée", mn:"andaaa/andaa", cr:"", ko:"알다", ar:"يعرف", zh:"知道", ja:"知る", ia:"saper", la:"scire", grc:"εἰδέναι" },
       { tema:"verbi", livello:"A1", it:"amare", en:"love", fr:"aimer", es:"amar", de:"lieben", pt:"amar", ru:"любить", ca:"estimar|amar", sp:"voree ben", mn:"v'ree ben/vrëë bën/vre ben/vrëëbën", ko:"사랑하다", ar:"يحب", zh:"爱", ja:"愛する", ia:"amar", la:"amare", grc:"φιλεῖν|ἀγαπᾶν" },
-      { tema:"salute", livello:"A1", it:"scrivere", en:"write", fr:"écrire", es:"escribir", de:"schreiben", pt:"escrever", ru:"писать", ca:"escriure", sp:"negron", mn:"tütu", cr:"N'ròn", ko:"쓰다", ar:"يكتب", zh:"写", ja:"書く", ia:"scriber", la:"scribere", grc:"γράφειν" },
+      { tema:"salute", livello:"A1", it:"scrivere", en:"write", fr:"écrire", es:"escribir", de:"schreiben", pt:"escrever", ru:"писать", ca:"escriure", sp:"negron", mn:"tütu", cr:"", ko:"쓰다", ar:"يكتب", zh:"写", ja:"書く", ia:"scriber", la:"scribere", grc:"γράφειν" },
       { tema:"verbi", livello:"A2", it:"leggere", en:"read", fr:"lire", es:"leer", de:"lesen", pt:"ler", ru:"читать", ca:"llegir", sp:"lèze", ko:"읽다", ar:"يقرأ", zh:"读", ja:"読む", ia:"leger", la:"legere", grc:"ἀναγιγνώσκειν" },
       { tema:"verbi", livello:"A2", it:"governare", en:"govern", fr:"gouverner", es:"gobernar", de:"regieren", pt:"governar", sp:"stae", ko:"통치하다", ar:"يحكم", zh:"统治", ja:"統治する", ia:"governar", la:"regere", grc:"ἄρχειν" },
       { tema:"verbi", livello:"A2", it:"parlare", en:"speak", fr:"parler", es:"hablar", de:"sprechen", pt:"falar", ru:"говорить", ca:"parlar", sp:"bròca", ko:"말하다", ar:"يتكلم", zh:"说话", ja:"話す", ia:"parlar", la:"loqui", grc:"λέγειν" },
@@ -2071,7 +2070,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"lavorare/lavoro", en:"work", fr:"travailler", es:"trabajar", de:"arbeiten", pt:"trabalhar", ru:"работать", ca:"treballar", sp:"travagiae, lavoae", ko:"일하다", ar:"يعمل", zh:"工作", ja:"働く", ia:"laborar" },
       { tema:"luoghi", livello:"A1", it:"scuola", en:"school", fr:"école", es:"escuela", de:"Schule", pt:"escola", ru:"школа", ca:"escola", sp:"schèa", ko:"학교", ar:"مدرسة", zh:"学校", ja:"学校", ia:"schola" },
       { tema:"luoghi", livello:"A1", it:"ospedale", en:"hospital", fr:"hôpital", es:"hospital", de:"Krankenhaus", pt:"hospital", ru:"больница", ca:"hospital", sp:"spedào", ko:"병원", ar:"مستشفى", zh:"医院", ja:"病院", ia:"hospital" },
-      { tema:"natura", livello:"A1", it:"acqua", en:"water", fr:"eau|o|au", es:"agua", de:"Wasser", pt:"água|agua", ru:"вода", ca:"aigua", sp:"àaigoa/àigoa", mn:"àaìgua/aigua", cr:"", ge:"ægoa", ko:"물", ar:"ماء", zh:"水", ja:"水", ia:"aqua", la:"aqua", grc:"ὕδωρ" },
+      { tema:"natura", livello:"A1", it:"acqua", en:"water", fr:"eau|o|au", es:"agua", de:"Wasser", pt:"água|agua", ru:"вода", ca:"aigua", sp:"àaigoa/àigoa", mn:"àaigua/aigua", cr:"", ge:"ægoa", ko:"물", ar:"ماء", zh:"水", ja:"水", ia:"aqua", la:"aqua", grc:"ὕδωρ" },
       { tema:"dialetti", livello:"A2", it:"pesto", en:"pesto", fr:"pesto", es:"pesto", de:"Pesto", pt:"pesto", ge:"pèsto", ia:"fullate" },
       { tema:"dialetti", livello:"B1", it:"riparazione di fortuna", en:"makeshift repair", fr:"réparation improvisée", es:"reparación improvisada", de:"Notlösung", pt:"conserto improvisado", ge:"tapullo" },
       { tema:"dialetti", livello:"B1", it:"tramontana", en:"north wind", fr:"tramontane", es:"tramontana", de:"Nordwind", pt:"tramontana", ge:"tramuntànn-a" },
@@ -2121,7 +2120,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"ghiotto", en:"greedy", fr:"gourmand", es:"goloso", de:"naschhaft", pt:"guloso", sp:"giòto,goòn,lecardòn", ia:"glutte" },
       { tema:"aggettivi", livello:"B1", it:"selvatico", en:"wild", fr:"sauvage", es:"salvaje", de:"wild", pt:"selvagem", sp:"servadego", ia:"salvage" },
       { tema:"famiglia", livello:"A1", it:"rompere", en:"break", fr:"casser", es:"romper", de:"brechen", pt:"quebrar", ru:"мать|мама", ca:"mare", sp:"ronpie| scossae| stocae", cr:"" },
-      { tema:"verbi", livello:"A1", it:"cadere", en:"fall", fr:"tomber", es:"caer", de:"fallen", pt:"cair", ru:"падать", ca:"caure", sp:"caiiìe/caie", mn:"tumbaa", cr:"bo" },
+      { tema:"verbi", livello:"A1", it:"cadere", en:"fall", fr:"tomber", es:"caer", de:"fallen", pt:"cair", ru:"падать", ca:"caure", sp:"caiiìe/caie", mn:"tumbaa", cr:"" },
       { tema:"verbi", livello:"A2", it:"sciogliere", en:"dissolve", fr:"dissoudre", es:"disolver", de:"auflösen", pt:"dissolver", sp:"siòlie", ia:"disfacer" },
       { tema:"dialetti", livello:"A2", it:"presto", en:"soon", fr:"bientôt", es:"pronto", de:"bald", pt:"cedo", sp:"fito", ia:"presto" },
       { tema:"dialetti", livello:"A1", it:"accanto", en:"next to", fr:"à côté", es:"al lado", de:"daneben", pt:"ao lado", sp:"de costa", mn:"acantu", ia:"apud" },
@@ -2221,7 +2220,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"luoghi", livello:"A1", it:"albergo", en:"hotel", fr:"hôtel", es:"hotel", de:"Hotel", pt:"hotel", sp:"arbergo, locanda", mn:"arbèrgu", ko:"호텔", ar:"فندق", zh:"酒店", ja:"ホテル", ia:"hotel", la:"deversorium", grc:"πανδοχεῖον" },
       { tema:"luoghi", livello:"A1", it:"ristorante", en:"restaurant", fr:"restaurant", es:"restaurante", de:"Restaurant", pt:"restaurante", ru:"ресторан", ca:"restaurant", ko:"식당", ar:"مطعم", zh:"餐厅", ja:"レストラン", ia:"restaurante", la:"caupona", grc:"ἑστιατόριον" },
       { tema:"luoghi", livello:"A2", it:"museo", en:"museum", fr:"musée", es:"museo", de:"Museum", pt:"museu", ru:"музей", ca:"museu", ko:"박물관", ar:"متحف", zh:"博物馆", ja:"博物館", ia:"museo", la:"museum", grc:"μουσεῖον" },
-      { tema:"famiglia", livello:"A1", it:"spiaggia", en:"beach", fr:"plage", es:"playa", de:"Strand", pt:"praia", ru:"пляж", ca:"platja", sp:"straco", cr:"npoti", ko:"해변", ar:"شاطئ", zh:"海滩", ja:"ビーチ", ia:"plage", la:"litus", grc:"αἰγιαλός" },
+      { tema:"famiglia", livello:"A1", it:"spiaggia", en:"beach", fr:"plage", es:"playa", de:"Strand", pt:"praia", ru:"пляж", ca:"platja", sp:"straco", cr:"", ko:"해변", ar:"شاطئ", zh:"海滩", ja:"ビーチ", ia:"plage", la:"litus", grc:"αἰγιαλός" },
       { tema:"luoghi", livello:"A2", it:"montagna", en:"mountain", fr:"montagne", es:"montaña", de:"Berg", pt:"montanha", ru:"гора", ca:"muntanya", ko:"산", ar:"جبل", zh:"山", ja:"山", ia:"montania", la:"mons", grc:"ὄρος" },
       { tema:"luoghi", livello:"A2", it:"biglietto", en:"ticket", fr:"billet", es:"billete", de:"Ticket", pt:"bilhete", sp:"bigeto", mn:"bigetu", ko:"표", ar:"تذكرة", zh:"票", ja:"チケット", ia:"billet", la:"tessera", grc:"σύμβολον" },
       { tema:"luoghi", livello:"A2", it:"passaporto", en:"passport", fr:"passeport", es:"pasaporte", de:"Pass", pt:"passaporte", ko:"여권", ar:"جواز سفر", zh:"护照", ja:"パスポート", ia:"passeporte", la:"diploma", grc:"διαβατήριον" },
@@ -2243,7 +2242,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mesi", livello:"A1", it:"agosto", en:"August", fr:"août", es:"agosto", de:"August", pt:"agosto", ru:"agosto", ca:"agost", sp:"agosto", mn:"agustu", ko:"8월", ar:"أغسطس", zh:"八月", ja:"8月", ia:"augusto", la:"Augustus", grc:"Αὔγουστος" },
       { tema:"mesi", livello:"A1", it:"settembre", en:"September", fr:"septembre", es:"septiembre", de:"September", pt:"setembro", ru:"settembre", ca:"setembre", sp:"setenbre", ko:"9월", ar:"سبتمبر", zh:"九月", ja:"9月", ia:"septembre", la:"September", grc:"Σεπτέμβριος" },
       { tema:"mesi", livello:"A1", it:"ottobre", en:"October", fr:"octobre", es:"octubre", de:"Oktober", pt:"outubro", ru:"ottobre", ca:"octubre", sp:"otobre", ko:"10월", ar:"أكتوبر", zh:"十月", ja:"10月", ia:"octobre", la:"October", grc:"Ὀκτώβριος" },
-      { tema:"mesi", livello:"A1", it:"novembre", en:"November", fr:"novembre", es:"noviembre", de:"November", pt:"novembro", ru:"novembre", ca:"novembre", sp:"novenbre", cr:"flasch", ko:"11월", ar:"نوفمبر", zh:"十一月", ja:"11月", ia:"novembre", la:"November", grc:"Νοέμβριος" },
+      { tema:"mesi", livello:"A1", it:"novembre", en:"November", fr:"novembre", es:"noviembre", de:"November", pt:"novembro", ru:"novembre", ca:"novembre", sp:"novenbre", cr:"", ko:"11월", ar:"نوفمبر", zh:"十一月", ja:"11月", ia:"novembre", la:"November", grc:"Νοέμβριος" },
       { tema:"mesi", livello:"A1", it:"dicembre", en:"December", fr:"décembre", es:"diciembre", de:"Dezember", pt:"dezembro", ru:"dicembre", ca:"desembre", sp:"dezenbre", cr:"Dizembr", ko:"12월", ar:"ديسمبر", zh:"十二月", ja:"12月", ia:"decembre", la:"December", grc:"Δεκέμβριος" },
       { tema:"natura", livello:"A1", it:"primavera", en:"spring", fr:"printemps", es:"primavera", de:"Frühling", pt:"primavera", ru:"весна", ca:"primavera", cr:"primavera", ko:"봄", ar:"ربيع", zh:"春天", ja:"春", ia:"primavera", la:"ver", grc:"ἔαρ" },
       { tema:"natura", livello:"A1", it:"estate", en:"summer", fr:"été", es:"verano", de:"Sommer", pt:"verão|verao", ru:"лето", ca:"estiu", sp:"nose", cr:"", ko:"여름", ar:"صيف", zh:"夏天", ja:"夏", ia:"estate", la:"aestas", grc:"θέρος" },
@@ -2383,14 +2382,14 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A1", it:"pioggia", en:"rain", fr:"pluie", es:"lluvia", de:"Regen", pt:"chuva", ru:"дождь", ca:"pluja", sp:"", ko:"비", ar:"مطر", zh:"雨", ja:"雨", ia:"pluvia", la:"pluvia", grc:"ὑετός" },
       { tema:"natura", livello:"A1", it:"neve", en:"snow", fr:"neige", es:"nieve", de:"Schnee", pt:"neve", ru:"снег", ca:"neu", sp:"envelòpe, bùsta", ko:"눈", ar:"ثلج", zh:"雪", ja:"雪", ia:"nive", la:"nix", grc:"χιών" },
       { tema:"natura", livello:"A2", it:"nuvola", en:"cloud", fr:"nuage", es:"nube", de:"Wolke", pt:"nuvem", ru:"облако", ca:"núvol", ko:"구름", ar:"سحابة", zh:"云", ja:"雲", ia:"nube", la:"nubes", grc:"νεφέλη" },
-      { tema:"natura", livello:"A1", it:"nebbia", en:"fog", fr:"brouillard", es:"niebla", de:"Nebel", pt:"névoa|nevoa", sp:"garbìn", cr:"polenta", ko:"안개", ar:"ضباب", zh:"雾", ja:"霧", ia:"nebula", la:"nebula", grc:"ὁμίχλη" },
-      { tema:"natura", livello:"A2", it:"grandine", en:"hail", fr:"grêle", es:"granizo", de:"Hagel", pt:"granizo", sp:"granzèa", cr:"farina", ko:"우박", ar:"بَرَد", zh:"冰雹", ja:"雹", ia:"grando", la:"grando", grc:"χάλαζα" },
+      { tema:"natura", livello:"A1", it:"nebbia", en:"fog", fr:"brouillard", es:"niebla", de:"Nebel", pt:"névoa|nevoa", sp:"garbìn", cr:"", ko:"안개", ar:"ضباب", zh:"雾", ja:"霧", ia:"nebula", la:"nebula", grc:"ὁμίχλη" },
+      { tema:"natura", livello:"A2", it:"grandine", en:"hail", fr:"grêle", es:"granizo", de:"Hagel", pt:"granizo", sp:"granzèa", cr:"", ko:"우박", ar:"بَرَد", zh:"冰雹", ja:"雹", ia:"grando", la:"grando", grc:"χάλαζα" },
       { tema:"natura", livello:"A2", it:"fulmine", en:"lightning", fr:"éclair", es:"relámpago", de:"Blitz", pt:"raio", ko:"번개", ar:"برق", zh:"闪电", ja:"稲妻", ia:"fulmine", la:"fulmen", grc:"κεραυνός" },
       { tema:"natura", livello:"A2", it:"arcobaleno", en:"rainbow", fr:"arc-en-ciel|arc en ciel", es:"arco iris", de:"Regenbogen", pt:"arco-íris|arco-iris", sp:"arco", mn:"arcubalenu", ko:"무지개", ar:"قوس قزح", zh:"彩虹", ja:"虹", ia:"arco-celo", la:"arcus", grc:"ἶρις" },
       { tema:"natura", livello:"B1", it:"uragano", en:"hurricane", fr:"ouragan", es:"huracán", de:"Hurrikan", pt:"furacão|furacao", ko:"허리케인", ar:"إعصار", zh:"飓风", ja:"ハリケーン", ia:"uragano", la:"turbo", grc:"τυφών" },
       { tema:"natura", livello:"A2", it:"siccità", en:"drought", fr:"sécheresse", es:"sequía", de:"Dürre", pt:"seca", ru:"отправлять", ca:"enviar", ko:"가뭄", ar:"جفاف", zh:"干旱", ja:"干ばつ", ia:"siccitate", la:"siccitas", grc:"αὐχμός" },
       { tema:"natura", livello:"A1", it:"temperatura", en:"temperature", fr:"température", es:"temperatura", de:"Temperatur", pt:"temperatura", ru:"температура", ca:"temperatura", ko:"온도", ar:"درجة الحرارة", zh:"温度", ja:"気温", ia:"temperatura", la:"temperatura", grc:"θερμοκρασία" },
-      { tema:"casa", livello:"A2", it:"umido", en:"humid", fr:"humide", es:"húmedo", de:"feucht", pt:"úmido|umido", ru:"влажный", ca:"humit", sp:"ümeo", cr:"sach", ko:"습한", ar:"رطب", zh:"潮湿", ja:"湿気", ia:"humide", la:"umidus", grc:"ὑγρός" },
+      { tema:"casa", livello:"A2", it:"umido", en:"humid", fr:"humide", es:"húmedo", de:"feucht", pt:"úmido|umido", ru:"влажный", ca:"humit", sp:"ümeo", cr:"", ko:"습한", ar:"رطب", zh:"潮湿", ja:"湿気", ia:"humide", la:"umidus", grc:"ὑγρός" },
       { tema:"natura", livello:"A2", it:"secco", en:"dry", fr:"sec", es:"seco", de:"trocken", pt:"seco", ru:"сухой", ca:"sec", ko:"건조한", ar:"جاف", zh:"干燥", ja:"乾燥", ia:"sic", la:"siccus", grc:"ξηρός" },
       { tema:"natura", livello:"A2", it:"previsioni", en:"forecast", fr:"prévisions", es:"previsión", de:"Vorhersage", pt:"previsão|previsao", ru:"прогноз", ca:"previsió", ko:"예보", ar:"توقعات", zh:"预报", ja:"予報", ia:"prevision", la:"praenuntium", grc:"πρόγνωση" },
       { tema:"natura", livello:"B1", it:"alluvione", en:"flood", fr:"inondation", es:"inundación", de:"Überschwemmung", pt:"inundação|inundacao", ru:"наводнение", ca:"inundació", mn:"alüviùn", ko:"홍수", ar:"فيضان", zh:"洪水", ja:"洪水", ia:"inundation", la:"diluvium", grc:"κατακλυσμός" },
@@ -2584,7 +2583,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A1", it:"chiuso", en:"closed", fr:"fermé", es:"cerrado", de:"geschlossen", pt:"fechado", ru:"закрытый", ca:"tancat", sp:"schéna, schéne", mn:"", ge:"schénn-a", ko:"닫힌", ar:"مغلق", zh:"关着的", ja:"閉じた", ia:"clause", la:"clausus", grc:"κλειστός" },
       { tema:"aggettivi", livello:"A1", it:"sporco|zozzo", en:"dirty", fr:"sale", es:"sucio", de:"schmutzig", pt:"sujo", ru:"грязный", ca:"brut", sp:"lédo", mn:"zòzu", ko:"더러운", ar:"قذر", zh:"脏", ja:"汚い", ia:"", la:"sordidus", grc:"ῥυπαρός" },
       { tema:"aggettivi", livello:"A2", it:"pesante", en:"heavy", fr:"lourd", es:"pesado", de:"schwer", pt:"pesado", ru:"тяжёлый", ca:"pesat", ko:"무거운", ar:"ثقيل", zh:"重", ja:"重い", ia:"pesante", la:"gravis", grc:"βαρύς" },
-      { tema:"natura", livello:"A2", it:"ricco", en:"rich", fr:"riche", es:"rico", de:"reich", pt:"rico", ru:"богатый", ca:"ric", sp:"bosàrdo", cr:"fiama", ko:"부유한", ar:"غني", zh:"富", ja:"金持ちの", ia:"ric", la:"dives", grc:"πλούσιος" },
+      { tema:"natura", livello:"A2", it:"ricco", en:"rich", fr:"riche", es:"rico", de:"reich", pt:"rico", ru:"богатый", ca:"ric", sp:"bosàrdo", cr:"", ko:"부유한", ar:"غني", zh:"富", ja:"金持ちの", ia:"ric", la:"dives", grc:"πλούσιος" },
       { tema:"verbi", livello:"A1", it:"alzarsi", en:"get up |stand up", fr:"se lever", es:"levantarse", de:"aufstehen", pt:"levantar-se", ru:"вставать", ca:"aixecar-se", sp:"stae sü| issasse", mn:"issase/isàse", ko:"일어나다", ar:"ينهض", ja:"起きる", ia:"levar se", la:"surgere", grc:"ἐγείρω" },
       { tema:"verbi", livello:"A1", it:"sedersi", en:"sit down", fr:"s'asseoir", es:"sentarse", de:"sitzen", pt:"sentar-se", ru:"садиться", ca:"seure|asseure's", sp:"setarse", ko:"앉다", ar:"يجلس", zh:"坐下", ja:"座る", ia:"seder se", la:"sedere", grc:"καθίζειν" },
       { tema:"verbi", livello:"A1", it:"entrare", en:"enter", fr:"entrer", es:"entrar", de:"eintreten", pt:"entrar", ru:"входить", ca:"entrar", sp:"entrae", ko:"들어가다", ar:"يدخل", zh:"进入", ja:"入る", ia:"entrar", la:"intrare", grc:"εἰσέρχεσθαι" },
@@ -2608,9 +2607,9 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"B1", it:"riparare", en:"repair", fr:"réparer", es:"reparar", de:"reparieren", pt:"reparar|consertar", ru:"ремонтировать", ca:"reparar", ko:"수리하다", ar:"يصلح", zh:"修理", ja:"修理する", ia:"reparar", la:"reficere", grc:"ἐπισκευάζειν" },
       { tema:"numeri", livello:"A1", it:"zero", en:"zero", fr:"zéro", es:"cero", de:"null", pt:"zero", sp:"zèo", mn:"zeeuu/zeu", ko:"영", ar:"صفر", zh:"零", ja:"ゼロ", ia:"zero", la:"nihil", grc:"μηδέν" },
       { tema:"famiglia", livello:"A1", it:"padre", en:"father", fr:"père", es:"padre", de:"Vater", pt:"pai", ru:"отец|папа", ca:"pare", sp:"pà, pae,", ko:"아버지", ar:"أب", zh:"父亲", ja:"父", ia:"patre", la:"pater", grc:"πατήρ" },
-      { tema:"famiglia", livello:"A2", it:"figlio", en:"son", fr:"fils", es:"hijo", de:"Sohn", pt:"filho", ru:"сын", ca:"fill", sp:"figio", cr:"mogla", ko:"아들", ar:"ابن", zh:"儿子", ja:"息子", ia:"filio", la:"filius", grc:"υἱός" },
+      { tema:"famiglia", livello:"A2", it:"figlio", en:"son", fr:"fils", es:"hijo", de:"Sohn", pt:"filho", ru:"сын", ca:"fill", sp:"figio", cr:"", ko:"아들", ar:"ابن", zh:"儿子", ja:"息子", ia:"filio", la:"filius", grc:"υἱός" },
       { tema:"famiglia", livello:"A2", it:"cugino", en:"cousin", fr:"cousin", es:"primo", de:"Cousin", pt:"primo", ru:"двоюродный брат", ca:"cosí", ko:"사촌", ar:"ابن عم", zh:"表兄弟", ja:"いとこ", ia:"cousino", la:"patrueles", grc:"ξάδελφος" },
-      { tema:"famiglia", livello:"A2", it:"zia", en:"aunt", fr:"tante", es:"tía", de:"Tante", pt:"tia", ru:"тётя", ca:"tia", sp:"séa|làla", cr:"mar", ko:"이모", ar:"عمة", zh:"", ja:"", ia:"tante", la:"amita", grc:"θεία" },
+      { tema:"famiglia", livello:"A2", it:"zia", en:"aunt", fr:"tante", es:"tía", de:"Tante", pt:"tia", ru:"тётя", ca:"tia", sp:"séa|làla", cr:"", ko:"이모", ar:"عمة", zh:"", ja:"", ia:"tante", la:"amita", grc:"θεία" },
       { tema:"giorni", livello:"A1", it:"testa", en:"head", fr:"tête", es:"cabeza", de:"Kopf", pt:"cabeça|cabeca", ru:"голова", ca:"cap", sp:"figio", mn:"sbraitaaa/sbraitaa", cr:"", ko:"머리", ar:"رأس", zh:"头", ja:"頭", ia:"testa", la:"caput", grc:"κεφαλή" },
       { tema:"corpo", livello:"A1", it:"naso", en:"nose", fr:"nez", es:"nariz", de:"Nase", pt:"nariz", ru:"нос", ca:"nas", ko:"코", ar:"أنف", zh:"鼻子", ja:"鼻", ia:"naso", la:"nasus", grc:"ῥίς" },
       { tema:"farmaci", livello:"A1", it:"dito", en:"finger", fr:"doigt", es:"dedo", de:"Finger", pt:"dedo", ru:"палец", ca:"dit", sp:"dido, didi, dida, dite, dide", ko:"손가락", ar:"إصبع", zh:"手指", ja:"指", ia:"digito", la:"digitus", grc:"δάκτυλος" },
@@ -2665,7 +2664,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A2", it:"fiore", en:"flower", fr:"fleur", es:"flor", de:"blume", pt:"flor", ru:"цветок", ca:"flor", sp:"fiòo", cr:"fior", ia:"flor" },
       { tema:"natura", livello:"B1", it:"marmo", sp:"màrmeo", cr:"marm" },
       { tema:"casa", livello:"A2", it:"tetto", de:"Dach", ru:"крыша", ca:"teulada", sp:"técio", cr:"tec" },
-      { tema:"casa", livello:"B1", it:"comignolo", cr:"camin ner" },
+      { tema:"casa", livello:"B1", it:"comignolo", cr:"camin " },
       { tema:"luoghi", livello:"A1", it:"strada", ru:"улица", ca:"carrer", sp:"strade", cr:"" },
       { tema:"aggettivi", livello:"A2", it:"pieno", ru:"полный", ca:"ple", sp:"cén", cr:"pien" },
       { tema:"aggettivi", livello:"B1", it:"gigantesco", cr:"gigantesch" },
@@ -2680,7 +2679,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"buono|buona", en:"good", fr:"bon", ru:"хороший", ca:"bo|bon", sp:"bon|bona", mn:"bun|buna", cr:"bon" },
       { tema:"aggettivi", livello:"A2", it:"contento", ru:"доволен", ca:"content", cr:"content" },
       { tema:"dialetti", livello:"B2", it:"bacio", en:"kiss", fr:"baiser", sp:"bazo", mn:"bazu", cr:"bas" },
-      { tema:"dialetti", livello:"B2", it:"il sangue - 18 tombola", cr:"Dizot - l sangu" },
       { tema:"dialetti", livello:"A2", it:"adocchiare, avvistare", en:"spot", fr:"apercevoir", mn:"vistaaa/vistaa" },
       { tema:"dialetti", livello:"A2", it:"viziare", en:"", mn:"visciiaa/vìsciaa" },
       { tema:"dialetti", livello:"A2", it:"volto|porticato", mn:"vòrtu" },
@@ -2865,7 +2863,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 24;
+const VOC_VERSION = 27;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
@@ -7594,18 +7592,9 @@ function Home({
   }, t.sceglimodo), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 sm:grid-cols-2 gap-4"
   }, modalitaBtn.map(m => {
-    let sbloccata = isSbloccata(m.key);
+    const sbloccata = isSbloccata(m.key);
     const prog = progSblocco(m.key);
     const rec = getRecordModalita(m.key);
-    // Verifica requisiti linguistici per modalità specifiche.
-    // Scelta multipla richiede almeno 2 lingue attive (qualsiasi coppia, dialetti inclusi).
-    let motivoBlocco = null;
-    if (sbloccata && m.key === "sceltamultipla") {
-      if (nLingueAttive < 2) {
-        sbloccata = false;
-        motivoBlocco = "Servono almeno 2 lingue attive";
-      }
-    }
     const EMOJI_MODI = {
       dettato: "✍️",
       allenamento: "🏋️",
@@ -7634,9 +7623,7 @@ function Home({
       className: `text-xs font-bold px-1.5 py-0.5 rounded-full flex-shrink-0 ${sbloccata ? "bg-zinc-700 text-zinc-300" : "bg-zinc-800 text-zinc-600"}`
     }, m.lv)), /*#__PURE__*/React.createElement("div", {
       className: `text-sm ${sbloccata ? "text-slate-400" : "text-zinc-600"}`
-    }, m.desc), motivoBlocco && /*#__PURE__*/React.createElement("div", {
-      className: "text-xs text-amber-500 mt-1 font-medium"
-    }, "\u26A0 ", motivoBlocco), sbloccata && rec && /*#__PURE__*/React.createElement("div", {
+    }, m.desc), sbloccata && rec && /*#__PURE__*/React.createElement("div", {
       className: "text-xs text-slate-500 mt-1 font-medium"
     }, rec, " \xB7 ", nLingueAttive, "\uD83C\uDF10"), !sbloccata && prog && /*#__PURE__*/React.createElement("div", {
       className: "mt-2"
@@ -8741,9 +8728,7 @@ function SchermataSceltaMultipla({
   const [carte, setCarte] = useState([]);
   const [risposta, setRisposta] = useState(null); // null | {scelta, corretta}
   const [punteggio, setPunteggio] = useState(0);
-  const [erroreSetup, setErroreSetup] = useState(null);
-  // Tutte le lingue attive — anche dialetti — sono ora valide come prompt o target.
-  const lingueAttive = lingue.filter(l => l.attiva);
+  const lingueAttive = lingue.filter(l => l.attiva && !["sp", "ge", "cr", "mn"].includes(l.codice));
   function salvaStato(s) {
     try {
       localStorage.setItem(SK_SM, JSON.stringify(s));
@@ -8751,36 +8736,12 @@ function SchermataSceltaMultipla({
   }
   function generaCarte(statoOverride) {
     const st = statoOverride || stato;
-    if (lingueAttive.length < 2) {
-      setErroreSetup("Servono almeno 2 lingue attive.");
-      return;
-    }
-    // Lingua del prompt: la UI dell'utente, se attiva; altrimenti la prima attiva.
-    const uiCode = getUILang();
-    const lP = lingueAttive.find(l => l.codice === uiCode) || lingueAttive[0];
-    const candidatiLA = lingueAttive.filter(l => l.codice !== lP.codice);
-    if (candidatiLA.length === 0) {
-      setErroreSetup("Servono almeno 2 lingue attive diverse.");
-      return;
-    }
-    // Prova ogni lingua target finché non se ne trova una con abbastanza candidati.
-    // Mescola l'ordine per non scegliere sempre la prima.
-    const targetMescolati = [...candidatiLA].sort(() => Math.random() - 0.5);
-    let lA = null;
-    let cand = [];
-    for (const t of targetMescolati) {
-      const c = vocabolario.filter(e => e[lP.codice] && String(e[lP.codice]).trim() && e[t.codice] && String(e[t.codice]).trim());
-      if (c.length >= st.nScelte) {
-        lA = t;
-        cand = c;
-        break;
-      }
-    }
-    if (!lA) {
-      setErroreSetup("Vocabolario insufficiente per le lingue attive. Aggiungi parole o cambia lingue.");
-      return;
-    }
-    setErroreSetup(null);
+    // Scegli prima la lingua target, poi filtra le entry che hanno SIA `it` SIA quella lingua
+    const candidatiLA = lingueAttive.filter(l => l.codice !== "it");
+    if (candidatiLA.length === 0) return;
+    const lA = candidatiLA[Math.floor(Math.random() * candidatiLA.length)];
+    const cand = vocabolario.filter(e => e.it && String(e.it).trim() && e[lA.codice] && String(e[lA.codice]).trim());
+    if (cand.length < st.nScelte) return;
     // Selezione senza ripetizioni: shuffle e prendi le prime nDom
     const shuffled = [...cand].sort(() => Math.random() - 0.5);
     const nDomReali = Math.min(st.nDom, shuffled.length);
@@ -8794,7 +8755,6 @@ function SchermataSceltaMultipla({
       const scelte = [corretta, ...altri.map(e => soloVisibile(e[lA.codice]))].sort(() => Math.random() - 0.5);
       nuoveCarte.push({
         entry,
-        linguaPrompt: lP,
         lingua: lA,
         corretta,
         scelte
@@ -8893,19 +8853,8 @@ function SchermataSceltaMultipla({
     generaCarte(nuovoStato);
   }
   if (!carte.length) return /*#__PURE__*/React.createElement("div", {
-    className: "min-h-screen bg-black flex items-center justify-center p-6"
-  }, erroreSetup ? /*#__PURE__*/React.createElement("div", {
-    className: "max-w-sm w-full bg-zinc-900 border border-amber-800 rounded-2xl p-6 text-center"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "text-4xl mb-3"
-  }, "\u26A0\uFE0F"), /*#__PURE__*/React.createElement("p", {
-    className: "text-amber-400 font-bold mb-2"
-  }, "Scelta multipla non disponibile"), /*#__PURE__*/React.createElement("p", {
-    className: "text-slate-400 text-sm mb-5"
-  }, erroreSetup), /*#__PURE__*/React.createElement("button", {
-    onClick: onHome,
-    className: "w-full bg-zinc-800 hover:bg-zinc-700 text-slate-200 font-bold py-3 rounded-xl transition"
-  }, "\u2190 Torna alla home")) : /*#__PURE__*/React.createElement("p", {
+    className: "min-h-screen bg-black flex items-center justify-center"
+  }, /*#__PURE__*/React.createElement("p", {
     className: "text-zinc-500 animate-pulse"
   }, "Caricamento..."));
   const carta = carte[indice];
@@ -8940,9 +8889,9 @@ function SchermataSceltaMultipla({
     className: "bg-zinc-900 border border-zinc-800 rounded-2xl p-6 mb-4 text-center"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-500 mb-2"
-  }, carta.linguaPrompt?.bandiera || "\uD83C\uDDEE\uD83C\uDDF9", " ", carta.linguaPrompt?.nome || "Italiano"), /*#__PURE__*/React.createElement("p", {
+  }, "\uD83C\uDDEE\uD83C\uDDF9 Italiano"), /*#__PURE__*/React.createElement("p", {
     className: "text-5xl font-extrabold text-white tracking-tight"
-  }, soloVisibile(carta.entry[carta.linguaPrompt?.codice || "it"])), /*#__PURE__*/React.createElement("p", {
+  }, soloVisibile(carta.entry.it)), /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-600 mt-2"
   }, carta.lingua.bandiera, " ", carta.lingua.nome)), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 gap-3 mb-4"
@@ -9946,18 +9895,7 @@ function App() {
   });
   const [lingue, setLingue] = useState(() => {
     try {
-      const salvate = loadJSON(SK_LINGUE, LINGUE_DEFAULT);
-      // Merge con LINGUE_DEFAULT: se l'utente ha un localStorage vecchio
-      // mancano lingue aggiunte successivamente (es. manarolese). Le
-      // aggiungiamo con attiva:false, preservando le sue scelte ON/OFF
-      // per quelle che già aveva e le lingue extra aggiunte manualmente.
-      if (!Array.isArray(salvate)) return LINGUE_DEFAULT;
-      const codiciSalvati = new Set(salvate.map(l => l && l.codice));
-      const mancanti = LINGUE_DEFAULT.filter(l => !codiciSalvati.has(l.codice)).map(l => ({
-        ...l,
-        attiva: false
-      }));
-      return mancanti.length > 0 ? [...salvate, ...mancanti] : salvate;
+      return loadJSON(SK_LINGUE, LINGUE_DEFAULT);
     } catch (e) {
       return LINGUE_DEFAULT;
     }
