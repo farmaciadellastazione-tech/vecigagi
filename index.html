@@ -1803,7 +1803,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"pagina", en:"page", fr:"page", es:"página", de:"Seite", pt:"página", ru:"страница", ca:"pàgina" },
       { tema:"mestieri", livello:"B1", it:"pittore", en:"painter", fr:"peintre", es:"pintor", de:"Maler", pt:"pintor", ru:"художник", ca:"pintor", sp:"pitoe" },
       { tema:"arte", livello:"B1", it:"pittura/dipinto", en:"painting", fr:"peinture|tableau", es:"pintura|cuadro", de:"Gemälde", pt:"pintura|quadro", ru:"картина|живопись", ca:"pintura|quadre", sp:"pitüa" },
-      { tema:"dialogo", livello:"A2", it:"paio/coppia", en:"pair", fr:"paire", es:"par", de:"Paar", pt:"par", ru:"пара", ca:"parell", sp:"pao" },
+      { tema:"dialogo", livello:"A2", it:"paio|coppia", en:"pair", fr:"paire", es:"par", de:"Paar", pt:"par", ru:"пара", ca:"parell", sp:"pao" },
       { tema:"dialogo", livello:"B1", it:"profumo", en:"perfume", fr:"parfum", es:"perfume", de:"Parfüm", pt:"perfume", ru:"духи|парфюм", ca:"perfum", sp:"prefümo,aigoa d’odoe" },
       { tema:"animali", livello:"A2", it:"animale domestico", en:"pet", fr:"animal de compagnie", es:"mascota", de:"Haustier", pt:"animal de estimação", ru:"домашнее животное", ca:"animal de companyia", ia:"animal domestic" },
       { tema:"dialogo", livello:"B1", it:"benzina", en:"petrol", fr:"essence", es:"gasolina", de:"Benzin", pt:"gasolina", ru:"бензин", ca:"gasolina" },
@@ -2172,7 +2172,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cosmetica", livello:"A2", it:"spazzolino", en:"toothbrush", fr:"brosse à dents", es:"cepillo de dientes", de:"Zahnbürste", pt:"escova de dentes", ko:"칫솔", ar:"فرشاة أسنان", zh:"牙刷", ja:"歯ブラシ" },
       { tema:"cosmetica", livello:"A2", it:"sapone", en:"soap", fr:"savon", es:"jabón", de:"Seife", pt:"sabão|sabao", sp:"saòn|savòn", ko:"비누", ar:"صابون", zh:"肥皂", ja:"石鹸", ia:"sapon" },
       { tema:"cosmetica", livello:"B1", it:"crema solare", en:"sunscreen", fr:"crème solaire", es:"protector solar", de:"Sonnencreme", pt:"protetor solar", ko:"선크림", ar:"واقي شمسي", zh:"防晒霜", ja:"日焼け止め" },
-      { tema:"cosmetica", livello:"A1", it:"idratante", en:"moisturiser", fr:"hydratant", es:"hidratante", de:"Feuchtigkeitscreme", pt:"hidratante", ru:"пить", ca:"beure", sp:"beve", cr:"", ko:"보습제", ar:"مرطب", zh:"保湿霜", ja:"保湿剤" },
+      { tema:"cosmetica", livello:"A1", it:"idratante", en:"moisturiser", fr:"hydratant", es:"hidratante", de:"Feuchtigkeitscreme", pt:"hidratante", ru:"пить", ca:"beure", sp:"", cr:"", ko:"보습제", ar:"مرطب", zh:"保湿霜", ja:"保湿剤" },
       { tema:"cosmetica", livello:"B1", it:"termometro", en:"thermometer", fr:"thermomètre", es:"termómetro", de:"Thermometer", pt:"termômetro|termometro", ko:"체온계", ar:"ميزان الحرارة", zh:"体温计", ja:"体温計" },
       { tema:"cosmetica", livello:"B1", it:"siringa", en:"syringe", fr:"seringue", es:"jeringa", de:"Spritze", pt:"seringa", ko:"주사기", ar:"حقنة", zh:"注射器", ja:"注射器", ia:"syringa" },
       { tema:"cosmetica", livello:"B1", it:"benda", en:"bandage", fr:"bandage", es:"venda", de:"Verband", pt:"atadura", sp:"binda", mn:"binda", ko:"붕대", ar:"ضمادة", zh:"绷带", ja:"包帯", ia:"banda" },
@@ -2634,7 +2634,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"sentirsi bene", en:"feel good", fr:"se sentir bien", es:"sentirse bien", de:"sich gut fühlen", pt:"sentir-se bem" },
       { tema:"natura", livello:"A2", it:"significare", en:"mean that", fr:"vouloir dire", es:"significar", de:"bedeuten", pt:"significar", sp:"arsiprèsso, aosiprèsso", cr:"" },
       { tema:"numeri", livello:"A1", it:"fammi sapere", en:"let me know", fr:"fais-moi savoir", es:"hazme saber", de:"lass es mich wissen", pt:"me avise", sp:"", cr:"" },
-      { tema:"dialogo", livello:"A1", it:"iniziare ora", en:"begin now", fr:"commencer maintenant", es:"empezar ahora", de:"jetzt beginnen", pt:"começar agora|comecar agora", ru:"novanta", ca:"noranta", sp:"treze", cr:"" },
+      { tema:"dialogo", livello:"A1", it:"iniziare ora", en:"begin now", fr:"commencer maintenant", es:"empezar ahora", de:"jetzt beginnen", pt:"começar agora|comecar agora", ru:"novanta", ca:"noranta", sp:"", cr:"" },
       { tema:"dialogo", livello:"A2", it:"arrivare in ritardo", en:"run late", fr:"être en retard", es:"llegar tarde", de:"zu spät sein", pt:"atrasar" },
       { tema:"numeri", livello:"A1", it:"credere in te", en:"believe you", fr:"te croire", es:"creer en ti", de:"dir glauben", pt:"acreditar em você|acreditar em voce", ru:"отвечать", ca:"respondre", cr:"" },
       { tema:"natura", livello:"A1", it:"portalo", en:"bring it", fr:"apporte-le", es:"tráelo", de:"bring es", pt:"traga isso", sp:"rondanìna", cr:"" },
@@ -2862,7 +2862,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 33;
+const VOC_VERSION = 34;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
