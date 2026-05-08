@@ -2021,7 +2021,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"saggio", en:"wise", fr:"sage", es:"sabio", de:"weise", pt:"sábio|sabio", ko:"현명한", ar:"حكيم", zh:"聪明", ja:"賢い", ia:"sage", la:"sapiens", grc:"σοφός" },
       { tema:"aggettivi", livello:"A2", it:"giusto", en:"just", fr:"juste", es:"justo", de:"gerecht", pt:"justo", ru:"правильный", ca:"correcte|just", sp:"zigoèla", mn:"", ko:"공정한", ar:"عادل", zh:"公正", ja:"正しい", ia:"juste", la:"iustus", grc:"δίκαιος" },
       { tema:"aggettivi", livello:"B1", it:"vero", en:"true", fr:"vrai", es:"verdadero", de:"wahr", pt:"verdadeiro", ru:"настоящий|правдивый", ca:"veritable|cert", ko:"진실된", ar:"حقيقي", zh:"真实", ja:"真実の", ia:"ver", la:"verus", grc:"ἀληθής" },
-      { tema:"aggettivi", livello:"A2", it:"mortale", en:"mortal", fr:"mortel", es:"mortal", de:"sterblich", pt:"mortal", ru:"важный", ca:"important", mn:"soodi/sòdi", ge:"", ko:"필멸의", ar:"فاني", zh:"凡人", ja:"死すべき", ia:"mortal", la:"mortalis", grc:"θνητός" },
+      { tema:"aggettivi", livello:"A2", en:"mortal", fr:"mortel", es:"mortal", de:"sterblich", pt:"mortal", ru:"важный", ca:"important", ko:"필멸의", ar:"فاني", zh:"凡人", ja:"死すべき", ia:"mortal", la:"mortalis", grc:"θνητός" },
       { tema:"luoghi", livello:"A1", it:"città", en:"city", fr:"ville", es:"ciudad", de:"Stadt", pt:"cidade", ru:"город", ca:"ciutat", sp:"sità", ko:"도시", ar:"مدينة", zh:"城市", ja:"都市", ia:"citate", la:"urbs|civitas", grc:"πόλις" },
       { tema:"luoghi", livello:"A1", it:"casa", en:"house", fr:"maison", es:"casa", de:"Haus", pt:"casa", ru:"дом", ca:"casa", sp:"ca", cr:"Cà", ko:"집", ar:"بيت", zh:"房子", ja:"家", ia:"domo", la:"domus", grc:"οἰκία" },
       { tema:"luoghi", livello:"A2", it:"tempio", en:"temple", fr:"temple", es:"templo", de:"Tempel", pt:"templo", ko:"신전", ar:"معبد", zh:"寺庙", ja:"神殿", ia:"templo", la:"templum", grc:"ναός" },
@@ -2567,7 +2567,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"mischiare", en:"mix", fr:"mélanger", es:"mezclar", de:"mischen", pt:"misturar", ru:"смешивать", ca:"barrejar", sp:"mesc-ciae/mes'ciae", mn:"", cr:"" },
       { tema:"dialetti", livello:"B1", it:"uscita", en:"exit", fr:"sortie", es:"salida", de:"Ausgang", pt:"saída|saida", sp:"sortida", ia:"exito" },
       { tema:"luoghi", livello:"A1", it:"Lerici", en:"Lerici", fr:"Lerici", es:"Lerici", de:"Lerici", pt:"Lerici", sp:"Lerze" },
-      { tema:"famiglia", livello:"A1", it:"donna", en:"woman", fr:"femme", es:"mujer", de:"Frau", pt:"mulher", mn:"sbusaà/zbùzà/sbùzà", ko:"여자", ar:"امرأة", zh:"女人", ja:"女性", ia:"femina", la:"femina", grc:"γυνή" },
+      { tema:"famiglia", livello:"A1", it:"donna", en:"woman", fr:"femme", es:"mujer", de:"Frau", pt:"mulher", mn:"", ko:"여자", ar:"امرأة", zh:"女人", ja:"女性", ia:"femina", la:"femina", grc:"γυνή" },
       { tema:"mesi", livello:"A1", it:"mese", en:"month", fr:"mois", es:"mes", de:"Monat", pt:"mês|mes", ru:"месяц", ca:"mes", ko:"달", ar:"شهر", zh:"月", ja:"月", ia:"mense", la:"mensis", grc:"μήν" },
       { tema:"verbi", livello:"A1", it:"potere", en:"can|kan", fr:"pouvoir", es:"poder", de:"können", pt:"poder", ru:"власть", ca:"poder", sp:"podée", ko:"할 수 있다", ar:"يستطيع", zh:"能", ja:"できる", ia:"poter", la:"posse", grc:"δύνασθαι" },
       { tema:"numeri", livello:"A1", it:"domani", en:"tomorrow", fr:"demain", es:"mañana", de:"morgen", pt:"amanhã|amanha", ru:"завтра", ca:"demà", ko:"내일", ar:"غداً", zh:"明天", ja:"明日", ia:"deman", la:"cras", grc:"αὔριον" },
@@ -2864,7 +2864,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 40;
+const VOC_VERSION = 41;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
