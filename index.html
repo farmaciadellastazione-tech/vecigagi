@@ -8776,13 +8776,13 @@ function SchermataSceltaMultipla({
       if (targetsValidi.length === 0) continue;
       const lA = targetsValidi[Math.floor(Math.random() * targetsValidi.length)];
       const stCoppia = getStatoCoppia(lA.codice, ts);
-      const corretta = soloVisibile(entry[lA.codice]);
+      const corretta = formaDisplay(entry[lA.codice], lA.codice);
       // Distrattori dalla stessa lingua target
       const pool_lA = poolGlobale.filter(e => e[lA.codice] && String(e[lA.codice]).trim());
-      const altri = pool_lA.filter(e => soloVisibile(e[lA.codice]) !== corretta)
+      const altri = pool_lA.filter(e => formaDisplay(e[lA.codice], lA.codice) !== corretta)
         .sort(() => Math.random() - 0.5).slice(0, stCoppia.nScelte - 1);
       if (altri.length < stCoppia.nScelte - 1) continue;
-      const scelte = [corretta, ...altri.map(e => soloVisibile(e[lA.codice]))].sort(() => Math.random() - 0.5);
+      const scelte = [corretta, ...altri.map(e => formaDisplay(e[lA.codice], lA.codice))].sort(() => Math.random() - 0.5);
       nuoveCarte.push({ entry, linguaPrompt: lP, lingua: lA, corretta, scelte });
     }
 
@@ -8902,7 +8902,7 @@ function SchermataSceltaMultipla({
     className: "text-sm text-zinc-500 mb-2"
   }, carta.linguaPrompt?.bandiera || "\uD83C\uDDEE\uD83C\uDDF9", " ", carta.linguaPrompt?.nome || "Italiano"), /*#__PURE__*/React.createElement("p", {
     className: "text-5xl font-extrabold text-white tracking-tight"
-  }, soloVisibile(carta.entry[carta.linguaPrompt?.codice || "it"])), /*#__PURE__*/React.createElement("p", {
+  }, formaDisplay(carta.entry[carta.linguaPrompt?.codice || "it"], carta.linguaPrompt?.codice || "it")), /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-600 mt-2"
   }, carta.lingua.bandiera, " ", carta.lingua.nome)), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 gap-3 mb-4"
