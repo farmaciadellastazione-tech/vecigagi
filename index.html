@@ -236,7 +236,7 @@ const UI = {
     ripasso: "Ripasso",
     nota_verbi_en: "ℹ️ I verbi inglesi non includono \"to\" (es. \"go\" non \"to go\")",
     sceltamultipla: "Scelta multipla",
-    desc_sceltamultipla: "🎯 5-12 scelte, livello adattivo"
+    desc_sceltamultipla: "🎯 4-12 scelte, livello adattivo"
   },
   en: {
     lingue: "Languages",
@@ -367,7 +367,7 @@ const UI = {
     tuttedir: "all",
     nota_verbi_en: "ℹ️ English verbs do not include \"to\" (e.g. \"go\" not \"to go\")",
     sceltamultipla: "Multiple choice",
-    desc_sceltamultipla: "🎯 5-12 options, adaptive level"
+    desc_sceltamultipla: "🎯 4-12 options, adaptive level"
   },
   fr: {
     lingue: "Langues",
@@ -498,7 +498,7 @@ const UI = {
     tuttiitemi: "Tous les thèmes",
     tuttilivelli: "Tous les niveaux",
     sceltamultipla: "Choix multiple",
-    desc_sceltamultipla: "🎯 5-12 options, niveau adaptatif"
+    desc_sceltamultipla: "🎯 4-12 options, niveau adaptatif"
   },
   es: {
     lingue: "Idiomas",
@@ -641,7 +641,7 @@ const UI = {
     homebtn: "Inicio",
     ancorabtn: "Otra vez",
     sceltamultipla: "Opción múltiple",
-    desc_sceltamultipla: "🎯 5-12 opciones, nivel adaptativo"
+    desc_sceltamultipla: "🎯 4-12 opciones, nivel adaptativo"
   },
   de: {
     lingue: "Sprachen",
@@ -783,7 +783,7 @@ const UI = {
     nota_verbi_en: "ℹ️ Englische Verben enthalten kein \"to\" (z.B. \"go\" nicht \"to go\")",
     tuttedir: "alle",
     sceltamultipla: "Multiple Choice",
-    desc_sceltamultipla: "🎯 5-12 Optionen, adaptives Niveau"
+    desc_sceltamultipla: "🎯 4-12 Optionen, adaptives Niveau"
   },
   pt: {
     lingue: "Idiomas",
@@ -919,7 +919,7 @@ const UI = {
     ripasso: "Revisão",
     tuttedir: "Todas as direções",
     sceltamultipla: "Escolha múltipla",
-    desc_sceltamultipla: "🎯 5-12 opções, nível adaptativo"
+    desc_sceltamultipla: "🎯 4-12 opções, nível adaptativo"
   },
   ru: {
     lingue: "Языки",
@@ -1003,7 +1003,7 @@ const UI = {
     segnalabtn: "⚠️ Сообщить об ошибке",
     usachromemsg: "Используй Chrome для распознавания голоса.",
     sceltamultipla: "Множественный выбор",
-    desc_sceltamultipla: "🎯 5-12 вариантов, адаптивный уровень"
+    desc_sceltamultipla: "🎯 4-12 вариантов, адаптивный уровень"
   },
   zh: {
     lingue: "语言",
@@ -1094,7 +1094,7 @@ const UI = {
     ripasso: "复习",
     tuttedir: "所有方向",
     sceltamultipla: "多项选择",
-    desc_sceltamultipla: "🎯 5-12个选项，自适应级别"
+    desc_sceltamultipla: "🎯 4-12个选项，自适应级别"
   },
   ko: {
     lingue: "언어",
@@ -1183,7 +1183,7 @@ const UI = {
     ripasso: "복습",
     tuttedir: "모든 방향",
     sceltamultipla: "객관식",
-    desc_sceltamultipla: "🎯 5-12개 선택지, 적응형 레벨"
+    desc_sceltamultipla: "🎯 4-12개 선택지, 적응형 레벨"
   },
   ca: {
     lingue: "Idiomes",
@@ -1267,7 +1267,7 @@ const UI = {
     segnalabtn: "⚠️ Reportar error",
     usachromemsg: "Usa Chrome per al reconeixement de veu.",
     sceltamultipla: "Selecció múltiple",
-    desc_sceltamultipla: "🎯 5-12 opcions, nivell adaptatiu"
+    desc_sceltamultipla: "🎯 4-12 opcions, nivell adaptatiu"
   }
 };
 const UI_LINGUE = [{
@@ -1636,7 +1636,6 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO (gestito tramite edit.html) ──────────────────────────
-      { tema:"viaggi", livello:"A2", it:"dove è andato", sp:"dovié andà" },
       { tema:"tempo", livello:"A1", it:"Natale", sp:"Nadae|Nadà", mn:"Nadaa" },
       { tema:"comunicazione", livello:"A1", it:"voce", mn:"guza" },
       { tema:"natura", livello:"B1", it:"milione|un milione", mn:"migliun|un migliun" },
@@ -1777,7 +1776,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"bussare/picchiare", en:"knock", fr:"frapper", es:"llamar|golpear", de:"klopfen", pt:"bater|tocar", ru:"стучать", ca:"trucar|colpejar", sp:"picae", mn:"zùmbaa" },
       { tema:"casa", livello:"B1", it:"scala a pioli", en:"ladder", fr:"échelle", es:"escalera", de:"Leiter", pt:"escada", ru:"лестница", ca:"escala" },
       { tema:"dialogo", livello:"A2", it:"ultimo/scorso", en:"last", fr:"dernier|passé", es:"último|pasado", de:"letzter", pt:"último|passado", ru:"последний|прошлый", ca:"últim|passat", sp:"ürtimo, daredéo" },
-      { tema:"dialogo", livello:"A1", it:"tardi|in ritardo", en:"late", fr:"tard|en retard", es:"tarde|con retraso", de:"spät|zu spät", pt:"tarde|atrasado", ru:"поздно|с опозданием", ca:"tard|amb retard", sp:"tardio, tardiòto", mn:"tardiu" },
+      { tema:"dialogo", livello:"A1", it:"tardi/in ritardo", en:"late", fr:"tard|en retard", es:"tarde|con retraso", de:"spät|zu spät", pt:"tarde|atrasado", ru:"поздно|с опозданием", ca:"tard|amb retard", sp:"tardio, tardiòto" },
       { tema:"verbi", livello:"B1", it:"prestare", en:"lend", fr:"prêter", es:"prestar", de:"leihen", pt:"emprestar", ru:"одалживать", ca:"prestar", sp:"enprestae, anprestae, areméte" },
       { tema:"dialogo", livello:"B1", it:"bugiardo", en:"liar", fr:"menteur", es:"mentiroso", de:"Lügner", pt:"mentiroso", ru:"лжец", ca:"mentider", sp:"bosàrdo", mn:"buzardu" },
       { tema:"aggettivi", livello:"B1", it:"vivace", en:"lively", fr:"animé|vivant", es:"animado|vivaz", de:"lebhaft", pt:"animado|vivo", ru:"живой|оживлённый", ca:"viu|animat" },
@@ -2005,7 +2004,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"vedere", en:"see", fr:"voir", es:"ver", de:"sehen", pt:"ver", ru:"видеть", ca:"veure", sp:"vede", cr:"", ko:"보다", ar:"يرى", zh:"看", ja:"見る", ia:"vider", la:"videre", grc:"ὁρᾶν" },
       { tema:"verbi", livello:"A1", it:"dire", en:"say", fr:"dire", es:"decir", de:"sagen", pt:"dizer", ru:"говорить|сказать", ca:"dir", sp:"die", mn:"dì", cr:"dì", ko:"말하다", ar:"يقول", zh:"说", ja:"言う", ia:"dicer", la:"dicere", grc:"λέγειν" },
       { tema:"cibo", livello:"A1", it:"fare", en:"do", fr:"faire", es:"hacer", de:"machen", pt:"fazer", ru:"делать", ca:"fer", sp:"fae", cr:"", ko:"하다", ar:"يفعل", zh:"做", ja:"する", ia:"facer", la:"facere", grc:"ποιεῖν" },
-      { tema:"verbi", livello:"A1", it:"sapere", en:"know", fr:"savoir", es:"saber", de:"wissen", pt:"saber", ru:"знать", ca:"saber", sp:"savée", mn:"", cr:"", ko:"알다", ar:"يعرف", zh:"知道", ja:"知る", ia:"saper", la:"scire", grc:"εἰδέναι" },
+      { tema:"verbi", livello:"A1", it:"sapere", en:"know", fr:"savoir", es:"saber", de:"wissen", pt:"saber", ru:"знать", ca:"saber", sp:"savée", mn:"andaaa/andaa", cr:"", ko:"알다", ar:"يعرف", zh:"知道", ja:"知る", ia:"saper", la:"scire", grc:"εἰδέναι" },
       { tema:"verbi", livello:"A1", it:"amare", en:"love", fr:"aimer", es:"amar", de:"lieben", pt:"amar", ru:"любить", ca:"estimar|amar", sp:"voree ben", mn:"v'ree ben/vrëë bën/vre ben/vrëëbën", ko:"사랑하다", ar:"يحب", zh:"爱", ja:"愛する", ia:"amar", la:"amare", grc:"φιλεῖν|ἀγαπᾶν" },
       { tema:"salute", livello:"A1", it:"scrivere", en:"write", fr:"écrire", es:"escribir", de:"schreiben", pt:"escrever", ru:"писать", ca:"escriure", sp:"", mn:"", cr:"", ko:"쓰다", ar:"يكتب", zh:"写", ja:"書く", ia:"scriber", la:"scribere", grc:"γράφειν" },
       { tema:"verbi", livello:"A2", it:"leggere", en:"read", fr:"lire", es:"leer", de:"lesen", pt:"ler", ru:"читать", ca:"llegir", sp:"lèze", ko:"읽다", ar:"يقرأ", zh:"读", ja:"読む", ia:"leger", la:"legere", grc:"ἀναγιγνώσκειν" },
@@ -2018,7 +2017,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A1", it:"piccolo", en:"small", fr:"petit", es:"pequeño", de:"klein", pt:"pequeno", ru:"маленький", ca:"petit", sp:"pecenìn", ko:"작은", ar:"صغير", zh:"小", ja:"小さい", ia:"parve", la:"parvus", grc:"μικρός" },
       { tema:"aggettivi", livello:"A2", it:"bello|bella", en:"beautiful", fr:"beau", es:"bello", de:"schön", pt:"bonito", ru:"красивый", ca:"bonic|bell", sp:"bèo| bèlo|bèla", mn:"belu|bela", ko:"아름다운", ar:"جميل", zh:"美丽", ja:"美しい", ia:"belle", la:"pulcher", grc:"καλός" },
       { tema:"aggettivi", livello:"A1", it:"brutto", en:"ugly", fr:"laid", es:"feo", de:"hässlich", pt:"feio", ru:"некрасивый|некрасиво", ca:"lleig", sp:"bruto", mn:"bruttu", ko:"못생긴", ar:"قبيح", zh:"丑", ja:"醜い", ia:"fede", la:"turpis", grc:"αἰσχρός" },
-      { tema:"aggettivi", livello:"A1", it:"libero", en:"free", fr:"libre", es:"libre", de:"frei", pt:"livre", ru:"свободный", ca:"lliure", sp:"quaatro/quatro", mn:"", ko:"자유로운", ar:"حر", zh:"自由", ja:"自由な", ia:"libere", la:"liber", grc:"ἐλεύθερος" },
+      { tema:"aggettivi", livello:"A1", it:"libero", en:"free", fr:"libre", es:"libre", de:"frei", pt:"livre", ru:"свободный", ca:"lliure", sp:"quaatro/quatro", mn:"quatru", ko:"자유로운", ar:"حر", zh:"自由", ja:"自由な", ia:"libere", la:"liber", grc:"ἐλεύθερος" },
       { tema:"aggettivi", livello:"A2", it:"saggio", en:"wise", fr:"sage", es:"sabio", de:"weise", pt:"sábio|sabio", ko:"현명한", ar:"حكيم", zh:"聪明", ja:"賢い", ia:"sage", la:"sapiens", grc:"σοφός" },
       { tema:"aggettivi", livello:"A2", it:"giusto", en:"just", fr:"juste", es:"justo", de:"gerecht", pt:"justo", ru:"правильный", ca:"correcte|just", sp:"zigoèla", mn:"", ko:"공정한", ar:"عادل", zh:"公正", ja:"正しい", ia:"juste", la:"iustus", grc:"δίκαιος" },
       { tema:"aggettivi", livello:"B1", it:"vero", en:"true", fr:"vrai", es:"verdadero", de:"wahr", pt:"verdadeiro", ru:"настоящий|правдивый", ca:"veritable|cert", ko:"진실된", ar:"حقيقي", zh:"真实", ja:"真実の", ia:"ver", la:"verus", grc:"ἀληθής" },
@@ -2035,7 +2034,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"B1", it:"natura", en:"nature", fr:"nature", es:"naturaleza", de:"Natur", pt:"natureza", ru:"природа", ca:"natura", ko:"자연", ar:"طبيعة", zh:"自然", ja:"自然", ia:"natura", la:"natura", grc:"φύσις" },
       { tema:"aggettivi", livello:"B2", it:"filosofia", en:"philosophy", fr:"philosophie", es:"filosofía", de:"Philosophie", pt:"filosofia", ko:"철학", ar:"فلسفة", zh:"哲学", ja:"哲学", ia:"philosophia", la:"philosophia", grc:"φιλοσοφία" },
       { tema:"aggettivi", livello:"B2", it:"democrazia", en:"democracy", fr:"démocratie", es:"democracia", de:"Demokratie", pt:"democracia", ru:"демократия", ca:"democràcia", ko:"민주주의", ar:"ديمقراطية", zh:"民主", ja:"民主主義", ia:"democratia", la:"democratia", grc:"δημοκρατία" },
-      { tema:"grammatica", livello:"A2", it:"io amo", la:"amo", grc:"φιλῶ" },
+      { tema:"grammatica", livello:"A2", it:"io amo (1ª coniug. lat.)", la:"amo", grc:"φιλῶ" },
       { tema:"grammatica", livello:"A2", it:"tu ami", en:"you love", es:"amas", ia:"amas", la:"amas", grc:"φιλεῖς" },
       { tema:"grammatica", livello:"A2", it:"egli/ella ama", sp:"ama", la:"amat", grc:"φιλεῖ" },
       { tema:"grammatica", livello:"A2", it:"noi amiamo", la:"amamus", grc:"φιλοῦμεν" },
@@ -2219,7 +2218,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"B1", it:"orgoglioso", en:"proud", fr:"fier", es:"orgulloso", de:"stolz", pt:"orgulhoso", sp:"desapìto", ko:"자랑스러운", ar:"فخور", zh:"自豪", ja:"誇りに思う", ia:"superbe", la:"superbus", grc:"ὑπερήφανος" },
       { tema:"aggettivi", livello:"B1", it:"geloso", en:"jealous", fr:"jaloux", es:"celoso", de:"eifersüchtig", pt:"ciumento", ko:"질투하는", ar:"غيور", zh:"嫉妒", ja:"嫉妬深い", ia:"zelouse", la:"invidiosus", grc:"ζηλότυπος" },
       { tema:"luoghi", livello:"A1", it:"aeroporto", en:"airport", fr:"aéroport", es:"aeropuerto", de:"Flughafen", pt:"aeroporto", ru:"аэропорт", ca:"aeroport", ko:"공항", ar:"مطار", zh:"机场", ja:"空港", ia:"aeroporto", la:"aeroportus", grc:"ἀεροδρόμιο" },
-      { tema:"luoghi", livello:"A1", it:"stazione", en:"station", fr:"gare", es:"estación", de:"Bahnhof", pt:"estação|estacao", ru:"вокзал|станция", ca:"estació", sp:"stassion", ko:"역", ar:"محطة", zh:"车站", ja:"駅", ia:"station", la:"statio", grc:"σταθμός" },
+      { tema:"luoghi", livello:"A1", it:"stazione", en:"station", fr:"gare", es:"estación", de:"Bahnhof", pt:"estação|estacao", ru:"вокзал|станция", ca:"estació", sp:"apüto", ko:"역", ar:"محطة", zh:"车站", ja:"駅", ia:"station", la:"statio", grc:"σταθμός" },
       { tema:"luoghi", livello:"A1", it:"albergo", en:"hotel", fr:"hôtel", es:"hotel", de:"Hotel", pt:"hotel", sp:"arbergo, locanda", mn:"arbèrgu", ko:"호텔", ar:"فندق", zh:"酒店", ja:"ホテル", ia:"hotel", la:"deversorium", grc:"πανδοχεῖον" },
       { tema:"luoghi", livello:"A1", it:"ristorante", en:"restaurant", fr:"restaurant", es:"restaurante", de:"Restaurant", pt:"restaurante", ru:"ресторан", ca:"restaurant", ko:"식당", ar:"مطعم", zh:"餐厅", ja:"レストラン", ia:"restaurante", la:"caupona", grc:"ἑστιατόριον" },
       { tema:"luoghi", livello:"A2", it:"museo", en:"museum", fr:"musée", es:"museo", de:"Museum", pt:"museu", ru:"музей", ca:"museu", ko:"박물관", ar:"متحف", zh:"博物馆", ja:"博物館", ia:"museo", la:"museum", grc:"μουσεῖον" },
@@ -2564,8 +2563,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"pazienza", en:"patience", fr:"patience", es:"paciencia", de:"Geduld", pt:"paciência|paciencia", sp:"pasiensa", ia:"patientia" },
       { tema:"dialetti", livello:"A2", it:"fidanzata", en:"girlfriend", fr:"petite amie", es:"novia", de:"Freundin", pt:"noiva", sp:"spaviccia" },
       { tema:"verbi", livello:"A2", it:"finire", en:"finish", fr:"finir", es:"terminar", de:"beenden", pt:"acabar", ru:"заканчивать", ca:"acabar", sp:"fenìe", cr:"", ia:"finir" },
-      { tema:"dialetti", livello:"A2", it:"scoppiare", en:"burst", fr:"éclater", es:"estallar", de:"platzen", pt:"explodir", ru:"взрываться", ca:"esclatar", sp:"sc-ciopàe/s'ciopàe", mn:"vùtaaa/vùtaa", ia:"exploder" },
-      { tema:"dialetti", livello:"A2", it:"mischiare", en:"mix", fr:"mélanger", es:"mezclar", de:"mischen", pt:"misturar", ru:"смешивать", ca:"barrejar", sp:"mesc-ciae/mes'ciae", mn:"zingà", cr:"" },
+      { tema:"dialetti", livello:"A2", it:"scoppiare", en:"burst", fr:"éclater", es:"estallar", de:"platzen", pt:"explodir", ru:"взрываться", ca:"esclatar", sp:"sc-ciopàe/s'ciopàe", mn:"", ia:"exploder" },
+      { tema:"dialetti", livello:"A2", it:"mischiare", en:"mix", fr:"mélanger", es:"mezclar", de:"mischen", pt:"misturar", ru:"смешивать", ca:"barrejar", sp:"mesc-ciae/mes'ciae", mn:"", cr:"" },
       { tema:"dialetti", livello:"B1", it:"uscita", en:"exit", fr:"sortie", es:"salida", de:"Ausgang", pt:"saída|saida", sp:"sortida", ia:"exito" },
       { tema:"luoghi", livello:"A1", it:"Lerici", en:"Lerici", fr:"Lerici", es:"Lerici", de:"Lerici", pt:"Lerici", sp:"Lerze" },
       { tema:"famiglia", livello:"A1", it:"donna", en:"woman", fr:"femme", es:"mujer", de:"Frau", pt:"mulher", mn:"sbusaà/zbùzà/sbùzà", ko:"여자", ar:"امرأة", zh:"女人", ja:"女性", ia:"femina", la:"femina", grc:"γυνή" },
@@ -2580,7 +2579,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A1", it:"grazie", en:"thank you", fr:"merci", es:"gracias", de:"danke", pt:"obrigado", ru:"спасибо", ca:"gràcies", sp:"grassie", mn:"", cr:"", ko:"감사합니다", ar:"شكراً", zh:"谢谢", ja:"ありがとう", ia:"gratias", la:"gratias", grc:"εὐχαριστῶ" },
       { tema:"dialogo", livello:"A1", it:"scusa", en:"sorry", fr:"pardon", es:"perdón", de:"Entschuldigung", pt:"desculpa", ru:"извини", ca:"perdona", ko:"미안해요", ar:"آسف", zh:"对不起", ja:"ごめんなさい", ia:"pardono", la:"ignosce", grc:"συγγνώμη" },
       { tema:"aggettivi", livello:"A2", it:"certo", en:"certain", fr:"certain", es:"cierto", de:"sicher", pt:"certo", ko:"확실한", ar:"مؤكد", zh:"确定", ja:"確かな", ia:"certe", la:"certus", grc:"βέβαιος" },
-      { tema:"aggettivi", livello:"A1", it:"forte", en:"strong", fr:"fort", es:"fuerte", de:"stark", pt:"forte", ru:"сильный", ca:"fort", mn:"sgarbelaà/zgarbélà", ko:"강한", ar:"قوي", zh:"强", ja:"強い", ia:"forte", la:"fortis", grc:"ἰσχυρός" },
+      { tema:"aggettivi", livello:"A1", it:"forte", en:"strong", fr:"fort", es:"fuerte", de:"stark", pt:"forte", ru:"сильный", ca:"fort", mn:"", ko:"강한", ar:"قوي", zh:"强", ja:"強い", ia:"forte", la:"fortis", grc:"ἰσχυρός" },
       { tema:"aggettivi", livello:"A1", it:"vuoto", en:"empty", fr:"vide", es:"vacío", de:"leer", pt:"vazio", ru:"пустой", ca:"buit", sp:"vèito", ko:"빈", ar:"فارغ", zh:"空", ja:"空の", ia:"vacue", la:"vacuus", grc:"κενός" },
       { tema:"aggettivi", livello:"A1", it:"aperto", en:"open", fr:"ouvert", es:"abierto", de:"offen", pt:"aberto", ru:"открытый", ca:"obert", sp:"ravèrto, avèrto", mn:"àvèrtu", ko:"열린", ar:"مفتوح", zh:"开着的", ja:"開いた", ia:"aperte", la:"apertus", grc:"ἀνοικτός" },
       { tema:"aggettivi", livello:"A1", it:"chiuso", en:"closed", fr:"fermé", es:"cerrado", de:"geschlossen", pt:"fechado", ru:"закрытый", ca:"tancat", sp:"schéna, schéne", mn:"", ge:"schénn-a", ko:"닫힌", ar:"مغلق", zh:"关着的", ja:"閉じた", ia:"clause", la:"clausus", grc:"κλειστός" },
@@ -2606,7 +2605,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"spiegare", en:"explain", fr:"expliquer", es:"explicar", de:"erklären", pt:"explicar", ru:"четыре", ca:"quatre", sp:"", ko:"설명하다", ar:"يشرح", zh:"解释", ja:"説明する", ia:"explicar", la:"explicare", grc:"ἐξηγεῖν" },
       { tema:"verbi", livello:"B1", it:"scegliere", en:"choose", fr:"choisir", es:"elegir", de:"wählen", pt:"escolher", ru:"выбирать", ca:"escollir|triar", sp:"sèrne", ko:"선택하다", ar:"يختار", zh:"选择", ja:"選ぶ", ia:"elector", la:"eligere", grc:"αἱρεῖσθαι" },
       { tema:"verbi", livello:"B1", it:"decidere", en:"decide", fr:"décider", es:"decidir", de:"entscheiden", pt:"decidir", ru:"решать", ca:"decidir", ko:"결정하다", ar:"يقرر", zh:"决定", ja:"決める", ia:"decider", la:"decernere", grc:"ἀποφαίνεσθαι" },
-      { tema:"aggettivi", livello:"B1", it:"cambiare", en:"change", fr:"changer", es:"cambiar", de:"ändern", pt:"mudar", ru:"менять", ca:"canviar", sp:"cangiae", mn:"cangiaa", ko:"바꾸다", ar:"يغير", zh:"改变", ja:"変える", ia:"cambiar", la:"mutare", grc:"ἀλλάσσειν" },
+      { tema:"aggettivi", livello:"B1", it:"cambiare", en:"change", fr:"changer", es:"cambiar", de:"ändern", pt:"mudar", ru:"менять", ca:"canviar", sp:"cangiae", mn:"sbragiùn/zbragiùn", ko:"바꾸다", ar:"يغير", zh:"改变", ja:"変える", ia:"cambiar", la:"mutare", grc:"ἀλλάσσειν" },
       { tema:"verbi", livello:"B1", it:"riparare", en:"repair", fr:"réparer", es:"reparar", de:"reparieren", pt:"reparar|consertar", ru:"ремонтировать", ca:"reparar", ko:"수리하다", ar:"يصلح", zh:"修理", ja:"修理する", ia:"reparar", la:"reficere", grc:"ἐπισκευάζειν" },
       { tema:"numeri", livello:"A1", it:"zero", en:"zero", fr:"zéro", es:"cero", de:"null", pt:"zero", sp:"zèo", mn:"zeeuu/zeu", ko:"영", ar:"صفر", zh:"零", ja:"ゼロ", ia:"zero", la:"nihil", grc:"μηδέν" },
       { tema:"famiglia", livello:"A1", it:"padre", en:"father", fr:"père", es:"padre", de:"Vater", pt:"pai", ru:"отец|папа", ca:"pare", sp:"pà, pae,", ko:"아버지", ar:"أب", zh:"父亲", ja:"父", ia:"patre", la:"pater", grc:"πατήρ" },
@@ -2618,7 +2617,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"farmaci", livello:"A1", it:"dito", en:"finger", fr:"doigt", es:"dedo", de:"Finger", pt:"dedo", ru:"палец", ca:"dit", sp:"dido, didi, dida, dite, dide", ko:"손가락", ar:"إصبع", zh:"手指", ja:"指", ia:"digito", la:"digitus", grc:"δάκτυλος" },
       { tema:"corpo", livello:"A2", it:"cuore", en:"heart", fr:"cœur", es:"corazón", de:"Herz", pt:"coração|coracao", ru:"сердце", ca:"cor", sp:"chèe", ko:"심장", ar:"قلب", zh:"心脏", ja:"心臓", ia:"corde", la:"cor", grc:"καρδία" },
       { tema:"vestiti", livello:"A1", it:"cintura", en:"belt", fr:"ceinture", es:"cinturón", de:"Gürtel", pt:"cinto", ru:"ремень", ca:"cinturó", sp:"sentüa", cr:"", ko:"벨트", ar:"حزام", zh:"腰带", ja:"ベルト", ia:"cinctura", la:"cingulum", grc:"ζώνη" },
-      { tema:"vestiti", livello:"A2", it:"guanti", en:"gloves", fr:"gants", es:"guantes", de:"Handschuhe", pt:"luvas", ru:"перчатки", ca:"guants", mn:"", ko:"장갑", ar:"قفازات", zh:"手套", ja:"手袋", ia:"guantes", la:"manicae", grc:"χειρίδες" },
+      { tema:"vestiti", livello:"A2", it:"guanti", en:"gloves", fr:"gants", es:"guantes", de:"Handschuhe", pt:"luvas", ru:"перчатки", ca:"guants", mn:"vitèlu/vìtèlu", ko:"장갑", ar:"قفازات", zh:"手套", ja:"手袋", ia:"guantes", la:"manicae", grc:"χειρίδες" },
       { tema:"dialogo", livello:"B1", it:"essere se stessi", en:"be yourself" },
       { tema:"dialogo", livello:"B1", it:"fare attenzione", en:"take care" },
       { tema:"dialogo", livello:"B1", it:"perderlo", en:"lose it" },
@@ -2636,7 +2635,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"chiedere", en:"ask for", fr:"demander", es:"pedir", de:"fragen nach", pt:"pedir", ru:"спрашивать", ca:"demanar" },
       { tema:"dialogo", livello:"A2", it:"sentirsi bene", en:"feel good", fr:"se sentir bien", es:"sentirse bien", de:"sich gut fühlen", pt:"sentir-se bem" },
       { tema:"natura", livello:"A2", it:"significare", en:"mean that", fr:"vouloir dire", es:"significar", de:"bedeuten", pt:"significar", sp:"arsiprèsso, aosiprèsso", cr:"" },
-      { tema:"numeri", livello:"A1", it:"fammi sapere", en:"let me know", fr:"fais-moi savoir", es:"hazme saber", de:"lass es mich wissen", pt:"me avise", sp:"fame savé", cr:"" },
+      { tema:"numeri", livello:"A1", it:"fammi sapere", en:"let me know", fr:"fais-moi savoir", es:"hazme saber", de:"lass es mich wissen", pt:"me avise", sp:"", cr:"" },
       { tema:"dialogo", livello:"A1", it:"iniziare ora", en:"begin now", fr:"commencer maintenant", es:"empezar ahora", de:"jetzt beginnen", pt:"começar agora|comecar agora", ru:"novanta", ca:"noranta", sp:"", cr:"" },
       { tema:"dialogo", livello:"A2", it:"arrivare in ritardo", en:"run late", fr:"être en retard", es:"llegar tarde", de:"zu spät sein", pt:"atrasar" },
       { tema:"numeri", livello:"A1", it:"credere in te", en:"believe you", fr:"te croire", es:"creer en ti", de:"dir glauben", pt:"acreditar em você|acreditar em voce", ru:"отвечать", ca:"respondre", cr:"" },
@@ -2754,7 +2753,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"muovere", en:"", mn:"smévé/zmévé" },
       { tema:"dialetti", livello:"A2", it:"dividere in metà| dimezzare", en:"to halve", fr:"couper en deux", es:"dividir por la mitad", de:"teilen", pt:"dividir ao meio", ca:"partir", mn:"smesaaa/zmèzaa", ia:"divider in duo partes", la:"dividere", grc:"διαιρεῖν" },
       { tema:"aggettivo", livello:"A2", it:"spento", en:"", mn:"smòrtu/zmòrtu" },
-      { tema:"dialetti", livello:"A2", it:"cambiamento meteo, movimento, mossa", en:"", mn:"" },
+      { tema:"dialetti", livello:"A2", it:"cambiamento meteo, movimento, mossa", en:"", mn:"smossa/zmòssa" },
       { tema:"dialetti", livello:"A2", it:"smucchiare, dilapidare", en:"", mn:"smüciaaa/zmüciaa" },
       { tema:"verbo", livello:"A2", it:"spento", en:"", mn:"smuurtàa/zmurtà" },
       { tema:"dialetti", livello:"A2", it:"spegnere il fuoco o il lume", en:"put out", fr:"éteindre", mn:"smuurtàaa/zmurtaa" },
@@ -2865,7 +2864,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 43;
+const VOC_VERSION = 40;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
@@ -7192,7 +7191,9 @@ function Home({
     }
   };
   function isSbloccata(key) {
-    return true; // TODO: ripristinare soglie per utenti reali
+    const sb = SBLOCCHI[key];
+    if (!sb) return true;
+    return (sb.tipo === "viste" ? paroleViste : apprese) >= sb.soglia;
   }
   function progSblocco(key) {
     const sb = SBLOCCHI[key];
@@ -8719,139 +8720,180 @@ function SchermataSceltaMultipla({
   setStats,
   onHome
 }) {
-  // Stato per coppia di lingue: "it→en", "it→sp", ecc.
-  // Ogni coppia ha il suo nScelte/nDom indipendente.
-  const SK_SM = "qml_v10_sm2"; // chiave aggiornata per reset pulito
-  const lingueAttive = lingue.filter(l => l.attiva);
-  const uiCode = getUILang();
-  const lP = lingueAttive.find(l => l.codice === uiCode) || lingueAttive[0];
-
-  function defaultStatoCoppia() {
-    return { nScelte: 5, nDom: 10, corrette: 0 };
-  }
-  function loadTuttiStati() {
-    try { return JSON.parse(localStorage.getItem(SK_SM) || "{}"); } catch { return {}; }
-  }
-  function salvaTuttiStati(tutti) {
-    try { localStorage.setItem(SK_SM, JSON.stringify(tutti)); } catch {}
-  }
-  // stato corrente = mappa codice_target → {nScelte, nDom, corrette}
-  const [tuttiStati, setTuttiStati] = useState(loadTuttiStati);
+  const SK_SM = "qml_v10_sm"; // {nScelte, nDom, corrette}
+  const [stato, setStato] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(SK_SM) || "null") || {
+        nScelte: 4,
+        nDom: 10,
+        corrette: 0
+      };
+    } catch {
+      return {
+        nScelte: 4,
+        nDom: 10,
+        corrette: 0
+      };
+    }
+  });
   const [indice, setIndice] = useState(0);
   const [carte, setCarte] = useState([]);
-  const [risposta, setRisposta] = useState(null);
+  const [risposta, setRisposta] = useState(null); // null | {scelta, corretta}
   const [punteggio, setPunteggio] = useState(0);
   const [erroreSetup, setErroreSetup] = useState(null);
-
-  function getStatoCoppia(codTarget, stati) {
-    return (stati || tuttiStati)[codTarget] || defaultStatoCoppia();
+  // Tutte le lingue attive — anche dialetti — sono ora valide come prompt o target.
+  const lingueAttive = lingue.filter(l => l.attiva);
+  function salvaStato(s) {
+    try {
+      localStorage.setItem(SK_SM, JSON.stringify(s));
+    } catch {}
   }
-
-  function generaCarte(tuttiStatiOverride) {
-    const ts = tuttiStatiOverride || tuttiStati;
-    if (lingueAttive.length < 2) { setErroreSetup("Servono almeno 2 lingue attive."); return; }
-    if (!lP) { setErroreSetup("Lingua prompt non trovata."); return; }
-    const candidatiLA = lingueAttive.filter(l => l.codice !== lP.codice);
-    if (candidatiLA.length === 0) { setErroreSetup("Servono almeno 2 lingue attive diverse."); return; }
-
-    // Calcola nScelte massimo tra tutte le coppie attive (per il filtro distrattori)
-    const nScelteMax = Math.max(...candidatiLA.map(l => getStatoCoppia(l.codice, ts).nScelte));
-
-    // Pool globale: entry con prompt e almeno una lingua target valida
-    const poolGlobale = vocabolario.filter(e =>
-      e[lP.codice] && String(e[lP.codice]).trim() &&
-      candidatiLA.some(l => e[l.codice] && String(e[l.codice]).trim())
-    );
-    if (poolGlobale.length === 0) { setErroreSetup("Vocabolario insufficiente per le lingue attive."); return; }
-
-    // nDom = massimo nDom tra le coppie attive (il mazzo è misto)
-    const nDomTot = Math.max(...candidatiLA.map(l => getStatoCoppia(l.codice, ts).nDom));
-    const shuffled = [...poolGlobale].sort(() => Math.random() - 0.5);
-    const nuoveCarte = [];
-
-    for (const entry of shuffled) {
-      if (nuoveCarte.length >= nDomTot) break;
-      // Scegli una lingua target casuale tra quelle con traduzione disponibile
-      const targetsValidi = candidatiLA.filter(l => entry[l.codice] && String(entry[l.codice]).trim());
-      if (targetsValidi.length === 0) continue;
-      const lA = targetsValidi[Math.floor(Math.random() * targetsValidi.length)];
-      const stCoppia = getStatoCoppia(lA.codice, ts);
-      const corretta = formaDisplay(entry[lA.codice], lA.codice);
-      // Distrattori dalla stessa lingua target
-      const pool_lA = poolGlobale.filter(e => e[lA.codice] && String(e[lA.codice]).trim());
-      const altri = pool_lA.filter(e => formaDisplay(e[lA.codice], lA.codice) !== corretta)
-        .sort(() => Math.random() - 0.5).slice(0, stCoppia.nScelte - 1);
-      if (altri.length < stCoppia.nScelte - 1) continue;
-      const scelte = [corretta, ...altri.map(e => formaDisplay(e[lA.codice], lA.codice))].sort(() => Math.random() - 0.5);
-      nuoveCarte.push({ entry, linguaPrompt: lP, lingua: lA, corretta, scelte });
+  function generaCarte(statoOverride) {
+    const st = statoOverride || stato;
+    if (lingueAttive.length < 2) {
+      setErroreSetup("Servono almeno 2 lingue attive.");
+      return;
     }
-
-    if (nuoveCarte.length === 0) {
-      setErroreSetup("Vocabolario insufficiente: non ci sono abbastanza traduzioni diverse per generare distrattori.");
+    // Lingua del prompt: la UI dell'utente, se attiva; altrimenti la prima attiva.
+    const uiCode = getUILang();
+    const lP = lingueAttive.find(l => l.codice === uiCode) || lingueAttive[0];
+    const candidatiLA = lingueAttive.filter(l => l.codice !== lP.codice);
+    if (candidatiLA.length === 0) {
+      setErroreSetup("Servono almeno 2 lingue attive diverse.");
+      return;
+    }
+    // Prova ogni lingua target finché non se ne trova una con abbastanza candidati.
+    // Mescola l'ordine per non scegliere sempre la prima.
+    const targetMescolati = [...candidatiLA].sort(() => Math.random() - 0.5);
+    let lA = null;
+    let cand = [];
+    for (const t of targetMescolati) {
+      const c = vocabolario.filter(e => e[lP.codice] && String(e[lP.codice]).trim() && e[t.codice] && String(e[t.codice]).trim());
+      if (c.length >= st.nScelte) {
+        lA = t;
+        cand = c;
+        break;
+      }
+    }
+    if (!lA) {
+      setErroreSetup("Vocabolario insufficiente per le lingue attive. Aggiungi parole o cambia lingue.");
       return;
     }
     setErroreSetup(null);
+    // Selezione senza ripetizioni: shuffle e prendi le prime nDom
+    const shuffled = [...cand].sort(() => Math.random() - 0.5);
+    const nDomReali = Math.min(st.nDom, shuffled.length);
+    const nuoveCarte = [];
+    for (let i = 0; i < nDomReali; i++) {
+      const entry = shuffled[i];
+      const corretta = soloVisibile(entry[lA.codice]);
+      // Distrattori: altre entry con traduzione diversa (e non vuota — già garantito da `cand`)
+      const altri = cand.filter(e => soloVisibile(e[lA.codice]) !== corretta).sort(() => Math.random() - 0.5).slice(0, st.nScelte - 1);
+      if (altri.length < st.nScelte - 1) continue; // non abbastanza distrattori unici
+      const scelte = [corretta, ...altri.map(e => soloVisibile(e[lA.codice]))].sort(() => Math.random() - 0.5);
+      nuoveCarte.push({
+        entry,
+        linguaPrompt: lP,
+        lingua: lA,
+        corretta,
+        scelte
+      });
+    }
+    if (nuoveCarte.length === 0) {
+      setErroreSetup("Vocabolario insufficiente: non ci sono abbastanza traduzioni diverse per generare distrattori. Aggiungi parole o riduci il numero di scelte.");
+      return;
+    }
     setCarte(nuoveCarte);
     setIndice(0);
     setRisposta(null);
     setPunteggio(0);
   }
-
-  useEffect(() => { generaCarte(); }, []);
+  useEffect(() => {
+    generaCarte();
+  }, []); // genera al mount; le sessioni successive le crea giocaAncora
 
   function scegli(s) {
     if (risposta) return;
     const carta = carte[indice];
     const ok = s === carta.corretta;
-    setRisposta({ scelta: s, corretta: ok });
+    setRisposta({
+      scelta: s,
+      corretta: ok
+    });
     if (ok) {
       setPunteggio(p => p + 1);
+      // Conta come "vista" (livello zero → 1) per sbloccare modalità successive,
+      // ma non avanza SM-2 oltre 1 (è riconoscimento, non richiamo attivo)
       if (setStats && carta.entry && carta.lingua && carta.linguaPrompt) {
         const key = coppiaKey(carta.entry, carta.linguaPrompt.codice, carta.lingua.codice);
         setStats(prev => {
           const c = getCoppia(prev, key);
-          if (c.livello > 0) return prev;
-          return { ...prev, [key]: { livello: 1, prossima: oggi() + INTERVALLI[1] * 86400000, risposte: (c.risposte || 0) + 1, corrette: (c.corrette || 0) + 1 } };
+          if (c.livello > 0) return prev; // già appresa o vista, non toccare
+          return {
+            ...prev,
+            [key]: {
+              livello: 1,
+              prossima: oggi() + INTERVALLI[1] * 86400000,
+              risposte: (c.risposte || 0) + 1,
+              corrette: (c.corrette || 0) + 1
+            }
+          };
         });
       }
     }
   }
-
   function avanti() {
-    if (indice < carte.length - 1) { setIndice(i => i + 1); setRisposta(null); }
-  }
-
-  // Progressione per coppia: 5→12 scelte, 10→50 domande
-  function calcolaProssimoStatoCoppia(codTarget, percentuale) {
-    const st = getStatoCoppia(codTarget);
-    if (percentuale === 100) {
-      if (st.nDom >= 50) {
-        // Massimo domande raggiunto: scala le scelte
-        const nuoveScelte = Math.min(st.nScelte + 2, 12);
-        return { nScelte: nuoveScelte, nDom: 10, corrette: 0 };
-      }
-      return { ...st, nDom: Math.min(st.nDom + 5, 50), corrette: 0 };
+    // Solo per passaggio fra le carte intermedie. L'ultima carta porta direttamente
+    // alla schermata fine (non si arriva mai qui con indice===carte.length-1).
+    if (indice < carte.length - 1) {
+      setIndice(i => i + 1);
+      setRisposta(null);
     }
-    if (percentuale < 50) return { ...st, nDom: Math.max(st.nDom - 5, 10), corrette: 0 };
-    return { ...st, corrette: 0 };
   }
 
+  // Calcola lo stato della prossima sessione in base alla performance attuale
+  function calcolaProssimoStato(percentuale) {
+    if (percentuale === 100) {
+      if (stato.nDom + 5 > 100) {
+        const nuoveScelte = Math.min(stato.nScelte + 2, 12);
+        if (nuoveScelte > stato.nScelte) {
+          return {
+            nScelte: nuoveScelte,
+            nDom: 10,
+            corrette: 0
+          };
+        }
+        return {
+          ...stato,
+          nDom: 10,
+          corrette: 0
+        }; // già a 12, riparte da 10
+      }
+      return {
+        ...stato,
+        nDom: Math.min(stato.nDom + 5, 100),
+        corrette: 0
+      };
+    }
+    if (percentuale < 50) {
+      return {
+        ...stato,
+        nDom: Math.max(stato.nDom - 5, 10),
+        corrette: 0
+      };
+    }
+    return {
+      ...stato,
+      corrette: 0
+    };
+  }
   function giocaAncora() {
     const percFinale = Math.round(punteggio / carte.length * 100);
-    // Aggiorna ogni coppia target presente nel mazzo in base alla performance globale
-    const nuoviStati = { ...tuttiStati };
-    const targetsUsati = [...new Set(carte.map(c => c.lingua.codice))];
-    for (const cod of targetsUsati) {
-      nuoviStati[cod] = calcolaProssimoStatoCoppia(cod, percFinale);
-    }
-    salvaTuttiStati(nuoviStati);
-    setTuttiStati(nuoviStati);
-    generaCarte(nuoviStati);
+    const nuovoStato = calcolaProssimoStato(percFinale);
+    salvaStato(nuovoStato);
+    setStato(nuovoStato);
+    generaCarte(nuovoStato);
   }
-
-  // Stato "rappresentativo" per display: usa la prima coppia target attiva
-  const primaTarget = lingueAttive.find(l => l.codice !== lP?.codice);
-  const statoDisplay = primaTarget ? getStatoCoppia(primaTarget.codice) : defaultStatoCoppia();
   if (!carte.length) return /*#__PURE__*/React.createElement("div", {
     className: "min-h-screen bg-black flex items-center justify-center p-6"
   }, erroreSetup ? /*#__PURE__*/React.createElement("div", {
@@ -8887,7 +8929,7 @@ function SchermataSceltaMultipla({
     className: "text-zinc-600 text-xs"
   }, "\uD83C\uDFAF Scelta multipla"), /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-zinc-700"
-  }, statoDisplay.nScelte, " scelte \xB7 ", statoDisplay.nDom, " dom")), /*#__PURE__*/React.createElement("span", {
+  }, stato.nScelte, " scelte \xB7 ", stato.nDom, " domande")), /*#__PURE__*/React.createElement("span", {
     className: "text-zinc-500 text-sm"
   }, indice + 1, "/", carte.length)), /*#__PURE__*/React.createElement("div", {
     className: "h-1 bg-zinc-900 rounded-full mb-4"
@@ -8902,7 +8944,7 @@ function SchermataSceltaMultipla({
     className: "text-sm text-zinc-500 mb-2"
   }, carta.linguaPrompt?.bandiera || "\uD83C\uDDEE\uD83C\uDDF9", " ", carta.linguaPrompt?.nome || "Italiano"), /*#__PURE__*/React.createElement("p", {
     className: "text-5xl font-extrabold text-white tracking-tight"
-  }, formaDisplay(carta.entry[carta.linguaPrompt?.codice || "it"], carta.linguaPrompt?.codice || "it")), /*#__PURE__*/React.createElement("p", {
+  }, soloVisibile(carta.entry[carta.linguaPrompt?.codice || "it"])), /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-600 mt-2"
   }, carta.lingua.bandiera, " ", carta.lingua.nome)), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 gap-3 mb-4"
@@ -8924,8 +8966,7 @@ function SchermataSceltaMultipla({
   }, indice < carte.length - 1 ? "Avanti →" : "Risultati →"), /*#__PURE__*/React.createElement("div", {
     className: "text-center mt-3 text-zinc-600 text-sm"
   }, "\u2705 ", punteggio, " / ", indice + 1)), fine && (() => {
-    const primaTargetFine = carte.length > 0 ? carte[0].lingua.codice : null;
-    const prossimoStato = primaTargetFine ? calcolaProssimoStatoCoppia(primaTargetFine, perc) : defaultStatoCoppia();
+    const prossimoStato = calcolaProssimoStato(perc);
     return /*#__PURE__*/React.createElement("div", {
       className: "flex-1 flex flex-col items-center justify-center text-center"
     }, /*#__PURE__*/React.createElement("div", {
@@ -8936,9 +8977,9 @@ function SchermataSceltaMultipla({
       className: "text-zinc-400 mb-2"
     }, punteggio, " / ", carte.length, " corrette"), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-600 mb-6"
-    }, perc === 100 ? "⬆️ +5 dom al prossimo giro" : perc < 50 ? "⬇️ -5 dom al prossimo giro" : "➡️ Stesso livello"), /*#__PURE__*/React.createElement("p", {
+    }, perc === 100 ? "⬆️ +5 domande al prossimo giro" : perc < 50 ? "⬇️ -5 domande al prossimo giro" : "➡️ Stesso livello"), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-700 mb-6"
-    }, "Prossimo: ", prossimoStato.nScelte, " scelte \xB7 ", prossimoStato.nDom, " dom"), /*#__PURE__*/React.createElement("button", {
+    }, "Prossimo: ", prossimoStato.nScelte, " scelte \xB7 ", prossimoStato.nDom, " domande"), /*#__PURE__*/React.createElement("button", {
       onClick: giocaAncora,
       className: "w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-4 rounded-xl transition btn-shadow mb-3"
     }, "Gioca ancora \u2192"), /*#__PURE__*/React.createElement("button", {
@@ -9051,7 +9092,7 @@ Reply with JSON only.`;
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mb-1"
   }, carta.lingua.bandiera, " ", carta.lingua.nome), /*#__PURE__*/React.createElement("p", {
-    className: "text-5xl font-extrabold text-white mb-1 tracking-tight"
+    className: "text-4xl font-extrabold text-white mb-1"
   }, soloVisibile(carta.entry[carta.lingua.codice])), /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-500 italic"
   }, "\uD83C\uDDEE\uD83C\uDDF9 ", soloVisibile(carta.entry.it))), stato === "domanda" && /*#__PURE__*/React.createElement("div", {
@@ -9062,7 +9103,7 @@ Reply with JSON only.`;
     value: frase,
     onChange: e => setFrase(e.target.value),
     placeholder: `Frase con "${soloVisibile(carta.entry[carta.lingua.codice])}"...`,
-    className: "w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white text-lg resize-none focus:outline-none focus:border-cyan-500 mb-3",
+    className: "w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white text-base resize-none focus:outline-none focus:border-cyan-500 mb-3",
     rows: 3,
     onKeyDown: e => {
       if (e.key === "Enter" && !e.shiftKey) {
