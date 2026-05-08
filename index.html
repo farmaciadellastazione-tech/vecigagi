@@ -1636,6 +1636,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO (gestito tramite edit.html) ──────────────────────────
+      { tema:"verbi", livello:"B1", it:"malmenare", sp:"tombae", mn:"tumbaa" },
       { tema:"tempo", livello:"A1", it:"Natale", sp:"Nadae|Nadà", mn:"Nadaa" },
       { tema:"comunicazione", livello:"A1", it:"voce", mn:"guza" },
       { tema:"natura", livello:"B1", it:"milione|un milione", mn:"migliun|un migliun" },
@@ -1929,7 +1930,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mestieri", livello:"B1", it:"pescatore", en:"fisherman", fr:"pêcheur", es:"pescador", de:"Fischer", pt:"pescador", sp:"pescadoe", ko:"어부", ar:"صياد", zh:"渔民", ja:"漁師" },
       { tema:"salute", livello:"A1", it:"gatto", en:"cat", fr:"chat", es:"gato", de:"Katze", pt:"gato", ru:"кошка", ca:"gat", sp:"gato", mn:"gatu", cr:"", ko:"고양이", ar:"قطة", zh:"猫", ja:"猫" },
       { tema:"animali", livello:"A1", it:"cavallo", en:"horse", fr:"cheval", es:"caballo", de:"Pferd", pt:"cavalo", ru:"лошадь", ca:"cavall", sp:"cavalo", ko:"말", ar:"حصان", zh:"马", ja:"馬", ia:"cavallo" },
-      { tema:"insulti", livello:"A2", it:"coniglio", en:"rabbit", fr:"lapin", es:"conejo", de:"Kaninchen", pt:"coelho", ru:"кролик", ca:"conill", sp:"conigio", mn:"gagiu", cr:"Cunìggi", ge:"cunìggio", ko:"토끼", ar:"أرنب", zh:"兔子", ja:"ウサギ" },
+      { tema:"insulti", livello:"A2", it:"coniglio", en:"rabbit", fr:"lapin", es:"conejo", de:"Kaninchen", pt:"coelho", ru:"кролик", ca:"conill", sp:"conigio", mn:"conigiu", cr:"Cunìggi", ge:"cunìggio", ko:"토끼", ar:"أرنب", zh:"兔子", ja:"ウサギ" },
       { tema:"animali", livello:"A2", it:"gallina", en:"hen", fr:"poule", es:"gallina", de:"Huhn", pt:"galinha", sp:"gaìna", mn:"gagina", ge:"gàinn-a", ko:"닭", ar:"دجاجة", zh:"鸡", ja:"鶏", ia:"gallina" },
       { tema:"animali", livello:"A2", it:"mucca", en:"cow", fr:"vache", es:"vaca", de:"Kuh", pt:"vaca", ru:"корова", ca:"vaca", cr:"", ko:"소", ar:"بقرة", zh:"牛", ja:"牛" },
       { tema:"animali", livello:"A2", it:"pecora", en:"sheep", fr:"mouton", es:"oveja", de:"Schaf", pt:"ovelha", ru:"овца", ca:"ovella", sp:"pégoa", ge:"péigoa", ko:"양", ar:"خروف", zh:"羊", ja:"羊" },
@@ -2004,7 +2005,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"vedere", en:"see", fr:"voir", es:"ver", de:"sehen", pt:"ver", ru:"видеть", ca:"veure", sp:"vede", cr:"", ko:"보다", ar:"يرى", zh:"看", ja:"見る", ia:"vider", la:"videre", grc:"ὁρᾶν" },
       { tema:"verbi", livello:"A1", it:"dire", en:"say", fr:"dire", es:"decir", de:"sagen", pt:"dizer", ru:"говорить|сказать", ca:"dir", sp:"die", mn:"dì", cr:"dì", ko:"말하다", ar:"يقول", zh:"说", ja:"言う", ia:"dicer", la:"dicere", grc:"λέγειν" },
       { tema:"cibo", livello:"A1", it:"fare", en:"do", fr:"faire", es:"hacer", de:"machen", pt:"fazer", ru:"делать", ca:"fer", sp:"fae", cr:"", ko:"하다", ar:"يفعل", zh:"做", ja:"する", ia:"facer", la:"facere", grc:"ποιεῖν" },
-      { tema:"verbi", livello:"A1", it:"sapere", en:"know", fr:"savoir", es:"saber", de:"wissen", pt:"saber", ru:"знать", ca:"saber", sp:"savée", mn:"andaaa/andaa", cr:"", ko:"알다", ar:"يعرف", zh:"知道", ja:"知る", ia:"saper", la:"scire", grc:"εἰδέναι" },
+      { tema:"verbi", livello:"A1", it:"sapere", en:"know", fr:"savoir", es:"saber", de:"wissen", pt:"saber", ru:"знать", ca:"saber", sp:"savée", mn:"savee", cr:"", ko:"알다", ar:"يعرف", zh:"知道", ja:"知る", ia:"saper", la:"scire", grc:"εἰδέναι" },
       { tema:"verbi", livello:"A1", it:"amare", en:"love", fr:"aimer", es:"amar", de:"lieben", pt:"amar", ru:"любить", ca:"estimar|amar", sp:"voree ben", mn:"v'ree ben/vrëë bën/vre ben/vrëëbën", ko:"사랑하다", ar:"يحب", zh:"爱", ja:"愛する", ia:"amar", la:"amare", grc:"φιλεῖν|ἀγαπᾶν" },
       { tema:"salute", livello:"A1", it:"scrivere", en:"write", fr:"écrire", es:"escribir", de:"schreiben", pt:"escrever", ru:"писать", ca:"escriure", sp:"", mn:"", cr:"", ko:"쓰다", ar:"يكتب", zh:"写", ja:"書く", ia:"scriber", la:"scribere", grc:"γράφειν" },
       { tema:"verbi", livello:"A2", it:"leggere", en:"read", fr:"lire", es:"leer", de:"lesen", pt:"ler", ru:"читать", ca:"llegir", sp:"lèze", ko:"읽다", ar:"يقرأ", zh:"读", ja:"読む", ia:"leger", la:"legere", grc:"ἀναγιγνώσκειν" },
@@ -2531,7 +2532,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"spicchio", en:"clove", fr:"gousse", es:"diente", de:"Zehe", pt:"dente de alho", sp:"spigo" },
       { tema:"dialetti", livello:"A2", it:"zucchina", en:"courgette", fr:"courgette", es:"calabacín", de:"Zucchini", pt:"abobrinha", sp:"süchèo" },
       { tema:"dialetti", livello:"A1", it:"tu sei", en:"you are", fr:"tu es", es:"tú eres", de:"du bist", pt:"tu és", sp:"tèi" },
-      { tema:"dialetti", livello:"A2", it:"tu eri", en:"you were", fr:"tu étais", es:"tú eras", de:"du warst", pt:"tu eras", sp:"téi", mn:"sganassase/zgànassasé" },
+      { tema:"dialetti", livello:"A2", it:"tu eri", en:"you were", fr:"tu étais", es:"tú eras", de:"du warst", pt:"tu eras", sp:"", mn:"" },
       { tema:"dialetti", livello:"A2", it:"baccello", en:"pod", fr:"cosse", es:"vaina", de:"Schote", pt:"vagem", sp:"baga", mn:"baga" },
       { tema:"dialetti", livello:"A1", it:"tavola", en:"table", fr:"table", es:"mesa", de:"Tisch", pt:"mesa", ru:"стол|трапеза", ca:"taula", sp:"tòa/toa", la:"mensa", grc:"τράπεζα" },
       { tema:"dialetti", livello:"A2", it:"tavolata", en:"dinner party", fr:"tablée", es:"tablada", de:"Tafelrunde", pt:"tablada", sp:"toà/toa", ia:"tabulata" },
@@ -2864,7 +2865,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 41;
+const VOC_VERSION = 42;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
