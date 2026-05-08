@@ -7630,9 +7630,9 @@ function Home({
       className: "flex items-center gap-2 mb-0.5"
     }, /*#__PURE__*/React.createElement("span", {
       className: `font-extrabold text-lg ${sbloccata ? "text-white" : "text-zinc-600"}`
-    }, m.title), /*#__PURE__*/React.createElement("span", {
-      className: `text-xs font-bold px-1.5 py-0.5 rounded-full flex-shrink-0 ${sbloccata ? "bg-zinc-700 text-zinc-300" : "bg-zinc-800 text-zinc-600"}`
-    }, isSbloccata(m.key) ? null : m.lv)), /*#__PURE__*/React.createElement("div", {
+    }, m.title), isSbloccata(m.key) ? null : /*#__PURE__*/React.createElement("span", {
+      className: "text-xs font-bold px-1.5 py-0.5 rounded-full flex-shrink-0 bg-zinc-800 text-zinc-600"
+    }, m.lv)), /*#__PURE__*/React.createElement("div", {
       className: `text-sm ${sbloccata ? "text-slate-400" : "text-zinc-600"}`
     }, m.desc), motivoBlocco && /*#__PURE__*/React.createElement("div", {
       className: "text-xs text-amber-500 mt-1 font-medium"
