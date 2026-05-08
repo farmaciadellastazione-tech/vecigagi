@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>LinguaeQuiz Editor</title>
+<style>
+  :root {
+    --primary: #1e40af;
+    --primary-light: #3b82f6;
+    --accent: #dc2626;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --border: #e2e8f0;
+    --text: #1e293b;
+    --muted: #64748b;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --amber: #d97706;
+    --amber-light: #fef3c7;
+    --purple: #7c3aed;
+    --purple-light: #ede9fe;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 0; }
+  header { background: var(--card-bg); border-bottom: 2px solid var(--border); padding: 0.8rem 1rem; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
+  h1 { margin: 0 0 0.6rem; font-size: 1.25rem; color: var(--primary); display: flex; align-items: center; gap: 0.4rem; }
+  .controls { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: flex-end; }
+  .controls label { font-size: 0.78rem; color: var(--muted); display: flex; flex-direction: column; gap: 0.2rem; font-weight: 500; }
+  .controls label.inline { flex-direction: row; align-items: center; gap: 0.4rem; padding-bottom: 0.4rem; }
+  select, input[type=text] { padding: 0.45rem 0.65rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.92rem; background: white; color: var(--text); }
+  input[type=text] { min-width: 200px; }
+  input[type=text]#search { min-width: 240px; }
+  .btn { padding: 0.5rem 0.9rem; border: none; border-radius: 6px; cursor: pointer; font-size: 0.88rem; font-weight: 500; transition: background 0.15s; white-space: nowrap; }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: var(--primary-light); }
+  .btn-success { background: #24292f; color: white; }
+  .btn-success:hover { background: #4a4f54; }
+  .btn-secondary { background: white; color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: #f1f5f9; }
+  .btn-ai { background: var(--purple); color: white; }
+  .btn-ai:hover { background: #6d28d9; }
+  .btn-danger { background: var(--accent); color: white; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .stats { font-size: 0.82rem; color: var(--muted); margin-left: auto; }
+  main { padding: 1rem; max-width: 1500px; margin: 0 auto 5rem; }
+  table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  th { text-align: left; padding: 0.55rem 0.6rem; background: #f1f5f9; font-size: 0.75rem; text-transform: uppercase; color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--border); position: sticky; top: var(--header-h, 138px); z-index: 15; box-shadow: 0 2px 0 var(--border); }
+  tbody tr { background: var(--card-bg); }
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { background: #e2e8f0; color: var(--primary); }
+  th.sorted { color: var(--primary); background: #e0e7ff; }
+  th .sort-arrow { display: inline-block; margin-left: 0.2rem; opacity: 0.6; font-size: 0.7rem; }
+  td { padding: 0.35rem 0.55rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:hover { background: #f8fafc; }
+  tr.modified { background: #fefce8; }
+  tr.modified:hover { background: #fef9c3; }
+  tr.new-row { background: var(--green-light); }
+  tr.new-row:hover { background: #bbf7d0; }
+  td input { width: 100%; padding: 0.4rem 0.55rem; border: 1px solid transparent; border-radius: 4px; background: transparent; font-size: 0.93rem; font-family: inherit; }
+  td input:hover { background: white; border-color: var(--border); }
+  td input:focus { background: white; border-color: var(--primary-light); outline: none; box-shadow: 0 0 0 2px rgba(59,130,246,0.15); }
+  td.it-cell, td.lang-cell { position: relative; }
+  td.it-cell input { font-weight: 500; color: var(--text); }
+  td.lang-cell input { color: var(--primary); font-weight: 500; }
+  td.lang2-cell input { color: var(--muted); font-weight: 500; }
+  .alt-badge { position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: var(--amber-light); color: #92400e; font-size: 0.68rem; font-weight: 700; padding: 0.1rem 0.35rem; border-radius: 4px; pointer-events: none; border: 1px solid #fde68a; }
+  .slash-badge { position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: var(--purple-light); color: var(--purple); font-size: 0.62rem; font-weight: 700; padding: 0.1rem 0.3rem; border-radius: 4px; pointer-events: none; border: 1px solid #c4b5fd; letter-spacing: 0.02em; }
+  td.lang-cell .slash-badge + .alt-badge, td.lang2-cell .slash-badge + .alt-badge { right: 4.2rem; }
+  td.it-cell input, td.lang-cell input, td.lang2-cell input { padding-right: 2.4rem; }
+  td.tema-cell input, td.livello-cell input { color: var(--muted); font-size: 0.85rem; }
+  .row-actions { display: flex; gap: 0.15rem; white-space: nowrap; }
+  .icon-btn { background: none; border: none; cursor: pointer; padding: 0.3rem 0.4rem; border-radius: 4px; font-size: 0.95rem; opacity: 0.55; transition: all 0.12s; }
+  .icon-btn:hover { opacity: 1; background: #f1f5f9; }
+  .icon-btn.danger:hover { background: #fee2e2; }
+  .icon-btn.ai:hover { background: var(--purple-light); }
+  .icon-btn.ai-pending { animation: pulse 1.2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+  .empty-cell input { background: #fff7ed !important; }
+  .footer-bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--card-bg); border-top: 2px solid var(--border); padding: 0.7rem 1rem; display: flex; gap: 0.5rem; align-items: center; box-shadow: 0 -2px 6px rgba(0,0,0,0.06); flex-wrap: wrap; z-index: 20; }
+  .footer-bar .stats { margin-left: auto; }
+  .badge { display: inline-block; padding: 0.1rem 0.45rem; border-radius: 4px; font-size: 0.74rem; font-weight: 600; background: #e0e7ff; color: var(--primary); }
+  .badge-empty { background: var(--amber-light); color: #b45309; }
+  .badge-new { background: var(--green-light); color: var(--green); }
+  #pagination { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; padding: 0.8rem 0; }
+  #pagination button { padding: 0.3rem 0.6rem; }
+  .help { padding: 0.7rem 1rem; background: #fffbeb; border-left: 3px solid #f59e0b; margin: 0 0 1rem; border-radius: 4px; font-size: 0.86rem; color: #92400e; }
+  .help.error { background: #fef2f2; border-left-color: var(--accent); color: #991b1b; }
+  .help.success { background: #f0fdf4; border-left-color: var(--green); color: #166534; }
+  .help.info { background: #eff6ff; border-left-color: var(--primary-light); color: #1e3a8a; }
+  .legend { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.78rem; color: var(--muted); margin-top: 0.5rem; }
+  .legend span { display: flex; align-items: center; gap: 0.3rem; }
+  .legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .row-status { font-size: 1rem; text-align: center; }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; border-radius: 12px; padding: 1.5rem; max-width: 500px; width: 100%; box-shadow: 0 10px 40px rgba(0,0,0,0.2); max-height: 90vh; overflow-y: auto; }
+  .modal h2 { margin: 0 0 0.5rem; font-size: 1.15rem; color: var(--primary); }
+  .modal p { margin: 0.4rem 0; font-size: 0.9rem; color: var(--text); }
+  .modal label { display: block; margin: 0.8rem 0 0.3rem; font-size: 0.85rem; font-weight: 500; color: var(--text); }
+  .modal input, .modal select { width: 100%; padding: 0.5rem 0.7rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.92rem; }
+  .modal input[type=checkbox] { width: auto; }
+  .modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1.2rem; }
+  .ai-status { display: inline-block; font-size: 0.78rem; padding: 0.15rem 0.5rem; border-radius: 4px; background: var(--purple-light); color: var(--purple); margin-left: 0.5rem; }
+  .ai-status.off { background: #f1f5f9; color: var(--muted); }
+  .dup-group { border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.8rem; margin-bottom: 0.7rem; background: #fafbfc; }
+  .dup-group-safe { border-left: 4px solid var(--green); }
+  .dup-group-sinonimi { border-left: 4px solid var(--accent); background: #fef9f9; }
+  .dup-conflitti { background: #fff; border: 1px dashed #fca5a5; padding: 0.4rem 0.7rem; border-radius: 6px; margin-bottom: 0.5rem; }
+  .dup-group h3 { margin: 0 0 0.5rem; font-size: 0.95rem; color: var(--primary); }
+  .dup-row { display: flex; gap: 0.5rem; align-items: flex-start; padding: 0.5rem; border: 1px solid var(--border); border-radius: 6px; background: white; margin-bottom: 0.4rem; font-size: 0.85rem; }
+  .dup-row.recommended { border-color: var(--green); background: var(--green-light); }
+  .dup-row .dup-fields { flex: 1; min-width: 0; }
+  .dup-row .dup-fields code { background: rgba(0,0,0,0.05); padding: 1px 5px; border-radius: 3px; font-size: 0.82rem; word-break: break-word; }
+  .dup-row .dup-actions { display: flex; gap: 0.3rem; flex-shrink: 0; }
+  .dup-row .dup-meta { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+  .dup-empty { color: var(--muted); font-style: italic; text-align: center; padding: 2rem; }
+  /* Import preview */
+  .import-preview { font-size: 0.83rem; margin-top: 0.8rem; max-height: 200px; overflow-y: auto; border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem 0.7rem; background: #f8fafc; }
+  .import-preview table { box-shadow: none; font-size: 0.82rem; }
+  .import-preview th { position: static; top: auto; }
+  @media (max-width: 700px) {
+    th { display: none; }
+    table, tbody, tr, td { display: block; width: 100%; }
+    tr { padding: 0.6rem; border-bottom: 2px solid var(--border); }
+    td { padding: 0.25rem 0; border-bottom: none; }
+    td::before { content: attr(data-label); font-size: 0.7rem; text-transform: uppercase; color: var(--muted); display: block; margin-top: 0.3rem; font-weight: 600; }
+    .footer-bar { padding: 0.6rem; gap: 0.4rem; }
+    .footer-bar .btn { font-size: 0.82rem; padding: 0.45rem 0.7rem; }
+    .footer-bar .stats { width: 100%; margin: 0; text-align: center; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>📝 LinguaeQuiz Editor <span id="ai-indicator" class="ai-status off">AI: off</span></h1>
+  <div class="controls">
+    <label>Lingua principale
+      <select id="lang-select"></select>
+    </label>
+    <label>Lingua secondaria
+      <select id="lang2-select"><option value="">— nessuna —</option></select>
+    </label>
+    <label>Tema
+      <select id="tema-select"><option value="">tutti</option></select>
+    </label>
+    <label>Livello
+      <select id="livello-select">
+        <option value="">tutti</option>
+        <option>A1</option><option>A2</option><option>B1</option><option>B2</option>
+      </select>
+    </label>
+    <label>Cerca
+      <input type="text" id="search" placeholder="cerca italiano o lingua...">
+    </label>
+    <label class="inline">
+      <input type="checkbox" id="only-empty"> solo da tradurre
+    </label>
+    <button class="btn btn-secondary" onclick="apriConfigAI()" title="Configura AI">⚙️ AI</button>
+    <span class="stats" id="stats"></span>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--green-light);border:1px solid #86efac"></i> nuova voce</span>
+    <span><i style="background:#fefce8;border:1px solid #fde68a"></i> modificata</span>
+    <span><i style="background:#fff7ed;border:1px solid #fed7aa"></i> da tradurre</span>
+    <span>💡 separa traduzioni alternative con <code style="background:var(--amber-light);padding:0 4px;border-radius:3px">|</code></span>
+  </div>
+</header>
+
+<main>
+  <div class="help" id="help-msg"></div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:32px" title="Stato">·</th>
+        <th class="sortable" data-sort="it" style="width:24%">Italiano <span class="sort-arrow"></span></th>
+        <th class="sortable" data-sort="lang" id="lang-th" style="width:24%">Lingua <span class="sort-arrow"></span></th>
+        <th class="sortable" data-sort="lang2" id="lang2-th" style="width:18%; display:none">Sec. <span class="sort-arrow"></span></th>
+        <th class="sortable" data-sort="tema" style="width:14%">Tema <span class="sort-arrow"></span></th>
+        <th class="sortable" data-sort="livello" style="width:7%">Liv. <span class="sort-arrow"></span></th>
+        <th style="width:9%">Pron. TTS</th>
+        <th style="width:90px"></th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <div id="pagination"></div>
+</main>
+
+<div class="footer-bar">
+  <button class="btn btn-primary" onclick="aggiungiVoce()">➕ Nuova voce</button>
+  <button class="btn btn-ai" onclick="completaConAI()" id="btn-ai-batch" title="Completa con AI tutte le voci filtrate vuote">✨ Completa con AI</button>
+  <button class="btn btn-secondary" onclick="apriDuplicati()" title="Trova e gestisci voci duplicate">🔍 Duplicati</button>
+  <button class="btn btn-secondary" onclick="exportExcel()" title="Esporta lingua corrente (filtri applicati) come Excel">📥 Esporta</button>
+  <button class="btn btn-secondary" onclick="apriImport()" title="Importa traduzioni da Excel o CSV">📤 Importa</button>
+  <button class="btn btn-secondary" onclick="apriNuovaLingua()" title="Aggiungi una nuova lingua o dialetto">🌐 Nuova lingua</button>
+  <button id="btn-gh-save" class="btn btn-success" onclick="salvaSuGitHub()">☁️ Salva su GitHub</button>
+  <button class="btn btn-secondary" onclick="scaricaCopia()" title="Scarica index.html localmente">💾 Scarica</button>
+  <button class="btn btn-secondary" onclick="reimpostaToken()" title="Cambia token GitHub">🔑</button>
+  <span class="stats" id="footer-stats"></span>
+</div>
+
+<!-- Modal config AI -->
+<div class="modal-overlay" id="ai-modal">
+  <div class="modal">
+    <h2>⚙️ Configurazione AI</h2>
+    <p style="color:var(--muted); font-size:0.85rem">L'AI viene usata per: tradurre voci mancanti, suggerire tema e livello (A1-B2) per nuove voci. La chiave API resta solo in questo browser (localStorage).</p>
+    <label>Provider
+      <select id="ai-provider">
+        <option value="">— disabilitato —</option>
+        <option value="groq">Groq (consigliato, gratuito)</option>
+        <option value="gemini">Google Gemini</option>
+        <option value="anthropic">Anthropic Claude</option>
+        <option value="openai">OpenAI</option>
+      </select>
+    </label>
+    <label>API Key
+      <input type="text" id="ai-key" placeholder="Incolla qui la tua chiave API">
+    </label>
+    <p style="font-size:0.78rem; color:var(--muted); margin-top:0.6rem">
+      <strong>Dove ottenere una chiave gratuita:</strong><br>
+      • Groq: <span style="user-select:all">console.groq.com/keys</span><br>
+      • Gemini: <span style="user-select:all">aistudio.google.com/apikey</span>
+    </p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="chiudiConfigAI()">Annulla</button>
+      <button class="btn btn-primary" onclick="salvaConfigAI()">Salva</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal duplicati -->
+<div class="modal-overlay" id="dup-modal">
+  <div class="modal" style="max-width: 760px;">
+    <h2>🔍 Voci duplicate</h2>
+    <p style="color:var(--muted); font-size:0.85rem">Voci con lo stesso italiano (ignorando maiuscole e spazi). Per ogni gruppo, scegli quale tenere e cancella le altre. Il salvataggio è effettivo solo dopo "☁️ Salva su GitHub".</p>
+    <div id="dup-list" style="max-height: 60vh; overflow-y: auto; margin-top: 0.8rem;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="dedupaAutomatico()" title="Fonde automaticamente tutti i gruppi senza conflitti">🧹 Dedupa automaticamente</button>
+      <button class="btn btn-secondary" onclick="chiudiDuplicati()">Chiudi</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Import -->
+<div class="modal-overlay" id="import-modal">
+  <div class="modal" style="max-width: 600px;">
+    <h2>📤 Importa vocabolario</h2>
+    <p style="color:var(--muted); font-size:0.85rem">Carica un file Excel (.xlsx) o CSV precedentemente esportato. Il match avviene sulla colonna <strong>ITALIANO</strong>. La colonna da importare è quella della lingua attualmente selezionata nell'editor.</p>
+    <label>File Excel (.xlsx) o CSV (.csv)
+      <input type="file" id="import-file" accept=".xlsx,.csv" style="border:none;padding:0.3rem 0;">
+    </label>
+    <label style="display:flex; align-items:center; gap:0.5rem; flex-direction:row; margin-top:0.8rem;">
+      <input type="checkbox" id="import-force" style="width:auto;">
+      <span style="font-size:0.85rem;">Forza sovrascrittura (aggiorna anche voci già tradotte)</span>
+    </label>
+    <div id="import-preview" class="import-preview" style="display:none;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="chiudiImport()">Annulla</button>
+      <button class="btn btn-primary" id="btn-import-apply" onclick="applicaImport()" disabled>Applica</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Nuova Lingua -->
+<div class="modal-overlay" id="lingua-modal">
+  <div class="modal" style="max-width: 480px;">
+    <h2>🌐 Aggiungi nuova lingua / dialetto</h2>
+    <p style="color:var(--muted); font-size:0.85rem">La lingua verrà aggiunta a <strong>edit.html</strong> e a <strong>index.html</strong> (disattivata di default — l'utente la abilita manualmente). Richiede salvataggio su GitHub.</p>
+    <label>Codice ISO breve (es. <code>oc</code>, <code>ve</code>, <code>sc</code>)
+      <input type="text" id="nl-code" placeholder="es. oc" maxlength="6" style="text-transform:lowercase;">
+    </label>
+    <label>Nome visualizzato (es. Occitano)
+      <input type="text" id="nl-name" placeholder="es. Occitano">
+    </label>
+    <label>Emoji bandiera/icona (es. 🏔️)
+      <input type="text" id="nl-emoji" placeholder="es. 🏔️" maxlength="4">
+    </label>
+    <label>BCP-47 per TTS (es. <code>it-IT</code>, <code>fr-FR</code>)
+      <input type="text" id="nl-bcp47" placeholder="es. it-IT">
+    </label>
+    <label>Gruppo
+      <select id="nl-gruppo">
+        <option value="europee">Lingue europee</option>
+        <option value="locali">Lingue locali / dialetti</option>
+        <option value="classiche">Lingue classiche</option>
+        <option value="asiatiche">Lingue asiatiche</option>
+      </select>
+    </label>
+    <label style="display:flex; align-items:center; gap:0.5rem; flex-direction:row; margin-top:0.8rem;">
+      <input type="checkbox" id="nl-dialetto" style="width:auto;">
+      <span style="font-size:0.85rem;">È un dialetto (usa convenzione TTS/<span style="font-family:monospace">grafia</span>)</span>
+    </label>
+    <div id="nl-error" style="color:var(--accent); font-size:0.82rem; margin-top:0.5rem; display:none;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="chiudiNuovaLingua()">Annulla</button>
+      <button class="btn btn-primary" onclick="confermaNuovaLingua()">Aggiungi lingua</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==========================================================================
+// CONFIGURAZIONE GITHUB
+// ==========================================================================
+const GH_OWNER = 'farmaciadellastazione-tech';
+const GH_REPO  = 'vecigagi';
+const GH_BRANCH = 'main';
+const GH_PATH = 'index.html';
+const GH_TOKEN_KEY = 'gh_pat_vecigagi';
+const BLOCK_START_RE = /^\s*const VOCABOLARIO_DEFAULT = \[/m;
+
+// ==========================================================================
+// LINGUE
+// ==========================================================================
+const LINGUE = [
+  { code:'mn',  name:'Manarolese',   bcp47:'it-IT', dialetto:true },
+  { code:'sp',  name:'Spezzino',     bcp47:'it-IT', dialetto:true },
+  { code:'ge',  name:'Genovese',     bcp47:'it-IT', dialetto:true },
+  { code:'cr',  name:'Carrarino',    bcp47:'it-IT', dialetto:true },
+  { code:'en',  name:'Inglese',      bcp47:'en-GB' },
+  { code:'fr',  name:'Francese',     bcp47:'fr-FR' },
+  { code:'es',  name:'Spagnolo',     bcp47:'es-ES' },
+  { code:'de',  name:'Tedesco',      bcp47:'de-DE' },
+  { code:'pt',  name:'Portoghese',   bcp47:'pt-PT' },
+  { code:'ru',  name:'Russo',        bcp47:'ru-RU' },
+  { code:'ca',  name:'Catalano',     bcp47:'ca-ES' },
+  { code:'ko',  name:'Coreano',      bcp47:'ko-KR' },
+  { code:'ar',  name:'Arabo',        bcp47:'ar-SA' },
+  { code:'zh',  name:'Cinese',       bcp47:'zh-CN' },
+  { code:'ja',  name:'Giapponese',   bcp47:'ja-JP' },
+  { code:'ia',  name:'Interlingua',  bcp47:'it-IT' },
+  { code:'la',  name:'Latino',       bcp47:'it-IT' },
+  { code:'grc', name:'Greco antico', bcp47:'el-GR' },
+];
+
+const DIALETTI_TTS_ITA = LINGUE.filter(l => l.dialetto).map(l => l.code);
+
+const PAGE_SIZE = 50;
+
+// ==========================================================================
+// STATO GLOBALE
+// ==========================================================================
+let vocabolario = [];
+let originalSourceFile = null;
+let originalSourceSha = null;
+let currentLang = 'mn';
+let currentLang2 = '';
+let currentTema = '';
+let currentLivello = '';
+let currentSearch = '';
+let onlyEmpty = false;
+let currentPage = 1;
+let modifiedKeys = new Set();
+let newKeys = new Set();
+let originalKeysByEntry = new Map();
+let sortKey = 'lang';
+let sortDir = 'asc';
+const AI_KEY_LS = 'lq_ai_config';
+let aiConfig = null;
+
+// Buffer per import: { voci: [{it, raw, valore}], langCode, forza }
+let importBuffer = null;
+
+// ==========================================================================
+// AVVIO
+// ==========================================================================
+window.addEventListener('DOMContentLoaded', init);
+
+async function init() {
+  caricaConfigAI();
+  popolaSelectLingue();
+  attaccaListener();
+  attivaHeaderHeightTracking();
+  await caricaIndexDaGitHub();
+}
+
+function attivaHeaderHeightTracking() {
+  const header = document.querySelector('header');
+  if (!header) return;
+  const aggiorna = () => document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+  aggiorna();
+  if (window.ResizeObserver) new ResizeObserver(aggiorna).observe(header);
+  else window.addEventListener('resize', aggiorna);
+  window.addEventListener('load', aggiorna);
+}
+
+function popolaSelectLingue() {
+  const sel = document.getElementById('lang-select');
+  const sel2 = document.getElementById('lang2-select');
+  LINGUE.forEach(l => {
+    const opt = document.createElement('option');
+    opt.value = l.code;
+    opt.textContent = l.name + ' (' + l.code + ')';
+    sel.appendChild(opt);
+    sel2.appendChild(opt.cloneNode(true));
+  });
+  sel.value = currentLang;
+}
+
+function aggiungiLinguaASelect(l) {
+  const sel = document.getElementById('lang-select');
+  const sel2 = document.getElementById('lang2-select');
+  const opt = document.createElement('option');
+  opt.value = l.code;
+  opt.textContent = l.name + ' (' + l.code + ')';
+  sel.appendChild(opt);
+  sel2.appendChild(opt.cloneNode(true));
+}
+
+function attaccaListener() {
+  document.getElementById('lang-select').addEventListener('change', e => { currentLang = e.target.value; currentPage = 1; mostraBannerDialetto(); render(); });
+  document.getElementById('lang2-select').addEventListener('change', e => { currentLang2 = e.target.value; document.getElementById('lang2-th').style.display = currentLang2 ? '' : 'none'; currentPage = 1; mostraBannerDialetto(); render(); });
+  document.getElementById('tema-select').addEventListener('change', e => { currentTema = e.target.value; currentPage = 1; render(); });
+  document.getElementById('livello-select').addEventListener('change', e => { currentLivello = e.target.value; currentPage = 1; render(); });
+  document.getElementById('search').addEventListener('input', e => { currentSearch = e.target.value.toLowerCase().trim(); currentPage = 1; render(); });
+  document.getElementById('only-empty').addEventListener('change', e => { onlyEmpty = e.target.checked; currentPage = 1; render(); });
+  document.querySelectorAll('th.sortable').forEach(th => {
+    th.addEventListener('click', () => {
+      const k = th.dataset.sort;
+      if (sortKey === k) sortDir = (sortDir === 'asc' ? 'desc' : 'asc'); else { sortKey = k; sortDir = 'asc'; }
+      render();
+    });
+  });
+  // Import file change
+  document.getElementById('import-file').addEventListener('change', onImportFileChange);
+}
+
+// ==========================================================================
+// CARICA DA GITHUB
+// ==========================================================================
+function fetchTimeout(url, opts, ms) {
+  ms = ms || 20000;
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort('timeout'), ms);
+  return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(() => clearTimeout(tid));
+}
+
+async function caricaIndexDaGitHub() {
+  setHelp('⏳ Carico l\'ultima versione di index.html da GitHub...', 'info');
+  try {
+    const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?ref=${GH_BRANCH}`;
+    const token = localStorage.getItem(GH_TOKEN_KEY);
+    const headers = { 'Accept': 'application/vnd.github+json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    const res = await fetchTimeout(apiUrl, { headers }, 25000);
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+    const meta = await res.json();
+    originalSourceSha = meta.sha;
+    const b64 = meta.content.replace(/\n/g, '');
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    originalSourceFile = new TextDecoder('utf-8').decode(bytes);
+    vocabolario = estraiVocabolario(originalSourceFile);
+    if (!vocabolario.length) throw new Error('VOCABOLARIO_DEFAULT vuoto o non trovato');
+    originalKeysByEntry.clear();
+    vocabolario.forEach(v => originalKeysByEntry.set(rowKey(v), new Set(Object.keys(v))));
+    popolaTemiSelect();
+    setHelp(`✅ Caricate <strong>${vocabolario.length}</strong> voci. Modifica i campi e clicca <strong>☁️ Salva su GitHub</strong> quando hai finito.`, 'success');
+    render();
+  } catch (err) {
+    console.error(err);
+    setHelp('❌ Errore caricamento da GitHub: ' + err.message + '<br>Riprova tra qualche secondo.', 'error');
+  }
+}
+
+function estraiVocabolario(src) {
+  const m = BLOCK_START_RE.exec(src);
+  if (!m) throw new Error('Marcatore "const VOCABOLARIO_DEFAULT = [" non trovato');
+  const start = m.index + m[0].length;
+  let depth = 1, i = start, inStr = false, esc = false, q = null;
+  while (i < src.length) {
+    const c = src[i];
+    if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === q) inStr = false; }
+    else { if (c === '"' || c === '\'') { inStr = true; q = c; } else if (c === '[') depth++; else if (c === ']') { depth--; if (depth === 0) break; } }
+    i++;
+  }
+  if (depth !== 0) throw new Error('Parentesi quadre non bilanciate');
+  const arr = (new Function('return [' + src.slice(start, i) + ']'))();
+  if (!Array.isArray(arr)) throw new Error('VOCABOLARIO_DEFAULT non è un array');
+  return arr;
+}
+
+function popolaTemiSelect() {
+  const temi = new Set();
+  vocabolario.forEach(v => { if (v.tema) temi.add(v.tema); });
+  const sel = document.getElementById('tema-select');
+  sel.innerHTML = '<option value="">tutti</option>';
+  Array.from(temi).sort((a, b) => a.localeCompare(b, 'it')).forEach(t => {
+    const o = document.createElement('option'); o.value = t; o.textContent = t; sel.appendChild(o);
+  });
+}
+
+// ==========================================================================
+// RENDER
+// ==========================================================================
+function setHelp(html, kind) {
+  const el = document.getElementById('help-msg');
+  el.className = 'help' + (kind ? ' ' + kind : '');
+  el.innerHTML = html;
+  el.style.display = html ? 'block' : 'none';
+}
+
+function mostraBannerDialetto() {
+  const dialPrincipale = DIALETTI_TTS_ITA.includes(currentLang);
+  const dialSec = currentLang2 && DIALETTI_TTS_ITA.includes(currentLang2);
+  if (dialPrincipale || dialSec) {
+    const nomi = [];
+    if (dialPrincipale) nomi.push(LINGUE.find(l => l.code === currentLang).name);
+    if (dialSec) nomi.push(LINGUE.find(l => l.code === currentLang2).name);
+    setHelp(`📣 <strong>Convenzione dialetti</strong> (${nomi.join(', ')}): scrivi <code style="background:var(--purple-light);padding:0 4px;border-radius:3px">trascrizione_TTS<strong>/</strong>grafia_tradizionale</code>. ` +
+      `Es. <code style="background:var(--purple-light);padding:0 4px;border-radius:3px">tintüüa/tintüa</code> — il TTS legge "tintüüa", all'utente viene mostrato "tintüa". ` +
+      `Se manca la <code>/</code>, lo stesso valore viene usato per entrambi.`, 'info');
+  }
+}
+
+function rowKey(v) { return (v.it || '').toLowerCase().trim(); }
+function visiblePart(s) { if (!s) return ''; const i = s.indexOf('|'); return (i === -1 ? s : s.slice(0, i)).trim(); }
+function normalizzaVarianti(s) {
+  if (!s) return '';
+  return visiblePart(String(s)).split(',').map(x => x.trim().toLowerCase()).filter(x => x.length > 0).sort().join(', ');
+}
+
+// Estrae la grafia da visualizzare secondo convenzione slash dialetti
+function formaDisplay(val, langCode) {
+  if (!val) return '';
+  const isD = DIALETTI_TTS_ITA.includes(langCode);
+  const prima = val.split('|')[0];
+  if (!isD || !prima.includes('/')) return visiblePart(val);
+  const parts = prima.split('/').map(s => s.trim());
+  return parts[parts.length - 1];
+}
+
+function filtroVoci() {
+  return vocabolario.filter(v => {
+    if (currentTema && v.tema !== currentTema) return false;
+    if (currentLivello && v.livello !== currentLivello) return false;
+    if (onlyEmpty && (v[currentLang] || '').trim() !== '') return false;
+    if (currentSearch) {
+      const it = (v.it || '').toLowerCase();
+      const lang = (v[currentLang] || '').toLowerCase();
+      const lang2 = currentLang2 ? (v[currentLang2] || '').toLowerCase() : '';
+      if (!it.includes(currentSearch) && !lang.includes(currentSearch) && !lang2.includes(currentSearch)) return false;
+    }
+    return true;
+  });
+}
+
+function ordinaVoci(arr) {
+  const dir = sortDir === 'asc' ? 1 : -1;
+  const getter = v => {
+    if (sortKey === 'it') return visiblePart(v.it).toLowerCase();
+    if (sortKey === 'lang') return visiblePart(v[currentLang] || '').toLowerCase();
+    if (sortKey === 'lang2') return visiblePart(v[currentLang2] || '').toLowerCase();
+    if (sortKey === 'tema') return (v.tema || '').toLowerCase();
+    if (sortKey === 'livello') return (v.livello || '').toLowerCase();
+    return '';
+  };
+  return arr.slice().sort((a, b) => {
+    const va = getter(a), vb = getter(b);
+    if (!va && !vb) return visiblePart(a.it).toLowerCase().localeCompare(visiblePart(b.it).toLowerCase(), 'it');
+    if (!va) return 1; if (!vb) return -1;
+    const cmp = va.localeCompare(vb, 'it');
+    return cmp !== 0 ? cmp * dir : visiblePart(a.it).toLowerCase().localeCompare(visiblePart(b.it).toLowerCase(), 'it');
+  });
+}
+
+function aggiornaSortIndicators() {
+  document.querySelectorAll('th.sortable').forEach(th => {
+    const arrow = th.querySelector('.sort-arrow');
+    th.classList.remove('sorted');
+    if (th.dataset.sort === sortKey) { th.classList.add('sorted'); arrow.textContent = sortDir === 'asc' ? '▲' : '▼'; }
+    else arrow.textContent = '';
+  });
+}
+
+function render() {
+  const langInfo = LINGUE.find(l => l.code === currentLang);
+  const lang2Info = currentLang2 ? LINGUE.find(l => l.code === currentLang2) : null;
+  document.getElementById('lang-th').firstChild.textContent = (langInfo ? langInfo.name : currentLang) + ' ';
+  if (lang2Info) document.getElementById('lang2-th').firstChild.textContent = lang2Info.name + ' ';
+  aggiornaSortIndicators();
+
+  const filtrate = ordinaVoci(filtroVoci());
+  const totalPages = Math.max(1, Math.ceil(filtrate.length / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = totalPages;
+  const startIdx = (currentPage - 1) * PAGE_SIZE;
+  const slice = filtrate.slice(startIdx, startIdx + PAGE_SIZE);
+
+  const tbody = document.getElementById('rows');
+  tbody.innerHTML = '';
+  slice.forEach(v => {
+    const tr = document.createElement('tr');
+    const key = rowKey(v);
+    const isEmpty = !(v[currentLang] || '').trim();
+    const isNew = newKeys.has(key), isMod = modifiedKeys.has(key);
+    if (isNew) tr.className = 'new-row'; else if (isMod) tr.className = 'modified';
+
+    const itHidden = (v.it || '').includes('|') ? (v.it.split('|').length - 1) : 0;
+    const langHidden = (v[currentLang] || '').includes('|') ? (v[currentLang].split('|').length - 1) : 0;
+    const isLangDialetto = DIALETTI_TTS_ITA.includes(currentLang);
+    const isLang2Dialetto = currentLang2 && DIALETTI_TTS_ITA.includes(currentLang2);
+    const langValRaw = v[currentLang] || '';
+    const langHasSlash = isLangDialetto && langValRaw.split('|')[0].includes('/');
+    const lang2ValRaw = currentLang2 ? (v[currentLang2] || '') : '';
+    const lang2HasSlash = isLang2Dialetto && lang2ValRaw.split('|')[0].includes('/');
+
+    const statusIcon = isNew ? '🆕' : (isEmpty ? '⚠️' : (isMod ? '✏️' : '✓'));
+    const statusTitle = isNew ? 'Nuova voce' : (isEmpty ? 'Da tradurre' : (isMod ? 'Modificata' : 'OK'));
+
+    let html = `
+      <td class="row-status" title="${statusTitle}">${statusIcon}</td>
+      <td class="it-cell" data-label="Italiano"><input type="text" value="${escapeAttr(v.it||'')}" data-field="it" title="Usa | per traduzioni alternative">${itHidden ? `<span class="alt-badge" title="${itHidden} alt. nascoste">+${itHidden}</span>` : ''}</td>
+      <td class="lang-cell ${isEmpty?'empty-cell':''}" data-label="${langInfo.name}"><input type="text" value="${escapeAttr(v[currentLang]||'')}" data-field="${currentLang}" placeholder="(da tradurre)">${langHasSlash ? '<span class="slash-badge" title="TTS/grafia">TTS/⌨</span>' : ''}${langHidden ? `<span class="alt-badge" title="${langHidden} alt. nascoste">+${langHidden}</span>` : ''}${isLangDialetto ? `<button class="icon-btn ai" onclick="aiTrascriviTTSCella(this, '${currentLang}')" title="Suggerisci trascrizione TTS" style="margin-left:4px">🔤</button>` : ''}</td>
+    `;
+    if (currentLang2) {
+      const isEmpty2 = !(v[currentLang2] || '').trim();
+      html += `<td class="lang2-cell ${isEmpty2?'empty-cell':''}" data-label="${lang2Info.name}"><input type="text" value="${escapeAttr(v[currentLang2]||'')}" data-field="${currentLang2}" placeholder="(da tradurre)">${lang2HasSlash ? '<span class="slash-badge" title="TTS/grafia">TTS/⌨</span>' : ''}${isLang2Dialetto ? `<button class="icon-btn ai" onclick="aiTrascriviTTSCella(this, '${currentLang2}')" title="Suggerisci trascrizione TTS" style="margin-left:4px">🔤</button>` : ''}</td>`;
+    }
+    html += `
+      <td class="tema-cell" data-label="Tema"><input type="text" value="${escapeAttr(v.tema||'')}" data-field="tema" list="temi-list"></td>
+      <td class="livello-cell" data-label="Livello"><input type="text" value="${escapeAttr(v.livello||'')}" data-field="livello" list="livelli-list"></td>
+      <td data-label="Pron. TTS"><input type="text" value="${escapeAttr(v.pron||'')}" data-field="pron" placeholder="—"></td>
+      <td class="row-actions">
+        <button class="icon-btn ai" onclick="aiCompletaRiga(this)" title="Completa con AI">✨</button>
+        <button class="icon-btn" onclick="ttsRow(this)" title="Pronuncia">🔊</button>
+        <button class="icon-btn danger" onclick="cancellaVoce(this)" title="Cancella">🗑️</button>
+      </td>
+    `;
+    tr.innerHTML = html;
+    tr.dataset.key = key;
+    tr._voce = v;
+    tr.querySelectorAll('input').forEach(inp => inp.addEventListener('input', () => onCellEdit(tr, v, inp)));
+    tbody.appendChild(tr);
+  });
+
+  ensureDatalists();
+
+  const tot = vocabolario.length;
+  const totVuote = vocabolario.filter(v => !(v[currentLang] || '').trim()).length;
+  const modCount = modifiedKeys.size + newKeys.size;
+  document.getElementById('stats').innerHTML = `<strong>${tot}</strong> voci · <span class="badge-empty badge">${totVuote}</span> da tradurre in ${langInfo.name}`;
+  document.getElementById('footer-stats').innerHTML = modCount ? `<span class="badge">${modCount}</span> modifiche non salvate` : '<em>nessuna modifica</em>';
+  renderPagination(filtrate.length, totalPages);
+}
+
+function ensureDatalists() {
+  let dl = document.getElementById('temi-list');
+  if (!dl) { dl = document.createElement('datalist'); dl.id = 'temi-list'; document.body.appendChild(dl); }
+  const temi = new Set(); vocabolario.forEach(v => { if (v.tema) temi.add(v.tema); });
+  dl.innerHTML = Array.from(temi).sort().map(t => `<option value="${escapeAttr(t)}">`).join('');
+  let dl2 = document.getElementById('livelli-list');
+  if (!dl2) { dl2 = document.createElement('datalist'); dl2.id = 'livelli-list'; dl2.innerHTML = '<option value="A1"><option value="A2"><option value="B1"><option value="B2">'; document.body.appendChild(dl2); }
+}
+
+function renderPagination(totalItems, totalPages) {
+  const el = document.getElementById('pagination');
+  if (totalPages <= 1) { el.innerHTML = `<span style="color:var(--muted); font-size:0.85rem">${totalItems} voci visualizzate</span>`; return; }
+  el.innerHTML = '';
+  const info = document.createElement('span'); info.style.color = 'var(--muted)'; info.style.fontSize = '0.85rem';
+  info.textContent = `Pagina ${currentPage}/${totalPages} · ${totalItems} voci`; el.appendChild(info);
+  const mk = (label, page, disabled) => { const b = document.createElement('button'); b.className = 'btn btn-secondary'; b.textContent = label; b.disabled = disabled; b.onclick = () => { currentPage = page; render(); window.scrollTo(0, 0); }; return b; };
+  el.appendChild(mk('« prima', 1, currentPage === 1)); el.appendChild(mk('‹', currentPage - 1, currentPage === 1));
+  el.appendChild(mk('›', currentPage + 1, currentPage === totalPages)); el.appendChild(mk('ultima »', totalPages, currentPage === totalPages));
+}
+
+function escapeAttr(s) { return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+// ==========================================================================
+// EDITING
+// ==========================================================================
+function onCellEdit(tr, voce, input) {
+  const field = input.dataset.field, val = input.value;
+  voce[field] = val;
+  const key = rowKey(voce);
+  if (!newKeys.has(key)) modifiedKeys.add(key);
+  if (!tr.classList.contains('new-row')) tr.classList.add('modified');
+  if (field === 'it' || field === currentLang || field === currentLang2) {
+    const cell = input.parentElement, oldBadge = cell.querySelector('.alt-badge');
+    if (oldBadge) oldBadge.remove();
+    const hidden = val.includes('|') ? val.split('|').length - 1 : 0;
+    if (hidden > 0) { const span = document.createElement('span'); span.className = 'alt-badge'; span.title = `${hidden} alt. nascoste`; span.textContent = '+' + hidden; cell.appendChild(span); }
+  }
+  if (field === currentLang || field === currentLang2) {
+    const cell = input.parentElement, oldSlash = cell.querySelector('.slash-badge');
+    if (oldSlash) oldSlash.remove();
+    if (DIALETTI_TTS_ITA.includes(field) && val.split('|')[0].includes('/')) {
+      const span = document.createElement('span'); span.className = 'slash-badge'; span.title = 'TTS/grafia'; span.textContent = 'TTS/⌨'; cell.appendChild(span);
+    }
+  }
+  if (field === currentLang) { const cell = input.parentElement; if (val.trim()) cell.classList.remove('empty-cell'); else cell.classList.add('empty-cell'); }
+  if (field === currentLang2 && currentLang2) { const cell = input.parentElement; if (val.trim()) cell.classList.remove('empty-cell'); else cell.classList.add('empty-cell'); }
+  const statusCell = tr.querySelector('.row-status');
+  if (statusCell) {
+    const isEmpty = !(voce[currentLang] || '').trim(), k2 = rowKey(voce);
+    if (newKeys.has(k2)) statusCell.textContent = '🆕'; else if (isEmpty) statusCell.textContent = '⚠️'; else statusCell.textContent = '✏️';
+  }
+  const modCount = modifiedKeys.size + newKeys.size;
+  document.getElementById('footer-stats').innerHTML = modCount ? `<span class="badge">${modCount}</span> modifiche non salvate` : '<em>nessuna modifica</em>';
+}
+
+async function aggiungiVoce() {
+  const it = prompt('Italiano (richiesto):');
+  if (!it || !it.trim()) return;
+  const itTrim = it.trim();
+  if (vocabolario.some(v => (v.it || '').toLowerCase().trim() === itTrim.toLowerCase())) { alert('Esiste già una voce con questo italiano.'); return; }
+  const voce = { tema: '', livello: '', it: itTrim };
+  if (aiConfig && aiConfig.provider && aiConfig.key) {
+    const isDialetto = DIALETTI_TTS_ITA.includes(currentLang);
+    const langName_ = LINGUE.find(l => l.code === currentLang).name;
+    if (confirm(isDialetto ? `Vuoi che l'AI suggerisca solo tema e livello per "${itTrim}"?` : `Vuoi che l'AI suggerisca tema, livello e traduzione in ${langName_}?`)) {
+      setHelp('✨ AI sta classificando la voce...', 'info');
+      try {
+        const sugg = await aiClassificaERTraducici(itTrim, isDialetto ? ['en'] : [currentLang]);
+        if (sugg.tema) voce.tema = sugg.tema;
+        if (sugg.livello) voce.livello = sugg.livello;
+        if (!isDialetto && sugg.translations && sugg.translations[currentLang]) voce[currentLang] = sugg.translations[currentLang];
+        setHelp(`✨ AI: tema="${voce.tema}", livello="${voce.livello}"${!isDialetto ? `, ${currentLang}="${voce[currentLang]||'(vuoto)'}"` : ''}`, 'success');
+      } catch (e) { setHelp('⚠️ AI non disponibile: ' + e.message, 'error'); }
+    }
+  }
+  if (!voce.tema) voce.tema = prompt('Tema (es. "casa", "verbi", "dialetti"):') || 'dialetti';
+  if (!voce.livello) voce.livello = prompt('Livello (A1/A2/B1/B2):') || 'A2';
+  vocabolario.unshift(voce);
+  newKeys.add(rowKey(voce));
+  popolaTemiSelect();
+  currentPage = 1;
+  render();
+  window.scrollTo(0, 0);
+}
+
+function cancellaVoce(btn) {
+  const tr = btn.closest('tr'), v = tr._voce;
+  if (!v) return;
+  const idx = vocabolario.indexOf(v);
+  if (idx < 0) return;
+  const key = rowKey(v);
+  const altreConStessoIt = vocabolario.filter(x => x !== v && rowKey(x) === key).length;
+  if (!confirm(`Cancellare la voce "${v.it}"?${altreConStessoIt > 0 ? `\n\n⚠️ Esistono altre ${altreConStessoIt} voci con lo stesso italiano.` : ''}`)) return;
+  vocabolario.splice(idx, 1);
+  if (altreConStessoIt === 0) { modifiedKeys.delete(key); newKeys.delete(key); }
+  render();
+}
+
+// ==========================================================================
+// EXPORT EXCEL
+// ==========================================================================
+function exportExcel() {
+  const langInfo = LINGUE.find(l => l.code === currentLang);
+  const isDialetto = DIALETTI_TTS_ITA.includes(currentLang);
+  const filtrate = filtroVoci();
+  if (!filtrate.length) { alert('Nessuna voce da esportare con i filtri attuali.'); return; }
+
+  // Costruisce CSV con BOM UTF-8 per Excel
+  const cols = isDialetto
+    ? ['ITALIANO', 'TEMA', 'LIVELLO', 'RAW', 'TTS (pronuncia)', 'ALTERNATIVA', 'GRAFIA (da mostrare)', 'NOTE']
+    : ['ITALIANO', 'TEMA', 'LIVELLO', langInfo.name.toUpperCase(), 'NOTE'];
+
+  const rows = [cols];
+  filtrate.forEach(v => {
+    const raw = v[currentLang] || '';
+    let note = '';
+    if (/(.)\1\1/.test(raw)) note = 'TRIPLETTE';
+    if (!raw || raw === '?') note = 'MANCA';
+    if (isDialetto) {
+      const parts = raw.split('/');
+      let tts, alt, grafia;
+      if (parts.length === 1) { tts = raw; alt = ''; grafia = raw; }
+      else if (parts.length === 2) { tts = parts[0].trim(); alt = ''; grafia = parts[1].trim(); }
+      else { tts = parts[0].trim(); alt = parts[1].trim(); grafia = parts[2].trim(); }
+      rows.push([v.it || '', v.tema || '', v.livello || '', raw, tts, alt, grafia, note]);
+    } else {
+      rows.push([v.it || '', v.tema || '', v.livello || '', raw, note]);
+    }
+  });
+
+  const csv = '\uFEFF' + rows.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const filtroDesc = [currentTema, currentLivello].filter(Boolean).join('_') || 'tutto';
+  a.download = `linguaequiz_${currentLang}_${filtroDesc}.csv`;
+  a.click();
+  setHelp(`📥 Esportate ${filtrate.length} voci in CSV. Apri con Excel e alla riapertura importa con "📤 Importa".`, 'success');
+}
+
+// ==========================================================================
+// IMPORT
+// ==========================================================================
+function apriImport() {
+  importBuffer = null;
+  document.getElementById('import-file').value = '';
+  document.getElementById('import-preview').style.display = 'none';
+  document.getElementById('import-preview').innerHTML = '';
+  document.getElementById('btn-import-apply').disabled = true;
+  document.getElementById('import-modal').classList.add('open');
+}
+
+function chiudiImport() {
+  document.getElementById('import-modal').classList.remove('open');
+  importBuffer = null;
+}
+
+async function onImportFileChange(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const preview = document.getElementById('import-preview');
+  const btnApply = document.getElementById('btn-import-apply');
+  preview.style.display = 'none'; preview.innerHTML = ''; btnApply.disabled = true; importBuffer = null;
+
+  try {
+    let rows;
+    if (file.name.endsWith('.csv')) {
+      rows = await parseCsv(file);
+    } else if (file.name.endsWith('.xlsx')) {
+      rows = await parseXlsx(file);
+    } else {
+      alert('Formato non supportato. Usa .csv o .xlsx'); return;
+    }
+    if (!rows.length) { alert('File vuoto o non leggibile.'); return; }
+
+    // Trova colonne: ITALIANO (obbligatorio) + RAW o nome lingua
+    const header = rows[0].map(c => (c || '').toString().trim().toUpperCase());
+    const idxIt = header.findIndex(h => h === 'ITALIANO');
+    if (idxIt < 0) { alert('Colonna "ITALIANO" non trovata nel file.'); return; }
+
+    // Cerca colonna da importare: prima "RAW", poi il nome della lingua corrente
+    const langInfo = LINGUE.find(l => l.code === currentLang);
+    let idxVal = header.findIndex(h => h === 'RAW');
+    if (idxVal < 0) idxVal = header.findIndex(h => h.includes(langInfo.name.toUpperCase()) || h === currentLang.toUpperCase());
+    if (idxVal < 0) { alert(`Colonna "RAW" o "${langInfo.name}" non trovata. Le colonne trovate sono: ${rows[0].join(', ')}`); return; }
+
+    const voci = [];
+    for (let i = 1; i < rows.length; i++) {
+      const r = rows[i];
+      const it = (r[idxIt] || '').toString().trim();
+      const val = (r[idxVal] || '').toString().trim();
+      if (!it) continue;
+      voci.push({ it, raw: val });
+    }
+
+    if (!voci.length) { alert('Nessuna voce trovata nel file.'); return; }
+
+    importBuffer = { voci, langCode: currentLang };
+
+    // Preview
+    const forza = document.getElementById('import-force').checked;
+    const { nuove, aggiornate, saltate } = calcolaImport(voci, currentLang, forza);
+    let html = `<strong>${voci.length}</strong> righe nel file · <span style="color:var(--green)">${nuove} nuove</span> · <span style="color:var(--amber)">${aggiornate} da aggiornare</span> · <span style="color:var(--muted)">${saltate} saltate</span><br><br>`;
+    html += '<table><tr><th>Italiano</th><th>Valore importato</th><th>Stato</th></tr>';
+    voci.slice(0, 20).forEach(r => {
+      const match = vocabolario.find(v => rowKey(v) === r.it.toLowerCase().trim());
+      let stato;
+      if (!match) stato = '<span style="color:var(--green)">🆕 nuova</span>';
+      else if (!r.raw) stato = '<span style="color:var(--muted)">⏭ vuoto, skip</span>';
+      else if ((match[currentLang] || '').trim() && !forza) stato = '<span style="color:var(--muted)">⏭ già tradotta</span>';
+      else stato = '<span style="color:var(--amber)">✏️ aggiorna</span>';
+      html += `<tr><td>${escapeAttr(r.it)}</td><td>${escapeAttr(r.raw)}</td><td>${stato}</td></tr>`;
+    });
+    if (voci.length > 20) html += `<tr><td colspan="3" style="color:var(--muted); font-style:italic">... e altre ${voci.length - 20} righe</td></tr>`;
+    html += '</table>';
+    preview.innerHTML = html; preview.style.display = 'block';
+    btnApply.disabled = false;
+  } catch (err) {
+    alert('Errore lettura file: ' + err.message);
+  }
+}
+
+function calcolaImport(voci, langCode, forza) {
+  let nuove = 0, aggiornate = 0, saltate = 0;
+  voci.forEach(r => {
+    if (!r.raw) { saltate++; return; }
+    const match = vocabolario.find(v => rowKey(v) === r.it.toLowerCase().trim());
+    if (!match) { nuove++; return; }
+    if ((match[langCode] || '').trim() && !forza) { saltate++; return; }
+    aggiornate++;
+  });
+  return { nuove, aggiornate, saltate };
+}
+
+function applicaImport() {
+  if (!importBuffer) return;
+  const forza = document.getElementById('import-force').checked;
+  const { voci, langCode } = importBuffer;
+  let nuove = 0, aggiornate = 0, saltate = 0;
+
+  voci.forEach(r => {
+    if (!r.raw) { saltate++; return; }
+    const match = vocabolario.find(v => rowKey(v) === r.it.toLowerCase().trim());
+    if (!match) {
+      // Nuova voce
+      const nuovaVoce = { it: r.it, tema: '', livello: '', [langCode]: r.raw };
+      vocabolario.push(nuovaVoce);
+      newKeys.add(r.it.toLowerCase().trim());
+      nuove++;
+    } else if (!(match[langCode] || '').trim() || forza) {
+      match[langCode] = r.raw;
+      if (!newKeys.has(rowKey(match))) modifiedKeys.add(rowKey(match));
+      aggiornate++;
+    } else {
+      saltate++;
+    }
+  });
+
+  chiudiImport();
+  popolaTemiSelect();
+  render();
+  setHelp(`📤 Import completato: <strong>${nuove}</strong> nuove · <strong>${aggiornate}</strong> aggiornate · <strong>${saltate}</strong> saltate. Ricorda di salvare con ☁️.`, 'success');
+}
+
+// Parser CSV semplice (gestisce virgolette e newline)
+function parseCsv(file) {
+  return new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        let text = e.target.result;
+        // Rimuovi BOM se presente
+        if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+        const rows = [];
+        let row = [], cell = '', inQ = false;
+        for (let i = 0; i < text.length; i++) {
+          const c = text[i], n = text[i + 1];
+          if (inQ) {
+            if (c === '"' && n === '"') { cell += '"'; i++; }
+            else if (c === '"') inQ = false;
+            else cell += c;
+          } else {
+            if (c === '"') inQ = true;
+            else if (c === ',') { row.push(cell); cell = ''; }
+            else if (c === '\r' && n === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; i++; }
+            else if (c === '\n' || c === '\r') { row.push(cell); rows.push(row); row = []; cell = ''; }
+            else cell += c;
+          }
+        }
+        if (cell || row.length) { row.push(cell); rows.push(row); }
+        res(rows.filter(r => r.some(c => c.trim())));
+      } catch (err) { rej(err); }
+    };
+    reader.onerror = () => rej(new Error('Lettura file fallita'));
+    reader.readAsText(file, 'utf-8');
+  });
+}
+
+// Parser XLSX minimale (legge solo la prima sheet, celle come testo)
+function parseXlsx(file) {
+  return new Promise((res, rej) => {
+    const reader = new FileReader();
+    reader.onload = async e => {
+      try {
+        // Usa SheetJS se disponibile, altrimenti fallback su CSV manuale
+        if (typeof XLSX !== 'undefined') {
+          const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+          const ws = wb.Sheets[wb.SheetNames[0]];
+          const data = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+          res(data);
+        } else {
+          // Leggi come ZIP e cerca shared strings + sheet1
+          const rows = await parseXlsxManual(e.target.result);
+          res(rows);
+        }
+      } catch (err) { rej(err); }
+    };
+    reader.onerror = () => rej(new Error('Lettura file fallita'));
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+// Parsing XLSX minimale senza librerie esterne
+async function parseXlsxManual(arrayBuffer) {
+  // Decomprime ZIP e legge xl/sharedStrings.xml + xl/worksheets/sheet1.xml
+  const { files } = await unzipBasic(arrayBuffer);
+  const ssXml = files['xl/sharedStrings.xml'] || '';
+  const shXml = files['xl/worksheets/sheet1.xml'] || '';
+
+  // Estrai shared strings
+  const ss = [];
+  const siRe = /<si>[\s\S]*?<\/si>/g;
+  let m;
+  while ((m = siRe.exec(ssXml)) !== null) {
+    const tVals = [...m[0].matchAll(/<t[^>]*>([^<]*)<\/t>/g)].map(x => x[1]);
+    ss.push(tVals.join('').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'"));
+  }
+
+  // Estrai celle
+  const rows = [];
+  const rowRe = /<row[^>]*>([\s\S]*?)<\/row>/g;
+  while ((m = rowRe.exec(shXml)) !== null) {
+    const row = [];
+    const cellRe = /<c\s([^>]*)>([\s\S]*?)<\/c>/g;
+    let cm;
+    while ((cm = cellRe.exec(m[1])) !== null) {
+      const attrs = cm[1], inner = cm[2];
+      const tAttr = (attrs.match(/\bt="([^"]+)"/) || [])[1];
+      const vMatch = inner.match(/<v>([^<]*)<\/v>/);
+      const val = vMatch ? vMatch[1] : '';
+      if (tAttr === 's') row.push(ss[parseInt(val)] || '');
+      else row.push(val);
+    }
+    rows.push(row);
+  }
+  return rows;
+}
+
+async function unzipBasic(buf) {
+  // Usa DecompressionStream se disponibile (Chrome/Edge/FF)
+  const files = {};
+  const view = new DataView(buf);
+  let offset = 0;
+  while (offset < buf.byteLength - 4) {
+    const sig = view.getUint32(offset, true);
+    if (sig !== 0x04034b50) break;
+    const flags = view.getUint16(offset + 6, true);
+    const comp = view.getUint16(offset + 8, true);
+    const compSize = view.getUint32(offset + 18, true);
+    const nameLen = view.getUint16(offset + 26, true);
+    const extraLen = view.getUint16(offset + 28, true);
+    const name = new TextDecoder().decode(new Uint8Array(buf, offset + 30, nameLen));
+    const dataOffset = offset + 30 + nameLen + extraLen;
+    const data = new Uint8Array(buf, dataOffset, compSize);
+    if (comp === 8 && typeof DecompressionStream !== 'undefined') {
+      try {
+        const ds = new DecompressionStream('deflate-raw');
+        const writer = ds.writable.getWriter(); writer.write(data); writer.close();
+        const chunks = []; const reader = ds.readable.getReader();
+        while (true) { const { done, value } = await reader.read(); if (done) break; chunks.push(value); }
+        const out = new Uint8Array(chunks.reduce((a,c)=>a+c.length,0));
+        let p=0; chunks.forEach(c=>{out.set(c,p);p+=c.length;});
+        files[name] = new TextDecoder('utf-8').decode(out);
+      } catch(e) { files[name] = ''; }
+    } else if (comp === 0) {
+      files[name] = new TextDecoder('utf-8').decode(data);
+    }
+    offset = dataOffset + compSize;
+  }
+  return { files };
+}
+
+// ==========================================================================
+// NUOVA LINGUA
+// ==========================================================================
+function apriNuovaLingua() {
+  document.getElementById('nl-code').value = '';
+  document.getElementById('nl-name').value = '';
+  document.getElementById('nl-emoji').value = '';
+  document.getElementById('nl-bcp47').value = 'it-IT';
+  document.getElementById('nl-gruppo').value = 'europee';
+  document.getElementById('nl-dialetto').checked = false;
+  document.getElementById('nl-error').style.display = 'none';
+  document.getElementById('lingua-modal').classList.add('open');
+}
+
+function chiudiNuovaLingua() {
+  document.getElementById('lingua-modal').classList.remove('open');
+}
+
+async function confermaNuovaLingua() {
+  const code = document.getElementById('nl-code').value.trim().toLowerCase();
+  const name = document.getElementById('nl-name').value.trim();
+  const emoji = document.getElementById('nl-emoji').value.trim();
+  const bcp47 = document.getElementById('nl-bcp47').value.trim();
+  const gruppo = document.getElementById('nl-gruppo').value;
+  const isDialetto = document.getElementById('nl-dialetto').checked;
+  const errEl = document.getElementById('nl-error');
+
+  // Validazione
+  if (!code || !name || !bcp47) { errEl.textContent = 'Codice, nome e BCP-47 sono obbligatori.'; errEl.style.display = 'block'; return; }
+  if (!/^[a-z]{2,6}$/.test(code)) { errEl.textContent = 'Il codice deve essere 2-6 lettere minuscole.'; errEl.style.display = 'block'; return; }
+  if (LINGUE.find(l => l.code === code)) { errEl.textContent = `Il codice "${code}" è già in uso.`; errEl.style.display = 'block'; return; }
+  errEl.style.display = 'none';
+
+  if (!confirm(`Aggiungere la lingua "${name}" (${code}) a edit.html e index.html?\n\nVerrà aggiunta disattivata (l'utente la abilita manualmente).\n\nRicorda di salvare su GitHub dopo.`)) return;
+
+  // 1. Aggiorna LINGUE locale in edit.html (runtime)
+  const nuovaLingua = { code, name, bcp47, ...(isDialetto ? { dialetto: true } : {}) };
+  LINGUE.push(nuovaLingua);
+  if (isDialetto) DIALETTI_TTS_ITA.push(code);
+  aggiungiLinguaASelect(nuovaLingua);
+
+  // 2. Aggiorna index.html: inserisci in LINGUE_DEFAULT e LINGUE_SENZA_AUDIO se dialetto classico
+  if (!originalSourceFile) { alert('index.html non ancora caricato da GitHub.'); chiudiNuovaLingua(); return; }
+  try {
+    const nuovoSrc = aggiungiLinguaAIndexHtml(originalSourceFile, { code, name, emoji, bcp47, gruppo, isDialetto });
+    originalSourceFile = nuovoSrc;
+    modifiedKeys.add('__lingua_aggiunta__'); // forza il salvataggio
+    setHelp(`🌐 Lingua "${name}" (${code}) aggiunta. <strong>Salva su GitHub</strong> per rendere la modifica permanente.`, 'success');
+  } catch (err) {
+    setHelp('❌ Errore aggiunta lingua a index.html: ' + err.message, 'error');
+  }
+
+  chiudiNuovaLingua();
+  render();
+}
+
+function aggiungiLinguaAIndexHtml(src, { code, name, emoji, bcp47, gruppo, isDialetto }) {
+  // 1. Trova e aggiorna LINGUE_DEFAULT in index.html
+  // Cerca il blocco e inserisce la nuova lingua nella posizione giusta (per gruppo)
+  const lingueRe = /const LINGUE_DEFAULT\s*=\s*\[[\s\S]*?\];/m;
+  const mLingue = lingueRe.exec(src);
+  if (!mLingue) throw new Error('LINGUE_DEFAULT non trovato in index.html');
+
+  const emojiFld = emoji ? ` emoji:"${emoji}",` : '';
+  const gruppiFld = gruppo ? ` gruppo:"${gruppo}",` : '';
+  const dialectFld = isDialetto ? ` dialetto:true,` : '';
+  const nuovaRiga = `      { codice:"${code}", nome:"${name}",${emojiFld} bcp47:"${bcp47}",${gruppiFld}${dialectFld} attiva:false },`;
+
+  // Inserisce prima del ]; di chiusura del blocco LINGUE_DEFAULT
+  const oldBlock = mLingue[0];
+  const lastBracket = oldBlock.lastIndexOf(']');
+  const newBlock = oldBlock.slice(0, lastBracket) + '\n' + nuovaRiga + '\n    ' + oldBlock.slice(lastBracket);
+  src = src.slice(0, mLingue.index) + newBlock + src.slice(mLingue.index + oldBlock.length);
+
+  // 2. Se è un dialetto, aggiunge a DIALETTI_TTS_ITA in index.html
+  if (isDialetto) {
+    src = src.replace(
+      /(const DIALETTI_TTS_ITA\s*=\s*\[)([^\]]+)(\])/,
+      (m, pre, inner, post) => pre + inner.trimEnd() + (inner.trimEnd().endsWith(',') ? '' : ',') + `"${code}",` + post
+    );
+  }
+
+  return src;
+}
+
+// ==========================================================================
+// AI INTEGRATION (invariata)
+// ==========================================================================
+function caricaConfigAI() {
+  try { const raw = localStorage.getItem(AI_KEY_LS); if (raw) aiConfig = JSON.parse(raw); } catch(e) { aiConfig = null; }
+  aggiornaIndicatoreAI();
+}
+
+function aggiornaIndicatoreAI() {
+  const el = document.getElementById('ai-indicator');
+  if (aiConfig && aiConfig.provider && aiConfig.key) { el.textContent = 'AI: ' + aiConfig.provider; el.classList.remove('off'); }
+  else { el.textContent = 'AI: off'; el.classList.add('off'); }
+}
+
+function apriConfigAI() { document.getElementById('ai-modal').classList.add('open'); document.getElementById('ai-provider').value = (aiConfig && aiConfig.provider) || ''; document.getElementById('ai-key').value = (aiConfig && aiConfig.key) || ''; }
+function chiudiConfigAI() { document.getElementById('ai-modal').classList.remove('open'); }
+function salvaConfigAI() {
+  const provider = document.getElementById('ai-provider').value, key = document.getElementById('ai-key').value.trim();
+  if (!provider) { aiConfig = null; localStorage.removeItem(AI_KEY_LS); }
+  else { if (!key) { alert('Inserisci una chiave API o seleziona "disabilitato"'); return; } aiConfig = { provider, key }; localStorage.setItem(AI_KEY_LS, JSON.stringify(aiConfig)); }
+  aggiornaIndicatoreAI(); chiudiConfigAI();
+}
+
+function langName(code) { const l = LINGUE.find(x => x.code === code); return l ? l.name : code; }
+
+function buildAIPrompt(italianTerm, langCodes, contextSamples) {
+  const langList = langCodes.map(c => `${c} (${langName(c)})`).join(', ');
+  const targetHaDialetto = langCodes.some(c => DIALETTI_TTS_ITA.includes(c));
+  let dialettoContext = '';
+  if (targetHaDialetto) {
+    const dialCode = langCodes.find(c => DIALETTI_TTS_ITA.includes(c));
+    const samplesDialetto = vocabolario.filter(v => v[dialCode] && String(v[dialCode]).includes('/')).slice(0, 6).map(v => ({ it: v.it, [dialCode]: v[dialCode] }));
+    if (samplesDialetto.length) dialettoContext = `\n\nESEMPI CONVENZIONE DIALETTO (${dialCode}):\n` + samplesDialetto.map(s => JSON.stringify(s)).join('\n') + `\nParte PRIMA "/" = trascrizione TTS; parte DOPO = grafia tradizionale.`;
+  }
+  let context = '';
+  if (contextSamples && contextSamples.length) context = '\n\nEsempi dal vocabolario:\n' + contextSamples.slice(0, 6).map(s => JSON.stringify(s)).join('\n');
+  return `Sei un assistente per un quiz di vocabolario multilingue italiano. Per il termine italiano "${italianTerm}", fornisci:
+1. Una traduzione concisa (1-3 parole) in: ${langList}
+2. Livello CEFR: A1/A2/B1/B2
+3. Tema (es: "casa", "cibo", "verbi", "famiglia", "lavoro", "natura", "corpo", "tempo", "viaggi", "saluti", "dialetti", "numeri")${dialettoContext}
+Rispondi SOLO con JSON valido:
+{"tema":"...", "livello":"A1|A2|B1|B2", "translations":{"${langCodes[0]}":"..."}}${context}`;
+}
+
+async function aiClassificaERTraducici(italianTerm, langCodes) {
+  if (!aiConfig || !aiConfig.provider || !aiConfig.key) throw new Error('AI non configurata.');
+  const samples = vocabolario.filter(v => v.tema && v.livello && langCodes.every(c => v[c])).slice(0, 8).map(v => { const o = { it: v.it, tema: v.tema, livello: v.livello }; langCodes.forEach(c => o[c] = v[c]); return o; });
+  const prompt = buildAIPrompt(italianTerm, langCodes, samples);
+  let text;
+  if (aiConfig.provider === 'groq') text = await callGroq(prompt);
+  else if (aiConfig.provider === 'gemini') text = await callGemini(prompt);
+  else if (aiConfig.provider === 'anthropic') text = await callAnthropic(prompt);
+  else if (aiConfig.provider === 'openai') text = await callOpenAI(prompt);
+  else throw new Error('Provider sconosciuto: ' + aiConfig.provider);
+  let parsed;
+  try { const cleaned = text.replace(/```json|```/g, '').trim(); const m = cleaned.match(/\{[\s\S]*\}/); parsed = JSON.parse(m ? m[0] : cleaned); }
+  catch(e) { throw new Error('Risposta AI non in JSON: ' + text.slice(0, 200)); }
+  return parsed;
+}
+
+async function callGroq(prompt) {
+  const res = await fetchTimeout('https://api.groq.com/openai/v1/chat/completions', { method:'POST', headers:{'Authorization':'Bearer '+aiConfig.key,'Content-Type':'application/json'}, body:JSON.stringify({ model:'llama-3.3-70b-versatile', messages:[{role:'user',content:prompt}], temperature:0.3, response_format:{type:'json_object'} }) }, 30000);
+  if (!res.ok) throw new Error('Groq HTTP '+res.status+': '+await res.text());
+  return (await res.json()).choices[0].message.content;
+}
+async function callGemini(prompt) {
+  const res = await fetchTimeout('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+encodeURIComponent(aiConfig.key), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ contents:[{parts:[{text:prompt}]}], generationConfig:{temperature:0.3,responseMimeType:'application/json'} }) }, 30000);
+  if (!res.ok) throw new Error('Gemini HTTP '+res.status+': '+await res.text());
+  return (await res.json()).candidates[0].content.parts[0].text;
+}
+async function callAnthropic(prompt) {
+  const res = await fetchTimeout('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'x-api-key':aiConfig.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','Content-Type':'application/json'}, body:JSON.stringify({ model:'claude-3-5-haiku-20241022', max_tokens:500, messages:[{role:'user',content:prompt}] }) }, 30000);
+  if (!res.ok) throw new Error('Anthropic HTTP '+res.status+': '+await res.text());
+  return (await res.json()).content[0].text;
+}
+async function callOpenAI(prompt) {
+  const res = await fetchTimeout('https://api.openai.com/v1/chat/completions', { method:'POST', headers:{'Authorization':'Bearer '+aiConfig.key,'Content-Type':'application/json'}, body:JSON.stringify({ model:'gpt-4o-mini', messages:[{role:'user',content:prompt}], temperature:0.3, response_format:{type:'json_object'} }) }, 30000);
+  if (!res.ok) throw new Error('OpenAI HTTP '+res.status+': '+await res.text());
+  return (await res.json()).choices[0].message.content;
+}
+
+async function aiCompletaRiga(btn) {
+  if (!aiConfig || !aiConfig.provider || !aiConfig.key) { if (confirm('AI non configurata. Configurarla ora?')) apriConfigAI(); return; }
+  const tr = btn.closest('tr'), v = tr._voce;
+  if (!v || !v.it || !v.it.trim()) { alert('Compila prima il campo italiano.'); return; }
+  const langsToTranslate = [];
+  if (!(v[currentLang] || '').trim()) langsToTranslate.push(currentLang);
+  if (currentLang2 && !(v[currentLang2] || '').trim()) langsToTranslate.push(currentLang2);
+  const dialettiTarget = langsToTranslate.filter(c => DIALETTI_TTS_ITA.includes(c));
+  if (dialettiTarget.length > 0 && !confirm(`⚠️ L'AI ha scarsa conoscenza dei dialetti (${dialettiTarget.map(c => LINGUE.find(l => l.code === c).name).join(', ')}). Verificare il risultato. Procedere?`)) return;
+  btn.classList.add('ai-pending'); btn.disabled = true; setHelp(`✨ AI sta elaborando "${v.it}"...`, 'info');
+  if (langsToTranslate.length === 0 && v.tema && v.livello) { btn.classList.remove('ai-pending'); btn.disabled = false; if (!confirm('Voce già completa. Chiedere all\'AI di rivedere tema/livello?')) return; btn.classList.add('ai-pending'); btn.disabled = true; }
+  try {
+    const langs = langsToTranslate.length ? langsToTranslate : [currentLang];
+    const sugg = await aiClassificaERTraducici(visiblePart(v.it), langs);
+    let changed = false;
+    if (sugg.tema && !v.tema) { v.tema = sugg.tema; changed = true; }
+    if (sugg.livello && !v.livello && /^[AB][12]$/.test(sugg.livello)) { v.livello = sugg.livello; changed = true; }
+    if (sugg.translations) Object.keys(sugg.translations).forEach(c => { if (!(v[c] || '').trim() && sugg.translations[c]) { v[c] = sugg.translations[c]; changed = true; } });
+    if (changed) { if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v)); popolaTemiSelect(); render(); setHelp(`✨ AI: "${v.it}" — ${langs.map(c => c + '=' + (v[c] || '?')).join(', ')}`, 'success'); }
+    else setHelp('ℹ️ AI: nessuna modifica.', 'info');
+  } catch(e) { setHelp('❌ AI: ' + e.message, 'error'); }
+  finally { btn.classList.remove('ai-pending'); btn.disabled = false; }
+}
+
+async function aiTrascriviTTSCella(btn, langCode) {
+  if (!aiConfig || !aiConfig.provider || !aiConfig.key) { if (confirm('AI non configurata. Configurarla ora?')) apriConfigAI(); return; }
+  const tr = btn.closest('tr'), v = tr._voce;
+  if (!v) return;
+  const grafiaPresente = (v[langCode] || '').trim();
+  if (!grafiaPresente) { alert(`Scrivi prima la grafia ${langCode} a mano.`); return; }
+  let grafiaIn = grafiaPresente.split('|')[0].trim();
+  if (grafiaIn.includes('/')) { const parts = grafiaIn.split('/').map(s => s.trim()).filter(Boolean); grafiaIn = parts[parts.length - 1]; }
+  const langName_ = (LINGUE.find(l => l.code === langCode) || {}).name || langCode;
+  btn.classList.add('ai-pending'); btn.disabled = true; setHelp(`🔤 AI TTS per "${grafiaIn}"...`, 'info');
+  try {
+    const proposta = await aiTrascriviTTS(grafiaIn, langCode, langName_, (v.it || '').trim());
+    btn.classList.remove('ai-pending'); btn.disabled = false;
+    if (!proposta) { setHelp('ℹ️ AI: nessuna trascrizione.', 'info'); return; }
+    const nuovaCella = (proposta === grafiaIn) ? grafiaIn : `${proposta}/${grafiaIn}`;
+    if (confirm(`Proposta AI:\n\n  ${nuovaCella}\n\n(TTS legge "${proposta}"${proposta === grafiaIn ? '' : `, utente vede "${grafiaIn}"`})\n\nOK = applica  •  Annulla = ignora`)) {
+      v[langCode] = nuovaCella; if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v)); render(); setHelp(`🔤 Applicato "${nuovaCella}".`, 'success');
+    } else setHelp('ℹ️ Suggerimento ignorato.', 'info');
+  } catch(e) { btn.classList.remove('ai-pending'); btn.disabled = false; setHelp('❌ AI: ' + e.message, 'error'); }
+}
+
+async function aiTrascriviTTS(grafiaDialettale, langCode, langName_, italiano) {
+  const esempi = vocabolario.filter(x => x[langCode] && String(x[langCode]).includes('/')).slice(0, 8).map(x => { const cella = String(x[langCode]).split('|')[0].trim(); const parts = cella.split('/').map(s => s.trim()); return { it: x.it, trascrizione_TTS: parts[0], grafia_tradizionale: parts[parts.length - 1] }; });
+  const prompt = `Sei un assistente fonetico. Parola in ${langName_} (dialetto italiano, codice "${langCode}"): "${grafiaDialettale}"${italiano ? ` (it: "${italiano}")` : ''}.
+COMPITO: proponi trascrizione TTS italianizzata che — letta da voce TTS italiana — suoni vicino alla pronuncia dialettale.
+REGOLE: usa solo lettere italiane standard (a,e,i,o,u,accenti,consonanti). Se la grafia si legge già in italiano, restituiscila identica. NON aggiungere "/".
+${esempi.length ? '\nEsempi stile:\n' + esempi.map(e => JSON.stringify(e)).join('\n') : ''}
+Risposta SOLO JSON: {"trascrizione":"..."}`;
+  let text;
+  if (aiConfig.provider === 'groq') text = await callGroq(prompt);
+  else if (aiConfig.provider === 'gemini') text = await callGemini(prompt);
+  else if (aiConfig.provider === 'anthropic') text = await callAnthropic(prompt);
+  else text = await callOpenAI(prompt);
+  let parsed;
+  try { const cleaned = text.replace(/```json|```/g, '').trim(); const m = cleaned.match(/\{[\s\S]*\}/); parsed = JSON.parse(m ? m[0] : cleaned); }
+  catch(e) { throw new Error('Risposta AI non in JSON: ' + text.slice(0, 200)); }
+  return (parsed.trascrizione || '').toString().trim().replace(/[\/|]/g, '').trim();
+}
+
+async function completaConAI() {
+  if (!aiConfig || !aiConfig.provider || !aiConfig.key) { if (confirm('AI non configurata. Configurarla ora?')) apriConfigAI(); return; }
+  const filtrate = filtroVoci(), daCompletare = filtrate.filter(v => !(v[currentLang] || '').trim() || !v.tema || !v.livello);
+  if (!daCompletare.length) { alert('Nessuna voce da completare.'); return; }
+  const max = Math.min(daCompletare.length, 30);
+  const targetDialetti = [currentLang, currentLang2].filter(c => c && DIALETTI_TTS_ITA.includes(c)).map(c => LINGUE.find(l => l.code === c).name);
+  if (targetDialetti.length && !confirm(`⚠️ Il batch include dialetti (${targetDialetti.join(', ')}). L'AI ha conoscenza limitata. Procedere?`)) return;
+  if (!confirm(`Completare ${max} voci con AI (${aiConfig.provider})?`)) return;
+  const btn = document.getElementById('btn-ai-batch'); btn.disabled = true; const origLabel = btn.textContent;
+  let ok = 0, ko = 0;
+  for (let i = 0; i < max; i++) {
+    const v = daCompletare[i]; btn.textContent = `✨ ${i + 1}/${max}...`; setHelp(`✨ AI: ${i + 1}/${max} — "${v.it}"`, 'info');
+    try {
+      const langs = [currentLang]; if (currentLang2 && !(v[currentLang2] || '').trim()) langs.push(currentLang2);
+      const sugg = await aiClassificaERTraducici(visiblePart(v.it), langs);
+      if (sugg.tema && !v.tema) v.tema = sugg.tema;
+      if (sugg.livello && !v.livello && /^[AB][12]$/.test(sugg.livello)) v.livello = sugg.livello;
+      if (sugg.translations) Object.keys(sugg.translations).forEach(c => { if (!(v[c] || '').trim() && sugg.translations[c]) v[c] = sugg.translations[c]; });
+      if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v)); ok++;
+    } catch(e) { console.error('AI batch:', v.it, e); ko++; }
+    await new Promise(r => setTimeout(r, 250));
+  }
+  popolaTemiSelect(); render(); btn.textContent = origLabel; btn.disabled = false;
+  setHelp(`✨ AI: ${ok} ok, ${ko} errori. Ricorda ☁️.`, ok && !ko ? 'success' : 'error');
+}
+
+// ==========================================================================
+// GESTIONE DUPLICATI (invariata)
+// ==========================================================================
+function trovaDuplicati() {
+  const map = new Map();
+  vocabolario.forEach((v, idx) => { const k = (v.it || '').toLowerCase().trim(); if (!k) return; if (!map.has(k)) map.set(k, []); map.get(k).push(idx); });
+  const groups = []; map.forEach((indici, key) => { if (indici.length > 1) groups.push({ key, indici }); });
+  return groups.sort((a, b) => a.key.localeCompare(b.key, 'it'));
+}
+
+function punteggioCompletezza(v) {
+  let score = 0;
+  if (v.tema && v.tema.trim()) score += 2; if (v.livello && v.livello.trim()) score += 2;
+  Object.keys(v).forEach(k => { if (k === 'tema' || k === 'livello' || k === 'it' || k === 'pron') return; if (v[k] && String(v[k]).trim()) score += 1; });
+  return score;
+}
+
+function riassuntoVoce(v) {
+  const tradotte = [], meta = [];
+  Object.keys(v).forEach(k => { if (k === 'tema' || k === 'livello' || k === 'it' || k === 'pron') return; if (v[k] && String(v[k]).trim()) tradotte.push(`<code>${escapeAttr(k)}: ${escapeAttr(visiblePart(v[k]))}</code>`); });
+  if (v.tema) meta.push('<strong>tema:</strong> ' + escapeAttr(v.tema)); if (v.livello) meta.push('<strong>livello:</strong> ' + escapeAttr(v.livello));
+  return { tradotte: tradotte.length ? tradotte.join(' ') : '<span style="color:var(--muted)">— nessuna traduzione —</span>', meta: meta.length ? meta.join(' · ') : '<span style="color:var(--muted)">— senza tema/livello —</span>', nTrad: tradotte.length };
+}
+
+let dupGroupsCache = [];
+function apriDuplicati() { dupGroupsCache = trovaDuplicati(); document.getElementById('dup-modal').classList.add('open'); renderDuplicati(); }
+function chiudiDuplicati() { document.getElementById('dup-modal').classList.remove('open'); }
+
+function analizzaConflitti(indici) {
+  const conflitti = [], tuttiCampi = new Set();
+  indici.forEach(i => Object.keys(vocabolario[i]).forEach(k => { if (k !== 'it') tuttiCampi.add(k); }));
+  tuttiCampi.forEach(campo => {
+    if (campo === 'tema' || campo === 'livello') return;
+    const valori = [];
+    indici.forEach(i => { const val = vocabolario[i][campo]; if (val !== undefined && val !== null && String(val).trim() !== '') valori.push({ idx: i, val: String(val), visible: visiblePart(String(val)) }); });
+    if (valori.length >= 2) { const distinti = new Set(valori.map(v => normalizzaVarianti(v.visible))); if (distinti.size >= 2) conflitti.push({ campo, valori }); }
+  });
+  return conflitti;
+}
+
+function renderDuplicati() {
+  const list = document.getElementById('dup-list');
+  dupGroupsCache = trovaDuplicati();
+  if (!dupGroupsCache.length) { list.innerHTML = '<div class="dup-empty">✅ Nessun duplicato trovato.</div>'; return; }
+  let nSicuri = 0, nSinonimi = 0;
+  dupGroupsCache.forEach(g => { g._conflitti = analizzaConflitti(g.indici); if (g._conflitti.length === 0) nSicuri++; else nSinonimi++; });
+  let html = `<p style="font-size:0.85rem; margin:0 0 0.8rem;"><strong>${dupGroupsCache.length}</strong> gruppi: <span style="color:var(--green); font-weight:600">${nSicuri} sicuri</span> · <span style="color:var(--accent); font-weight:600">${nSinonimi} con conflitti</span></p>`;
+  dupGroupsCache.forEach((gruppo, gIdx) => {
+    const haSinonimi = gruppo._conflitti.length > 0;
+    let bestIdx = gruppo.indici[0], bestScore = -1;
+    gruppo.indici.forEach(i => { const s = punteggioCompletezza(vocabolario[i]); if (s > bestScore) { bestScore = s; bestIdx = i; } });
+    html += `<div class="dup-group ${haSinonimi ? 'dup-group-sinonimi' : 'dup-group-safe'}">`;
+    html += `<h3>📂 "${escapeAttr(vocabolario[gruppo.indici[0]].it)}" — ${gruppo.indici.length} voci · ${haSinonimi ? '<span style="color:var(--accent)">🔴 conflitti</span>' : '<span style="color:var(--green)">🟢 sicuro</span>'}</h3>`;
+    if (haSinonimi) {
+      html += `<div class="dup-conflitti"><ul style="margin:0.3rem 0 0.5rem 1.2rem; font-size:0.82rem;">`;
+      gruppo._conflitti.forEach(c => { html += `<li><strong>${escapeAttr(c.campo)}:</strong> ${c.valori.map(v => `<code style="background:#fee2e2;padding:1px 4px;border-radius:3px">${escapeAttr(v.visible)}</code>`).join(' ≠ ')}</li>`; });
+      html += `</ul></div>`;
+    }
+    gruppo.indici.forEach(i => {
+      const v = vocabolario[i], r = riassuntoVoce(v), isBest = i === bestIdx;
+      html += `<div class="dup-row ${isBest && !haSinonimi ? 'recommended' : ''}"><div class="dup-fields"><div>${r.tradotte}</div><div class="dup-meta">${r.meta}${isBest && !haSinonimi ? ' · <strong style="color:var(--green)">consigliata</strong>' : ''}</div></div>
+        <div class="dup-actions">${haSinonimi ? `<button class="btn btn-secondary" disabled>⇒ fondi</button><button class="btn btn-danger" onclick="cancellaDup(${i})">🗑️</button>` : (isBest ? '<button class="btn btn-secondary" disabled>✓ tieni</button>' : `<button class="btn btn-secondary" onclick="fondiInBest(${i},${bestIdx})">⇒ fondi</button><button class="btn btn-danger" onclick="cancellaDup(${i})">🗑️</button>`)}</div></div>`;
+    });
+    html += `</div>`;
+  });
+  list.innerHTML = html;
+}
+
+function cancellaDup(idx) {
+  const v = vocabolario[idx]; if (!v) return;
+  const key = rowKey(v), altre = vocabolario.filter((x, i) => i !== idx && rowKey(x) === key).length;
+  if (!confirm(`Cancellare "${v.it}"?\n${riassuntoVoce(v).meta}`)) return;
+  vocabolario.splice(idx, 1);
+  if (!vocabolario.some(x => rowKey(x) === key)) { modifiedKeys.delete(key); newKeys.delete(key); } else if (!newKeys.has(key)) modifiedKeys.add(key);
+  renderDuplicati(); render();
+}
+
+function fondiInBest(idxFrom, idxTo) {
+  const vFrom = vocabolario[idxFrom], vTo = vocabolario[idxTo]; if (!vFrom || !vTo) return;
+  const campiCopiati = [];
+  Object.keys(vFrom).forEach(k => { if (k === 'it') return; const hF = vFrom[k] !== undefined && vFrom[k] !== null && String(vFrom[k]).trim() !== ''; const hT = vTo[k] !== undefined && vTo[k] !== null && String(vTo[k]).trim() !== ''; if (hF && !hT) campiCopiati.push(`${k}: "${visiblePart(vFrom[k])}"`); });
+  if (!confirm(`Fondere nella consigliata?\n${campiCopiati.length ? 'Campi copiati:\n• ' + campiCopiati.join('\n• ') : 'Nessun campo nuovo.'}\n\nQuesta voce verrà cancellata.`)) return;
+  Object.keys(vFrom).forEach(k => { if (k === 'it') return; const hF = vFrom[k] !== undefined && vFrom[k] !== null && String(vFrom[k]).trim() !== ''; const hT = vTo[k] !== undefined && vTo[k] !== null && String(vTo[k]).trim() !== ''; if (hF && !hT) vTo[k] = vFrom[k]; });
+  const keyTo = rowKey(vTo); if (!newKeys.has(keyTo)) modifiedKeys.add(keyTo);
+  vocabolario.splice(idxFrom, 1); renderDuplicati(); render();
+}
+
+function scegliTemaCanonico(voci) {
+  const conteggi = new Map(); voci.forEach(v => { const t = (v.tema||'').trim(); if (!t) return; conteggi.set(t, (conteggi.get(t)||0)+1); }); if (!conteggi.size) return null;
+  let maxC = 0; conteggi.forEach(c => { if (c > maxC) maxC = c; }); let candidati = [...conteggi.entries()].filter(([,c])=>c===maxC).map(([t])=>t);
+  if (candidati.length === 1) return candidati[0];
+  if (candidati.length > 1 && candidati.includes('dialetti')) { const s = candidati.filter(t=>t!=='dialetti'); if (s.length) candidati = s; }
+  if (candidati.length === 1) return candidati[0];
+  const pop = new Map(); candidati.forEach(t => pop.set(t, 0)); vocabolario.forEach(v => { const t=(v.tema||'').trim(); if (pop.has(t)) pop.set(t, pop.get(t)+1); });
+  let best = candidati[0], bp = pop.get(best); candidati.forEach(t => { const p=pop.get(t); if (p < bp) { best=t; bp=p; } }); return best;
+}
+
+function scegliLivelloCanonico(voci) {
+  const conteggi = new Map(); voci.forEach(v => { const l=(v.livello||'').trim(); if (!l) return; conteggi.set(l,(conteggi.get(l)||0)+1); }); if (!conteggi.size) return null;
+  let maxC=0; conteggi.forEach(c=>{if(c>maxC)maxC=c;}); let candidati=[...conteggi.entries()].filter(([,c])=>c===maxC).map(([l])=>l);
+  if (candidati.length===1) return candidati[0];
+  const ORDINE=['A1','A2','B1','B2','C1','C2']; candidati.sort((a,b)=>{const ia=ORDINE.indexOf(a),ib=ORDINE.indexOf(b); if(ia===-1&&ib===-1) return a.localeCompare(b); if(ia===-1) return 1; if(ib===-1) return -1; return ia-ib;}); return candidati[0];
+}
+
+function dedupaAutomatico() {
+  const groups = trovaDuplicati(); if (!groups.length) { alert('✅ Nessun duplicato.'); return; }
+  const fondibili = groups.filter(g => analizzaConflitti(g.indici).length === 0), conConflitti = groups.length - fondibili.length;
+  if (!fondibili.length) { alert(`Nessun gruppo fondibile automaticamente.\n${conConflitti} con conflitti da gestire a mano.`); return; }
+  if (!confirm(`Fondere ${fondibili.length} gruppi automaticamente?${conConflitti ? `\n⚠️ ${conConflitti} con conflitti non verranno toccati.` : ''}`)) return;
+  let fusi = 0;
+  fondibili.forEach(g => {
+    const voci = g.indici.map(i => vocabolario[i]); let best = voci[0], bs = -1; voci.forEach(v => { const s=punteggioCompletezza(v); if(s>bs){bs=s;best=v;} });
+    const temaCan = scegliTemaCanonico(voci), livCan = scegliLivelloCanonico(voci);
+    voci.forEach(v => { if (v===best) return; Object.keys(v).forEach(k => { if(k==='it'||k==='tema'||k==='livello') return; const hF=v[k]!==undefined&&v[k]!==null&&String(v[k]).trim()!==''; const hT=best[k]!==undefined&&best[k]!==null&&String(best[k]).trim()!==''; if(hF&&!hT) best[k]=v[k]; }); const idx=vocabolario.indexOf(v); if(idx>=0) vocabolario.splice(idx,1); });
+    if (temaCan!==null) best.tema=temaCan; if (livCan!==null) best.livello=livCan;
+    if (!newKeys.has(rowKey(best))) modifiedKeys.add(rowKey(best)); fusi++;
+  });
+  popolaTemiSelect(); setHelp(`🧹 ${fusi} gruppi fusi.${conConflitti?` ${conConflitti} con conflitti da gestire a mano.`:''} Ricorda ☁️.`, 'success'); renderDuplicati(); render();
+}
+
+// ==========================================================================
+// TTS
+// ==========================================================================
+let _voicesReady = false;
+function _initVoices() { if (!window.speechSynthesis) return; window.speechSynthesis.getVoices(); if ('onvoiceschanged' in window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => { _voicesReady = true; }; _voicesReady = window.speechSynthesis.getVoices().length > 0; }
+_initVoices();
+function _pickVoice(bcp47) { const voices = window.speechSynthesis.getVoices(); if (!voices.length) return null; let v = voices.find(x => x.lang === bcp47); if (v) return v; const pref = bcp47.split('-')[0].toLowerCase(); return voices.find(x => (x.lang||'').toLowerCase().startsWith(pref)) || null; }
+
+function ttsRow(btn) {
+  const tr = btn.closest('tr'), langInput = tr.querySelector(`input[data-field="${currentLang}"]`), pronInput = tr.querySelector('input[data-field="pron"]');
+  const testo = (pronInput && pronInput.value.trim()) || (langInput && visiblePart(langInput.value)) || '';
+  if (!testo || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  setTimeout(() => { const u = new SpeechSynthesisUtterance(testo); const langInfo = LINGUE.find(l => l.code === currentLang); u.lang = langInfo ? langInfo.bcp47 : 'it-IT'; u.rate = 0.85; const v = _pickVoice(u.lang); if (v) u.voice = v; window.speechSynthesis.speak(u); }, 80);
+}
+
+// ==========================================================================
+// SERIALIZZAZIONE / SALVATAGGIO
+// ==========================================================================
+const KEY_ORDER = ['tema','livello','it','en','fr','es','de','pt','ru','ca','sp','mn','cr','ge','ko','ar','zh','ja','ia','la','grc','pron'];
+
+function serializzaVoce(v) {
+  const parts = [], origKeys = originalKeysByEntry.get(rowKey(v)) || new Set();
+  KEY_ORDER.forEach(k => {
+    const val = v[k], hasValue = val !== undefined && val !== null && val !== '', wasOriginal = origKeys.has(k);
+    if (hasValue) parts.push(`${k}:${JSON.stringify(val)}`); else if (wasOriginal && val !== undefined) parts.push(`${k}:""`);
+  });
+  Object.keys(v).forEach(k => { if (!KEY_ORDER.includes(k) && !k.startsWith('_') && v[k] !== undefined && v[k] !== '') parts.push(`${k}:${JSON.stringify(v[k])}`); });
+  return '{ ' + parts.join(', ') + ' }';
+}
+
+function ricostruisciSorgente() {
+  if (!originalSourceFile) throw new Error('Sorgente originale non caricato');
+  const m = BLOCK_START_RE.exec(originalSourceFile); if (!m) throw new Error('Marcatore non trovato');
+  const start = m.index + m[0].length;
+  let depth = 1, i = start, inStr = false, esc = false, q = null;
+  while (i < originalSourceFile.length) {
+    const c = originalSourceFile[i];
+    if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === q) inStr = false; }
+    else { if (c === '"' || c === '\'') { inStr = true; q = c; } else if (c === '[') depth++; else if (c === ']') { depth--; if (depth === 0) break; } }
+    i++;
+  }
+  if (depth !== 0) throw new Error('Parentesi non bilanciate');
+  const lines = vocabolario.map(v => '      ' + serializzaVoce(v) + ',');
+  let nuovoSrc = originalSourceFile.slice(0, start) + '\n      // ── VOCABOLARIO ──────────────────────────\n' + lines.join('\n') + '\n    ' + originalSourceFile.slice(i);
+  nuovoSrc = nuovoSrc.replace(/^(\s*const\s+VOC_VERSION\s*=\s*)(\d+)(\s*;)/m, (match, prefix, num, suffix) => prefix + (parseInt(num, 10) + 1) + suffix);
+  return nuovoSrc;
+}
+
+function scaricaCopia() {
+  let nuovoSrc; try { nuovoSrc = ricostruisciSorgente(); } catch(e) { alert('Errore: ' + e.message); return; }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([nuovoSrc], { type: 'text/html;charset=utf-8' })); a.download = 'index.html'; a.click();
+}
+
+async function salvaSuGitHub() {
+  let token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!token) {
+    token = prompt('Incolla il tuo Personal Access Token GitHub (Contents: Read/Write su "vecigagi"):');
+    if (!token) return;
+    token = token.trim();
+    if (!token.startsWith('github_pat_') && !token.startsWith('ghp_')) { if (!confirm('Token non sembra GitHub standard. Continuare?')) return; }
+    localStorage.setItem(GH_TOKEN_KEY, token);
+  }
+  const tot = vocabolario.length, modCount = modifiedKeys.size + newKeys.size;
+  if (!modCount && !confirm('Nessuna modifica. Salvare comunque?')) return;
+  if (!confirm(`Scrivere ${tot} voci su GitHub (modifiche: ${modCount})?\n\n"vecigagi/index.html" verrà sovrascritta.`)) return;
+  const btn = document.getElementById('btn-gh-save'), orig = btn.textContent; btn.disabled = true; btn.textContent = '⏳ Salvataggio...';
+  let success = false;
+  try {
+    const nuovoSrc = ricostruisciSorgente();
+    const apiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`;
+    const headers = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+    const getRes = await fetchTimeout(apiBase + '?ref=' + GH_BRANCH, { headers }, 20000);
+    if (!getRes.ok) { if (getRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('GET fallito (' + getRes.status + ')'); }
+    const sha = (await getRes.json()).sha;
+    const bytes = new TextEncoder().encode(nuovoSrc); let bin = ''; for (let j = 0; j < bytes.length; j++) bin += String.fromCharCode(bytes[j]);
+    const putRes = await fetchTimeout(apiBase, { method:'PUT', headers:Object.assign({}, headers, {'Content-Type':'application/json'}), body:JSON.stringify({ message:`Aggiornamento da edit.html (${tot} voci, ${modCount} modifiche)`, content:btoa(bin), branch:GH_BRANCH, sha }) }, 60000);
+    if (!putRes.ok) { if (putRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('PUT fallito (' + putRes.status + ')'); }
+    originalSourceFile = nuovoSrc; originalSourceSha = (await putRes.json()).content.sha;
+    modifiedKeys.clear(); newKeys.clear(); success = true;
+    btn.textContent = '✅ Salvato!'; setHelp('✅ Salvataggio riuscito! GitHub Pages aggiornerà tra 1-2 min.', 'success');
+    setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 3000); render();
+  } catch(err) { console.error('[GH]', err); alert('Errore:\n\n' + err.message); }
+  finally { if (!success) { btn.textContent = orig; btn.disabled = false; } }
+}
+
+function reimpostaToken() { if (confirm('Cancellare il token GitHub?')) { localStorage.removeItem(GH_TOKEN_KEY); alert('Token rimosso.'); } }
+</script>
+</body>
+</html>
