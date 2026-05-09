@@ -2925,10 +2925,10 @@ const VOCABOLARIO_DEFAULT = [
       { it:"toppa", mn:"topa" },
       { tema:"dialetti", livello:"A2", it:"identico|spiaccicato", mn:"schciattà/sciatà" },
       { it:"ciao", ro:"salut" },
-      { it:"buongiorno", mn:"bun dii", ro:"bună dimineața" },
-      { it:"buonasera", mn:"buna seia", ro:"bună seara" },
-      { it:"buonanotte", mn:"buna nota", ro:"noapte bună" },
-      { tema:"saluti", livello:"A1", it:"arrivederci", mn:"adiu", ro:"la revedere" },
+      { it:"buongiorno", sp:"bongiorno", mn:"bungiurnu", ro:"bună dimineața" },
+      { it:"buonasera", sp:"bonasea", mn:"bunasea", ro:"bună seara" },
+      { it:"buonanotte", sp:"bonanota", mn:"bunanota", ro:"noapte bună" },
+      { tema:"saluti", livello:"A1", it:"arrivederci", sp:"se vedemo", mn:"adiu|se vedemu|ciao", ro:"la revedere" },
       { it:"per favore", ro:"vă rog" },
       { it:"prego", mn:"pregu", ro:"cu plăcere" },
       { it:"sì", mn:"si", ro:"da" },
@@ -2957,7 +2957,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"tempo", livello:"A1", it:"oggi", mn:"anchè", ro:"azi" },
       { tema:"tempo", livello:"A1", it:"ieri", sp:"aiei", mn:"aiei", ro:"ieri" },
       { it:"bello", mn:"belu", ro:"frumos" },
-      { it:"buono", mn:"bun", ro:"bun" },
+      { it:"buono", sp:"bon", mn:"bun", ro:"bun" },
       { it:"come stai?", mn:"cume te sté", ro:"ce mai faci?" },
       { it:"sto bene grazie", ro:"sunt bine mulțumesc" },
       { it:"come ti chiami?", mn:"te cume te ciami", ro:"cum te cheamă?" },
@@ -2975,9 +2975,9 @@ const VOCABOLARIO_DEFAULT = [
       { it:"ho sete", mn:"me a gho sede", ro:"mi-e sete" },
       { it:"mi piace", sp:"me ciasa", mn:"me ciasa", ro:"îmi place" },
       { it:"non mi piace", sp:"ne me ciasa", mn:"ne me ciasa", ro:"nu-mi place" },
-      { it:"buon appetito!", ro:"poftă bună!" },
+      { it:"buon appetito!", sp:"bon apeti", mn:"bun apetì", ro:"poftă bună!" },
       { it:"salute! (brindisi)", mn:"salute!", ro:"noroc!" },
-      { it:"in bocca al lupo!", ro:"mult succes!" },
+      { it:"in bocca al lupo!", sp:"en boca ar lovo", mn:"en buca au luu", ro:"mult succes!" },
     ];
 
 // ── Storage ───────────────────────────────────────────────────────────────
@@ -2993,7 +2993,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 74;
+const VOC_VERSION = 75;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
