@@ -1688,6 +1688,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"verbi", livello:"A1", it:"io vado", en:"I go", fr:"je vais", sp:"me a vago", mn:"me a vagu" },
+      { tema:"verbi", livello:"B1", it:"reggere", en:"hold", es:"soportar", mn:"areze" },
       { tema:"natura", livello:"A1", it:"prato", en:"meadow", fr:"pré", sp:"prado", mn:"pradu" },
       { tema:"comunicazione", livello:"A2", it:"chiacchiera", sp:"ciacea", mn:"ciacéa" },
       { tema:"viaggi", livello:"B1", it:"Manarola", mn:"Manaèa" },
@@ -2939,7 +2941,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"frutta", mn:"fruta", ro:"fructe" },
       { it:"formaggio", mn:"furmagiu", ro:"brânză" },
       { it:"caffè", mn:"café", ro:"cafea" },
-      { tema:"verbi", livello:"A1", it:"bere", mn:"bee", ro:"a bea" },
+      { tema:"verbi", livello:"A1", it:"bere", sp:"beve", mn:"bee", ro:"a bea" },
       { it:"volere", mn:"vree", ro:"a vrea" },
       { it:"lavorare", mn:"travagiaa", ro:"a lucra" },
       { it:"negozio", mn:"negosciu", ro:"magazin" },
@@ -2982,7 +2984,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 64;
+const VOC_VERSION = 65;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
