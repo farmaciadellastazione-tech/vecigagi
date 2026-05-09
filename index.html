@@ -1688,6 +1688,11 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"cibo", livello:"A1", it:"cipolla", en:"onion", sp:"sigòla|siòla" },
+      { tema:"natura", livello:"A1", it:"ala", en:"wing", sp:"àa" },
+      { tema:"natura", livello:"A1", it:"polvere", en:"dust", sp:"püa" },
+      { tema:"natura", livello:"A1", it:"luce", en:"light", sp:"lüse" },
+      { tema:"emotivi", livello:"A1", it:"sicuro", en:"sure", sp:"següo" },
       { tema:"natura", livello:"A1", it:"volpe", en:"fox", sp:"gorpe", mn:"gurpa" },
       { tema:"natura", livello:"A1", it:"goccia", mn:"gùssu" },
       { tema:"cibo", livello:"A2", it:"bietole", sp:"biete", mn:"géde" },
@@ -1705,7 +1710,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A1", it:"sabbia", mn:"àena" },
       { tema:"verbi", livello:"A1", it:"alzare", mn:"àusaa" },
       { tema:"cibo", livello:"A1", it:"uva", mn:"ua" },
-      { tema:"cibo", livello:"A1", it:"oliva", mn:"ùiva" },
+      { tema:"cibo", livello:"A1", it:"oliva", en:"olive", sp:"oìva", mn:"ùiva" },
       { tema:"lingua", livello:"A1", it:"parola", mn:"paòla" },
       { tema:"famiglia", livello:"A1", it:"nipote", mn:"nìeu|néssa" },
       { tema:"persona", livello:"A1", it:"uomo", sp:"omo", mn:"omu" },
@@ -2451,7 +2456,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mestieri", livello:"B1", it:"commerciante", en:"merchant", fr:"commerçant", es:"comerciante", de:"Händler", pt:"comerciante", ru:"торговец", ca:"comerciant", sp:"", ko:"상인", ar:"تاجر", zh:"商人", ja:"商人", ia:"mercante", la:"mercator", grc:"ἔμπορος" },
       { tema:"mestieri", livello:"B1", it:"contabile", en:"accountant", fr:"comptable", es:"contable", de:"Buchhalter", pt:"contador", ru:"бухгалтер", ca:"comptable", ko:"회계사", ar:"محاسب", zh:"会计", ja:"会計士", ia:"contabile" },
       { tema:"luoghi", livello:"A1", it:"macchina", en:"car", fr:"voiture", es:"coche", de:"Auto", pt:"carro", ru:"машина", ca:"cotxe", ko:"자동차", ar:"سيارة", zh:"汽车", ja:"車", ia:"auto", la:"vehiculum", grc:"ὄχημα" },
-      { tema:"luoghi", livello:"A1", it:"autobus", en:"bus", fr:"bus", es:"autobús", de:"Bus", pt:"ônibus|onibus", ru:"автобус", ca:"autobús", ko:"버스", ar:"حافلة", zh:"公共汽车", ja:"バス", ia:"autobus", la:"raeda", grc:"λεωφορεῖον" },
+      { tema:"luoghi", livello:"A1", it:"autobus", en:"bus", fr:"bus", es:"autobús", de:"Bus", pt:"ônibus|onibus", ru:"автобус", ca:"autobús", sp:"bus", mn:"bus", ko:"버스", ar:"حافلة", zh:"公共汽车", ja:"バス", ia:"autobus", la:"raeda", grc:"λεωφορεῖον" },
       { tema:"viaggi", livello:"A1", it:"treno", en:"train", fr:"train", es:"tren", de:"Zug", pt:"trem", ru:"поезд", ca:"tren", sp:"", ko:"기차", ar:"قطار", zh:"火车", ja:"電車", ia:"train" },
       { tema:"luoghi", livello:"A1", it:"aereo", en:"plane", fr:"avion", es:"avión", de:"Flugzeug", pt:"avião|aviao", ru:"самолёт", ca:"avió", ko:"비행기", ar:"طائرة", zh:"飞机", ja:"飛行機", ia:"avion", grc:"ἀεροπλάνον" },
       { tema:"luoghi", livello:"A2", it:"barca", en:"boat", fr:"bateau", es:"barco", de:"Boot", pt:"barco", sp:"barca", mn:"barca", ko:"배", ar:"قارب", zh:"船", ja:"船", ia:"barca", la:"navis", grc:"πλοῖον" },
@@ -2532,7 +2537,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"corpo", livello:"A2", it:"pelle", en:"skin", fr:"peau", es:"piel", de:"Haut", pt:"pele", ru:"неудобный", ca:"incòmode", cr:"peda", ko:"피부", ar:"جلد", zh:"皮肤", ja:"肌", ia:"pelle", la:"cutis", grc:"δέρμα" },
       { tema:"corpo", livello:"A2", it:"osso", en:"bone", fr:"os", es:"hueso", de:"Knochen", pt:"osso", sp:"osso", mn:"òssu", ko:"뼈", ar:"عظمة", zh:"骨头", ja:"骨", ia:"osso", la:"os", grc:"ὀστέον" },
       { tema:"corpo", livello:"B1", it:"muscolo", en:"muscle", fr:"muscle", es:"músculo", de:"Muskel", pt:"músculo|musculo", ca:"múscul", sp:"", cr:"", ko:"근육", ar:"عضلة", zh:"肌肉", ja:"筋肉", ia:"musculo", la:"musculus", grc:"μῦς" },
-      { tema:"corpo", livello:"A2", it:"polmone", en:"lung", fr:"poumon", es:"pulmón", de:"Lunge", pt:"pulmão|pulmao", ru:"юг", ca:"sud", sp:"pümòn, pimòn, pormòn", ko:"폐", ar:"رئة", zh:"肺", ja:"肺", ia:"pulmon", la:"pulmo", grc:"πλεύμων" },
+      { tema:"corpo", livello:"A2", it:"polmone", en:"lung", fr:"poumon", es:"pulmón", de:"Lunge", pt:"pulmão|pulmao", ru:"юг", ca:"sud", sp:"pümòn| pimòn| pormòn", ko:"폐", ar:"رئة", zh:"肺", ja:"肺", ia:"pulmon", la:"pulmo", grc:"πλεύμων" },
       { tema:"corpo", livello:"B1", it:"rene", en:"kidney", fr:"rein", es:"riñón", de:"Niere", pt:"rim", sp:"rén", ko:"신장", ar:"كلية", zh:"肾", ja:"腎臓", ia:"ren", la:"ren", grc:"νεφρός" },
       { tema:"corpo", livello:"B1", it:"fegato", en:"liver", fr:"foie", es:"hígado", de:"Leber", pt:"fígado|figado", sp:"figaéto", ko:"간", ar:"كبد", zh:"肝", ja:"肝臓", ia:"hepate", la:"iecur", grc:"ἧπαρ" },
       { tema:"luoghi", livello:"A1", it:"libertà", en:"freedom", fr:"liberté", es:"libertad", de:"Freiheit", pt:"liberdade", ru:"свобода", ca:"llibertat", ko:"자유", ar:"حرية", zh:"自由", ja:"自由", ia:"libertate", la:"libertas", grc:"ἐλευθερία" },
@@ -2868,7 +2873,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"ordine, comando", en:"", mn:"ùrdén" },
       { tema:"dialetti", livello:"A2", it:"dove", en:"", mn:"uunde/ùndé" },
       { tema:"dialetti", livello:"A2", it:"onestà, sincerità", en:"", mn:"uunéstà/unéstà" },
-      { tema:"dialetti", livello:"A2", it:"unghia", en:"", mn:"üngia" },
+      { tema:"corpo", livello:"A2", it:"unghia", en:"nail", sp:"üngia", mn:"üngia" },
       { tema:"dialetti", livello:"A2", it:"unguento, linimento", en:"", mn:"ünguëntu" },
       { tema:"dialetti", livello:"A2", it:"unico", en:"", mn:"üunicu/ünicu" },
       { tema:"dialetti", livello:"A2", it:"unto, oliato", en:"", mn:"üntu" },
@@ -2993,7 +2998,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 75;
+const VOC_VERSION = 76;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
