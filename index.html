@@ -1688,7 +1688,10 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
-      { tema:"verbi", livello:"A1", it:"noi diciamo", mn:"nùi a disëmu/nùi a dizëmu" },
+      { tema:"casa", livello:"A1", it:"camera", en:"room", fr:"chambre", sp:"cambéa", mn:"cambéa" },
+      { tema:"natura", livello:"A1", it:"campo", en:"field", mn:"campu|cian" },
+      { tema:"viaggi", livello:"A1", it:"voi partite", en:"you leave", sp:"voiàötri a partì", mn:"vàutri a partii" },
+      { tema:"verbi", livello:"A1", it:"noi diciamo", en:"we say", sp:"noi a disemo", mn:"nùi a disëmu/nùi a dizëmu" },
       { tema:"sentimenti", livello:"A2", it:"fortunato", mn:"afurtünà" },
       { tema:"verbi", livello:"A1", it:"io vado", en:"I go", fr:"je vais", sp:"me a vago", mn:"me a vagu" },
       { tema:"verbi", livello:"B1", it:"reggere", en:"hold", es:"soportar", mn:"areze" },
@@ -1696,7 +1699,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"comunicazione", livello:"A2", it:"chiacchiera", sp:"ciacea", mn:"ciacéa" },
       { tema:"viaggi", livello:"B1", it:"Manarola", mn:"Manaèa" },
       { tema:"natura", livello:"A1", it:"sabbia", mn:"àena" },
-      { tema:"verbi", livello:"A1", it:"alzare", mn:"àusaa" },
+      { tema:"verbi", livello:"A1", it:"alzare", sp:"ausae", mn:"àusaa" },
       { tema:"cibo", livello:"A1", it:"uva", mn:"ua" },
       { tema:"cibo", livello:"A1", it:"oliva", mn:"ùiva" },
       { tema:"lingua", livello:"A1", it:"parola", mn:"paòla" },
@@ -2058,7 +2061,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"famiglia", livello:"A2", it:"marito", en:"husband", fr:"mari", es:"marido", de:"Ehemann", pt:"marido", ru:"муж", ca:"marit", sp:"maì", ge:"màrito", ko:"남편", ar:"زوج", zh:"丈夫", ja:"夫", ia:"marito", la:"maritus", grc:"ἀνήρ", ro:"soț" },
       { tema:"famiglia", livello:"A2", it:"moglie", en:"wife", fr:"femme", es:"esposa", de:"Ehefrau", pt:"esposa", ru:"жена", ca:"esposa", sp:"mogée", ko:"아내", ar:"زوجة", zh:"妻子", ja:"妻", ia:"uxor", la:"uxor", grc:"γυνή", ro:"soție" },
       { tema:"famiglia", livello:"A1", it:"zio", en:"uncle", fr:"oncle", es:"tío", de:"Onkel", pt:"tio", ru:"дядя", ca:"oncle", sp:"zìo/sio|barba", ge:"bàrba", ko:"삼촌", ar:"عم", zh:"叔叔", ja:"叔父", ia:"oncle", la:"patruus", grc:"θεῖος" },
-      { tema:"famiglia", livello:"A1", it:"suocero", en:"father-in-law", fr:"beau-père", es:"suegro", de:"Schwiegervater", pt:"sogro", ru:"свёкор|тесть", ca:"sogre", sp:"sèsoo", ko:"시아버지", ar:"حمو", zh:"公公", ja:"義父", ia:"socer", la:"socer", grc:"πενθερός" },
+      { tema:"famiglia", livello:"A1", it:"suocero", en:"father-in-law", fr:"beau-père", es:"suegro", de:"Schwiegervater", pt:"sogro", ru:"свёкор|тесть", ca:"sogre", sp:"sèsoo|sésoo", ko:"시아버지", ar:"حمو", zh:"公公", ja:"義父", ia:"socer", la:"socer", grc:"πενθερός" },
       { tema:"natura", livello:"A1", it:"sole", en:"sun", fr:"soleil", es:"sol", de:"Sonne", pt:"sol", ru:"солнце", ca:"sol", sp:"sò", cr:"sol", ko:"태양", ar:"شمس", zh:"太阳", ja:"太陽", ia:"sol", la:"sol", grc:"ἥλιος" },
       { tema:"famiglia", livello:"A1", it:"luna", en:"moon", fr:"lune", es:"luna", de:"Mond", pt:"lua", ru:"луна", ca:"lluna", sp:"", ge:"sêueo", ko:"달", ar:"قمر", zh:"月亮", ja:"月", ia:"luna", la:"luna", grc:"σελήνη" },
       { tema:"natura", livello:"A1", it:"mare", en:"sea", fr:"mer", es:"mar", de:"Meer", pt:"mar", ru:"море", ca:"mar", sp:"mae", mn:"maa", cr:"", ko:"바다", ar:"بحر", zh:"海", ja:"海", ia:"mar", la:"mare", grc:"θάλασσα" },
@@ -2757,7 +2760,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"sbuffare", en:"", mn:"sbüfaaa/zbüfaa/sbüfaa" },
       { tema:"dialetti", livello:"A2", it:"sbollire, fermentare", en:"", mn:"sbugii/zbùgii/sbùgii" },
       { tema:"dialetti", livello:"A2", it:"scacciare, mandar via con durezza", en:"", mn:"sburii/zbùrii/sbùrii" },
-      { tema:"dialetti", livello:"A2", it:"smentire pubblicamente", en:"", mn:"sbusardaà/zbùzardaa/sbùzardaa" },
       { tema:"dialetti", livello:"A2", it:"gelato", mn:"zéàa/zéà" },
       { tema:"dialetti", livello:"A2", it:"zibibbo, uva passa", en:"", mn:"zébibu" },
       { tema:"dialetti", livello:"A2", it:"ginepro", en:"", mn:"zénëvru" },
@@ -2965,7 +2967,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"quanto costa?", mn:"quantu custa?", ro:"cât costă?" },
       { it:"dov'è il bagno?", ro:"unde este baia?" },
       { it:"ho fame", mn:"me a gho fame", ro:"mi-e foame" },
-      { it:"ho sete", mn:"me a gho sede", ro:"mi-e sete" },
+      { it:"ho sete", sp:"me a gho séde", mn:"me a gho sede", ro:"mi-e sete" },
       { it:"mi piace", mn:"me ciasa", ro:"îmi place" },
       { it:"non mi piace", mn:"ne me ciasa", ro:"nu-mi place" },
       { it:"buon appetito!", ro:"poftă bună!" },
@@ -2986,7 +2988,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 67;
+const VOC_VERSION = 68;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
