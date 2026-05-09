@@ -1688,6 +1688,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"natura", livello:"A1", it:"goccia", mn:"gùssu" },
+      { tema:"cibo", livello:"A2", it:"bietole", sp:"biete", mn:"géde" },
       { tema:"numeri", livello:"A1", it:"doppio", sp:"docio", mn:"dùciu" },
       { tema:"numeri", livello:"A1", it:"più", es:"más", sp:"ciü", mn:"ciü" },
       { tema:"natura", livello:"A1", it:"campo", en:"field", es:"campo", sp:"campo", mn:"campu|cian" },
@@ -2459,7 +2461,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A1", it:"pioggia", en:"rain", fr:"pluie", es:"lluvia", de:"Regen", pt:"chuva", ru:"дождь", ca:"pluja", sp:"", ko:"비", ar:"مطر", zh:"雨", ja:"雨", ia:"pluvia", la:"pluvia", grc:"ὑετός" },
       { tema:"natura", livello:"A1", it:"neve", en:"snow", fr:"neige", es:"nieve", de:"Schnee", pt:"neve", ru:"снег", ca:"neu", sp:"envelòpe, bùsta", ko:"눈", ar:"ثلج", zh:"雪", ja:"雪", ia:"nive", la:"nix", grc:"χιών" },
       { tema:"natura", livello:"A2", it:"nuvola", en:"cloud", fr:"nuage", es:"nube", de:"Wolke", pt:"nuvem", ru:"облако", ca:"núvol", ko:"구름", ar:"سحابة", zh:"云", ja:"雲", ia:"nube", la:"nubes", grc:"νεφέλη" },
-      { tema:"natura", livello:"A1", it:"nebbia", en:"fog", fr:"brouillard", es:"niebla", de:"Nebel", pt:"névoa|nevoa", sp:"garbìn", cr:"", ko:"안개", ar:"ضباب", zh:"雾", ja:"霧", ia:"nebula", la:"nebula", grc:"ὁμίχλη" },
+      { tema:"natura", livello:"A1", it:"nebbia", en:"fog", fr:"brouillard", es:"niebla", de:"Nebel", pt:"névoa|nevoa", sp:"garbìn", mn:"garbie", cr:"", ko:"안개", ar:"ضباب", zh:"雾", ja:"霧", ia:"nebula", la:"nebula", grc:"ὁμίχλη" },
       { tema:"natura", livello:"A2", it:"grandine", en:"hail", fr:"grêle", es:"granizo", de:"Hagel", pt:"granizo", sp:"granzèa", cr:"", ko:"우박", ar:"بَرَد", zh:"冰雹", ja:"雹", ia:"grando", la:"grando", grc:"χάλαζα" },
       { tema:"natura", livello:"A2", it:"fulmine", en:"lightning", fr:"éclair", es:"relámpago", de:"Blitz", pt:"raio", ko:"번개", ar:"برق", zh:"闪电", ja:"稲妻", ia:"fulmine", la:"fulmen", grc:"κεραυνός" },
       { tema:"natura", livello:"A2", it:"arcobaleno", en:"rainbow", fr:"arc-en-ciel|arc en ciel", es:"arco iris", de:"Regenbogen", pt:"arco-íris|arco-iris", sp:"arco", mn:"arcubalenu", ko:"무지개", ar:"قوس قزح", zh:"彩虹", ja:"虹", ia:"arco-celo", la:"arcus", grc:"ἶρις" },
@@ -2623,7 +2625,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"B1", it:"avere garbo", en:"have grace", fr:"avoir du savoir-faire", es:"tener gracia", de:"Charme haben", pt:"ter graça", sp:"avée manéa", mn:"avee garbu", ja:"品がいい" },
       { tema:"natura", livello:"B1", it:"piove ", en:"it's raining", fr:"il pleut", es:"llueve", de:"es regnet", pt:"chove", sp:"cèva", mn:"céve" },
       { tema:"natura", livello:"B1", it:"nevica", en:"it's snowing", fr:"il neige", es:"nieva", de:"es schneit", pt:"neva", sp:"la néva" },
-      { tema:"natura", livello:"A1", it:"ghiaccio", en:"ice", fr:"glace", es:"hielo", de:"Eis", pt:"gelo", sp:"giasso" },
+      { tema:"natura", livello:"A1", it:"ghiaccio", en:"ice", fr:"glace", es:"hielo", de:"Eis", pt:"gelo", sp:"giasso", mn:"giassu" },
       { tema:"animali", livello:"A1", it:"cane", en:"dog", fr:"chien", es:"perro", de:"Hund", pt:"cão|cao", ru:"собака", ca:"gos", sp:"can", cr:"can" },
       { tema:"corpo", livello:"A1", it:"mano", en:"hand", fr:"main", es:"mano", de:"Hand", pt:"mão|mao", ru:"рука (кисть)", ca:"mà", sp:"man" },
       { tema:"cibo", livello:"A1", it:"uovo", en:"egg", fr:"œuf", es:"huevo", de:"Ei", pt:"ovo", ru:"яйцо", ca:"ou", sp:"èvo", mn:"eu", cr:"ov", ro:"ou" },
@@ -2836,7 +2838,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"zabaione", en:"", mn:"zanbaiùn" },
       { tema:"dialetti", livello:"A2", it:"strappo, profonda ferita", en:"", mn:"sbeèru/zbèru/sbèru" },
       { tema:"dialetti", livello:"A2", it:"che ha vuoti o cavità", en:"", mn:"sbézu/zbézu" },
-      { tema:"dialetti", livello:"A2", it:"sbieco, inclinato", en:"", mn:"sbiécu/zbiécu" },
+      { tema:"dialetti", livello:"A2", it:"sbieco, inclinato", en:"", sp:"sbieco", mn:"sbiécu/zbiécu" },
       { tema:"dialetti", livello:"A2", it:"claudicante, traballante", en:"", mn:"sbiléncu/zbiléncu" },
       { tema:"dialetti", livello:"A2", it:"strabico, storto", en:"", mn:"sbilèr'ciu/zbilèrciu/sbilèrciu" },
       { tema:"dialetti", livello:"A2", it:"zavorra", en:"", mn:"zàvura" },
@@ -2938,7 +2940,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"sette", ro:"șapte" },
       { it:"dieci", ro:"zece" },
       { it:"cento", mn:"sentu", ro:"o sută" },
-      { it:"bianco", mn:"giancu", ro:"alb" },
+      { it:"bianco", sp:"gianco", mn:"giancu", ro:"alb" },
       { it:"madre", mn:"maa", ro:"mamă" },
       { it:"pane", mn:"pan", ro:"pâine" },
       { it:"latte", mn:"late", ro:"lapte" },
@@ -2990,7 +2992,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 72;
+const VOC_VERSION = 73;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
