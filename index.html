@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>LinguaeQuiz – Learn Languages with Spaced Repetition</title>
-  <meta name="description" content="Free multilingual vocabulary quiz with spaced repetition. Practice Italian, French, Spanish, Portuguese, German, Latin, Ancient Greek, Interlingua and more — including rare dialects." />
-  <meta name="keywords" content="language learning, vocabulary quiz, spaced repetition, Italian, French, Latin, multilingual, free" />
+  <title>Quiz dialetti liguri e lunigianesi — Spezzino, Genovese, Manarolese, Carrarino | LinguaeQuiz</title>
+  <meta name="description" content="Impara i dialetti del Golfo della Spezia, delle Cinque Terre, di Genova e della Lunigiana. Quiz interattivo gratuito con pronuncia: spezzino, genovese, manarolese (Manarola), carrarino. Anche italiano, latino e 10+ lingue moderne." />
+
+  <!-- Canonical & hreflang -->
+  <link rel="canonical" href="https://linguaequiz.com/" />
+  <link rel="alternate" hreflang="it" href="https://linguaequiz.com/" />
+  <link rel="alternate" hreflang="en" href="https://linguaequiz.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/" />
 
   <!-- Favicon & app icons -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -21,21 +26,22 @@
   <meta name="apple-mobile-web-app-title" content="LinguaeQuiz" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="LinguaeQuiz – Learn Languages with Spaced Repetition" />
-  <meta property="og:description" content="Free multilingual vocabulary quiz with spaced repetition. 1400+ words across 15+ languages." />
-  <meta property="og:url" content="https://linguaequiz.com" />
+  <meta property="og:title" content="Quiz dialetti liguri e lunigianesi — Spezzino, Genovese, Manarolese, Carrarino" />
+  <meta property="og:description" content="Impara i dialetti del Golfo della Spezia, delle Cinque Terre, di Genova e della Lunigiana. Quiz interattivo gratuito con pronuncia." />
+  <meta property="og:url" content="https://linguaequiz.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="LinguaeQuiz" />
-  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale" content="it_IT" />
+  <meta property="og:locale:alternate" content="en_US" />
   <meta property="og:image" content="https://linguaequiz.com/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="LinguaeQuiz — free multilingual vocabulary trainer" />
+  <meta property="og:image:alt" content="LinguaeQuiz — quiz gratuito di dialetti liguri, lunigianesi e 15+ lingue" />
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="LinguaeQuiz" />
-  <meta name="twitter:description" content="Free multilingual vocabulary quiz with spaced repetition. Practice 15+ languages." />
+  <meta name="twitter:title" content="LinguaeQuiz — Dialetti liguri e lunigianesi" />
+  <meta name="twitter:description" content="Quiz interattivo gratuito di spezzino, genovese, manarolese, carrarino. E 15+ lingue." />
   <meta name="twitter:image" content="https://linguaequiz.com/og-image.png" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
@@ -74,8 +80,54 @@
     gtag('js', new Date());
     gtag('config', 'G-G2KYH1T350');
   </script>
+
+  <!-- Structured data: WebApplication / EducationalApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalApplication",
+    "name": "LinguaeQuiz",
+    "url": "https://linguaequiz.com/",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web",
+    "description": "Quiz interattivo gratuito di vocabolario con ripetizione spaziata. Dialetti liguri (spezzino, genovese, manarolese) e lunigianesi (carrarino), italiano, latino, greco antico e oltre 10 lingue moderne.",
+    "inLanguage": ["it", "en"],
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    "about": [
+      { "@type": "Language", "name": "Dialetto spezzino", "alternateName": "Spezin" },
+      { "@type": "Language", "name": "Dialetto genovese", "alternateName": "Zeneise" },
+      { "@type": "Language", "name": "Dialetto manarolese" },
+      { "@type": "Language", "name": "Dialetto carrarino" },
+      { "@type": "Language", "name": "Italiano" },
+      { "@type": "Language", "name": "Latino" }
+    ]
+  }
+  </script>
 </head>
 <body class="bg-black text-slate-200">
+  <!-- SEO: contenuto statico per crawler e screen reader (invisibile, l'app React si renderizza dentro #root) -->
+  <header class="sr-only">
+    <h1>Impara i dialetti delle Cinque Terre, della Spezia, di Genova e della Lunigiana</h1>
+    <p>LinguaeQuiz è un quiz interattivo gratuito per imparare il dialetto spezzino (La Spezia, Golfo dei Poeti), il genovese (Genova e Liguria), il manarolese (Manarola, Cinque Terre) e il carrarino (Carrara, Lunigiana storica). Include la pronuncia audio e oltre 10 lingue moderne (italiano, francese, spagnolo, tedesco, portoghese, latino, greco antico, interlingua e altre) con sistema di ripetizione spaziata.</p>
+    <nav aria-label="Dialetti e lingue disponibili">
+      <ul>
+        <li>Dialetto spezzino — La Spezia, Golfo della Spezia</li>
+        <li>Dialetto genovese — Genova, Liguria</li>
+        <li>Dialetto manarolese — Manarola, Cinque Terre</li>
+        <li>Dialetto carrarino — Carrara, Massa, Lunigiana</li>
+        <li>Italiano, latino, greco antico, interlingua</li>
+        <li>Francese, spagnolo, portoghese, tedesco, inglese</li>
+      </ul>
+    </nav>
+  </header>
+  <style>
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  </style>
   <div id="root"></div>
   <script>
 const {
