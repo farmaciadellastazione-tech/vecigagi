@@ -1688,6 +1688,10 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"numeri", livello:"A1", it:"doppio", sp:"docio", mn:"dùciu" },
+      { tema:"numeri", livello:"A1", it:"più", es:"más", sp:"ciü", mn:"ciü" },
+      { tema:"natura", livello:"A1", it:"campo", en:"field", es:"campo", sp:"campo", mn:"campu|cian" },
+      { tema:"viaggi", livello:"A1", it:"voi partite", mn:"vautri a partii" },
       { tema:"verbi", livello:"A1", it:"noi diciamo", sp:"noiaötri a disému/noiaötri a dizémo", mn:"nùi a disëmu/nùi a dizëmu" },
       { tema:"sentimenti", livello:"A2", it:"fortunato", mn:"afurtünà" },
       { tema:"verbi", livello:"A1", it:"io vado", en:"I go", fr:"je vais", sp:"me a vago", mn:"me a vagu" },
@@ -2030,11 +2034,11 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"vestiti", livello:"A2", it:"cappotto", en:"coat", fr:"manteau", es:"abrigo", de:"Mantel", pt:"casaco", ru:"пальто", ca:"abric", ko:"코트", ar:"معطف", zh:"外套", ja:"コート", ia:"cappotto" },
       { tema:"dialogo", livello:"A1", it:"grembiule", en:"apron", fr:"tablier", es:"delantal", de:"Schürze", pt:"avental", ru:"труба", ca:"trompeta", sp:"scosà", mn:"scozà", cr:"Grembiàle", ko:"앞치마", ar:"مريلة", zh:"围裙", ja:"エプロン", ia:"gremial" },
       { tema:"casa", livello:"A1", it:"finestra", en:"window", fr:"fenêtre", es:"ventana", de:"Fenster", pt:"janela", ru:"окно", ca:"finestra", sp:"barcòn", ko:"창문", ar:"نافذة", zh:"窗户", ja:"窓", ia:"tapete", la:"tapete", grc:"τάπης" },
-      { tema:"luoghi", livello:"A1", it:"cucchiaio", en:"spoon", fr:"cuillère", es:"cuchara", de:"Löffel", pt:"colher", sp:"cüciao", cr:"Cuciàr", ko:"숟가락", ar:"ملعقة", zh:"勺子", ja:"スプーン", ia:"coclear", la:"Italia", grc:"Ἰταλία" },
+      { tema:"luoghi", livello:"A1", it:"cucchiaio", en:"spoon", fr:"cuillère", es:"cuchara", de:"Löffel", pt:"colher", sp:"cüciao", mn:"ciüciaa", cr:"Cuciàr", ko:"숟가락", ar:"ملعقة", zh:"勺子", ja:"スプーン", ia:"coclear", la:"Italia", grc:"Ἰταλία" },
       { tema:"casa", livello:"A1", it:"coltello", en:"knife", fr:"couteau", es:"cuchillo", de:"Messer", pt:"faca", ca:"ganivet", sp:"cotèo", cr:"Cultèd", ko:"칼", ar:"سكين", zh:"刀", ja:"ナイフ", ia:"cultello", la:"Hispania", grc:"Ἱσπανία" },
       { tema:"casa", livello:"A2", it:"bicchiere", en:"glass", fr:"verre", es:"vaso", de:"Glas", pt:"copo", ru:"поворачивать|поворот", ca:"girar|torn", sp:"gòto", mn:"gotu", cr:"Bicèr", ko:"컵", ar:"كوب", zh:"杯子", ja:"グラス", ia:"bicario" },
       { tema:"luoghi", livello:"A1", it:"chiesa", en:"church", fr:"église", es:"iglesia", de:"Kirche", pt:"igreja", ru:"церковь", ca:"església", sp:"gese", ge:"", ko:"교회", ar:"كنيسة", zh:"教堂", ja:"教会", ia:"ecclesia", la:"numquam", grc:"οὐδέποτε" },
-      { tema:"luoghi", livello:"A1", it:"piazza|quadrato", en:"square", fr:"place", es:"plaza", de:"Platz", pt:"praça|praca", ru:"площадь", ca:"plaça", sp:"ciassa", cr:"piaza", ko:"광장", ar:"ميدان", zh:"广场", ja:"広場" },
+      { tema:"luoghi", livello:"A1", it:"piazza|quadrato", en:"square", fr:"place", es:"plaza", de:"Platz", pt:"praça|praca", ru:"площадь", ca:"plaça", sp:"ciassa", mn:"ciassa", cr:"piaza", ko:"광장", ar:"ميدان", zh:"广场", ja:"広場" },
       { tema:"lavoro", livello:"A1", it:"mercato", en:"market", fr:"marché", es:"mercado", de:"Markt", pt:"mercado", ru:"рынок", ca:"mercat", sp:"mercà", mn:"mercaa", cr:"mrcat", ge:"", ko:"시장", ar:"سوق", zh:"市场", ja:"市場", ia:"mercato", la:"ibi", grc:"ἐκεῖ" },
       { tema:"verbi", livello:"A1", it:"avere", en:"have", fr:"avoir", es:"tener", de:"haben", pt:"ter", ru:"иметь", ca:"tenir|haver", sp:"avée", mn:"aveee/avee", ko:"가지다", ar:"يملك", zh:"有", ja:"持つ", ia:"haver", la:"habere", ro:"a avea" },
       { tema:"verbi", livello:"A1", it:"andare", en:"go", fr:"aller", es:"ir", de:"gehen", pt:"ir", ru:"идти|ехать", ca:"anar", sp:"andae", mn:"andaaa/andaa", cr:"", ge:"andâ", ko:"가다", ar:"يذهب", zh:"去", ja:"行く", ia:"ir", la:"ire", grc:"ἰέναι", ro:"a merge" },
@@ -2353,7 +2357,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"B1", it:"chiedere", en:"ask", fr:"demander", es:"preguntar", de:"fragen", pt:"perguntar", ru:"спрашивать", ca:"demanar", ko:"묻다", ar:"يسأل", zh:"问", ja:"聞く", ia:"demandar", la:"rogare", grc:"ἐρωτᾶν" },
       { tema:"verbi", livello:"B1", it:"rispondere", en:"answer", fr:"répondre", es:"responder", de:"antworten", pt:"responder", ru:"отвечать", ca:"respondre", ko:"대답하다", ar:"يجيب", zh:"回答", ja:"答える", ia:"responder", la:"respondere", grc:"ἀποκρίνεσθαι" },
       { tema:"natura", livello:"A2", it:"animale", en:"animal", fr:"animal", es:"animal", de:"Tier", pt:"animal", sp:"animào", mn:"animaa", ko:"동물", ar:"حيوان", zh:"动物", ja:"動物", ia:"animal", la:"animal", grc:"ζῷον" },
-      { tema:"natura", livello:"A2", it:"pianta", en:"plant", fr:"plante", es:"planta", de:"Pflanze", pt:"planta", sp:"cianta,", ko:"식물", ar:"نبات", zh:"植物", ja:"植物", ia:"planta", la:"planta", grc:"φυτόν" },
+      { tema:"natura", livello:"A2", it:"pianta", en:"plant", fr:"plante", es:"planta", de:"Pflanze", pt:"planta", sp:"cianta", mn:"cianta", ko:"식물", ar:"نبات", zh:"植物", ja:"植物", ia:"planta", la:"planta", grc:"φυτόν" },
       { tema:"luoghi", livello:"A2", it:"paese", en:"country", fr:"pays", es:"país", de:"Land", pt:"país", ru:"деревня|страна", ca:"poble|país", sp:"", ko:"나라", ar:"بلد", zh:"国家", ja:"国", ia:"pais", la:"patria", grc:"χώρα" },
       { tema:"luoghi", livello:"A2", it:"lingua", en:"language", fr:"langue", es:"idioma", de:"Sprache", pt:"língua|lingua", ru:"язык", ca:"llengua", sp:"léngoa", ko:"언어", ar:"لغة", zh:"语言", ja:"言語", ia:"lingua", la:"lingua", grc:"γλῶσσα" },
       { tema:"luoghi", livello:"A2", it:"mondo", en:"world", fr:"monde", es:"mundo", de:"Welt", pt:"mundo", ko:"세계", ar:"عالم", zh:"世界", ja:"世界", ia:"mundo", la:"mundus", grc:"κόσμος" },
@@ -2432,7 +2436,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mestieri", livello:"A2", it:"cuoco", en:"cook", fr:"cuisinier", es:"cocinero", de:"Koch", pt:"cozinheiro", ru:"повар", ca:"cuiner", sp:"chègo", ko:"요리사", ar:"طاهٍ", zh:"厨师", ja:"料理人", ia:"coco", la:"coquus", grc:"μάγειρος" },
       { tema:"mestieri", livello:"A2", it:"pilota", en:"pilot", fr:"pilote", es:"piloto", de:"Pilot", pt:"piloto", ru:"пилот", ca:"pilot", ko:"조종사", ar:"طيار", zh:"飞行员", ja:"パイロット", ia:"pilota", la:"gubernator", grc:"κυβερνήτης" },
       { tema:"mestieri", livello:"A1", it:"infermiere", en:"nurse", fr:"infirmier", es:"enfermero", de:"Krankenpfleger", pt:"enfermeiro", ru:"медбрат|медсестра", ca:"infermer", ko:"간호사", ar:"ممرض", zh:"护士", ja:"看護師", ia:"infirmero", la:"valetudinarius", grc:"νοσοκόμος" },
-      { tema:"mestieri", livello:"A1", it:"architetto", en:"architect", fr:"architecte", es:"arquitecto", de:"Architekt", pt:"arquiteto", ru:"архитектор", ca:"arquitecte", mn:"architetu", ge:"", ko:"건축가", ar:"مهندس معماري", zh:"建筑师", ja:"建築家", ia:"architecto", la:"architectus", grc:"ἀρχιτέκτων" },
+      { tema:"mestieri", livello:"A1", it:"architetto", en:"architect", fr:"architecte", es:"arquitecto", de:"Architekt", pt:"arquiteto", ru:"архитектор", ca:"arquitecte", sp:"architeto", mn:"architetu", ge:"", ko:"건축가", ar:"مهندس معماري", zh:"建筑师", ja:"建築家", ia:"architecto", la:"architectus", grc:"ἀρχιτέκτων" },
       { tema:"mestieri", livello:"A2", it:"programmatore", en:"programmer", fr:"programmeur", es:"programador", de:"Programmierer", pt:"programador", ru:"программист", ca:"programador", ko:"프로그래머", ar:"مبرمج", zh:"程序员", ja:"プログラマー", ia:"programator" },
       { tema:"mestieri", livello:"A2", it:"giornalista", en:"journalist", fr:"journaliste", es:"periodista", de:"Journalist", pt:"jornalista", ru:"журналист", ca:"periodista", ko:"기자", ar:"صحفي", zh:"记者", ja:"ジャーナリスト", ia:"journalista", la:"diurnarius", grc:"δημοσιογράφος" },
       { tema:"mestieri", livello:"A1", it:"pompiere", en:"firefighter", fr:"pompier", es:"bombero", de:"Feuerwehrmann", pt:"bombeiro", ru:"пожарный", ca:"bomber", ko:"소방관", ar:"رجل إطفاء", zh:"消防员", ja:"消防士", ia:"pompier" },
@@ -2548,7 +2552,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"scendere", en:"go down", fr:"descendre", es:"bajar", de:"hinunter", pt:"descer", ru:"спускаться", ca:"baixar", sp:"chinae" },
       { tema:"aggettivi", livello:"A2", it:"piegare", en:"bend", fr:"plier", es:"doblar", de:"biegen", pt:"dobrar", ru:"сгибать", ca:"plegar|doblegar", sp:"chinae" },
       { tema:"natura", livello:"B1", it:"covata", en:"brood", fr:"couvée", es:"nidada", de:"Brut", pt:"ninhada", sp:"coà" },
-      { tema:"cibo", livello:"A1", it:"cavolo", en:"cabbage", fr:"chou", es:"col", de:"Kohl", pt:"couve", sp:"còo" },
+      { tema:"cibo", livello:"A1", it:"cavolo", en:"cabbage", fr:"chou", es:"col", de:"Kohl", pt:"couve", sp:"còo", mn:"còu" },
       { tema:"arte", livello:"A2", it:"coro", en:"choir", fr:"chœur", es:"coro", de:"Chor", pt:"coro", sp:"còo" },
       { tema:"cibo", livello:"A2", it:"coppa", en:"cold cuts", fr:"charcuterie", es:"embutidos", de:"Aufschnitt", pt:"frios", sp:"cópa" },
       { tema:"dialetti", livello:"A1", it:"ciotola", en:"bowl", fr:"bol", es:"cuenco", de:"Schüssel", pt:"tigela", sp:"cópa" },
@@ -2606,7 +2610,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"tavolata", en:"dinner party", fr:"tablée", es:"tablada", de:"Tafelrunde", pt:"tablada", sp:"toà/toa", ia:"tabulata" },
       { tema:"dialetti", livello:"A2", it:"sugo di carne", en:"meat sauce", fr:"sauce de viande", es:"salsa de carne", de:"Fleischsoße", pt:"molho de carne", sp:"tóco" },
       { tema:"dialetti", livello:"A1", it:"undici", en:"eleven", fr:"onze", es:"once", de:"elf", pt:"onze", ru:"одиннадцать", ca:"onze", sp:"ünze", mn:"ünze" },
-      { tema:"dialetti", livello:"A2", it:"piatto fondo", en:"soup plate", fr:"assiette creuse", es:"plato hondo", de:"Suppenteller", pt:"prato fundo", sp:"zàta" },
+      { tema:"dialetti", livello:"A2", it:"piatto fondo", en:"soup plate", fr:"assiette creuse", es:"plato hondo", de:"Suppenteller", pt:"prato fundo", sp:"zàta", mn:"zàta" },
       { tema:"verbi", livello:"A2", it:"conoscere", sp:"cognosse", ia:"cognoscer" },
       { tema:"verbi", livello:"A2", it:"cuocere", en:"cook", fr:"cuire", sp:"chése" },
       { tema:"verbi", livello:"A2", it:"dormire", ru:"спать", ca:"dormir", sp:"dormie, polae", mn:"durmii", ro:"a dormi" },
@@ -2733,7 +2737,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A1", it:"monte", sp:"monte, brico", cr:"mont" },
       { tema:"natura", livello:"A2", it:"fiore", en:"flower", fr:"fleur", es:"flor", de:"blume", pt:"flor", ru:"цветок", ca:"flor", sp:"fiòo", cr:"fior", ia:"flor" },
       { tema:"natura", livello:"B1", it:"marmo", sp:"màrmeo", cr:"marm" },
-      { tema:"casa", livello:"A2", it:"tetto", de:"Dach", ru:"крыша", ca:"teulada", sp:"técio", cr:"tec" },
+      { tema:"casa", livello:"A2", it:"tetto", de:"Dach", ru:"крыша", ca:"teulada", sp:"técio", mn:"tëciu", cr:"tec" },
       { tema:"casa", livello:"B1", it:"comignolo", cr:"camin " },
       { tema:"luoghi", livello:"A1", it:"strada", ru:"улица", ca:"carrer", sp:"strade", cr:"", ro:"stradă" },
       { tema:"aggettivi", livello:"A2", it:"pieno", ru:"полный", ca:"ple", sp:"cén", cr:"pien" },
@@ -2966,8 +2970,8 @@ const VOCABOLARIO_DEFAULT = [
       { it:"dov'è il bagno?", ro:"unde este baia?" },
       { it:"ho fame", mn:"me a gho fame", ro:"mi-e foame" },
       { it:"ho sete", mn:"me a gho sede", ro:"mi-e sete" },
-      { it:"mi piace", mn:"me ciasa", ro:"îmi place" },
-      { it:"non mi piace", mn:"ne me ciasa", ro:"nu-mi place" },
+      { it:"mi piace", sp:"me ciasa", mn:"me ciasa", ro:"îmi place" },
+      { it:"non mi piace", sp:"ne me ciasa", mn:"ne me ciasa", ro:"nu-mi place" },
       { it:"buon appetito!", ro:"poftă bună!" },
       { it:"salute! (brindisi)", mn:"salute!", ro:"noroc!" },
       { it:"in bocca al lupo!", ro:"mult succes!" },
@@ -2986,7 +2990,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 70;
+const VOC_VERSION = 71;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
