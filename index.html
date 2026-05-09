@@ -2919,7 +2919,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"buongiorno", mn:"bun dii", ro:"bună dimineața" },
       { it:"buonasera", mn:"buna seia", ro:"bună seara" },
       { it:"buonanotte", mn:"buna nota", ro:"noapte bună" },
-      { it:"arrivederci", mn:"adiu", ro:"la revedere" },
+      { tema:"saluti", livello:"A1", it:"arrivederci", mn:"adiu", ro:"la revedere" },
       { it:"per favore", ro:"vă rog" },
       { it:"prego", mn:"pregu", ro:"cu plăcere" },
       { it:"sì", mn:"si", ro:"da" },
@@ -2945,8 +2945,8 @@ const VOCABOLARIO_DEFAULT = [
       { it:"volere", mn:"vree", ro:"a vrea" },
       { it:"lavorare", mn:"travagiaa", ro:"a lucra" },
       { it:"negozio", mn:"negosciu", ro:"magazin" },
-      { it:"oggi", mn:"anchè", ro:"azi" },
-      { it:"ieri", sp:"aiei", mn:"aiei", ro:"ieri" },
+      { tema:"tempo", livello:"A1", it:"oggi", mn:"anchè", ro:"azi" },
+      { tema:"tempo", livello:"A1", it:"ieri", sp:"aiei", mn:"aiei", ro:"ieri" },
       { it:"bello", mn:"belu", ro:"frumos" },
       { it:"buono", mn:"bun", ro:"bun" },
       { it:"come stai?", mn:"cume te sté", ro:"ce mai faci?" },
@@ -2955,7 +2955,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"mi chiamo...", mn:"me ciamu", ro:"mă numesc..." },
       { it:"da dove vieni?", mn:"dunde te vegni", ro:"de unde ești?" },
       { it:"vengo dall'Italia", ro:"vin din Italia" },
-      { it:"non capisco", mn:"a ne capisciu", ro:"nu înțeleg" },
+      { tema:"comunicazione", livello:"A1", it:"non capisco", mn:"a ne capissu", ro:"nu înțeleg" },
       { it:"puoi ripetere?", mn:"te pe ripète", ro:"poți repeta?" },
       { it:"parli italiano?", ro:"vorbești italiană?" },
       { it:"quanti anni hai?", mn:"quante ani t'aa", ro:"câți ani ai?" },
@@ -2984,7 +2984,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 65;
+const VOC_VERSION = 66;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
