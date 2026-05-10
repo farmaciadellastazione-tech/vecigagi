@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"dialetti", livello:"B2", it:"sei fuori come un balcone", sp:"t'ei fèa come na terassa" },
       { tema:"abbigliamento", livello:"A2", it:"bretelle", sp:"bertéle", mn:"bertèle", ge:"bertèlle" },
       { tema:"corpo", livello:"A2", it:"sudare", sp:"südae", mn:"südaa", ge:"süâ" },
       { tema:"abbigliamento", livello:"A1", it:"maglia", sp:"màgia", mn:"magia", ge:"màggia" },
@@ -2684,7 +2685,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A1", it:"scusa", en:"sorry", fr:"pardon", es:"perdón", de:"Entschuldigung", pt:"desculpa", ru:"извини", ca:"perdona", ko:"미안해요", ar:"آسف", zh:"对不起", ja:"ごめんなさい", ia:"pardono", la:"ignosce", grc:"συγγνώμη", ro:"scuză-mă" },
       { tema:"aggettivi", livello:"A2", it:"certo", en:"certain", fr:"certain", es:"cierto", de:"sicher", pt:"certo", ko:"확실한", ar:"مؤكد", zh:"确定", ja:"確かな", ia:"certe", la:"certus", grc:"βέβαιος" },
       { tema:"aggettivi", livello:"A1", it:"forte", en:"strong", fr:"fort", es:"fuerte", de:"stark", pt:"forte", ru:"сильный", ca:"fort", sp:"forte", mn:"forte", ko:"강한", ar:"قوي", zh:"强", ja:"強い", ia:"forte", la:"fortis", grc:"ἰσχυρός" },
-      { tema:"aggettivi", livello:"A1", it:"vuoto", en:"empty", fr:"vide", es:"vacío", de:"leer", pt:"vazio", ru:"пустой", ca:"buit", sp:"vèito", ko:"빈", ar:"فارغ", zh:"空", ja:"空の", ia:"vacue", la:"vacuus", grc:"κενός" },
+      { tema:"aggettivi", livello:"A1", it:"vuoto", en:"empty", fr:"vide", es:"vacío", de:"leer", pt:"vazio", ru:"пустой", ca:"buit", sp:"vèito", mn:"veitu", ko:"빈", ar:"فارغ", zh:"空", ja:"空の", ia:"vacue", la:"vacuus", grc:"κενός" },
       { tema:"aggettivi", livello:"A1", it:"aperto", en:"open", fr:"ouvert", es:"abierto", de:"offen", pt:"aberto", ru:"открытый", ca:"obert", sp:"ravèrto, avèrto", mn:"àvèrtu", ko:"열린", ar:"مفتوح", zh:"开着的", ja:"開いた", ia:"aperte", la:"apertus", grc:"ἀνοικτός" },
       { tema:"aggettivi", livello:"A1", it:"chiuso", en:"closed", fr:"fermé", es:"cerrado", de:"geschlossen", pt:"fechado", ru:"закрытый", ca:"tancat", sp:"schéna, schéne", mn:"", ge:"schénn-a", ko:"닫힌", ar:"مغلق", zh:"关着的", ja:"閉じた", ia:"clause", la:"clausus", grc:"κλειστός" },
       { tema:"aggettivi", livello:"A1", it:"sporco|zozzo", en:"dirty", fr:"sale", es:"sucio", de:"schmutzig", pt:"sujo", ru:"грязный", ca:"brut", sp:"lédo", mn:"zòzu", ko:"더러운", ar:"قذر", zh:"脏", ja:"汚い", ia:"", la:"sordidus", grc:"ῥυπαρός" },
@@ -2798,7 +2799,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"peperoncino, zenzero", en:"", mn:"zénzéu" },
       { tema:"dialetti", livello:"A2", it:"gengiva", en:"", mn:"zénziigia/zénzigia" },
       { tema:"dialetti", livello:"A2", it:"zerbino, stuoino", en:"", mn:"zerbiìn/zérbìn" },
-      { tema:"dialetti", livello:"A2", it:"incolto, abbandonato", en:"uncultivated", fr:"inculte", es:"abandonado", de:"vernachlässigt", pt:"abandonado", ca:"abandonat", mn:"zerbiu/zèrbiu" },
+      { tema:"dialetti", livello:"A2", it:"incolto| abbandonato", en:"uncultivated", fr:"inculte", es:"abandonado", de:"vernachlässigt", pt:"abandonado", ca:"abandonat", mn:"zerbiu/zèrbiu" },
       { tema:"dialetti", livello:"A2", it:"gelone", en:"", mn:"zeùn" },
       { tema:"dialetti", livello:"A2", it:"escoriarsi", en:"", de:"aufschlagen", ca:"esgarrar-se", mn:"sgarbelàsse/zgàrbélasé" },
       { tema:"dialetti", livello:"A2", it:"sgarbo, offesa", en:"", mn:"sgarbu/zgàrbu" },
@@ -3122,7 +3123,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 105;
+const VOC_VERSION = 106;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
