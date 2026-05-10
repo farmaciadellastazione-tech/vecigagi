@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"ristorante", livello:"A1", it:"il conto per favore", sp:"er conto pe' piasée", mn:"er cuntu pe' piazëë", ge:"o conto pe' piaxei" },
       { tema:"cibo", livello:"A1", it:"un bicchier d'acqua", sp:"ün goto d'àigoa", mn:"ün gòtu d'aigua", ge:"ün gòto d'ægoa" },
       { tema:"cibo", livello:"A1", it:"un cappuccino" },
       { tema:"saluti", livello:"A1", it:"un caffé per piacere", sp:"ün cafè pe' piasée", mn:"ün cafè pe' piazëë", ge:"ün caffè pe' piaxei" },
@@ -3127,7 +3128,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 111;
+const VOC_VERSION = 112;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
