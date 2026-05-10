@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"abbigliamento", livello:"A1", it:"maglia", sp:"màgia", mn:"magia", ge:"màggia" },
       { tema:"famiglia", livello:"A2", it:"genero", en:"son-in-law", de:"Schwiegersohn", sp:"d'zeneo/zéneo", mn:"jiéneu", ge:"d'zèneo/zeneo" },
       { tema:"viaggi", livello:"A1", it:"Genova", sp:"d'zena/Zena", mn:"Jiéna", ge:"d'zena/Zena" },
       { tema:"oggetti", livello:"A1", it:"chiave", sp:"ciàve", mn:"ciava", ge:"ciàve" },
@@ -1730,7 +1731,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"comunicazione", livello:"A2", it:"chiacchiera", sp:"ciacea", mn:"ciacéa" },
       { tema:"viaggi", livello:"B1", it:"Manarola", mn:"Manaèa" },
       { tema:"natura", livello:"A1", it:"sabbia", mn:"àena" },
-      { tema:"verbi", livello:"A1", it:"alzare", sp:"aossae|issae|levae", mn:"àusaa" },
+      { tema:"verbi", livello:"A1", it:"alzare|sollevare", sp:"aossae|issae|levae", mn:"àusaa|suvélaa" },
       { tema:"cibo", livello:"A1", it:"uva", sp:"üa|üva", mn:"üa" },
       { tema:"cibo", livello:"A1", it:"oliva", en:"olive", sp:"oìva", mn:"ùiva" },
       { tema:"lingua", livello:"A1", it:"parola", mn:"paòla" },
@@ -1943,7 +1944,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"B1", it:"rapina", en:"robbery", fr:"vol|braquage", es:"robo|atraco", de:"Raub", pt:"assalto|roubo", ru:"ограбление", ca:"robatori" },
       { tema:"aggettivi", livello:"B1", it:"scortese", en:"rude", fr:"impoli|grossier", es:"maleducado", de:"unhöflich", pt:"rude|malcriado", ru:"грубый", ca:"maleducat" },
       { tema:"sport", livello:"B1", it:"corridore", en:"runner", fr:"coureur", es:"corredor", de:"Läufer", pt:"corredor", ru:"бегун", ca:"corredor" },
-      { tema:"sport", livello:"B1", it:"vela", en:"sailing", fr:"voile", es:"vela", de:"Segeln", pt:"vela", ru:"парусный спорт", ca:"vela", sp:"véa" },
+      { tema:"sport", livello:"B1", it:"vela", en:"sailing", fr:"voile", es:"vela", de:"Segeln", pt:"vela", ru:"парусный спорт", ca:"vela", sp:"véa", mn:"vëa", ge:"veéia/véia" },
       { tema:"dialogo", livello:"B1", it:"frase", en:"sentence", fr:"phrase", es:"frase|oración", de:"Satz", pt:"frase", ru:"предложение", ca:"frase" },
       { tema:"aggettivi", livello:"B1", it:"grave/serio", en:"serious", fr:"grave|sérieux", es:"grave|serio", de:"ernst|schwer", pt:"grave|sério", ru:"серьёзный", ca:"greu|seriós" },
       { tema:"natura", livello:"B1", it:"conchiglia", en:"shell", fr:"coquillage", es:"concha", de:"Muschel", pt:"concha", ru:"ракушка", ca:"closca|petxina" },
@@ -2041,7 +2042,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"animali", livello:"B1", it:"lupo", en:"wolf", fr:"loup", es:"lobo", de:"Wolf", pt:"lobo", ru:"волк", ca:"llop", sp:"lovo, Ioo, lòpa", cr:"", ge:"", ko:"늑대", ar:"ذئب", zh:"狼", ja:"オオカミ", ia:"lupo" },
       { tema:"animali", livello:"A2", it:"cinghiale", en:"wild boar", fr:"sanglier", es:"jabalí", de:"Wildschwein", pt:"javali", ru:"вместе", ca:"junts", sp:"singhiale", ko:"멧돼지", ar:"خنزير بري", zh:"野猪", ja:"イノシシ", ia:"insimul" },
       { tema:"animali", livello:"A2", it:"aragosta", en:"lobster", fr:"homard", es:"langosta", de:"Hummer", pt:"lagosta", sp:"ragostena", mn:"ragùstena", cr:"", ko:"바닷가재", ar:"جراد البحر", zh:"龙虾", ja:"ロブスター" },
-      { tema:"natura", livello:"A1", it:"basilico", en:"basil", fr:"basilic", es:"albahaca", de:"Basilikum", pt:"manjericão|manjericao", sp:"basèrco, basìrco", ge:"baxaicò", ko:"바질", ar:"ريحان", zh:"罗勒", ja:"バジル", ia:"stulte" },
+      { tema:"natura", livello:"A1", it:"basilico", en:"basil", fr:"basilic", es:"albahaca", de:"Basilikum", pt:"manjericão|manjericao", sp:"basèrco, basìrco", mn:"bajércu", ge:"baxaicò", ko:"바질", ar:"ريحان", zh:"罗勒", ja:"バジル", ia:"stulte" },
       { tema:"dialetti", livello:"A1", it:"pomodoro", en:"tomato", fr:"tomate", es:"tomate", de:"Tomate", pt:"tomate", ru:"помидор", ca:"tomàquet", sp:"pomata", mn:"pumata", cr:"", ge:"", ko:"토마토", ar:"طماطم", zh:"番茄", ja:"トマト", ia:"tomate", la:"", grc:"" },
       { tema:"cibo", livello:"A2", it:"riso", en:"rice", fr:"riz", es:"arroz", de:"Reis", pt:"arroz", ru:"рис", ca:"arròs", ko:"밥", ar:"أرز", zh:"米饭", ja:"ご飯" },
       { tema:"cibo", livello:"A2", it:"anguria", en:"watermelon", fr:"pastèque", es:"sandía", de:"Wassermelone", pt:"melancia", sp:"süca fetosa|patéca", mn:"patéca", cr:"Cocòmbla", ko:"수박", ar:"بطيخ", zh:"西瓜", ja:"スイカ" },
@@ -2769,7 +2770,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"luoghi", livello:"A1", it:"strada", ru:"улица", ca:"carrer", sp:"strade", cr:"", ro:"stradă" },
       { tema:"aggettivi", livello:"A2", it:"pieno", ru:"полный", ca:"ple", sp:"cén", cr:"pien" },
       { tema:"aggettivi", livello:"B1", it:"gigantesco", cr:"gigantesch" },
-      { tema:"corpo", livello:"A2", it:"sudore", cr:"sudor" },
+      { tema:"corpo", livello:"A2", it:"sudore", sp:"südóe", mn:"süduu", cr:"sudor", ge:"süô" },
       { tema:"corpo", livello:"A2", it:"anima", sp:"anima", mn:"anima", cr:"anma" },
       { tema:"natura", livello:"A2", it:"vento", ru:"ветер", ca:"vent", sp:"vento", mn:"ventu", cr:"vent" },
       { tema:"natura", livello:"B1", it:"fontana", mn:"fùntana", cr:"fontana" },
@@ -3037,7 +3038,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"bollire", cr:"bugir" },
       { it:"magro", cr:"magr" },
       { tema:"aggettivi", livello:"B1", it:"schietto", en:"frank", pt:"franco", cr:"sçiet" },
-      { it:"mattina", cr:"matina" },
+      { it:"mattina", sp:"matìn", cr:"matina", ge:"matinn-a" },
       { it:"Befana", cr:"P'fana" },
       { it:"piazza", cr:"piaza" },
       { it:"cantina", cr:"cantina" },
@@ -3119,7 +3120,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 100;
+const VOC_VERSION = 101;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
