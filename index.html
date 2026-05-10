@@ -2323,7 +2323,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"B1", it:"orgoglioso", en:"proud", fr:"fier", es:"orgulloso", de:"stolz", pt:"orgulhoso", sp:"", ko:"자랑스러운", ar:"فخور", zh:"自豪", ja:"誇りに思う", ia:"superbe", la:"superbus", grc:"ὑπερήφανος" },
       { tema:"aggettivi", livello:"B1", it:"geloso", en:"jealous", fr:"jaloux", es:"celoso", de:"eifersüchtig", pt:"ciumento", ko:"질투하는", ar:"غيور", zh:"嫉妒", ja:"嫉妬深い", ia:"zelouse", la:"invidiosus", grc:"ζηλότυπος" },
       { tema:"luoghi", livello:"A1", it:"aeroporto", en:"airport", fr:"aéroport", es:"aeropuerto", de:"Flughafen", pt:"aeroporto", ru:"аэропорт", ca:"aeroport", ko:"공항", ar:"مطار", zh:"机场", ja:"空港", ia:"aeroporto", la:"aeroportus", grc:"ἀεροδρόμιο" },
-      { tema:"luoghi", livello:"A1", it:"stazione", en:"station", fr:"gare", es:"estación", de:"Bahnhof", pt:"estação|estacao", ru:"вокзал|станция", ca:"estació", sp:"stassion/stasion", mn:"stasciun", ko:"역", ar:"محطة", zh:"车站", ja:"駅", ia:"station", la:"statio", grc:"σταθμός", ro:"gară" },
+      { tema:"luoghi", livello:"A1", it:"stazione", en:"station", fr:"gare", es:"estación", de:"Bahnhof", pt:"estação|estacao", ru:"вокзал|станция", ca:"estació", sp:"stassion/stasion", mn:"stasciun", ge:"stazion", ko:"역", ar:"محطة", zh:"车站", ja:"駅", ia:"station", la:"statio", grc:"σταθμός", ro:"gară" },
       { tema:"luoghi", livello:"A1", it:"albergo", en:"hotel", fr:"hôtel", es:"hotel", de:"Hotel", pt:"hotel", sp:"arbergo, locanda", mn:"arbèrgu", ko:"호텔", ar:"فندق", zh:"酒店", ja:"ホテル", ia:"hotel", la:"deversorium", grc:"πανδοχεῖον" },
       { tema:"luoghi", livello:"A1", it:"ristorante", en:"restaurant", fr:"restaurant", es:"restaurante", de:"Restaurant", pt:"restaurante", ru:"ресторан", ca:"restaurant", ko:"식당", ar:"مطعم", zh:"餐厅", ja:"レストラン", ia:"restaurante", la:"caupona", grc:"ἑστιατόριον", ro:"restaurant" },
       { tema:"luoghi", livello:"A2", it:"museo", en:"museum", fr:"musée", es:"museo", de:"Museum", pt:"museu", ru:"музей", ca:"museu", ko:"박물관", ar:"متحف", zh:"博物馆", ja:"博物館", ia:"museo", la:"museum", grc:"μουσεῖον" },
@@ -2398,7 +2398,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"luoghi", livello:"B1", it:"economia", en:"economy", fr:"économie", es:"economía", de:"Wirtschaft", pt:"economia", sp:"conomia", ko:"경제", ar:"اقتصاد", zh:"经济", ja:"経済", ia:"economia", la:"oeconomia", grc:"οἰκονομία" },
       { tema:"mestieri", livello:"A2", it:"medico", en:"doctor", fr:"médecin", es:"médico", de:"Arzt", pt:"médico|medico", ru:"врач", ca:"metge", sp:"médego, médegòn", cr:"Dotòr", ko:"의사", ar:"طبيب", zh:"医生", ja:"医者", ia:"medico", la:"medicus", grc:"ἰατρός" },
       { tema:"mestieri", livello:"A2", it:"maestro", en:"teacher", fr:"professeur", es:"maestro", de:"Lehrer", pt:"professor", sp:"maìstro", mn:"maistru", ko:"선생님", ar:"معلم", zh:"老师", ja:"先生", ia:"maestro", la:"magister", grc:"διδάσκαλος" },
-      { tema:"mestieri", livello:"A2", it:"soldato", en:"soldier", fr:"soldat", es:"soldado", de:"Soldat", pt:"soldado", ru:"солдат", ca:"soldat", ko:"군인", ar:"جندي", zh:"士兵", ja:"兵士", ia:"soldato", la:"miles", grc:"στρατιώτης" },
+      { tema:"mestieri", livello:"A2", it:"soldato", en:"soldier", fr:"soldat", es:"soldado", de:"Soldat", pt:"soldado", ru:"солдат", ca:"soldat", sp:"sordà|sordato", mn:"sùrdatu", ge:"sordatto", ko:"군인", ar:"جندي", zh:"士兵", ja:"兵士", ia:"soldato", la:"miles", grc:"στρατιώτης" },
       { tema:"mestieri", livello:"A2", it:"re", en:"king", fr:"roi", es:"rey", de:"König", pt:"rei", ko:"왕", ar:"ملك", zh:"国王", ja:"王", ia:"rege", la:"rex", grc:"βασιλεύς" },
       { tema:"mestieri", livello:"A2", it:"filosofo", en:"philosopher", fr:"philosophe", es:"filósofo", de:"Philosoph", pt:"filósofo|filosofo", ko:"철학자", ar:"فيلسوف", zh:"哲学家", ja:"哲学者", ia:"philosopho", la:"philosophus", grc:"φιλόσοφος" },
       { tema:"mestieri", livello:"B1", it:"poeta", en:"poet", fr:"poète", es:"poeta", de:"Dichter", pt:"poeta", ko:"시인", ar:"شاعر", zh:"诗人", ja:"詩人", ia:"poeta", la:"poeta", grc:"ποιητής" },
@@ -3121,7 +3121,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 102;
+const VOC_VERSION = 103;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
