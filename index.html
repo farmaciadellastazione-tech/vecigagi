@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"aspetto", livello:"B1", it:"trasandato", sp:"sbolina/zbolinà", mn:"sbulina/zbulinà" },
       { tema:"spazio", livello:"A1", it:"vicino", sp:"vesin|arente" },
       { tema:"corpo", livello:"B1", it:"infezione", mn:"infesciùn" },
       { tema:"cibo", livello:"A1", it:"cipolla", en:"onion", sp:"sigòla|siòla" },
@@ -3102,7 +3103,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 85;
+const VOC_VERSION = 86;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
