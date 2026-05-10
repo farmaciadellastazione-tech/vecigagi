@@ -2385,7 +2385,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mestieri", livello:"A2", it:"filosofo", en:"philosopher", fr:"philosophe", es:"filósofo", de:"Philosoph", pt:"filósofo|filosofo", ko:"철학자", ar:"فيلسوف", zh:"哲学家", ja:"哲学者", ia:"philosopho", la:"philosophus", grc:"φιλόσοφος" },
       { tema:"mestieri", livello:"B1", it:"poeta", en:"poet", fr:"poète", es:"poeta", de:"Dichter", pt:"poeta", ko:"시인", ar:"شاعر", zh:"诗人", ja:"詩人", ia:"poeta", la:"poeta", grc:"ποιητής" },
       { tema:"mestieri", livello:"B1", it:"oratore", en:"orator", fr:"orateur", es:"orador", de:"Redner", pt:"orador", ko:"연설가", ar:"خطيب", zh:"演说家", ja:"弁士", ia:"orator", la:"orator", grc:"ῥήτωρ" },
-      { tema:"mestieri", livello:"B1", it:"schiavo", en:"slave", fr:"esclave", es:"esclavo", de:"Sklave", pt:"escravo", ko:"노예", ar:"عبد", zh:"奴隶", ja:"奴隷", ia:"servo", la:"servus", grc:"δοῦλος" },
+      { tema:"mestieri", livello:"B1", it:"schiavo", en:"slave", fr:"esclave", es:"esclavo", de:"Sklave", pt:"escravo", sp:"s'ciàvo/sciàvo", mn:"s'ciàvu/sciàvu", ko:"노예", ar:"عبد", zh:"奴隶", ja:"奴隷", ia:"servo", la:"servus", grc:"δοῦλος" },
       { tema:"natura", livello:"A1", it:"bosco", en:"forest", fr:"forêt", es:"bosque", de:"Wald", pt:"bosque", ru:"война", ca:"guerra", sp:"", ko:"숲", ar:"غابة", zh:"森林", ja:"森", ia:"bosco", la:"silva", grc:"ὕλη" },
       { tema:"natura", livello:"A2", it:"fiume", en:"river", fr:"fleuve", es:"río", de:"Fluss", pt:"rio", ru:"река", ca:"riu", ko:"강", ar:"نهر", zh:"河流", ja:"川", ia:"fluvio", la:"flumen", grc:"ποταμός" },
       { tema:"natura", livello:"A2", it:"isola", en:"island", fr:"île", es:"isla", de:"Insel", pt:"ilha", ru:"остров", ca:"illa", ko:"섬", ar:"جزيرة", zh:"岛屿", ja:"島", ia:"insula", la:"insula", grc:"νῆσος" },
@@ -2884,7 +2884,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"avversario", en:"", mn:"àvérsaiu" },
       { tema:"dialetti", livello:"A2", it:"avvertire", en:"", mn:"àvértii" },
       { tema:"dialetti", livello:"A2", it:"apertura", en:"", mn:"àvèrtüa" },
-      { tema:"dialetti", livello:"A2", it:"abituato|avvezzo", mn:"abituà|àvëssu" },
+      { tema:"dialetti", livello:"A2", it:"abituato|avvezzo", sp:"abetüa|avesso", mn:"abituà|àvëssu" },
       { tema:"dialetti", livello:"A2", it:"avvisare, avvertire", en:"", mn:"avisàa/àvizaa" },
       { tema:"dialetti", livello:"A2", it:"impeto, slancio", en:"", mn:"àsbriviu/àzbriviu" },
       { tema:"dialetti", livello:"A2", it:"ditta, esercizio", en:"", mn:"àsiënda/àziënda" },
@@ -3105,7 +3105,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 89;
+const VOC_VERSION = 90;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
