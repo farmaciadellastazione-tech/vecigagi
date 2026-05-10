@@ -1688,6 +1688,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"saluti", livello:"A1", it:"cosa c'è oggi?", sp:"cös'i gh'è anché", mn:"coz'i gh'è anché", ge:"cöse gh'é ancheu" },
+      { tema:"cibo", livello:"A2", it:"un calice di vino bianco", sp:"ün goto de vin gianco", ge:"ün goto de vin gianco" },
       { tema:"ristorante", livello:"A1", it:"il conto per favore", sp:"er conto pe' piasée", mn:"er cuntu pe' piazëë", ge:"o conto pe' piaxei" },
       { tema:"cibo", livello:"A1", it:"un bicchier d'acqua", sp:"ün goto d'àigoa", mn:"ün gòtu d'aigua", ge:"ün gòto d'ægoa" },
       { tema:"cibo", livello:"A1", it:"un cappuccino" },
@@ -2633,7 +2635,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A1", it:"sacco", en:"bag", fr:"sac", es:"saco", de:"Sack", pt:"saco", sp:"saco" },
       { tema:"dialetti", livello:"A2", it:"schiacciare", en:"to crush", fr:"écraser", es:"aplastar", de:"zerdrücken", pt:"esmagar", ru:"давить", ca:"aixafar", sp:"saco" },
       { tema:"dialetti", livello:"A1", it:"sera", en:"evening", fr:"soir", es:"tarde", de:"Abend", pt:"noite", ru:"вечер", ca:"vespre|tarda", sp:"séa", cr:"sera" },
-      { tema:"dialetti", livello:"A1", it:"sete", en:"thirst", fr:"soif", es:"sed", de:"Durst", pt:"sede", sp:"séde" },
+      { tema:"dialetti", livello:"A1", it:"sete", en:"thirst", fr:"soif", es:"sed", de:"Durst", pt:"sede", sp:"séde", mn:"sëde" },
       { tema:"dialetti", livello:"B1", it:"sego", en:"tallow", fr:"suif", es:"sebo", de:"Talg", pt:"sebo", sp:"sèo" },
       { tema:"dialetti", livello:"A2", it:"strato", en:"layer", fr:"couche", es:"capa", de:"Schicht", pt:"camada", sp:"sèo" },
       { tema:"dialetti", livello:"A2", it:"cece", en:"chickpea", fr:"pois chiche", es:"garbanzo", de:"Kichererbse", pt:"grão-de-bico", sp:"sésoo" },
@@ -3000,7 +3002,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"quanto costa?", sp:"quanto costa?", mn:"quantu custa?", ge:"quanto costa?", ro:"cât costă?" },
       { it:"dov'è il bagno?", ro:"unde este baia?" },
       { it:"ho fame", sp:"a g'ho fame", mn:"me a gho fame", ge:"g'ho famme", ro:"mi-e foame" },
-      { it:"ho sete", mn:"me a gho sede", ro:"mi-e sete" },
+      { it:"ho sete", sp:"a g'ho sede", mn:"me a g'ho sëde", ge:"g'ho sae", ro:"mi-e sete" },
       { it:"mi piace", sp:"me ciasa", mn:"me ciasa", ro:"îmi place" },
       { it:"non mi piace", sp:"ne me ciasa", mn:"ne me ciasa", ro:"nu-mi place" },
       { it:"buon appetito!", sp:"bon apeti", mn:"bun apetì", ro:"poftă bună!" },
@@ -3128,7 +3130,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 113;
+const VOC_VERSION = 114;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
