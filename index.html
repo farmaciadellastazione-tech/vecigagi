@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"corpo", livello:"A2", it:"sudare", sp:"südae", mn:"südaa", ge:"süâ" },
       { tema:"abbigliamento", livello:"A1", it:"maglia", sp:"màgia", mn:"magia", ge:"màggia" },
       { tema:"famiglia", livello:"A2", it:"genero", en:"son-in-law", de:"Schwiegersohn", sp:"d'zeneo/zéneo", mn:"jiéneu", ge:"d'zèneo/zeneo" },
       { tema:"viaggi", livello:"A1", it:"Genova", sp:"d'zena/Zena", mn:"Jiéna", ge:"d'zena/Zena" },
@@ -2022,7 +2023,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"B1", it:"peggiore", en:"worse", fr:"pire", es:"peor", de:"schlechter", pt:"pior", ru:"хуже", ca:"pitjor" },
       { tema:"mestieri", livello:"B1", it:"scrittore", en:"writer", fr:"écrivain", es:"escritor", de:"Schriftsteller", pt:"escritor", ru:"писатель", ca:"escriptor" },
       { tema:"aggettivi", livello:"A2", it:"sbagliato", en:"wrong", fr:"faux|erroné", es:"incorrecto", de:"falsch", pt:"errado", ru:"неправильный", ca:"incorrecte|erroni", sp:"sbagià" },
-      { tema:"aggettivi", livello:"A1", it:"giovane", en:"young", fr:"jeune", es:"joven", de:"jung", pt:"jovem", ru:"молодой", ca:"jove", sp:"zove|zòvena", mn:"zùeno|zùena", cr:"zov'n" },
+      { tema:"aggettivi", livello:"A1", it:"giovane", en:"young", fr:"jeune", es:"joven", de:"jung", pt:"jovem", ru:"молодой", ca:"jove", sp:"zove|zòvena", mn:"zùeno|zùena", cr:"zov'n", ge:"zóèno|zóvena|zóveno" },
       { tema:"famiglia", livello:"A1", it:"madre|mamma", en:"mother", fr:"mère", es:"madre", de:"Mutter", pt:"mãe|mae", ru:"мать|мама", ca:"mare", sp:"mae", cr:"Mà", ge:"mæ", ko:"어머니", ar:"أم", zh:"母亲", ja:"母", ia:"matre", la:"mater", grc:"μήτηρ" },
       { tema:"famiglia", livello:"A1", it:"ragazza", en:"girl", fr:"fille", es:"chica", de:"Mädchen", pt:"rapariga", ru:"девушка|девочка", ca:"noia", sp:"fantèla|fante", cr:"Fanta", ge:"figétta", ko:"소녀", ar:"فتاة", zh:"女孩", ja:"少女" },
       { tema:"famiglia", livello:"B1", it:"nuora", en:"daughter-in-law", fr:"belle-fille", es:"nuera", de:"Schwiegertochter", pt:"nora", ru:"невестка", ca:"nora", sp:"nèa", cr:"Nèa", ge:"nêua", ko:"며느리", ar:"كنة", zh:"儿媳", ja:"嫁" },
@@ -2334,7 +2335,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"giorni", livello:"A1", it:"lunedì", en:"Monday", fr:"lundi", es:"lunes", de:"Montag", pt:"segunda-feira", ru:"понедельник", ca:"dilluns", sp:"lünedì", mn:"lünedì", ko:"월요일", ar:"الاثنين", zh:"星期一", ja:"月曜日", ia:"lunedi", la:"dies Lunae", grc:"Δευτέρα", ro:"luni" },
       { tema:"giorni", livello:"A1", it:"martedì", en:"Tuesday", fr:"mardi", es:"martes", de:"Dienstag", pt:"terça-feira|terca-feira", ru:"вторник", ca:"dimarts", sp:"martedì", mn:"martedi", ko:"화요일", ar:"الثلاثاء", zh:"星期二", ja:"火曜日", ia:"martedi", la:"dies Martis", grc:"Τρίτη", ro:"marți" },
       { tema:"giorni", livello:"A1", it:"mercoledì", en:"Wednesday", fr:"mercredi", es:"miércoles", de:"Mittwoch", pt:"quarta-feira", ru:"среда", ca:"dimecres", sp:"marcordì", mn:"marcurdi", ko:"수요일", ar:"الأربعاء", zh:"星期三", ja:"水曜日", ia:"mercuridi", la:"dies Mercurii", grc:"Τετάρτη", ro:"miercuri" },
-      { tema:"giorni", livello:"A1", it:"giovedì", en:"Thursday", fr:"jeudi", es:"jueves", de:"Donnerstag", pt:"quinta-feira", ru:"четверг", ca:"dijous", sp:"zògia", mn:"zògia", ko:"목요일", ar:"الخميس", zh:"星期四", ja:"木曜日", ia:"jovedi", la:"dies Iovis", grc:"Πέμπτη", ro:"joi" },
+      { tema:"giorni", livello:"A1", it:"giovedì", en:"Thursday", fr:"jeudi", es:"jueves", de:"Donnerstag", pt:"quinta-feira", ru:"четверг", ca:"dijous", sp:"zògia", mn:"zògia", ge:"zêuggia", ko:"목요일", ar:"الخميس", zh:"星期四", ja:"木曜日", ia:"jovedi", la:"dies Iovis", grc:"Πέμπτη", ro:"joi" },
       { tema:"giorni", livello:"A1", it:"venerdì", en:"Friday", fr:"vendredi", es:"viernes", de:"Freitag", pt:"sexta-feira", ru:"пятница", ca:"divendres", sp:"vernardì", mn:"vernardì", ko:"금요일", ar:"الجمعة", zh:"星期五", ja:"金曜日", ia:"venerdi", la:"dies Veneris", grc:"Παρασκευή", ro:"vineri" },
       { tema:"giorni", livello:"A1", it:"sabato", en:"Saturday", fr:"samedi", es:"sábado", de:"Samstag", pt:"sábado|sabado", ru:"суббота", ca:"dissabte", sp:"sabo", mn:"sabu", cr:"sabt", ko:"토요일", ar:"السبت", zh:"星期六", ja:"土曜日", ia:"sabbato", la:"Sabbatum", grc:"Σάββατον", ro:"sâmbătă" },
       { tema:"giorni", livello:"A1", it:"domenica", en:"Sunday", fr:"dimanche", es:"domingo", de:"Sonntag", pt:"domingo", ru:"воскресенье", ca:"diumenge", sp:"domeénega/domenega", mn:"dumenega", cr:"domenica", ko:"일요일", ar:"الأحد", zh:"星期日", ja:"日曜日", ia:"dominica", la:"dies Solis", grc:"Κυριακή", ro:"duminică" },
@@ -2963,7 +2964,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"cento", mn:"sentu", ro:"o sută" },
       { it:"bianco", sp:"gianco", mn:"giancu", cr:"bianch", ro:"alb" },
       { it:"madre", mn:"maa", ro:"mamă" },
-      { it:"pane", mn:"pan", cr:"pan", ro:"pâine" },
+      { it:"pane", sp:"pan", mn:"pan", cr:"pan", ge:"pan", ro:"pâine" },
       { it:"latte", mn:"late", ro:"lapte" },
       { it:"pesce", mn:"pessu", ro:"pește" },
       { it:"verdura", mn:"verdua", ro:"legume" },
@@ -3120,7 +3121,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 101;
+const VOC_VERSION = 102;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
