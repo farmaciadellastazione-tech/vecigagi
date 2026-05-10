@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"corpo", livello:"B1", it:"infezione", mn:"infesciùn" },
       { tema:"cibo", livello:"A1", it:"cipolla", en:"onion", sp:"sigòla|siòla" },
       { tema:"natura", livello:"A1", it:"ala", en:"wing", sp:"àa" },
       { tema:"natura", livello:"A1", it:"polvere", en:"dust", sp:"püa" },
@@ -1743,7 +1744,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"nove", en:"nine", ru:"девять", sp:"néve", mn:"néve", ro:"nouă" },
       { tema:"cibo", livello:"A1", it:"burro", en:"butter", fr:"beurre", es:"mantequilla", de:"Butter", pt:"manteiga", ru:"масло", ca:"mantega", sp:"buro", mn:"buru", ko:"버터", la:"butyrum", grc:"βούτυρον" },
       { tema:"natura", livello:"A1", it:"collina", en:"hill", fr:"colline", es:"colina", de:"Hügel", pt:"colina", ru:"холм", ca:"turó", ko:"언덕", ar:"تلة", zh:"小山", ja:"丘", grc:"λόφος" },
-      { tema:"salute", livello:"B1", it:"influenza", en:"influenza", fr:"influence", es:"gripe", de:"Influenza", pt:"gripe", ru:"грипп", ca:"grip", ko:"인플루엔자", ar:"إنفلونزا", zh:"流感", ja:"インフルエンザ", ia:"influenza", la:"influentia", grc:"ἐπινοία" },
+      { tema:"salute", livello:"B1", it:"influenza", en:"influenza", fr:"influence", es:"gripe", de:"Influenza", pt:"gripe", ru:"грипп", ca:"grip", sp:"influënsa", mn:"influënsa", ko:"인플루엔자", ar:"إنفلونزا", zh:"流感", ja:"インフルエンザ", ia:"influenza", la:"influentia", grc:"ἐπινοία" },
       { tema:"aggettivi", livello:"B1", it:"coraggioso", en:"brave", fr:"courageux", es:"valiente", de:"mutig", pt:"corajoso", ru:"храбрый", ca:"valent" },
       { tema:"lavoro", livello:"A2", it:"pompieri", en:"firefighters", fr:"pompiers", es:"bomberos", de:"Feuerwehr", pt:"bombeiros", ru:"пожарные", ca:"bombers", sp:"pompiei", mn:"pumpieri", ko:"소방대", ar:"مُطَفيُ النّار", zh:"消防员", ja:"消防士", ia:"pompieros", la:"vigiles", grc:"πυροσβέστες" },
       { tema:"casa", livello:"A2", it:"affitto", en:"rent", de:"Miete", ru:"аренда", sp:"afito", mn:"afitu" },
@@ -2125,7 +2126,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"grammatica", livello:"A2", it:"essi amano", la:"amant", grc:"φιλοῦσι" },
       { tema:"grammatica", livello:"B1", it:"io fui / ho amato (perfetto)", la:"fui | amavi", grc:"ἐφίλησα" },
       { tema:"grammatica", livello:"B1", it:"modo congiuntivo (che io ami)", la:"amem", grc:"φιλῶ (ottativo: φιλοίην)" },
-      { tema:"grammatica", livello:"B2", it:"infinito presente attivo", en:"present active infinitive", ja:"現在形能動", ia:"presente active infinitive", la:"amare", grc:"φιλεῖν" },
       { tema:"grammatica", livello:"B2", it:"participio presente attivo", la:"amans | amantis", grc:"φιλῶν | φιλοῦσα | φιλοῦν" },
       { tema:"grammatica", livello:"A2", it:"pronome relativo (che / il quale)", la:"qui | quae | quod", grc:"ὅς | ἥ | ὅ" },
       { tema:"citazioni", livello:"B1", it:"Conosci te stesso", la:"Nosce te ipsum", grc:"Γνῶθι σεαυτόν" },
@@ -2442,7 +2442,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mestieri", livello:"A2", it:"ingegnere", en:"engineer", fr:"ingénieur", es:"ingeniero", de:"Ingenieur", pt:"engenheiro", sp:"anzegnéo|enzeneo", mn:"enzegneu", ko:"엔지니어", ar:"مهندس", zh:"工程师", ja:"エンジニア", ia:"ingeniero", la:"artifex", grc:"μηχανικός" },
       { tema:"mestieri", livello:"A2", it:"cuoco", en:"cook", fr:"cuisinier", es:"cocinero", de:"Koch", pt:"cozinheiro", ru:"повар", ca:"cuiner", sp:"chègo", ko:"요리사", ar:"طاهٍ", zh:"厨师", ja:"料理人", ia:"coco", la:"coquus", grc:"μάγειρος" },
       { tema:"mestieri", livello:"A2", it:"pilota", en:"pilot", fr:"pilote", es:"piloto", de:"Pilot", pt:"piloto", ru:"пилот", ca:"pilot", ko:"조종사", ar:"طيار", zh:"飞行员", ja:"パイロット", ia:"pilota", la:"gubernator", grc:"κυβερνήτης" },
-      { tema:"mestieri", livello:"A1", it:"infermiere", en:"nurse", fr:"infirmier", es:"enfermero", de:"Krankenpfleger", pt:"enfermeiro", ru:"медбрат|медсестра", ca:"infermer", ko:"간호사", ar:"ممرض", zh:"护士", ja:"看護師", ia:"infirmero", la:"valetudinarius", grc:"νοσοκόμος" },
+      { tema:"mestieri", livello:"A1", it:"infermiere", en:"nurse", fr:"infirmier", es:"enfermero", de:"Krankenpfleger", pt:"enfermeiro", ru:"медбрат|медсестра", ca:"infermer", mn:"infermié", ko:"간호사", ar:"ممرض", zh:"护士", ja:"看護師", ia:"infirmero", la:"valetudinarius", grc:"νοσοκόμος" },
       { tema:"mestieri", livello:"A1", it:"architetto", en:"architect", fr:"architecte", es:"arquitecto", de:"Architekt", pt:"arquiteto", ru:"архитектор", ca:"arquitecte", sp:"architeto", mn:"architetu", ge:"", ko:"건축가", ar:"مهندس معماري", zh:"建筑师", ja:"建築家", ia:"architecto", la:"architectus", grc:"ἀρχιτέκτων" },
       { tema:"mestieri", livello:"A2", it:"programmatore", en:"programmer", fr:"programmeur", es:"programador", de:"Programmierer", pt:"programador", ru:"программист", ca:"programador", ko:"프로그래머", ar:"مبرمج", zh:"程序员", ja:"プログラマー", ia:"programator" },
       { tema:"mestieri", livello:"A2", it:"giornalista", en:"journalist", fr:"journaliste", es:"periodista", de:"Journalist", pt:"jornalista", ru:"журналист", ca:"periodista", ko:"기자", ar:"صحفي", zh:"记者", ja:"ジャーナリスト", ia:"journalista", la:"diurnarius", grc:"δημοσιογράφος" },
@@ -2971,7 +2971,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"comunicazione", livello:"A1", it:"non capisco", mn:"a ne capissu", ro:"nu înțeleg" },
       { it:"puoi ripetere?", mn:"te pe ripète", ro:"poți repeta?" },
       { it:"parli italiano?", ro:"vorbești italiană?" },
-      { it:"quanti anni hai?", mn:"quante ani t'aa", ro:"câți ani ai?" },
+      { it:"quanti anni hai?", mn:"quant ani t'aa", ro:"câți ani ai?" },
       { it:"ho ... anni", mn:"me a gho ... ani", ro:"am ... ani" },
       { it:"quanto costa?", mn:"quantu custa?", ro:"cât costă?" },
       { it:"dov'è il bagno?", ro:"unde este baia?" },
@@ -2997,7 +2997,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 77;
+const VOC_VERSION = 78;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
