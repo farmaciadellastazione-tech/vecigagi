@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"spazio", livello:"A1", it:"vicino", sp:"vesin|arente" },
       { tema:"corpo", livello:"B1", it:"infezione", mn:"infesciùn" },
       { tema:"cibo", livello:"A1", it:"cipolla", en:"onion", sp:"sigòla|siòla" },
       { tema:"natura", livello:"A1", it:"ala", en:"wing", sp:"àa" },
@@ -1889,7 +1890,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"pagina", en:"page", fr:"page", es:"página", de:"Seite", pt:"página", ru:"страница", ca:"pàgina" },
       { tema:"mestieri", livello:"B1", it:"pittore", en:"painter", fr:"peintre", es:"pintor", de:"Maler", pt:"pintor", ru:"художник", ca:"pintor", sp:"pitoe" },
       { tema:"arte", livello:"B1", it:"pittura/dipinto", en:"painting", fr:"peinture|tableau", es:"pintura|cuadro", de:"Gemälde", pt:"pintura|quadro", ru:"картина|живопись", ca:"pintura|quadre", sp:"pitüa", mn:"petua" },
-      { tema:"dialogo", livello:"A2", it:"paio|coppia", en:"pair", fr:"paire", es:"par", de:"Paar", pt:"par", ru:"пара", ca:"parell", sp:"pao" },
+      { tema:"dialogo", livello:"A2", it:"paio|coppia", en:"pair", fr:"paire", es:"par", de:"Paar", pt:"par", ru:"пара", ca:"parell", sp:"paào/pao" },
       { tema:"dialogo", livello:"B1", it:"profumo", en:"perfume", fr:"parfum", es:"perfume", de:"Parfüm", pt:"perfume", ru:"духи|парфюм", ca:"perfum", sp:"prefümo,aigoa d’odoe" },
       { tema:"animali", livello:"A2", it:"animale domestico", en:"pet", fr:"animal de compagnie", es:"mascota", de:"Haustier", pt:"animal de estimação", ru:"домашнее животное", ca:"animal de companyia", mn:"animaa demestegu", ia:"animal domestic" },
       { tema:"dialogo", livello:"B1", it:"benzina", en:"petrol", fr:"essence", es:"gasolina", de:"Benzin", pt:"gasolina", ru:"бензин", ca:"gasolina" },
@@ -2590,7 +2591,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A1", it:"mio", en:"my", fr:"mon", es:"mío", de:"mein", pt:"meu", sp:"méo" },
       { tema:"dialetti", livello:"A2", it:"notizia", en:"news", fr:"nouvelle", es:"noticia", de:"Nachricht", pt:"notícia|noticia", sp:"nèva" },
       { tema:"dialetti", livello:"A2", it:"pala", en:"shovel", fr:"pelle", es:"pala", de:"Schaufel", pt:"pá", sp:"pàa" },
-      { tema:"dialetti", livello:"A2", it:"pari", en:"even", fr:"pair", es:"par", de:"gerade", pt:"igual", sp:"pào" },
+      { tema:"dialetti", livello:"A2", it:"pari", en:"even", fr:"pair", es:"par", de:"gerade", pt:"igual", sp:"paào/pao" },
       { tema:"cibo", livello:"A2", it:"pera", en:"pear", fr:"poire", es:"pera", de:"Birne", pt:"pera", ru:"груша", ca:"pera", sp:"pèa" },
       { tema:"corpo", livello:"A1", it:"petto", en:"chest", fr:"poitrine", es:"pecho", de:"Brust", pt:"peito", ru:"грудь", ca:"pit", sp:"pèto", mn:"pètu" },
       { tema:"dialetti", livello:"A2", it:"peto", en:"fart", fr:"pet", es:"pedo", de:"Furz", pt:"pum", sp:"péto" },
@@ -2766,7 +2767,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"cogliere acerbo", en:"", mn:"sbrùsaaa/zbrùzaa/sbrùzaa" },
       { tema:"dialetti", livello:"A2", it:"sbuffare", en:"", mn:"sbüfaaa/zbüfaa/sbüfaa" },
       { tema:"dialetti", livello:"A2", it:"sbollire, fermentare", en:"", mn:"sbugii/zbùgii/sbùgii" },
-      { tema:"dialetti", livello:"A2", it:"scacciare, mandar via con durezza", en:"", mn:"sburii/zbùrii/sbùrii" },
       { tema:"dialetti", livello:"A2", it:"smentire pubblicamente", en:"", mn:"sbusardaà/zbùzardaa/sbùzardaa" },
       { tema:"dialetti", livello:"A2", it:"gelato", mn:"zéàa/zéà" },
       { tema:"dialetti", livello:"A2", it:"zibibbo, uva passa", en:"", mn:"zébibu" },
@@ -3102,7 +3102,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 83;
+const VOC_VERSION = 84;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
