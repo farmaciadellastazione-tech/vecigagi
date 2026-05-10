@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"abbigliamento", livello:"A2", it:"bretelle", sp:"bertéle", mn:"bertèle", ge:"bertèlle" },
       { tema:"corpo", livello:"A2", it:"sudare", sp:"südae", mn:"südaa", ge:"süâ" },
       { tema:"abbigliamento", livello:"A1", it:"maglia", sp:"màgia", mn:"magia", ge:"màggia" },
       { tema:"famiglia", livello:"A2", it:"genero", en:"son-in-law", de:"Schwiegersohn", sp:"d'zeneo/zéneo", mn:"jiéneu", ge:"d'zèneo/zeneo" },
@@ -3005,7 +3006,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"noce (frutto)", cr:"noza" },
       { it:"castagna", cr:"castagna" },
       { it:"pesco", cr:"pesch fiurit" },
-      { it:"capra", cr:"capra" },
+      { it:"capra", sp:"crava", mn:"crava", cr:"capra", ge:"crava" },
       { it:"asino", sp:"àase/ase", mn:"àasen/àzen", cr:"as'n" },
       { it:"passero", cr:"ciuin" },
       { it:"faccia", cr:"faza" },
@@ -3121,7 +3122,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 104;
+const VOC_VERSION = 105;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
