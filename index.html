@@ -2061,7 +2061,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"animali", livello:"A1", it:"vecchio", en:"old", fr:"vieux", es:"viejo", de:"alt", pt:"velho", ru:"старый", ca:"vell", sp:"vècio", ko:"오래된", ar:"قديم", zh:"旧", ja:"古い", ro:"vechi" },
       { tema:"aggettivi", livello:"B1", it:"nostalgia", en:"longing", fr:"nostalgie", es:"nostalgia", de:"Sehnsucht", pt:"saudade", ko:"그리움", ar:"حنين", zh:"思乡", ja:"郷愁", ia:"nostalgia" },
       { tema:"animali", livello:"A2", it:"rospo", en:"toad", fr:"crapaud", es:"sapo", de:"Kröte", pt:"sapo", ru:"жаба", ca:"gripau", sp:"bagio", mn:"bagiu", cr:"", ko:"두꺼비", ar:"علجوم", zh:"蟾蜍", ja:"ヒキガエル" },
-      { tema:"dialetti", livello:"B1", it:"coccole", en:"cuddles", fr:"câlins", es:"mimos", de:"Schmusen", pt:"carinhos", ca:"mimoses", sp:"gnòri", cr:"", ko:"애정", ar:"دلال", zh:"拥抱", ja:"甘え" },
+      { tema:"dialetti", livello:"B1", it:"coccole", en:"cuddles", fr:"câlins", es:"mimos", de:"Schmusen", pt:"carinhos", ca:"mimoses", sp:"", cr:"", ko:"애정", ar:"دلال", zh:"拥抱", ja:"甘え" },
       { tema:"vestiti", livello:"A1", it:"fratello", en:"brother", fr:"frère", es:"hermano", de:"Bruder", pt:"irmão|irmao", ru:"брат", ca:"germà", sp:"frè", mn:"free", ge:"fræ", ko:"형|남동생", ar:"أخ", zh:"兄弟", ja:"兄|弟", ia:"fratre", la:"frater", grc:"ἀδελφός", ro:"frate" },
       { tema:"famiglia", livello:"A1", it:"sorella", en:"sister", fr:"sœur", es:"hermana", de:"Schwester", pt:"irmã|irma", ru:"", ca:"germana", sp:"soèla", cr:"", ge:"", ko:"언니|여동생", ar:"أخت", zh:"姐妹", ja:"姉|妹", ia:"soror", la:"soror", grc:"ἀδελφή", ro:"soră" },
       { tema:"giorni", livello:"A1", it:"figlia", en:"daughter", fr:"fille", es:"hija", de:"Tochter", pt:"filha", ru:"дочь", ca:"filla", sp:"figia", mn:"figia", ko:"딸", ar:"ابنة", zh:"女儿", ja:"娘", ia:"filia", la:"filia", grc:"θυγάτηρ", ro:"fiică" },
@@ -2787,10 +2787,10 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"capriccio", en:"", mn:"sghiribissu/zghìribissu" },
       { tema:"dialetti", livello:"A2", it:"ghiro, dormiglione", en:"", mn:"sghiiu/zghìu" },
       { tema:"dialetti", livello:"A2", it:"ponfo, gonfiore", en:"", mn:"sgnocua/zgnòcua" },
-      { tema:"dialetti", livello:"A2", it:"sgraffignare, rubare", en:"", mn:"sgrafignaaa/zgràfignaa/sgràfignaa" },
-      { tema:"dialetti", livello:"A2", it:"fessura, spaccatura nella roccia", en:"crevice", fr:"fissure", mn:"sgrëndia/zgrëndia" },
+      { tema:"dialetti", livello:"A2", it:"sgraffignare|rubare", mn:"sgrafignaaa/zgràfignaa/sgràfignaa" },
+      { tema:"dialetti", livello:"A2", it:"fessura| spaccatura nella roccia", en:"crevice", fr:"fissure", mn:"sgrëndia/zgrëndia" },
       { tema:"dialetti", livello:"A2", it:"disfare i nodi", en:"", mn:"sgrüpaaa/zgrüpaa" },
-      { tema:"dialetti", livello:"A2", it:"grezzo, non intonacato", en:"", mn:"sgrüzu/zgrüzu" },
+      { tema:"dialetti", livello:"A2", it:"grezzo| non intonacato", mn:"sgrüzu/zgrüzu" },
       { tema:"dialetti", livello:"A2", it:"bagnato, fradicio", en:"", mn:"sguaà/zguà" },
       { tema:"dialetti", livello:"A2", it:"bagnare, gocciolare", en:"drip", fr:"goutter", mn:"sgùaa/zgùaa" },
       { tema:"dialetti", livello:"A2", it:"sgualdrina", en:"", mn:"sgualdrìna/zgùaldrina" },
@@ -2994,7 +2994,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 81;
+const VOC_VERSION = 82;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
