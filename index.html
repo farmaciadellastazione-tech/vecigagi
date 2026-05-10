@@ -2540,7 +2540,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A2", it:"ricetta", en:"recipe", fr:"recette", es:"receta", de:"Rezept", pt:"receita", ko:"레시피", ar:"وصفة", zh:"食谱", ja:"レシピ", ia:"recepta", la:"praescriptum", grc:"συνταγή" },
       { tema:"cibo", livello:"A2", it:"sapore", en:"flavour", fr:"saveur", es:"sabor", de:"Geschmack", pt:"sabor", sp:"savòe", ko:"맛", ar:"نكهة", zh:"味道", ja:"味", ia:"sapor", la:"sapor", grc:"γεῦσις" },
       { tema:"cibo", livello:"A2", it:"dolce", en:"sweet", fr:"doux", es:"dulce", de:"süß", pt:"doce", ru:"сладкое|десерт", ca:"dolç", mn:"duse", ko:"달콤한", ar:"حلو", zh:"甜", ja:"甘い", ia:"dulce", la:"dulcis", grc:"γλυκύς" },
-      { tema:"cibo", livello:"A2", it:"amaro", en:"bitter", fr:"amer", es:"amargo", de:"bitter", pt:"amargo", sp:"amao", mn:"amau", ko:"쓴", ar:"مر", zh:"苦", ja:"苦い", ia:"amar", la:"amarus", grc:"πικρός" },
+      { tema:"cibo", livello:"A2", it:"amaro", en:"bitter", fr:"amer", es:"amargo", de:"bitter", pt:"amargo", sp:"amao", mn:"amau", ge:"amao", ko:"쓴", ar:"مر", zh:"苦", ja:"苦い", ia:"amar", la:"amarus", grc:"πικρός" },
       { tema:"cibo", livello:"A2", it:"salato", en:"salty", fr:"salé", es:"salado", de:"salzig", pt:"salgado", ru:"солёный", ca:"salat", ko:"짠", ar:"مالح", zh:"咸", ja:"塩辛い", ia:"salate", la:"salsus", grc:"ἁλμυρός" },
       { tema:"cibo", livello:"A2", it:"piccante", en:"spicy", fr:"épicé", es:"picante", de:"scharf", pt:"picante", sp:"", ko:"매운", ar:"حار", zh:"辣", ja:"辛い", ia:"picante", la:"acer", grc:"πικάντικος" },
       { tema:"cibo", livello:"A1", it:"ingrediente", en:"ingredient", fr:"ingrédient", es:"ingrediente", de:"Zutat", pt:"ingrediente", ru:"полный", ca:"ple", sp:"", ko:"재료", ar:"مكون", zh:"成分", ja:"材料", ia:"ingrediente", la:"elementum", grc:"συστατικόν" },
@@ -2917,7 +2917,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"sindaco", en:"", sp:"séndico", mn:"sindicu" },
       { tema:"dialetti", livello:"A2", it:"socio, compare", en:"partner", fr:"associé", mn:"sociu/sòciu" },
       { tema:"dialetti", livello:"A2", it:"ceppo, ciocco", en:"log", fr:"bûche", mn:"socu/sòcu" },
-      { tema:"caratteristiche", livello:"A2", it:"duro", en:"hard", mn:"duu|sodu" },
+      { tema:"caratteristiche", livello:"A2", it:"duro", en:"hard", sp:"düo", mn:"düu|sodu", ge:"düo" },
       { tema:"dialetti", livello:"A2", it:"afa", en:"", mn:"soofegu/sòfégu" },
       { tema:"dialetti", livello:"A2", it:"zoppo, claudicante", en:"", mn:"soopu/sòpu" },
       { tema:"dialetti", livello:"A2", it:"schiaffo", en:"slap", pt:"bofetada", mn:"s'ciàfu/sciàfu" },
@@ -3121,7 +3121,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 103;
+const VOC_VERSION = 104;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
