@@ -2139,7 +2139,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"citazioni", livello:"B2", it:"Niente di nuovo sotto il sole", la:"Nihil novi sub sole", grc:"Οὐδὲν νέον ὑπὸ τὸν ἥλιον" },
       { tema:"citazioni", livello:"B2", it:"Carpe diem (cogli l'attimo)", la:"Carpe diem", grc:"Δρέπε τὴν ἡμέραν" },
       { tema:"numeri", livello:"A1", it:"uno", en:"one", fr:"un", es:"uno", de:"ein|eins", pt:"um", ru:"один", ca:"un", sp:"ün", mn:"ün", ko:"일", ar:"واحد", zh:"一", ja:"一", ia:"un|uno", la:"unus", grc:"εἷς", ro:"unu" },
-      { tema:"numeri", livello:"A1", it:"due|2", en:"two", fr:"deux", es:"dos", de:"zwei", pt:"dois", ru:"два", ca:"dos", sp:"doi, doa", mn:"dùi", cr:"Do", ko:"이", ar:"اثنان", zh:"二", ja:"二", ia:"duo", la:"duo", grc:"δύο" },
+      { tema:"numeri", livello:"A1", it:"due|2", en:"two", fr:"deux", es:"dos", de:"zwei", pt:"dois", ru:"два", ca:"dos", sp:"doi, doa", mn:"dùi", cr:"Do", ko:"이", ar:"اثنان", zh:"二", ja:"二", ia:"duo", la:"duo", grc:"δύο", ro:"doi" },
       { tema:"numeri", livello:"A1", it:"tre|3", en:"three", fr:"trois", es:"tres", de:"drei", pt:"três|tres", ru:"три", ca:"tres", sp:"trèi", mn:"tree", cr:"Tre", ko:"삼", ar:"ثلاثة", zh:"三", ja:"三", ia:"tres", la:"tres", grc:"τρεῖς" },
       { tema:"numeri", livello:"A1", it:"quattro|4", en:"four", fr:"quatre", es:"cuatro", de:"vier", pt:"quatro", ru:"четыре", ca:"quatre", sp:"quatro/quattro/quatro", mn:"quatru", cr:"Quatr", ko:"사", ar:"أربعة", zh:"四", ja:"四", ia:"quatro", la:"quattuor", ro:"patru" },
       { tema:"numeri", livello:"A1", it:"cinque|5", en:"five", fr:"cinq", es:"cinco", de:"fünf", pt:"cinco", ru:"пять", ca:"cinc", sp:"sìnque", mn:"sinque", cr:"Zinqui", ko:"오", ar:"خمسة", zh:"五", ja:"五", ia:"cinque", la:"quinque", grc:"πέντε" },
@@ -2703,7 +2703,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"B1", it:"perderlo", en:"lose it" },
       { tema:"dialogo", livello:"B1", it:"aprirsi / andarsene", en:"open up" },
       { tema:"dialogo", livello:"A1", it:"fallo", en:"do it", fr:"fais-le", es:"hazlo", de:"mach es", pt:"faça isso|faca isso", sp:"fota" },
-      { tema:"verbi", livello:"A1", it:"pensarla così", en:"think so", fr:"le penser", es:"creerlo", de:"so denken", pt:"achar isso", ru:"один", ca:"un", sp:"", cr:"", zh:"这样想" },
       { tema:"avvertimenti", livello:"A1", it:"fa' attenzione", en:"take care", fr:"fais attention", es:"ten cuidado", de:"pass auf", pt:"tome cuidado", ru:"тридцать", ca:"trenta", sp:"ocio", cr:"" },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu" },
       { tema:"dialogo", livello:"A1", it:"tornare", en:"come back", fr:"revenir", es:"volver", de:"zurückkommen", pt:"voltar", ru:"возвращаться", ca:"tornar", sp:"tornae" },
@@ -2937,7 +2936,6 @@ const VOCABOLARIO_DEFAULT = [
       { it:"prego", mn:"pregu", ro:"cu plăcere" },
       { it:"sì", mn:"si", ro:"da" },
       { it:"no", mn:"nu", ro:"nu" },
-      { it:"due", mn:"dui", ro:"doi" },
       { it:"tre", ro:"trei" },
       { it:"cinque", mn:"sinque", ro:"cinci" },
       { it:"sei", ro:"șase" },
@@ -2996,7 +2994,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 79;
+const VOC_VERSION = 80;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
