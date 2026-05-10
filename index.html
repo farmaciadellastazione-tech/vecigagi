@@ -1688,6 +1688,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"corpo", livello:"A1", it:"schiena", en:"back", pt:"costas" },
+      { tema:"natura", livello:"A1", it:"gabbiano", sp:"gabian|oca de mae|ochin" },
       { tema:"viaggi", livello:"A2", it:"vicolo", sp:"carogio", mn:"carugiu" },
       { tema:"aspetto", livello:"B1", it:"trasandato", sp:"sbolina/zbolinà", mn:"sbulina/zbulinà" },
       { tema:"spazio", livello:"A1", it:"vicino", sp:"vesin|arente" },
@@ -2123,7 +2125,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"B2", it:"democrazia", en:"democracy", fr:"démocratie", es:"democracia", de:"Demokratie", pt:"democracia", ru:"демократия", ca:"democràcia", ko:"민주주의", ar:"ديمقراطية", zh:"民主", ja:"民主主義", ia:"democratia", la:"democratia", grc:"δημοκρατία" },
       { tema:"grammatica", livello:"A2", it:"io amo (1ª coniug. lat.)", la:"amo", grc:"φιλῶ" },
       { tema:"grammatica", livello:"A2", it:"tu ami", en:"you love", es:"amas", ia:"amas", la:"amas", grc:"φιλεῖς" },
-      { tema:"grammatica", livello:"A2", it:"egli/ella ama", sp:"ama", la:"amat", grc:"φιλεῖ" },
+      { tema:"grammatica", livello:"A2", it:"lui ama|lei ama", sp:"ama", la:"amat", grc:"φιλεῖ" },
       { tema:"grammatica", livello:"A2", it:"noi amiamo", la:"amamus", grc:"φιλοῦμεν" },
       { tema:"grammatica", livello:"A2", it:"voi amate", la:"amatis", grc:"φιλεῖτε" },
       { tema:"grammatica", livello:"A2", it:"essi amano", la:"amant", grc:"φιλοῦσι" },
@@ -2433,7 +2435,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"sport", livello:"B1", it:"orchestra", en:"orchestra", fr:"orchestre", es:"orquesta", de:"Orchester", pt:"orquestra", ru:"чемпионат", ca:"campionat", ko:"오케스트라", ar:"أوركسترا", zh:"管弦乐团", ja:"オーケストラ", ia:"orchestra", grc:"ὀρχήστρα" },
       { tema:"arte", livello:"B1", it:"ritmo", en:"rhythm", fr:"rythme", es:"ritmo", de:"Rhythmus", pt:"ritmo", ko:"리듬", ar:"إيقاع", zh:"节奏", ja:"リズム", ia:"rhythmo", la:"rhythmus", grc:"ῥυθμός" },
       { tema:"mestieri", livello:"A2", it:"lavoro", en:"work", fr:"travail", es:"trabajo", de:"Arbeit", pt:"trabalho", sp:"travagio, lavòo", ko:"일", ar:"عمل", zh:"工作", ja:"仕事", ia:"labor", la:"labor", grc:"ἐργασία" },
-      { tema:"mestieri", livello:"A2", it:"ufficio", en:"office", fr:"bureau", es:"oficina", de:"Büro", pt:"escritório|escritorio", ru:"офис", ca:"oficina", ge:"", ko:"사무실", ar:"مكتب", zh:"办公室", ja:"オフィス", ia:"officio", la:"officium", grc:"γραφεῖον" },
+      { tema:"mestieri", livello:"A2", en:"office", fr:"bureau", es:"oficina", de:"Büro", pt:"escritório|escritorio", ru:"офис", ca:"oficina", ko:"사무실", ar:"مكتب", zh:"办公室", ja:"オフィス", ia:"officio", la:"officium", grc:"γραφεῖον" },
       { tema:"mestieri", livello:"A2", it:"riunione", en:"meeting", fr:"réunion", es:"reunión", de:"Besprechung", pt:"reunião|reuniao", ko:"회의", ar:"اجتماع", zh:"会议", ja:"会議", ia:"reunion", la:"conventus", grc:"σύσκεψις" },
       { tema:"mestieri", livello:"A2", it:"stipendio", en:"salary", fr:"salaire", es:"salario", de:"Gehalt", pt:"salário|salario", ko:"급여", ar:"راتب", zh:"工资", ja:"給料", ia:"salario", la:"merces", grc:"μισθός" },
       { tema:"mestieri", livello:"A2", it:"capo", en:"boss", fr:"chef", es:"jefe", de:"Chef", pt:"chefe", ko:"상사", ar:"رئيس", zh:"老板", ja:"上司", ia:"chef", la:"dominus", grc:"ἀρχηγός" },
@@ -2833,7 +2835,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"muovere", en:"", mn:"smévé/zmévé" },
       { tema:"dialetti", livello:"A2", it:"dividere in metà| dimezzare", en:"to halve", fr:"couper en deux", es:"dividir por la mitad", de:"teilen", pt:"dividir ao meio", ca:"partir", mn:"smesaaa/zmèzaa", ia:"divider in duo partes", la:"dividere", grc:"διαιρεῖν" },
       { tema:"aggettivo", livello:"A2", it:"spento", en:"", mn:"smòrtu/zmòrtu" },
-      { tema:"dialetti", livello:"A2", it:"cambiamento meteo, movimento, mossa", en:"", mn:"smossa/zmòssa" },
       { tema:"dialetti", livello:"A2", it:"smucchiare, dilapidare", en:"", mn:"smüciaaa/zmüciaa" },
       { tema:"verbo", livello:"A2", it:"spento", en:"", mn:"smuurtàa/zmurtà" },
       { tema:"dialetti", livello:"A2", it:"spegnere il fuoco o il lume", en:"put out", fr:"éteindre", mn:"smuurtàaa/zmurtaa" },
@@ -2902,8 +2903,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"caratteristiche", livello:"A2", it:"duro", en:"hard", mn:"duu|sodu" },
       { tema:"dialetti", livello:"A2", it:"afa", en:"", mn:"soofegu/sòfégu" },
       { tema:"dialetti", livello:"A2", it:"zoppo, claudicante", en:"", mn:"soopu/sòpu" },
-      { tema:"dialetti", livello:"A2", it:"schiaffo", en:"", mn:"s'ciàfu/sciàfu" },
-      { tema:"dialetti", livello:"A2", it:"fucile| schioppo", mn:"s' ciopu/ sciòpu" },
+      { tema:"dialetti", livello:"A2", it:"schiaffo", en:"slap", pt:"bofetada", mn:"s'ciàfu/sciàfu" },
+      { tema:"dialetti", livello:"A2", it:"fucile| schioppo", en:"rifle", pt:"fuzil", mn:"s' ciopu/ sciòpu" },
       { tema:"dialetti", livello:"A2", it:"sciancato, claudicante", en:"", mn:"s' ciancà/sciancà" },
       { tema:"dialetti", livello:"A2", it:"strattone", en:"", mn:"s'ciancùn/sciancùn" },
       { tema:"dialetti", livello:"A2", it:"scoglio", mn:"scògiu" },
@@ -3020,7 +3021,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"tagliare", cr:"taiar" },
       { it:"bollire", cr:"bugir" },
       { it:"magro", cr:"magr" },
-      { it:"schietto", cr:"sçiet" },
+      { tema:"aggettivi", livello:"B1", it:"schietto", en:"frank", pt:"franco", cr:"sçiet" },
       { it:"mattina", cr:"matina" },
       { it:"Befana", cr:"P'fana" },
       { it:"piazza", cr:"piaza" },
@@ -3104,7 +3105,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 88;
+const VOC_VERSION = 89;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
