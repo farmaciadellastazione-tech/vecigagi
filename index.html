@@ -1688,6 +1688,9 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"cibo", livello:"A1", it:"un bicchier d'acqua", sp:"ün goto d'àigoa", ge:"ün gòto d'ægoa" },
+      { tema:"cibo", livello:"A1", it:"un cappuccino" },
+      { tema:"saluti", livello:"A1", it:"un caffé per piacere", sp:"ün cafè pe' piasée", mn:"ün cafè pe' piazëë", ge:"ün caffè pe' piaxei" },
       { tema:"cibo", livello:"A1", it:"zucchero", sp:"süùcheo/sücheo", mn:"süùcheu/sücheu", ge:"süccao" },
       { tema:"dialetti", livello:"B2", it:"sei fuori come un balcone", sp:"t'ei fèa come na terassa" },
       { tema:"abbigliamento", livello:"A2", it:"bretelle", sp:"bertéle", mn:"bertèle", ge:"bertèlle" },
@@ -2955,7 +2958,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"buonasera", sp:"bonaséa", mn:"bunasea", ro:"bună seara" },
       { it:"buonanotte", sp:"bonanota", mn:"bunanota", ro:"noapte bună" },
       { tema:"saluti", livello:"A1", it:"arrivederci", sp:"se vedemo", mn:"adiu|se vedemu|ciao", ro:"la revedere" },
-      { it:"per favore", ro:"vă rog" },
+      { it:"per favore|per piacere", sp:"pe' piasée", mn:"pe' piazëë", ge:"pe' piaxei", ro:"vă rog" },
       { it:"prego", mn:"pregu", ro:"cu plăcere" },
       { it:"sì", mn:"si", ro:"da" },
       { it:"no", mn:"nu", ro:"nu" },
@@ -3124,7 +3127,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 108;
+const VOC_VERSION = 109;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
