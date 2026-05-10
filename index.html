@@ -1688,6 +1688,12 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"oggetti", livello:"A1", it:"chiave", sp:"ciàve", mn:"ciava", ge:"ciàve" },
+      { tema:"casa", livello:"A1", it:"panchina", mn:"bànchiea" },
+      { tema:"natura", livello:"A1", it:"ragno", sp:"ragno", mn:"ragnu", ge:"ragno|ägno" },
+      { tema:"emotivi", livello:"A2", it:"rabbia", sp:"ràgia", mn:"ràgia", ge:"ràggia" },
+      { tema:"natura", livello:"A1", it:"crosta", sp:"gróste", mn:"grùsta", ge:"crosta" },
+      { tema:"cibo", livello:"A1", it:"barbabietola", sp:"gederàva", ge:"giae rava" },
       { tema:"natura", livello:"A1", it:"piuma", sp:"ciuüma/ciüma", mn:"ciuüma/ciüma", ge:"ciümma/ciümma" },
       { tema:"emotivi", livello:"A2", it:"pianto", sp:"cianto", mn:"ciantu" },
       { tema:"natura", livello:"A1", it:"lepre", sp:"lévoòa" },
@@ -1709,7 +1715,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"emotivi", livello:"A1", it:"sicuro", en:"sure", sp:"següo" },
       { tema:"natura", livello:"A1", it:"volpe", en:"fox", sp:"gorpe", mn:"gurpa" },
       { tema:"natura", livello:"A1", it:"goccia", mn:"gùssu" },
-      { tema:"cibo", livello:"A2", it:"bietole", sp:"biete", mn:"géde" },
+      { tema:"cibo", livello:"A2", it:"bietole", sp:"géde", mn:"géde", ge:"giaéa" },
       { tema:"numeri", livello:"A1", it:"doppio", sp:"docio", mn:"dùciu" },
       { tema:"numeri", livello:"A1", it:"più", es:"más", sp:"ciü", mn:"ciü" },
       { tema:"natura", livello:"A1", it:"campo", en:"field", es:"campo", sp:"campo", mn:"campu|cian" },
@@ -1736,7 +1742,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"corpo", livello:"A2", it:"dolore", en:"pain", mn:"duuu" },
       { tema:"verbi", livello:"B1", it:"malmenare", en:"beat", ru:"избивать", sp:"tombae", mn:"tumbaa" },
       { tema:"tempo", livello:"A1", it:"Natale", en:"Christmas", ru:"Рождество", sp:"Nadae|Nadà", mn:"Nadaa", cr:"Natal" },
-      { tema:"comunicazione", livello:"A1", it:"voce", en:"voice", ru:"голос", mn:"guza" },
+      { tema:"comunicazione", livello:"A1", it:"voce", en:"voice", ru:"голос", sp:"góse", mn:"gusa/guza", ge:"voxe" },
       { tema:"natura", livello:"B1", it:"milione|un milione", en:"million", ru:"миллион", sp:"milión", mn:"migliun|un migliun" },
       { tema:"numeri", livello:"B1", it:"centomila", en:"hundred thousand", ru:"сто тысяч", sp:"sentomila", mn:"sentumila" },
       { tema:"numeri", livello:"B1", it:"diecimila", en:"ten thousand", ru:"десять тысяч", sp:"dézemila", mn:"dièzemila" },
@@ -2058,7 +2064,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"luoghi", livello:"A1", it:"cucchiaio", en:"spoon", fr:"cuillère", es:"cuchara", de:"Löffel", pt:"colher", sp:"cüciao", mn:"ciüciaa", cr:"Cuciàr", ko:"숟가락", ar:"ملعقة", zh:"勺子", ja:"スプーン", ia:"coclear", la:"Italia", grc:"Ἰταλία" },
       { tema:"casa", livello:"A1", it:"coltello", en:"knife", fr:"couteau", es:"cuchillo", de:"Messer", pt:"faca", ca:"ganivet", sp:"cotèo", cr:"Cultèd", ko:"칼", ar:"سكين", zh:"刀", ja:"ナイフ", ia:"cultello", la:"Hispania", grc:"Ἱσπανία" },
       { tema:"casa", livello:"A2", it:"bicchiere", en:"glass", fr:"verre", es:"vaso", de:"Glas", pt:"copo", ru:"поворачивать|поворот", ca:"girar|torn", sp:"gòto", mn:"gotu", cr:"Bicèr", ko:"컵", ar:"كوب", zh:"杯子", ja:"グラス", ia:"bicario" },
-      { tema:"luoghi", livello:"A1", it:"chiesa", en:"church", fr:"église", es:"iglesia", de:"Kirche", pt:"igreja", ru:"церковь", ca:"església", sp:"gese", cr:"ciesa / cesa", ge:"", ko:"교회", ar:"كنيسة", zh:"教堂", ja:"教会", ia:"ecclesia", la:"numquam", grc:"οὐδέποτε" },
+      { tema:"luoghi", livello:"A1", it:"chiesa", en:"church", fr:"église", es:"iglesia", de:"Kirche", pt:"igreja", ru:"церковь", ca:"església", sp:"gese", mn:"giésa", cr:"ciesa / cesa", ge:"gëxa", ko:"교회", ar:"كنيسة", zh:"教堂", ja:"教会", ia:"ecclesia", la:"numquam", grc:"οὐδέποτε" },
       { tema:"luoghi", livello:"A1", it:"piazza|quadrato", en:"square", fr:"place", es:"plaza", de:"Platz", pt:"praça|praca", ru:"площадь", ca:"plaça", sp:"ciassa", mn:"ciassa", cr:"piaza", ko:"광장", ar:"ميدان", zh:"广场", ja:"広場" },
       { tema:"lavoro", livello:"A1", it:"mercato", en:"market", fr:"marché", es:"mercado", de:"Markt", pt:"mercado", ru:"рынок", ca:"mercat", sp:"mercà", mn:"mercaa", cr:"mrcat", ge:"", ko:"시장", ar:"سوق", zh:"市场", ja:"市場", ia:"mercato", la:"ibi", grc:"ἐκεῖ" },
       { tema:"verbi", livello:"A1", it:"avere", en:"have", fr:"avoir", es:"tener", de:"haben", pt:"ter", ru:"иметь", ca:"tenir|haver", sp:"avée", mn:"aveee/avee", ko:"가지다", ar:"يملك", zh:"有", ja:"持つ", ia:"haver", la:"habere", ro:"a avea" },
@@ -2097,7 +2103,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"corpo", livello:"A1", it:"braccio", en:"arm", fr:"bras", es:"brazo", de:"Arm", pt:"braço|braco", ru:"рука", ca:"braç", sp:"brasso", mn:"brassu", ge:"bràsso", ko:"팔", ar:"ذراع", zh:"手臂", ja:"腕", ia:"bracio", la:"brachium", grc:"βραχίων" },
       { tema:"salute", livello:"A1", it:"sangue", en:"blood", fr:"sang", es:"sangre", de:"Blut", pt:"sangue", ru:"соль", ca:"sal", sp:"", cr:"sangu", ko:"피", ar:"دم", zh:"血", ja:"血", ia:"sanguine", la:"sanguis", grc:"αἷμα" },
       { tema:"vestiti", livello:"A1", it:"essere", en:"be", fr:"être", es:"ser|estar", de:"sein", pt:"ser|estar", ru:"быть", ca:"ser|estar", sp:"èsse", mn:"èsse", cr:"", ko:"이다|있다", ar:"يكون", zh:"是", ja:"", ia:"esser", la:"esse", grc:"εἶναι", ro:"a fi" },
-      { tema:"verbi", livello:"A1", it:"venire", en:"come", fr:"venir", es:"venir", de:"kommen", pt:"vir", ru:"приходить", ca:"venir", sp:"vegnìe", mn:"vegnii", cr:"venir", ko:"오다", ar:"يأتي", zh:"来", ja:"来る", ia:"venir", la:"venire", grc:"ἔρχεσθαι", ro:"a veni" },
+      { tema:"verbi", livello:"A1", it:"venire", en:"come", fr:"venir", es:"venir", de:"kommen", pt:"vir", ru:"приходить", ca:"venir", sp:"vegnìe", mn:"vegnii", cr:"venir", ge:"vegnî", ko:"오다", ar:"يأتي", zh:"来", ja:"来る", ia:"venir", la:"venire", grc:"ἔρχεσθαι", ro:"a veni" },
       { tema:"verbi", livello:"A1", it:"vedere", en:"see", fr:"voir", es:"ver", de:"sehen", pt:"ver", ru:"видеть", ca:"veure", sp:"vede", mn:"vedé", cr:"", ko:"보다", ar:"يرى", zh:"看", ja:"見る", ia:"vider", la:"videre", grc:"ὁρᾶν", ro:"a vedea" },
       { tema:"verbi", livello:"A1", it:"dire", en:"say", fr:"dire", es:"decir", de:"sagen", pt:"dizer", ru:"говорить|сказать", ca:"dir", sp:"die", mn:"dì", cr:"dì", ko:"말하다", ar:"يقول", zh:"说", ja:"言う", ia:"dicer", la:"dicere", grc:"λέγειν" },
       { tema:"cibo", livello:"A1", it:"fare", en:"do", fr:"faire", es:"hacer", de:"machen", pt:"fazer", ru:"делать", ca:"fer", sp:"fae", cr:"far", ko:"하다", ar:"يفعل", zh:"做", ja:"する", ia:"facer", la:"facere", grc:"ποιεῖν" },
@@ -2411,7 +2417,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"luoghi", livello:"A1", it:"penna", en:"pen", fr:"stylo", es:"bolígrafo", de:"Stift", pt:"caneta", ko:"펜", ar:"قلم", zh:"钢笔", ja:"ペン", ia:"penna", la:"calamus", grc:"κάλαμος" },
       { tema:"luoghi", livello:"A1", it:"classe", en:"classroom", fr:"salle de classe", es:"clase", de:"Klassenzimmer", pt:"sala de aula", ko:"교실", ar:"فصل دراسي", zh:"教室", ja:"教室", ia:"classe", la:"schola", grc:"διδασκαλεῖον" },
       { tema:"luoghi", livello:"A2", it:"università", en:"university", fr:"université", es:"universidad", de:"Universität", pt:"universidade", ko:"대학교", ar:"جامعة", zh:"大学", ja:"大学", ia:"universitate", la:"universitas", grc:"πανεπιστήμιον" },
-      { tema:"luoghi", livello:"A2", it:"biblioteca", en:"library", fr:"bibliothèque", es:"biblioteca", de:"Bibliothek", pt:"biblioteca", ru:"библиотека", ca:"biblioteca", ko:"도서관", ar:"مكتبة", zh:"图书馆", ja:"図書館", ia:"bibliotheca", la:"bibliotheca", grc:"βιβλιοθήκη" },
+      { tema:"luoghi", livello:"A2", it:"biblioteca", en:"library", fr:"bibliothèque", es:"biblioteca", de:"Bibliothek", pt:"biblioteca", ru:"библиотека", ca:"biblioteca", sp:"bibrioteca", ko:"도서관", ar:"مكتبة", zh:"图书馆", ja:"図書館", ia:"bibliotheca", la:"bibliotheca", grc:"βιβλιοθήκη" },
       { tema:"luoghi", livello:"A1", it:"voto", en:"grade", fr:"note", es:"nota", de:"Note", pt:"nota", sp:"", ko:"점수", ar:"درجة", zh:"成绩", ja:"成績", ia:"nota", la:"nota", grc:"βαθμός" },
       { tema:"luoghi", livello:"B1", it:"diploma", en:"diploma", fr:"diplôme", es:"diploma", de:"Diplom", pt:"diploma", ko:"졸업장", ar:"شهادة", zh:"文凭", ja:"卒業証書", ia:"diploma", la:"diploma", grc:"δίπλωμα" },
       { tema:"verbi", livello:"A1", it:"calcio", en:"football", fr:"football", es:"fútbol", de:"Fußball", pt:"futebol", ru:"футбол", ca:"futbol", sp:"caosso", mn:"causu", ko:"축구", ar:"كرة القدم", zh:"足球", ja:"サッカー", ia:"football", la:"pila pedalis", grc:"ποδόσφαιρο" },
@@ -2631,7 +2637,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"sugo di carne", en:"meat sauce", fr:"sauce de viande", es:"salsa de carne", de:"Fleischsoße", pt:"molho de carne", sp:"tóco" },
       { tema:"dialetti", livello:"A1", it:"undici", en:"eleven", fr:"onze", es:"once", de:"elf", pt:"onze", ru:"одиннадцать", ca:"onze", sp:"ünze", mn:"ünze" },
       { tema:"dialetti", livello:"A2", it:"piatto fondo", en:"soup plate", fr:"assiette creuse", es:"plato hondo", de:"Suppenteller", pt:"prato fundo", sp:"zàta", mn:"zàta" },
-      { tema:"verbi", livello:"A2", it:"conoscere", sp:"cognosse", ia:"cognoscer" },
+      { tema:"verbi", livello:"A2", it:"conoscere", sp:"cognosse", mn:"cugnùsse", ge:"conosce", ia:"cognoscer" },
       { tema:"verbi", livello:"A2", it:"cuocere", en:"cook", fr:"cuire", sp:"chése" },
       { tema:"verbi", livello:"A2", it:"dormire", ru:"спать", ca:"dormir", sp:"dormie, polae", mn:"durmii", cr:"durmir", ro:"a dormi" },
       { tema:"verbi", livello:"A2", it:"nascere", ru:"родиться", ca:"néixer", sp:"nasse" },
@@ -2797,7 +2803,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"scivolate", en:"" },
       { tema:"dialetti", livello:"A2", it:"colui che evita| scansafatiche", en:"evader", fr:"éviteur", es:"eludidor", de:"Meidender", pt:"evitador", ca:"evitador", mn:"sghi'nda/sghinda/zghìnda", zh:"回避者", ja:"避ける人" },
       { tema:"dialetti", livello:"A2", it:"capriccio", en:"", mn:"sghiribissu/zghìribissu" },
-      { tema:"dialetti", livello:"A2", it:"ghiro, dormiglione", en:"", mn:"sghiiu/zghìu" },
+      { tema:"dialetti", livello:"A2", it:"ghiro| dormiglione", mn:"sghiiu/zghìu" },
       { tema:"dialetti", livello:"A2", it:"ponfo, gonfiore", en:"", mn:"sgnocua/zgnòcua" },
       { tema:"dialetti", livello:"A2", it:"sgraffignare|rubare", mn:"sgrafignaaa/zgràfignaa/sgràfignaa" },
       { tema:"dialetti", livello:"A2", it:"fessura| spaccatura nella roccia", en:"crevice", fr:"fissure", mn:"sgrëndia/zgrëndia" },
@@ -3111,7 +3117,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 97;
+const VOC_VERSION = 98;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
