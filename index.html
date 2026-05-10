@@ -2035,7 +2035,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"famiglia", livello:"A1", it:"ragazza", en:"girl", fr:"fille", es:"chica", de:"Mädchen", pt:"rapariga", ru:"девушка|девочка", ca:"noia", sp:"fantèla|fante", cr:"Fanta", ge:"figétta", ko:"소녀", ar:"فتاة", zh:"女孩", ja:"少女" },
       { tema:"famiglia", livello:"B1", it:"nuora", en:"daughter-in-law", fr:"belle-fille", es:"nuera", de:"Schwiegertochter", pt:"nora", ru:"невестка", ca:"nora", sp:"nèa", cr:"Nèa", ge:"nêua", ko:"며느리", ar:"كنة", zh:"儿媳", ja:"嫁" },
       { tema:"famiglia", livello:"B1", it:"cognato", en:"brother-in-law", fr:"beau-frère", es:"cuñado", de:"Schwager", pt:"cunhado", ru:"шурин|зять", ca:"cunyat", sp:"cognà", ge:"cognòu", ko:"처남", ar:"صهر", zh:"姐夫", ja:"義兄" },
-      { tema:"mestieri", livello:"A2", it:"cameriere", en:"waiter", fr:"serveur", es:"camarero", de:"Kellner", pt:"empregado de mesa", ru:"официант", ca:"cambrer", sp:"canbeéo", ko:"웨이터", ar:"نادل", zh:"服务员", ja:"ウェイター", ia:"servitor" },
+      { tema:"mestieri", livello:"A2", it:"cameriere!", en:"waiter", fr:"serveur", es:"camarero", de:"Kellner", pt:"empregado de mesa", ru:"официант", ca:"cambrer", sp:"canbeéo!", ge:"camê", ko:"웨이터", ar:"نادل", zh:"服务员", ja:"ウェイター", ia:"servitor" },
       { tema:"mestieri", livello:"A2", it:"panettiere", en:"baker", fr:"boulanger", es:"panadero", de:"Bäcker", pt:"padeiro", sp:"panatéo, panadéo, paneréo", ko:"제빵사", ar:"خباز", zh:"面包师", ja:"パン屋" },
       { tema:"mestieri", livello:"B1", it:"barbiere", en:"barber", fr:"barbier", es:"barbero", de:"Barbier", pt:"barbeiro", sp:"barbéo", mn:"barbié", ko:"이발사", ar:"حلاق", zh:"理发师", ja:"床屋", ia:"barbero" },
       { tema:"mestieri", livello:"B1", it:"macellaio", en:"butcher", fr:"boucher", es:"carnicero", de:"Metzger", pt:"açougueiro|acougueiro", sp:"maselào", ko:"정육점", ar:"جزار", zh:"屠夫", ja:"肉屋", ia:"macellero" },
@@ -2999,7 +2999,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"ho ... anni", mn:"me a gho ... ani", ro:"am ... ani" },
       { it:"quanto costa?", sp:"quanto costa?", mn:"quantu custa?", ge:"quanto costa?", ro:"cât costă?" },
       { it:"dov'è il bagno?", ro:"unde este baia?" },
-      { it:"ho fame", mn:"me a gho fame", ro:"mi-e foame" },
+      { it:"ho fame", sp:"a g'ho fame", mn:"me a gho fame", ge:"g'ho famme", ro:"mi-e foame" },
       { it:"ho sete", mn:"me a gho sede", ro:"mi-e sete" },
       { it:"mi piace", sp:"me ciasa", mn:"me ciasa", ro:"îmi place" },
       { it:"non mi piace", sp:"ne me ciasa", mn:"ne me ciasa", ro:"nu-mi place" },
@@ -3128,7 +3128,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 112;
+const VOC_VERSION = 113;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
