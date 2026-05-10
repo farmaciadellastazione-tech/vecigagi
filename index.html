@@ -1688,6 +1688,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"famiglia", livello:"A2", it:"genero", en:"son-in-law", de:"Schwiegersohn", sp:"d'zeneo/zéneo", mn:"jiéneu", ge:"d'zèneo/zeneo" },
+      { tema:"viaggi", livello:"A1", it:"Genova", sp:"d'zena/Zena", mn:"Jiéna", ge:"d'zena/Zena" },
       { tema:"oggetti", livello:"A1", it:"chiave", sp:"ciàve", mn:"ciava", ge:"ciàve" },
       { tema:"casa", livello:"A1", it:"panchina", mn:"bànchiea" },
       { tema:"natura", livello:"A1", it:"ragno", sp:"ragno", mn:"ragnu", ge:"ragno|ägno" },
@@ -2945,7 +2947,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"identico|spiaccicato", mn:"schciattà/sciatà" },
       { it:"ciao", ro:"salut" },
       { it:"buongiorno", sp:"bongiorno", mn:"bungiurnu", ro:"bună dimineața" },
-      { it:"buonasera", sp:"bonasea", mn:"bunasea", ro:"bună seara" },
+      { it:"buonasera", sp:"bonaséa", mn:"bunasea", ro:"bună seara" },
       { it:"buonanotte", sp:"bonanota", mn:"bunanota", ro:"noapte bună" },
       { tema:"saluti", livello:"A1", it:"arrivederci", sp:"se vedemo", mn:"adiu|se vedemu|ciao", ro:"la revedere" },
       { it:"per favore", ro:"vă rog" },
@@ -3117,7 +3119,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 98;
+const VOC_VERSION = 99;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
