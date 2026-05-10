@@ -2516,7 +2516,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A2", it:"mango", en:"mango", fr:"mangue", es:"mango", de:"Mango", pt:"manga", ko:"망고", ar:"مانجو", zh:"芒果", ja:"マンゴー", ia:"mango" },
       { tema:"cibo", livello:"A1", it:"carota", en:"carrot", fr:"carotte", es:"zanahoria", de:"Karotte", pt:"cenoura", sp:"gnifra", mn:"sgniifra/sgnìfra/zgnìfra", ko:"당근", ar:"جزرة", zh:"胡萝卜", ja:"にんじん", ia:"carota", la:"carota", grc:"καρότο" },
       { tema:"cibo", livello:"A2", it:"spinaci", en:"spinach", fr:"épinard", es:"espinaca", de:"Spinat", pt:"espinafre", sp:"spinassi", mn:"spinassi", ko:"시금치", ar:"سبانخ", zh:"菠菜", ja:"ほうれん草", ia:"spinace" },
-      { tema:"cibo", livello:"A2", it:"zucchine", en:"courgette", fr:"courgette", es:"calabacín", de:"Zucchini", pt:"abobrinha", ko:"애호박", ar:"كوسا", zh:"西葫芦", ja:"ズッキーニ", ia:"cucurbita" },
+      { tema:"cibo", livello:"A2", it:"zucchine", en:"courgette", fr:"courgette", es:"calabacín", de:"Zucchini", pt:"abobrinha", sp:"süchèi", mn:"süchéi", ko:"애호박", ar:"كوسا", zh:"西葫芦", ja:"ズッキーニ", ia:"cucurbita" },
       { tema:"cibo", livello:"A2", it:"peperone", en:"pepper", fr:"poivron", es:"pimiento", de:"Paprika", pt:"pimentão|pimentao", sp:"pevéon", ko:"피망", ar:"فلفل", zh:"甜椒", ja:"ピーマン", ia:"pipere" },
       { tema:"cibo", livello:"A1", it:"colazione", en:"breakfast", fr:"petit-déjeuner", es:"desayuno", de:"Frühstück", pt:"café da manhã|cafe da manha", ca:"esmorzar", ko:"아침식사", ar:"فطور", zh:"早餐", ja:"朝食", ia:"prime repasto", la:"ientaculum", grc:"ἀκρατισμός" },
       { tema:"salute", livello:"A1", it:"pranzo", en:"lunch", fr:"déjeuner", es:"almuerzo", de:"Mittagessen", pt:"almoço|almoco", sp:"", ko:"점심", ar:"غداء", zh:"午餐", ja:"昼食", ia:"repasto de mediodie", la:"prandium", grc:"ἄριστον" },
@@ -2616,7 +2616,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"cece", en:"chickpea", fr:"pois chiche", es:"garbanzo", de:"Kichererbse", pt:"grão-de-bico", sp:"sésoo" },
       { tema:"dialetti", livello:"A2", it:"zitto", en:"quiet", fr:"silencieux", es:"callado", de:"still", pt:"quieto", sp:"sito" },
       { tema:"dialetti", livello:"A2", it:"spicchio", en:"clove", fr:"gousse", es:"diente", de:"Zehe", pt:"dente de alho", sp:"spigo" },
-      { tema:"dialetti", livello:"A2", it:"zucchina", en:"courgette", fr:"courgette", es:"calabacín", de:"Zucchini", pt:"abobrinha", sp:"süchèo" },
+      { tema:"dialetti", livello:"A2", it:"zucchina", en:"courgette", fr:"courgette", es:"calabacín", de:"Zucchini", pt:"abobrinha", sp:"süchèo", mn:"süchée" },
       { tema:"dialetti", livello:"A1", it:"tu sei", en:"you are", fr:"tu es", es:"tú eres", de:"du bist", pt:"tu és", sp:"tèi" },
       { tema:"dialetti", livello:"A2", it:"tu eri", en:"you were", fr:"tu étais", es:"tú eras", de:"du warst", pt:"tu eras", sp:"", mn:"" },
       { tema:"dialetti", livello:"A2", it:"baccello", en:"pod", fr:"cosse", es:"vaina", de:"Schote", pt:"vagem", sp:"baga", mn:"baga" },
@@ -3106,7 +3106,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 90;
+const VOC_VERSION = 91;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
