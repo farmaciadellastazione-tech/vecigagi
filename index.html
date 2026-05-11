@@ -1688,6 +1688,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"cibo", livello:"A1", it:"pago io", en:"I pay", fr:"je paie", es:"pago yo", de:"ich bezahle", pt:"eu pago", ca:"jo pago", sp:"a pago me", mn:"a pagu me", ge:"pago mi", ia:"io paga", la:"ego solvo", ro:"eu plătesc" },
+      { tema:"fisica", livello:"B1", it:"vogata", en:"rowing", fr:"ramee", es:"remada", de:"Rudern", pt:"remada", ca:"remada", sp:"vega", mn:"vega", ge:"vogâ", ia:"remada", la:"remigatio", ro:"vâslire" },
       { tema:"corpo", livello:"A2", it:"cervello", en:"brain", fr:"cerveau", es:"cerebro", de:"Gehirn", pt:"cérebro", ca:"cervell", sp:"servelo", mn:"servèlu", ge:"çervello", ia:"cerebro", la:"cerebrum", ro:"creier" },
       { tema:"tempo", livello:"A2", it:"piove pioveve pian pianino", en:"rains gently", fr:"il pleut doucement", es:"llueve suavemente", pt:"chove suavemente", ca:"plou suaument", sp:"cèva cèva cian cianin", mn:"céve céve cian cianin", ge:"cieue cieue cian cianin", ro:"plou lin" },
       { tema:"denaro", livello:"B1", it:"i soldi non crescono sugli alberi", ge:"e palànche no créscian in scî èrboi" },
@@ -1718,7 +1720,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"corpo", livello:"B1", it:"culo", sp:"cüo", mn:"cüü" },
       { tema:"oggetti", livello:"A2", it:"storto", sp:"storto", mn:"stortu" },
       { tema:"verbi", livello:"A1", it:"spingere", sp:"spinze" },
-      { tema:"corpo", livello:"A1", it:"schiena", en:"back", pt:"costas", sp:"sccena", mn:"sccena" },
+      { tema:"corpo", livello:"A1", it:"schiena", en:"back", fr:"dos", es:"espalda", de:"Rücken", pt:"costas", ca:"esquena", sp:"schena", mn:"schena", ge:"schénn-a", ia:"dorso", la:"dorsum", ro:"spate" },
       { tema:"natura", livello:"A1", it:"gabbiano", en:"seagull", fr:"goéland", es:"gaviota", de:"Möwe", pt:"gaivota", ca:"gavina", sp:"gabian|oca de mae|ochin", mn:"gabianu", ge:"gabbian", ia:"gaviota", la:"larus", ro:"pescăruș" },
       { tema:"viaggi", livello:"A2", it:"vicolo", sp:"carogio", mn:"carugiu" },
       { tema:"aspetto", livello:"B1", it:"trasandato", sp:"sbolina/zbolinà", mn:"sbulina/zbulinà" },
@@ -1826,7 +1828,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"B1", it:"secchio", en:"bucket", fr:"seau", es:"cubo", de:"Eimer", pt:"balde", ru:"ведро", ca:"galleda", sp:"stagnòn| sécia| possadòa" },
       { tema:"verbi", livello:"A2", it:"bruciare", en:"burn", fr:"brûler", es:"quemar", de:"brennen", pt:"queimar", ru:"гореть|сжигать", ca:"cremar", sp:"brusae", mn:"bruzaaa/bruzaa" },
       { tema:"aggettivi", livello:"A2", it:"occupato", en:"busy", fr:"occupé", es:"ocupado", de:"beschäftigt", pt:"ocupado", ru:"занятой", ca:"ocupat" },
-      { tema:"famiglia", livello:"A1", it:"canarino", en:"canary", fr:"canari", es:"canario", de:"Kanarienvogel", pt:"canário", ru:"канарейка", ca:"canari", sp:"", cr:"" },
+      { tema:"famiglia", livello:"A1", it:"canarino", en:"canary", fr:"canari", es:"canario", de:"Kanarienvogel", pt:"canário", ru:"канарейка", ca:"canari", sp:"canaìn", mn:"canarìn", cr:"", ge:"canaÏn", ia:"canario", la:"canarius", ro:"canar" },
       { tema:"luoghi", livello:"B1", it:"mensa", en:"canteen", fr:"cantine", es:"cantina", de:"Kantine", pt:"cantina", ru:"столовая", ca:"cantina" },
       { tema:"aggettivi", livello:"A2", it:"attento", en:"careful", fr:"prudent|attentif", es:"cuidadoso", de:"vorsichtig", pt:"cuidadoso", ru:"осторожный", ca:"curós" },
       { tema:"casa", livello:"A2", it:"tappeto/moquette", en:"carpet", fr:"tapis|moquette", es:"alfombra|moqueta", de:"Teppich", pt:"tapete|alcatifa", ru:"ковёр", ca:"catifa" },
@@ -3133,7 +3135,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 120;
+const VOC_VERSION = 121;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
