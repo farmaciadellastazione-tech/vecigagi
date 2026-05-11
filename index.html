@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"natura", livello:"A2", it:"piove pioveve pian pianino", sp:"cèva cèva cian cianin", mn:"céve céve cian cianin", ge:"cieue cieue cian cianin" },
       { tema:"denaro", livello:"B1", it:"i soldi non crescono sugli alberi", ge:"e palànche no créscian in scî èrboi" },
       { tema:"saluti", livello:"A1", it:"cosa c'è oggi?", sp:"cös'i gh'è anché", mn:"coz'i gh'è anché", ge:"cöse gh'é ancheu" },
       { tema:"cibo", livello:"A2", it:"un calice di vino bianco", sp:"ün goto de vin gianco", ge:"ün goto de vin gianco" },
@@ -2661,7 +2662,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"B1", it:"andare di fretta", en:"be in a hurry", fr:"être pressé", es:"ir deprisa", de:"es eilig haben", pt:"ter pressa", sp:"andae de sprèssa", mn:"andaa de spréssa", ge:"anâ de spresción|", la:"festinare", grc:"σπεύδειν" },
       { tema:"dialetti", livello:"B1", it:"essere ignorante", en:"be illiterate", fr:"être ignorant", es:"ser ignorante", de:"ungebildet sein", pt:"ser ignorante", sp:"èsse 'ndaré de scritüa" },
       { tema:"dialetti", livello:"B1", it:"avere garbo", en:"have grace", fr:"avoir du savoir-faire", es:"tener gracia", de:"Charme haben", pt:"ter graça", sp:"avée manéa", mn:"avee garbu", ja:"品がいい" },
-      { tema:"natura", livello:"B1", it:"piove ", en:"it's raining", fr:"il pleut", es:"llueve", de:"es regnet", pt:"chove", sp:"cèva", mn:"céve" },
+      { tema:"natura", livello:"B1", it:"piove ", en:"it's raining", fr:"il pleut", es:"llueve", de:"es regnet", pt:"chove", sp:"cèva", mn:"céve", ge:"cieue" },
       { tema:"natura", livello:"B1", it:"nevica", en:"it's snowing", fr:"il neige", es:"nieva", de:"es schneit", pt:"neva", sp:"la néva" },
       { tema:"natura", livello:"A1", it:"ghiaccio", en:"ice", fr:"glace", es:"hielo", de:"Eis", pt:"gelo", sp:"giasso", mn:"giassu" },
       { tema:"animali", livello:"A1", it:"cane", en:"dog", fr:"chien", es:"perro", de:"Hund", pt:"cão|cao", ru:"собака", ca:"gos", sp:"can", cr:"can" },
@@ -3131,7 +3132,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 116;
+const VOC_VERSION = 117;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
