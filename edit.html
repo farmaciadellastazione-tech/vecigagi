@@ -736,6 +736,7 @@ function renderTheadLingue() {
   theadRow.querySelectorAll('th[data-lang]').forEach(th => th.remove());
   // Inserisci dopo la th "Italiano" (indice 1)
   const itTh = theadRow.querySelector('th[data-sort="it"]');
+  let insertAfter = itTh;
   currentLangs.forEach((code, idx) => {
     const info = LINGUE.find(l => l.code === code);
     const th = document.createElement('th');
@@ -749,7 +750,8 @@ function renderTheadLingue() {
       if (sortKey === k) sortDir = sortDir === 'asc' ? 'desc' : 'asc'; else { sortKey = k; sortDir = 'asc'; }
       render();
     });
-    itTh.insertAdjacentElement('afterend', th);
+    insertAfter.insertAdjacentElement('afterend', th);
+    insertAfter = th;
   });
   aggiornaSortIndicators();
 }
