@@ -1338,12 +1338,13 @@ function buildAIPrompt(italianTerm, langCodes, contextSamples) {
   }
   let context = '';
   if (contextSamples && contextSamples.length) context = '\n\nEsempi dal vocabolario:\n' + contextSamples.slice(0, 6).map(s => JSON.stringify(s)).join('\n');
+  const exampleTranslations = langCodes.map(c => `"${c}":"..."`).join(', ');
   return `Sei un assistente per un quiz di vocabolario multilingue italiano. Per il termine italiano "${italianTerm}", fornisci:
 1. Una traduzione concisa (1-3 parole) in: ${langList}
 2. Livello CEFR: A1/A2/B1/B2
 3. Tema (es: "casa", "cibo", "verbi", "famiglia", "lavoro", "natura", "corpo", "tempo", "viaggi", "saluti", "dialetti", "numeri")${dialettoContext}
 Rispondi SOLO con JSON valido:
-{"tema":"...", "livello":"A1|A2|B1|B2", "translations":{"${langCodes[0]}":"..."}}${context}`;
+{"tema":"...", "livello":"A1|A2|B1|B2", "translations":{${exampleTranslations}}}${context}`;
 }
 
 async function aiClassificaERTraducici(italianTerm, langCodes) {
@@ -1387,9 +1388,7 @@ async function aiCompletaRiga(btn) {
   if (!aiConfig || !aiConfig.provider || !aiConfig.key) { if (confirm('AI non configurata. Configurarla ora?')) apriConfigAI(); return; }
   const tr = btn.closest('tr'), v = tr._voce;
   if (!v || !v.it || !v.it.trim()) { alert('Compila prima il campo italiano.'); return; }
-  const langsToTranslate = [];
-  if (!(v[currentLangs[0]] || '').trim()) langsToTranslate.push(currentLangs[0]);
-  if (currentLangs[1] && !(v[currentLangs[1]] || '').trim()) langsToTranslate.push(currentLangs[1]);
+  const langsToTranslate = currentLangs.filter(c => !(v[c] || '').trim());
   const dialettiTarget = langsToTranslate.filter(c => DIALETTI_TTS_ITA.includes(c));
   if (dialettiTarget.length > 0 && !confirm(`⚠️ L'AI ha scarsa conoscenza dei dialetti (${dialettiTarget.map(c => LINGUE.find(l => l.code === c).name).join(', ')}). Verificare il risultato. Procedere?`)) return;
   btn.classList.add('ai-pending'); btn.disabled = true; setHelp(`✨ AI sta elaborando "${v.it}"...`, 'info');
