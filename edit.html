@@ -131,7 +131,19 @@
     .footer-bar .stats { width: 100%; margin: 0; text-align: center; }
   }
 
-  /* Barra caratteri speciali */
+  /* Badge lingua multi-selezione */
+  .lang-badge {
+    display: inline-flex; align-items: center; gap: 0.25rem;
+    background: var(--blue-light, #dbeafe); color: #1e40af;
+    border: 1px solid #93c5fd; border-radius: 999px;
+    font-size: 0.78rem; font-weight: 600;
+    padding: 0.18rem 0.5rem 0.18rem 0.6rem;
+    cursor: default; user-select: none;
+  }
+  .lang-badge.primary { background: #1e40af; color: #fff; border-color: #1e40af; }
+  .lang-badge .rm-badge { cursor: pointer; font-size: 0.85rem; line-height: 1; opacity: 0.7; margin-left: 0.1rem; }
+  .lang-badge .rm-badge:hover { opacity: 1; }
+
   #char-bar {
     position: sticky; top: 0; z-index: 50;
     background: #fef3c7;
@@ -165,11 +177,12 @@
 <header>
   <h1>📝 LinguaeQuiz Editor <span id="ai-indicator" class="ai-status off">AI: off</span></h1>
   <div class="controls">
-    <label>Lingua principale
-      <select id="lang-select"></select>
-    </label>
-    <label>Lingua secondaria
-      <select id="lang2-select"><option value="">— nessuna —</option></select>
+    <label>Lingue visualizzate
+      <div id="lang-multi-wrap" style="display:flex;flex-wrap:wrap;gap:0.3rem;align-items:center;margin-top:0.25rem;">
+        <select id="lang-add-select" title="Aggiungi lingua alla vista" style="max-width:160px"></select>
+        <button class="btn btn-secondary" id="btn-lang-add" onclick="aggiungiLinguaVista()" style="padding:0.25rem 0.5rem;font-size:0.8rem">+ Aggiungi</button>
+      </div>
+      <div id="lang-badges" style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.35rem;min-height:1.6rem"></div>
     </label>
     <label>Tema
       <select id="tema-select"><option value="">tutti</option></select>
@@ -204,14 +217,13 @@
   </div>
   <table>
     <thead>
-      <tr>
+      <tr id="thead-row">
         <th style="width:32px" title="Stato">·</th>
-        <th class="sortable" data-sort="it" style="width:24%">Italiano <span class="sort-arrow"></span></th>
-        <th class="sortable" data-sort="lang" id="lang-th" style="width:24%">Lingua <span class="sort-arrow"></span></th>
-        <th class="sortable" data-sort="lang2" id="lang2-th" style="width:18%; display:none">Sec. <span class="sort-arrow"></span></th>
-        <th class="sortable" data-sort="tema" style="width:14%">Tema <span class="sort-arrow"></span></th>
-        <th class="sortable" data-sort="livello" style="width:7%">Liv. <span class="sort-arrow"></span></th>
-        <th style="width:9%">Pron. TTS</th>
+        <th class="sortable" data-sort="it" style="min-width:140px;width:22%">Italiano <span class="sort-arrow"></span></th>
+        <!-- le th delle lingue vengono inserite dinamicamente da renderTheadLingue() -->
+        <th class="sortable" data-sort="tema" style="width:12%">Tema <span class="sort-arrow"></span></th>
+        <th class="sortable" data-sort="livello" style="width:6%">Liv. <span class="sort-arrow"></span></th>
+        <th style="width:8%">Pron. TTS</th>
         <th style="width:90px"></th>
       </tr>
     </thead>
@@ -379,8 +391,7 @@ const PAGE_SIZE = 50;
 let vocabolario = [];
 let originalSourceFile = null;
 let originalSourceSha = null;
-let currentLang = 'mn';
-let currentLang2 = '';
+let currentLangs = ['mn'];   // array ordinato di codici lingua visibili in tabella
 let currentTema = '';
 let currentLivello = '';
 let currentSearch = '';
@@ -393,6 +404,8 @@ let sortKey = 'lang';
 let sortDir = 'asc';
 const AI_KEY_LS = 'lq_ai_config';
 let aiConfig = null;
+
+// currentLangs[0] = lingua primaria, currentLangs[1..n] = lingue aggiuntive
 
 // Buffer per import: { voci: [{it, raw, valore}], langCode, forza }
 let importBuffer = null;
@@ -422,31 +435,64 @@ function attivaHeaderHeightTracking() {
 }
 
 function popolaSelectLingue() {
-  const sel = document.getElementById('lang-select');
-  const sel2 = document.getElementById('lang2-select');
+  const sel = document.getElementById('lang-add-select');
+  sel.innerHTML = '';
   LINGUE.forEach(l => {
     const opt = document.createElement('option');
     opt.value = l.code;
     opt.textContent = l.name + ' (' + l.code + ')';
     sel.appendChild(opt);
-    sel2.appendChild(opt.cloneNode(true));
   });
-  sel.value = currentLang;
+  renderLangBadges();
+}
+
+function aggiungiLinguaVista() {
+  const sel = document.getElementById('lang-add-select');
+  const code = sel.value;
+  if (!code || currentLangs.includes(code)) return;
+  currentLangs.push(code);
+  renderLangBadges();
+  renderTheadLingue();
+  mostraBannerDialetto();
+  aggiornaCharBar();
+  currentPage = 1;
+  render();
+}
+
+function rimuoviLinguaVista(code) {
+  if (currentLangs.length <= 1) { alert('Almeno una lingua deve restare visibile.'); return; }
+  currentLangs = currentLangs.filter(c => c !== code);
+  renderLangBadges();
+  renderTheadLingue();
+  mostraBannerDialetto();
+  aggiornaCharBar();
+  currentPage = 1;
+  render();
+}
+
+function renderLangBadges() {
+  const container = document.getElementById('lang-badges');
+  container.innerHTML = '';
+  currentLangs.forEach((code, idx) => {
+    const info = LINGUE.find(l => l.code === code);
+    const badge = document.createElement('span');
+    badge.className = 'lang-badge' + (idx === 0 ? ' primary' : '');
+    badge.innerHTML = `${info ? info.name : code} <span class="rm-badge" title="Rimuovi" onclick="rimuoviLinguaVista('${code}')">✕</span>`;
+    container.appendChild(badge);
+  });
 }
 
 function aggiungiLinguaASelect(l) {
-  const sel = document.getElementById('lang-select');
-  const sel2 = document.getElementById('lang2-select');
+  // aggiunge al selettore "Aggiungi lingua"
+  const sel = document.getElementById('lang-add-select');
+  if (!sel) return;
   const opt = document.createElement('option');
   opt.value = l.code;
   opt.textContent = l.name + ' (' + l.code + ')';
   sel.appendChild(opt);
-  sel2.appendChild(opt.cloneNode(true));
 }
 
 function attaccaListener() {
-  document.getElementById('lang-select').addEventListener('change', e => { currentLang = e.target.value; currentPage = 1; mostraBannerDialetto(); aggiornaCharBar(); render(); });
-  document.getElementById('lang2-select').addEventListener('change', e => { currentLang2 = e.target.value; document.getElementById('lang2-th').style.display = currentLang2 ? '' : 'none'; currentPage = 1; mostraBannerDialetto(); aggiornaCharBar(); render(); });
   document.getElementById('tema-select').addEventListener('change', e => { currentTema = e.target.value; currentPage = 1; render(); });
   document.getElementById('livello-select').addEventListener('change', e => { currentLivello = e.target.value; currentPage = 1; render(); });
   document.getElementById('search').addEventListener('input', e => { currentSearch = e.target.value.toLowerCase().trim(); currentPage = 1; render(); });
@@ -493,6 +539,9 @@ async function caricaIndexDaGitHub() {
     originalKeysByEntry.clear();
     vocabolario.forEach(v => originalKeysByEntry.set(rowKey(v), new Set(Object.keys(v))));
     popolaTemiSelect();
+    renderLangBadges();
+    mostraBannerDialetto();
+    aggiornaCharBar();
     setHelp(`✅ Caricate <strong>${vocabolario.length}</strong> voci. Modifica i campi e clicca <strong>☁️ Salva su GitHub</strong> quando hai finito.`, 'success');
     render();
   } catch (err) {
@@ -539,13 +588,10 @@ function setHelp(html, kind) {
 }
 
 function mostraBannerDialetto() {
-  const dialPrincipale = DIALETTI_TTS_ITA.includes(currentLang);
-  const dialSec = currentLang2 && DIALETTI_TTS_ITA.includes(currentLang2);
-  if (dialPrincipale || dialSec) {
-    const nomi = [];
-    if (dialPrincipale) nomi.push(LINGUE.find(l => l.code === currentLang).name);
-    if (dialSec) nomi.push(LINGUE.find(l => l.code === currentLang2).name);
-    setHelp(`📣 <strong>Convenzione dialetti</strong> (${nomi.join(', ')}): scrivi <code style="background:var(--purple-light);padding:0 4px;border-radius:3px">trascrizione_TTS<strong>/</strong>grafia_tradizionale</code>. ` +
+  const dialetti = currentLangs.filter(c => DIALETTI_TTS_ITA.includes(c));
+  if (dialetti.length > 0) {
+    const nomi = dialetti.map(c => LINGUE.find(l => l.code === c).name).join(', ');
+    setHelp(`📣 <strong>Convenzione dialetti</strong> (${nomi}): scrivi <code style="background:var(--purple-light);padding:0 4px;border-radius:3px">trascrizione_TTS<strong>/</strong>grafia_tradizionale</code>. ` +
       `Es. <code style="background:var(--purple-light);padding:0 4px;border-radius:3px">tintüüa/tintüa</code> — il TTS legge "tintüüa", all'utente viene mostrato "tintüa". ` +
       `Se manca la <code>/</code>, lo stesso valore viene usato per entrambi.`, 'info');
   }
@@ -571,13 +617,8 @@ let ultimoInputFocus = null;
 
 function aggiornaCharBar() {
   const bar = document.getElementById('char-bar');
-  const mostra = LINGUE_CON_ACCENTI_LATINI.includes(currentLang) ||
-                 (currentLang2 && LINGUE_CON_ACCENTI_LATINI.includes(currentLang2));
-  if (!mostra) {
-    bar.classList.remove('visible');
-    return;
-  }
-  // Costruisci pulsanti solo se non già presenti
+  const mostra = currentLangs.some(c => LINGUE_CON_ACCENTI_LATINI.includes(c));
+  if (!mostra) { bar.classList.remove('visible'); return; }
   if (bar.querySelectorAll('button').length === 0) {
     CARATTERI_SPECIALI.forEach((gruppo, idx) => {
       if (idx > 0) {
@@ -642,15 +683,15 @@ function formaDisplay(val, langCode) {
 }
 
 function filtroVoci() {
+  const lang0 = currentLangs[0];
   return vocabolario.filter(v => {
     if (currentTema && v.tema !== currentTema) return false;
     if (currentLivello && v.livello !== currentLivello) return false;
-    if (onlyEmpty && (v[currentLang] || '').trim() !== '') return false;
+    if (onlyEmpty && (v[lang0] || '').trim() !== '') return false;
     if (currentSearch) {
       const it = (v.it || '').toLowerCase();
-      const lang = (v[currentLang] || '').toLowerCase();
-      const lang2 = currentLang2 ? (v[currentLang2] || '').toLowerCase() : '';
-      if (!it.includes(currentSearch) && !lang.includes(currentSearch) && !lang2.includes(currentSearch)) return false;
+      const inLangs = currentLangs.some(c => (v[c] || '').toLowerCase().includes(currentSearch));
+      if (!it.includes(currentSearch) && !inLangs) return false;
     }
     return true;
   });
@@ -660,10 +701,15 @@ function ordinaVoci(arr) {
   const dir = sortDir === 'asc' ? 1 : -1;
   const getter = v => {
     if (sortKey === 'it') return visiblePart(v.it).toLowerCase();
-    if (sortKey === 'lang') return visiblePart(v[currentLang] || '').toLowerCase();
-    if (sortKey === 'lang2') return visiblePart(v[currentLang2] || '').toLowerCase();
     if (sortKey === 'tema') return (v.tema || '').toLowerCase();
     if (sortKey === 'livello') return (v.livello || '').toLowerCase();
+    // lang, lang1, lang2... → mappa a currentLangs[idx]
+    const m = sortKey.match(/^lang(\d*)$/);
+    if (m) {
+      const idx = m[1] === '' ? 0 : parseInt(m[1]);
+      const code = currentLangs[idx];
+      return code ? visiblePart(v[code] || '').toLowerCase() : '';
+    }
     return '';
   };
   return arr.slice().sort((a, b) => {
@@ -684,12 +730,32 @@ function aggiornaSortIndicators() {
   });
 }
 
-function render() {
-  const langInfo = LINGUE.find(l => l.code === currentLang);
-  const lang2Info = currentLang2 ? LINGUE.find(l => l.code === currentLang2) : null;
-  document.getElementById('lang-th').firstChild.textContent = (langInfo ? langInfo.name : currentLang) + ' ';
-  if (lang2Info) document.getElementById('lang2-th').firstChild.textContent = lang2Info.name + ' ';
+function renderTheadLingue() {
+  const theadRow = document.getElementById('thead-row');
+  // Rimuovi th lingue esistenti (quelli con data-lang)
+  theadRow.querySelectorAll('th[data-lang]').forEach(th => th.remove());
+  // Inserisci dopo la th "Italiano" (indice 1)
+  const itTh = theadRow.querySelector('th[data-sort="it"]');
+  currentLangs.forEach((code, idx) => {
+    const info = LINGUE.find(l => l.code === code);
+    const th = document.createElement('th');
+    th.dataset.lang = code;
+    th.className = 'sortable';
+    th.dataset.sort = idx === 0 ? 'lang' : 'lang' + idx;
+    th.style.minWidth = '120px';
+    th.innerHTML = `${info ? info.name : code} <span class="sort-arrow"></span>`;
+    th.addEventListener('click', () => {
+      const k = th.dataset.sort;
+      if (sortKey === k) sortDir = sortDir === 'asc' ? 'desc' : 'asc'; else { sortKey = k; sortDir = 'asc'; }
+      render();
+    });
+    itTh.insertAdjacentElement('afterend', th);
+  });
   aggiornaSortIndicators();
+}
+
+function render() {
+  renderTheadLingue();
 
   const filtrate = ordinaVoci(filtroVoci());
   const totalPages = Math.max(1, Math.ceil(filtrate.length / PAGE_SIZE));
@@ -702,31 +768,33 @@ function render() {
   slice.forEach(v => {
     const tr = document.createElement('tr');
     const key = rowKey(v);
-    const isEmpty = !(v[currentLang] || '').trim();
+    const lang0 = currentLangs[0];
+    const isEmpty0 = !(v[lang0] || '').trim();
     const isNew = newKeys.has(key), isMod = modifiedKeys.has(key);
     if (isNew) tr.className = 'new-row'; else if (isMod) tr.className = 'modified';
 
     const itHidden = (v.it || '').includes('|') ? (v.it.split('|').length - 1) : 0;
-    const langHidden = (v[currentLang] || '').includes('|') ? (v[currentLang].split('|').length - 1) : 0;
-    const isLangDialetto = DIALETTI_TTS_ITA.includes(currentLang);
-    const isLang2Dialetto = currentLang2 && DIALETTI_TTS_ITA.includes(currentLang2);
-    const langValRaw = v[currentLang] || '';
-    const langHasSlash = isLangDialetto && langValRaw.split('|')[0].includes('/');
-    const lang2ValRaw = currentLang2 ? (v[currentLang2] || '') : '';
-    const lang2HasSlash = isLang2Dialetto && lang2ValRaw.split('|')[0].includes('/');
-
-    const statusIcon = isNew ? '🆕' : (isEmpty ? '⚠️' : (isMod ? '✏️' : '✓'));
-    const statusTitle = isNew ? 'Nuova voce' : (isEmpty ? 'Da tradurre' : (isMod ? 'Modificata' : 'OK'));
 
     let html = `
-      <td class="row-status" title="${statusTitle}">${statusIcon}</td>
+      <td class="row-status" title="${isNew?'Nuova voce':isEmpty0?'Da tradurre':isMod?'Modificata':'OK'}">${isNew?'🆕':isEmpty0?'⚠️':isMod?'✏️':'✓'}</td>
       <td class="it-cell" data-label="Italiano"><input type="text" value="${escapeAttr(v.it||'')}" data-field="it" title="Usa | per traduzioni alternative">${itHidden ? `<span class="alt-badge" title="${itHidden} alt. nascoste">+${itHidden}</span>` : ''}</td>
-      <td class="lang-cell ${isEmpty?'empty-cell':''}" data-label="${langInfo.name}"><input type="text" value="${escapeAttr(v[currentLang]||'')}" data-field="${currentLang}" placeholder="(da tradurre)">${langHasSlash ? '<span class="slash-badge" title="TTS/grafia">TTS/⌨</span>' : ''}${langHidden ? `<span class="alt-badge" title="${langHidden} alt. nascoste">+${langHidden}</span>` : ''}${isLangDialetto ? `<button class="icon-btn ai" onclick="aiTrascriviTTSCella(this, '${currentLang}')" title="Suggerisci trascrizione TTS" style="margin-left:4px">🔤</button>` : ''}</td>
     `;
-    if (currentLang2) {
-      const isEmpty2 = !(v[currentLang2] || '').trim();
-      html += `<td class="lang2-cell ${isEmpty2?'empty-cell':''}" data-label="${lang2Info.name}"><input type="text" value="${escapeAttr(v[currentLang2]||'')}" data-field="${currentLang2}" placeholder="(da tradurre)">${lang2HasSlash ? '<span class="slash-badge" title="TTS/grafia">TTS/⌨</span>' : ''}${isLang2Dialetto ? `<button class="icon-btn ai" onclick="aiTrascriviTTSCella(this, '${currentLang2}')" title="Suggerisci trascrizione TTS" style="margin-left:4px">🔤</button>` : ''}</td>`;
-    }
+
+    currentLangs.forEach((code, idx) => {
+      const info = LINGUE.find(l => l.code === code);
+      const isDialetto = DIALETTI_TTS_ITA.includes(code);
+      const valRaw = v[code] || '';
+      const isEmpty = !valRaw.trim();
+      const hasSlash = isDialetto && valRaw.split('|')[0].includes('/');
+      const hidden = valRaw.includes('|') ? valRaw.split('|').length - 1 : 0;
+      html += `<td class="lang-cell ${idx===0?'':'lang-extra-cell'} ${isEmpty?'empty-cell':''}" data-label="${info?info.name:code}">
+        <input type="text" value="${escapeAttr(valRaw)}" data-field="${code}" placeholder="(da tradurre)">
+        ${hasSlash ? '<span class="slash-badge" title="TTS/grafia">TTS/⌨</span>' : ''}
+        ${hidden ? `<span class="alt-badge" title="${hidden} alt. nascoste">+${hidden}</span>` : ''}
+        ${isDialetto ? `<button class="icon-btn ai" onclick="aiTrascriviTTSCella(this,'${code}')" title="Suggerisci trascrizione TTS" style="margin-left:4px">🔤</button>` : ''}
+      </td>`;
+    });
+
     html += `
       <td class="tema-cell" data-label="Tema"><input type="text" value="${escapeAttr(v.tema||'')}" data-field="tema" list="temi-list"></td>
       <td class="livello-cell" data-label="Livello"><input type="text" value="${escapeAttr(v.livello||'')}" data-field="livello" list="livelli-list"></td>
@@ -746,10 +814,12 @@ function render() {
 
   ensureDatalists();
 
+  const lang0 = currentLangs[0];
+  const info0 = LINGUE.find(l => l.code === lang0);
   const tot = vocabolario.length;
-  const totVuote = vocabolario.filter(v => !(v[currentLang] || '').trim()).length;
+  const totVuote = vocabolario.filter(v => !(v[lang0] || '').trim()).length;
   const modCount = modifiedKeys.size + newKeys.size;
-  document.getElementById('stats').innerHTML = `<strong>${tot}</strong> voci · <span class="badge-empty badge">${totVuote}</span> da tradurre in ${langInfo.name}`;
+  document.getElementById('stats').innerHTML = `<strong>${tot}</strong> voci · <span class="badge-empty badge">${totVuote}</span> da tradurre in ${info0 ? info0.name : lang0}`;
   document.getElementById('footer-stats').innerHTML = modCount ? `<span class="badge">${modCount}</span> modifiche non salvate` : '<em>nessuna modifica</em>';
   renderPagination(filtrate.length, totalPages);
 }
@@ -785,24 +855,23 @@ function onCellEdit(tr, voce, input) {
   const key = rowKey(voce);
   if (!newKeys.has(key)) modifiedKeys.add(key);
   if (!tr.classList.contains('new-row')) tr.classList.add('modified');
-  if (field === 'it' || field === currentLang || field === currentLang2) {
+  if (field === 'it' || currentLangs.includes(field)) {
     const cell = input.parentElement, oldBadge = cell.querySelector('.alt-badge');
     if (oldBadge) oldBadge.remove();
     const hidden = val.includes('|') ? val.split('|').length - 1 : 0;
     if (hidden > 0) { const span = document.createElement('span'); span.className = 'alt-badge'; span.title = `${hidden} alt. nascoste`; span.textContent = '+' + hidden; cell.appendChild(span); }
   }
-  if (field === currentLang || field === currentLang2) {
+  if (currentLangs.includes(field)) {
     const cell = input.parentElement, oldSlash = cell.querySelector('.slash-badge');
     if (oldSlash) oldSlash.remove();
     if (DIALETTI_TTS_ITA.includes(field) && val.split('|')[0].includes('/')) {
       const span = document.createElement('span'); span.className = 'slash-badge'; span.title = 'TTS/grafia'; span.textContent = 'TTS/⌨'; cell.appendChild(span);
     }
+    if (currentLangs.includes(field)) { const cell2 = input.parentElement; if (val.trim()) cell2.classList.remove('empty-cell'); else cell2.classList.add('empty-cell'); }
   }
-  if (field === currentLang) { const cell = input.parentElement; if (val.trim()) cell.classList.remove('empty-cell'); else cell.classList.add('empty-cell'); }
-  if (field === currentLang2 && currentLang2) { const cell = input.parentElement; if (val.trim()) cell.classList.remove('empty-cell'); else cell.classList.add('empty-cell'); }
   const statusCell = tr.querySelector('.row-status');
   if (statusCell) {
-    const isEmpty = !(voce[currentLang] || '').trim(), k2 = rowKey(voce);
+    const isEmpty = !(voce[currentLangs[0]] || '').trim(), k2 = rowKey(voce);
     if (newKeys.has(k2)) statusCell.textContent = '🆕'; else if (isEmpty) statusCell.textContent = '⚠️'; else statusCell.textContent = '✏️';
   }
   const modCount = modifiedKeys.size + newKeys.size;
@@ -816,16 +885,16 @@ async function aggiungiVoce() {
   if (vocabolario.some(v => (v.it || '').toLowerCase().trim() === itTrim.toLowerCase())) { alert('Esiste già una voce con questo italiano.'); return; }
   const voce = { tema: '', livello: '', it: itTrim };
   if (aiConfig && aiConfig.provider && aiConfig.key) {
-    const isDialetto = DIALETTI_TTS_ITA.includes(currentLang);
-    const langName_ = LINGUE.find(l => l.code === currentLang).name;
+    const isDialetto = DIALETTI_TTS_ITA.includes(currentLangs[0]);
+    const langName_ = LINGUE.find(l => l.code === currentLangs[0]).name;
     if (confirm(isDialetto ? `Vuoi che l'AI suggerisca solo tema e livello per "${itTrim}"?` : `Vuoi che l'AI suggerisca tema, livello e traduzione in ${langName_}?`)) {
       setHelp('✨ AI sta classificando la voce...', 'info');
       try {
-        const sugg = await aiClassificaERTraducici(itTrim, isDialetto ? ['en'] : [currentLang]);
+        const sugg = await aiClassificaERTraducici(itTrim, isDialetto ? ['en'] : [currentLangs[0]]);
         if (sugg.tema) voce.tema = sugg.tema;
         if (sugg.livello) voce.livello = sugg.livello;
-        if (!isDialetto && sugg.translations && sugg.translations[currentLang]) voce[currentLang] = sugg.translations[currentLang];
-        setHelp(`✨ AI: tema="${voce.tema}", livello="${voce.livello}"${!isDialetto ? `, ${currentLang}="${voce[currentLang]||'(vuoto)'}"` : ''}`, 'success');
+        if (!isDialetto && sugg.translations && sugg.translations[currentLangs[0]]) voce[currentLangs[0]] = sugg.translations[currentLangs[0]];
+        setHelp(`✨ AI: tema="${voce.tema}", livello="${voce.livello}"${!isDialetto ? `, ${currentLangs[0]}="${voce[currentLangs[0]]||'(vuoto)'}"` : ''}`, 'success');
       } catch (e) { setHelp('⚠️ AI non disponibile: ' + e.message, 'error'); }
     }
   }
@@ -856,8 +925,8 @@ function cancellaVoce(btn) {
 // EXPORT EXCEL
 // ==========================================================================
 function exportExcel() {
-  const langInfo = LINGUE.find(l => l.code === currentLang);
-  const isDialetto = DIALETTI_TTS_ITA.includes(currentLang);
+  const langInfo = LINGUE.find(l => l.code === currentLangs[0]);
+  const isDialetto = DIALETTI_TTS_ITA.includes(currentLangs[0]);
   const filtrate = filtroVoci();
   if (!filtrate.length) { alert('Nessuna voce da esportare con i filtri attuali.'); return; }
 
@@ -868,7 +937,7 @@ function exportExcel() {
 
   const rows = [cols];
   filtrate.forEach(v => {
-    const raw = v[currentLang] || '';
+    const raw = v[currentLangs[0]] || '';
     let note = '';
     if (/(.)\1\1/.test(raw)) note = 'TRIPLETTE';
     if (!raw || raw === '?') note = 'MANCA';
@@ -889,7 +958,7 @@ function exportExcel() {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   const filtroDesc = [currentTema, currentLivello].filter(Boolean).join('_') || 'tutto';
-  a.download = `linguaequiz_${currentLang}_${filtroDesc}.csv`;
+  a.download = `linguaequiz_${currentLangs[0]}_${filtroDesc}.csv`;
   a.click();
   setHelp(`📥 Esportate ${filtrate.length} voci in CSV. Apri con Excel e alla riapertura importa con "📤 Importa".`, 'success');
 }
@@ -935,9 +1004,9 @@ async function onImportFileChange(e) {
     if (idxIt < 0) { alert('Colonna "ITALIANO" non trovata nel file.'); return; }
 
     // Cerca colonna da importare: prima "RAW", poi il nome della lingua corrente
-    const langInfo = LINGUE.find(l => l.code === currentLang);
+    const langInfo = LINGUE.find(l => l.code === currentLangs[0]);
     let idxVal = header.findIndex(h => h === 'RAW');
-    if (idxVal < 0) idxVal = header.findIndex(h => h.includes(langInfo.name.toUpperCase()) || h === currentLang.toUpperCase());
+    if (idxVal < 0) idxVal = header.findIndex(h => h.includes(langInfo.name.toUpperCase()) || h === currentLangs[0].toUpperCase());
     if (idxVal < 0) { alert(`Colonna "RAW" o "${langInfo.name}" non trovata. Le colonne trovate sono: ${rows[0].join(', ')}`); return; }
 
     const voci = [];
@@ -951,11 +1020,11 @@ async function onImportFileChange(e) {
 
     if (!voci.length) { alert('Nessuna voce trovata nel file.'); return; }
 
-    importBuffer = { voci, langCode: currentLang };
+    importBuffer = { voci, langCode: currentLangs[0] };
 
     // Preview
     const forza = document.getElementById('import-force').checked;
-    const { nuove, aggiornate, saltate } = calcolaImport(voci, currentLang, forza);
+    const { nuove, aggiornate, saltate } = calcolaImport(voci, currentLangs[0], forza);
     let html = `<strong>${voci.length}</strong> righe nel file · <span style="color:var(--green)">${nuove} nuove</span> · <span style="color:var(--amber)">${aggiornate} da aggiornare</span> · <span style="color:var(--muted)">${saltate} saltate</span><br><br>`;
     html += '<table><tr><th>Italiano</th><th>Valore importato</th><th>Stato</th></tr>';
     voci.slice(0, 20).forEach(r => {
@@ -963,7 +1032,7 @@ async function onImportFileChange(e) {
       let stato;
       if (!match) stato = '<span style="color:var(--green)">🆕 nuova</span>';
       else if (!r.raw) stato = '<span style="color:var(--muted)">⏭ vuoto, skip</span>';
-      else if ((match[currentLang] || '').trim() && !forza) stato = '<span style="color:var(--muted)">⏭ già tradotta</span>';
+      else if ((match[currentLangs[0]] || '').trim() && !forza) stato = '<span style="color:var(--muted)">⏭ già tradotta</span>';
       else stato = '<span style="color:var(--amber)">✏️ aggiorna</span>';
       html += `<tr><td>${escapeAttr(r.it)}</td><td>${escapeAttr(r.raw)}</td><td>${stato}</td></tr>`;
     });
@@ -1317,14 +1386,14 @@ async function aiCompletaRiga(btn) {
   const tr = btn.closest('tr'), v = tr._voce;
   if (!v || !v.it || !v.it.trim()) { alert('Compila prima il campo italiano.'); return; }
   const langsToTranslate = [];
-  if (!(v[currentLang] || '').trim()) langsToTranslate.push(currentLang);
-  if (currentLang2 && !(v[currentLang2] || '').trim()) langsToTranslate.push(currentLang2);
+  if (!(v[currentLangs[0]] || '').trim()) langsToTranslate.push(currentLangs[0]);
+  if (currentLangs[1] && !(v[currentLangs[1]] || '').trim()) langsToTranslate.push(currentLangs[1]);
   const dialettiTarget = langsToTranslate.filter(c => DIALETTI_TTS_ITA.includes(c));
   if (dialettiTarget.length > 0 && !confirm(`⚠️ L'AI ha scarsa conoscenza dei dialetti (${dialettiTarget.map(c => LINGUE.find(l => l.code === c).name).join(', ')}). Verificare il risultato. Procedere?`)) return;
   btn.classList.add('ai-pending'); btn.disabled = true; setHelp(`✨ AI sta elaborando "${v.it}"...`, 'info');
   if (langsToTranslate.length === 0 && v.tema && v.livello) { btn.classList.remove('ai-pending'); btn.disabled = false; if (!confirm('Voce già completa. Chiedere all\'AI di rivedere tema/livello?')) return; btn.classList.add('ai-pending'); btn.disabled = true; }
   try {
-    const langs = langsToTranslate.length ? langsToTranslate : [currentLang];
+    const langs = langsToTranslate.length ? langsToTranslate : [currentLangs[0]];
     const sugg = await aiClassificaERTraducici(visiblePart(v.it), langs);
     let changed = false;
     if (sugg.tema && !v.tema) { v.tema = sugg.tema; changed = true; }
@@ -1377,10 +1446,10 @@ Risposta SOLO JSON: {"trascrizione":"..."}`;
 
 async function completaConAI() {
   if (!aiConfig || !aiConfig.provider || !aiConfig.key) { if (confirm('AI non configurata. Configurarla ora?')) apriConfigAI(); return; }
-  const filtrate = filtroVoci(), daCompletare = filtrate.filter(v => !(v[currentLang] || '').trim() || !v.tema || !v.livello);
+  const filtrate = filtroVoci(), daCompletare = filtrate.filter(v => !(v[currentLangs[0]] || '').trim() || !v.tema || !v.livello);
   if (!daCompletare.length) { alert('Nessuna voce da completare.'); return; }
   const max = Math.min(daCompletare.length, 30);
-  const targetDialetti = [currentLang, currentLang2].filter(c => c && DIALETTI_TTS_ITA.includes(c)).map(c => LINGUE.find(l => l.code === c).name);
+  const targetDialetti = currentLangs.filter(c => DIALETTI_TTS_ITA.includes(c)).map(c => LINGUE.find(l => l.code === c).name);
   if (targetDialetti.length && !confirm(`⚠️ Il batch include dialetti (${targetDialetti.join(', ')}). L'AI ha conoscenza limitata. Procedere?`)) return;
   if (!confirm(`Completare ${max} voci con AI (${aiConfig.provider})?`)) return;
   const btn = document.getElementById('btn-ai-batch'); btn.disabled = true; const origLabel = btn.textContent;
@@ -1388,7 +1457,7 @@ async function completaConAI() {
   for (let i = 0; i < max; i++) {
     const v = daCompletare[i]; btn.textContent = `✨ ${i + 1}/${max}...`; setHelp(`✨ AI: ${i + 1}/${max} — "${v.it}"`, 'info');
     try {
-      const langs = [currentLang]; if (currentLang2 && !(v[currentLang2] || '').trim()) langs.push(currentLang2);
+      const langs = currentLangs.filter(c => !(v[c] || '').trim());
       const sugg = await aiClassificaERTraducici(visiblePart(v.it), langs);
       if (sugg.tema && !v.tema) v.tema = sugg.tema;
       if (sugg.livello && !v.livello && /^[AB][12]$/.test(sugg.livello)) v.livello = sugg.livello;
@@ -1530,11 +1599,11 @@ _initVoices();
 function _pickVoice(bcp47) { const voices = window.speechSynthesis.getVoices(); if (!voices.length) return null; let v = voices.find(x => x.lang === bcp47); if (v) return v; const pref = bcp47.split('-')[0].toLowerCase(); return voices.find(x => (x.lang||'').toLowerCase().startsWith(pref)) || null; }
 
 function ttsRow(btn) {
-  const tr = btn.closest('tr'), langInput = tr.querySelector(`input[data-field="${currentLang}"]`), pronInput = tr.querySelector('input[data-field="pron"]');
+  const tr = btn.closest('tr'), langInput = tr.querySelector(`input[data-field="${currentLangs[0]}"]`), pronInput = tr.querySelector('input[data-field="pron"]');
   const testo = (pronInput && pronInput.value.trim()) || (langInput && visiblePart(langInput.value)) || '';
   if (!testo || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
-  setTimeout(() => { const u = new SpeechSynthesisUtterance(testo); const langInfo = LINGUE.find(l => l.code === currentLang); u.lang = langInfo ? langInfo.bcp47 : 'it-IT'; u.rate = 0.85; const v = _pickVoice(u.lang); if (v) u.voice = v; window.speechSynthesis.speak(u); }, 80);
+  setTimeout(() => { const u = new SpeechSynthesisUtterance(testo); const langInfo = LINGUE.find(l => l.code === currentLangs[0]); u.lang = langInfo ? langInfo.bcp47 : 'it-IT'; u.rate = 0.85; const v = _pickVoice(u.lang); if (v) u.voice = v; window.speechSynthesis.speak(u); }, 80);
 }
 
 // ==========================================================================
