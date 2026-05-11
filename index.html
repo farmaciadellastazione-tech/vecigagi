@@ -1688,9 +1688,10 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"corpo", livello:"A2", it:"cervello", en:"brain", fr:"cerveau", es:"cerebro", de:"Gehirn", pt:"cérebro", ca:"cervell", sp:"servelo", mn:"servèlu", ge:"çervello", ia:"cerebro", la:"cerebrum", ro:"creier" },
       { tema:"tempo", livello:"A2", it:"piove pioveve pian pianino", en:"rains gently", fr:"il pleut doucement", es:"llueve suavemente", pt:"chove suavemente", ca:"plou suaument", sp:"cèva cèva cian cianin", mn:"céve céve cian cianin", ge:"cieue cieue cian cianin", ro:"plou lin" },
       { tema:"denaro", livello:"B1", it:"i soldi non crescono sugli alberi", ge:"e palànche no créscian in scî èrboi" },
-      { tema:"saluti", livello:"A1", it:"cosa c'è oggi?", sp:"cös'i gh'è anché", mn:"coz'i gh'è anché", ge:"cöse gh'é ancheu" },
+      { tema:"saluti", livello:"A1", it:"cosa c'è oggi?", en:"what's up", fr:"qu'est-ce qu'il y a", es:"¿qué hay", de:"was gibt's", pt:"o que há", ca:"què hi ha", sp:"cös'i gh'è anché", mn:"cusa a gh'è anché", ge:"cöse gh'é ancheu", ia:"què hay", la:"quid est", ro:"ce este" },
       { tema:"cibo", livello:"A2", it:"un calice di vino bianco", ru:"бокал белого вина", ca:"un got de vi blanc", sp:"ün goto de vin gianco", mn:"un calis de vin bianc/un calis de vin bianch", ge:"ün goto de vin gianco", ro:"un pahar de vin alb" },
       { tema:"ristorante", livello:"A1", it:"il conto per favore", sp:"er conto pe' piasée", mn:"er cuntu pe' piazëë", ge:"o conto pe' piaxei" },
       { tema:"cibo", livello:"A1", it:"un bicchier d'acqua", sp:"ün goto d'àigoa", mn:"ün gòtu d'aigua", ge:"ün gòto d'ægoa" },
@@ -1718,7 +1719,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"oggetti", livello:"A2", it:"storto", sp:"storto", mn:"stortu" },
       { tema:"verbi", livello:"A1", it:"spingere", sp:"spinze" },
       { tema:"corpo", livello:"A1", it:"schiena", en:"back", pt:"costas", sp:"sccena", mn:"sccena" },
-      { tema:"natura", livello:"A1", it:"gabbiano", sp:"gabian|oca de mae|ochin" },
+      { tema:"natura", livello:"A1", it:"gabbiano", en:"seagull", fr:"goéland", es:"gaviota", de:"Möwe", pt:"gaivota", ca:"gavina", sp:"gabian|oca de mae|ochin", mn:"gabianu", ge:"gabbian", ia:"gaviota", la:"larus", ro:"pescăruș" },
       { tema:"viaggi", livello:"A2", it:"vicolo", sp:"carogio", mn:"carugiu" },
       { tema:"aspetto", livello:"B1", it:"trasandato", sp:"sbolina/zbolinà", mn:"sbulina/zbulinà" },
       { tema:"spazio", livello:"A1", it:"vicino", sp:"vesin|arente" },
@@ -1974,7 +1975,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"fumare/fumo", en:"smoke", fr:"fumer|fumée", es:"fumar|humo", de:"rauchen|Rauch", pt:"fumar|fumaça", ru:"курить|дым", ca:"fumar|fum", sp:"" },
       { tema:"animali", livello:"A2", it:"serpente", en:"snake", fr:"serpent", es:"serpiente", de:"Schlange", pt:"cobra|serpente", ru:"змея", ca:"serp" },
       { tema:"dialogo", livello:"A2", it:"qualcuno", en:"somebody", fr:"quelqu'un", es:"alguien", de:"jemand", pt:"alguém", ru:"кто-то", ca:"algú", sp:"quarchedün, quarcudün", mn:"quarcùn" },
-      { tema:"dialogo", livello:"A2", it:"qualcosa", en:"something", fr:"quelque chose", es:"algo", de:"etwas", pt:"algo|alguma coisa", ru:"что-то", ca:"alguna cosa", sp:"quarcò", mn:"quarcò" },
+      { tema:"dialogo", livello:"A2", it:"qualcosa", en:"something", fr:"quelque chose", es:"algo", de:"etwas", pt:"algo|alguma coisa", ru:"что-то", ca:"alguna cosa", sp:"quarcò", mn:"quarcò", ge:"quarcösa", ia:"algo", la:"aliquid", ro:"ceva" },
       { tema:"dialogo", livello:"A1", it:"qualche volta", en:"sometimes", fr:"parfois|quelquefois", es:"a veces", de:"manchmal", pt:"às vezes", ru:"иногда", ca:"de vegades" },
       { tema:"dialogo", livello:"B1", it:"da qualche parte", en:"somewhere", fr:"quelque part", es:"en algún lugar", de:"irgendwo", pt:"em algum lugar", ru:"где-то", ca:"en algun lloc" },
       { tema:"dialogo", livello:"A1", it:"spiacente/dispiaciuto", en:"sorry", fr:"désolé", es:"lo siento", de:"es tut mir leid", pt:"desculpe", ru:"извините|жаль", ca:"ho sento", mn:"desciaszu" },
@@ -2252,7 +2253,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"valute", livello:"A2", it:"sconto", en:"discount", fr:"remise", es:"descuento", de:"Rabatt", pt:"desconto", ko:"할인", ar:"خصم", zh:"折扣", ja:"割引", ia:"disconto" },
       { tema:"valute", livello:"A2", it:"totale", en:"total", fr:"total", es:"total", de:"Gesamt", pt:"total", ru:"пустой", ca:"buit", sp:"fatiga", cr:"", ko:"합계", ar:"المجموع", zh:"总计", ja:"合計", ia:"total" },
       { tema:"valute", livello:"A2", it:"resto", en:"change", fr:"monnaie", es:"cambio", de:"Wechselgeld", pt:"troco", ko:"거스름돈", ar:"باقي", zh:"找零", ja:"お釣り", ia:"resto" },
-      { tema:"farmaci", livello:"B1", it:"ticket sanitario", en:"co-payment", fr:"ticket modérateur", es:"copago", de:"Zuzahlung", pt:"ticket", ko:"본인부담금", ar:"مشاركة في التكلفة", zh:"自付额", ja:"一部負担金" },
+      { tema:"farmaci", livello:"B1", it:"ticket sanitario", en:"co-payment", fr:"ticket modérateur", es:"copago", de:"Zuzahlung", pt:"ticket", sp:"ticket sanitario", mn:"ticket sanitariu", ge:"ticket sanitäio", ko:"본인부담금", ar:"مشاركة في التكلفة", zh:"自付额", ja:"一部負担金" },
       { tema:"sintomi", livello:"A1", it:"mal di testa", en:"headache", fr:"mal de tête", es:"dolor de cabeza", de:"Kopfschmerzen", pt:"dor de cabeça|dor de cabeca", ko:"두통", ar:"صداع", zh:"头痛", ja:"頭痛" },
       { tema:"sintomi", livello:"A1", it:"mal di stomaco", en:"stomachache", fr:"mal au ventre", es:"dolor de estómago", de:"Bauchschmerzen", pt:"dor de estômago|dor de estomago", ko:"복통", ar:"ألم في المعدة", zh:"胃痛", ja:"腹痛" },
       { tema:"sintomi", livello:"A1", it:"mal di gola", en:"sore throat", fr:"mal de gorge", es:"dolor de garganta", de:"Halsschmerzen", pt:"dor de garganta", sp:"", ko:"인후통", ar:"التهاب الحلق", zh:"喉咙痛", ja:"喉の痛み" },
@@ -2502,7 +2503,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A2", it:"nuvola", en:"cloud", fr:"nuage", es:"nube", de:"Wolke", pt:"nuvem", ru:"облако", ca:"núvol", ko:"구름", ar:"سحابة", zh:"云", ja:"雲", ia:"nube", la:"nubes", grc:"νεφέλη" },
       { tema:"natura", livello:"A1", it:"nebbia", en:"fog", fr:"brouillard", es:"niebla", de:"Nebel", pt:"névoa|nevoa", sp:"garbìn", mn:"garbie", cr:"", ko:"안개", ar:"ضباب", zh:"雾", ja:"霧", ia:"nebula", la:"nebula", grc:"ὁμίχλη" },
       { tema:"natura", livello:"A2", it:"grandine", en:"hail", fr:"grêle", es:"granizo", de:"Hagel", pt:"granizo", sp:"granzèa", cr:"", ko:"우박", ar:"بَرَد", zh:"冰雹", ja:"雹", ia:"grando", la:"grando", grc:"χάλαζα" },
-      { tema:"natura", livello:"A2", it:"fulmine", en:"lightning", fr:"éclair", es:"relámpago", de:"Blitz", pt:"raio", ko:"번개", ar:"برق", zh:"闪电", ja:"稲妻", ia:"fulmine", la:"fulmen", grc:"κεραυνός" },
+      { tema:"natura", livello:"A2", it:"fulmine", en:"lightning", fr:"éclair", es:"relámpago", de:"Blitz", pt:"raio", ca:"llamp", sp:"sà", mn:"sà", ge:"sà", ko:"번개", ar:"برق", zh:"闪电", ja:"稲妻", ia:"fulmine", la:"fulmen", grc:"κεραυνός", ro:"fulger" },
       { tema:"natura", livello:"A2", it:"arcobaleno", en:"rainbow", fr:"arc-en-ciel|arc en ciel", es:"arco iris", de:"Regenbogen", pt:"arco-íris|arco-iris", sp:"arco", mn:"arcubalenu", ko:"무지개", ar:"قوس قزح", zh:"彩虹", ja:"虹", ia:"arco-celo", la:"arcus", grc:"ἶρις" },
       { tema:"natura", livello:"B1", it:"uragano", en:"hurricane", fr:"ouragan", es:"huracán", de:"Hurrikan", pt:"furacão|furacao", ko:"허리케인", ar:"إعصار", zh:"飓风", ja:"ハリケーン", ia:"uragano", la:"turbo", grc:"τυφών" },
       { tema:"natura", livello:"A2", it:"siccità", en:"drought", fr:"sécheresse", es:"sequía", de:"Dürre", pt:"seca", ru:"отправлять", ca:"enviar", ko:"가뭄", ar:"جفاف", zh:"干旱", ja:"干ばつ", ia:"siccitate", la:"siccitas", grc:"αὐχμός" },
@@ -2833,7 +2834,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"sgobbone", en:"", mn:"sgubuùn/zgubùn" },
       { tema:"dialetti", livello:"A2", it:"sgusciare, gocciolare", en:"to drip", fr:"s'écouler", mn:"sgüssaaa/zgüssaa" },
       { tema:"dialetti", livello:"A2", it:"girare, passeggiare, voltare", en:"", mn:"ziaaa/ziaa" },
-      { tema:"dialetti", livello:"A2", it:"voltagabbana", en:"", mn:"zìabandiéa" },
+      { tema:"dialetti", livello:"A2", it:"voltagabbana", en:"turncoat", fr:"renégat", es:"traidor", de:"Verräter", pt:"traíra", ca:"traïdor", sp:"traditore", mn:"zìabandiéa", ge:"traditô", ia:"traditor", la:"perfidus", ro:"trădător" },
       { tema:"dialetti", livello:"A2", it:"trapano manuale", en:"" },
       { tema:"dialetti", livello:"A2", it:"giramento", en:"", mn:"zìamëntu" },
       { tema:"dialetti", livello:"A2", it:"girarsi, voltarsi", en:"", mn:"ziaasé/ziasé" },
@@ -3003,7 +3004,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"ho ... anni", mn:"me a gho ... ani", ro:"am ... ani" },
       { it:"quanto costa?", sp:"quanto costa?", mn:"quantu custa?", ge:"quanto costa?", ro:"cât costă?" },
       { it:"dov'è il bagno?", ro:"unde este baia?" },
-      { it:"ho fame", sp:"a g'ho fame", mn:"me a gho fame", ge:"g'ho famme", ro:"mi-e foame" },
+      { tema:"cibo", livello:"A1", it:"ho fame", en:"I'm hungry", fr:"j'ai faim", es:"tengo hambre", de:"ich habe Hunger", pt:"estou com fome", ca:"tinc gana", sp:"a g'ho fame", mn:"a gho fame", ge:"g'ho famme", ia:"me es fama", la:"esurio", ro:"mi-e foame" },
       { it:"ho sete", sp:"a g'ho sede", mn:"me a g'ho sëde", ge:"g'ho sae", ro:"mi-e sete" },
       { it:"mi piace", sp:"me ciasa", mn:"me ciasa", ro:"îmi place" },
       { it:"non mi piace", sp:"ne me ciasa", mn:"ne me ciasa", ro:"nu-mi place" },
@@ -3132,7 +3133,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 119;
+const VOC_VERSION = 120;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
