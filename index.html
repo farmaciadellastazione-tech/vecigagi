@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"viaggi", livello:"B1", it:"chi può può, chi non può va a piedi", en:"those who can, do, those who can't walk", fr:"ceux qui peuvent, font, ceux qui ne peuvent pas vont à pied", es:"quien puede, puede, quien no puede va a pie", de:"wer kann, kann, wer nicht kann geht zu Fuß", pt:"quem pode, pode, quem não pode vai a pé", ca:"qui pot, pot, qui no pot va a peu", sp:"Chi pè pè, chi ne pè va a pé ", la:"qui potest, potest, qui non potest ambulat", ro:"cine poate, poate, cine nu poate merge pe jos" },
       { tema:"cibo", livello:"A1", it:"pago io", en:"I pay", fr:"je paie", es:"pago yo", de:"ich bezahle", pt:"eu pago", ca:"jo pago", sp:"a pago me", mn:"a pagu me", ge:"pago mi", ia:"io paga", la:"ego solvo", ro:"eu plătesc" },
       { tema:"fisica", livello:"B1", it:"vogata", en:"rowing", fr:"ramee", es:"remada", de:"Rudern", pt:"remada", ca:"remada", sp:"vega", mn:"vega", ge:"vogâ", ia:"remada", la:"remigatio", ro:"vâslire" },
       { tema:"corpo", livello:"A2", it:"cervello", en:"brain", fr:"cerveau", es:"cerebro", de:"Gehirn", pt:"cérebro", ca:"cervell", sp:"servelo", mn:"servèlu", ge:"çervello", ia:"cerebro", la:"cerebrum", ro:"creier" },
@@ -3135,7 +3136,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 121;
+const VOC_VERSION = 122;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
