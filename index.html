@@ -1688,6 +1688,11 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"viaggi", livello:"A2", it:"no, scendo più in là", en:"no, I'll get off further down", fr:"non, je descends plus loin", es:"no, bajo más abajo", de:"nein, ich steige weiter unten aus", pt:"não, desço mais adiante", ca:"no, baixo més avall", sp:"no, a chino ciü en là", ia:"no, me descende plus in basso", ro:"nu, cobor mai jos" },
+      { tema:"viaggi", livello:"A1", it:"scendi qui?", en:"do you get off here?", fr:"descends ici", es:"baja aquí", de:"steig hier aus", pt:"desce aqui", ca:"baixa aquí", sp:"a te chini chi?", ia:"descende hic", ro:"coborâ aici" },
+      { tema:"corpo", livello:"A2", it:"tosse con catarro", en:"cough with phlegm", fr:"toux avec catarrhe", es:"tos con catarro", de:"Husten mit Schleim", pt:"tosse com catarro", ca:"tos amb catarr", sp:"rantega", mn:"rantega", ge:"tosse con cataro/tosse con catarro", ia:"tusse con catarro", ro:"tuse cu secreții" },
+      { tema:"espressioni", livello:"B1", it:"Sei duro come il marmo di Carrara", en:"you're as hard as marble", fr:"tu es dur comme le marbre", es:"eres duro como el mármol", de:"du bist hart wie Marmor", pt:"você é duro como o mármore", ca:"ets dur com el marbre", sp:"Tei düo come er marmo de caraa", ge:"ti l'æ duro comme o marmao de Carrara", ia:"tu es dure como le marbre", ro:"ești tare ca marmora" },
+      { tema:"abbigliamento", livello:"A2", it:"pantofola|ciabatta", en:"slipper", fr:"pantoufle", es:"zapatilla", de:"Pantoffel", pt:"chinelo", ca:"pantufa", sp:"savata", ge:"savàtta", ia:"pantuflo", ro:"papuc" },
       { tema:"saluti", livello:"A1", it:"cosa vuoi", en:"what do you want", fr:"qu'est-ce que vous voulez", es:"¿qué quieres", de:"was willst du", pt:"o que você quer", ca:"què vols", sp:"coss'te vé| costevé", ge:"cöse ti veu", ia:"què vules", ro:"ce vrei" },
       { tema:"espressioni", livello:"B1", it:"cosa vuoi che io ne sappia", en:"what do you expect me to know", fr:"qu'est-ce que vous voulez que je sache", es:"¿qué quieres que sepa", de:"was willst du, dass ich weiß", pt:"o que você quer que eu saiba", ca:"què vols que sàpiga", sp:"coss'te vè ch'an sacio| costevè can sacio", ge:"cöse te vo che me sappia", ia:"què vuole que io sappia", ro:"ce vrei să știu" },
       { tema:"proverbi", livello:"B2", it:"vale più l'undici che il dodici", en:"eleven is better than twelve", fr:"onze vaut mieux que douze", es:"once es mejor que doce", de:"elf ist besser als zwölf", pt:"onze é melhor do que doze", ca:"onze és millor que dotze", sp:"la vaa ciü l'ünze ch'o dóze", ia:"undece es melior que dece-duo", ro:"unsprezece este mai bun decât doisprezece" },
@@ -1788,7 +1793,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"diciannove", en:"nineteen", ru:"девятнадцать", sp:"dezanéve", mn:"dezanéve" },
       { tema:"numeri", livello:"A1", it:"sedici", en:"sixteen", ru:"шестнадцать", sp:"sèze", mn:"seze" },
       { tema:"numeri", livello:"A1", it:"quindici", en:"fifteen", ru:"пятнадцать", sp:"chinze", mn:"chinze" },
-      { tema:"numeri", livello:"A1", it:"quattordici", en:"fourteen", ru:"четырнадцать", sp:"quatorze", mn:"quatorze" },
+      { tema:"numeri", livello:"A1", it:"quattordici", en:"fourteen", fr:"quatorze", es:"catorce", de:"vierzehn", pt:"catorze", ru:"четырнадцать", ca:"catorze", sp:"quatorze", mn:"quatorze", ge:"quattòrze|quatòrze", ia:"quattorde", ro:"paisprezece" },
       { tema:"numeri", livello:"A1", it:"tredici", en:"thirteen", ru:"тринадцать", sp:"treze", mn:"treze" },
       { tema:"numeri", livello:"A1", it:"dodici", en:"twelve", ru:"двенадцать", sp:"duze", mn:"duze" },
       { tema:"numeri", livello:"A1", it:"nove", en:"nine", ru:"девять", sp:"néve", mn:"néve", ro:"nouă" },
@@ -1816,7 +1821,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"peggio", mn:"pézu" },
       { tema:"verbi", livello:"A2", it:"svegliare", mn:"svegiaa/zvegiaa" },
       { tema:"dialetti", livello:"B1", it:"pergolato", sp:"autedo", mn:"autedu" },
-      { tema:"mestieri", livello:"A2", it:"attore", mn:"atùu" },
+      { tema:"mestieri", livello:"A2", it:"attore", en:"actor", fr:"acteur", es:"actor", de:"Schauspieler", pt:"ator", ca:"actor", sp:"atóe", mn:"atùu", ge:"attô", ia:"actor", ro:"actor" },
       { tema:"dialetti", livello:"A2", it:"scherzi", sp:"ati", mn:"ati" },
       { tema:"luoghi", livello:"B2", it:"abbazia", en:"abbey", fr:"abbaye", es:"abadía", de:"Abtei", pt:"abadia", ru:"", ca:"abadia", sp:"abadìa" },
       { tema:"dialogo", livello:"A2", it:"incidente", en:"accident", fr:"accident", es:"accidente", de:"Unfall", pt:"acidente", ru:"авария|несчастный случай", ca:"accident" },
@@ -2061,7 +2066,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mestieri", livello:"B1", it:"macellaio", en:"butcher", fr:"boucher", es:"carnicero", de:"Metzger", pt:"açougueiro|acougueiro", sp:"maselào", ko:"정육점", ar:"جزار", zh:"屠夫", ja:"肉屋", ia:"macellero" },
       { tema:"mestieri", livello:"B1", it:"falegname", en:"carpenter", fr:"menuisier", es:"carpintero", de:"Tischler", pt:"marceneiro", sp:"bancaà", ko:"목수", ar:"نجار", zh:"木匠", ja:"大工" },
       { tema:"mestieri", livello:"B1", it:"pescatore", en:"fisherman", fr:"pêcheur", es:"pescador", de:"Fischer", pt:"pescador", sp:"pescadoe", ko:"어부", ar:"صياد", zh:"渔民", ja:"漁師" },
-      { tema:"salute", livello:"A1", it:"gatto", en:"cat", fr:"chat", es:"gato", de:"Katze", pt:"gato", ru:"кошка", ca:"gat", sp:"gato", mn:"gatu", cr:"gat", ko:"고양이", ar:"قطة", zh:"猫", ja:"猫" },
+      { tema:"salute", livello:"A1", it:"gatto", en:"cat", fr:"chat", es:"gato", de:"Katze", pt:"gato", ru:"кошка", ca:"gat", sp:"gato", mn:"gatu", cr:"gat", ge:"gatto/gatto", ko:"고양이", ar:"قطة", zh:"猫", ja:"猫", ia:"gatto", ro:"pisică" },
       { tema:"animali", livello:"A1", it:"cavallo", en:"horse", fr:"cheval", es:"caballo", de:"Pferd", pt:"cavalo", ru:"лошадь", ca:"cavall", sp:"cavalo", cr:"cavad", ko:"말", ar:"حصان", zh:"马", ja:"馬", ia:"cavallo" },
       { tema:"insulti", livello:"A2", it:"coniglio", en:"rabbit", fr:"lapin", es:"conejo", de:"Kaninchen", pt:"coelho", ru:"кролик", ca:"conill", sp:"conigio", mn:"conigiu", cr:"Cunìgio", ge:"cunìggio", ko:"토끼", ar:"أرنب", zh:"兔子", ja:"ウサギ" },
       { tema:"animali", livello:"A2", it:"gallina", en:"hen", fr:"poule", es:"gallina", de:"Huhn", pt:"galinha", sp:"gaìna", mn:"gagina", cr:"gadina", ge:"gàinn-a", ko:"닭", ar:"دجاجة", zh:"鸡", ja:"鶏", ia:"gallina" },
@@ -2228,7 +2233,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"corpo", livello:"B1", it:"colonna vertebrale", en:"spine", fr:"colonne vertébrale", es:"columna vertebral", de:"Wirbelsäule", pt:"coluna vertebral", ca:"columna vertebral", sp:"filon dea schena", zh:"脊柱", ja:"脊柱" },
       { tema:"corpo", livello:"B1", it:"grembo", en:"lap", fr:"giron", es:"regazo", de:"Schoß", pt:"colo", ru:"колени (лоно)", ca:"falda|giron", sp:"scòso", mn:"scozu", ia:"gremio" },
       { tema:"corpo", livello:"B1", it:"zigomo", en:"cheekbone", fr:"pommette", es:"pómulo", de:"Wangenknochen", pt:"maçã do rosto|maca do rosto", sp:"pométi", ia:"zygoma" },
-      { tema:"salute", livello:"A2", it:"tosse secca", en:"dry cough", fr:"toux sèche", es:"tos seca", de:"trockener Husten", pt:"tosse seca", sp:"bèssega" },
+      { tema:"salute", livello:"A2", it:"tosse secca", en:"dry cough", fr:"toux sèche", es:"tos seca", de:"trockener Husten", pt:"tosse seca", ca:"tos ferina", sp:"bèssega", mn:"bessega", ge:"tòsse sécca", ia:"tusse seca", ro:"tuse seacă" },
       { tema:"salute", livello:"B1", it:"dissenteria", en:"dysentery", fr:"dysenterie", es:"disentería", de:"Ruhr", pt:"disenteria", sp:"cagaròn|caghéta", mn:"cagaun|gagheta" },
       { tema:"salute", livello:"B2", it:"infarto", en:"heart attack", fr:"infarctus", es:"infarto", de:"Herzinfarkt", pt:"infarto", ru:"инфаркт", ca:"infart", sp:"sc-ciopon/s'ciopon", ko:"심근경색", ar:"سكتة قلبية", zh:"心脏病发作", ja:"心臓発作", ia:"thrombosis coronari", la:"apoplexia", grc:"ἔμφραγμα" },
       { tema:"salute", livello:"B1", it:"fiatone", en:"breathlessness", fr:"essoufflement", es:"jadeo", de:"Kurzatmigkeit", pt:"falta de ar", sp:"pantàsso" },
@@ -2240,7 +2245,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"B1", it:"cavatappi", en:"corkscrew", fr:"tire-bouchon", es:"sacacorchos", de:"Korkenzieher", pt:"saca-rolhas", sp:"tiabüssòn" },
       { tema:"casa", livello:"A2", it:"piatto", en:"plate", fr:"assiette", es:"plato", de:"Teller", pt:"prato", sp:"tondo", ia:"platto" },
       { tema:"casa", livello:"A2", it:"tegame", en:"pan", fr:"poêle", es:"sartén", de:"Pfanne", pt:"frigideira", sp:"tiàn", ia:"casserola" },
-      { tema:"casa", livello:"B1", it:"barattolo", en:"jar", fr:"pot", es:"frasco", de:"Glas", pt:"frasco", ru:"баночка", ca:"pot", sp:"bolaco", mn:"bulacu", ko:"병", ia:"stanno", la:"vasculum" },
+      { tema:"casa", livello:"B1", it:"barattolo", en:"jar", fr:"pot", es:"frasco", de:"Glas", pt:"frasco", ru:"баночка", ca:"pot", sp:"bolaco", mn:"bulacu", ge:"baratöu/barattolo", ko:"병", ia:"stanno", la:"vasculum", ro:"borcan" },
       { tema:"casa", livello:"A2", it:"tovagliolo", en:"napkin", fr:"serviette", es:"servilleta", de:"Serviette", pt:"guardanapo", sp:"toagìn|picagéta" },
       { tema:"casa", livello:"A2", it:"occhiali", en:"glasses", fr:"lunettes", es:"gafas", de:"Brille", pt:"óculos|oculos", ru:"очки", ca:"ulleres", sp:"specéti, barìcole", mn:"ùciai" },
       { tema:"casa", livello:"B1", it:"comodino", en:"bedside table", fr:"table de nuit", es:"mesita de noche", de:"Nachttisch", pt:"criado-mudo", sp:"ghirindón" },
@@ -3148,7 +3153,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 131;
+const VOC_VERSION = 132;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
