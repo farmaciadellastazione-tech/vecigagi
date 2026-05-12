@@ -1688,6 +1688,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"casa", livello:"A1", it:"sedia", en:"chair", fr:"chaise", es:"silla", de:"Stuhl", pt:"cadeira", ca:"cadira", sp:"caréga", la:"cathedra", ro:"scaun" },
+      { tema:"natura", livello:"B1", it:"viscido", en:"slippery", fr:"glissant", es:"resbaloso", de:"rutschig", pt:"escorregadio", ca:"relliscós", sp:"Lépego", ge:"viscido/viscidu", la:"lubricus", ro:"alunecos" },
       { tema:"dialetti", livello:"B2", it:"Ma tu chi sei, il mostro di Pitelli?", en:"but who are you, the monster of Pitelli?", fr:"mais qui es-tu, le monstre de Pitelli?", es:"pero ¿quién eres, el monstruo de Pitelli?", de:"aber wer bist du, das Monster von Pitelli?", pt:"mas quem és, o monstro de Pitelli?", ca:"però qui ets, el monstre de Pitelli?", sp:"Ma te chi tei, er mostro de pitei?", ge:"ma ti chi ti, u mostro de Pitelli?", la:"sed quis es, mons Pitellorum?", ro:"dar cine eşti, monstrul din Pitelli?" },
       { tema:"viaggi", livello:"B1", it:"chi può può, chi non può va a piedi", en:"those who can, do, those who can't walk", fr:"ceux qui peuvent, font, ceux qui ne peuvent pas vont à pied", es:"quien puede, puede, quien no puede va a pie", de:"wer kann, kann, wer nicht kann geht zu Fuß", pt:"quem pode, pode, quem não pode vai a pé", ca:"qui pot, pot, qui no pot va a peu", sp:"Chi pè pè, chi ne pè va a pé ", la:"qui potest, potest, qui non potest ambulat", ro:"cine poate, poate, cine nu poate merge pe jos" },
       { tema:"cibo", livello:"A1", it:"pago io", en:"I pay", fr:"je paie", es:"pago yo", de:"ich bezahle", pt:"eu pago", ca:"jo pago", sp:"a pago me", mn:"a pagu me", ge:"pago mi", ia:"io paga", la:"ego solvo", ro:"eu plătesc" },
@@ -2398,7 +2400,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"B1", it:"sperare", en:"hope", fr:"espérer", es:"esperar", de:"hoffen", pt:"esperar", ko:"바라다", ar:"يأمل", zh:"希望", ja:"望む", ia:"sperar", la:"sperare", grc:"ἐλπίζειν" },
       { tema:"verbi", livello:"B1", it:"credere", en:"believe", fr:"croire", es:"creer", de:"glauben", pt:"acreditar", ko:"믿다", ar:"يؤمن", zh:"相信", ja:"信じる", ia:"creder", la:"credere", grc:"πιστεύειν" },
       { tema:"verbi", livello:"B1", it:"ricordare", en:"remember", fr:"se souvenir", es:"recordar", de:"erinnern", pt:"lembrar", ru:"помнить", ca:"recordar", sp:"sovegnie, arecordae", cr:"arcordar", ko:"기억하다", ar:"يتذكر", zh:"记得", ja:"覚える", ia:"memorar", la:"meminisse", grc:"μνημονεύειν" },
-      { tema:"verbi", livello:"B1", it:"dimenticare", en:"forget", fr:"oublier", es:"olvidar", de:"vergessen", pt:"esquecer", ru:"забывать", ca:"oblidar", sp:"scordae, desmentegae, descordasse", ko:"잊다", ar:"ينسى", zh:"忘记", ja:"忘れる", ia:"oblidar", la:"oblivisci", grc:"ἐπιλανθάνειν" },
+      { tema:"verbi", livello:"B1", it:"dimenticare", en:"forget", fr:"oublier", es:"olvidar", de:"vergessen", pt:"esquecer", ru:"забывать", ca:"oblidar", sp:"scordae|desmentegae, descordasse", ge:"scordâ|scordà", ko:"잊다", ar:"ينسى", zh:"忘记", ja:"忘れる", ia:"oblidar", la:"oblivisci", grc:"ἐπιλανθάνειν", ro:"a uita" },
       { tema:"verbi", livello:"B1", it:"aiutare", en:"help", fr:"aider", es:"ayudar", de:"helfen", pt:"ajudar", ru:"помогать", ca:"ajudar", sp:"aidae, agiütae, giütae", mn:"agiütaaa", ge:"agiutâ", ko:"돕다", ar:"يساعد", zh:"帮助", ja:"助ける", ia:"adjutar", la:"adiuvare", grc:"βοηθεῖν" },
       { tema:"verbi", livello:"B1", it:"chiedere", en:"ask", fr:"demander", es:"preguntar", de:"fragen", pt:"perguntar", ru:"спрашивать", ca:"demanar", ko:"묻다", ar:"يسأل", zh:"问", ja:"聞く", ia:"demandar", la:"rogare", grc:"ἐρωτᾶν" },
       { tema:"verbi", livello:"B1", it:"rispondere", en:"answer", fr:"répondre", es:"responder", de:"antworten", pt:"responder", ru:"отвечать", ca:"respondre", ko:"대답하다", ar:"يجيب", zh:"回答", ja:"答える", ia:"responder", la:"respondere", grc:"ἀποκρίνεσθαι" },
@@ -3137,7 +3139,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 123;
+const VOC_VERSION = 124;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
