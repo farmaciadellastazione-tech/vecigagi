@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"saluti", livello:"A1", it:"cosa fai|cosa stai facendo", en:"what do you do|what are you doing", fr:"qu'est-ce que tu fais", es:"¿qué haces", de:"was machst du", pt:"o que você faz", ca:"què fas", sp:"costefé", ge:"cösa ti fæ", la:"quid agis", ro:"ce faci" },
       { tema:"casa", livello:"A1", it:"sedia", en:"chair", fr:"chaise", es:"silla", de:"Stuhl", pt:"cadeira", ca:"cadira", sp:"caréga", la:"cathedra", ro:"scaun" },
       { tema:"natura", livello:"B1", it:"viscido", en:"slippery", fr:"glissant", es:"resbaloso", de:"rutschig", pt:"escorregadio", ca:"relliscós", sp:"Lépego", ge:"viscido/viscidu", la:"lubricus", ro:"alunecos" },
       { tema:"dialetti", livello:"B2", it:"Ma tu chi sei, il mostro di Pitelli?", en:"but who are you, the monster of Pitelli?", fr:"mais qui es-tu, le monstre de Pitelli?", es:"pero ¿quién eres, el monstruo de Pitelli?", de:"aber wer bist du, das Monster von Pitelli?", pt:"mas quem és, o monstro de Pitelli?", ca:"però qui ets, el monstre de Pitelli?", sp:"Ma te chi tei, er mostro de pitei?", ge:"ma ti chi ti, u mostro de Pitelli?", la:"sed quis es, mons Pitellorum?", ro:"dar cine eşti, monstrul din Pitelli?" },
@@ -3139,7 +3140,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 124;
+const VOC_VERSION = 125;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
