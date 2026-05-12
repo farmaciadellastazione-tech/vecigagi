@@ -1688,6 +1688,9 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"saluti", livello:"A1", it:"cosa vuoi", en:"what do you want", fr:"qu'est-ce que vous voulez", es:"¿qué quieres", de:"was willst du", pt:"o que você quer", ca:"què vols", sp:"coss'te vé| costevé", ge:"cöse ti veu", ia:"què vules", ro:"ce vrei" },
+      { tema:"espressioni", livello:"B1", it:"cosa vuoi che io ne sappia", en:"what do you expect me to know", fr:"qu'est-ce que vous voulez que je sache", es:"¿qué quieres que sepa", de:"was willst du, dass ich weiß", pt:"o que você quer que eu saiba", ca:"què vols que sàpiga", sp:"coss'te vè ch'an sacio| costevè can sacio", ge:"cöse te vo che me sappia", ia:"què vuole que io sappia", ro:"ce vrei să știu" },
+      { tema:"proverbi", livello:"B2", it:"vale più l'undici che il dodici", en:"eleven is better than twelve", fr:"onze vaut mieux que douze", es:"once es mejor que doce", de:"elf ist besser als zwölf", pt:"onze é melhor do que doze", ca:"onze és millor que dotze", sp:"la vaa ciü l'ünze ch'o dóze", ia:"undece es melior que dece-duo", ro:"unsprezece este mai bun decât doisprezece" },
       { tema:"amici", livello:"B2", it:"gli amici sono come i fagioli: parlano da dietro", en:"friends are like beans: they talk behind", fr:"les amis sont comme les haricots: ils parlent derrière", es:"los amigos son como los frijoles: hablan por detrás", de:"Freunde sind wie Bohnen: sie sprechen hinter", pt:"os amigos são como os feijões: falam por trás", ca:"els amics són com els fesols: parlen per darrere", sp:"i amighi i'en come i fasei: a te parlo de darè.", mn:"i amixi i xe come i faje: parla da drio", ia:"amicos es como fabos: parla de retro", la:"amici sunt ut fabae, loquuntur a tergo", ro:"prieteni sunt ca boabele: vorbesc pe la spate" },
       { tema:"arte", livello:"B1", it:"stucco e pittura fan bella figura", en:"plaster and painting look good", fr:"le plâtre et la peinture font bonne figure", es:"el yeso y la pintura tienen buena presencia", de:"Stuck und Malerei machen eine gute Figur", pt:"o gesso e a pintura têm boa aparência", ca:"l'estuc i la pintura fan bona figura", sp:"Stuco e pitùa fan bela fegùa", ge:"stucco e pittüa fan bèlla figüa", la:"gypsum et pictura habent bonam speciem", ro:"tencuiala și pictura arată bine" },
       { tema:"cibo", livello:"B2", it:"t'ho detto otto etti di totanetti, tagliati a pezzetti", en:"I told you eight ounces of cuttlefish, cut into pieces", fr:"je t'ai dit huit onces de seiches, coupées en morceaux", es:"te dije ocho onzas de sepia, cortada en trozos", de:"ich habe dir gesagt acht Unzen Tintenfisch, in Stücke geschnitten", pt:"eu disse oito onças de lula, cortada em pedaços", ca:"et vaig dir vuit unces de sipia, tallada a trossos", sp:"A t'o ito oto eti de totaneti tuti tagià a tocheti", la:"tibi dixi octo uncias sepiæ, in frusta concisæ", ro:"ți-am spus opt uncii de sepia, tăiată în bucăți" },
@@ -2761,7 +2764,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"chiedere", en:"ask for", fr:"demander", es:"pedir", de:"fragen nach", pt:"pedir", ru:"спрашивать", ca:"demanar" },
       { tema:"dialogo", livello:"A2", it:"sentirsi bene", en:"feel good", fr:"se sentir bien", es:"sentirse bien", de:"sich gut fühlen", pt:"sentir-se bem" },
       { tema:"natura", livello:"A2", it:"significare", en:"mean that", fr:"vouloir dire", es:"significar", de:"bedeuten", pt:"significar", sp:"arsiprèsso, aosiprèsso", cr:"" },
-      { tema:"comunicazione", livello:"A1", it:"fammi sapere", en:"let me know", fr:"fais-moi savoir", es:"hazme saber", de:"lass es mich wissen", pt:"me avise", ru:"скажи мне", sp:"", cr:"" },
+      { tema:"comunicazione", livello:"A1", it:"fammi sapere", en:"let me know", fr:"fais-moi savoir", es:"hazme saber", de:"lass es mich wissen", pt:"me avise", ru:"скажи мне", sp:"fame savée", cr:"" },
       { tema:"dialogo", livello:"A1", it:"iniziare ora", en:"begin now", fr:"commencer maintenant", es:"empezar ahora", de:"jetzt beginnen", pt:"começar agora|comecar agora", ru:"", ca:"noranta", sp:"", cr:"" },
       { tema:"dialogo", livello:"A2", it:"arrivare in ritardo", en:"run late", fr:"être en retard", es:"llegar tarde", de:"zu spät sein", pt:"atrasar" },
       { tema:"dialogo", livello:"A1", it:"credere in te", en:"believe you", fr:"te croire", es:"creer en ti", de:"dir glauben", pt:"acreditar em você|acreditar em voce", ru:"отвечать", ca:"respondre", cr:"" },
@@ -2893,8 +2896,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"sbarramento, ostacolo", en:"barrier", fr:"obstacle", es:"obstáculo", de:"Hindernis", pt:"obstáculo", ca:"obstacle", mn:"sbaàramentu/zbàramentu/sbàramentu" },
       { tema:"dialetti", livello:"A2", it:"abbassare, diminuire", en:"", mn:"sbassaa/zbàssaa/sbàssaa" },
       { tema:"dialetti", livello:"A2", it:"sbattere, urtare", en:"", mn:"sbaàte/zbàté/sbàté" },
-      { tema:"dialetti", livello:"A2", it:"urlo sguaiato, richiamo", en:"", mn:"sbeècu/zbècu/sbècu" },
-      { tema:"dialetti", livello:"A2", it:"urlo, rimprovero", en:"", mn:"sbràgiu/zbràgiu" },
+      { tema:"dialetti", livello:"A2", it:"urlo sguaiato|bercio", en:"loud cry", fr:"cri perçant", es:"grito estruendoso", de:"lautes Geschrei", pt:"grito alto", ca:"crit estrident", sp:"sbèco", mn:"sbeècu/zbècu/sbècu", ge:"urlo|urlo sguaiòu", ia:"clamor forte", ro:"strigăt puternic" },
+      { tema:"dialetti", livello:"A2", it:"urlo|rimprovero", en:"shout", fr:"cri", es:"grito", de:"Schrei", pt:"grito", ca:"crit", sp:"ürlo|sbragio", mn:"sbràgiu/zbràgiu", ge:"ürlo", ia:"clamo", ro:"strigăt" },
       { tema:"dialetti", livello:"A2", it:"ritorto, attorcigliato", en:"", mn:"sbrilà/zbrilà" },
       { tema:"dialetti", livello:"A2", it:"sbrogliare", en:"", mn:"sbrùgiaaa/zbrùgiaa/zbrùgiaa" },
       { tema:"dialetti", livello:"A2", it:"sviscerare, svuotare", en:"", mn:"sbüzaaa/zbüzaa/zbüzaa" },
@@ -2919,7 +2922,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"unguento, linimento", en:"", mn:"ünguëntu" },
       { tema:"dialetti", livello:"A2", it:"unico", en:"", mn:"üunicu/ünicu" },
       { tema:"dialetti", livello:"A2", it:"unto, oliato", en:"", mn:"üntu" },
-      { tema:"dialetti", livello:"A2", it:"ungere, lubrificare", en:"", mn:"üunze/ünzé" },
+      { tema:"dialetti", livello:"A2", it:"ungere, lubrificare", en:"", sp:"üunze/ünzé", mn:"üunze/ünzé", ge:"unze" },
       { tema:"verbi", livello:"A2", it:"avanzare", en:"", sp:"avansae", mn:"àvansaa" },
       { tema:"dialetti", livello:"A2", it:"avariato, guasto", en:"", sp:"avarià", mn:"avarià" },
       { tema:"dialetti", livello:"A2", it:"avversario", en:"", mn:"àvérsaiu" },
@@ -3145,7 +3148,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 130;
+const VOC_VERSION = 131;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
