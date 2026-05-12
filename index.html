@@ -1688,9 +1688,13 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"arte", livello:"B1", it:"stucco e pittura fan bella figura", en:"plaster and painting look good", fr:"le plâtre et la peinture font bonne figure", es:"el yeso y la pintura tienen buena presencia", de:"Stuck und Malerei machen eine gute Figur", pt:"o gesso e a pintura têm boa aparência", ca:"l'estuc i la pintura fan bona figura", sp:"Stuco e pitùa fan bela fegùa", ge:"stucco e pittüa fan bèlla figüa", la:"gypsum et pictura habent bonam speciem", ro:"tencuiala și pictura arată bine" },
+      { tema:"cibo", livello:"B2", it:"t'ho detto otto etti di totanetti, tagliati a pezzetti", en:"I told you eight ounces of cuttlefish, cut into pieces", fr:"je t'ai dit huit onces de seiches, coupées en morceaux", es:"te dije ocho onzas de sepia, cortada en trozos", de:"ich habe dir gesagt acht Unzen Tintenfisch, in Stücke geschnitten", pt:"eu disse oito onças de lula, cortada em pedaços", ca:"et vaig dir vuit unces de sipia, tallada a trossos", sp:"A t'o ito oto eti de totaneti tuti tagià a tocheti", la:"tibi dixi octo uncias sepiæ, in frusta concisæ", ro:"ți-am spus opt uncii de sepia, tăiată în bucăți" },
+      { tema:"denaro", livello:"A2", it:"se non ce sono non si spendono", en:"no money no spend", fr:"pas d'argent pas de dépense", es:"sin dinero no se gasta", de:"kein Geld keine Ausgabe", pt:"sem dinheiro não se gasta", ca:"sense diners no es gasta", sp:"Se ne ghe n'è n'è se'n spenda", la:"sine pecunia non expeditur", ro:"fără bani nu se cheltuie" },
+      { tema:"tempo", livello:"B1", it:"ieri era olio, ora è  oro", en:"yesterday oil, today gold", fr:"hier huile, aujourd'hui or", es:"ayer aceite, hoy oro", de:"gestern Öl, heute Gold", pt:"ontem óleo, hoje ouro", ca:"ahir oli, avui or", sp:"Aiei i ea eio, aoa i è oo", la:"heri oleum, hodie aurum", ro:"ieri ulei, azi aur" },
       { tema:"saluti", livello:"A1", it:"cosa fai|cosa stai facendo", en:"what do you do|what are you doing", fr:"qu'est-ce que tu fais", es:"¿qué haces", de:"was machst du", pt:"o que você faz", ca:"què fas", sp:"costefé", ge:"cösa ti fæ", la:"quid agis", ro:"ce faci" },
       { tema:"casa", livello:"A1", it:"sedia", en:"chair", fr:"chaise", es:"silla", de:"Stuhl", pt:"cadeira", ca:"cadira", sp:"caréga", la:"cathedra", ro:"scaun" },
-      { tema:"natura", livello:"B1", it:"viscido", en:"slippery", fr:"glissant", es:"resbaloso", de:"rutschig", pt:"escorregadio", ca:"relliscós", sp:"Lépego", ge:"viscido/viscidu", la:"lubricus", ro:"alunecos" },
+      { tema:"natura", livello:"B1", it:"viscido", en:"slippery", fr:"glissant", es:"resbaloso", de:"rutschig", pt:"escorregadio", ca:"relliscós", sp:"lépego", ge:"leppego", la:"lubricus", ro:"alunecos" },
       { tema:"dialetti", livello:"B2", it:"Ma tu chi sei, il mostro di Pitelli?", en:"but who are you, the monster of Pitelli?", fr:"mais qui es-tu, le monstre de Pitelli?", es:"pero ¿quién eres, el monstruo de Pitelli?", de:"aber wer bist du, das Monster von Pitelli?", pt:"mas quem és, o monstro de Pitelli?", ca:"però qui ets, el monstre de Pitelli?", sp:"Ma te chi tei, er mostro de pitei?", ge:"ma ti chi ti, u mostro de Pitelli?", la:"sed quis es, mons Pitellorum?", ro:"dar cine eşti, monstrul din Pitelli?" },
       { tema:"viaggi", livello:"B1", it:"chi può può, chi non può va a piedi", en:"those who can, do, those who can't walk", fr:"ceux qui peuvent, font, ceux qui ne peuvent pas vont à pied", es:"quien puede, puede, quien no puede va a pie", de:"wer kann, kann, wer nicht kann geht zu Fuß", pt:"quem pode, pode, quem não pode vai a pé", ca:"qui pot, pot, qui no pot va a peu", sp:"Chi pè pè, chi ne pè va a pé ", la:"qui potest, potest, qui non potest ambulat", ro:"cine poate, poate, cine nu poate merge pe jos" },
       { tema:"cibo", livello:"A1", it:"pago io", en:"I pay", fr:"je paie", es:"pago yo", de:"ich bezahle", pt:"eu pago", ca:"jo pago", sp:"a pago me", mn:"a pagu me", ge:"pago mi", ia:"io paga", la:"ego solvo", ro:"eu plătesc" },
@@ -3140,7 +3144,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 125;
+const VOC_VERSION = 126;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
