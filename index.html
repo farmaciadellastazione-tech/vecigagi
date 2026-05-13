@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"numeri", livello:"A1", it:"primo", en:"first", fr:"premier", es:"primero", de:"erste", pt:"primeiro", sp:"primo|priméo", mn:"primu", ge:"primmo", ia:"prime", la:"primus", ro:"primul" },
       { tema:"viaggi", livello:"A2", it:"no, scendo più in là", en:"no, I'll get off further down", fr:"non, je descends plus loin", es:"no, bajo más abajo", de:"nein, ich steige weiter unten aus", pt:"não, desço mais adiante", ca:"no, baixo més avall", sp:"no, a chino ciü en là", ia:"no, me descende plus in basso", ro:"nu, cobor mai jos" },
       { tema:"viaggi", livello:"A1", it:"scendi qui?", en:"do you get off here?", fr:"descends ici", es:"baja aquí", de:"steig hier aus", pt:"desce aqui", ca:"baixa aquí", sp:"a te chini chi?", ia:"descende hic", ro:"coborâ aici" },
       { tema:"corpo", livello:"A2", it:"tosse con catarro", en:"cough with phlegm", fr:"toux avec catarrhe", es:"tos con catarro", de:"Husten mit Schleim", pt:"tosse com catarro", ca:"tos amb catarr", sp:"rantega", mn:"rantega", ge:"tosse con cataro/tosse con catarro", ia:"tusse con catarro", ro:"tuse cu secreții" },
@@ -2745,7 +2746,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"zero", en:"zero", fr:"zéro", es:"cero", de:"null", pt:"zero", sp:"zèo", mn:"zeeuu/zeu", ko:"영", ar:"صفر", zh:"零", ja:"ゼロ", ia:"zero", la:"nihil", grc:"μηδέν" },
       { tema:"famiglia", livello:"A1", it:"padre", en:"father", fr:"père", es:"padre", de:"Vater", pt:"pai", ru:"отец|папа", ca:"pare", sp:"pà, pae,", ko:"아버지", ar:"أب", zh:"父亲", ja:"父", ia:"patre", la:"pater", grc:"πατήρ", ro:"tată" },
       { tema:"famiglia", livello:"A2", it:"figlio", en:"son", fr:"fils", es:"hijo", de:"Sohn", pt:"filho", ru:"сын", ca:"fill", sp:"figio", mn:"figiu", cr:"", ko:"아들", ar:"ابن", zh:"儿子", ja:"息子", ia:"filio", la:"filius", grc:"υἱός", ro:"fiu" },
-      { tema:"famiglia", livello:"A2", it:"cugino", en:"cousin", fr:"cousin", es:"primo", de:"Cousin", pt:"primo", ru:"двоюродный брат", ca:"cosí", cr:"cusin", ko:"사촌", ar:"ابن عم", zh:"表兄弟", ja:"いとこ", ia:"cousino", la:"patrueles", grc:"ξάδελφος" },
+      { tema:"famiglia", livello:"A2", it:"cugino", en:"cousin", fr:"cousin", es:"primo", de:"Cousin", pt:"primo", ru:"двоюродный брат", ca:"cosí", sp:"cosìn", mn:"cuzin", cr:"cusin", ge:"cuxìn|côxo", ko:"사촌", ar:"ابن عم", zh:"表兄弟", ja:"いとこ", ia:"cousino", la:"patrueles", grc:"ξάδελφος", ro:"văr" },
       { tema:"famiglia", livello:"A2", it:"zia", en:"aunt", fr:"tante", es:"tía", de:"Tante", pt:"tia", ru:"тётя", ca:"tia", sp:"séa|làla", cr:"zia", ko:"이모", ar:"عمة", zh:"", ja:"", ia:"tante", la:"amita", grc:"θεία" },
       { tema:"giorni", livello:"A1", it:"testa", en:"head", fr:"tête", es:"cabeza", de:"Kopf", pt:"cabeça|cabeca", ru:"голова", ca:"cap", sp:"testa", mn:"testa", cr:"testa", ko:"머리", ar:"رأس", zh:"头", ja:"頭", ia:"testa", la:"caput", grc:"κεφαλή" },
       { tema:"corpo", livello:"A1", it:"naso", en:"nose", fr:"nez", es:"nariz", de:"Nase", pt:"nariz", ru:"нос", ca:"nas", cr:"nas", ko:"코", ar:"أنف", zh:"鼻子", ja:"鼻", ia:"naso", la:"nasus", grc:"ῥίς" },
@@ -3152,7 +3153,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 134;
+const VOC_VERSION = 135;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
