@@ -1688,6 +1688,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"numeri", livello:"A1", it:"quarto", en:"fourth", fr:"quatrième", es:"cuarto", de:"vierte", pt:"quarto", sp:"quarto", mn:"quàrtu", ge:"quàrto", ia:"quarte", la:"quartus", ro:"al patrulea" },
+      { tema:"oggetti", livello:"A2", it:"forbice", en:"scissors", fr:"ciseaux", es:"tijeras", de:"Schere", pt:"tesoura", sp:"tesoa", mn:"tézua", ge:"tezoîe", ia:"ciseaux", la:"forfex", ro:"foarfecă" },
       { tema:"numeri", livello:"A1", it:"primo", en:"first", fr:"premier", es:"primero", de:"erste", pt:"primeiro", sp:"primo|priméo", mn:"primu", ge:"primmo", ia:"prime", la:"primus", ro:"primul" },
       { tema:"viaggi", livello:"A2", it:"no, scendo più in là", en:"no, I'll get off further down", fr:"non, je descends plus loin", es:"no, bajo más abajo", de:"nein, ich steige weiter unten aus", pt:"não, desço mais adiante", ca:"no, baixo més avall", sp:"no, a chino ciü en là", ia:"no, me descende plus in basso", ro:"nu, cobor mai jos" },
       { tema:"viaggi", livello:"A1", it:"scendi qui?", en:"do you get off here?", fr:"descends ici", es:"baja aquí", de:"steig hier aus", pt:"desce aqui", ca:"baixa aquí", sp:"a te chini chi?", ia:"descende hic", ro:"coborâ aici" },
@@ -1788,7 +1790,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"novanta", ru:"девяносто", sp:"novanta", mn:"nuanta" },
       { tema:"numeri", livello:"A1", it:"ottanta|80", en:"eighty", ru:"восемьдесят", sp:"otanta|80", mn:"utanta|80" },
       { tema:"numeri", livello:"A1", it:"sessanta|60", en:"sixty", ru:"шестьдесят", sp:"sesanta|60", mn:"sesanta|60" },
-      { tema:"numeri", livello:"A1", it:"quaranta", en:"forty", ru:"сорок", sp:"quaanta", mn:"quaanta" },
+      { tema:"numeri", livello:"A1", it:"quaranta", en:"forty", fr:"quarante", es:"cuarenta", de:"vierzig", pt:"quarenta", ru:"сорок", sp:"quaanta", mn:"quaanta", ge:"quarànta", ia:"quaranta", la:"quadraginta", ro:"patruzeci" },
       { tema:"numeri", livello:"A1", it:"trenta", en:"thirty", ru:"тридцать", sp:"trenta", mn:"trenta" },
       { tema:"numeri", livello:"A1", it:"venti", en:"twenty", ru:"двадцать", sp:"vinti", mn:"vinti", ro:"douăzeci" },
       { tema:"numeri", livello:"A1", it:"diciannove", en:"nineteen", ru:"девятнадцать", sp:"dezanéve", mn:"dezanéve" },
@@ -1886,7 +1888,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A1", it:"recinzione", en:"fence", fr:"clôture|barrière", es:"valla|cerca", de:"Zaun", pt:"cerca|vedação", ru:"забор", ca:"tanca", sp:"ciodénda" },
       { tema:"verbi", livello:"A2", it:"riempire", en:"fill", fr:"remplir", es:"llenar", de:"füllen", pt:"encher", ru:"наполнять", ca:"omplir", sp:"areencie, reencie", ia:"plenar" },
       { tema:"dialogo", livello:"A2", it:"bandiera", en:"flag", fr:"drapeau", es:"bandera", de:"Fahne", pt:"bandeira", ru:"флаг", ca:"bandera", mn:"bandièa" },
-      { tema:"luoghi", livello:"A2", it:"appartamento", en:"flat", fr:"appartement", es:"apartamento|piso", de:"Wohnung", pt:"apartamento", ru:"квартира", ca:"pis|apartament", sp:"quartéo" },
+      { tema:"luoghi", livello:"A2", it:"appartamento", en:"flat", fr:"appartement", es:"apartamento|piso", de:"Wohnung", pt:"apartamento", ru:"квартира", ca:"pis|apartament", sp:"quartéo", mn:"apartameentu/apartameent", ge:" scîto", ia:"appartamento", la:"appartamentum", ro:"apartament" },
       { tema:"viaggi", livello:"A2", it:"volo", en:"flight", fr:"vol", es:"vuelo", de:"Flug", pt:"voo|vôo", ru:"рейс|полёт", ca:"vol", sp:"svolo", mn:"svéu/zvéu" },
       { tema:"dialogo", livello:"B1", it:"correntemente", en:"fluently", fr:"couramment", es:"con fluidez", de:"fließend", pt:"fluentemente", ru:"бегло", ca:"amb fluïdesa" },
       { tema:"natura", livello:"B1", it:"nebbioso", en:"foggy", fr:"brumeux", es:"neblinoso", de:"neblig", pt:"nevoento", ru:"туманный", ca:"boirós" },
@@ -1995,7 +1997,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"sorridere/sorriso", en:"smile", fr:"sourire", es:"sonreír|sonrisa", de:"lächeln|Lächeln", pt:"sorrir|sorriso", ru:"улыбаться|улыбка", ca:"somriure" },
       { tema:"verbi", livello:"A2", it:"fumare/fumo", en:"smoke", fr:"fumer|fumée", es:"fumar|humo", de:"rauchen|Rauch", pt:"fumar|fumaça", ru:"курить|дым", ca:"fumar|fum", sp:"" },
       { tema:"animali", livello:"A2", it:"serpente", en:"snake", fr:"serpent", es:"serpiente", de:"Schlange", pt:"cobra|serpente", ru:"змея", ca:"serp" },
-      { tema:"dialogo", livello:"A2", it:"qualcuno", en:"somebody", fr:"quelqu'un", es:"alguien", de:"jemand", pt:"alguém", ru:"кто-то", ca:"algú", sp:"quarchedün, quarcudün", mn:"quarcùn" },
+      { tema:"dialogo", livello:"A2", it:"qualcuno", en:"somebody", fr:"quelqu'un", es:"alguien", de:"jemand", pt:"alguém", ru:"кто-то", ca:"algú", sp:"quarchedün", mn:"quarcùn", ge:"quarchedùn", ia:"alcuno", la:"quidam", ro:"cineva" },
       { tema:"dialogo", livello:"A2", it:"qualcosa", en:"something", fr:"quelque chose", es:"algo", de:"etwas", pt:"algo|alguma coisa", ru:"что-то", ca:"alguna cosa", sp:"quarcò", mn:"quarcò", ge:"quarcösa", ia:"algo", la:"aliquid", ro:"ceva" },
       { tema:"dialogo", livello:"A1", it:"qualche volta", en:"sometimes", fr:"parfois|quelquefois", es:"a veces", de:"manchmal", pt:"às vezes", ru:"иногда", ca:"de vegades" },
       { tema:"dialogo", livello:"B1", it:"da qualche parte", en:"somewhere", fr:"quelque part", es:"en algún lugar", de:"irgendwo", pt:"em algum lugar", ru:"где-то", ca:"en algun lloc" },
@@ -2102,7 +2104,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A1", it:"coltello", en:"knife", fr:"couteau", es:"cuchillo", de:"Messer", pt:"faca", ca:"ganivet", sp:"cotèo", cr:"Cultèd", ko:"칼", ar:"سكين", zh:"刀", ja:"ナイフ", ia:"cultello", la:"Hispania", grc:"Ἱσπανία" },
       { tema:"casa", livello:"A2", it:"bicchiere", en:"glass", fr:"verre", es:"vaso", de:"Glas", pt:"copo", ru:"поворачивать|поворот", ca:"girar|torn", sp:"gòto", mn:"gotu", cr:"Bicèr", ko:"컵", ar:"كوب", zh:"杯子", ja:"グラス", ia:"bicario" },
       { tema:"luoghi", livello:"A1", it:"chiesa", en:"church", fr:"église", es:"iglesia", de:"Kirche", pt:"igreja", ru:"церковь", ca:"església", sp:"gese", mn:"giésa", cr:"ciesa / cesa", ge:"gëxa", ko:"교회", ar:"كنيسة", zh:"教堂", ja:"教会", ia:"ecclesia", la:"numquam", grc:"οὐδέποτε" },
-      { tema:"luoghi", livello:"A1", it:"piazza|quadrato", en:"square", fr:"place", es:"plaza", de:"Platz", pt:"praça|praca", ru:"площадь", ca:"plaça", sp:"ciassa", mn:"ciassa", cr:"piaza", ko:"광장", ar:"ميدان", zh:"广场", ja:"広場" },
+      { tema:"luoghi", livello:"A1", it:"piazza|quadrato", en:"square", fr:"place", es:"plaza", de:"Platz", pt:"praça|praca", ru:"площадь", ca:"plaça", sp:"ciassa", mn:"ciassa", cr:"piaza", ge:"ciassa", ko:"광장", ar:"ميدان", zh:"广场", ja:"広場", ia:"plaza", la:"platea", ro:"piață" },
       { tema:"lavoro", livello:"A1", it:"mercato", en:"market", fr:"marché", es:"mercado", de:"Markt", pt:"mercado", ru:"рынок", ca:"mercat", sp:"mercà", mn:"mercaa", cr:"mrcat", ge:"", ko:"시장", ar:"سوق", zh:"市场", ja:"市場", ia:"mercato", la:"ibi", grc:"ἐκεῖ" },
       { tema:"verbi", livello:"A1", it:"avere", en:"have", fr:"avoir", es:"tener", de:"haben", pt:"ter", ru:"иметь", ca:"tenir|haver", sp:"avée", mn:"aveee/avee", ko:"가지다", ar:"يملك", zh:"有", ja:"持つ", ia:"haver", la:"habere", ro:"a avea" },
       { tema:"verbi", livello:"A1", it:"andare", en:"go", fr:"aller", es:"ir", de:"gehen", pt:"ir", ru:"идти|ехать", ca:"anar", sp:"andae", mn:"andaaa/andaa", cr:"andar", ge:"andâ|anâ", ko:"가다", ar:"يذهب", zh:"去", ja:"行く", ia:"ir", la:"ire", grc:"ἰέναι", ro:"a merge" },
@@ -2195,7 +2197,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"citazioni", livello:"B2", it:"Niente di nuovo sotto il sole", la:"Nihil novi sub sole", grc:"Οὐδὲν νέον ὑπὸ τὸν ἥλιον" },
       { tema:"citazioni", livello:"B2", it:"Carpe diem (cogli l'attimo)", la:"Carpe diem", grc:"Δρέπε τὴν ἡμέραν" },
       { tema:"numeri", livello:"A1", it:"uno", en:"one", fr:"un", es:"uno", de:"ein|eins", pt:"um", ru:"один", ca:"un", sp:"ün", mn:"ün", ko:"일", ar:"واحد", zh:"一", ja:"一", ia:"un|uno", la:"unus", grc:"εἷς", ro:"unu" },
-      { tema:"numeri", livello:"A1", it:"due|2", en:"two", fr:"deux", es:"dos", de:"zwei", pt:"dois", ru:"два", ca:"dos", sp:"doi, doa", mn:"dùi", cr:"Do", ko:"이", ar:"اثنان", zh:"二", ja:"二", ia:"duo", la:"duo", grc:"δύο", ro:"doi" },
+      { tema:"numeri", livello:"A1", it:"due|2", en:"two", fr:"deux", es:"dos", de:"zwei", pt:"dois", ru:"два", ca:"dos", sp:"doi, doa", mn:"dùi", cr:"Do", ge:"doî | dôe", ko:"이", ar:"اثنان", zh:"二", ja:"二", ia:"duo", la:"duo", grc:"δύο", ro:"doi" },
       { tema:"numeri", livello:"A1", it:"tre|3", en:"three", fr:"trois", es:"tres", de:"drei", pt:"três|tres", ru:"три", ca:"tres", sp:"trèi", mn:"tree", cr:"Tre", ko:"삼", ar:"ثلاثة", zh:"三", ja:"三", ia:"tres", la:"tres", grc:"τρεῖς" },
       { tema:"numeri", livello:"A1", it:"quattro|4", en:"four", fr:"quatre", es:"cuatro", de:"vier", pt:"quatro", ru:"четыре", ca:"quatre", sp:"quatro/quattro/quatro", mn:"quatru", cr:"Quatr", ko:"사", ar:"أربعة", zh:"四", ja:"四", ia:"quatro", la:"quattuor", ro:"patru" },
       { tema:"numeri", livello:"A1", it:"cinque|5", en:"five", fr:"cinq", es:"cinco", de:"fünf", pt:"cinco", ru:"пять", ca:"cinc", sp:"sìnque", mn:"sinque", cr:"Zinqui", ko:"오", ar:"خمسة", zh:"五", ja:"五", ia:"cinque", la:"quinque", grc:"πέντε" },
@@ -2367,7 +2369,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"luoghi", livello:"B1", it:"dogana", en:"customs", fr:"douane", es:"aduana", de:"Zoll", pt:"alfândega|alfandega", ru:"сегодня вечером", ca:"aquesta nit", sp:"", ko:"세관", ar:"جمارك", zh:"海关", ja:"税関", ia:"aduana", la:"portorium", grc:"τελωνεῖον" },
       { tema:"giorni", livello:"A1", it:"lunedì", en:"Monday", fr:"lundi", es:"lunes", de:"Montag", pt:"segunda-feira", ru:"понедельник", ca:"dilluns", sp:"lünedì", mn:"lünedì", ko:"월요일", ar:"الاثنين", zh:"星期一", ja:"月曜日", ia:"lunedi", la:"dies Lunae", grc:"Δευτέρα", ro:"luni" },
       { tema:"giorni", livello:"A1", it:"martedì", en:"Tuesday", fr:"mardi", es:"martes", de:"Dienstag", pt:"terça-feira|terca-feira", ru:"вторник", ca:"dimarts", sp:"martedì", mn:"martedi", ko:"화요일", ar:"الثلاثاء", zh:"星期二", ja:"火曜日", ia:"martedi", la:"dies Martis", grc:"Τρίτη", ro:"marți" },
-      { tema:"giorni", livello:"A1", it:"mercoledì", en:"Wednesday", fr:"mercredi", es:"miércoles", de:"Mittwoch", pt:"quarta-feira", ru:"среда", ca:"dimecres", sp:"marcordì", mn:"marcurdi", ko:"수요일", ar:"الأربعاء", zh:"星期三", ja:"水曜日", ia:"mercuridi", la:"dies Mercurii", grc:"Τετάρτη", ro:"miercuri" },
+      { tema:"giorni", livello:"A1", it:"mercoledì", en:"Wednesday", fr:"mercredi", es:"miércoles", de:"Mittwoch", pt:"quarta-feira", ru:"среда", ca:"dimecres", sp:"marcordì", mn:"marcurdi", ge:"mâcordì", ko:"수요일", ar:"الأربعاء", zh:"星期三", ja:"水曜日", ia:"mercuridi", la:"dies Mercurii", grc:"Τετάρτη", ro:"miercuri" },
       { tema:"giorni", livello:"A1", it:"giovedì", en:"Thursday", fr:"jeudi", es:"jueves", de:"Donnerstag", pt:"quinta-feira", ru:"четверг", ca:"dijous", sp:"zògia", mn:"zògia", ge:"zêuggia", ko:"목요일", ar:"الخميس", zh:"星期四", ja:"木曜日", ia:"jovedi", la:"dies Iovis", grc:"Πέμπτη", ro:"joi" },
       { tema:"giorni", livello:"A1", it:"venerdì", en:"Friday", fr:"vendredi", es:"viernes", de:"Freitag", pt:"sexta-feira", ru:"пятница", ca:"divendres", sp:"vernardì", mn:"vernardì", ko:"금요일", ar:"الجمعة", zh:"星期五", ja:"金曜日", ia:"venerdi", la:"dies Veneris", grc:"Παρασκευή", ro:"vineri" },
       { tema:"giorni", livello:"A1", it:"sabato", en:"Saturday", fr:"samedi", es:"sábado", de:"Samstag", pt:"sábado|sabado", ru:"суббота", ca:"dissabte", sp:"sabo", mn:"sabu", cr:"sabt", ko:"토요일", ar:"السبت", zh:"星期六", ja:"土曜日", ia:"sabbato", la:"Sabbatum", grc:"Σάββατον", ro:"sâmbătă" },
@@ -2789,7 +2791,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"ventiquattro|24", sp:"vintiquatro", mn:"vintiquatru", cr:"Vintiquatr" },
       { tema:"numeri", livello:"A1", it:"venticinque|25", sp:"vintisinque", mn:"vintisinque", cr:"Vintizinqui" },
       { tema:"numeri", livello:"A1", it:"trentatre|33", sp:"trentatrei", mn:"trentatree" },
-      { tema:"numeri", livello:"A1", it:"quarantadue|42", sp:"quaantadoi|quaantadoa", mn:"quaantadui", cr:"Quarantadò" },
+      { tema:"numeri", livello:"A1", it:"quarantadue|42", en:"forty-two", fr:"quarante-deux", es:"cuarenta y dos", de:"zweiundvierzig", pt:"quarenta e dois", sp:"quaantadoi|quaantadoa", mn:"quaantadui", cr:"Quarantadò", ge:"quarantadoî", ia:"quaranta-duo", la:"quadraginta duo", ro:"patruzeci și doi" },
       { tema:"numeri", livello:"A1", it:"sessantasei|66", sp:"sesantasei|66", mn:"sesantasciei|66", cr:"Sessantassé" },
       { tema:"numeri", livello:"A1", it:"sessantanove|69", sp:"sesantanéve|69", mn:"sesantanéve|69", cr:"Sessantanovi" },
       { tema:"numeri", livello:"A1", it:"settantadue|72", sp:"setandadoi|setantadoa", mn:"setantadui", cr:"Settantadò" },
@@ -3153,7 +3155,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 136;
+const VOC_VERSION = 137;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
