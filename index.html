@@ -1688,6 +1688,9 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"numeri", livello:"A1", it:"settimo", en:"seventh", fr:"septième", es:"séptimo", de:"siebte", pt:"sétimo", sp:"setmo", mn:"setimu", ge:"sètimo|setén", ia:"septime", la:"septimus", ro:"al șaptelea" },
+      { tema:"numeri", livello:"A1", it:"sesto", en:"sixth", fr:"sixième", es:"sexto", de:"sechste", pt:"sexto", sp:"sèsto", mn:"sèstu", ge:"sèsto", ia:"septe", la:"sextus", ro:"al șaselea" },
+      { tema:"numeri", livello:"A1", it:"quinto", en:"fifth", fr:"cinquième", es:"quinto", de:"fünfte", pt:"quinto", sp:"quinto", mn:"quìntu", ge:"quìnto", ia:"quinte", la:"quintus", ro:"al cincilea" },
       { tema:"numeri", livello:"A1", it:"quarto", en:"fourth", fr:"quatrième", es:"cuarto", de:"vierte", pt:"quarto", sp:"quarto", mn:"quàrtu", ge:"quàrto", ia:"quarte", la:"quartus", ro:"al patrulea" },
       { tema:"oggetti", livello:"A2", it:"forbice", en:"scissors", fr:"ciseaux", es:"tijeras", de:"Schere", pt:"tesoura", sp:"tesoa", mn:"tézua", ge:"tezoîe", ia:"ciseaux", la:"forfex", ro:"foarfecă" },
       { tema:"numeri", livello:"A1", it:"primo", en:"first", fr:"premier", es:"primero", de:"erste", pt:"primeiro", sp:"primo|priméo", mn:"primu", ge:"primmo", ia:"prime", la:"primus", ro:"primul" },
@@ -2994,7 +2997,6 @@ const VOCABOLARIO_DEFAULT = [
       { it:"tre", ro:"trei" },
       { it:"cinque", mn:"sinque", ro:"cinci" },
       { it:"sei", ro:"șase" },
-      { it:"sette", ro:"șapte" },
       { it:"dieci", ro:"zece" },
       { it:"cento", mn:"sentu", ro:"o sută" },
       { it:"bianco", sp:"gianco", mn:"giancu", cr:"bianch", ro:"alb" },
@@ -3155,7 +3157,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 137;
+const VOC_VERSION = 138;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
