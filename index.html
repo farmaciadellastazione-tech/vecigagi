@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"numeri", livello:"A1", it:"settanta|70", sp:"Setanta", mn:"setanta", cr:"Settanta", ge:"setanta" },
       { tema:"numeri", livello:"A1", it:"settimo", en:"seventh", fr:"septième", es:"séptimo", de:"siebte", pt:"sétimo", mn:"setimu", ge:"sètimo|setén", ia:"septime", la:"septimus", ro:"al șaptelea" },
       { tema:"numeri", livello:"A1", it:"sesto", en:"sixth", fr:"sixième", es:"sexto", de:"sechste", pt:"sexto", sp:"sèsto", mn:"sèstu", ge:"sèsto", ia:"septe", la:"sextus", ro:"al șaselea" },
       { tema:"numeri", livello:"A1", it:"quinto", en:"fifth", fr:"cinquième", es:"quinto", de:"fünfte", pt:"quinto", sp:"quinto", mn:"quìntu", ge:"quìnto", ia:"quinte", la:"quintus", ro:"al cincilea" },
@@ -1758,7 +1759,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A1", it:"volpe", en:"fox", sp:"gorpe", mn:"gurpa" },
       { tema:"natura", livello:"A1", it:"goccia", mn:"gùssu" },
       { tema:"cibo", livello:"A2", it:"bietole", sp:"géde", mn:"géde", ge:"giaéa" },
-      { tema:"numeri", livello:"A1", it:"doppio", sp:"docio", mn:"dùciu" },
+      { tema:"numeri", livello:"A1", it:"doppio", sp:"docio", mn:"dùciu", ge:"dóggio| dópio" },
       { tema:"numeri", livello:"A1", it:"più", es:"más", sp:"ciü", mn:"ciü" },
       { tema:"natura", livello:"A1", it:"campo", en:"field", es:"campo", sp:"campo", mn:"campu|cian" },
       { tema:"viaggi", livello:"A1", it:"voi partite", mn:"vautri a partii" },
@@ -1790,13 +1791,13 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"B1", it:"diecimila", en:"ten thousand", ru:"десять тысяч", sp:"dézemila", mn:"dièzemila" },
       { tema:"numeri", livello:"A1", it:"cinquecento|500", en:"five hundred", ru:"пятьсот", sp:"sinquesento|500", mn:"sinquesentu|500" },
       { tema:"numeri", livello:"A1", it:"duecento|200", en:"two hundred", ru:"двести", sp:"doisento|200", mn:"duisentu|200" },
-      { tema:"numeri", livello:"A1", it:"novanta", ru:"девяносто", sp:"novanta", mn:"nuanta" },
-      { tema:"numeri", livello:"A1", it:"ottanta|80", en:"eighty", ru:"восемьдесят", sp:"otanta|80", mn:"utanta|80" },
-      { tema:"numeri", livello:"A1", it:"sessanta|60", en:"sixty", ru:"шестьдесят", sp:"sesanta|60", mn:"sesanta|60" },
+      { tema:"numeri", livello:"A1", it:"novanta", ru:"девяносто", sp:"novanta", mn:"nuanta|nuvanta", ge:"novànta" },
+      { tema:"numeri", livello:"A1", it:"ottanta|80", en:"eighty", ru:"восемьдесят", sp:"otanta|80", mn:"utanta|80", ge:"òtànta" },
+      { tema:"numeri", livello:"A1", it:"sessanta|60", en:"sixty", ru:"шестьдесят", sp:"sesanta|60", mn:"sesanta|60", ge:"sciusciànta" },
       { tema:"numeri", livello:"A1", it:"quaranta", en:"forty", fr:"quarante", es:"cuarenta", de:"vierzig", pt:"quarenta", ru:"сорок", sp:"quaanta", mn:"quaanta", ge:"quarànta", ia:"quaranta", la:"quadraginta", ro:"patruzeci" },
-      { tema:"numeri", livello:"A1", it:"trenta", en:"thirty", ru:"тридцать", sp:"trenta", mn:"trenta" },
-      { tema:"numeri", livello:"A1", it:"venti", en:"twenty", ru:"двадцать", sp:"vinti", mn:"vinti", ro:"douăzeci" },
-      { tema:"numeri", livello:"A1", it:"diciannove", en:"nineteen", ru:"девятнадцать", sp:"dezanéve", mn:"dezanéve" },
+      { tema:"numeri", livello:"A1", it:"trenta", en:"thirty", ru:"тридцать", sp:"trenta", mn:"trönta|trenta", ge:"trénta" },
+      { tema:"numeri", livello:"A1", it:"venti", en:"twenty", ru:"двадцать", sp:"vinti", mn:"vinti", ge:"vinti", ro:"douăzeci" },
+      { tema:"numeri", livello:"A1", it:"diciannove", en:"nineteen", ru:"девятнадцать", sp:"dezanéve", mn:"dezenéve", ge:"dixinêuve" },
       { tema:"numeri", livello:"A1", it:"sedici", en:"sixteen", ru:"шестнадцать", sp:"sèze", mn:"seze|söse", ge:"sezze" },
       { tema:"numeri", livello:"A1", it:"quindici", en:"fifteen", ru:"пятнадцать", sp:"chinze", mn:"chinze", ge:"chìnze" },
       { tema:"numeri", livello:"A1", it:"quattordici", en:"fourteen", fr:"quatorze", es:"catorce", de:"vierzehn", pt:"catorze", ru:"четырнадцать", ca:"catorze", sp:"quatorze", mn:"quatrze|quatorze", ge:"quattòrze|quatòrze", ia:"quattorde", ro:"paisprezece" },
@@ -2270,9 +2271,9 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"sciogliere", en:"dissolve", fr:"dissoudre", es:"disolver", de:"auflösen", pt:"dissolver", sp:"siòlie", ia:"disfacer" },
       { tema:"dialetti", livello:"A2", it:"presto", en:"soon", fr:"bientôt", es:"pronto", de:"bald", pt:"cedo", sp:"fito", ia:"presto" },
       { tema:"dialetti", livello:"A1", it:"accanto", en:"next to", fr:"à côté", es:"al lado", de:"daneben", pt:"ao lado", sp:"de costa", mn:"acantu", ge:"vexin à", ia:"apud" },
-      { tema:"numeri", livello:"A2", it:"cinquanta|50", en:"fifty", fr:"cinquante", es:"cincuenta", de:"fünfzig", pt:"cinquenta", ru:"пятьдесят", ca:"cinquanta", sp:"sinquanta", mn:"sinquanta", cr:"Zinquanta", ko:"오십", ar:"خمسون", zh:"五十", ja:"五十" },
-      { tema:"numeri", livello:"A1", it:"cento|100", en:"one hundred|hundred", fr:"cent", es:"cien", de:"hundert", pt:"cem", ru:"сто", ca:"cent", sp:"sénto", mn:"sentu", ko:"백", ar:"مئة", zh:"一百|百", ja:"百" },
-      { tema:"numeri", livello:"A2", it:"secondo", en:"second", fr:"deuxième", es:"segundo", de:"zweite", pt:"segundo", sp:"segondo", mn:"segundu", ge:"segóndo", ko:"두 번째", ar:"الثاني", zh:"第二", ja:"二番目", ia:"secunde", la:"secundus", ro:"al doilea" },
+      { tema:"numeri", livello:"A2", it:"cinquanta|50", en:"fifty", fr:"cinquante", es:"cincuenta", de:"fünfzig", pt:"cinquenta", ru:"пятьдесят", ca:"cinquanta", sp:"sinquanta", mn:"sinquanta", cr:"Zinquanta", ge:"çinquànta", ko:"오십", ar:"خمسون", zh:"五十", ja:"五十" },
+      { tema:"numeri", livello:"A1", it:"cento|100", en:"one hundred|hundred", fr:"cent", es:"cien", de:"hundert", pt:"cem", ru:"сто", ca:"cent", sp:"sénto", mn:"sentu|söntu", ge:"çénto", ko:"백", ar:"مئة", zh:"一百|百", ja:"百", ro:"o sută" },
+      { tema:"numeri", livello:"A2", it:"secondo", en:"second", fr:"deuxième", es:"segundo", de:"zweite", pt:"segundo", sp:"segondo", mn:"segundu|secundu", ge:"segóndo", ko:"두 번째", ar:"الثاني", zh:"第二", ja:"二番目", ia:"secunde", la:"secundus", ro:"al doilea" },
       { tema:"vestiti", livello:"A1", it:"terzo", en:"third", fr:"troisième", es:"tercero", de:"dritte", pt:"terceiro", ru:"небо", ca:"cel", sp:"tèrso", mn:"tersu", cr:"", ge:"tèrso", ko:"세 번째", ar:"الثالث", zh:"第三", ja:"三番目", ia:"tertie", la:"lacerna", grc:"ἀντίλυπος", ro:"al treilea" },
       { tema:"valute", livello:"A1", it:"dollaro", en:"dollar", fr:"dollar", es:"dólar", de:"Dollar", pt:"dólar|dolar", ko:"달러", ar:"دولار", zh:"美元", ja:"ドル" },
       { tema:"valute", livello:"A2", it:"prezzo", en:"price", fr:"prix", es:"precio", de:"Preis", pt:"preço|preco", sp:"prèssio", mn:"priju", ko:"가격", ar:"سعر", zh:"价格", ja:"値段" },
@@ -2790,15 +2791,15 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"B1", it:"parlare chiaramente", en:"speak clearly", fr:"parler clairement", es:"hablar claramente", de:"klar sprechen", pt:"falar claramente", zh:"说话清楚", ia:"parlar clar" },
       { tema:"dialogo", livello:"A2", it:"crescere", en:"grow up", fr:"grandir", es:"crecer", de:"aufwachsen", pt:"crescer", ru:"расти", ca:"créixer" },
       { tema:"numeri", livello:"A1", it:"diciassette|17", ru:"семнадцать", ca:"disset", sp:"dezasète|desete", mn:"dinsete", cr:"Dizisseta", ge:"dîsètte" },
-      { tema:"numeri", livello:"A1", it:"diciotto|18", de:"achtzehn", ru:"восемнадцать", ca:"divuit", sp:"dezòto", mn:"dezotu", cr:"Dizòt", ia:"deces-octo" },
+      { tema:"numeri", livello:"A1", it:"diciotto|18", de:"achtzehn", ru:"восемнадцать", ca:"divuit", sp:"dezòto", mn:"dezotu", cr:"Dizòt", ge:"dixéutto", ia:"deces-octo" },
       { tema:"numeri", livello:"A1", it:"ventiquattro|24", sp:"vintiquatro", mn:"vintiquatru", cr:"Vintiquatr" },
       { tema:"numeri", livello:"A1", it:"venticinque|25", sp:"vintisinque", mn:"vintisinque", cr:"Vintizinqui" },
-      { tema:"numeri", livello:"A1", it:"trentatre|33", sp:"trentatrei", mn:"trentatree" },
+      { tema:"numeri", livello:"A1", it:"trentatre|33", sp:"trentatrei", mn:"trentatree", ge:"tréntatrei" },
       { tema:"numeri", livello:"A1", it:"quarantadue|42", en:"forty-two", fr:"quarante-deux", es:"cuarenta y dos", de:"zweiundvierzig", pt:"quarenta e dois", sp:"quaantadoi|quaantadoa", mn:"quaantadui", cr:"Quarantadò", ge:"quarantadoî", ia:"quaranta-duo", la:"quadraginta duo", ro:"patruzeci și doi" },
       { tema:"numeri", livello:"A1", it:"sessantasei|66", sp:"sesantasei|66", mn:"sesantasciei|66", cr:"Sessantassé" },
       { tema:"numeri", livello:"A1", it:"sessantanove|69", sp:"sesantanéve|69", mn:"sesantanéve|69", cr:"Sessantanovi" },
       { tema:"numeri", livello:"A1", it:"settantadue|72", sp:"setandadoi|setantadoa", mn:"setantadui", cr:"Settantadò" },
-      { tema:"numeri", livello:"A1", it:"settantacinque|75", sp:"setantasinque", mn:"setantasinque", cr:"Settantazinqui" },
+      { tema:"numeri", livello:"A1", it:"settantacinque|75", sp:"Setantasinque", mn:"setantasinque", cr:"Settantazinqui" },
       { tema:"natura", livello:"B1", it:"tronco d'albero", cr:"tronch d'albr" },
       { tema:"natura", livello:"B1", it:"frescura", cr:"frschezza" },
       { tema:"natura", livello:"A1", it:"monte", sp:"monte, brico", cr:"mont" },
@@ -2998,7 +2999,6 @@ const VOCABOLARIO_DEFAULT = [
       { it:"cinque", mn:"sinque", ro:"cinci" },
       { it:"sei", ro:"șase" },
       { it:"dieci", sp:"dése", mn:"diése", ge:"dexe", ro:"zece" },
-      { it:"cento", mn:"sentu", ro:"o sută" },
       { it:"bianco", sp:"gianco", mn:"giancu", cr:"bianch", ro:"alb" },
       { it:"madre", mn:"maa", ro:"mamă" },
       { it:"pane", sp:"pan", mn:"pan", cr:"pan", ge:"pan", ro:"pâine" },
@@ -3156,7 +3156,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 143;
+const VOC_VERSION = 144;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
