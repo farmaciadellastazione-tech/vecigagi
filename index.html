@@ -2718,7 +2718,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A1", it:"adesso|ora", en:"now", fr:"maintenant", es:"ahora", de:"jetzt", pt:"agora", sp:"adèssa, adèsso| ooa/oa", mn:"auùa/aua", ko:"지금", ar:"الآن", zh:"现在", ja:"今", ia:"nunc", la:"nunc", grc:"νῦν" },
       { tema:"aggettivi", livello:"A1", it:"qui", en:"here", fr:"ici", es:"aquí", de:"hier", pt:"aqui", sp:"chì", ko:"여기", ar:"هنا", zh:"这里", ja:"ここ", ia:"hic", la:"hic", grc:"ἐνθάδε" },
       { tema:"aggettivi", livello:"A1", it:"bene", en:"well", fr:"bien", es:"bien", de:"gut", pt:"bem", ru:"хорошо", ca:"bé", sp:"ben", mn:"ben", ko:"잘", ar:"جيداً", zh:"好", ja:"よく", ia:"bon", la:"bene", grc:"καλῶς" },
-      { tema:"aggettivi", livello:"A1", it:"grazie", en:"thank you", fr:"merci", es:"gracias", de:"danke", pt:"obrigado", ru:"спасибо", ca:"gràcies", sp:"grassie", mn:"grassie", cr:"", ko:"감사합니다", ar:"شكراً", zh:"谢谢", ja:"ありがとう", ia:"gratias", la:"gratias", grc:"εὐχαριστῶ", ro:"mulțumesc" },
+      { tema:"aggettivi", livello:"A1", it:"grazie", en:"thank you", fr:"merci", es:"gracias", de:"danke", pt:"obrigado", ru:"спасибо", ca:"gràcies", sp:"grassie", mn:"grassie", cr:"", ge:"graçie", ko:"감사합니다", ar:"شكراً", zh:"谢谢", ja:"ありがとう", ia:"gratias", la:"gratias", grc:"εὐχαριστῶ", ro:"mulțumesc" },
       { tema:"dialogo", livello:"A1", it:"scusa", en:"sorry", fr:"pardon", es:"perdón", de:"Entschuldigung", pt:"desculpa", ru:"извини", ca:"perdona", sp:"scüsa", mn:"scüza", ge:"scüsa", ko:"미안해요", ar:"آسف", zh:"对不起", ja:"ごめんなさい", ia:"pardono", la:"ignosce", grc:"συγγνώμη", ro:"scuză-mă" },
       { tema:"aggettivi", livello:"A2", it:"certo", en:"certain", fr:"certain", es:"cierto", de:"sicher", pt:"certo", ko:"확실한", ar:"مؤكد", zh:"确定", ja:"確かな", ia:"certe", la:"certus", grc:"βέβαιος" },
       { tema:"aggettivi", livello:"A1", it:"forte", en:"strong", fr:"fort", es:"fuerte", de:"stark", pt:"forte", ru:"сильный", ca:"fort", sp:"forte", mn:"forte", ko:"강한", ar:"قوي", zh:"强", ja:"強い", ia:"forte", la:"fortis", grc:"ἰσχυρός" },
@@ -2992,8 +2992,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"saluti", livello:"A1", it:"arrivederci", en:"goodbye", fr:"au revoir", es:"hasta luego", de:"auf Wiedersehen", pt:"até logo", ca:"adéu", sp:"a revédese", mn:"adiu|se vedemu|ciao", ge:"a revéise", la:"vale", ro:"la revedere" },
       { it:"per favore|per piacere", sp:"pe' piasée", mn:"pe' piazëë", ge:"pe' piaxei", ro:"vă rog" },
       { it:"prego", mn:"pregu", ro:"cu plăcere" },
-      { it:"sì", mn:"si", ro:"da" },
-      { it:"no", mn:"nu", ro:"nu" },
+      { tema:"saluti", livello:"A1", it:"sì", en:"yes", fr:"oui", es:"sí", de:"ja", pt:"sim", ca:"sí", sp:"si", mn:"si", cr:"si", ge:"si", la:"ita", ro:"da" },
+      { tema:"saluti", livello:"A1", it:"no", en:"no", fr:"non", es:"no", de:"nein", pt:"não", ca:"no", sp:"no", mn:"nu", cr:"no", ge:"no", la:"non", ro:"nu" },
       { it:"tre", ro:"trei" },
       { it:"cinque", mn:"sinque", ro:"cinci" },
       { it:"sei", ro:"șase" },
@@ -3155,7 +3155,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 145;
+const VOC_VERSION = 146;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
