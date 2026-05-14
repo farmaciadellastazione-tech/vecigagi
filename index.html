@@ -1797,7 +1797,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"trenta", en:"thirty", ru:"тридцать", sp:"trenta", mn:"trenta" },
       { tema:"numeri", livello:"A1", it:"venti", en:"twenty", ru:"двадцать", sp:"vinti", mn:"vinti", ro:"douăzeci" },
       { tema:"numeri", livello:"A1", it:"diciannove", en:"nineteen", ru:"девятнадцать", sp:"dezanéve", mn:"dezanéve" },
-      { tema:"numeri", livello:"A1", it:"sedici", en:"sixteen", ru:"шестнадцать", sp:"sèze", mn:"seze" },
+      { tema:"numeri", livello:"A1", it:"sedici", en:"sixteen", ru:"шестнадцать", sp:"sèze", mn:"seze|söse", ge:"sezze" },
       { tema:"numeri", livello:"A1", it:"quindici", en:"fifteen", ru:"пятнадцать", sp:"chinze", mn:"chinze", ge:"chìnze" },
       { tema:"numeri", livello:"A1", it:"quattordici", en:"fourteen", fr:"quatorze", es:"catorce", de:"vierzehn", pt:"catorze", ru:"четырнадцать", ca:"catorze", sp:"quatorze", mn:"quatrze|quatorze", ge:"quattòrze|quatòrze", ia:"quattorde", ro:"paisprezece" },
       { tema:"numeri", livello:"A1", it:"tredici", en:"thirteen", ru:"тринадцать", sp:"treze", mn:"tröze", ge:"Trezze" },
@@ -2789,7 +2789,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A1", it:"fermati qui", en:"stop here", fr:"arrête-toi ici", es:"para aquí", de:"halt hier", pt:"pare aqui", sp:"fermete chi" },
       { tema:"dialogo", livello:"B1", it:"parlare chiaramente", en:"speak clearly", fr:"parler clairement", es:"hablar claramente", de:"klar sprechen", pt:"falar claramente", zh:"说话清楚", ia:"parlar clar" },
       { tema:"dialogo", livello:"A2", it:"crescere", en:"grow up", fr:"grandir", es:"crecer", de:"aufwachsen", pt:"crescer", ru:"расти", ca:"créixer" },
-      { tema:"numeri", livello:"A1", it:"diciassette|17", ru:"семнадцать", ca:"disset", sp:"dezasète|desete", mn:"dinsete", cr:"Dizisseta" },
+      { tema:"numeri", livello:"A1", it:"diciassette|17", ru:"семнадцать", ca:"disset", sp:"dezasète|desete", mn:"dinsete", cr:"Dizisseta", ge:"dîsètte" },
       { tema:"numeri", livello:"A1", it:"diciotto|18", de:"achtzehn", ru:"восемнадцать", ca:"divuit", sp:"dezòto", mn:"dezotu", cr:"Dizòt", ia:"deces-octo" },
       { tema:"numeri", livello:"A1", it:"ventiquattro|24", sp:"vintiquatro", mn:"vintiquatru", cr:"Vintiquatr" },
       { tema:"numeri", livello:"A1", it:"venticinque|25", sp:"vintisinque", mn:"vintisinque", cr:"Vintizinqui" },
@@ -3156,7 +3156,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 142;
+const VOC_VERSION = 143;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
