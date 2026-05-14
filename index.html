@@ -2749,7 +2749,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"B1", it:"cambiare", en:"change", fr:"changer", es:"cambiar", de:"ändern", pt:"mudar", ru:"менять", ca:"canviar", sp:"cangiae", mn:"sbragiùn/zbragiùn", ko:"바꾸다", ar:"يغير", zh:"改变", ja:"変える", ia:"cambiar", la:"mutare", grc:"ἀλλάσσειν" },
       { tema:"verbi", livello:"B1", it:"riparare", en:"repair", fr:"réparer", es:"reparar", de:"reparieren", pt:"reparar|consertar", ru:"ремонтировать", ca:"reparar", ko:"수리하다", ar:"يصلح", zh:"修理", ja:"修理する", ia:"reparar", la:"reficere", grc:"ἐπισκευάζειν" },
       { tema:"numeri", livello:"A1", it:"zero", en:"zero", fr:"zéro", es:"cero", de:"null", pt:"zero", sp:"zèo", mn:"zeeuu/zeu", ko:"영", ar:"صفر", zh:"零", ja:"ゼロ", ia:"zero", la:"nihil", grc:"μηδέν" },
-      { tema:"famiglia", livello:"A1", it:"padre", en:"father", fr:"père", es:"padre", de:"Vater", pt:"pai", ru:"отец|папа", ca:"pare", sp:"pà, pae,", ko:"아버지", ar:"أب", zh:"父亲", ja:"父", ia:"patre", la:"pater", grc:"πατήρ", ro:"tată" },
+      { tema:"famiglia", livello:"A1", it:"padre|babbo", en:"father", fr:"père", es:"padre", de:"Vater", pt:"pai", ru:"отец|папа", ca:"pare", sp:"pae|pa", mn:"pâ", cr:"ba|pa", ge:"poæ", ko:"아버지", ar:"أب", zh:"父亲", ja:"父", ia:"patre", la:"pater", grc:"πατήρ", ro:"tată" },
       { tema:"famiglia", livello:"A2", it:"figlio", en:"son", fr:"fils", es:"hijo", de:"Sohn", pt:"filho", ru:"сын", ca:"fill", sp:"figio", mn:"figiu", cr:"", ko:"아들", ar:"ابن", zh:"儿子", ja:"息子", ia:"filio", la:"filius", grc:"υἱός", ro:"fiu" },
       { tema:"famiglia", livello:"A2", it:"cugino", en:"cousin", fr:"cousin", es:"primo", de:"Cousin", pt:"primo", ru:"двоюродный брат", ca:"cosí", sp:"cosìn", mn:"cuzin", cr:"cusin", ge:"cuxìn|côxo", ko:"사촌", ar:"ابن عم", zh:"表兄弟", ja:"いとこ", ia:"cousino", la:"patrueles", grc:"ξάδελφος", ro:"văr" },
       { tema:"famiglia", livello:"A2", it:"zia", en:"aunt", fr:"tante", es:"tía", de:"Tante", pt:"tia", ru:"тётя", ca:"tia", sp:"séa|làla", cr:"zia", ko:"이모", ar:"عمة", zh:"", ja:"", ia:"tante", la:"amita", grc:"θεία" },
@@ -3062,7 +3062,6 @@ const VOCABOLARIO_DEFAULT = [
       { it:"germoglio", cr:"b'detr" },
       { it:"malva", cr:"malva" },
       { it:"madre / mamma", cr:"ma / mama" },
-      { it:"padre / babbo", cr:"ba / pa" },
       { it:"bambino / bimbo", cr:"m'nin" },
       { it:"figliolo", cr:"fiol" },
       { it:"zitella", cr:"zavata" },
@@ -3157,7 +3156,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 140;
+const VOC_VERSION = 141;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
