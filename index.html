@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"espressioni", livello:"B1", it:"me ne frego", en:"I don't care", fr:"je m'en fiche", es:"me importa un bledo", de:"es ist mir egal", pt:"não me importo", ru:"мне все равно", ca:"no em fa res", sp:"amen baato 'r belin/a men bato er belin", mn:"a men batu er belin", ge:"a men bato o belin", ko:"관심 없다", ar:"لا أهتم", zh:"我不在乎", ja:"気にしない", ia:"me non importa", la:"non cura", grc:"ἀμελήσω", ro:"nu-mi pasă", sq:"nuk më shqetëson" },
       { tema:"biologia", livello:"B2", it:"copulare", en:"mate", fr:"baiser", es:"copular", de:"begatten", pt:"acoplar", ru:"спариваться", ca:"copular", sp:"beciaaae/beciae", mn:"beciaaae/beciae", ge:"beciaaa/beciâ", ko:"교미하다", ar:"تزاوج", zh:"交配", ja:"交尾する", ia:"copular", la:"coire", grc:"συζεύγνυμι", ro:"a copula", sq:"bashkohen" },
       { tema:"tempo", livello:"A1", it:"allora", en:"then", fr:"alors", es:"entonces", de:"dann", pt:"então", ru:"тогда", ca:"llavors", sp:"aloooa/aloa", mn:"aluùa/alùa", ge:"alôa", ko:"그때", ar:"ثم", zh:"那么", ja:"それで", ia:"tunc", la:"tunc", grc:"τότε", ro:"atunci", sq:"atëherë" },
       { tema:"insulti", livello:"B2", it:"bagascia", en:"slut", fr:"pute", es:"puta", de:"Hure", pt:"vadia", ru:"шлюха", ca:"puta", sp:"bagàssa", mn:"bagàssa", cr:"bagascia / bagàscia", ge:"bagascia", ko:"양아치", ar:"عاهرة", zh:"荡妇", ja:"売春婦", ia:"meretrice", la:"meretrix", grc:"πόρνη", ro:"curvă", sq:"lavire" },
@@ -2200,7 +2201,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"citazioni", livello:"B1", it:"Penso dunque sono", la:"Cogito ergo sum", grc:"Νοῶ, ἄρα εἰμί" },
       { tema:"citazioni", livello:"B1", it:"Nella misura, sta la virtù", la:"In medio stat virtus", grc:"Μηδὲν ἄγαν (niente di troppo)" },
       { tema:"citazioni", livello:"B2", it:"L'uomo è la misura di tutte le cose", la:"Homo omnium rerum mensura", grc:"Πάντων χρημάτων μέτρον ἄνθρωπος" },
-      { tema:"citazioni", livello:"B2", it:"So di non sapere", la:"Scio me nescire", grc:"Οἶδα οὐκ εἰδώς" },
       { tema:"citazioni", livello:"B2", it:"Niente di nuovo sotto il sole", la:"Nihil novi sub sole", grc:"Οὐδὲν νέον ὑπὸ τὸν ἥλιον" },
       { tema:"citazioni", livello:"B2", it:"Carpe diem (cogli l'attimo)", la:"Carpe diem", grc:"Δρέπε τὴν ἡμέραν" },
       { tema:"numeri", livello:"A1", it:"uno", en:"one", fr:"un", es:"uno", de:"ein|eins", pt:"um", ru:"один", ca:"un", sp:"ün", mn:"ün", ko:"일", ar:"واحد", zh:"一", ja:"一", ia:"un|uno", la:"unus", grc:"εἷς", ro:"unu" },
@@ -3157,7 +3157,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 150;
+const VOC_VERSION = 151;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
