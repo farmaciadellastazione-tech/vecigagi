@@ -1688,6 +1688,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"tempo", livello:"A1", it:"allora", en:"then", fr:"alors", es:"entonces", de:"dann", pt:"então", ru:"тогда", ca:"llavors", sp:"aloooa/aloa", mn:"aluùa/alùa", ge:"alôa", ko:"그때", ar:"ثم", zh:"那么", ja:"それで", ia:"tunc", la:"tunc", grc:"τότε", ro:"atunci", sq:"atëherë" },
+      { tema:"insulti", livello:"B2", it:"bagascia", en:"slut", fr:"pute", es:"puta", de:"Hure", pt:"vadia", ru:"шлюха", ca:"puta", sp:"bagàssa", mn:"bagàssa", cr:"bagascia / bagàscia", ge:"bagascia", ko:"양아치", ar:"عاهرة", zh:"荡妇", ja:"売春婦", ia:"meretrice", la:"meretrix", grc:"πόρνη", ro:"curvă", sq:"lavire" },
       { tema:"numeri", livello:"A1", it:"settanta|70", sp:"Setanta", mn:"setanta", cr:"Settanta", ge:"setanta" },
       { tema:"numeri", livello:"A1", it:"settimo", en:"seventh", fr:"septième", es:"séptimo", de:"siebte", pt:"sétimo", mn:"setimu", ge:"sètimo|setén", ia:"septime", la:"septimus", ro:"al șaptelea" },
       { tema:"numeri", livello:"A1", it:"sesto", en:"sixth", fr:"sixième", es:"sexto", de:"sechste", pt:"sexto", sp:"sèsto", mn:"sèstu", ge:"sèsto", ia:"septe", la:"sextus", ro:"al șaselea" },
@@ -2666,7 +2668,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"schiacciare", en:"to crush", fr:"écraser", es:"aplastar", de:"zerdrücken", pt:"esmagar", ru:"давить", ca:"aixafar", sp:"saco" },
       { tema:"dialetti", livello:"A1", it:"sera", en:"evening", fr:"soir", es:"tarde", de:"Abend", pt:"noite", ru:"вечер", ca:"vespre|tarda", sp:"séa", cr:"sera" },
       { tema:"dialetti", livello:"A1", it:"sete", en:"thirst", fr:"soif", es:"sed", de:"Durst", pt:"sede", sp:"séde", mn:"sëde" },
-      { tema:"dialetti", livello:"B1", it:"sego", en:"tallow", fr:"suif", es:"sebo", de:"Talg", pt:"sebo", sp:"sèo" },
       { tema:"dialetti", livello:"A2", it:"strato", en:"layer", fr:"couche", es:"capa", de:"Schicht", pt:"camada", sp:"sèo" },
       { tema:"dialetti", livello:"A2", it:"cece", en:"chickpea", fr:"pois chiche", es:"garbanzo", de:"Kichererbse", pt:"grão-de-bico", sp:"sésoo" },
       { tema:"dialetti", livello:"A2", it:"zitto", en:"quiet", fr:"silencieux", es:"callado", de:"still", pt:"quieto", sp:"sito" },
@@ -3155,7 +3156,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 148;
+const VOC_VERSION = 149;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
