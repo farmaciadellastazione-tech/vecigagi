@@ -1688,6 +1688,9 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"cibo", livello:"A2", it:"sciroppo", en:"syrup", fr:"sirop", es:"jarabe", de:"Sirup", pt:"xarope", ru:"сироп", ca:"xarop", sp:"siropo", mn:"siopu", ge:"sciöpo", ko:"시럽", ar:"شراب", zh:"糖浆", ja:"シロップ", ia:"siropo", la:"syrupus", grc:"σίρος", ro:"sirop", sq:"shurup" },
+      { tema:"lavoro", livello:"B1", it:"camallare|sfacchinare|portare in spalla", en:"to haul", fr:"traîner", es:"acarrear", de:"schleppen", pt:"puxar", ru:"тащить", ca:"arrossegar", sp:"camalàaee/camalae", mn:"camalaaa/camalaa", cr:"camalà/camallare", ge:"camallà", ko:"끌다", ar:"سحب", zh:"拖", ja:"引く", ia:"traher", la:"trahere", grc:"ἑλκύω", ro:"a trage", sq:"të tërheq" },
+      { tema:"insulti", livello:"B2", it:"cagare", en:"to shit", fr:"chier", es:"cagar", de:"scheißen", pt:"cagar", ru:"говно", ca:"cagar", sp:"cagàaee/cagàe", mn:"cagàa", cr:"cagà", ge:"cagâ", ko:"똥", ar:"قذارة", zh:"拉屎", ja:"うんこ", ia:"merda", la:"stercus", grc:"σκατά", ro:"a căca", sq:"të shkojë" },
       { tema:"espressioni", livello:"B1", it:"me ne frego", en:"I don't care", fr:"je m'en fiche", es:"me importa un bledo", de:"es ist mir egal", pt:"não me importo", ru:"мне все равно", ca:"no em fa res", sp:"amen baato 'r belin/a men bato er belin", mn:"a men batu er belin", ge:"a men bato o belin", ko:"관심 없다", ar:"لا أهتم", zh:"我不在乎", ja:"気にしない", ia:"me non importa", la:"non cura", grc:"ἀμελήσω", ro:"nu-mi pasă", sq:"nuk më shqetëson" },
       { tema:"biologia", livello:"B2", it:"copulare", en:"mate", fr:"baiser", es:"copular", de:"begatten", pt:"acoplar", ru:"спариваться", ca:"copular", sp:"beciaaae/beciae", mn:"beciaaae/beciae", ge:"beciaaa/beciâ", ko:"교미하다", ar:"تزاوج", zh:"交配", ja:"交尾する", ia:"copular", la:"coire", grc:"συζεύγνυμι", ro:"a copula", sq:"bashkohen" },
       { tema:"tempo", livello:"A1", it:"allora", en:"then", fr:"alors", es:"entonces", de:"dann", pt:"então", ru:"тогда", ca:"llavors", sp:"aloooa/aloa", mn:"aluùa/alùa", ge:"alôa", ko:"그때", ar:"ثم", zh:"那么", ja:"それで", ia:"tunc", la:"tunc", grc:"τότε", ro:"atunci", sq:"atëherë" },
@@ -1713,7 +1716,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"denaro", livello:"A2", it:"se non ce sono non si spendono", en:"no money no spend", fr:"pas d'argent pas de dépense", es:"sin dinero no se gasta", de:"kein Geld keine Ausgabe", pt:"sem dinheiro não se gasta", ca:"sense diners no es gasta", sp:"Se ne ghe n'è n'è se'n spenda", la:"sine pecunia non expeditur", ro:"fără bani nu se cheltuie" },
       { tema:"tempo", livello:"B1", it:"ieri era olio, ora è  oro", en:"yesterday oil, today gold", fr:"hier huile, aujourd'hui or", es:"ayer aceite, hoy oro", de:"gestern Öl, heute Gold", pt:"ontem óleo, hoje ouro", ca:"ahir oli, avui or", sp:"Aiei i ea eio, aoa i è oo", la:"heri oleum, hodie aurum", ro:"ieri ulei, azi aur" },
       { tema:"saluti", livello:"A1", it:"cosa fai|cosa stai facendo", en:"what do you do|what are you doing", fr:"qu'est-ce que tu fais", es:"¿qué haces", de:"was machst du", pt:"o que você faz", ca:"què fas", sp:"costefé", ge:"cösa ti fæ", la:"quid agis", ro:"ce faci" },
-      { tema:"casa", livello:"A1", it:"sedia", en:"chair", fr:"chaise", es:"silla", de:"Stuhl", pt:"cadeira", ca:"cadira", sp:"caréga", la:"cathedra", ro:"scaun" },
+      { tema:"casa", livello:"A1", it:"sedia|seggiola", en:"chair", fr:"chaise", es:"silla", de:"Stuhl", pt:"cadeira", ru:"стул", ca:"cadira", sp:"caréga|scrana", mn:"carêga", cr:"scrana", ge:"carêga", ko:"의자", ar:"كرسي", zh:"椅子", ja:"椅子", ia:"sedia", la:"cathedra", grc:"καθίσμα", ro:"scaun", sq:"karrige" },
       { tema:"natura", livello:"B1", it:"viscido", en:"slippery", fr:"glissant", es:"resbaloso", de:"rutschig", pt:"escorregadio", ca:"relliscós", sp:"lépego", ge:"leppego", la:"lubricus", ro:"alunecos" },
       { tema:"dialetti", livello:"B2", it:"Ma tu chi sei, il mostro di Pitelli?", en:"but who are you, the monster of Pitelli?", fr:"mais qui es-tu, le monstre de Pitelli?", es:"pero ¿quién eres, el monstruo de Pitelli?", de:"aber wer bist du, das Monster von Pitelli?", pt:"mas quem és, o monstro de Pitelli?", ca:"però qui ets, el monstre de Pitelli?", sp:"Ma te chi tei, er mostro de pitei?", ge:"ma ti chi ti, u mostro de Pitelli?", la:"sed quis es, mons Pitellorum?", ro:"dar cine eşti, monstrul din Pitelli?" },
       { tema:"viaggi", livello:"B1", it:"chi può può, chi non può va a piedi", en:"those who can, do, those who can't walk", fr:"ceux qui peuvent, font, ceux qui ne peuvent pas vont à pied", es:"quien puede, puede, quien no puede va a pie", de:"wer kann, kann, wer nicht kann geht zu Fuß", pt:"quem pode, pode, quem não pode vai a pé", ca:"qui pot, pot, qui no pot va a peu", sp:"Chi pè pè, chi ne pè va a pé ", la:"qui potest, potest, qui non potest ambulat", ro:"cine poate, poate, cine nu poate merge pe jos" },
@@ -1996,7 +1999,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"B1", it:"sparare", en:"shoot", fr:"tirer|fusiller", es:"disparar", de:"schießen", pt:"atirar|disparar", ru:"стрелять", ca:"disparar|tirar", sp:"spaàe" },
       { tema:"verbi", livello:"A2", it:"mostrare/spettacolo", en:"show", fr:"montrer|spectacle", es:"mostrar|espectáculo", de:"zeigen|Show", pt:"mostrar|espetáculo", ru:"показывать|шоу", ca:"mostrar|espectacle" },
       { tema:"casa", livello:"A1", it:"doccia", en:"shower", fr:"douche", es:"ducha", de:"Dusche", pt:"duche|chuveiro", ru:"душ", ca:"dutxa" },
-      { tema:"aggettivi", livello:"B1", it:"sciocco/stupido", en:"silly", fr:"stupide|bête", es:"tonto|bobo", de:"dumm|albern", pt:"tolo", ru:"глупый", ca:"ximple|estúpid", sp:"belinon, badaàco,belighè,tananò,besügo,semelòn,pomelòn,barloco" },
+      { tema:"aggettivi", livello:"B1", it:"sciocco|stupido", en:"silly", fr:"stupide|bête", es:"tonto|bobo", de:"dumm|albern", pt:"tolo", ru:"глупый", ca:"ximple|estúpid", sp:"belinòn|belighè|tananò|besügo|semelòn|pomelòn|barloco" },
       { tema:"dialogo", livello:"B1", it:"da/da quando", en:"since", fr:"depuis", es:"desde|desde que", de:"seit", pt:"desde", ru:"с тех пор как", ca:"des de" },
       { tema:"mestieri", livello:"A2", it:"cantante", en:"singer", fr:"chanteur", es:"cantante", de:"Sänger", pt:"cantor", ru:"певец|певица", ca:"cantant" },
       { tema:"dialogo", livello:"A2", it:"celibe|nubile", en:"single", fr:"célibataire", es:"soltero", de:"ledig|Single", pt:"solteiro", ru:"холостой", ca:"solter", sp:"zitelon", mn:"zitelu|zitela" },
@@ -2271,7 +2274,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"B1", it:"selvatico", en:"wild", fr:"sauvage", es:"salvaje", de:"wild", pt:"selvagem", sp:"servadego", ia:"salvage" },
       { tema:"famiglia", livello:"A1", it:"rompere", en:"break", fr:"casser", es:"romper", de:"brechen", pt:"quebrar", ru:"мать|мама", ca:"mare", sp:"ronpie| scossae| stocae", cr:"romp'r" },
       { tema:"verbi", livello:"A1", it:"cadere", en:"fall", fr:"tomber", es:"caer", de:"fallen", pt:"cair", ru:"падать", ca:"caure", sp:"caiiìe/caie", mn:"tumbaa", cr:"" },
-      { tema:"verbi", livello:"A2", it:"sciogliere", en:"dissolve", fr:"dissoudre", es:"disolver", de:"auflösen", pt:"dissolver", sp:"siòlie", ia:"disfacer" },
+      { tema:"verbi", livello:"A2", it:"sciogliere", en:"dissolve", fr:"dissoudre", es:"disolver", de:"auflösen", pt:"dissolver", ru:"растворять", ca:"dissoldre", sp:"sioòlie/siòlie", ko:"녹이다", ar:"إذابة", zh:"溶解", ja:"解く", ia:"disfacer", la:"solvere", grc:"λύω", ro:"a dizolva", sq:"shkrirë" },
       { tema:"dialetti", livello:"A2", it:"presto", en:"soon", fr:"bientôt", es:"pronto", de:"bald", pt:"cedo", sp:"fito", ia:"presto" },
       { tema:"dialetti", livello:"A1", it:"accanto", en:"next to", fr:"à côté", es:"al lado", de:"daneben", pt:"ao lado", sp:"de costa", mn:"acantu", ge:"vexin à", ia:"apud" },
       { tema:"numeri", livello:"A2", it:"cinquanta|50", en:"fifty", fr:"cinquante", es:"cincuenta", de:"fünfzig", pt:"cinquenta", ru:"пятьдесят", ca:"cinquanta", sp:"sinquanta", mn:"sinquanta", cr:"Zinquanta", ge:"çinquànta", ko:"오십", ar:"خمسون", zh:"五十", ja:"五十" },
@@ -2987,7 +2990,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"avaro| tignoso", mn:"tignusu/tignuzu, tignusu" },
       { it:"toppa", mn:"topa" },
       { tema:"dialetti", livello:"A2", it:"identico|spiaccicato", mn:"schciattà/sciatà" },
-      { it:"ciao", ro:"salut" },
+      { tema:"saluti", livello:"A1", it:"ciao", en:"hello", fr:"bonjour", es:"hola", de:"hallo", pt:"olá", ru:"привет", ca:"hola", sp:"bona", mn:"bona", cr:"ciào/ciào", ge:"ciào", ko:"안녕하세요", ar:"مرحبا", zh:"你好", ja:"こんにちは", ia:"salute", la:"salve", grc:"χαῖρε", ro:"salut", sq:"shpresa" },
       { tema:"saluti", livello:"A1", it:"buongiorno", en:"good morning", fr:"bonjour", es:"buenos días", de:"guten Morgen", pt:"bom dia", ca:"bon dia", sp:"bongiorno", mn:"bungiurnu", cr:"bongiorn / buongiorno", ge:"bongiorno", la:"bonum mane", ro:"bună dimineața" },
       { tema:"saluti", livello:"A1", it:"buonasera", en:"good evening", fr:"bonsoir", es:"buenas noches", de:"guten Abend", pt:"boa noite", ca:"bona nit", sp:"bonaséa", mn:"bunasea", cr:"bun sera / buonasera", ge:"bónn-a séia", la:"bona sera", ro:"bună seara" },
       { tema:"saluti", livello:"A1", it:"buonanotte", en:"goodnight", fr:"bonne nuit", es:"buenas noches", de:"gute Nacht", pt:"boa noite", ca:"bona nit", sp:"bonanota", mn:"bunanota", cr:"buanot/buanòt", ge:"bónn-a néutte", la:"noctem", ro:"noapte bună" },
@@ -3157,7 +3160,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 151;
+const VOC_VERSION = 152;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
