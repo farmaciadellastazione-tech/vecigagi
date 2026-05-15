@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"spazio", livello:"A1", it:"dentro", en:"inside", fr:"dedans", es:"dentro", de:"drinnen", pt:"dentro", ru:"внутри", ca:"dins", sp:"drento", mn:"drentu", ge:"drénto", ko:"안에", ar:"داخل", zh:"里面", ja:"中", ia:"in", la:"intus", grc:"ἔσω", ro:"înăuntru", sq:"brenda" },
       { tema:"natura", livello:"A2", it:"pipistrello", en:"bat", fr:"chauve-souris", es:"murciélago", de:"Fledermaus", pt:"morcego", ru:"летучая мышь", ca:"ratpenat", sp:"rato penùo", ge:"ràtto penûgo", ko:"박쥐", ar:"خفاش", zh:"蝙蝠", ja:"こうもり", ia:"vespertilio", la:"vespertilio", grc:"νυκτερίς", ro:"liliac", sq:"nuse" },
       { tema:"cibo", livello:"A2", it:"branzino| spigola", en:"sea bass", fr:"loup de mer", es:"lubina", de:"Wolfsbarsch", pt:"robalo", ru:"морской окунь", ca:"llobarro", sp:"lovasso", mn:"luassu", cr:"branzin/branzino", ge:"loâso", ko:"바다농어", ar:"قاروص البحر", zh:"海鲈", ja:"スズキ", ia:"lup de mare", la:"lupus marinus", grc:"λαβράκι", ro:"șalău", sq:"barku i detit" },
       { tema:"cibo", livello:"A2", it:"sciroppo", en:"syrup", fr:"sirop", es:"jarabe", de:"Sirup", pt:"xarope", ru:"сироп", ca:"xarop", sp:"siropo", mn:"siopu", ge:"sciöpo", ko:"시럽", ar:"شراب", zh:"糖浆", ja:"シロップ", ia:"siropo", la:"syrupus", grc:"σίρος", ro:"sirop", sq:"shurup" },
@@ -1942,7 +1943,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"rivista", en:"magazine", fr:"magazine|revue", es:"revista", de:"Zeitschrift", pt:"revista", ru:"журнал", ca:"revista" },
       { tema:"verbi", livello:"A2", it:"sposare", en:"marry", fr:"épouser|se marier", es:"casarse", de:"heiraten", pt:"casar", ru:"жениться|выходить замуж", ca:"casar-se", sp:"sposae, maidae" },
       { tema:"dialogo", livello:"B1", it:"maschera", en:"mask", fr:"masque", es:"máscara", de:"Maske", pt:"máscara", ru:"маска", ca:"màscara", sp:"màscoa", ar:"قناع", zh:"面具", ja:"仮面", ia:"masca", la:"persona", grc:"πρόσωπον" },
-      { tema:"sport", livello:"A2", it:"partita|incontro", en:"match", fr:"match", es:"partido", de:"Spiel|Wettkampf", pt:"jogo|partida", ru:"матч", ca:"partit", sp:"partìa" },
+      { tema:"sport", livello:"A2", it:"partita|incontro", en:"match", fr:"match", es:"partido", de:"Spiel|Wettkampf", pt:"jogo|partida", ru:"матч", ca:"partit", sp:"partiìa/partia", ge:"partîa" },
       { tema:"cibo", livello:"A2", it:"pasto", en:"meal", fr:"repas", es:"comida|plato", de:"Mahlzeit", pt:"refeição", ru:"еда|приём пищи", ca:"àpat|menjar", sp:"past", mn:"past/past", ro:"masă" },
       { tema:"dialogo", livello:"B1", it:"riunione|incontro", en:"meeting", fr:"réunion|rencontre", es:"reunión", de:"Treffen|Sitzung", pt:"reunião", ru:"встреча|собрание", ca:"reunió" },
       { tema:"dialogo", livello:"A2", it:"mezzo", en:"middle", fr:"milieu|centre", es:"centro|medio", de:"Mitte", pt:"meio|centro", ru:"середина|центр", ca:"mig|centre", mn:"mézu" },
@@ -2556,7 +2557,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"entusiasta", en:"enthusiastic", fr:"enthousiaste", es:"entusiasmado", de:"begeistert", pt:"entusiasmado", ru:"восторженный", ca:"entusiasta", ko:"열정적인", ar:"متحمس", zh:"热情", ja:"熱狂的", ia:"enthusiaste", la:"acer", grc:"ἐνθουσιαστικός" },
       { tema:"aggettivi", livello:"A2", it:"solo/solitario", en:"lonely", fr:"solitaire", es:"solitario", de:"einsam", pt:"solitário|solitario", ru:"полка", ca:"prestatge", mn:"", ko:"외로운", ar:"وحيد", zh:"孤独", ja:"孤独", ia:"sol", la:"solus", grc:"μόνος" },
       { tema:"luoghi", livello:"A2", it:"colpevole", en:"guilty", fr:"coupable", es:"culpable", de:"schuldig", pt:"culpado", ru:"виновный", ca:"culpable", ko:"죄책감", ar:"مذنب", zh:"内疚", ja:"罪悪感", ia:"culpabile", la:"reus", grc:"ἔνοχος" },
-      { tema:"aggettivi", livello:"B1", it:"fiducioso", en:"confident", fr:"confiant", es:"confiado", de:"zuversichtlich", pt:"confiante", ru:"уверенный", ca:"confiat", ko:"자신있는", ar:"واثق", zh:"自信", ja:"自信がある", ia:"confidiente", la:"fidens", grc:"πεποιθώς" },
+      { tema:"aggettivi", livello:"B1", it:"fiducioso", en:"confident", fr:"confiant", es:"confiado", de:"zuversichtlich", pt:"confiante", ru:"уверенный", ca:"confiat", ge:"fiduciôzo", ko:"자신있는", ar:"واثق", zh:"自信", ja:"自信がある", ia:"confidiente", la:"fidens", grc:"πεποιθώς" },
       { tema:"aggettivi", livello:"A2", it:"deluso", en:"disappointed", fr:"déçu", es:"decepcionado", de:"enttäuscht", pt:"decepcionado", ru:"разочарованный", ca:"decebut", ko:"실망한", ar:"خائب الأمل", zh:"失望", ja:"失望した", ia:"decepte", la:"deceptus", grc:"ἀπογοητευμένος" },
       { tema:"aggettivi", livello:"A2", it:"ansioso", en:"anxious", fr:"anxieux", es:"ansioso", de:"ängstlich", pt:"ansioso", ru:"тревожный", ca:"ansiós", ko:"불안한", ar:"قلق", zh:"焦虑", ja:"不安", ia:"anxiose", la:"anxius", grc:"ἄγχιμος" },
       { tema:"aggettivi", livello:"B1", it:"indifferente", en:"indifferent", fr:"indifférent", es:"indiferente", de:"gleichgültig", pt:"indiferente", ru:"равнодушный", ca:"indiferent", ko:"무관심한", ar:"لامبالٍ", zh:"冷漠", ja:"無関心", ia:"indifferente", la:"indifferens", grc:"ἀδιάφορος" },
@@ -2667,7 +2668,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A1", it:"pollo", en:"chicken", fr:"poulet", es:"pollo", de:"Huhn", pt:"frango", ru:"курица", ca:"pollastre", sp:"pòlo" },
       { tema:"dialetti", livello:"A2", it:"rete", en:"net", fr:"filet", es:"red", de:"Netz", pt:"rede", ru:"сеть", ca:"xarxa", sp:"rê", la:"rete", grc:"δίκτυον" },
       { tema:"dialetti", livello:"A2", it:"rado", en:"sparse", fr:"clairsemé", es:"escaso", de:"dünn", pt:"ralo", sp:"rèo" },
-      { tema:"dialetti", livello:"A1", it:"dietro", en:"behind", fr:"derrière", es:"detrás", de:"hinten", pt:"atrás|atras", sp:"rèo" },
+      { tema:"dialetti", livello:"A1", it:"dietro", en:"behind", fr:"derrière", es:"detrás", de:"hinten", pt:"atrás|atras", sp:"daré", ge:"derrê" },
       { tema:"dialetti", livello:"A2", it:"rutto", en:"burp", fr:"renvoi", es:"eructo", de:"Rülpser", pt:"arroto", sp:"rócio" },
       { tema:"dialetti", livello:"A1", it:"qua", en:"here", fr:"ici", es:"acá", de:"hierher", pt:"cá", sp:"sâ", mn:"sà" },
       { tema:"dialetti", livello:"A1", it:"sacco", en:"bag", fr:"sac", es:"saco", de:"Sack", pt:"saco", sp:"saco" },
@@ -2763,7 +2764,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"famiglia", livello:"A2", it:"zia", en:"aunt", fr:"tante", es:"tía", de:"Tante", pt:"tia", ru:"тётя", ca:"tia", sp:"séa|làla", cr:"zia", ko:"이모", ar:"عمة", zh:"", ja:"", ia:"tante", la:"amita", grc:"θεία" },
       { tema:"giorni", livello:"A1", it:"testa", en:"head", fr:"tête", es:"cabeza", de:"Kopf", pt:"cabeça|cabeca", ru:"голова", ca:"cap", sp:"testa", mn:"testa", cr:"testa", ko:"머리", ar:"رأس", zh:"头", ja:"頭", ia:"testa", la:"caput", grc:"κεφαλή" },
       { tema:"corpo", livello:"A1", it:"naso", en:"nose", fr:"nez", es:"nariz", de:"Nase", pt:"nariz", ru:"нос", ca:"nas", cr:"nas", ko:"코", ar:"أنف", zh:"鼻子", ja:"鼻", ia:"naso", la:"nasus", grc:"ῥίς" },
-      { tema:"farmaci", livello:"A1", it:"dito", en:"finger", fr:"doigt", es:"dedo", de:"Finger", pt:"dedo", ru:"палец", ca:"dit", sp:"dido, didi, dida, dite, dide", ko:"손가락", ar:"إصبع", zh:"手指", ja:"指", ia:"digito", la:"digitus", grc:"δάκτυλος" },
+      { tema:"farmaci", livello:"A1", it:"dito|dita", en:"finger", fr:"doigt", es:"dedo", de:"Finger", pt:"dedo", ru:"палец", ca:"dit", sp:"dido|didi| dida| dite| dide", ge:"dîo|die", ko:"손가락", ar:"إصبع", zh:"手指", ja:"指", ia:"digito", la:"digitus", grc:"δάκτυλος" },
       { tema:"corpo", livello:"A2", it:"cuore", en:"heart", fr:"cœur", es:"corazón", de:"Herz", pt:"coração|coracao", ru:"сердце", ca:"cor", sp:"chèe", ko:"심장", ar:"قلب", zh:"心脏", ja:"心臓", ia:"corde", la:"cor", grc:"καρδία" },
       { tema:"vestiti", livello:"A1", it:"cintura", en:"belt", fr:"ceinture", es:"cinturón", de:"Gürtel", pt:"cinto", ru:"ремень", ca:"cinturó", sp:"sentüa", cr:"", ko:"벨트", ar:"حزام", zh:"腰带", ja:"ベルト", ia:"cinctura", la:"cingulum", grc:"ζώνη" },
       { tema:"vestiti", livello:"A2", it:"guanti", en:"gloves", fr:"gants", es:"guantes", de:"Handschuhe", pt:"luvas", ru:"перчатки", ca:"guants", mn:"vitèlu/vìtèlu", ko:"장갑", ar:"قفازات", zh:"手套", ja:"手袋", ia:"guantes", la:"manicae", grc:"χειρίδες" },
@@ -3162,7 +3163,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 153;
+const VOC_VERSION = 154;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
