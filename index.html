@@ -1688,6 +1688,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"natura", livello:"B1", it:"una rondine non fa primavera", cr:"una rond’na a n fa primavera" },
       { tema:"spazio", livello:"A1", it:"dentro", en:"inside", fr:"dedans", es:"dentro", de:"drinnen", pt:"dentro", ru:"внутри", ca:"dins", sp:"drento", mn:"drentu", ge:"drénto", ko:"안에", ar:"داخل", zh:"里面", ja:"中", ia:"in", la:"intus", grc:"ἔσω", ro:"înăuntru", sq:"brenda" },
       { tema:"natura", livello:"A2", it:"pipistrello", en:"bat", fr:"chauve-souris", es:"murciélago", de:"Fledermaus", pt:"morcego", ru:"летучая мышь", ca:"ratpenat", sp:"rato penùo", ge:"ràtto penûgo", ko:"박쥐", ar:"خفاش", zh:"蝙蝠", ja:"こうもり", ia:"vespertilio", la:"vespertilio", grc:"νυκτερίς", ro:"liliac", sq:"nuse" },
       { tema:"cibo", livello:"A2", it:"branzino| spigola", en:"sea bass", fr:"loup de mer", es:"lubina", de:"Wolfsbarsch", pt:"robalo", ru:"морской окунь", ca:"llobarro", sp:"lovasso", mn:"luassu", cr:"branzin/branzino", ge:"loâso", ko:"바다농어", ar:"قاروص البحر", zh:"海鲈", ja:"スズキ", ia:"lup de mare", la:"lupus marinus", grc:"λαβράκι", ro:"șalău", sq:"barku i detit" },
@@ -1752,7 +1753,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A1", it:"lepre", sp:"lévoòa" },
       { tema:"comunicazione", livello:"B1", it:"discorso", mn:"déscùrsu" },
       { tema:"verbi", livello:"B1", it:"difendere", mn:"defëënde/defënde" },
-      { tema:"corpo", livello:"B1", it:"culo", sp:"cüo", mn:"cüü" },
+      { tema:"corpo", livello:"B1", it:"culo", sp:"cüo", mn:"cüü", cr:"cul" },
       { tema:"oggetti", livello:"A2", it:"storto", sp:"storto", mn:"stortu" },
       { tema:"verbi", livello:"A1", it:"spingere", sp:"spinze" },
       { tema:"corpo", livello:"A1", it:"schiena", en:"back", fr:"dos", es:"espalda", de:"Rücken", pt:"costas", ca:"esquena", sp:"schéna", mn:"schéna", ge:"schénn-a", ia:"dorso", la:"dorsum", ro:"spate" },
@@ -2056,7 +2057,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mestieri", livello:"A2", it:"cameriera", en:"waitress", fr:"serveuse", es:"camarera", de:"Kellnerin", pt:"garçonete", ru:"официантка", ca:"cambrera", sp:"canbeéa" },
       { tema:"vestiti", livello:"A2", it:"portafogli", en:"wallet", fr:"portefeuille", es:"cartera", de:"Brieftasche", pt:"carteira", ru:"кошелёк", ca:"cartera" },
       { tema:"verbi", livello:"A1", it:"lavare", en:"wash", fr:"laver", es:"lavar", de:"waschen", pt:"lavar", ru:"мыть", ca:"rentar" },
-      { tema:"natura", livello:"A1", it:"tempo", en:"weather", fr:"temps", es:"tiempo", de:"Wetter", pt:"tempo", ru:"погода", ca:"temps" },
+      { tema:"natura", livello:"A1", it:"tempo", en:"weather", fr:"temps", es:"tiempo", de:"Wetter", pt:"tempo", ru:"погода", ca:"temps", mn:"tempu", cr:"tempo" },
       { tema:"dialogo", livello:"A2", it:"fine settimana", en:"weekend", fr:"week-end", es:"fin de semana", de:"Wochenende", pt:"fim de semana", ru:"выходные", ca:"cap de setmana" },
       { tema:"aggettivi", livello:"A2", it:"bagnato", en:"wet", fr:"mouillé", es:"mojado", de:"nass", pt:"molhado", ru:"мокрый", ca:"mullat", sp:"bagno", mn:"zguàa/zguà" },
       { tema:"dialogo", livello:"B1", it:"ruota", en:"wheel", fr:"roue", es:"rueda", de:"Rad", pt:"roda", ru:"колесо", ca:"roda", sp:"rèda" },
@@ -2207,7 +2208,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"citazioni", livello:"B1", it:"Penso dunque sono", la:"Cogito ergo sum", grc:"Νοῶ, ἄρα εἰμί" },
       { tema:"citazioni", livello:"B1", it:"Nella misura, sta la virtù", la:"In medio stat virtus", grc:"Μηδὲν ἄγαν (niente di troppo)" },
       { tema:"citazioni", livello:"B2", it:"L'uomo è la misura di tutte le cose", la:"Homo omnium rerum mensura", grc:"Πάντων χρημάτων μέτρον ἄνθρωπος" },
-      { tema:"citazioni", livello:"B2", it:"Niente di nuovo sotto il sole", la:"Nihil novi sub sole", grc:"Οὐδὲν νέον ὑπὸ τὸν ἥλιον" },
       { tema:"citazioni", livello:"B2", it:"Carpe diem (cogli l'attimo)", la:"Carpe diem", grc:"Δρέπε τὴν ἡμέραν" },
       { tema:"numeri", livello:"A1", it:"uno", en:"one", fr:"un", es:"uno", de:"ein|eins", pt:"um", ru:"один", ca:"un", sp:"ün", mn:"ün", ko:"일", ar:"واحد", zh:"一", ja:"一", ia:"un|uno", la:"unus", grc:"εἷς", ro:"unu" },
       { tema:"numeri", livello:"A1", it:"due|2", en:"two", fr:"deux", es:"dos", de:"zwei", pt:"dois", ru:"два", ca:"dos", sp:"doi, doa", mn:"dùi", cr:"Do", ge:"doî | dôe", ko:"이", ar:"اثنان", zh:"二", ja:"二", ia:"duo", la:"duo", grc:"δύο", ro:"doi" },
@@ -2603,7 +2603,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"luoghi", livello:"A2", it:"Asia", en:"Asia", fr:"Asie", es:"Asia", de:"Asien", pt:"Ásia|Asia", ko:"아시아", ar:"آسيا", zh:"亚洲", ja:"アジア", ia:"Asia", la:"Asia", grc:"Ἀσία" },
       { tema:"luoghi", livello:"A2", it:"confine", en:"border", fr:"frontière", es:"frontera", de:"Grenze", pt:"fronteira", sp:"tèrmo", cr:"", ko:"국경", ar:"حدود", zh:"边界", ja:"国境", ia:"limite", la:"finis", grc:"σύνορα" },
       { tema:"luoghi", livello:"B1", it:"capitale", en:"capital", fr:"capitale", es:"capital", de:"Hauptstadt", pt:"capital", ko:"수도", ar:"عاصمة", zh:"首都", ja:"首都", ia:"capital", la:"caput", grc:"πρωτεύουσα" },
-      { tema:"famiglia", livello:"A1", it:"capello|capelli", en:"hair", fr:"cheveu", es:"cabello", de:"Haar", pt:"cabelo", ru:"племянник", ca:"nebot", sp:"cavèo|cavei", mn:"caveu|cavei", ge:"cavéllo|cavélli", ko:"머리카락", ar:"شعر", zh:"头发", ja:"髪", ia:"capillo", la:"capillus", grc:"κόμη", ro:"păr", sq:"floke" },
+      { tema:"famiglia", livello:"A1", it:"capello|capelli", en:"hair", fr:"cheveu", es:"cabello", de:"Haar", pt:"cabelo", ru:"племянник", ca:"nebot", sp:"cavèo|cavei", mn:"caveu|cavei", cr:"caped", ge:"cavéllo|cavélli", ko:"머리카락", ar:"شعر", zh:"头发", ja:"髪", ia:"capillo", la:"capillus", grc:"κόμη", ro:"păr", sq:"floke" },
       { tema:"corpo", livello:"A2", it:"pelle", en:"skin", fr:"peau", es:"piel", de:"Haut", pt:"pele", ru:"неудобный", ca:"incòmode", cr:"peda", ko:"피부", ar:"جلد", zh:"皮肤", ja:"肌", ia:"pelle", la:"cutis", grc:"δέρμα" },
       { tema:"corpo", livello:"A2", it:"osso", en:"bone", fr:"os", es:"hueso", de:"Knochen", pt:"osso", sp:"osso", mn:"òssu", ko:"뼈", ar:"عظمة", zh:"骨头", ja:"骨", ia:"osso", la:"os", grc:"ὀστέον" },
       { tema:"corpo", livello:"B1", it:"muscolo", en:"muscle", fr:"muscle", es:"músculo", de:"Muskel", pt:"músculo|musculo", ca:"múscul", sp:"", cr:"", ko:"근육", ar:"عضلة", zh:"肌肉", ja:"筋肉", ia:"musculo", la:"musculus", grc:"μῦς" },
@@ -3010,7 +3010,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"madre", mn:"maa", ro:"mamă" },
       { it:"pane", sp:"pan", mn:"pan", cr:"pan", ge:"pan", ro:"pâine" },
       { it:"latte", mn:"late", ro:"lapte" },
-      { it:"pesce", mn:"pessu", ro:"pește" },
+      { it:"pesce", mn:"pessu", cr:"pess", ro:"pește" },
       { it:"verdura", mn:"verdua", ro:"legume" },
       { it:"frutta", mn:"fruta", ro:"fructe" },
       { it:"formaggio", mn:"furmagiu", ro:"brânză" },
@@ -3020,7 +3020,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"lavorare", mn:"travagiaa", cr:"lavor", ro:"a lucra" },
       { it:"negozio", mn:"negosciu", ro:"magazin" },
       { tema:"tempo", livello:"A1", it:"oggi", sp:"anché", mn:"anchè", cr:"ozi", ge:"ancheu", ro:"azi" },
-      { tema:"tempo", livello:"A1", it:"ieri", sp:"aiei", mn:"aiei", ge:"vêi", ro:"ieri" },
+      { tema:"tempo", livello:"A1", it:"ieri", sp:"aiei", mn:"aiei", cr:"aier", ge:"vêi", ro:"ieri" },
       { it:"bello", mn:"belu", cr:"bel", ro:"frumos" },
       { tema:"cibo", livello:"A1", it:"buono|buona", en:"good", fr:"bon", es:"bueno", de:"gut", pt:"bom", ru:"хороший", ca:"bo", sp:"bon", mn:"bùn", cr:"bon", ge:"bòno|buono", la:"bonus", ro:"bun" },
       { it:"come stai?", mn:"cume te sté", ro:"ce mai faci?" },
@@ -3163,7 +3163,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 154;
+const VOC_VERSION = 155;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
