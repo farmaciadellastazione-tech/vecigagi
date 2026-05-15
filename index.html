@@ -7848,7 +7848,22 @@ function Home({
       border: `1px solid hsl(${VOC_VERSION * 47 % 360}, 55%, 38%)`,
       cursor: "default", userSelect: "none"
     }
-  }, "v", VOC_VERSION), /*#__PURE__*/React.createElement("div", {
+  }, "v", VOC_VERSION), /*#__PURE__*/React.createElement("button", {
+    title: "Reset vocabolario (ricarica dal default, non tocca i progressi)",
+    onClick: () => {
+      if (!confirm("Resetta il vocabolario al default? I tuoi progressi di apprendimento non vengono cancellati.")) return;
+      try { localStorage.removeItem("qml_v10_vocabolario"); localStorage.removeItem("qml_v10_voc_version"); } catch(_) {}
+      window.location.reload();
+    },
+    style: {
+      fontSize: "0.68rem", fontWeight: "700", padding: "3px 9px",
+      borderRadius: "999px", cursor: "pointer",
+      background: "transparent",
+      color: "#f87171",
+      border: "1px solid #7f1d1d",
+      userSelect: "none"
+    }
+  }, "\uD83D\uDDD1\uFE0F"), /*#__PURE__*/React.createElement("div", {
     className: "relative group"
   }, /*#__PURE__*/React.createElement("button", {
     className: "text-xs font-bold bg-zinc-800 hover:bg-zinc-700 text-slate-300 px-2.5 py-2 rounded-xl transition border border-zinc-700"
