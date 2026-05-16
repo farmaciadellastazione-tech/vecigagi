@@ -3181,34 +3181,10 @@ function saveJSON(key, val) {
   } catch {}
 }
 function esportaProgressi(stats, vocabolario, lingue) {
-  const ai = (() => {
-    try {
-      return JSON.parse(localStorage.getItem("qml_v10_ai") || "null");
-    } catch {
-      return null;
-    }
-  })();
-  const streak = (() => {
-    try {
-      return JSON.parse(localStorage.getItem("qml_v10_streak") || "null");
-    } catch {
-      return null;
-    }
-  })();
-  const recordPerc = (() => {
-    try {
-      return JSON.parse(localStorage.getItem("qml_v10_record_perc") || "null");
-    } catch {
-      return null;
-    }
-  })();
-  const ndom = (() => {
-    try {
-      return JSON.parse(localStorage.getItem("qml_v10_ndom") || "null");
-    } catch {
-      return null;
-    }
-  })();
+  const ai = loadJSON(SK_AI, null);
+  const streak = loadJSON(SK_STREAK, null);
+  const recordPerc = loadJSON(SK_RECORD_PERC, null);
+  const ndom = loadJSON(SK_NDOM, null);
   const blob = new Blob([JSON.stringify({
     stats,
     vocabolario,
@@ -3232,18 +3208,10 @@ function importaProgressi(file, onDone) {
     try {
       const data = JSON.parse(e.target.result);
       // Restore optional fields to localStorage
-      if (data.ai) try {
-        localStorage.setItem("qml_v10_ai", JSON.stringify(data.ai));
-      } catch {}
-      if (data.streak) try {
-        localStorage.setItem("qml_v10_streak", JSON.stringify(data.streak));
-      } catch {}
-      if (data.recordPerc) try {
-        localStorage.setItem("qml_v10_record_perc", JSON.stringify(data.recordPerc));
-      } catch {}
-      if (data.ndom) try {
-        localStorage.setItem("qml_v10_ndom", JSON.stringify(data.ndom));
-      } catch {}
+      if (data.ai) saveJSON(SK_AI, data.ai);
+      if (data.streak) saveJSON(SK_STREAK, data.streak);
+      if (data.recordPerc) saveJSON(SK_RECORD_PERC, data.recordPerc);
+      if (data.ndom) saveJSON(SK_NDOM, data.ndom);
       onDone(data);
     } catch {
       alert(UI[localStorage.getItem("linguaUI") || "en"].filenonvalido);
@@ -3455,16 +3423,18 @@ function vocaleDisponibile(bcp47) {
   if (voci.length === 0) return true; // non ancora caricate, ottimistico
   return voci.some(v => v.lang.startsWith(bcp47.split("-")[0]));
 }
+// Timer per serializzare chiamate consecutive a parla() (vedi sotto).
+let _parlaTimer = null;
 function parla(testo, bcp47) {
   if (!window.speechSynthesis || !bcp47) return;
-  window.speechSynthesis.cancel();
+  const synth = window.speechSynthesis;
   const u = new SpeechSynthesisUtterance(testo.replace(/\(.*?\)/g, "").split(/[/,;]/)[0].trim());
   u.lang = bcp47;
   u.rate = 0.85;
   // Forza una voce della lingua richiesta per evitare misdetection
   // (es. "can" letto come modale inglese invece che parola spezzina con voce italiana).
   try {
-    const voices = window.speechSynthesis.getVoices() || [];
+    const voices = synth.getVoices() || [];
     const baseLang = bcp47.toLowerCase().split("-")[0];
     // Preferisci match esatto, poi base lang
     const exactMatch = voices.find(v => v.lang && v.lang.toLowerCase() === bcp47.toLowerCase());
@@ -3472,7 +3442,16 @@ function parla(testo, bcp47) {
     const voice = exactMatch || baseMatch;
     if (voice) u.voice = voice;
   } catch (e) {}
-  window.speechSynthesis.speak(u);
+  // Serializza: cancel() è asincrono in Chromium → chiamare speak() subito dopo
+  // può far scartare la nuova utterance o sovrapporla alla precedente.
+  // Se è già in coda un parla() differito, lo cancelliamo (l'ultimo vince).
+  if (_parlaTimer) { clearTimeout(_parlaTimer); _parlaTimer = null; }
+  if (synth.speaking || synth.pending) {
+    synth.cancel();
+    _parlaTimer = setTimeout(() => { _parlaTimer = null; synth.speak(u); }, 60);
+  } else {
+    synth.speak(u);
+  }
 }
 // Mappa numeri→parole per le lingue principali
 // Usata per correggere il riconoscimento vocale che converte es. "quinze" in "15"
@@ -3901,7 +3880,14 @@ function rimuoviSoggetto(str, codLingua) {
 // Dialetti che NON hanno una loro TTS e usano la voce italiana del browser.
 // In questi codici, "/" significa "stessa parola, due grafie" (pron/tradizionale).
 // Per gli altri codici, "/" è SINONIMI (parole diverse con stesso significato).
+// Sono anche i dialetti per cui:
+//  - si applica normalizzaDialetto() (strip prefissi fonetici)
+//  - si escludono dalla modalità Frase Libera AI (l'AI non li conosce)
 const DIALETTI_TTS_ITA = ["mn", "sp", "ge", "cr"];
+
+// Sottoinsieme: dialetti con tabella NUMERI_DIALETTO (cifre → parola).
+// mn non è incluso perché non ha la propria tabella in NUMERI_DIALETTO.
+const DIALETTI_NUMERI = ["sp", "ge", "cr"];
 
 // soloVisibile: rimuove le alternative nascoste (separate da |).
 // Es. "cammino|tragitto|distanza" -> "cammino"
@@ -3939,7 +3925,7 @@ function formaTTS(s) {
 function isCorretta(atteso, dato, bcp47, codLingua) {
   const datoConv = bcp47 ? convertiNumeri(dato, bcp47) : dato;
   // Per dialetti: converti cifre in parole dialettali
-  const datoConvDial = ["sp", "ge", "cr"].includes(codLingua) ? convertiNumeriDialetto(datoConv, codLingua) : datoConv;
+  const datoConvDial = DIALETTI_NUMERI.includes(codLingua) ? convertiNumeriDialetto(datoConv, codLingua) : datoConv;
   const datoFin = datoConvDial !== datoConv ? datoConvDial : datoConv;
   const isEn = bcp47 && bcp47.startsWith("en");
   // Normalizza: rimuovi "to " per inglese, poi prova anche senza soggetto
@@ -3958,10 +3944,10 @@ function isCorretta(atteso, dato, bcp47, codLingua) {
   const opsNoSogg = codLingua ? ops.map(op => rimuoviSoggetto(op, codLingua)) : ops;
   const omofoniDato = bcp47 ? getOmofoni(datoConv.trim(), bcp47).map(w => normalizza(w)) : [n];
   // Per dialetti: aggiungi versione senza prefisso fonetico (gh', sc', etc.)
-  const isDialetto = ["sp", "ge", "cr"].includes(codLingua);
+  const isDialetto = DIALETTI_TTS_ITA.includes(codLingua);
   const nDialetto = isDialetto ? normalizzaDialetto(n) : null;
   const opsDialetto = isDialetto ? ops.map(o => normalizzaDialetto(o)) : [];
-  const nFin = ["sp", "ge", "cr"].includes(codLingua) ? normalizza(datoFin) : n;
+  const nFin = isDialetto ? normalizza(datoFin) : n;
   const candidati = [...new Set([n, nFin, nNoSogg, ...(nDialetto ? [nDialetto] : []), ...omofoniDato])];
   return ops.some((op, idx) => {
     if (!op) return false;
@@ -8121,12 +8107,12 @@ const GROQ_MODELS = {
     model: "gpt-4o-mini"
   },
   gemini: {
-    url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
-    model: "gemini-2.0-flash"
+    url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+    model: "gemini-2.5-flash"
   }
 };
 async function callAI(systemPrompt, userPrompt, aiCfg) {
-  const cfg = GROQ_MODELS[aiCfg?.provider] || GROQ_MODELS.groq;
+  const cfg = GROQ_MODELS[aiCfg?.provider] || GROQ_MODELS.gemini;
   const key = aiCfg?.apiKey || "";
   try {
     if (aiCfg?.provider === "anthropic") {
@@ -8309,19 +8295,19 @@ function ImpostazioniAI({
   setAiSettings,
   onIndietro
 }) {
-  const [provider, setProvider] = useState(aiSettings?.provider || "groq");
+  const [provider, setProvider] = useState(aiSettings?.provider || "gemini");
   const [apiKey, setApiKey] = useState(aiSettings?.apiKey || "");
   const [testMsg, setTestMsg] = useState("");
   const PROVIDERS = [{
-    id: "groq",
-    label: "Groq (consigliato 🆓)",
-    note: "Chiave gratuita su console.groq.com → crea account → API Keys",
-    link: "https://console.groq.com"
-  }, {
     id: "gemini",
-    label: "Google Gemini",
-    note: "Chiave gratuita su ai.google.dev",
+    label: "Google Gemini (consigliato 🆓)",
+    note: "Chiave gratuita su ai.google.dev → Get API key. Multilingua robusto.",
     link: "https://ai.google.dev"
+  }, {
+    id: "groq",
+    label: "Groq Llama 🆓",
+    note: "Veloce ma debole su lingue diverse dall'inglese. console.groq.com",
+    link: "https://console.groq.com"
   }, {
     id: "anthropic",
     label: "Anthropic Claude",
@@ -8958,7 +8944,7 @@ function SpiegaAI({
     setStato("traduzione");
   }
   if (!hasKey) return /*#__PURE__*/React.createElement("button", {
-    onClick: () => alert("Inserisci una chiave API nelle impostazioni 🤖\nGroq è gratuito: console.groq.com"),
+    onClick: () => alert("Inserisci una chiave API nelle impostazioni 🤖\nGemini è gratuito: ai.google.dev"),
     className: "text-xs text-zinc-600 flex items-center gap-1 mt-1"
   }, "\uD83E\uDD16 Spiega (configura IA)");
   if (stato === "idle") return /*#__PURE__*/React.createElement("button", {
@@ -9001,10 +8987,10 @@ function SchermataSceltaMultipla({
     return { nScelte: 5, nDom: 10, corrette: 0 };
   }
   function loadStato() {
-    try { return { ...defaultStato(), ...JSON.parse(localStorage.getItem(SK_SM) || "{}") }; } catch { return defaultStato(); }
+    return { ...defaultStato(), ...loadJSON(SK_SM, {}) };
   }
   function salvaStato(s) {
-    try { localStorage.setItem(SK_SM, JSON.stringify(s)); } catch {}
+    saveJSON(SK_SM, s);
   }
 
   const [stato, setStato] = useState(loadStato);
@@ -9013,6 +8999,9 @@ function SchermataSceltaMultipla({
   const [risposta, setRisposta] = useState(null);
   const [punteggio, setPunteggio] = useState(0);
   const [erroreSetup, setErroreSetup] = useState(null);
+  // Timer per auto-avanti su risposta corretta (pulito su unmount/cambio carta)
+  const autoNextTimer = useRef(null);
+  useEffect(() => () => { if (autoNextTimer.current) clearTimeout(autoNextTimer.current); }, []);
 
   function generaCarte(statoOverride) {
     const st = statoOverride || stato;
@@ -9076,10 +9065,20 @@ function SchermataSceltaMultipla({
           return { ...prev, [key]: { livello: 1, prossima: oggi() + INTERVALLI[1] * 86400000, risposte: (c.risposte || 0) + 1, corrette: (c.corrette || 0) + 1 } };
         });
       }
+      // Auto-avanti: lascia 300ms per il feedback verde, poi vai alla prossima
+      // (se è l'ultima carta non serve: il render passa già a "fine")
+      if (indice < carte.length - 1) {
+        autoNextTimer.current = setTimeout(() => {
+          autoNextTimer.current = null;
+          setIndice(i => i + 1);
+          setRisposta(null);
+        }, 300);
+      }
     }
   }
 
   function avanti() {
+    if (autoNextTimer.current) { clearTimeout(autoNextTimer.current); autoNextTimer.current = null; }
     if (indice < carte.length - 1) { setIndice(i => i + 1); setRisposta(null); }
   }
 
@@ -9172,7 +9171,7 @@ function SchermataSceltaMultipla({
     }, /*#__PURE__*/React.createElement("span", {
       className: "text-zinc-500 mr-2"
     }, String.fromCharCode(65 + i), "."), s);
-  })), risposta && /*#__PURE__*/React.createElement("button", {
+  })), risposta && !risposta.corretta && /*#__PURE__*/React.createElement("button", {
     onClick: avanti,
     className: "w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-4 rounded-xl transition btn-shadow"
   }, indice < carte.length - 1 ? "Avanti →" : "Risultati →"), /*#__PURE__*/React.createElement("div", {
@@ -9213,7 +9212,7 @@ function SchermataFraseLibera({
   const [feedback, setFeedback] = useState(null);
   const [traduzione, setTraduzione] = useState("");
   const [showTrad, setShowTrad] = useState(false);
-  const lingueAttive = lingue.filter(l => l.attiva && !["sp", "ge", "cr"].includes(l.codice));
+  const lingueAttive = lingue.filter(l => l.attiva && !DIALETTI_TTS_ITA.includes(l.codice));
   function nuovaCarta() {
     const cand = vocabolario.filter(e => lingueAttive.some(l => l.codice !== "it" && e[l.codice]));
     if (!cand.length) return;
@@ -10192,18 +10191,9 @@ function App() {
     livelli: []
   }));
   const [schermata, setSchermata] = useState("home"); // splash disabilitata
-  const [aiSettings, setAiSettings] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem(SK_AI) || "null") || {
-        provider: "groq",
-        apiKey: ""
-      };
-    } catch {
-      return {
-        provider: "groq",
-        apiKey: ""
-      };
-    }
+  const [aiSettings, setAiSettings] = useState(() => loadJSON(SK_AI, null) || {
+    provider: "gemini",
+    apiKey: ""
   });
   const [modalita, setModalita] = useState("quiz");
   const [carte, setCarte] = useState([]);
@@ -10245,9 +10235,7 @@ function App() {
     saveJSON(SK_FILTRI, filtri);
   }, [filtri]);
   useEffect(() => {
-    try {
-      localStorage.setItem(SK_AI, JSON.stringify(aiSettings));
-    } catch {}
+    saveJSON(SK_AI, aiSettings);
   }, [aiSettings]);
   function avvia(voc, st, mod, ling, fil, linguaDa, linguaA, nDom) {
     const v = voc || vocabolario,
@@ -10743,7 +10731,9 @@ class ErrorBoundary extends React.Component {
     return this.props.children;
   }
 }
-ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(ErrorBoundary, null, /*#__PURE__*/React.createElement(App, null)));
+if (!window.__TEST_MODE__) {
+  ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(ErrorBoundary, null, /*#__PURE__*/React.createElement(App, null)));
+}
 </script>
 <style>
 #fb-footer-bar {

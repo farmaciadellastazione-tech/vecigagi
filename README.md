@@ -227,7 +227,7 @@ The dialect entries in particular represent the work of native speakers and comm
 
 ## Author
 
-**Dino Storti** — Pharmacist, La Spezia, Italy
+**vecigagi** — Pharmacist, La Spezia, Italy
 Built as a personal language learning tool, shared freely with the community.
 
-© 2026 Dino Storti
+© 2026 vecigagi
