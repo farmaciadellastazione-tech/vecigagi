@@ -7422,47 +7422,28 @@ function Home({
   const scadute = contaScadute(vocabolario, stats, lingue, filtri);
   const filtriAttivi = filtri.temi.length + filtri.livelli.length;
 
-  // Sblocco progressivo
+  // Sblocco progressivo: tutte le modalità si sbloccano dopo la prima parola studiata
   const paroleViste = Object.values(stats).filter(s => (s.livello || 0) > 0).length;
-  const nL = nLingueAttive;
-  function sU(a, b, c) {
-    return nL >= 5 ? c : nL >= 3 ? b : a;
-  }
   const SBLOCCHI = {
-    sceltaMultipla: null,
+    sceltamultipla: null,
     dettato: null,
-    allenamento: {
-      tipo: "viste",
-      soglia: sU(5, 3, 2)
-    },
-    voce: {
-      tipo: "viste",
-      soglia: sU(10, 7, 4)
-    },
-    ascolto: {
-      tipo: "viste",
-      soglia: sU(20, 14, 8)
-    },
-    fraseLibera: {
-      tipo: "apprese",
-      soglia: sU(20, 14, 8)
-    },
-    nonstop: {
-      tipo: "apprese",
-      soglia: sU(30, 20, 12)
-    },
-    quiz: {
-      tipo: "apprese",
-      soglia: sU(50, 35, 20)
-    }
+    allenamento: { tipo: "viste", soglia: 1 },
+    voce: { tipo: "viste", soglia: 1 },
+    ascolto: { tipo: "viste", soglia: 1 },
+    fraseLibera: { tipo: "apprese", soglia: 1 },
+    nonstop: { tipo: "apprese", soglia: 1 },
+    quiz: { tipo: "apprese", soglia: 1 }
   };
+  // Sblocco: basta avere abbastanza parole viste OPPURE apprese
   function isSbloccata(key) {
-    return true; // TODO: ripristinare soglie per utenti reali
+    const sb = SBLOCCHI[key];
+    if (!sb) return true;
+    return Math.max(paroleViste, apprese) >= sb.soglia;
   }
   function progSblocco(key) {
     const sb = SBLOCCHI[key];
     if (!sb) return null;
-    const val = sb.tipo === "viste" ? paroleViste : apprese;
+    const val = Math.max(paroleViste, apprese);
     return {
       val,
       soglia: sb.soglia,
@@ -7931,7 +7912,7 @@ function Home({
       className: "mt-2"
     }, /*#__PURE__*/React.createElement("div", {
       className: "flex justify-between text-xs text-zinc-600 mb-1"
-    }, /*#__PURE__*/React.createElement("span", null, prog.tipo === "viste" ? "Parole viste" : "Parole apprese"), /*#__PURE__*/React.createElement("span", null, prog.val, "/", prog.soglia)), /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("span", null, "Progresso"), /*#__PURE__*/React.createElement("span", null, prog.val, "/", prog.soglia)), /*#__PURE__*/React.createElement("div", {
       className: "h-1 bg-zinc-800 rounded-full overflow-hidden"
     }, /*#__PURE__*/React.createElement("div", {
       className: "h-full bg-zinc-600 rounded-full transition-all",
@@ -10323,40 +10304,14 @@ function App() {
     setSchermata("quiz");
   }
   function scegli(mod) {
-    // Verifica sblocco anche da qui (es. accesso diretto alla config)
-    const paroleViste = Object.values(stats).filter(s => (s.livello || 0) > 0).length;
-    const nL = lingue.filter(l => l.attiva).length;
-    function sU(a, b, c) {
-      return nL >= 5 ? c : nL >= 3 ? b : a;
+    // Difesa in profondità: blocca le modalità con sblocco se l'utente non ha
+    // ancora studiato almeno una parola (la UI in Home già disabilita il pulsante)
+    const SBLOCCHI_CHECK_KEYS = ["allenamento", "voce", "ascolto", "fraseLibera", "nonstop", "quiz"];
+    if (SBLOCCHI_CHECK_KEYS.includes(mod)) {
+      const paroleViste = Object.values(stats).filter(s => (s.livello || 0) > 0).length;
+      const apprese = vocabolario.filter(e => passaFiltri(e, filtri) && parolaAppresa(e, stats, lingue)).length;
+      if (paroleViste === 0 && apprese === 0) return;
     }
-    const SBLOCCHI_CHECK = {
-      allenamento: {
-        tipo: "viste",
-        soglia: sU(5, 3, 2)
-      },
-      voce: {
-        tipo: "viste",
-        soglia: sU(10, 7, 4)
-      },
-      ascolto: {
-        tipo: "viste",
-        soglia: sU(20, 14, 8)
-      },
-      nonstop: {
-        tipo: "apprese",
-        soglia: sU(30, 20, 12)
-      },
-      quiz: {
-        tipo: "apprese",
-        soglia: sU(50, 35, 20)
-      }
-    };
-    // Sblocchi disabilitati — TODO: ripristinare per utenti reali
-    // const sb = SBLOCCHI_CHECK[mod];
-    // if (sb) {
-    //   const val = sb.tipo === "viste" ? paroleViste : apprese;
-    //   if (val < sb.soglia) return;
-    // }
     if (mod === "fraseLibera") {
       setSchermata("fraseLibera");
       return;
