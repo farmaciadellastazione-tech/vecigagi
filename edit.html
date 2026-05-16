@@ -253,8 +253,8 @@
     <label>Provider
       <select id="ai-provider">
         <option value="">— disabilitato —</option>
-        <option value="groq">Groq (consigliato, gratuito)</option>
-        <option value="gemini">Google Gemini</option>
+        <option value="gemini">Google Gemini (consigliato, gratuito)</option>
+        <option value="groq">Groq Llama (gratuito)</option>
         <option value="anthropic">Anthropic Claude</option>
         <option value="openai">OpenAI</option>
       </select>
@@ -264,8 +264,8 @@
     </label>
     <p style="font-size:0.78rem; color:var(--muted); margin-top:0.6rem">
       <strong>Dove ottenere una chiave gratuita:</strong><br>
-      • Groq: <span style="user-select:all">console.groq.com/keys</span><br>
-      • Gemini: <span style="user-select:all">aistudio.google.com/apikey</span>
+      • Gemini: <span style="user-select:all">aistudio.google.com/apikey</span><br>
+      • Groq: <span style="user-select:all">console.groq.com/keys</span>
     </p>
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="chiudiConfigAI()">Annulla</button>
@@ -1369,12 +1369,12 @@ async function callGroq(prompt) {
   return (await res.json()).choices[0].message.content;
 }
 async function callGemini(prompt) {
-  const res = await fetchTimeout('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key='+encodeURIComponent(aiConfig.key), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ contents:[{parts:[{text:prompt}]}], generationConfig:{temperature:0.3,responseMimeType:'application/json'} }) }, 30000);
+  const res = await fetchTimeout('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(aiConfig.key), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ contents:[{parts:[{text:prompt}]}], generationConfig:{temperature:0.3,responseMimeType:'application/json'} }) }, 30000);
   if (!res.ok) throw new Error('Gemini HTTP '+res.status+': '+await res.text());
   return (await res.json()).candidates[0].content.parts[0].text;
 }
 async function callAnthropic(prompt) {
-  const res = await fetchTimeout('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'x-api-key':aiConfig.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','Content-Type':'application/json'}, body:JSON.stringify({ model:'claude-3-5-haiku-20241022', max_tokens:500, messages:[{role:'user',content:prompt}] }) }, 30000);
+  const res = await fetchTimeout('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'x-api-key':aiConfig.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','Content-Type':'application/json'}, body:JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:500, messages:[{role:'user',content:prompt}] }) }, 30000);
   if (!res.ok) throw new Error('Anthropic HTTP '+res.status+': '+await res.text());
   return (await res.json()).content[0].text;
 }
