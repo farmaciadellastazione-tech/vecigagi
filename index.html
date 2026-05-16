@@ -9045,43 +9045,35 @@ function SchermataSceltaMultipla({
   setStats,
   onHome
 }) {
-  // Stato per coppia di lingue: "it→en", "it→sp", ecc.
-  // Ogni coppia ha il suo nScelte/nDom indipendente.
-  const SK_SM = "qml_v10_sm2"; // chiave aggiornata per reset pulito
+  // Stato globale unico per la modalità: {nScelte, nDom, corrette}
+  const SK_SM = "qml_v11_sm_global"; // chiave nuova: stato globale (non più per coppia)
   const lingueAttive = lingue.filter(l => l.attiva);
   const uiCode = getUILang();
   const lP = lingueAttive.find(l => l.codice === uiCode) || lingueAttive[0];
 
-  function defaultStatoCoppia() {
+  function defaultStato() {
     return { nScelte: 5, nDom: 10, corrette: 0 };
   }
-  function loadTuttiStati() {
-    try { return JSON.parse(localStorage.getItem(SK_SM) || "{}"); } catch { return {}; }
+  function loadStato() {
+    try { return { ...defaultStato(), ...JSON.parse(localStorage.getItem(SK_SM) || "{}") }; } catch { return defaultStato(); }
   }
-  function salvaTuttiStati(tutti) {
-    try { localStorage.setItem(SK_SM, JSON.stringify(tutti)); } catch {}
+  function salvaStato(s) {
+    try { localStorage.setItem(SK_SM, JSON.stringify(s)); } catch {}
   }
-  // stato corrente = mappa codice_target → {nScelte, nDom, corrette}
-  const [tuttiStati, setTuttiStati] = useState(loadTuttiStati);
+
+  const [stato, setStato] = useState(loadStato);
   const [indice, setIndice] = useState(0);
   const [carte, setCarte] = useState([]);
   const [risposta, setRisposta] = useState(null);
   const [punteggio, setPunteggio] = useState(0);
   const [erroreSetup, setErroreSetup] = useState(null);
 
-  function getStatoCoppia(codTarget, stati) {
-    return (stati || tuttiStati)[codTarget] || defaultStatoCoppia();
-  }
-
-  function generaCarte(tuttiStatiOverride) {
-    const ts = tuttiStatiOverride || tuttiStati;
+  function generaCarte(statoOverride) {
+    const st = statoOverride || stato;
     if (lingueAttive.length < 2) { setErroreSetup("Servono almeno 2 lingue attive."); return; }
     if (!lP) { setErroreSetup("Lingua prompt non trovata."); return; }
     const candidatiLA = lingueAttive.filter(l => l.codice !== lP.codice);
     if (candidatiLA.length === 0) { setErroreSetup("Servono almeno 2 lingue attive diverse."); return; }
-
-    // Calcola nScelte massimo tra tutte le coppie attive (per il filtro distrattori)
-    const nScelteMax = Math.max(...candidatiLA.map(l => getStatoCoppia(l.codice, ts).nScelte));
 
     // Pool globale: entry con prompt e almeno una lingua target valida
     const poolGlobale = vocabolario.filter(e =>
@@ -9091,24 +9083,21 @@ function SchermataSceltaMultipla({
     );
     if (poolGlobale.length === 0) { setErroreSetup("Vocabolario insufficiente per le lingue attive."); return; }
 
-    // nDom = massimo nDom tra le coppie attive (il mazzo è misto)
-    const nDomTot = Math.max(...candidatiLA.map(l => getStatoCoppia(l.codice, ts).nDom));
     const shuffled = [...poolGlobale].sort(() => Math.random() - 0.5);
     const nuoveCarte = [];
 
     for (const entry of shuffled) {
-      if (nuoveCarte.length >= nDomTot) break;
+      if (nuoveCarte.length >= st.nDom) break;
       // Scegli una lingua target casuale tra quelle con traduzione disponibile
       const targetsValidi = candidatiLA.filter(l => entry[l.codice] && String(entry[l.codice]).trim());
       if (targetsValidi.length === 0) continue;
       const lA = targetsValidi[Math.floor(Math.random() * targetsValidi.length)];
-      const stCoppia = getStatoCoppia(lA.codice, ts);
       const corretta = formaDisplay(entry[lA.codice], lA.codice);
       // Distrattori dalla stessa lingua target
       const pool_lA = poolGlobale.filter(e => e[lA.codice] && String(e[lA.codice]).trim());
       const altri = pool_lA.filter(e => formaDisplay(e[lA.codice], lA.codice) !== corretta)
-        .sort(() => Math.random() - 0.5).slice(0, stCoppia.nScelte - 1);
-      if (altri.length < stCoppia.nScelte - 1) continue;
+        .sort(() => Math.random() - 0.5).slice(0, st.nScelte - 1);
+      if (altri.length < st.nScelte - 1) continue;
       const scelte = [corretta, ...altri.map(e => formaDisplay(e[lA.codice], lA.codice))].sort(() => Math.random() - 0.5);
       nuoveCarte.push({ entry, linguaPrompt: lP, lingua: lA, corretta, scelte });
     }
@@ -9148,37 +9137,29 @@ function SchermataSceltaMultipla({
     if (indice < carte.length - 1) { setIndice(i => i + 1); setRisposta(null); }
   }
 
-  // Progressione per coppia: 5→12 scelte, 10→50 domande
-  function calcolaProssimoStatoCoppia(codTarget, percentuale) {
-    const st = getStatoCoppia(codTarget);
+  // Progressione globale: 5→12 scelte, 10→50 domande
+  function calcolaProssimoStato(percentuale) {
     if (percentuale === 100) {
-      if (st.nDom >= 50) {
-        // Massimo domande raggiunto: scala le scelte
-        const nuoveScelte = Math.min(st.nScelte + 2, 12);
+      if (stato.nDom >= 50) {
+        // Massimo domande raggiunto: incrementa scelte e resetta domande a 10
+        const nuoveScelte = Math.min(stato.nScelte + 2, 12);
         return { nScelte: nuoveScelte, nDom: 10, corrette: 0 };
       }
-      return { ...st, nDom: Math.min(st.nDom + 5, 50), corrette: 0 };
+      return { ...stato, nDom: Math.min(stato.nDom + 5, 50), corrette: 0 };
     }
-    if (percentuale < 50) return { ...st, nDom: Math.max(st.nDom - 5, 10), corrette: 0 };
-    return { ...st, corrette: 0 };
+    if (percentuale < 50) return { ...stato, nDom: Math.max(stato.nDom - 5, 10), corrette: 0 };
+    return { ...stato, corrette: 0 };
   }
 
   function giocaAncora() {
     const percFinale = Math.round(punteggio / carte.length * 100);
-    // Aggiorna ogni coppia target presente nel mazzo in base alla performance globale
-    const nuoviStati = { ...tuttiStati };
-    const targetsUsati = [...new Set(carte.map(c => c.lingua.codice))];
-    for (const cod of targetsUsati) {
-      nuoviStati[cod] = calcolaProssimoStatoCoppia(cod, percFinale);
-    }
-    salvaTuttiStati(nuoviStati);
-    setTuttiStati(nuoviStati);
-    generaCarte(nuoviStati);
+    const nuovoStato = calcolaProssimoStato(percFinale);
+    salvaStato(nuovoStato);
+    setStato(nuovoStato);
+    generaCarte(nuovoStato);
   }
 
-  // Stato "rappresentativo" per display: usa la prima coppia target attiva
-  const primaTarget = lingueAttive.find(l => l.codice !== lP?.codice);
-  const statoDisplay = primaTarget ? getStatoCoppia(primaTarget.codice) : defaultStatoCoppia();
+  const statoDisplay = stato;
   if (!carte.length) return /*#__PURE__*/React.createElement("div", {
     className: "min-h-screen bg-black flex items-center justify-center p-6"
   }, erroreSetup ? /*#__PURE__*/React.createElement("div", {
@@ -9251,8 +9232,7 @@ function SchermataSceltaMultipla({
   }, indice < carte.length - 1 ? "Avanti →" : "Risultati →"), /*#__PURE__*/React.createElement("div", {
     className: "text-center mt-3 text-zinc-600 text-sm"
   }, "\u2705 ", punteggio, " / ", indice + 1)), fine && (() => {
-    const primaTargetFine = carte.length > 0 ? carte[0].lingua.codice : null;
-    const prossimoStato = primaTargetFine ? calcolaProssimoStatoCoppia(primaTargetFine, perc) : defaultStatoCoppia();
+    const prossimoStato = calcolaProssimoStato(perc);
     return /*#__PURE__*/React.createElement("div", {
       className: "flex-1 flex flex-col items-center justify-center text-center"
     }, /*#__PURE__*/React.createElement("div", {
@@ -9263,7 +9243,7 @@ function SchermataSceltaMultipla({
       className: "text-zinc-400 mb-2"
     }, punteggio, " / ", carte.length, " corrette"), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-600 mb-6"
-    }, perc === 100 ? "⬆️ +5 dom al prossimo giro" : perc < 50 ? "⬇️ -5 dom al prossimo giro" : "➡️ Stesso livello"), /*#__PURE__*/React.createElement("p", {
+    }, perc === 100 && stato.nDom >= 50 ? "🎉 +2 scelte, reset a 10 dom" : perc === 100 ? "⬆️ +5 dom al prossimo giro" : perc < 50 ? "⬇️ -5 dom al prossimo giro" : "➡️ Stesso livello"), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-700 mb-6"
     }, "Prossimo: ", prossimoStato.nScelte, " scelte \xB7 ", prossimoStato.nDom, " dom"), /*#__PURE__*/React.createElement("button", {
       onClick: giocaAncora,
