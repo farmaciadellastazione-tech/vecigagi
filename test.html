@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Test isCorretta — LinguaeQuiz</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <style>
+    body { font-family: ui-monospace, "Cascadia Code", Menlo, Consolas, monospace; background: #0a0a0a; color: #ddd; margin: 0; padding: 24px; line-height: 1.5; }
+    h1 { color: #fff; margin: 0 0 8px; font-size: 20px; }
+    .summary { padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-weight: bold; font-size: 14px; }
+    .summary.ok { background: #052e1a; color: #4ade80; border: 1px solid #166534; }
+    .summary.ko { background: #2e0505; color: #f87171; border: 1px solid #7f1d1d; }
+    .group { margin-bottom: 18px; }
+    .group h2 { font-size: 13px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin: 18px 0 8px; border-bottom: 1px solid #222; padding-bottom: 4px; }
+    .test { display: grid; grid-template-columns: 20px 1fr; gap: 8px; padding: 4px 0; font-size: 13px; align-items: baseline; }
+    .test.pass { color: #4ade80; }
+    .test.fail { color: #f87171; background: #1a0808; padding: 4px 8px; margin: 2px -8px; border-radius: 4px; }
+    .test .icon { font-size: 14px; }
+    .test code { color: #fbbf24; font-family: inherit; }
+    .meta { font-size: 11px; color: #666; margin-top: 12px; }
+    button { background: #1a1a1a; color: #ddd; border: 1px solid #333; padding: 6px 12px; border-radius: 6px; cursor: pointer; font: inherit; font-size: 12px; }
+    button:hover { border-color: #555; }
+  </style>
+</head>
+<body>
+  <h1>🧪 Test <code>isCorretta</code></h1>
+  <div id="status" class="summary">Caricamento <code>index.html</code>…</div>
+  <div id="results"></div>
+  <p class="meta">
+    Carica dinamicamente lo script di <code>index.html</code> (window.__TEST_MODE__ = true salta il render React),
+    poi chiama <code>window.isCorretta</code> con un set di casi. Esegui aprendo questo file in locale: <code>start test.html</code>.
+    <button onclick="location.reload()" style="margin-left:8px">🔄 Riesegui</button>
+  </p>
+
+  <!-- root necessario perché index.html lo cerca via getElementById -->
+  <div id="root" style="display:none"></div>
+
+  <script>
+    window.__TEST_MODE__ = true;
+
+    // Estrae il blocco <script> "interno" di index.html (quello con la const useState destructure)
+    // e lo inietta nella pagina, in modo che window.isCorretta diventi disponibile.
+    async function caricaIndex() {
+      const html = await fetch('./index.html').then(r => r.text());
+      // Lo script grande inizia con "const { useState, useEffect ..." subito dopo <script>
+      const match = html.match(/<script>\s*(const\s*\{\s*useState[\s\S]*?)<\/script>/);
+      if (!match) throw new Error('Impossibile trovare il blocco script in index.html');
+      const code = match[1];
+      const s = document.createElement('script');
+      s.textContent = code;
+      document.body.appendChild(s);
+      if (typeof window.isCorretta !== 'function') {
+        throw new Error('window.isCorretta non disponibile dopo l\'iniezione');
+      }
+    }
+
+    // ── Test cases ──────────────────────────────────────────────────────────
+    // Formato: { gruppo, atteso, dato, bcp47, codLingua, expected, note? }
+    const TEST_CASES = [
+      // — Match base —
+      { gruppo: 'Base',           atteso: 'ciao',      dato: 'ciao',      bcp47: 'it-IT', codLingua: 'it', expected: true },
+      { gruppo: 'Base',           atteso: 'ciao',      dato: 'CIAO',      bcp47: 'it-IT', codLingua: 'it', expected: true, note: 'case insensitive' },
+      { gruppo: 'Base',           atteso: 'ciao',      dato: '  ciao  ',  bcp47: 'it-IT', codLingua: 'it', expected: true, note: 'spazi extra' },
+      { gruppo: 'Base',           atteso: 'ciao',      dato: 'addio',     bcp47: 'it-IT', codLingua: 'it', expected: false },
+      { gruppo: 'Base',           atteso: 'ciao',      dato: '',          bcp47: 'it-IT', codLingua: 'it', expected: false, note: 'stringa vuota' },
+
+      // — Accenti —
+      { gruppo: 'Accenti',        atteso: 'perché',    dato: 'perche',    bcp47: 'it-IT', codLingua: 'it', expected: true, note: 'accento opzionale' },
+      { gruppo: 'Accenti',        atteso: 'città',     dato: 'citta',     bcp47: 'it-IT', codLingua: 'it', expected: true },
+      { gruppo: 'Accenti',        atteso: 'perché',    dato: 'perché',    bcp47: 'it-IT', codLingua: 'it', expected: true },
+
+      // — Sinonimi (separatori /, ;, ,, |) —
+      { gruppo: 'Sinonimi',       atteso: 'ciao/salve', dato: 'salve',    bcp47: 'it-IT', codLingua: 'it', expected: true, note: '/ separa sinonimi' },
+      { gruppo: 'Sinonimi',       atteso: 'ciao/salve', dato: 'ciao',     bcp47: 'it-IT', codLingua: 'it', expected: true },
+      { gruppo: 'Sinonimi',       atteso: 'ciao|hey',   dato: 'hey',      bcp47: 'it-IT', codLingua: 'it', expected: true, note: '| = sinonimi nascosti' },
+      { gruppo: 'Sinonimi',       atteso: 'a;b;c',      dato: 'b',        bcp47: 'it-IT', codLingua: 'it', expected: true, note: '; come separatore' },
+
+      // — Inglese: "to" opzionale —
+      { gruppo: 'Inglese',        atteso: 'eat',        dato: 'to eat',   bcp47: 'en-US', codLingua: 'en', expected: true, note: '"to" opzionale' },
+      { gruppo: 'Inglese',        atteso: 'to eat',     dato: 'eat',      bcp47: 'en-US', codLingua: 'en', expected: true },
+      { gruppo: 'Inglese',        atteso: 'go',         dato: 'to go',    bcp47: 'en-US', codLingua: 'en', expected: true },
+
+      // — Inglese: contrazioni —
+      { gruppo: 'Contrazioni en', atteso: 'I will go',  dato: "I'll go",  bcp47: 'en-US', codLingua: 'en', expected: true },
+      { gruppo: 'Contrazioni en', atteso: 'do not',     dato: "don't",    bcp47: 'en-US', codLingua: 'en', expected: true },
+      { gruppo: 'Contrazioni en', atteso: 'cannot',     dato: "can't",    bcp47: 'en-US', codLingua: 'en', expected: true },
+      { gruppo: 'Contrazioni en', atteso: 'it is',      dato: "it's",     bcp47: 'en-US', codLingua: 'en', expected: true },
+
+      // — Coniugazioni: soggetto opzionale —
+      { gruppo: 'Soggetti',       atteso: 'loved',      dato: 'you loved', bcp47: 'en-US', codLingua: 'en', expected: true, note: 'risposta con soggetto' },
+      { gruppo: 'Soggetti',       atteso: 'you loved',  dato: 'loved',     bcp47: 'en-US', codLingua: 'en', expected: true, note: 'atteso con soggetto, dato senza' },
+      { gruppo: 'Soggetti',       atteso: 'aime',       dato: "j'aime",    bcp47: 'fr-FR', codLingua: 'fr', expected: true, note: 'elision francese' },
+
+      // — Dialetti: cifre → parole (sp/cr/ge) —
+      { gruppo: 'Dialetto sp',    atteso: 'sénco',      dato: '5',         bcp47: 'it-IT', codLingua: 'sp', expected: true, note: 'cifra → parola dialettale' },
+      { gruppo: 'Dialetto cr',    atteso: 'tri',        dato: '3',         bcp47: 'it-IT', codLingua: 'cr', expected: true },
+      { gruppo: 'Dialetto ge',    atteso: 'çìnque',     dato: '5',         bcp47: 'it-IT', codLingua: 'ge', expected: true },
+
+      // — Dialetti: pronuncia/grafia (sp/ge/cr/mn) —
+      // Per i dialetti / separa pronuncia (prima) da grafia tradizionale (seconda).
+      // Entrambe le forme dovrebbero essere accettate come risposta.
+      { gruppo: 'Pron/grafia',    atteso: 'camalàaee/camalae', dato: 'camalae',    bcp47: 'it-IT', codLingua: 'sp', expected: true, note: 'grafia tradizionale' },
+      { gruppo: 'Pron/grafia',    atteso: 'camalàaee/camalae', dato: 'camalaee',   bcp47: 'it-IT', codLingua: 'sp', expected: true, note: 'pronuncia (no accento)' },
+
+      // — Parole brevi (≤4 lettere) tolleranza extra —
+      { gruppo: 'Parole brevi',   atteso: 'cat',         dato: 'cats',     bcp47: 'en-US', codLingua: 'en', expected: true, note: 'contenimento' },
+
+      // — Edge cases —
+      { gruppo: 'Edge',           atteso: 'ciao mamma',  dato: 'ciao mamma', bcp47: 'it-IT', codLingua: 'it', expected: true, note: 'frase multi-parola' },
+      { gruppo: 'Edge',           atteso: 'ciao mamma',  dato: 'arrivederci papà', bcp47: 'it-IT', codLingua: 'it', expected: false },
+      { gruppo: 'Edge',           atteso: 'casa',        dato: 'casa-bella', bcp47: 'it-IT', codLingua: 'it', expected: false, note: 'parole composte' },
+      { gruppo: 'Edge',           atteso: 'a/b',         dato: 'c',         bcp47: 'it-IT', codLingua: 'it', expected: false, note: 'nessun sinonimo match' },
+    ];
+
+    function eseguiTest() {
+      const results = document.getElementById('results');
+      results.innerHTML = '';
+      let passed = 0, failed = 0;
+      const byGroup = {};
+      for (const tc of TEST_CASES) {
+        let got;
+        try {
+          got = window.isCorretta(tc.atteso, tc.dato, tc.bcp47, tc.codLingua);
+        } catch (e) {
+          got = `ERR: ${e.message}`;
+        }
+        const ok = got === tc.expected;
+        (byGroup[tc.gruppo] ||= []).push({ tc, got, ok });
+        if (ok) passed++; else failed++;
+      }
+      for (const [gruppo, items] of Object.entries(byGroup)) {
+        const g = document.createElement('div');
+        g.className = 'group';
+        g.innerHTML = `<h2>${gruppo} (${items.filter(i => i.ok).length}/${items.length})</h2>`;
+        for (const { tc, got, ok } of items) {
+          const div = document.createElement('div');
+          div.className = `test ${ok ? 'pass' : 'fail'}`;
+          const noteStr = tc.note ? ` <span style="color:#666">— ${tc.note}</span>` : '';
+          const expectedStr = ok ? '' : ` <span style="color:#fbbf24">[atteso: ${tc.expected}, ottenuto: ${got}]</span>`;
+          div.innerHTML = `
+            <span class="icon">${ok ? '✓' : '✗'}</span>
+            <span>
+              isCorretta(<code>${JSON.stringify(tc.atteso)}</code>, <code>${JSON.stringify(tc.dato)}</code>, <code>"${tc.codLingua}"</code>)${noteStr}${expectedStr}
+            </span>
+          `;
+          g.appendChild(div);
+        }
+        results.appendChild(g);
+      }
+      const status = document.getElementById('status');
+      if (failed === 0) {
+        status.className = 'summary ok';
+        status.textContent = `✅ Tutti i ${passed} test passano`;
+      } else {
+        status.className = 'summary ko';
+        status.textContent = `❌ ${failed} test falliti su ${passed + failed}`;
+      }
+    }
+
+    (async () => {
+      try {
+        await caricaIndex();
+        eseguiTest();
+      } catch (e) {
+        const status = document.getElementById('status');
+        status.className = 'summary ko';
+        status.textContent = `❌ Errore: ${e.message}`;
+        console.error(e);
+      }
+    })();
+  </script>
+</body>
+</html>
