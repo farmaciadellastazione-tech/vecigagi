@@ -1653,6 +1653,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"espressioni", livello:"B1", it:"mi fai morire", en:"you're killing me", fr:"tu me tues", es:"me estás matando", de:"du bringst mich um", pt:"me estás matando", ru:"ты меня убиваешь", ca:"em mates", sp:"te me feè moìiee/te me fe moìe", ia:"tu me occide", la:"me necas", ro:"mă omori" },
       { tema:"esclamazioni", livello:"A2", it:"caspita!", sp:"beeeliiina dé... e chi ttèèi ?/belina deh, e chi t'ei?" },
       { tema:"insulti", livello:"B2", it:"sei un belinone", sp:"tèiin belinon/ t'ei un belinon" },
       { tema:"natura", livello:"B1", it:"una rondine non fa primavera", cr:"una rond’na a n fa primavera" },
@@ -3130,7 +3131,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 159;
+const VOC_VERSION = 160;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
