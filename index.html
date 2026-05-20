@@ -9027,13 +9027,17 @@ function SchermataSceltaMultipla({
       const targetsValidi = candidatiLA.filter(l => entry[l.codice] && String(entry[l.codice]).trim());
       if (targetsValidi.length === 0) continue;
       const lA = targetsValidi[Math.floor(Math.random() * targetsValidi.length)];
-      const corretta = formaDisplay(entry[lA.codice], lA.codice);
+      const correttaRaw = entry[lA.codice];
+      const corretta = formaDisplay(correttaRaw, lA.codice);
       // Distrattori dalla stessa lingua target
       const pool_lA = poolGlobale.filter(e => e[lA.codice] && String(e[lA.codice]).trim());
       const altri = pool_lA.filter(e => formaDisplay(e[lA.codice], lA.codice) !== corretta)
         .sort(() => Math.random() - 0.5).slice(0, st.nScelte - 1);
       if (altri.length < st.nScelte - 1) continue;
-      const scelte = [corretta, ...altri.map(e => formaDisplay(e[lA.codice], lA.codice))].sort(() => Math.random() - 0.5);
+      const scelte = [
+        { raw: correttaRaw, display: corretta },
+        ...altri.map(e => ({ raw: e[lA.codice], display: formaDisplay(e[lA.codice], lA.codice) }))
+      ].sort(() => Math.random() - 0.5);
       nuoveCarte.push({ entry, linguaPrompt: lP, lingua: lA, corretta, scelte });
     }
 
@@ -9053,8 +9057,10 @@ function SchermataSceltaMultipla({
   function scegli(s) {
     if (risposta) return;
     const carta = carte[indice];
-    const ok = s === carta.corretta;
-    setRisposta({ scelta: s, corretta: ok });
+    const ok = s.display === carta.corretta;
+    setRisposta({ scelta: s.display, corretta: ok });
+    // Auto-play della risposta corretta nella lingua target (utile per imparare la pronuncia)
+    parla(formaTTS(carta.entry[carta.lingua.codice]), carta.lingua?.bcp47);
     if (ok) {
       setPunteggio(p => p + 1);
       if (setStats && carta.entry && carta.lingua && carta.linguaPrompt) {
@@ -9065,14 +9071,14 @@ function SchermataSceltaMultipla({
           return { ...prev, [key]: { livello: 1, prossima: oggi() + INTERVALLI[1] * 86400000, risposte: (c.risposte || 0) + 1, corrette: (c.corrette || 0) + 1 } };
         });
       }
-      // Auto-avanti: lascia 300ms per il feedback verde, poi vai alla prossima
+      // Auto-avanti: lascia ~600ms per feedback verde + ascolto rapido della parola
       // (se è l'ultima carta non serve: il render passa già a "fine")
       if (indice < carte.length - 1) {
         autoNextTimer.current = setTimeout(() => {
           autoNextTimer.current = null;
           setIndice(i => i + 1);
           setRisposta(null);
-        }, 300);
+        }, 600);
       }
     }
   }
@@ -9155,22 +9161,33 @@ function SchermataSceltaMultipla({
     className: "text-sm text-zinc-500 mb-2"
   }, carta.linguaPrompt?.bandiera || "\uD83C\uDDEE\uD83C\uDDF9", " ", carta.linguaPrompt?.nome || "Italiano"), /*#__PURE__*/React.createElement("p", {
     className: "text-5xl font-extrabold text-white tracking-tight"
-  }, formaDisplay(carta.entry[carta.linguaPrompt?.codice || "it"], carta.linguaPrompt?.codice || "it")), /*#__PURE__*/React.createElement("p", {
+  }, formaDisplay(carta.entry[carta.linguaPrompt?.codice || "it"], carta.linguaPrompt?.codice || "it")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => parla(formaTTS(carta.entry[carta.linguaPrompt?.codice || "it"]), carta.linguaPrompt?.bcp47),
+    className: "mt-3 inline-flex items-center gap-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-1.5 rounded-lg text-sm transition",
+    title: "Ascolta la parola"
+  }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-600 mt-2"
   }, carta.lingua.bandiera, " ", carta.lingua.nome)), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 gap-3 mb-4"
   }, carta.scelte.map((s, i) => {
     let cls = "bg-zinc-900 border-2 border-zinc-800 text-white";
     if (risposta) {
-      if (s === carta.corretta) cls = "bg-green-950 border-2 border-green-600 text-green-300 font-bold";else if (s === risposta.scelta && !risposta.corretta) cls = "bg-red-950 border-2 border-red-600 text-red-300";else cls = "bg-zinc-950 border-2 border-zinc-800 text-zinc-600";
+      if (s.display === carta.corretta) cls = "bg-green-950 border-2 border-green-600 text-green-300 font-bold";else if (s.display === risposta.scelta && !risposta.corretta) cls = "bg-red-950 border-2 border-red-600 text-red-300";else cls = "bg-zinc-950 border-2 border-zinc-800 text-zinc-600";
     }
     return /*#__PURE__*/React.createElement("button", {
       key: i,
       onClick: () => scegli(s),
-      className: `${cls} rounded-xl py-5 px-5 text-left transition text-xl font-medium`
+      className: `${cls} rounded-xl py-5 px-5 transition text-xl font-medium flex items-center gap-3`
     }, /*#__PURE__*/React.createElement("span", {
-      className: "text-zinc-500 mr-2"
-    }, String.fromCharCode(65 + i), "."), s);
+      className: "text-zinc-500"
+    }, String.fromCharCode(65 + i), "."), /*#__PURE__*/React.createElement("span", {
+      className: "flex-1 text-left"
+    }, s.display), /*#__PURE__*/React.createElement("span", {
+      role: "button",
+      onClick: (ev) => { ev.stopPropagation(); parla(formaTTS(s.raw), carta.lingua?.bcp47); },
+      className: "text-zinc-500 hover:text-amber-400 text-base px-2 -my-2 py-2",
+      title: "Ascolta questa scelta"
+    }, "\uD83D\uDD0A"));
   })), risposta && !risposta.corretta && /*#__PURE__*/React.createElement("button", {
     onClick: avanti,
     className: "w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-4 rounded-xl transition btn-shadow"
