@@ -9081,6 +9081,10 @@ function SchermataSceltaMultipla({
           setIndice(i => i + 1);
           setRisposta(null);
         }, 600);
+      } else if (punteggio + 1 === carte.length) {
+        // Ultima carta + 100% di corrette: esclamazione celebrativa in spezzino.
+        // Delay per non sovrapporsi all'audio della parola corretta appena partito.
+        setTimeout(() => parla("beeeliina dé, e chi teei?", "it-IT"), 1500);
       }
     }
   }
@@ -9205,7 +9209,11 @@ function SchermataSceltaMultipla({
       className: "text-2xl font-extrabold text-white mb-1"
     }, perc, "%"), /*#__PURE__*/React.createElement("p", {
       className: "text-zinc-400 mb-2"
-    }, punteggio, " / ", carte.length, " corrette"), /*#__PURE__*/React.createElement("p", {
+    }, punteggio, " / ", carte.length, " corrette"), perc === 100 && /*#__PURE__*/React.createElement("button", {
+      onClick: () => parla("beeeliina dé, e chi teei?", "it-IT"),
+      className: "italic text-amber-400 text-base mb-3 inline-flex items-center gap-2 hover:text-amber-300 transition",
+      title: "Riascolta"
+    }, "⚓ “belina deh, e chi t'ei?” 🔊"), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-600 mb-6"
     }, perc === 100 && stato.nDom >= 50 ? "🎉 +2 scelte, reset a 10 dom" : perc === 100 ? "⬆️ +5 dom al prossimo giro" : perc < 50 ? "⬇️ -5 dom al prossimo giro" : "➡️ Stesso livello"), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-700 mb-6"
