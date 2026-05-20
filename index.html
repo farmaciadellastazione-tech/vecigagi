@@ -1653,7 +1653,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
-      { tema:"esclamazioni", livello:"A2", it:"caspita!", sp:"beeeliina dé, e chi teei?/belina deh, e chi t'ei?" },
+      { tema:"esclamazioni", livello:"A2", it:"caspita!", sp:"beeeliina dé... e chi teei?/belina deh, e chi t'ei?" },
       { tema:"insulti", livello:"B2", it:"sei un belinone", sp:"tèiin belinon/ t'ei un belinon" },
       { tema:"natura", livello:"B1", it:"una rondine non fa primavera", cr:"una rond’na a n fa primavera" },
       { tema:"spazio", livello:"A1", it:"dentro", en:"inside", fr:"dedans", es:"dentro", de:"drinnen", pt:"dentro", ru:"внутри", ca:"dins", sp:"drento", mn:"drentu", ge:"drénto", ko:"안에", ar:"داخل", zh:"里面", ja:"中", ia:"in", la:"intus", grc:"ἔσω", ro:"înăuntru", sq:"brenda" },
@@ -9084,7 +9084,7 @@ function SchermataSceltaMultipla({
       } else if (punteggio + 1 === carte.length) {
         // Ultima carta + 100% di corrette: esclamazione celebrativa in spezzino.
         // Delay per non sovrapporsi all'audio della parola corretta appena partito.
-        setTimeout(() => parla("beeeliina dé, e chi teei?", "it-IT"), 1500);
+        setTimeout(() => parla("beeeliina dé... e chi teei?", "it-IT"), 1500);
       }
     }
   }
@@ -9210,7 +9210,7 @@ function SchermataSceltaMultipla({
     }, perc, "%"), /*#__PURE__*/React.createElement("p", {
       className: "text-zinc-400 mb-2"
     }, punteggio, " / ", carte.length, " corrette"), perc === 100 && /*#__PURE__*/React.createElement("button", {
-      onClick: () => parla("beeeliina dé, e chi teei?", "it-IT"),
+      onClick: () => parla("beeeliina dé... e chi teei?", "it-IT"),
       className: "italic text-amber-400 text-base mb-3 inline-flex items-center gap-2 hover:text-amber-300 transition",
       title: "Riascolta"
     }, "⚓ “belina deh, e chi t'ei?” 🔊"), /*#__PURE__*/React.createElement("p", {
