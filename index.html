@@ -7321,6 +7321,15 @@ function TourGuidato({
   const [step, setStep] = useState(0);
   const total = steps.length;
   const s = steps[step];
+  // Nasconde la barra footer (#fb-footer-bar) mentre il tour è attivo:
+  // copriva il bottone "Avanti" nei webview di FB/Instagram.
+  useEffect(() => {
+    const f = document.getElementById("fb-footer-bar");
+    if (!f) return;
+    const prev = f.style.display;
+    f.style.display = "none";
+    return () => { f.style.display = prev; };
+  }, []);
   return /*#__PURE__*/React.createElement("div", {
     className: "fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4",
     onClick: e => {
