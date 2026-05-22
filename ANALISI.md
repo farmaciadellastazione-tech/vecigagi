@@ -87,4 +87,72 @@ A seguire #4 (conferma reset) e #5 (race TTS).
 - ✅ **#2 fatto (2026-05-16)** — refactor verso `loadJSON`/`saveJSON`: rimosse le IIFE try/catch in `esportaProgressi`, gli `setItem(... JSON.stringify(...))` in `importaProgressi` e nell'`useEffect` di `aiSettings`, semplificata l'inizializzazione di `aiSettings` e di `loadStato/salvaStato` in `SceltaMultipla`. Tutti i parse passano ora dall'helper protetto. *Nota: l'analisi originale parlava di "mancanza di try/catch", ma in realtà i punti erano già protetti — il valore del fix è uniformità e uso delle costanti `SK_*` (prima alcune chiavi erano stringhe hardcoded come `"qml_v10_ai"`).*
 - ✅ **#5 fatto (2026-05-16)** — serializzazione di `parla()`: aggiunta variabile `_parlaTimer` per evitare timer sovrapposti; se `speechSynthesis.speaking || .pending`, chiama `cancel()` e ritarda `speak()` di 60 ms (cancel() è asincrono in Chromium e provocava audio scartato/sovrapposto su click rapidi). Nessuna API esterna cambia: `parla(testo, bcp47)` resta identico per i chiamanti.
 - ❌ **#4 non applicabile (2026-05-16)** — l'analisi originale aveva interpretato male il codice. Vedi sezione 4 sopra: tutti i path distruttivi sono o già protetti o di recovery automatico.
-- ✅ **AI default model (2026-05-16, fuori dalla lista originale)** — cambiato il default AI provider da Groq/Llama-3.1-8b-instant (debole su multilingua: generava output in lingua sbagliata e grammatica inventata) a Google Gemini 2.5 Flash (`:8109-8112`, prima era 2.0 Flash che va in EOL il 1° giugno 2026). Modificati: fallback `callAI` (`:8115`), default `aiSettings` (`:10182`), default UI `:8298`, riordino `PROVIDERS` con Gemini primo + label "consigliato 🆓", aggiornato messaggio fallback no-key (`:8947`). Utenti esistenti con provider già salvato non sono toccati (solo nuovi utenti vedono Gemini come default).
+- 🔍 **#3 audit fatto (2026-05-22), correzioni in sospeso** — verificato che `edit.html` rispetta la convenzione `pronuncia/grafia` (banner help, prompt AI `aiTrascriviTTS`, esportazione CSV). Scan di 247 coppie con `/` nei campi `mn/sp/ge/cr`. Voci sospette elencate sotto: vanno corrette caso per caso a mano.
+- ✅ **AI default model (2026-05-16, fuori dalla lista originale)** — cambiato il default AI provider da Groq/Llama-3.1-8b-instant (debole su multilingua: generava output in lingua sbagliata e grammatica inventata) a Google Gemini 2.5 Flash (`:8109-8112`, prima era 2.0 Flash che va in EOL il 1° giugno 2026). Modificati: fallback `callAI` (`:8115`), default `aiSettings` (`:10182`), default UI `:8298`, riordino `PROVIDERS` con Gemini primo + label "consigliato 🆓", aggiornato messaggio fallback no-key (`:8997`). Utenti esistenti con provider già salvato non sono toccati (solo nuovi utenti vedono Gemini come default).
+- ✅ **Cleanup `resetbtn` (2026-05-22)** — rimosse 6 definizioni dialetti morte (it/en/fr/es/de/pt). Commit `aecdf60`.
+
+---
+
+## Audit fix #3 — voci sospette nel vocabolario (2026-05-22)
+
+Scan eseguito su 247 coppie `pronuncia/grafia` nei campi `mn/sp/ge/cr`. Tre categorie di anomalie. **Lista da decidere caso per caso, nessuna modifica applicata.**
+
+### Gruppo A — duplicati (slash inutile, parti identiche)
+
+| Lang | Valore attuale | it |
+|---|---|---|
+| ge | `gatto/gatto` | gatto |
+| mn | `melanzana/melanzana` | melanzana |
+| mn | `ananas/ananas` | ananas |
+| mn | `ingrediente/ingrediente` | ingrediente |
+
+Azione possibile: rimuovere lo slash, lasciare una sola occorrenza (la voce funziona già senza `/`).
+
+### Gruppo B — convenzione `dialetto/italiano` invece di `pronuncia/grafia`
+
+Parte 2 = traduzione italiana, già presente nel campo `it`. La grafia mostrata all'utente quando indovina nella scelta multipla sarà l'italiano (perché `formaDisplay` dei dialetti restituisce `parts[-1]`).
+
+| Lang | Valore attuale | it |
+|---|---|---|
+| cr | `branzin/branzino` | branzino\|spigola |
+| cr | `camalà/camallare` | camallare\|sfacchinare\|portare in spalla |
+| ge | `tosse con cataro/tosse con catarro` | tosse con catarro |
+| ge | `baratöu/barattolo` | barattolo |
+| cr | `bongiorn/buongiorno` | buongiorno |
+| cr | `bun sera/buonasera` | buonasera |
+
+Azione possibile: rimuovere la parte italiana, lasciare solo il dialetto.
+
+### Gruppo C — apostrofo `s'X` (ordine probabilmente invertito)
+
+In ligure/manarolese `s'c` con apostrofo distingue `[stʃ]` da `[ʃ]`. È **grafia tradizionale**, non pronuncia. La TTS italiana ignora l'apostrofo, quindi `s'ciàfu` e `sciàfu` suonano uguali — ma la convenzione vuole pronuncia in P1, grafia in P2.
+
+| Lang | Valore attuale | it | Inversione proposta |
+|---|---|---|---|
+| mn | `s'ciàfu/sciàfu` | schiaffo | `sciàfu/s'ciàfu` |
+| mn | `s' ciopu/sciòpu` | fucile\|schioppo | `sciòpu/s'ciopu` |
+| mn | `s' ciancà/sciancà` | sciancato, claudicante | `sciancà/s'ciancà` |
+| mn | `s'ciancùn/sciancùn` | strattone | `sciancùn/s'ciancùn` |
+
+### Gruppo D — casi ambigui (da decidere a mano)
+
+Pattern strani che non rientrano nelle categorie chiare. Possibile inversione o errore di trascrizione.
+
+| Lang | Valore attuale | it | Nota |
+|---|---|---|---|
+| sp | `d'zena/Zena` | Genova | `d'` davanti a `Zena` strana |
+| ge | `d'zena/Zena` | Genova | come sopra |
+| sp | `d'zeneo/zéneo` | genero | `d'` davanti a `zeneo` |
+| ge | `d'zèneo/zeneo` | genero | come sopra |
+| cr | `cand'da/candeda` | candela | TTS legge male `cand'da`: probabile inversione |
+| cr | `v'ci/veç` | vecchio | TTS legge male `veç` (ç non IT) |
+| mn | `v'ree ben/vrëëbën` | amare | `ëë` in P2: forse OK |
+| mn | `tra'féguu/tràfégu` | traffico, movimento | borderline |
+| mn | `sghi'nda/zghìnda` | colui che evita | OK probabile (P2 ha z- dialettale) |
+| sp | `amen baato 'r belin/a men bato er belin` | me ne frego | frase, borderline |
+
+### Note sull'audit
+
+Il primo passaggio (score fonetico) aveva segnalato 33 candidati ma includeva molti falsi positivi (es. `sgualdrìna/zgùaldrina` è OK: P1 italianizzata, P2 con `z-` dialettale tipica). Le tre categorie A/B/C sono il filtraggio più affidabile.
+
+Non audited: voci con `/` nei campi non-dialetto (es. `cr:"branzin/branzino"` se vista come sinonimi vs. pronuncia/grafia — `cr` è dialetto secondo `DIALETTI_TTS_ITA`, quindi va trattata come pronuncia/grafia).
