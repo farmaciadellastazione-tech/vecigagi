@@ -121,16 +121,18 @@ Parte italiana rimossa (già presente nel campo `it`).
 | cr | `bongiorn / buongiorno` | `bongiorn` |
 | cr | `bun sera / buonasera` | `bun sera` |
 
-### Gruppo C — apostrofo `s'X` (ordine probabilmente invertito)
+### Gruppo C — apostrofo `s'X` (ordine invertito) ✅ corretto 2026-05-22
 
 In ligure/manarolese `s'c` con apostrofo distingue `[stʃ]` da `[ʃ]`. È **grafia tradizionale**, non pronuncia. La TTS italiana ignora l'apostrofo, quindi `s'ciàfu` e `sciàfu` suonano uguali — ma la convenzione vuole pronuncia in P1, grafia in P2.
 
-| Lang | Valore attuale | it | Inversione proposta |
-|---|---|---|---|
-| mn | `s'ciàfu/sciàfu` | schiaffo | `sciàfu/s'ciàfu` |
-| mn | `s' ciopu/sciòpu` | fucile\|schioppo | `sciòpu/s'ciopu` |
-| mn | `s' ciancà/sciancà` | sciancato, claudicante | `sciancà/s'ciancà` |
-| mn | `s'ciancùn/sciancùn` | strattone | `sciancùn/s'ciancùn` |
+Inversione applicata mantenendo gli spazi interni originali (`s' ciopu`, `s' ciancà`); pulito uno spazio anomalo dopo `/` nella voce schioppo.
+
+| Lang | Valore precedente | Nuovo valore |
+|---|---|---|
+| mn | `s'ciàfu/sciàfu` | `sciàfu/s'ciàfu` |
+| mn | `s' ciopu/ sciòpu` | `sciòpu/s' ciopu` |
+| mn | `s' ciancà/sciancà` | `sciancà/s' ciancà` |
+| mn | `s'ciancùn/sciancùn` | `sciancùn/s'ciancùn` |
 
 ### Gruppo D — casi ambigui (da decidere a mano)
 
