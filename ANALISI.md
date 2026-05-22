@@ -97,31 +97,29 @@ A seguire #4 (conferma reset) e #5 (race TTS).
 
 Scan eseguito su 247 coppie `pronuncia/grafia` nei campi `mn/sp/ge/cr`. Tre categorie di anomalie. **Lista da decidere caso per caso, nessuna modifica applicata.**
 
-### Gruppo A — duplicati (slash inutile, parti identiche)
+### Gruppo A — duplicati (slash inutile, parti identiche) ✅ corretto 2026-05-22
 
-| Lang | Valore attuale | it |
+Slash rimosso, lasciata una sola occorrenza.
+
+| Lang | Valore precedente | Nuovo valore |
 |---|---|---|
-| ge | `gatto/gatto` | gatto |
-| mn | `melanzana/melanzana` | melanzana |
-| mn | `ananas/ananas` | ananas |
-| mn | `ingrediente/ingrediente` | ingrediente |
+| ge | `gatto/gatto` | `gatto` |
+| mn | `melanzana/melanzana` | `melanzana` |
+| mn | `ananas/ananas` | `ananas` |
+| mn | `ingrediente/ingrediente` | `ingrediente` |
 
-Azione possibile: rimuovere lo slash, lasciare una sola occorrenza (la voce funziona già senza `/`).
+### Gruppo B — convenzione `dialetto/italiano` invece di `pronuncia/grafia` ✅ corretto 2026-05-22
 
-### Gruppo B — convenzione `dialetto/italiano` invece di `pronuncia/grafia`
+Parte italiana rimossa (già presente nel campo `it`).
 
-Parte 2 = traduzione italiana, già presente nel campo `it`. La grafia mostrata all'utente quando indovina nella scelta multipla sarà l'italiano (perché `formaDisplay` dei dialetti restituisce `parts[-1]`).
-
-| Lang | Valore attuale | it |
+| Lang | Valore precedente | Nuovo valore |
 |---|---|---|
-| cr | `branzin/branzino` | branzino\|spigola |
-| cr | `camalà/camallare` | camallare\|sfacchinare\|portare in spalla |
-| ge | `tosse con cataro/tosse con catarro` | tosse con catarro |
-| ge | `baratöu/barattolo` | barattolo |
-| cr | `bongiorn/buongiorno` | buongiorno |
-| cr | `bun sera/buonasera` | buonasera |
-
-Azione possibile: rimuovere la parte italiana, lasciare solo il dialetto.
+| cr | `branzin/branzino` | `branzin` |
+| cr | `camalà/camallare` | `camalà` |
+| ge | `tosse con cataro/tosse con catarro` | `tosse con cataro` |
+| ge | `baratöu/barattolo` | `baratöu` |
+| cr | `bongiorn / buongiorno` | `bongiorn` |
+| cr | `bun sera / buonasera` | `bun sera` |
 
 ### Gruppo C — apostrofo `s'X` (ordine probabilmente invertito)
 
