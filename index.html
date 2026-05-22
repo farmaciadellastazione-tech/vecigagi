@@ -9327,7 +9327,7 @@ Reply with JSON only, all text in ${langName}.`;
   }
   async function traduci() {
     const testo = [feedback.correction ? `Correzione: ${feedback.correction}` : "✅ Corretta", `Grammatica: ${feedback.grammar}`, feedback.example ? `Esempio: ${feedback.example}` : ""].filter(Boolean).join("\n");
-    const t = await callAI("Translate to Italian concisely.", testo, aiSettings);
+    const t = await callAI("Translate to Italian. Keep the Italian labels 'Correzione:', 'Grammatica:', 'Esempio:' and the '✅ Corretta' marker unchanged — translate only the text after each label. Preserve line breaks. Natural Italian, not literal.", testo, aiSettings);
     setTraduzione(t);
     setShowTrad(true);
   }
