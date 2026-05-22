@@ -134,22 +134,26 @@ Inversione applicata mantenendo gli spazi interni originali (`s' ciopu`, `s' cia
 | mn | `s' ciancà/sciancà` | `sciancà/s' ciancà` |
 | mn | `s'ciancùn/sciancùn` | `sciancùn/s'ciancùn` |
 
-### Gruppo D — casi ambigui (da decidere a mano)
+### Gruppo D — casi ambigui ✅ analizzati 2026-05-22, nessuna correzione necessaria
 
-Pattern strani che non rientrano nelle categorie chiare. Possibile inversione o errore di trascrizione.
+**Chiarimento dell'autore (2026-05-22)**: la `d'` davanti a `z` in voci come `d'zena`, `d'zeneo`, `d'zèneo` è un **trucco TTS intenzionale**, NON un errore. Serve a far pronunciare il suono [z] sonoro (la `s` di "casa"/"rosa" del nord italia) perché la TTS italiana legge la `z` come affricata sorda [ts] (es. "zucchero"). Mettendo `d'` davanti, la TTS produce [dz] ≈ [z]. Quindi le 4 voci con `d'z` sono già conformi alla convenzione `pronuncia/grafia`.
 
-| Lang | Valore attuale | it | Nota |
+Le restanti voci del gruppo D risultano anch'esse coerenti con la convenzione (P1 italianizzata per TTS, P2 grafia tradizionale).
+
+| Lang | Valore | it | Verdict |
 |---|---|---|---|
-| sp | `d'zena/Zena` | Genova | `d'` davanti a `Zena` strana |
-| ge | `d'zena/Zena` | Genova | come sopra |
-| sp | `d'zeneo/zéneo` | genero | `d'` davanti a `zeneo` |
-| ge | `d'zèneo/zeneo` | genero | come sopra |
-| cr | `cand'da/candeda` | candela | TTS legge male `cand'da`: probabile inversione |
-| cr | `v'ci/veç` | vecchio | TTS legge male `veç` (ç non IT) |
-| mn | `v'ree ben/vrëëbën` | amare | `ëë` in P2: forse OK |
-| mn | `tra'féguu/tràfégu` | traffico, movimento | borderline |
-| mn | `sghi'nda/zghìnda` | colui che evita | OK probabile (P2 ha z- dialettale) |
-| sp | `amen baato 'r belin/a men bato er belin` | me ne frego | frase, borderline |
+| sp | `d'zena/Zena` | Genova | ✅ OK (d'z = TTS trick per [z]) |
+| ge | `d'zena/Zena` | Genova | ✅ OK |
+| sp | `d'zeneo/zéneo` | genero | ✅ OK |
+| ge | `d'zèneo/zeneo` | genero | ✅ OK |
+| cr | `cand'da/candeda` | candela | ✅ OK (apostrofo = e sincopata, TTS legge ≈ pronuncia reale) |
+| cr | `v'ci/veç` | vecchio | ✅ probabile OK |
+| mn | `v'ree ben/vrëëbën` | amare | ✅ OK |
+| mn | `tra'féguu/tràfégu` | traffico, movimento | ✅ OK |
+| mn | `sghi'nda/zghìnda` | colui che evita | ✅ OK |
+| sp | `amen baato 'r belin/a men bato er belin` | me ne frego | ✅ OK |
+
+**Suggerimento**: il trucco `d'z` per simulare [z] sonoro è una convenzione fonetica non documentata in `CLAUDE.md`. Aggiungerla aiuterebbe future sessioni di audit a non segnalare falsi positivi.
 
 ### Note sull'audit
 

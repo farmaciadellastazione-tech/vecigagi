@@ -21,6 +21,7 @@ Il carattere `/` ha **due significati diversi** in base al codice lingua:
   - Esempio: `sp:"camalàaee/camalae"` → TTS dice `camalàaee`, grafia mostrata `camalae`.
   - Se manca la `/`, viene letta la grafia così com'è (fallback transitorio).
   - La lista canonica è in `DIALETTI_TTS_ITA` in `index.html`.
+  - **Trucco TTS `d'z`**: la TTS italiana legge la `z` come affricata sorda [ts] (es. "zucchero" → [tsukˈkero]). Nei dialetti liguri/spezzini/genovesi le parole tipo "Zena" (Genova) si pronunciano invece con [z] sonoro (come la `s` di "casa"/"rosa" nell'italiano del nord). Per ingannare la TTS, si scrive `d'z...` davanti: la TTS produce [dz] che approssima [z]. Esempio: `sp:"d'zena/Zena"` → TTS dice `dzena` ≈ `zena`, grafia mostrata `Zena`. **Non confondere con un errore di trascrizione.**
 - **Tutti gli altri codici**: `/` separa **sinonimi** (parole diverse con stesso significato). Es. `cr:"branzin/branzino"`.
 
 Quando aggiungi/modifichi voci dialettali, rispetta la convenzione `pronuncia/grafia` per `mn/sp/ge/cr`.
