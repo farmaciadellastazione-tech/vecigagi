@@ -9281,13 +9281,23 @@ function SchermataFraseLibera({
     const parola = soloVisibile(carta.entry[carta.lingua.codice]);
     const itParola = soloVisibile(carta.entry.it);
     const langName = carta.lingua.nome;
-    const system = `Tu es un professeur de langues. Réponds UNIQUEMENT en ${langName}.
-Retourne UNIQUEMENT un objet JSON valide, sans explication, sans markdown, sans texte avant ou après.
-Tous les champs texte doivent être en ${langName}.
-Format exact: {"correct":true,"correction":"","grammar":"courte note grammaticale en ${langName}","example":"phrase exemple en ${langName}"}`;
-    const user = `Word to use: "${parola}" (means "${itParola}" in Italian)
+    const system = `You are a language teacher. Evaluate the student's sentence in ${langName}.
+
+Reply with ONE JSON object only (no markdown, no extra text).
+All text fields MUST be written in ${langName}.
+
+Shape: {"correct": boolean, "correction": string, "grammar": string, "example": string}
+- correct: JSON boolean true/false (NOT the strings "true"/"false"). true if the sentence is grammatically valid in ${langName} and uses the target word; false otherwise.
+- correction: corrected sentence in ${langName} (empty string when correct=true).
+- grammar: brief rule explanation in ${langName} (≤15 words).
+- example: another short sentence in ${langName} using the same target word.
+
+Format reference (Italian examples for illustration — YOUR output must be in ${langName}):
+"Io vado a casa" → {"correct":true,"correction":"","grammar":"Presente indicativo corretto.","example":"La mia casa è grande."}
+"Io andare casa" → {"correct":false,"correction":"Io vado a casa.","grammar":"Manca 'a' e il verbo va coniugato.","example":"Vado a casa ogni sera."}`;
+    const user = `Target word: "${parola}" (Italian meaning: "${itParola}")
 Student sentence: "${frase}"
-Reply with JSON only.`;
+Reply with JSON only, all text in ${langName}.`;
     try {
       const raw = await callAI(system, user, aiSettings);
       const clean = raw.replace(/```json|```/g, "").replace(/\n/g, " ").trim();
