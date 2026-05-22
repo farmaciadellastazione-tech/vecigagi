@@ -45,6 +45,8 @@ Verificare in `SceltaMultipla` (`~:9062`) e simili: se `[]` ma il corpo usa stat
 
 **Fix proposto**: inserire le dipendenze reali o riavviare via `key=` sul componente.
 
+✅ **Verificato 2026-05-22**: bug teorico ma non riproducibile nel flusso reale. Le props `lingue`/`vocabolario`/`filtri` cambiano solo dalla Home dove la schermata quiz non è montata; `nDom`/`nScelte` si aggiornano via `giocaAncora()` che chiama `generaCarte(nuovoStato)` esplicitamente. Aggiunti commenti esplicativi sui due `useEffect(()=>..., [])` di `SchermataSceltaMultipla` (`:9071`) e `SchermataFraseLibera` (`:9273`) per chiarire l'intento mount-only e prevenire fix sbagliati futuri. Non c'è ESLint nel progetto (React via CDN), quindi nessun warning `exhaustive-deps` da silenziare.
+
 ### 7. `getJSON` non centralizzato
 `:3172` definisce un helper, ma `:3186-3207` e `:10197` non lo usano. Convergere su un'unica funzione protetta.
 
@@ -90,6 +92,7 @@ A seguire #4 (conferma reset) e #5 (race TTS).
 - 🔍 **#3 audit fatto (2026-05-22), correzioni in sospeso** — verificato che `edit.html` rispetta la convenzione `pronuncia/grafia` (banner help, prompt AI `aiTrascriviTTS`, esportazione CSV). Scan di 247 coppie con `/` nei campi `mn/sp/ge/cr`. Voci sospette elencate sotto: vanno corrette caso per caso a mano.
 - ✅ **AI default model (2026-05-16, fuori dalla lista originale)** — cambiato il default AI provider da Groq/Llama-3.1-8b-instant (debole su multilingua: generava output in lingua sbagliata e grammatica inventata) a Google Gemini 2.5 Flash (`:8109-8112`, prima era 2.0 Flash che va in EOL il 1° giugno 2026). Modificati: fallback `callAI` (`:8115`), default `aiSettings` (`:10182`), default UI `:8298`, riordino `PROVIDERS` con Gemini primo + label "consigliato 🆓", aggiornato messaggio fallback no-key (`:8997`). Utenti esistenti con provider già salvato non sono toccati (solo nuovi utenti vedono Gemini come default).
 - ✅ **Cleanup `resetbtn` (2026-05-22)** — rimosse 6 definizioni dialetti morte (it/en/fr/es/de/pt). Commit `aecdf60`.
+- ✅ **#6 (2026-05-22)** — bug teorico ma non riproducibile. Aggiunti commenti su `useEffect(()=>..., [])` di `SchermataSceltaMultipla` e `SchermataFraseLibera` per chiarire l'intento mount-only.
 
 ---
 

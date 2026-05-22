@@ -9065,6 +9065,9 @@ function SchermataSceltaMultipla({
     setPunteggio(0);
   }
 
+  // Mount-only: lingue/filtri/vocabolario cambiano solo dalla Home (componente
+  // smontato); nDom/nScelte si aggiornano via giocaAncora() che chiama generaCarte
+  // esplicitamente. Non aggiungere dipendenze: rigenererebbero le carte mid-quiz.
   useEffect(() => { generaCarte(); }, []);
 
   function scegli(s) {
@@ -9267,6 +9270,8 @@ function SchermataFraseLibera({
     setShowTrad(false);
     setTraduzione("");
   }
+  // Mount-only: lingue/vocabolario cambiano solo dalla Home (componente smontato).
+  // Carte successive vengono richieste da bottoni dell'utente, non da effetti.
   useEffect(() => {
     nuovaCarta();
   }, []);
