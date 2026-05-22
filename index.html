@@ -3886,6 +3886,24 @@ const DIALETTI_TTS_ITA = ["mn", "sp", "ge", "cr"];
 // mn non è incluso perché non ha la propria tabella in NUMERI_DIALETTO.
 const DIALETTI_NUMERI = ["sp", "ge", "cr"];
 
+// Frasi scherzose in spezzino mostrate a fine esercizio (Allenamento/Quiz).
+// Convenzione tts/vis come per il vocabolario sp: la TTS italiana legge `tts`,
+// la UI mostra `vis`. Fasce per percentuale: min/max inclusivi, omessi = nessun limite.
+//   - alta: min:80     (vittoria)
+//   - media: min:50, max:79
+//   - bassa: max:49    (bonario, mai offensivo)
+const FRASI_FINE_SP = [
+  { tts: "beeeliiina dé... e chi ttèèi ?", vis: "belina deh, e chi t'ei?", min: 80 }
+  // TODO: aggiungere altre frasi per fasce media/bassa
+];
+function frasaFineSP(perc) {
+  const cand = FRASI_FINE_SP.filter(f =>
+    (f.min === undefined || perc >= f.min) &&
+    (f.max === undefined || perc <= f.max)
+  );
+  return cand.length ? cand[Math.floor(Math.random() * cand.length)] : null;
+}
+
 // soloVisibile: rimuove le alternative nascoste (separate da |).
 // Es. "cammino|tragitto|distanza" -> "cammino"
 // Le alternative dopo | sono accettate da isCorretta ma mai mostrate né lette dal TTS.
@@ -9223,11 +9241,14 @@ function SchermataSceltaMultipla({
       className: "text-2xl font-extrabold text-white mb-1"
     }, perc, "%"), /*#__PURE__*/React.createElement("p", {
       className: "text-zinc-400 mb-2"
-    }, punteggio, " / ", carte.length, " corrette"), perc === 100 && /*#__PURE__*/React.createElement("button", {
-      onClick: () => parla("beeeliiina dé... e chi ttèèi ?", "it-IT"),
-      className: "italic text-amber-400 text-base mb-3 inline-flex items-center gap-2 hover:text-amber-300 transition",
-      title: "Riascolta"
-    }, "⚓ “belina deh, e chi t'ei?” 🔊"), /*#__PURE__*/React.createElement("p", {
+    }, punteggio, " / ", carte.length, " corrette"), (() => {
+      const f = frasaFineSP(perc);
+      return f && /*#__PURE__*/React.createElement("button", {
+        onClick: () => parla(f.tts, "it-IT"),
+        className: "italic text-amber-400 text-base mb-3 inline-flex items-center gap-2 hover:text-amber-300 transition",
+        title: "Riascolta"
+      }, "⚓ “", f.vis, "” 🔊");
+    })(), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-600 mb-6"
     }, perc === 100 && stato.nDom >= 50 ? "🎉 +2 scelte, reset a 10 dom" : perc === 100 ? "⬆️ +5 dom al prossimo giro" : perc < 50 ? "⬇️ -5 dom al prossimo giro" : "➡️ Stesso livello"), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-700 mb-6"
@@ -9519,6 +9540,13 @@ function SchermataQuiz({
     }, isNS ? nuovoRecord ? t.nuovorecord2 : t.gameover : t.ottimolav), /*#__PURE__*/React.createElement("p", {
       className: "text-slate-500 text-sm mb-4"
     }, iconaModalita, " ", t.sessione), (() => {
+      const f = frasaFineSP(perc);
+      return f && /*#__PURE__*/React.createElement("button", {
+        onClick: () => parla(f.tts, "it-IT"),
+        className: "italic text-amber-400 text-base mb-4 inline-flex items-center gap-2 hover:text-amber-300 transition",
+        title: "Riascolta"
+      }, "⚓ “", f.vis, "” 🔊");
+    })(), (() => {
       const str = streak || {
         count: 0,
         lastDay: 0
