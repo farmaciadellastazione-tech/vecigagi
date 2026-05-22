@@ -9502,11 +9502,37 @@ Reply with JSON only, all text in ${langName}.`;
     }
     setStato("feedback");
   }
+  // Ri-analizza la frase dell'utente nella lingua UI (non in italiano fisso):
+  // una seconda correzione/spiegazione nella lingua "madre" dell'utente.
+  // La lingua UI è già nota: la cerchiamo in `lingue` (stesso pattern di PannelloBilingue).
+  const linguaUI = lingue.find(l => l.codice === getUILang());
   async function traduci() {
-    const testo = [feedback.correction ? `Correzione: ${feedback.correction}` : "✅ Corretta", `Grammatica: ${feedback.grammar}`, feedback.example ? `Esempio: ${feedback.example}` : ""].filter(Boolean).join("\n");
-    const t = await callAI("Translate to Italian. Keep the Italian labels 'Correzione:', 'Grammatica:', 'Esempio:' and the '✅ Corretta' marker unchanged — translate only the text after each label. Preserve line breaks. Natural Italian, not literal.", testo, aiSettings);
-    setTraduzione(t);
-    setShowTrad(true);
+    if (!carta || !frase.trim()) return;
+    setStato("loading");
+    const parola = soloVisibile(carta.entry[carta.lingua.codice]);
+    const itParola = soloVisibile(carta.entry.it);
+    const langName = carta.lingua.nome;
+    const userLangName = linguaUI?.nome || "Italiano";
+    const system = `You are a language teacher. The student is learning ${langName}; their native language is ${userLangName}.
+Re-analyze the student's sentence and reply ENTIRELY in ${userLangName} (except: keep the corrected sentence and the example sentence in ${langName}).
+
+Include, in this order, separated by line breaks (plain text, no markdown):
+1. A one-line verdict (correct, or what's wrong) in ${userLangName}.
+2. The corrected sentence in ${langName} (skip this line if already correct).
+3. A short grammar/usage note in ${userLangName} (≤25 words).
+4. A new example sentence in ${langName} using the target word, followed by its ${userLangName} translation in parentheses.`;
+    const user = `Target word: "${parola}" (Italian meaning: "${itParola}")
+Student sentence: "${frase}"
+Reply in ${userLangName}.`;
+    try {
+      const t = await callAI(system, user, aiSettings);
+      setTraduzione(t);
+      setShowTrad(true);
+    } catch (e) {
+      setTraduzione("Errore. Riprova.");
+      setShowTrad(true);
+    }
+    setStato("feedback");
   }
   if (!carta) return /*#__PURE__*/React.createElement("div", {
     className: "min-h-screen bg-black flex items-center justify-center"
@@ -9583,7 +9609,7 @@ Reply with JSON only, all text in ${langName}.`;
   }, !showTrad && /*#__PURE__*/React.createElement("button", {
     onClick: traduci,
     className: "flex-1 bg-zinc-900 border border-zinc-700 text-amber-400 font-bold py-2.5 rounded-xl text-sm hover:border-amber-600 transition"
-  }, "\uD83C\uDDEE\uD83C\uDDF9 Traduci"), /*#__PURE__*/React.createElement("button", {
+  }, (linguaUI?.bandiera || "\uD83C\uDF10") + " Traduci"), /*#__PURE__*/React.createElement("button", {
     onClick: nuovaCarta,
     className: "flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2.5 rounded-xl text-sm transition btn-shadow"
   }, "Nuova \u2192"))));
