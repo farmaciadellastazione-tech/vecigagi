@@ -31,7 +31,7 @@ Le funzioni `formaDisplay`/`formaTTS` (`:3909-3938`) splittano su `/[/,;]/`, qui
 - `:7791` 🗑️ "Reset vocabolario" ha già `confirm()` e preserva i progressi.
 - I 3 `localStorage.clear()` (`:3164`, `:10135`, `:10700`) sono path di recovery automatici (vocabolario corrotto, errore di boot, crash con `ErrorBoundary`), non azioni utente.
 
-Cleanup secondario: la chiave i18n `resetbtn` (`:232, :397, :516, :657, :785, :916`) non è referenziata da nessuna parte → codice morto da rimuovere.
+Cleanup secondario: la chiave i18n `resetbtn` (`:232, :397, :516, :657, :785, :916`) non è referenziata da nessuna parte → codice morto da rimuovere. ✅ **Fatto 2026-05-22**: rimosse tutte e 6 le definizioni (it/en/fr/es/de/pt).
 
 ## 🟡 Media priorità
 
