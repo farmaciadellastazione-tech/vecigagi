@@ -239,6 +239,7 @@
   <button class="btn btn-secondary" onclick="exportExcel()" title="Esporta lingua corrente (filtri applicati) come Excel">📥 Esporta</button>
   <button class="btn btn-secondary" onclick="apriImport()" title="Importa traduzioni da Excel o CSV">📤 Importa</button>
   <button class="btn btn-secondary" onclick="apriNuovaLingua()" title="Aggiungi una nuova lingua o dialetto">🌐 Nuova lingua</button>
+  <button class="btn btn-secondary" onclick="apriFrasiSP()" title="Frasi scherzose in spezzino a fine esercizio">⚓ Frasi SP</button>
   <button id="btn-gh-save" class="btn btn-success" onclick="salvaSuGitHub()">☁️ Salva su GitHub</button>
   <button class="btn btn-secondary" onclick="scaricaCopia()" title="Scarica index.html localmente">💾 Scarica</button>
   <button class="btn btn-secondary" onclick="reimpostaToken()" title="Cambia token GitHub">🔑</button>
@@ -344,6 +345,20 @@
   </div>
 </div>
 
+<!-- Modal Frasi spezzino fine esercizio -->
+<div class="modal-overlay" id="frasi-sp-modal">
+  <div class="modal" style="max-width: 780px;">
+    <h2>⚓ Frasi scherzose in spezzino</h2>
+    <p style="color:var(--muted); font-size:0.85rem">Mostrate a fine sessione (Allenamento/Quiz). <strong>tts</strong>: testo letto dalla TTS italiana (adatta foneticamente, es. allunga vocali). <strong>vis</strong>: grafia tradizionale mostrata all'utente. <strong>Fascia</strong>: <code>alta</code> ≥80%, <code>media</code> 50-79%, <code>bassa</code> &lt;50%.</p>
+    <div id="frasi-sp-list" style="max-height: 55vh; overflow-y: auto; margin-top: 0.8rem;"></div>
+    <button class="btn btn-secondary" onclick="aggiungiFraseSP()" style="margin-top:0.6rem">➕ Aggiungi frase</button>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="chiudiFrasiSP()">Annulla</button>
+      <button class="btn btn-primary" onclick="confermaFrasiSP()">OK</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ==========================================================================
 // CONFIGURAZIONE GITHUB
@@ -389,6 +404,8 @@ const PAGE_SIZE = 50;
 // STATO GLOBALE
 // ==========================================================================
 let vocabolario = [];
+let frasiSP = [];                // array editabile di frasi a fine esercizio (spezzino)
+let frasiSPModificate = false;   // flag per save: le frasi sono state cambiate
 let originalSourceFile = null;
 let originalSourceSha = null;
 let currentLangs = ['mn'];   // array ordinato di codici lingua visibili in tabella
@@ -536,6 +553,8 @@ async function caricaIndexDaGitHub() {
     originalSourceFile = new TextDecoder('utf-8').decode(bytes);
     vocabolario = estraiVocabolario(originalSourceFile);
     if (!vocabolario.length) throw new Error('VOCABOLARIO_DEFAULT vuoto o non trovato');
+    frasiSP = estraiFrasiSP(originalSourceFile);
+    frasiSPModificate = false;
     originalKeysByEntry.clear();
     vocabolario.forEach(v => originalKeysByEntry.set(rowKey(v), new Set(Object.keys(v))));
     popolaTemiSelect();
@@ -565,6 +584,37 @@ function estraiVocabolario(src) {
   const arr = (new Function('return [' + src.slice(start, i) + ']'))();
   if (!Array.isArray(arr)) throw new Error('VOCABOLARIO_DEFAULT non è un array');
   return arr;
+}
+
+// Trova un blocco "const NOME = [ ... ];" e ritorna { start, end } dei delimitatori
+// dell'array (start = posizione dopo '[', end = posizione di ']').
+// Usa lo stesso parser bracket-aware di estraiVocabolario. Ritorna null se marker assente.
+function trovaBloccoArray(src, marker) {
+  const re = new RegExp('^\\s*const\\s+' + marker + '\\s*=\\s*\\[', 'm');
+  const m = re.exec(src);
+  if (!m) return null;
+  const start = m.index + m[0].length;
+  let depth = 1, i = start, inStr = false, esc = false, q = null;
+  while (i < src.length) {
+    const c = src[i];
+    if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === q) inStr = false; }
+    else { if (c === '"' || c === '\'') { inStr = true; q = c; } else if (c === '[') depth++; else if (c === ']') { depth--; if (depth === 0) break; } }
+    i++;
+  }
+  if (depth !== 0) return null;
+  return { start, end: i };
+}
+
+function estraiFrasiSP(src) {
+  const r = trovaBloccoArray(src, 'FRASI_FINE_SP');
+  if (!r) return []; // tollerante: vecchi index.html senza la feature
+  try {
+    const arr = (new Function('return [' + src.slice(r.start, r.end) + ']'))();
+    return Array.isArray(arr) ? arr : [];
+  } catch (e) {
+    console.warn('Parsing FRASI_FINE_SP fallito:', e);
+    return [];
+  }
 }
 
 function popolaTemiSelect() {
@@ -1499,6 +1549,94 @@ let dupGroupsCache = [];
 function apriDuplicati() { dupGroupsCache = trovaDuplicati(); document.getElementById('dup-modal').classList.add('open'); renderDuplicati(); }
 function chiudiDuplicati() { document.getElementById('dup-modal').classList.remove('open'); }
 
+// ==========================================================================
+// FRASI SCHERZOSE SPEZZINO (fine esercizio)
+// ==========================================================================
+let frasiSPDraft = [];
+function fasciaDaMinMax(f) {
+  if (f.min === 80 && f.max === undefined) return 'alta';
+  if (f.min === 50 && f.max === 79) return 'media';
+  if (f.max === 49 && f.min === undefined) return 'bassa';
+  return 'custom';
+}
+function minMaxDaFascia(fascia) {
+  if (fascia === 'alta') return { min: 80 };
+  if (fascia === 'media') return { min: 50, max: 79 };
+  if (fascia === 'bassa') return { max: 49 };
+  return {};
+}
+function apriFrasiSP() {
+  frasiSPDraft = frasiSP.map(f => ({ ...f }));
+  renderFrasiSP();
+  document.getElementById('frasi-sp-modal').classList.add('open');
+}
+function chiudiFrasiSP() {
+  document.getElementById('frasi-sp-modal').classList.remove('open');
+}
+function aggiungiFraseSP() {
+  frasiSPDraft.push({ tts: '', vis: '', min: 80 });
+  renderFrasiSP();
+  // focus sull'ultimo tts appena aggiunto
+  setTimeout(() => {
+    const inputs = document.querySelectorAll('#frasi-sp-list .fsp-tts');
+    if (inputs.length) inputs[inputs.length - 1].focus();
+  }, 0);
+}
+function eliminaFraseSP(i) {
+  frasiSPDraft.splice(i, 1);
+  renderFrasiSP();
+}
+function aggiornaFraseSP(i, campo, valore) {
+  if (!frasiSPDraft[i]) return;
+  if (campo === 'fascia') {
+    delete frasiSPDraft[i].min;
+    delete frasiSPDraft[i].max;
+    Object.assign(frasiSPDraft[i], minMaxDaFascia(valore));
+  } else {
+    frasiSPDraft[i][campo] = valore;
+  }
+}
+function testaFraseSP(i) {
+  const t = (frasiSPDraft[i] && frasiSPDraft[i].tts || '').trim();
+  if (!t) return;
+  const u = new SpeechSynthesisUtterance(t);
+  u.lang = 'it-IT';
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+function renderFrasiSP() {
+  const list = document.getElementById('frasi-sp-list');
+  if (!frasiSPDraft.length) {
+    list.innerHTML = '<p style="color:var(--muted); text-align:center; padding:1rem; font-size:0.88rem">Nessuna frase. Clicca "➕ Aggiungi frase" per iniziare.</p>';
+    return;
+  }
+  list.innerHTML = frasiSPDraft.map((f, i) => {
+    const fascia = fasciaDaMinMax(f);
+    const customOpt = fascia === 'custom' ? `<option value="custom" selected>custom (min=${f.min ?? '–'}, max=${f.max ?? '–'})</option>` : '';
+    return `<div style="display:grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) 130px auto auto; gap:0.4rem; align-items:center; margin-bottom:0.45rem;">
+      <input class="fsp-tts" type="text" value="${escapeAttr(f.tts)}" placeholder="TTS (foneticamente)" oninput="aggiornaFraseSP(${i}, 'tts', this.value)">
+      <input class="fsp-vis" type="text" value="${escapeAttr(f.vis)}" placeholder="Grafia tradizionale" oninput="aggiornaFraseSP(${i}, 'vis', this.value)">
+      <select onchange="aggiornaFraseSP(${i}, 'fascia', this.value)">
+        <option value="alta"${fascia==='alta'?' selected':''}>alta (≥80%)</option>
+        <option value="media"${fascia==='media'?' selected':''}>media (50-79%)</option>
+        <option value="bassa"${fascia==='bassa'?' selected':''}>bassa (&lt;50%)</option>
+        ${customOpt}
+      </select>
+      <button class="btn btn-secondary" onclick="testaFraseSP(${i})" title="Ascolta TTS" style="padding:0.35rem 0.55rem;">🔊</button>
+      <button class="btn btn-secondary" onclick="eliminaFraseSP(${i})" title="Elimina" style="padding:0.35rem 0.55rem;">❌</button>
+    </div>`;
+  }).join('');
+}
+function confermaFrasiSP() {
+  const pulite = frasiSPDraft.filter(f => (f.tts || '').trim() && (f.vis || '').trim());
+  // Confronto JSON per capire se c'è davvero stata una modifica
+  const cambiato = JSON.stringify(pulite) !== JSON.stringify(frasiSP);
+  frasiSP = pulite;
+  if (cambiato) frasiSPModificate = true;
+  chiudiFrasiSP();
+  if (cambiato) setHelp(`✅ ${frasiSP.length} frasi spezzine pronte. Clicca "☁️ Salva su GitHub" per pubblicare.`, 'info');
+}
+
 function analizzaConflitti(indici) {
   const conflitti = [], tuttiCampi = new Set();
   indici.forEach(i => Object.keys(vocabolario[i]).forEach(k => { if (k !== 'it') tuttiCampi.add(k); }));
@@ -1622,6 +1760,13 @@ function serializzaVoce(v) {
   return '{ ' + parts.join(', ') + ' }';
 }
 
+function serializzaFraseSP(f) {
+  const parts = [`tts: ${JSON.stringify(f.tts || '')}`, `vis: ${JSON.stringify(f.vis || '')}`];
+  if (f.min !== undefined) parts.push(`min: ${f.min}`);
+  if (f.max !== undefined) parts.push(`max: ${f.max}`);
+  return '{ ' + parts.join(', ') + ' }';
+}
+
 function ricostruisciSorgente() {
   if (!originalSourceFile) throw new Error('Sorgente originale non caricato');
   const m = BLOCK_START_RE.exec(originalSourceFile); if (!m) throw new Error('Marcatore non trovato');
@@ -1637,6 +1782,14 @@ function ricostruisciSorgente() {
   const lines = vocabolario.map(v => '      ' + serializzaVoce(v) + ',');
   let nuovoSrc = originalSourceFile.slice(0, start) + '\n      // ── VOCABOLARIO ──────────────────────────\n' + lines.join('\n') + '\n    ' + originalSourceFile.slice(i);
   nuovoSrc = nuovoSrc.replace(/^(\s*const\s+VOC_VERSION\s*=\s*)(\d+)(\s*;)/m, (match, prefix, num, suffix) => prefix + (parseInt(num, 10) + 1) + suffix);
+  // Re-inietta FRASI_FINE_SP se il marker è presente nel sorgente
+  const r = trovaBloccoArray(nuovoSrc, 'FRASI_FINE_SP');
+  if (r) {
+    const corpo = frasiSP.length
+      ? '\n  ' + frasiSP.map(serializzaFraseSP).join(',\n  ') + '\n'
+      : '';
+    nuovoSrc = nuovoSrc.slice(0, r.start) + corpo + nuovoSrc.slice(r.end);
+  }
   return nuovoSrc;
 }
 
@@ -1655,8 +1808,9 @@ async function salvaSuGitHub() {
     localStorage.setItem(GH_TOKEN_KEY, token);
   }
   const tot = vocabolario.length, modCount = modifiedKeys.size + newKeys.size;
-  if (!modCount && !confirm('Nessuna modifica. Salvare comunque?')) return;
-  if (!confirm(`Scrivere ${tot} voci su GitHub (modifiche: ${modCount})?\n\n"vecigagi/index.html" verrà sovrascritta.`)) return;
+  if (!modCount && !frasiSPModificate && !confirm('Nessuna modifica. Salvare comunque?')) return;
+  const dettagliFrasi = frasiSPModificate ? ` + ${frasiSP.length} frasi spezzine` : '';
+  if (!confirm(`Scrivere ${tot} voci su GitHub (modifiche: ${modCount})${dettagliFrasi}?\n\n"vecigagi/index.html" verrà sovrascritta.`)) return;
   const btn = document.getElementById('btn-gh-save'), orig = btn.textContent; btn.disabled = true; btn.textContent = '⏳ Salvataggio...';
   let success = false;
   try {
@@ -1670,7 +1824,7 @@ async function salvaSuGitHub() {
     const putRes = await fetchTimeout(apiBase, { method:'PUT', headers:Object.assign({}, headers, {'Content-Type':'application/json'}), body:JSON.stringify({ message:`Aggiornamento da edit.html (${tot} voci, ${modCount} modifiche)`, content:btoa(bin), branch:GH_BRANCH, sha }) }, 60000);
     if (!putRes.ok) { if (putRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('PUT fallito (' + putRes.status + ')'); }
     originalSourceFile = nuovoSrc; originalSourceSha = (await putRes.json()).content.sha;
-    modifiedKeys.clear(); newKeys.clear(); success = true;
+    modifiedKeys.clear(); newKeys.clear(); frasiSPModificate = false; success = true;
     btn.textContent = '✅ Salvato!'; setHelp('✅ Salvataggio riuscito! GitHub Pages aggiornerà tra 1-2 min.', 'success');
     setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 3000); render();
   } catch(err) { console.error('[GH]', err); alert('Errore:\n\n' + err.message); }
