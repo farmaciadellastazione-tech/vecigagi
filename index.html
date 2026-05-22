@@ -71,7 +71,98 @@
     select { background:#111; color:#e2e8f0; border-color:#333; }
     select option { background:#111; }
     ::-webkit-scrollbar { width:6px; } ::-webkit-scrollbar-track { background:#111; } ::-webkit-scrollbar-thumb { background:#333; border-radius:3px; }
+
+    /* ====== TEMA CHIARO (per leggibilità all'aperto) ====== */
+    /* Attivato aggiungendo classe `light` a <html>. Lo script di init in fondo all'<head> applica
+       la classe sulla base di localStorage["lq_tema"] PRIMA del render React (evita flash). */
+    html.light body { background:#fafafa; color:#18181b; }
+    html.light .card { background:#fff; border-color:#e4e4e7; box-shadow:0 8px 24px rgba(0,0,0,0.08); }
+    html.light .card-inner { background:#f4f4f5; border-color:#d4d4d8; }
+    html.light input[type="text"] { background:#fff; color:#18181b; border-color:#d4d4d8; }
+    html.light input[type="text"]::placeholder { color:#a1a1aa; }
+    html.light textarea { background:#fff !important; color:#18181b !important; border-color:#d4d4d8 !important; }
+    html.light select { background:#fff; color:#18181b; border-color:#d4d4d8; }
+    html.light select option { background:#fff; color:#18181b; }
+    html.light ::-webkit-scrollbar-track { background:#f4f4f5; }
+    html.light ::-webkit-scrollbar-thumb { background:#a1a1aa; }
+    /* Tailwind grayscale override */
+    html.light .bg-black { background-color:#fafafa !important; }
+    html.light .bg-zinc-950 { background-color:#fafafa !important; }
+    html.light .bg-zinc-900 { background-color:#fff !important; }
+    html.light .bg-zinc-800 { background-color:#f4f4f5 !important; }
+    html.light .bg-zinc-700 { background-color:#e4e4e7 !important; }
+    html.light .text-white { color:#18181b !important; }
+    html.light .text-zinc-300 { color:#3f3f46 !important; }
+    html.light .text-zinc-400 { color:#52525b !important; }
+    html.light .text-zinc-500 { color:#71717a !important; }
+    html.light .text-zinc-600 { color:#a1a1aa !important; }
+    html.light .text-zinc-700 { color:#d4d4d8 !important; }
+    html.light .text-slate-300 { color:#334155 !important; }
+    html.light .text-slate-400 { color:#475569 !important; }
+    html.light .text-slate-500 { color:#64748b !important; }
+    html.light .text-slate-600 { color:#94a3b8 !important; }
+    html.light .border-zinc-700 { border-color:#d4d4d8 !important; }
+    html.light .border-zinc-800 { border-color:#e4e4e7 !important; }
+    html.light .border-zinc-900 { border-color:#f4f4f5 !important; }
+    html.light .hover\:bg-zinc-800:hover { background-color:#e4e4e7 !important; }
+    html.light .hover\:bg-zinc-700:hover { background-color:#d4d4d8 !important; }
+    html.light .hover\:border-zinc-700:hover { border-color:#d4d4d8 !important; }
+    /* Accent backgrounds: dark-950/900 -> light-50/100 */
+    html.light .bg-yellow-950 { background-color:#fefce8 !important; }
+    html.light .bg-yellow-900 { background-color:#fef9c3 !important; }
+    html.light .bg-sky-950 { background-color:#f0f9ff !important; }
+    html.light .bg-sky-900 { background-color:#e0f2fe !important; }
+    html.light .bg-emerald-950 { background-color:#ecfdf5 !important; }
+    html.light .bg-emerald-900 { background-color:#d1fae5 !important; }
+    html.light .bg-green-950 { background-color:#f0fdf4 !important; }
+    html.light .bg-green-900 { background-color:#dcfce7 !important; }
+    html.light .bg-red-950 { background-color:#fef2f2 !important; }
+    html.light .bg-red-900 { background-color:#fee2e2 !important; }
+    html.light .bg-amber-950 { background-color:#fffbeb !important; }
+    html.light .bg-amber-900 { background-color:#fef3c7 !important; }
+    html.light .bg-cyan-950 { background-color:#ecfeff !important; }
+    html.light .bg-orange-950 { background-color:#fff7ed !important; }
+    html.light .bg-orange-900 { background-color:#ffedd5 !important; }
+    html.light .bg-purple-950 { background-color:#faf5ff !important; }
+    html.light .bg-purple-900 { background-color:#f3e8ff !important; }
+    /* Accent borders: dark-800/700 -> light-200/300 */
+    html.light .border-yellow-800 { border-color:#fde68a !important; }
+    html.light .border-sky-800 { border-color:#bae6fd !important; }
+    html.light .border-sky-700 { border-color:#7dd3fc !important; }
+    html.light .border-emerald-800 { border-color:#a7f3d0 !important; }
+    html.light .border-green-800 { border-color:#bbf7d0 !important; }
+    html.light .border-red-800 { border-color:#fecaca !important; }
+    html.light .border-amber-800 { border-color:#fde68a !important; }
+    html.light .border-amber-700 { border-color:#fcd34d !important; }
+    html.light .border-cyan-800 { border-color:#a5f3fc !important; }
+    html.light .border-orange-800 { border-color:#fed7aa !important; }
+    html.light .border-orange-700 { border-color:#fdba74 !important; }
+    html.light .border-purple-800 { border-color:#d8b4fe !important; }
+    /* Accent text: light-300/400/500 -> dark-700/800 */
+    html.light .text-yellow-300 { color:#a16207 !important; }
+    html.light .text-sky-300 { color:#075985 !important; }
+    html.light .text-sky-400 { color:#0369a1 !important; }
+    html.light .text-emerald-300 { color:#047857 !important; }
+    html.light .text-green-300 { color:#15803d !important; }
+    html.light .text-green-400 { color:#166534 !important; }
+    html.light .text-green-500 { color:#15803d !important; }
+    html.light .text-red-300 { color:#b91c1c !important; }
+    html.light .text-red-400 { color:#991b1b !important; }
+    html.light .text-red-500 { color:#b91c1c !important; }
+    html.light .text-amber-300 { color:#b45309 !important; }
+    html.light .text-amber-400 { color:#92400e !important; }
+    html.light .text-amber-500 { color:#78350f !important; }
+    html.light .text-cyan-400 { color:#0e7490 !important; }
+    html.light .text-orange-300 { color:#c2410c !important; }
+    html.light .text-orange-400 { color:#9a3412 !important; }
+    html.light .text-purple-300 { color:#6d28d9 !important; }
   </style>
+  <script>
+    /* Tema: applica .light prima del render React per evitare flash dark→light. */
+    (function() {
+      try { if (localStorage.getItem("lq_tema") === "light") document.documentElement.classList.add("light"); } catch (e) {}
+    })();
+  </script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-G2KYH1T350"></script>
   <script>
@@ -7421,6 +7512,13 @@ function Home({
   const [mostraBilingue, setMostraBilingue] = useState(false);
   const [mostraFiltri, setMostraFiltri] = useState(false);
   const [mostraTour, setMostraTour] = useState(() => !localStorage.getItem("qml_tour_seen"));
+  const [temaChiaro, setTemaChiaro] = useState(() => {
+    try { return localStorage.getItem("lq_tema") === "light"; } catch (e) { return false; }
+  });
+  useEffect(() => {
+    document.documentElement.classList.toggle("light", temaChiaro);
+    try { localStorage.setItem("lq_tema", temaChiaro ? "light" : "dark"); } catch (e) {}
+  }, [temaChiaro]);
   const lingueAttive = lingue.filter(l => l.attiva);
   const nLingueAttive = lingueAttive.length;
   // Recupera record per ogni modalità (quiz e non-stop)
@@ -7820,6 +7918,18 @@ function Home({
       cursor: "default", userSelect: "none"
     }
   }, "v", VOC_VERSION), /*#__PURE__*/React.createElement("button", {
+    title: temaChiaro ? "Passa al tema scuro" : "Passa al tema chiaro (pi\u00F9 leggibile all'aperto)",
+    onClick: () => setTemaChiaro(v => !v),
+    style: {
+      fontSize: "0.85rem", fontWeight: "700", padding: "2px 9px",
+      borderRadius: "999px", cursor: "pointer",
+      background: "transparent",
+      color: temaChiaro ? "#a78bfa" : "#fbbf24",
+      border: temaChiaro ? "1px solid #6d28d9" : "1px solid #d97706",
+      userSelect: "none",
+      lineHeight: "1.2"
+    }
+  }, temaChiaro ? "\uD83C\uDF19" : "\u2600\uFE0F"), /*#__PURE__*/React.createElement("button", {
     title: "Reset vocabolario (ricarica dal default, non tocca i progressi)",
     onClick: () => {
       if (!confirm("Resetta il vocabolario al default? I tuoi progressi di apprendimento non vengono cancellati.")) return;
