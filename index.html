@@ -3262,7 +3262,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 165;
+const VOC_VERSION = 166;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
@@ -4030,7 +4030,8 @@ const DIALETTI_NUMERI = ["sp", "ge", "cr"];
 //   - media: min:50, max:79
 //   - bassa: max:49    (bonario, mai offensivo)
 const FRASI_FINE_SP = [
-  { tts: "beeeliiina dé... e chi ttèèi ?", vis: "belina deh, e chi t'ei?", min: 80 }
+  { tts: "beeeliiina dé... e chi ttèèi ?", vis: "belina deh, e chi t'ei?", min: 80 },
+  { tts: "ma''''''''costeféé??", vis: "ma costefé??", min: 80 }
 ];
 function frasaFineSP(perc) {
   const cand = FRASI_FINE_SP.filter(f =>
