@@ -18,11 +18,11 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
   <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
-  <meta name="theme-color" content="#0a1828" />
+  <meta name="theme-color" content="#fafafa" />
   <link rel="manifest" href="/manifest.json" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="LinguaeQuiz" />
 
   <!-- Open Graph -->
@@ -125,6 +125,20 @@
     html.light .bg-orange-900 { background-color:#ffedd5 !important; }
     html.light .bg-purple-950 { background-color:#faf5ff !important; }
     html.light .bg-purple-900 { background-color:#f3e8ff !important; }
+    html.light .bg-teal-950 { background-color:#f0fdfa !important; }
+    html.light .bg-teal-900 { background-color:#ccfbf1 !important; }
+    html.light .bg-violet-950 { background-color:#f5f3ff !important; }
+    html.light .bg-violet-900 { background-color:#ede9fe !important; }
+    html.light .bg-indigo-950 { background-color:#eef2ff !important; }
+    html.light .bg-indigo-900 { background-color:#e0e7ff !important; }
+    html.light .bg-rose-950 { background-color:#fff1f2 !important; }
+    html.light .bg-rose-900 { background-color:#ffe4e6 !important; }
+    html.light .bg-pink-950 { background-color:#fdf2f8 !important; }
+    html.light .bg-pink-900 { background-color:#fce7f3 !important; }
+    html.light .bg-fuchsia-950 { background-color:#fdf4ff !important; }
+    html.light .bg-fuchsia-900 { background-color:#fae8ff !important; }
+    html.light .bg-lime-950 { background-color:#f7fee7 !important; }
+    html.light .bg-lime-900 { background-color:#ecfccb !important; }
     /* Accent borders: dark-800/700 -> light-200/300 */
     html.light .border-yellow-800 { border-color:#fde68a !important; }
     html.light .border-sky-800 { border-color:#bae6fd !important; }
@@ -138,6 +152,13 @@
     html.light .border-orange-800 { border-color:#fed7aa !important; }
     html.light .border-orange-700 { border-color:#fdba74 !important; }
     html.light .border-purple-800 { border-color:#d8b4fe !important; }
+    html.light .border-teal-800 { border-color:#99f6e4 !important; }
+    html.light .border-violet-800 { border-color:#ddd6fe !important; }
+    html.light .border-indigo-800 { border-color:#c7d2fe !important; }
+    html.light .border-rose-800 { border-color:#fecdd3 !important; }
+    html.light .border-pink-800 { border-color:#fbcfe8 !important; }
+    html.light .border-fuchsia-800 { border-color:#f5d0fe !important; }
+    html.light .border-lime-800 { border-color:#d9f99d !important; }
     /* Accent text: light-300/400/500 -> dark-700/800 */
     html.light .text-yellow-300 { color:#a16207 !important; }
     html.light .text-sky-300 { color:#075985 !important; }
@@ -156,11 +177,36 @@
     html.light .text-orange-300 { color:#c2410c !important; }
     html.light .text-orange-400 { color:#9a3412 !important; }
     html.light .text-purple-300 { color:#6d28d9 !important; }
+    html.light .text-teal-300 { color:#0f766e !important; }
+    html.light .text-violet-300 { color:#6d28d9 !important; }
+    html.light .text-indigo-300 { color:#4338ca !important; }
+    html.light .text-rose-300 { color:#be123c !important; }
+    html.light .text-pink-300 { color:#be185d !important; }
+    html.light .text-fuchsia-300 { color:#a21caf !important; }
+    html.light .text-lime-300 { color:#4d7c0f !important; }
+    /* Opacità varianti (Tailwind genera classi separate per le shade con / alpha) */
+    html.light .bg-zinc-900\/80 { background-color:rgb(255 255 255 / 0.95) !important; }
+    html.light .bg-zinc-900\/60 { background-color:rgb(255 255 255 / 0.85) !important; }
+    html.light .bg-sky-900\/60 { background-color:rgb(186 230 253 / 0.6) !important; }
+    html.light .bg-sky-950\/80 { background-color:rgb(224 242 254 / 0.8) !important; }
+    /* Gradient scuri (es. Bilingue/Multilingue "attivo") -> gradient chiaro */
+    html.light [class*="bg-gradient-to-br"][class*="from-sky-900"][class*="to-sky-950"] {
+      background-image: linear-gradient(to bottom right, #e0f2fe, #f0f9ff) !important;
+    }
+    html.light [class*="bg-gradient-to-br"][class*="from-emerald-900"][class*="to-emerald-950"] {
+      background-image: linear-gradient(to bottom right, #d1fae5, #ecfdf5) !important;
+    }
+    html.light [class*="bg-gradient-to-br"][class*="from-amber-900"][class*="to-amber-950"] {
+      background-image: linear-gradient(to bottom right, #fef3c7, #fffbeb) !important;
+    }
+    html.light [class*="bg-gradient-to-br"][class*="from-purple-900"][class*="to-purple-950"] {
+      background-image: linear-gradient(to bottom right, #f3e8ff, #faf5ff) !important;
+    }
   </style>
   <script>
-    /* Tema: applica .light prima del render React per evitare flash dark→light. */
+    /* Tema: default = chiaro. Applica .light prima del render React per evitare flash. */
     (function() {
-      try { if (localStorage.getItem("lq_tema") === "light") document.documentElement.classList.add("light"); } catch (e) {}
+      try { if (localStorage.getItem("lq_tema") !== "dark") document.documentElement.classList.add("light"); } catch (e) { document.documentElement.classList.add("light"); }
     })();
   </script>
   <!-- Google tag (gtag.js) -->
@@ -7513,7 +7559,7 @@ function Home({
   const [mostraFiltri, setMostraFiltri] = useState(false);
   const [mostraTour, setMostraTour] = useState(() => !localStorage.getItem("qml_tour_seen"));
   const [temaChiaro, setTemaChiaro] = useState(() => {
-    try { return localStorage.getItem("lq_tema") === "light"; } catch (e) { return false; }
+    try { return localStorage.getItem("lq_tema") !== "dark"; } catch (e) { return true; }
   });
   useEffect(() => {
     document.documentElement.classList.toggle("light", temaChiaro);
