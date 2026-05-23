@@ -7073,7 +7073,7 @@ function SchermataVerbi({
     className: "px-3 py-2 text-slate-200 font-medium text-center"
   }, forma[l.codice] ? /*#__PURE__*/React.createElement("span", {
     className: "flex items-center justify-center gap-1"
-  }, /*#__PURE__*/React.createElement("span", null, forma[l.codice]), LINGUE_SENZA_AUDIO.has(l.codice) ? null : /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", null, formaDisplay(forma[l.codice], l.codice)), LINGUE_SENZA_AUDIO.has(l.codice) ? null : /*#__PURE__*/React.createElement("button", {
     onClick: () => parla(testoAudio(forma[l.codice], forma.p, l.codice), l.bcp47),
     className: "text-sky-600 hover:text-sky-400 text-xs transition"
   }, "\uD83D\uDD0A")) : /*#__PURE__*/React.createElement("span", {
