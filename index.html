@@ -3562,7 +3562,7 @@ let _parlaTimer = null;
 function parla(testo, bcp47) {
   if (!window.speechSynthesis || !bcp47) return;
   const synth = window.speechSynthesis;
-  const u = new SpeechSynthesisUtterance(testo.replace(/\(.*?\)/g, "").split(/[/,;]/)[0].trim());
+  const u = new SpeechSynthesisUtterance(testo.replace(/\(.*?\)/g, "").split("/")[0].trim());
   u.lang = bcp47;
   u.rate = 0.85;
   // Forza una voce della lingua richiesta per evitare misdetection
