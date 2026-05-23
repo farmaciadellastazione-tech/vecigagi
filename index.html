@@ -2188,7 +2188,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"insulti", livello:"A2", it:"coniglio", en:"rabbit", fr:"lapin", es:"conejo", de:"Kaninchen", pt:"coelho", ru:"кролик", ca:"conill", sp:"conigio", mn:"conigiu", cr:"Cunìgio", ge:"cunìggio", ko:"토끼", ar:"أرنب", zh:"兔子", ja:"ウサギ" },
       { tema:"animali", livello:"A2", it:"gallina", en:"hen", fr:"poule", es:"gallina", de:"Huhn", pt:"galinha", sp:"gaìna", mn:"gagina", cr:"gadina", ge:"gàinn-a", ko:"닭", ar:"دجاجة", zh:"鸡", ja:"鶏", ia:"gallina" },
       { tema:"animali", livello:"A2", it:"mucca", en:"cow", fr:"vache", es:"vaca", de:"Kuh", pt:"vaca", ru:"корова", ca:"vaca", cr:"", ko:"소", ar:"بقرة", zh:"牛", ja:"牛" },
-      { tema:"animali", livello:"A2", it:"pecora", en:"sheep", fr:"mouton", es:"oveja", de:"Schaf", pt:"ovelha", ru:"овца", ca:"ovella", sp:"pégoa", ge:"péigoa", ko:"양", ar:"خروف", zh:"羊", ja:"羊" },
+      { tema:"animali", livello:"A2", it:"pecora", en:"sheep", fr:"mouton", es:"oveja", de:"Schaf", pt:"ovelha", ru:"овца", ca:"ovella", sp:"peégoa/pégoa", ge:"péigoa", ko:"양", ar:"خروف", zh:"羊", ja:"羊" },
       { tema:"animali", livello:"B1", it:"lupo", en:"wolf", fr:"loup", es:"lobo", de:"Wolf", pt:"lobo", ru:"волк", ca:"llop", sp:"lovo, Ioo, lòpa", cr:"", ge:"", ko:"늑대", ar:"ذئب", zh:"狼", ja:"オオカミ", ia:"lupo" },
       { tema:"animali", livello:"A2", it:"cinghiale", en:"wild boar", fr:"sanglier", es:"jabalí", de:"Wildschwein", pt:"javali", ru:"вместе", ca:"junts", sp:"singhiale", ko:"멧돼지", ar:"خنزير بري", zh:"野猪", ja:"イノシシ", ia:"insimul" },
       { tema:"animali", livello:"A2", it:"aragosta", en:"lobster", fr:"homard", es:"langosta", de:"Hummer", pt:"lagosta", sp:"ragostena", mn:"ragùstena", cr:"", ko:"바닷가재", ar:"جراد البحر", zh:"龙虾", ja:"ロブスター" },
@@ -2322,7 +2322,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A1", it:"pasta", en:"pasta", fr:"pâtes", es:"pasta", de:"Nudeln", pt:"massa", ru:"паста|макароны", ca:"pasta", sp:"pasta/pàsta", mn:"pasta/pàsta", cr:"", ko:"파스타", ar:"معكرونة", zh:"意面", ja:"パスタ", ia:"pasta", ro:"paste/paste" },
       { tema:"salute", livello:"A1", it:"febbre", en:"fever", fr:"fièvre", es:"fiebre", de:"Fieber", pt:"febre", ru:"лихорадка|температура", ca:"febre", sp:"fréve, frévia", ko:"열", ar:"حمى", zh:"发烧", ja:"熱", ia:"febre" },
       { tema:"salute", livello:"B1", it:"ricetta", en:"prescription", fr:"ordonnance", es:"receta", de:"Rezept", pt:"receita", ko:"처방전", ar:"وصفة طبية", zh:"处方", ja:"処方箋", ia:"recepta" },
-      { tema:"verbi", livello:"A2", it:"lavorare/lavoro", en:"work", fr:"travailler", es:"trabajar", de:"arbeiten", pt:"trabalhar", ru:"работать", ca:"treballar", sp:"travagiae, lavoae", ko:"일하다", ar:"يعمل", zh:"工作", ja:"働く", ia:"laborar" },
+      { tema:"verbi", livello:"A2", it:"lavorare/lavoro", en:"work", fr:"travailler", es:"trabajar", de:"arbeiten", pt:"trabalhar", ru:"работать", ca:"treballar", sp:"travagiaae/travagiae| lavoae", ko:"일하다", ar:"يعمل", zh:"工作", ja:"働く", ia:"laborar" },
       { tema:"luoghi", livello:"A1", it:"scuola", en:"school", fr:"école", es:"escuela", de:"Schule", pt:"escola", ru:"школа", ca:"escola", sp:"schèa", mn:"schéa", ge:"schêua", ko:"학교", ar:"مدرسة", zh:"学校", ja:"学校", ia:"schola", ro:"școală" },
       { tema:"luoghi", livello:"A1", it:"ospedale", en:"hospital", fr:"hôpital", es:"hospital", de:"Krankenhaus", pt:"hospital", ru:"больница", ca:"hospital", sp:"spedào", mn:"spédaa", ko:"병원", ar:"مستشفى", zh:"医院", ja:"病院", ia:"hospital", ro:"spital" },
       { tema:"natura", livello:"A1", it:"acqua", en:"water", fr:"eau|o|au", es:"agua", de:"Wasser", pt:"água|agua", ru:"вода", ca:"aigua", sp:"àaigua/àigoa", mn:"àaigua/aigua", cr:"aqua", ge:"ægoa", ko:"물", ar:"ماء", zh:"水", ja:"水", ia:"aqua", la:"aqua", grc:"ὕδωρ", ro:"apă" },
@@ -3262,7 +3262,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 171;
+const VOC_VERSION = 172;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
