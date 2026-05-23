@@ -2939,7 +2939,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"zibibbo", sp:"zebìbo", mn:"zébibu" },
       { tema:"dialetti", livello:"A2", it:"ginepro", en:"", mn:"zénëëvru/zénëvru" },
       { tema:"dialetti", livello:"A2", it:"genovese", en:"", mn:"zénÊizé/zénëzé" },
-      { tema:"dialetti", livello:"A2", it:"peperoncino, zenzero", en:"", mn:"zénzéu" },
+      { tema:"dialetti", livello:"A2", it:"peperoncino|zenzero", mn:"zénzéu" },
       { tema:"dialetti", livello:"A2", it:"gengiva", en:"", mn:"zénziigia/zénzigia" },
       { tema:"dialetti", livello:"A2", it:"zerbino, stuoino", en:"", mn:"zerbiìn/zérbìn" },
       { tema:"dialetti", livello:"A2", it:"incolto| abbandonato", en:"uncultivated", fr:"inculte", es:"abandonado", de:"vernachlässigt", pt:"abandonado", ca:"abandonat", mn:"zerbiu/zèrbiu" },
@@ -3262,7 +3262,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 169;
+const VOC_VERSION = 170;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
