@@ -1959,7 +1959,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"B1", it:"appartenere", en:"belong", fr:"appartenir", es:"pertenecer", de:"gehören", pt:"pertencer", ru:"принадлежать", ca:"pertànyer" },
       { tema:"verbi", livello:"B1", it:"prendere in prestito", en:"borrow", fr:"emprunter", es:"pedir prestado", de:"ausleihen", pt:"pedir emprestado", ru:"брать взаймы", ca:"manllevar" },
       { tema:"dialogo", livello:"A2", it:"entrambi", en:"both", fr:"les deux|tous les deux", es:"ambos", de:"beide", pt:"ambos", ru:"оба", ca:"tots dos|ambdós" },
-      { tema:"sport", livello:"B1", it:"pugilato/boxe", en:"boxing", fr:"boxe", es:"boxeo", de:"Boxen", pt:"boxe", ru:"бокс", ca:"boxa" },
+      { tema:"sport", livello:"B1", it:"pugilato|boxe", en:"boxing", fr:"boxe", es:"boxeo", de:"Boxen", pt:"boxe", ru:"бокс", ca:"boxa" },
       { tema:"casa", livello:"B1", it:"secchio", en:"bucket", fr:"seau", es:"cubo", de:"Eimer", pt:"balde", ru:"ведро", ca:"galleda", sp:"stagnòn| sécia| possadòa" },
       { tema:"verbi", livello:"A2", it:"bruciare", en:"burn", fr:"brûler", es:"quemar", de:"brennen", pt:"queimar", ru:"гореть|сжигать", ca:"cremar", sp:"brusae", mn:"bruzaaa/bruzaa" },
       { tema:"aggettivi", livello:"A2", it:"occupato", en:"busy", fr:"occupé", es:"ocupado", de:"beschäftigt", pt:"ocupado", ru:"занятой", ca:"ocupat" },
@@ -3262,7 +3262,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 168;
+const VOC_VERSION = 169;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
@@ -4036,10 +4036,10 @@ const DIALETTI_NUMERI = ["sp", "ge", "cr"];
 //   - media: min:50, max:79
 //   - bassa: max:49    (bonario, mai offensivo)
 const FRASI_FINE_SP = [
-  { tts: "beeeliiina dé... e chi ttèèi ?", vis: "belina deh, e chi t'ei?", min: 80 },
-  { tts: "ma''''''''costeféé??", vis: "ma costefé??", max: 49 },
+  { tts: "beelìiina dé... e chi ttèèi ?", vis: "belina deh, e chi t'ei?", min: 80 },
+  { tts: "ma''''''''còsteféé??", vis: "ma costefé??", max: 49 },
   { tts: "te me pai naase", vis: "te me pai n'ase", max: 49 },
-  { tts: "mia che te miio''''''''''  '''''''''ooocio", vis: "mia che te mio  ocio", min: 50, max: 79 }
+  { tts: "mia che te miio'''''''''' :'''''''''ooòcio", vis: "mia che te mio  ocio", min: 50, max: 79 }
 ];
 function frasaFineSP(perc) {
   const cand = FRASI_FINE_SP.filter(f =>
