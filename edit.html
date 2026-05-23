@@ -1763,7 +1763,9 @@ function ttsRow(btn, rate) {
   // Necessario perché il TTS in edit faccia sentire la stessa cosa che l'app
   // farà ascoltare all'utente (calibrazione coerente).
   const rawField = langInput ? visiblePart(langInput.value) : '';
-  const fromField = rawField.split(/[/,;]/)[0].trim();
+  // Split solo su "/" (allineato a formaTTS in index.html): virgola e punto e
+  // virgola sono punteggiatura e vanno lette intere.
+  const fromField = rawField.split("/")[0].trim();
   const testo = (pronInput && pronInput.value.trim()) || fromField || '';
   if (!testo || !window.speechSynthesis) return;
   const finalRate = (typeof rate === 'number' && rate > 0) ? rate : 0.85;

@@ -4075,12 +4075,14 @@ function formaDisplay(s, codLingua) {
 
 // formaTTS: cosa leggere alla TTS.
 // - Rimuove sempre le alternative nascoste (dopo |)
-// - Per dialetti: legge la prima (forma TTS-friendly).
-// - Per altre lingue: legge la prima (evita di leggere "mamma slash madre").
+// - Split solo su "/" (in dialetti separa TTS/grafia; in altre lingue
+//   eviterebbe di sentire "mamma slash madre"): prende la prima parte.
+// - Virgola e punto e virgola NON splittano: vengono lette come punteggiatura,
+//   così frasi tipo sp:"no, a chino ciü en là" si sentono per intero.
 function formaTTS(s) {
   if (!s || typeof s !== "string") return s;
   s = soloVisibile(s);
-  const parts = s.split(/[/,;]/).map(p => p.trim()).filter(Boolean);
+  const parts = s.split("/").map(p => p.trim()).filter(Boolean);
   if (parts.length === 0) return s;
   return parts[0];
 }
