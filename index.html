@@ -3567,13 +3567,19 @@ function parla(testo, bcp47) {
   u.rate = 0.85;
   // Forza una voce della lingua richiesta per evitare misdetection
   // (es. "can" letto come modale inglese invece che parola spezzina con voce italiana).
+  // Preferisce voci "Google ..." (Chrome / Google Translate): garantisce che le
+  // trascrizioni TTS calibrate in edit.html suonino identiche qui nell'app.
   try {
     const voices = synth.getVoices() || [];
-    const baseLang = bcp47.toLowerCase().split("-")[0];
-    // Preferisci match esatto, poi base lang
-    const exactMatch = voices.find(v => v.lang && v.lang.toLowerCase() === bcp47.toLowerCase());
-    const baseMatch = voices.find(v => v.lang && v.lang.toLowerCase().split("-")[0] === baseLang);
-    const voice = exactMatch || baseMatch;
+    const lower = bcp47.toLowerCase();
+    const baseLang = lower.split("-")[0];
+    const isGoogle = v => /^google\b/i.test(v.name || "");
+    const langExact = v => v.lang && v.lang.toLowerCase() === lower;
+    const langBase  = v => v.lang && v.lang.toLowerCase().split("-")[0] === baseLang;
+    const voice = voices.find(v => isGoogle(v) && langExact(v))
+               || voices.find(v => isGoogle(v) && langBase(v))
+               || voices.find(langExact)
+               || voices.find(langBase);
     if (voice) u.voice = voice;
   } catch (e) {}
   // Serializza: cancel() è asincrono in Chromium → chiamare speak() subito dopo

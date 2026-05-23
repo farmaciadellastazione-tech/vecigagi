@@ -1601,6 +1601,7 @@ function testaFraseSP(i) {
   if (!t) return;
   const u = new SpeechSynthesisUtterance(t);
   u.lang = 'it-IT';
+  const v = _pickVoice(u.lang); if (v) u.voice = v;
   speechSynthesis.cancel();
   speechSynthesis.speak(u);
 }
@@ -1735,7 +1736,22 @@ function dedupaAutomatico() {
 let _voicesReady = false;
 function _initVoices() { if (!window.speechSynthesis) return; window.speechSynthesis.getVoices(); if ('onvoiceschanged' in window.speechSynthesis) window.speechSynthesis.onvoiceschanged = () => { _voicesReady = true; }; _voicesReady = window.speechSynthesis.getVoices().length > 0; }
 _initVoices();
-function _pickVoice(bcp47) { const voices = window.speechSynthesis.getVoices(); if (!voices.length) return null; let v = voices.find(x => x.lang === bcp47); if (v) return v; const pref = bcp47.split('-')[0].toLowerCase(); return voices.find(x => (x.lang||'').toLowerCase().startsWith(pref)) || null; }
+// Preferisce voci "Google ..." (Chrome / Google Translate) per garantire
+// che le trascrizioni TTS calibrate in edit suonino identiche nell'app.
+function _pickVoice(bcp47) {
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices.length) return null;
+  const lower = bcp47.toLowerCase();
+  const pref = lower.split('-')[0];
+  const isGoogle = v => /^google\b/i.test(v.name || '');
+  const langExact = v => (v.lang || '').toLowerCase() === lower;
+  const langBase  = v => (v.lang || '').toLowerCase().split('-')[0] === pref;
+  return voices.find(v => isGoogle(v) && langExact(v))
+      || voices.find(v => isGoogle(v) && langBase(v))
+      || voices.find(langExact)
+      || voices.find(langBase)
+      || null;
+}
 
 function ttsRow(btn) {
   const tr = btn.closest('tr'), langInput = tr.querySelector(`input[data-field="${currentLangs[0]}"]`), pronInput = tr.querySelector('input[data-field="pron"]');
