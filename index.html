@@ -4060,13 +4060,15 @@ function soloVisibile(s) {
 
 // formaDisplay: come mostrare la "soluzione corretta" all'utente.
 // - Rimuove sempre le alternative nascoste (dopo |)
-// - Per dialetti: mostra solo la forma tradizionale (ultima dopo /)
+// - Per dialetti: mostra solo la forma tradizionale (ultima dopo /).
+//   NB: split solo su "/", non su ",;" — la virgola/punto e virgola separa
+//   sinonimi (vanno mostrati tutti, e il primo coincide con la TTS).
 // - Per altre lingue: mostra tutto (i sinonimi sono utili da vedere)
 function formaDisplay(s, codLingua) {
   if (!s || typeof s !== "string") return s;
   s = soloVisibile(s);
   if (!DIALETTI_TTS_ITA.includes(codLingua)) return s;
-  const parts = s.split(/[/,;]/).map(p => p.trim()).filter(Boolean);
+  const parts = s.split("/").map(p => p.trim()).filter(Boolean);
   if (parts.length <= 1) return s;
   return parts[parts.length - 1];
 }
