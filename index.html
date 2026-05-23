@@ -9578,7 +9578,10 @@ Reply in ${userLangName}.`;
     className: "flex-1"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-400 mb-2 text-center"
-  }, "Scrivi una frase in ", carta.lingua.nome, " con questa parola"), /*#__PURE__*/React.createElement("textarea", {
+  }, "Scrivi una frase in ", carta.lingua.nome, " con questa parola"), DIALETTI_TTS_ITA.includes(carta.lingua.codice) && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-amber-500 mb-3 text-center italic",
+    title: "L'IA non conosce bene i dialetti: pu\u00F2 dare risposte bizzarre"
+  }, "\uD83C\uDF77 AI alcolizzata: coi dialetti d\u00E0 i numeri, abbi pazienza"), /*#__PURE__*/React.createElement("textarea", {
     value: frase,
     onChange: e => setFrase(e.target.value),
     placeholder: `Frase con "${soloVisibile(carta.entry[carta.lingua.codice])}"...`,
