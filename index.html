@@ -9188,6 +9188,8 @@ function SchermataSceltaMultipla({
   const [risposta, setRisposta] = useState(null);
   const [punteggio, setPunteggio] = useState(0);
   const [erroreSetup, setErroreSetup] = useState(null);
+  // Frase di fine sessione: scelta una sola volta quando si entra in "fine" e riprodotta in autoplay.
+  const [fraseFine, setFraseFine] = useState(null);
   // Timer per auto-avanti su risposta corretta (pulito su unmount/cambio carta)
   const autoNextTimer = useRef(null);
   useEffect(() => () => { if (autoNextTimer.current) clearTimeout(autoNextTimer.current); }, []);
@@ -9246,6 +9248,20 @@ function SchermataSceltaMultipla({
   // esplicitamente. Non aggiungere dipendenze: rigenererebbero le carte mid-quiz.
   useEffect(() => { generaCarte(); }, []);
 
+  // Autoplay frase di fine sessione: parte appena si entra nella schermata risultati.
+  // Delay per non sovrapporsi alla TTS della risposta corretta partita su scegli().
+  const isFineSchermata = carte.length > 0 && indice === carte.length - 1 && !!risposta;
+  useEffect(() => {
+    if (!isFineSchermata) { setFraseFine(null); return; }
+    if (fraseFine) return;
+    const perc = Math.round(punteggio / carte.length * 100);
+    const f = frasaFineSP(perc);
+    if (!f) return;
+    setFraseFine(f);
+    const t = setTimeout(() => parla(f.tts, "it-IT"), 1500);
+    return () => clearTimeout(t);
+  }, [isFineSchermata]);
+
   function scegli(s) {
     if (risposta) return;
     const carta = carte[indice];
@@ -9264,17 +9280,14 @@ function SchermataSceltaMultipla({
         });
       }
       // Auto-avanti: lascia ~600ms per feedback verde + ascolto rapido della parola
-      // (se è l'ultima carta non serve: il render passa già a "fine")
+      // (se è l'ultima carta non serve: il render passa già a "fine" e l'autoplay
+      // della frase di chiusura parte dall'useEffect su isFineSchermata)
       if (indice < carte.length - 1) {
         autoNextTimer.current = setTimeout(() => {
           autoNextTimer.current = null;
           setIndice(i => i + 1);
           setRisposta(null);
         }, 600);
-      } else if (punteggio + 1 === carte.length) {
-        // Ultima carta + 100% di corrette: esclamazione celebrativa in spezzino.
-        // Delay per non sovrapporsi all'audio della parola corretta appena partito.
-        setTimeout(() => parla("beeeliiina dé... e chi ttèèi ?", "it-IT"), 1500);
       }
     }
   }
@@ -9399,14 +9412,11 @@ function SchermataSceltaMultipla({
       className: "text-2xl font-extrabold text-white mb-1"
     }, perc, "%"), /*#__PURE__*/React.createElement("p", {
       className: "text-zinc-400 mb-2"
-    }, punteggio, " / ", carte.length, " corrette"), (() => {
-      const f = frasaFineSP(perc);
-      return f && /*#__PURE__*/React.createElement("button", {
-        onClick: () => parla(f.tts, "it-IT"),
-        className: "italic text-amber-400 text-base mb-3 inline-flex items-center gap-2 hover:text-amber-300 transition",
-        title: "Riascolta"
-      }, "⚓ “", f.vis, "” 🔊");
-    })(), /*#__PURE__*/React.createElement("p", {
+    }, punteggio, " / ", carte.length, " corrette"), fraseFine && /*#__PURE__*/React.createElement("button", {
+      onClick: () => parla(fraseFine.tts, "it-IT"),
+      className: "italic text-amber-400 text-base mb-3 inline-flex items-center gap-2 hover:text-amber-300 transition",
+      title: "Riascolta"
+    }, "⚓ “", fraseFine.vis, "” 🔊"), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-600 mb-6"
     }, perc === 100 && stato.nDom >= 50 ? "🎉 +2 scelte, reset a 10 dom" : perc === 100 ? "⬆️ +5 dom al prossimo giro" : perc < 50 ? "⬇️ -5 dom al prossimo giro" : "➡️ Stesso livello"), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-700 mb-6"
@@ -9647,6 +9657,20 @@ function SchermataQuiz({
 }) {
   const t = useUI();
   const inputRef = useRef(null);
+  // Frase di fine sessione: scelta una sola volta all'ingresso in "fine" e riprodotta in autoplay.
+  const [fraseFine, setFraseFine] = useState(null);
+  useEffect(() => {
+    if (!fine) { setFraseFine(null); return; }
+    if (fraseFine) return;
+    const tot = punteggio.giusti + punteggio.sbagliati;
+    const perc = tot > 0 ? Math.round(punteggio.giusti / tot * 100) : 0;
+    const f = frasaFineSP(perc);
+    if (!f) return;
+    setFraseFine(f);
+    // Delay per non sovrapporsi all'audio dell'ultima parola/feedback.
+    const tm = setTimeout(() => parla(f.tts, "it-IT"), 1500);
+    return () => clearTimeout(tm);
+  }, [fine]);
   const lDA = carta?.tipo === "coniugazione" ? carta.lDA : lingue.find(l => l.codice === carta?.da);
   const lA = carta?.tipo === "coniugazione" ? carta.lA : lingue.find(l => l.codice === carta?.a);
   const livello = carta ? getCoppia(stats, carta.key).livello : 0;
@@ -9723,14 +9747,11 @@ function SchermataQuiz({
       className: "text-3xl font-extrabold text-white tracking-tight mb-1"
     }, isNS ? nuovoRecord ? t.nuovorecord2 : t.gameover : t.ottimolav), /*#__PURE__*/React.createElement("p", {
       className: "text-slate-500 text-sm mb-4"
-    }, iconaModalita, " ", t.sessione), (() => {
-      const f = frasaFineSP(perc);
-      return f && /*#__PURE__*/React.createElement("button", {
-        onClick: () => parla(f.tts, "it-IT"),
-        className: "italic text-amber-400 text-base mb-4 inline-flex items-center gap-2 hover:text-amber-300 transition",
-        title: "Riascolta"
-      }, "⚓ “", f.vis, "” 🔊");
-    })(), (() => {
+    }, iconaModalita, " ", t.sessione), fraseFine && /*#__PURE__*/React.createElement("button", {
+      onClick: () => parla(fraseFine.tts, "it-IT"),
+      className: "italic text-amber-400 text-base mb-4 inline-flex items-center gap-2 hover:text-amber-300 transition",
+      title: "Riascolta"
+    }, "⚓ “", fraseFine.vis, "” 🔊"), (() => {
       const str = streak || {
         count: 0,
         lastDay: 0
