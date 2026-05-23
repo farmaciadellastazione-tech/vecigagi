@@ -3262,7 +3262,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 173;
+const VOC_VERSION = 174;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
@@ -4039,7 +4039,8 @@ const FRASI_FINE_SP = [
   { tts: "beelìiina dé... e chi ttèèi ?", vis: "belina deh, e chi t'ei?", min: 80 },
   { tts: "ma''''''''còsteféé??", vis: "ma costefé??", max: 49 },
   { tts: "te me pai naase", vis: "te me pai n'ase", max: 49 },
-  { tts: "mia che te miio'''''''''' :'''''''''ooòcio", vis: "mia che te mio  ocio", min: 50, max: 79 }
+  { tts: "mia che te miio'''''''''' :'''''''''ooòcio", vis: "mia che te mio  ocio", min: 50, max: 79 },
+  { tts: "teèin pagiasso", vis: "t'ei un pagiasso", max: 49 }
 ];
 function frasaFineSP(perc) {
   const cand = FRASI_FINE_SP.filter(f =>
