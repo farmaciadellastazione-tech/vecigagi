@@ -2706,7 +2706,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"pagina", en:"page", fr:"page", es:"página", de:"Seite", pt:"página", ru:"страница", ca:"pàgina" },
       { tema:"cibo", livello:"A1", it:"pago io", en:"I pay", fr:"je paie", es:"pago yo", de:"ich bezahle", pt:"eu pago", ca:"jo pago", sp:"a pago me", mn:"a pagu me", ge:"pago mi", ia:"io paga", la:"ego solvo", ro:"eu plătesc" },
       { tema:"dialogo", livello:"A2", it:"paio|coppia", en:"pair", fr:"paire", es:"par", de:"Paar", pt:"par", ru:"пара", ca:"parell", sp:"paào/pao" },
-      { it:"paiolo", cr:"lavez" },
+      { tema:"cibo", it:"paiolo", sp:"paoéto", cr:"paiol" },
       { tema:"dialetti", livello:"A2", it:"pala", en:"shovel", fr:"pelle", es:"pala", de:"Schaufel", pt:"pá", sp:"pàa" },
       { it:"paletto", cr:"palet" },
       { tema:"verbi", livello:"A2", it:"pallacanestro", en:"basketball", fr:"basketball", es:"baloncesto", de:"Basketball", pt:"basquete", ko:"농구", ar:"كرة السلة", zh:"篮球", ja:"バスケ", ia:"basketball" },
@@ -2936,7 +2936,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"sbattere, urtare", mn:"sbaàte/zbàté/sbàté" },
       { tema:"dialetti", livello:"A2", it:"sbieco, inclinato", sp:"sbieco", mn:"sbiécu/zbiécu" },
       { tema:"dialetti", livello:"A2", it:"sbollire, fermentare", mn:"sbugii/zbùgii/sbùgii" },
-      { tema:"dialetti", livello:"A2", it:"sbrogliare", en:"", mn:"sbrùgiaaa/zbrùgiaa/zbrùgiaa" },
+      { tema:"verbi", livello:"A2", it:"sbrogliare", en:"", sp:"desgarbüjaae, desbrogiaae/desgarbügiae, desbrogiae", mn:"sbrùgiaaa/zbrùgiaa/zbrùgiaa", ge:"desgarbüggia" },
       { tema:"dialetti", livello:"A2", it:"sbuffare", mn:"sbüfaaa/zbüfaa/sbüfaa" },
       { tema:"farmaci", livello:"B1", it:"scadenza", en:"expiry date", fr:"date de péremption", es:"fecha de caducidad", de:"Ablaufdatum", pt:"validade", ko:"유효기간", ar:"تاريخ انتهاء الصلاحية", zh:"有效期", ja:"有効期限" },
       { tema:"casa", livello:"B1", it:"scala a pioli", en:"ladder", fr:"échelle", es:"escalera", de:"Leiter", pt:"escada", ru:"лестница", ca:"escala" },
@@ -3324,7 +3324,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 180;
+const VOC_VERSION = 181;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
