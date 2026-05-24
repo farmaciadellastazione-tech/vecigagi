@@ -3040,6 +3040,13 @@ function onAdminSingleInput(input) {
   adminAggiornaValore(input.dataset.it, input.dataset.col, input.value.trim());
 }
 
+function adminExistingCellHtml(existing) {
+  if (!existing) return '—';
+  const safe = escapeHtml(existing);
+  if (!ADMIN) return safe;
+  return safe + ' <button class="btn-tts-index" data-action="speak-text" data-text="' + escapeAttr(existing) + '" title="Ascolta pronuncia di index">🔊</button>';
+}
+
 function onAdminSpeakRow(btn) {
   const tr = btn.closest('tr');
   const pronInput = tr.querySelector('input[data-kind="pron"]');
@@ -3245,9 +3252,7 @@ function renderTable() {
       ${okCellHtml}
       <td class="td-it">${escapeHtml(e.it)}${itCellExtra}</td>
       <td><span class="tema-badge">${TEMI_LABEL[e.tema]||e.tema||'–'}</span></td>
-      <td class="td-existing ${existing?'has-value':''}">${existing
-        ? escapeHtml(existing) + (ADMIN ? ` <button class="btn-tts-index" data-action="speak-text" data-text="${escapeAttr(existing)}" title="Ascolta pronuncia di index">🔊</button>` : '')
-        : '—'}</td>
+      <td class="td-existing ${existing?'has-value':''}">${adminExistingCellHtml(existing)}</td>
       <td class="td-input-wrap">
         <input type="text" class="td-input ${contributed?'filled':''}"
           placeholder="Scrivi qui…"
