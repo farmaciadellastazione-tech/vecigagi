@@ -283,6 +283,20 @@
     font-family: 'Crimson Pro', serif;
     font-size: 14px;
   }
+  .btn-tts-index {
+    background: none;
+    border: 1px solid #bae6fd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 1px 5px;
+    margin-left: 4px;
+    line-height: 1.2;
+    vertical-align: middle;
+    color: #0c4a6e;
+    transition: all 0.12s;
+  }
+  .btn-tts-index:hover { background: #e0f2fe; border-color: #0284c7; }
   body.admin .td-existing.has-value { color: #0c4a6e; }
   body.admin .td-existing:not(.has-value) {
     background: #fafafa;
@@ -3231,7 +3245,9 @@ function renderTable() {
       ${okCellHtml}
       <td class="td-it">${escapeHtml(e.it)}${itCellExtra}</td>
       <td><span class="tema-badge">${TEMI_LABEL[e.tema]||e.tema||'–'}</span></td>
-      <td class="td-existing ${existing?'has-value':''}">${existing?escapeHtml(existing):'—'}</td>
+      <td class="td-existing ${existing?'has-value':''}">${existing
+        ? escapeHtml(existing) + (ADMIN ? ` <button class="btn-tts-index" data-action="speak-text" data-text="${escapeAttr(existing)}" title="Ascolta pronuncia di index">🔊</button>` : '')
+        : '—'}</td>
       <td class="td-input-wrap">
         <input type="text" class="td-input ${contributed?'filled':''}"
           placeholder="Scrivi qui…"
@@ -3435,6 +3451,7 @@ if (ADMIN) {
       if (action === 'scarta')         adminScartaVoce(it);
       else if (action === 'cancella-campo') adminCancellaCampo(it, el.dataset.col);
       else if (action === 'speak')     onAdminSpeakRow(el);
+      else if (action === 'speak-text') adminSpeak(el.dataset.text);
     });
     tbody.addEventListener('change', ev => {
       const cb = ev.target.closest('input[data-action="toggle-ok"]');
