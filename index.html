@@ -1783,7 +1783,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // ── Vocabolario con temi e livelli ────────────────────────────────────────
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
-      // ── VOCABOLARIO_DEFAULT ──────────────────
+      // ── VOCABOLARIO ──────────────────────────
       { tema:"mestieri", livello:"A2", en:"office", fr:"bureau", es:"oficina", de:"Büro", pt:"escritório|escritorio", ru:"офис", ca:"oficina", ko:"사무실", ar:"مكتب", zh:"办公室", ja:"オフィス", ia:"officio", la:"officium", grc:"γραφεῖον" },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu" },
       { tema:"istruzioni", livello:"A2", it:"a stomaco vuoto", en:"on an empty stomach", fr:"à jeun", es:"en ayunas", de:"auf nüchternen Magen", pt:"em jejum", mn:"a stemagu veitu", ko:"공복에", ar:"على معدة فارغة", zh:"空腹服用", ja:"空腹時" },
@@ -3219,7 +3219,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", it:"urlare / sbraitare", sp:"sbragiàae/sbragiae" },
       { tema:"dialetti", livello:"A2", it:"urlo sguaiato|bercio", en:"loud cry", fr:"cri perçant", es:"grito estruendoso", de:"lautes Geschrei", pt:"grito alto", ca:"crit estrident", sp:"sbèco", mn:"sbeècu/zbècu/sbècu", ge:"urlo|urlo sguaiòu", ia:"clamor forte", ro:"strigăt puternic" },
       { tema:"dialetti", livello:"A2", it:"urlo|rimprovero", en:"shout", fr:"cri", es:"grito", de:"Schrei", pt:"grito", ca:"crit", sp:"ürlo|sbragio", mn:"sbràgiu/zbràgiu", ge:"ürlo", ia:"clamo", ro:"strigăt" },
-      { tema:"dialogo", livello:"A1", it:"usare", en:"use it", fr:"l'utiliser", es:"usarlo", de:"es benutzen", pt:"usá-lo|usa-lo", ru:"использовать", ca:"usar|fer servir", sp:"lèze de ciü" },
+      { tema:"dialogo", livello:"A1", it:"usare", en:"use it", fr:"l'utiliser", es:"usarlo", de:"es benutzen", pt:"usá-lo|usa-lo", ru:"использовать", ca:"usar|fer servir", sp:"" },
       { tema:"verbi", it:"uscire", en:"exit", sp:"sortiie, nessiie, renessiie/sortie|nessie| renessie" },
       { tema:"dialetti", livello:"B1", it:"uscita", en:"exit", fr:"sortie", es:"salida", de:"Ausgang", pt:"saída|saida", sp:"sortida", ia:"exito" },
       { tema:"aggettivi", livello:"A2", it:"utile", en:"useful", fr:"utile", es:"útil", de:"nützlich", pt:"útil", ru:"полезный", ca:"útil", sp:"" },
@@ -3324,7 +3324,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 185;
+const VOC_VERSION = 186;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
