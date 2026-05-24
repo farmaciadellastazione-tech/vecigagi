@@ -2977,8 +2977,8 @@ function adminCellHtml(e, col) {
           <input type="text" class="field-graf" value="${escapeAttr(graf)}" placeholder="es. tintüa"
             data-it="${it}" data-col="${col}" data-kind="graf" oninput="onAdminTTSInput(this)">
           <div class="admin-actions">
-            <button type="button" class="btn-tts" title="Ascolta pronuncia" onclick="onAdminSpeakRow(this)">🔊</button>
-            <button type="button" class="btn-del" title="Cancella valore" onclick="adminCancellaCampo('${escapeAttr(e.it)}','${col}')">🗑️</button>
+            <button type="button" class="btn-tts" data-action="speak" title="Ascolta pronuncia">🔊</button>
+            <button type="button" class="btn-del" data-action="cancella-campo" data-it="${it}" data-col="${col}" title="Cancella valore">🗑️</button>
           </div>
         </div>
       </div>`;
@@ -2989,7 +2989,7 @@ function adminCellHtml(e, col) {
           <input type="text" class="field-single" value="${escapeAttr(val)}" placeholder="—"
             data-it="${it}" data-col="${col}" data-kind="single" oninput="onAdminSingleInput(this)">
           <div class="admin-actions">
-            <button type="button" class="btn-del" title="Cancella valore" onclick="adminCancellaCampo('${escapeAttr(e.it)}','${col}')">🗑️</button>
+            <button type="button" class="btn-del" data-action="cancella-campo" data-it="${it}" data-col="${col}" title="Cancella valore">🗑️</button>
           </div>
         </div>
       </div>`;
@@ -3191,14 +3191,13 @@ function renderTable() {
     const okCellHtml = ADMIN
       ? `<td class="td-ok"><div class="ok-cell">
            <input type="checkbox" class="ok-checkbox" ${okChecked}
-             data-it="${escapeAttr(e.it)}"
-             onchange="adminToggleOK('${escapeAttr(e.it)}', this.checked)"
+             data-action="toggle-ok" data-it="${escapeAttr(e.it)}"
              title="Marca OK = pronta per promozione a index">
          </div></td>`
       : `<td class="td-ok"></td>`;
 
     const itCellExtra = ADMIN
-      ? `${badgeHtml}<button class="btn-scarta-voce" title="Scarta intera voce" onclick="adminScartaVoce('${escapeAttr(e.it)}')">scarta riga</button>`
+      ? `${badgeHtml}<button class="btn-scarta-voce" data-action="scarta" data-it="${escapeAttr(e.it)}" title="Scarta intera voce">scarta riga</button>`
       : '';
 
     tr.innerHTML = `
@@ -3396,6 +3395,26 @@ if (ADMIN) {
   const aiOn = localStorage.getItem(AI_FILL_PREF_LS) === '1';
   const cb = document.getElementById('ai-fill-toggle');
   if (cb) cb.checked = aiOn && aiConfig && aiConfig.provider && aiConfig.key;
+
+  // Event delegation per bottoni admin: evita problemi di escape JS in onclick
+  // inline quando `it` contiene apostrofi (es. "L'uomo è la misura...").
+  const tbody = document.getElementById('table-body');
+  if (tbody) {
+    tbody.addEventListener('click', ev => {
+      const el = ev.target.closest('[data-action]');
+      if (!el) return;
+      const action = el.dataset.action;
+      const it = el.dataset.it;
+      if (action === 'scarta')         adminScartaVoce(it);
+      else if (action === 'cancella-campo') adminCancellaCampo(it, el.dataset.col);
+      else if (action === 'speak')     onAdminSpeakRow(el);
+    });
+    tbody.addEventListener('change', ev => {
+      const cb = ev.target.closest('input[data-action="toggle-ok"]');
+      if (cb) adminToggleOK(cb.dataset.it, cb.checked);
+    });
+  }
+
   adminCaricaDaGitHub();
 } else {
   renderTable();
