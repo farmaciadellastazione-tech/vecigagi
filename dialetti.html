@@ -658,6 +658,22 @@
   }
   .btn-gh-reset:hover { background: rgba(255,255,255,0.1); }
 
+  .ai-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255,255,255,0.9);
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .ai-toggle:hover { background: rgba(255,255,255,0.1); }
+  .ai-toggle input[type=checkbox] { width: 16px; height: 16px; cursor: pointer; accent-color: #a78bfa; }
+
   .btn-gh-promote {
     background: #16a34a;
     color: white;
@@ -872,6 +888,10 @@
   <button class="btn-gh-save" id="btn-gh-save" onclick="adminSalvaSuGitHub()" disabled>
     ☁️ Salva su dialetti
   </button>
+  <label class="ai-toggle" title="Se attivo, prima della promozione l'AI riempie en/fr/es/de/pt mancanti per ogni voce OK">
+    <input type="checkbox" id="ai-fill-toggle" onchange="adminToggleAIFill(this.checked)">
+    🤖 +AI <span id="ai-fill-provider" style="font-size:11px; color:rgba(255,255,255,0.6)"></span>
+  </label>
   <button class="btn-gh-promote" id="btn-gh-promote" onclick="adminPromuovi()" disabled
     title="Aggiunge le voci OK a index.html e le rimuove da dialetti.html (doppio commit)">
     🚀 Promuovi
@@ -2691,6 +2711,129 @@ async function adminSalvaSuGitHub() {
   }
 }
 
+// ─── AI FILL: riempi en/fr/es/de/pt mancanti via Anthropic/OpenAI/Groq/Gemini
+// Riusa la configurazione AI di edit.html (localStorage 'lq_ai_config').
+// ─────────────────────────────────────────────────────────────────────────
+const AI_KEY_LS = 'lq_ai_config';
+const AI_FILL_LANGS = ['en','fr','es','de','pt'];
+const AI_LANG_NAMES = { en:'English', fr:'français', es:'español', de:'Deutsch', pt:'português' };
+const AI_BATCH_SIZE = 15;
+const AI_FILL_PREF_LS = 'admin_ai_fill_on';
+
+let aiConfig = null;
+function adminCaricaConfigAI() {
+  try { const raw = localStorage.getItem(AI_KEY_LS); if (raw) aiConfig = JSON.parse(raw); } catch(e) { aiConfig = null; }
+  // Aggiorna l'etichetta del toggle nel footer
+  const lbl = document.getElementById('ai-fill-provider');
+  if (lbl) lbl.textContent = (aiConfig && aiConfig.provider) ? `(${aiConfig.provider})` : '(non configurato)';
+}
+
+function adminToggleAIFill(checked) {
+  localStorage.setItem(AI_FILL_PREF_LS, checked ? '1' : '0');
+  if (checked && (!aiConfig || !aiConfig.provider || !aiConfig.key)) {
+    alert('AI non configurata. Configura prima un provider in edit.html (è la stessa chiave: lq_ai_config in localStorage).');
+    document.getElementById('ai-fill-toggle').checked = false;
+    localStorage.setItem(AI_FILL_PREF_LS, '0');
+  }
+}
+
+function adminAIFillIsOn() {
+  return localStorage.getItem(AI_FILL_PREF_LS) === '1' && aiConfig && aiConfig.provider && aiConfig.key;
+}
+
+async function adminAICall(prompt) {
+  if (!aiConfig) throw new Error('AI non configurata');
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort('timeout'), 60000);
+  const cleanup = () => clearTimeout(tid);
+  try {
+    let text;
+    if (aiConfig.provider === 'groq') {
+      const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method:'POST', signal: ctrl.signal,
+        headers:{'Authorization':'Bearer '+aiConfig.key,'Content-Type':'application/json'},
+        body:JSON.stringify({ model:'llama-3.3-70b-versatile', messages:[{role:'user',content:prompt}], temperature:0.2, response_format:{type:'json_object'} })
+      });
+      if (!r.ok) throw new Error('Groq HTTP '+r.status);
+      text = (await r.json()).choices[0].message.content;
+    } else if (aiConfig.provider === 'gemini') {
+      const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='+encodeURIComponent(aiConfig.key), {
+        method:'POST', signal: ctrl.signal,
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ contents:[{parts:[{text:prompt}]}], generationConfig:{temperature:0.2, responseMimeType:'application/json'} })
+      });
+      if (!r.ok) throw new Error('Gemini HTTP '+r.status);
+      text = (await r.json()).candidates[0].content.parts[0].text;
+    } else if (aiConfig.provider === 'anthropic') {
+      const r = await fetch('https://api.anthropic.com/v1/messages', {
+        method:'POST', signal: ctrl.signal,
+        headers:{'x-api-key':aiConfig.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true','Content-Type':'application/json'},
+        body:JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:4000, messages:[{role:'user',content:prompt}] })
+      });
+      if (!r.ok) throw new Error('Anthropic HTTP '+r.status);
+      text = (await r.json()).content[0].text;
+    } else if (aiConfig.provider === 'openai') {
+      const r = await fetch('https://api.openai.com/v1/chat/completions', {
+        method:'POST', signal: ctrl.signal,
+        headers:{'Authorization':'Bearer '+aiConfig.key,'Content-Type':'application/json'},
+        body:JSON.stringify({ model:'gpt-4o-mini', messages:[{role:'user',content:prompt}], temperature:0.2, response_format:{type:'json_object'} })
+      });
+      if (!r.ok) throw new Error('OpenAI HTTP '+r.status);
+      text = (await r.json()).choices[0].message.content;
+    } else throw new Error('Provider sconosciuto: ' + aiConfig.provider);
+    return text;
+  } finally { cleanup(); }
+}
+
+// Riempi en/fr/es/de/pt mancanti per un batch di voci. Modifica le voci in-place.
+async function adminAIFillBatch(voci) {
+  const items = voci.map(v => {
+    const missing = AI_FILL_LANGS.filter(c => !v[c] || v[c] === '');
+    return { it: v.it, missing, existing: Object.fromEntries(AI_FILL_LANGS.filter(c => v[c]).map(c => [c, v[c]])) };
+  }).filter(x => x.missing.length);
+
+  if (!items.length) return { filled: 0, errors: 0 };
+
+  const prompt = `Sei un traduttore di vocabolario didattico (livello CEFR A1-B2).
+Dato un elenco di parole italiane, fornisci le traduzioni nelle lingue specificate per ognuna.
+Regole:
+- Una sola parola/locuzione per ogni traduzione (la più comune e didatticamente utile).
+- Per i sinonimi importanti, usa la virgola: "casa, abitazione".
+- Mantieni il livello CEFR A1-B2 (no termini tecnici/letterari).
+- Per verbi italiani all'infinito, usa l'infinito anche nella traduzione (es. it:"correre" → en:"to run").
+- Se la parola non ha equivalente nella lingua, restituisci stringa vuota "".
+
+INPUT (JSON):
+${JSON.stringify(items.map(x => ({ it: x.it, da_tradurre_in: x.missing, gia_tradotto: x.existing })), null, 2)}
+
+OUTPUT: rispondi SOLO con JSON valido di questa forma esatta:
+{"results":[{"it":"...","translations":{"en":"...","fr":"...",...}}, ...]}
+Includi solo i campi richiesti in "da_tradurre_in" per ogni voce.`;
+
+  const text = await adminAICall(prompt);
+  let parsed;
+  try {
+    const cleaned = text.replace(/```json|```/g, '').trim();
+    const m = cleaned.match(/\{[\s\S]*\}/);
+    parsed = JSON.parse(m ? m[0] : cleaned);
+  } catch (e) {
+    throw new Error('Risposta AI non in JSON: ' + text.slice(0, 200));
+  }
+
+  const byIt = new Map(voci.map(v => [adminRowKey(v), v]));
+  let filled = 0;
+  (parsed.results || []).forEach(r => {
+    const v = byIt.get((r.it || '').toLowerCase().trim());
+    if (!v || !r.translations) return;
+    Object.keys(r.translations).forEach(c => {
+      if (!AI_FILL_LANGS.includes(c)) return;
+      const val = (r.translations[c] || '').trim();
+      if (val && !v[c]) { v[c] = val; filled++; }
+    });
+  });
+  return { filled, errors: items.length - (parsed.results || []).length };
+}
+
 // ─── PROMUOVI: voci OK → index.html, e le rimuove da dialetti.html ───────
 //
 // Strategia: per ogni voce candidata con ok:true,
@@ -2718,6 +2861,36 @@ async function adminPromuovi() {
   const btn = document.getElementById('btn-gh-promote');
   btn.disabled = true; btn.textContent = '⏳ Promozione…';
   try {
+    // 0. (opzionale) AI fill in batch su tutte le voci OK
+    let aiStats = null;
+    if (adminAIFillIsOn()) {
+      const daRiempire = ok.filter(v => AI_FILL_LANGS.some(c => !v[c]));
+      if (daRiempire.length) {
+        if (!confirm(`🤖 L'AI riempirà ${AI_FILL_LANGS.join('/')} per ${daRiempire.length} voci (provider: ${aiConfig.provider}).\n\nProcedere?`)) {
+          btn.disabled = false; btn.textContent = '🚀 Promuovi'; return;
+        }
+        aiStats = { filled: 0, errors: 0, batches: 0 };
+        for (let i = 0; i < daRiempire.length; i += AI_BATCH_SIZE) {
+          const chunk = daRiempire.slice(i, i + AI_BATCH_SIZE);
+          adminLog(`🤖 AI batch ${Math.floor(i/AI_BATCH_SIZE)+1}/${Math.ceil(daRiempire.length/AI_BATCH_SIZE)} (${chunk.length} voci)…`);
+          btn.textContent = `🤖 AI ${i+chunk.length}/${daRiempire.length}…`;
+          try {
+            const res = await adminAIFillBatch(chunk);
+            aiStats.filled += res.filled;
+            aiStats.errors += res.errors;
+            aiStats.batches++;
+          } catch (err) {
+            console.error('AI batch fallito:', err);
+            aiStats.errors += chunk.length;
+            if (!confirm(`Batch AI fallito: ${err.message}\n\nContinuare con la promozione comunque?`)) {
+              btn.disabled = false; btn.textContent = '🚀 Promuovi'; return;
+            }
+          }
+        }
+        adminLog(`✅ AI: ${aiStats.filled} traduzioni aggiunte (${aiStats.batches} batch).`, 'success');
+      }
+    }
+
     // 1. Costruisci il nuovo array per index
     const nuovoIndex = adminIndexVoc.map(v => Object.assign({}, v)); // shallow clone
     const indexByIt = new Map(nuovoIndex.map(v => [adminRowKey(v), v]));
@@ -2751,8 +2924,9 @@ async function adminPromuovi() {
     const nuoviDialettiSrc = adminRicostruisciDialetti(nuoviCandidati);
 
     // 4. PUT in sequenza: prima index, poi dialetti (se index fallisce, dialetti non viene toccato)
+    const aiSuffix = aiStats ? ` + AI ${aiStats.filled} traduzioni en/fr/es/de/pt` : '';
     adminLog('⏳ PUT index.html…');
-    await adminGhPutFile(GH_PATH_INDEX, nuovoIndexSrc, `Promozione ${ok.length} voci da dialetti (${aggiunte} nuove, ${aggiornate} aggiornate)`);
+    await adminGhPutFile(GH_PATH_INDEX, nuovoIndexSrc, `Promozione ${ok.length} voci da dialetti (${aggiunte} nuove, ${aggiornate} aggiornate)${aiSuffix}`);
     adminLog('⏳ PUT dialetti.html…');
     await adminGhPutFile(GH_PATH_DIALETTI, nuoviDialettiSrc, `Rimozione ${ok.length} voci promosse a index`);
 
@@ -2763,7 +2937,8 @@ async function adminPromuovi() {
     adminDialFile = nuoviDialettiSrc;
     adminVoc = nuoviCandidati;
     adminModifiedKeys.clear();
-    adminLog(`✅ Promosse ${ok.length} voci (${aggiunte} nuove, ${aggiornate} aggiornate). Index bumpato.`, 'success');
+    const okMsg = `✅ Promosse ${ok.length} voci (${aggiunte} nuove, ${aggiornate} aggiornate).${aiSuffix} Index bumpato.`;
+    adminLog(okMsg, 'success');
     btn.textContent = '✅ Promosse!';
     setTimeout(() => { btn.textContent = '🚀 Promuovi'; adminUpdateBadges(); }, 3000);
     renderTable();
@@ -3258,6 +3433,11 @@ if (ADMIN) {
   // In admin: carica subito il vocabolario reale da GitHub.
   // Nel frattempo la tabella è vuota; appena adminCaricaDaGitHub termina chiama renderTable().
   document.title = '🔒 ADMIN — Editor dialetti | LinguaeQuiz';
+  adminCaricaConfigAI();
+  // Ripristina la preferenza AI fill (default off)
+  const aiOn = localStorage.getItem(AI_FILL_PREF_LS) === '1';
+  const cb = document.getElementById('ai-fill-toggle');
+  if (cb) cb.checked = aiOn && aiConfig && aiConfig.provider && aiConfig.key;
   adminCaricaDaGitHub();
 } else {
   renderTable();
