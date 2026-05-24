@@ -275,6 +275,21 @@
   }
   .td-existing.has-value { color: #059669; font-style: normal; font-weight: 500; }
 
+  /* In admin la colonna mostra il valore di INDEX (riferimento, non modificabile). */
+  body.admin .td-existing {
+    background: #f0f9ff;
+    border-left: 3px solid #0284c7;
+    padding-left: 10px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 14px;
+  }
+  body.admin .td-existing.has-value { color: #0c4a6e; }
+  body.admin .td-existing:not(.has-value) {
+    background: #fafafa;
+    border-left-color: #cbd5e1;
+    color: #cbd5e1;
+  }
+
   .td-input-wrap { position: relative; }
   .td-input {
     width: 100%;
@@ -2367,17 +2382,19 @@ let adminIndexByIt = new Map();  // it.lower → voce di index (lookup veloce)
 
 function adminRowKey(v) { return (v.it || '').toLowerCase().trim(); }
 
-// Stato della voce candidata rispetto a index, dato il dialetto corrente
+// Stato della voce candidata rispetto a index, dato il dialetto corrente.
+// Il valore concreto di index è mostrato nella colonna "In index", quindi
+// qui basta il label sintetico (il `detail` serve solo per casi senza colonna).
 function adminVoceStato(candidato, dialetto) {
   const idx = adminIndexByIt.get(adminRowKey(candidato));
   const valC = (candidato[dialetto] || '').trim();
-  if (!idx) return { kind: 'nuova',  label: '🆕 NUOVA',  detail: 'IT non in index' };
+  if (!idx) return { kind: 'nuova', label: '🆕 NUOVA', detail: 'IT non in index' };
   const valI = (idx[dialetto] || '').trim();
-  if (!valC && !valI) return { kind: 'vuoto', label: '∅ vuoto', detail: 'né candidato né index hanno valore' };
-  if (!valI && valC)  return { kind: 'arricchisce', label: '➕ ARRICCHISCE', detail: `index ha "${candidato.it}" ma manca ${dialetto}` };
-  if (valI && !valC)  return { kind: 'gia-in-index', label: '✓ già in index', detail: `index ha "${valI}" — candidato non ha valore` };
-  if (valI === valC)  return { kind: 'duplicato', label: '= DUPLICATO', detail: `valore identico a index` };
-  return { kind: 'conflitto', label: '⚠️ CONFLITTO', detail: `index: "${valI}"` };
+  if (!valC && !valI) return { kind: 'vuoto', label: '∅ vuoto', detail: '' };
+  if (!valI && valC)  return { kind: 'arricchisce', label: '➕ ARRICCHISCE', detail: '' };
+  if (valI && !valC)  return { kind: 'gia-in-index', label: '✓ già in index', detail: '' };
+  if (valI === valC)  return { kind: 'duplicato', label: '= DUPLICATO', detail: '' };
+  return { kind: 'conflitto', label: '⚠️ CONFLITTO', detail: '' };
 }
 
 function adminLog(msg, kind) {
@@ -3148,10 +3165,11 @@ function renderTable() {
   const sourceVoc = ADMIN ? adminVoc : CANDIDATI;
 
   // Update column headers
-  document.getElementById('col-existing').textContent = isNew ? '—' : `Già in ${getDialectName()}`;
   if (ADMIN) {
-    document.getElementById('col-new').textContent = `✏️ Modifica ${getDialectName()}`;
+    document.getElementById('col-existing').textContent = isNew ? '—' : `📚 In index (${getDialectName()})`;
+    document.getElementById('col-new').textContent = `✏️ Candidato — ${getDialectName()}`;
   } else {
+    document.getElementById('col-existing').textContent = isNew ? '—' : `Già in ${getDialectName()}`;
     document.getElementById('col-new').textContent = `✏️ ${getDialectName()}`;
   }
 
@@ -3172,7 +3190,16 @@ function renderTable() {
   tbody.innerHTML = '';
 
   rows.forEach(e => {
-    const existing = isNew ? '' : (e[col] || '');
+    // In admin: la colonna "Già presente" mostra il valore di INDEX (per confronto).
+    // In public: continua a mostrare il valore del candidato.
+    let existing;
+    if (isNew) existing = '';
+    else if (ADMIN) {
+      const idx = adminIndexByIt.get(adminRowKey(e));
+      existing = idx ? (idx[col] || '') : '';
+    } else {
+      existing = e[col] || '';
+    }
     const contributed = contributions[e.it] || '';
     const tr = document.createElement('tr');
     tr.dataset.it = e.it;
