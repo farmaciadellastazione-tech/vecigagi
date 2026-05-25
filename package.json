@@ -1,0 +1,13 @@
+{
+  "name": "vecigagi",
+  "private": true,
+  "version": "0.0.0",
+  "description": "LinguaeQuiz — test infrastructure (l'app gira come single-file index.html via React CDN, nessun build step in prod)",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.8"
+  }
+}
