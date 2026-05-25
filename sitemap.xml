@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Homepage — quiz interattivo dialetti liguri + 15 lingue -->
   <url>
     <loc>https://linguaequiz.com/</loc>
-    <lastmod>2026-05-09</lastmod>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://linguaequiz.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linguaequiz.com/how-it-works.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/"/>
   </url>
+
+  <!-- Pagina contributi dialettali (manarolese, spezzino, genovese, carrarino) -->
+  <url>
+    <loc>https://linguaequiz.com/dialetti.html</loc>
+    <lastmod>2026-05-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/dialetti.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/dialetti.html"/>
+  </url>
+
+  <!-- Pagina informativa "How it works" (versione inglese) -->
+  <url>
+    <loc>https://linguaequiz.com/how-it-works.html</loc>
+    <lastmod>2026-05-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://linguaequiz.com/how-it-works.html"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/"/>
+  </url>
+
 </urlset>
