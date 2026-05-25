@@ -50,3 +50,11 @@ Sequenza corretta:
 ## Linguaggio della comunicazione
 
 L'autore è italiano: risposte e commenti nei file in italiano salvo richiesta diversa.
+
+## Testing rules
+- Never modify existing tests to make them pass (fix the implementation)
+- Never update snapshots without explicit instruction
+- Use transactions for database tests (roll back after each test)
+- Mark flaky tests with @pytest.mark.flaky
+- Write the failing test before fixing any reported bug
+- Run the full suite before declaring work complete
