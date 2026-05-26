@@ -45,8 +45,18 @@
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .stats { font-size: 0.82rem; color: var(--muted); margin-left: auto; }
   main { padding: 1rem; max-width: 1500px; margin: 0 auto 5rem; }
-  table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-  th { text-align: left; padding: 0.55rem 0.6rem; background: #f1f5f9; font-size: 0.75rem; text-transform: uppercase; color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--border); position: sticky; top: var(--header-h, 138px); z-index: 15; box-shadow: 0 2px 0 var(--border); }
+  /* Contenitore scroll della tabella: scrollbar orizzontale SEMPRE visibile sotto la tabella */
+  .table-wrap { overflow: auto; max-height: calc(100vh - var(--header-h, 138px) - 200px); min-height: 320px; border-radius: 8px; background: var(--card-bg); box-shadow: 0 1px 3px rgba(0,0,0,0.06); position: relative; }
+  table { width: 100%; border-collapse: collapse; background: var(--card-bg); }
+  /* Modalità compatta: nasconde colonne secondarie per far stare la tabella su portatili stretti */
+  table.cols-essenziali .col-tema,
+  table.cols-essenziali .col-livello,
+  table.cols-essenziali .col-pron { display: none; }
+  /* Pulsanti freccia fissi per scorrere orizzontalmente la tabella (alternativa scrollbar) */
+  .scroll-arrows { position: fixed; right: 12px; bottom: 78px; display: flex; gap: 6px; z-index: 30; }
+  .scroll-arrows button { background: var(--card-bg); border: 1px solid var(--border); border-radius: 999px; width: 38px; height: 38px; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.15); font-size: 1.05rem; line-height: 1; opacity: 0.88; transition: all 0.12s; }
+  .scroll-arrows button:hover { opacity: 1; background: var(--primary-light); color: white; border-color: var(--primary); }
+  th { text-align: left; padding: 0.55rem 0.6rem; background: #f1f5f9; font-size: 0.75rem; text-transform: uppercase; color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--border); position: sticky; top: 0; z-index: 15; box-shadow: 0 2px 0 var(--border); }
   tbody tr { background: var(--card-bg); }
   th.sortable { cursor: pointer; user-select: none; }
   th.sortable:hover { background: #e2e8f0; color: var(--primary); }
@@ -208,6 +218,7 @@
       <input type="checkbox" id="only-empty"> solo da tradurre
     </label>
     <button class="btn btn-secondary" onclick="apriConfigAI()" title="Configura AI">⚙️ AI</button>
+    <button class="btn btn-secondary" id="btn-cols-toggle" onclick="toggleColonneSecondarie()" title="Nasconde/mostra Tema, Livello, Pron. TTS per far stare la tabella su schermi stretti">📐 Compatta</button>
     <span class="stats" id="stats"></span>
   </div>
   <div class="legend">
@@ -223,22 +234,29 @@
   <div id="char-bar" aria-label="Caratteri speciali">
     <span class="char-label">Caratteri speciali:</span>
   </div>
-  <table>
-    <thead>
-      <tr id="thead-row">
-        <th style="width:32px" title="Stato">·</th>
-        <th class="sortable" data-sort="it" style="min-width:140px;width:22%">Italiano <span class="sort-arrow"></span></th>
-        <!-- le th delle lingue vengono inserite dinamicamente da renderTheadLingue() -->
-        <th class="sortable" data-sort="tema" style="width:12%">Tema <span class="sort-arrow"></span></th>
-        <th class="sortable" data-sort="livello" style="width:6%">Liv. <span class="sort-arrow"></span></th>
-        <th style="width:8%">Pron. TTS</th>
-        <th class="actions-th" style="width:90px"></th>
-      </tr>
-    </thead>
-    <tbody id="rows"></tbody>
-  </table>
+  <div class="table-wrap" id="table-wrap">
+    <table id="main-table">
+      <thead>
+        <tr id="thead-row">
+          <th style="width:32px" title="Stato">·</th>
+          <th class="sortable" data-sort="it" style="min-width:140px;width:22%">Italiano <span class="sort-arrow"></span></th>
+          <!-- le th delle lingue vengono inserite dinamicamente da renderTheadLingue() -->
+          <th class="sortable col-tema" data-sort="tema" style="width:12%">Tema <span class="sort-arrow"></span></th>
+          <th class="sortable col-livello" data-sort="livello" style="width:6%">Liv. <span class="sort-arrow"></span></th>
+          <th class="col-pron" style="width:8%">Pron. TTS</th>
+          <th class="actions-th" style="width:90px"></th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
   <div id="pagination"></div>
 </main>
+
+<div class="scroll-arrows" id="scroll-arrows" aria-hidden="false">
+  <button onclick="scrollTabella(-320)" title="Scorri tabella a sinistra">←</button>
+  <button onclick="scrollTabella(320)" title="Scorri tabella a destra">→</button>
+</div>
 
 <div class="footer-bar">
   <button class="btn btn-primary" onclick="aggiungiVoce()">➕ Nuova voce</button>
@@ -446,7 +464,42 @@ async function init() {
   attaccaListener();
   attivaHeaderHeightTracking();
   aggiornaCharBar();
+  initModoCompatto();
   await caricaIndexDaGitHub();
+}
+
+// ==========================================================================
+// SCROLL ORIZZONTALE TABELLA + MODALITÀ COMPATTA
+// (per portatili stretti: la tabella sta in un wrapper scrollabile, frecce
+// fisse a schermo e toggle per nascondere Tema/Livello/Pron. TTS)
+// ==========================================================================
+const COLS_TOGGLE_KEY = 'lq_edit_cols_essenziali';
+
+function scrollTabella(dx) {
+  const wrap = document.getElementById('table-wrap');
+  if (wrap) wrap.scrollBy({ left: dx, behavior: 'smooth' });
+}
+
+function applicaModoCompatto(on) {
+  const tbl = document.getElementById('main-table');
+  if (!tbl) return;
+  tbl.classList.toggle('cols-essenziali', !!on);
+  const btn = document.getElementById('btn-cols-toggle');
+  if (btn) btn.textContent = on ? '📐 Espandi' : '📐 Compatta';
+  try { localStorage.setItem(COLS_TOGGLE_KEY, on ? '1' : '0'); } catch (_) {}
+}
+
+function toggleColonneSecondarie() {
+  const tbl = document.getElementById('main-table');
+  applicaModoCompatto(!tbl || !tbl.classList.contains('cols-essenziali'));
+}
+
+function initModoCompatto() {
+  let saved = null;
+  try { saved = localStorage.getItem(COLS_TOGGLE_KEY); } catch (_) {}
+  // default: compatto se viewport stretto (< 1280px), altrimenti esteso
+  const on = saved === '1' || (saved === null && window.innerWidth < 1280);
+  applicaModoCompatto(on);
 }
 
 function attivaHeaderHeightTracking() {
@@ -857,9 +910,9 @@ function render() {
     });
 
     html += `
-      <td class="tema-cell" data-label="Tema"><input type="text" value="${escapeAttr(v.tema||'')}" data-field="tema" list="temi-list"></td>
-      <td class="livello-cell" data-label="Livello"><input type="text" value="${escapeAttr(v.livello||'')}" data-field="livello" list="livelli-list"></td>
-      <td data-label="Pron. TTS"><input type="text" value="${escapeAttr(v.pron||'')}" data-field="pron" placeholder="—"></td>
+      <td class="tema-cell col-tema" data-label="Tema"><input type="text" value="${escapeAttr(v.tema||'')}" data-field="tema" list="temi-list"></td>
+      <td class="livello-cell col-livello" data-label="Livello"><input type="text" value="${escapeAttr(v.livello||'')}" data-field="livello" list="livelli-list"></td>
+      <td class="col-pron" data-label="Pron. TTS"><input type="text" value="${escapeAttr(v.pron||'')}" data-field="pron" placeholder="—"></td>
       <td class="row-actions">
         <button class="icon-btn ai" onclick="aiCompletaRiga(this)" title="Completa con AI">✨</button>
         <button class="icon-btn" onclick="ttsRow(this)" title="Pronuncia">🔊</button>
