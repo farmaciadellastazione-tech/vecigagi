@@ -1818,13 +1818,21 @@ function _pickVoice(bcp47) {
       || null;
 }
 
+// Allinea il testo da leggere a formaTTS+parla di index.html (vocab.js):
+//  - visiblePart: scarta le alternative nascoste dopo "|"
+//  - rimuove le parentesi: "casa (edificio)" → "casa" (annotazione muta)
+//  - split("/")[0]: prima parte (TTS per dialetti, primo sinonimo per altre lingue)
+function preparaTestoTTS(valore) {
+  return visiblePart(valore || '').replace(/\(.*?\)/g, '').split('/')[0].trim();
+}
+
 // Pronuncia la SOLA cella su cui si clicca (utile quando ci sono più lingue
 // in colonna o quando il bottone in fondo riga è fuori schermo su portatile).
 function ttsCella(btn, langCode) {
   const td = btn.closest('td');
   const input = td && td.querySelector(`input[data-field="${langCode}"]`);
   if (!input) return;
-  const testo = visiblePart(input.value).split('/')[0].trim();
+  const testo = preparaTestoTTS(input.value);
   if (!testo || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   setTimeout(() => {
@@ -1838,21 +1846,47 @@ function ttsCella(btn, langCode) {
   }, 80);
 }
 
+// Legge in sequenza italiano + tutte le lingue visibili della riga.
+// Visto che ogni cella ha già il proprio 🔊, il bottone di riga (in fondo,
+// sticky a destra) ha senso solo se fa il "giro completo".
+// La pron override vale solo per la lingua primaria (currentLangs[0]), come
+// nell'originale.
 function ttsRow(btn, rate) {
-  const tr = btn.closest('tr'), langInput = tr.querySelector(`input[data-field="${currentLangs[0]}"]`), pronInput = tr.querySelector('input[data-field="pron"]');
-  // Replica esattamente la logica di formaTTS+parla in index.html:
-  // visiblePart (toglie |...) → split su /,;  → prima parte.
-  // Necessario perché il TTS in edit faccia sentire la stessa cosa che l'app
-  // farà ascoltare all'utente (calibrazione coerente).
-  const rawField = langInput ? visiblePart(langInput.value) : '';
-  // Split solo su "/" (allineato a formaTTS in index.html): virgola e punto e
-  // virgola sono punteggiatura e vanno lette intere.
-  const fromField = rawField.split("/")[0].trim();
-  const testo = (pronInput && pronInput.value.trim()) || fromField || '';
-  if (!testo || !window.speechSynthesis) return;
+  if (!window.speechSynthesis) return;
+  const tr = btn.closest('tr');
+  if (!tr) return;
   const finalRate = (typeof rate === 'number' && rate > 0) ? rate : 0.85;
+  const pronInput = tr.querySelector('input[data-field="pron"]');
+  const pronTesto = pronInput ? pronInput.value.trim() : '';
+  const primaryLang = currentLangs[0];
+
+  // Italiano sempre come prima utterance, poi le lingue selezionate (dedup it)
+  const codes = currentLangs.includes('it') ? [...currentLangs] : ['it', ...currentLangs];
+
+  const utterances = [];
+  codes.forEach(code => {
+    const input = tr.querySelector(`input[data-field="${code}"]`);
+    if (!input) return;
+    const testo = (code === primaryLang && pronTesto)
+      ? pronTesto
+      : preparaTestoTTS(input.value);
+    if (!testo) return;
+    const langInfo = LINGUE.find(l => l.code === code);
+    utterances.push({ testo, bcp: langInfo ? langInfo.bcp47 : 'it-IT' });
+  });
+
+  if (!utterances.length) return;
   window.speechSynthesis.cancel();
-  setTimeout(() => { const u = new SpeechSynthesisUtterance(testo); const langInfo = LINGUE.find(l => l.code === currentLangs[0]); u.lang = langInfo ? langInfo.bcp47 : 'it-IT'; u.rate = finalRate; const v = _pickVoice(u.lang); if (v) u.voice = v; window.speechSynthesis.speak(u); }, 80);
+  setTimeout(() => {
+    utterances.forEach(({ testo, bcp }) => {
+      const u = new SpeechSynthesisUtterance(testo);
+      u.lang = bcp;
+      u.rate = finalRate;
+      const v = _pickVoice(bcp);
+      if (v) u.voice = v;
+      window.speechSynthesis.speak(u);
+    });
+  }, 80);
 }
 
 // ==========================================================================
