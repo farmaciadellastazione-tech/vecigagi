@@ -70,6 +70,14 @@
   td.lang-cell .slash-badge + .alt-badge, td.lang2-cell .slash-badge + .alt-badge { right: 4.2rem; }
   td.it-cell input, td.lang-cell input, td.lang2-cell input { padding-right: 2.4rem; }
   td.tema-cell input, td.livello-cell input { color: var(--muted); font-size: 0.85rem; }
+  /* Colonna azioni ancorata a destra: il pulsante 🔊 resta sempre raggiungibile anche su portatili stretti */
+  th.actions-th { position: sticky; right: 0; background: #f1f5f9; z-index: 16; box-shadow: -2px 0 4px rgba(0,0,0,0.04); }
+  td.row-actions { position: sticky; right: 0; background: var(--card-bg); box-shadow: -2px 0 4px rgba(0,0,0,0.04); z-index: 1; }
+  tr.modified td.row-actions { background: #fefce8; }
+  tr.modified:hover td.row-actions { background: #fef9c3; }
+  tr.new-row td.row-actions { background: var(--green-light); }
+  tr.new-row:hover td.row-actions { background: #bbf7d0; }
+  tr:hover td.row-actions { background: #f8fafc; }
   .row-actions { display: flex; gap: 0.15rem; white-space: nowrap; }
   .icon-btn { background: none; border: none; cursor: pointer; padding: 0.3rem 0.4rem; border-radius: 4px; font-size: 0.95rem; opacity: 0.55; transition: all 0.12s; }
   .icon-btn:hover { opacity: 1; background: #f1f5f9; }
@@ -224,7 +232,7 @@
         <th class="sortable" data-sort="tema" style="width:12%">Tema <span class="sort-arrow"></span></th>
         <th class="sortable" data-sort="livello" style="width:6%">Liv. <span class="sort-arrow"></span></th>
         <th style="width:8%">Pron. TTS</th>
-        <th style="width:90px"></th>
+        <th class="actions-th" style="width:90px"></th>
       </tr>
     </thead>
     <tbody id="rows"></tbody>
@@ -843,7 +851,8 @@ function render() {
         <input type="text" value="${escapeAttr(valRaw)}" data-field="${code}" placeholder="(da tradurre)">
         ${hasSlash ? '<span class="slash-badge" title="TTS/grafia">TTS/⌨</span>' : ''}
         ${hidden ? `<span class="alt-badge" title="${hidden} alt. nascoste">+${hidden}</span>` : ''}
-        ${isDialetto ? `<button class="icon-btn ai" onclick="aiTrascriviTTSCella(this,'${code}')" title="Suggerisci trascrizione TTS" style="margin-left:4px">🔤</button>` : ''}
+        <button class="icon-btn" onclick="ttsCella(this,'${code}')" title="Pronuncia" style="margin-left:4px">🔊</button>
+        ${isDialetto ? `<button class="icon-btn ai" onclick="aiTrascriviTTSCella(this,'${code}')" title="Suggerisci trascrizione TTS">🔤</button>` : ''}
       </td>`;
     });
 
@@ -1754,6 +1763,26 @@ function _pickVoice(bcp47) {
       || voices.find(langExact)
       || voices.find(langBase)
       || null;
+}
+
+// Pronuncia la SOLA cella su cui si clicca (utile quando ci sono più lingue
+// in colonna o quando il bottone in fondo riga è fuori schermo su portatile).
+function ttsCella(btn, langCode) {
+  const td = btn.closest('td');
+  const input = td && td.querySelector(`input[data-field="${langCode}"]`);
+  if (!input) return;
+  const testo = visiblePart(input.value).split('/')[0].trim();
+  if (!testo || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  setTimeout(() => {
+    const u = new SpeechSynthesisUtterance(testo);
+    const langInfo = LINGUE.find(l => l.code === langCode);
+    u.lang = langInfo ? langInfo.bcp47 : 'it-IT';
+    u.rate = 0.85;
+    const v = _pickVoice(u.lang);
+    if (v) u.voice = v;
+    window.speechSynthesis.speak(u);
+  }, 80);
 }
 
 function ttsRow(btn, rate) {
