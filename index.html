@@ -1842,7 +1842,9 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", it:"alga", sp:"aarrghena/àrghena", mn:"alga, aiga", ge:"alga, aiga" },
       { tema:"aggettivi", it:"allampanato", sp:"lünganiòn, pertegòn/lüngagnón|pertegón", mn:"lüngagnon", cr:"alampanat", ge:"lüngagnon" },
       { tema:"dialetti", livello:"A2", it:"allargare", sp:"slargaae/slargae", mn:"slargaae/slargae" },
+      { tema:"casa", it:"allarme/sveglia", en:"alarm", ge:"alarme/alârme" },
       { tema:"verbi", livello:"A2", it:"allenamento", en:"training", fr:"entraînement", es:"entrenamiento", de:"Training", pt:"treino", sp:"alenamento", mn:"alenaménto", ge:"alenaménto", ko:"훈련", ar:"تدريب", zh:"训练", ja:"トレーニング", ia:"trainamento" },
+      { tema:"salute", it:"allergia", en:"allergy", ge:"alergîa" },
       { tema:"animali", it:"allodola", sp:"lòdoa, pitornèla, mignarda, capelón/lòdoa| pitornèla| mignarda|capelón", mn:"lödoa", ge:"lödoa" },
       { tema:"tempo", livello:"A1", it:"allora", en:"then", fr:"alors", es:"entonces", de:"dann", pt:"então", ru:"тогда", ca:"llavors", sp:"aloooa/aloa", mn:"alôa", ge:"alôa", ko:"그때", ar:"ثم", zh:"那么", ja:"それで", ia:"tunc", la:"tunc", grc:"τότε", ro:"atunci", sq:"atëherë" },
       { tema:"dialetti", it:"alloro", sp:"arfògio, aofògio", mn:"öfeuggio", ge:"öfeuggio" },
@@ -1861,8 +1863,10 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A2", it:"ananas", en:"pineapple", fr:"ananas", es:"piña", de:"Ananas", pt:"abacaxi", ru:"ананас", ca:"pinya", ko:"파인애플", ar:"أناناس", zh:"菠萝", ja:"パイナップル", ia:"ananas", ro:"ananas" },
       { tema:"animali", livello:"A2", it:"anatra", en:"duck", fr:"canard", es:"pato", de:"Ente", pt:"pato", ru:"утка", ca:"ànec" },
       { tema:"dialogo", livello:"A1", it:"anche", en:"also", fr:"aussi", es:"también", de:"auch", pt:"também", ru:"тоже|также", ca:"també", sp:"anca|assì|essì| nicò| ènca", mn:"anca|assì|essì| nicò| ènca", cr:"ancka/anca", ge:"ascii/ascì|anche" },
+      { tema:"dialetti", it:"ancora", ge:"ancùha/ancoa" },
       { tema:"dialetti", livello:"A2", it:"andar via velocemente", en:"rush away", fr:"partir vite", sp:"telaae/telae", mn:"telaae/telae" },
       { tema:"verbi", livello:"A1", it:"andare", en:"go", fr:"aller", es:"ir", de:"gehen", pt:"ir", ru:"идти|ехать", ca:"anar", sp:"andaae/andae", mn:"andâ|anâ", cr:"andar", ge:"andâ|anâ", ko:"가다", ar:"يذهب", zh:"去", ja:"行く", ia:"ir", la:"ire", grc:"ἰέναι", ro:"a merge" },
+      { tema:"dialogo", it:"andare a casa", en:"go home", sp:"andae a ca", ge:"anaa a casa/andâ a câza" },
       { tema:"dialetti", livello:"B1", it:"andare di fretta", en:"be in a hurry", fr:"être pressé", es:"ir deprisa", de:"es eilig haben", pt:"ter pressa", sp:"andae de sprèssa", mn:"anâ de spresción|", ge:"anâ de spresción|", la:"festinare", grc:"σπεύδειν" },
       { tema:"patologie", livello:"B1", it:"anemia", en:"anaemia", fr:"anémie", es:"anemia", de:"Anämie", pt:"anemia", ko:"빈혈", ar:"فقر الدم", zh:"贫血", ja:"貧血", ia:"anemia" },
       { tema:"dialetti", it:"anfora", sp:"ramina", mn:"rammin-a", ge:"rammin-a" },
@@ -3334,7 +3338,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 213;
+const VOC_VERSION = 214;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
