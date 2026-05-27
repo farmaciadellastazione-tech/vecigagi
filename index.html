@@ -1784,7 +1784,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // ── Vocabolario con temi e livelli ────────────────────────────────────────
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
-      // ── VOCABOLARIO ──────────────────────────
+      // ── VOCABOLARIO_DEFAULT ──────────────────
       { tema:"mestieri", livello:"A2", en:"office", fr:"bureau", es:"oficina", de:"Büro", pt:"escritório|escritorio", ru:"офис", ca:"oficina", ko:"사무실", ar:"مكتب", zh:"办公室", ja:"オフィス", ia:"officio", la:"officium", grc:"γραφεῖον" },
       { tema:"acquisto", livello:"A2", it:"a buon mercato", es:"barato", pt:"barato" },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu" },
@@ -1821,6 +1821,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A2", it:"affitto", en:"rent", de:"Miete", ru:"аренда", sp:"afito", mn:"afìtto| pixón", ge:"afìtto| pixón" },
       { tema:"aggettivi", livello:"B1", it:"affollato", en:"crowded", fr:"bondé", es:"abarrotado", de:"überfüllt", pt:"lotado", ru:"переполненный", ca:"ple de gent" },
       { tema:"luoghi", livello:"A2", it:"Africa", en:"Africa", fr:"Afrique", es:"África", de:"Afrika", pt:"África|Africa", sp:"", ko:"아프리카", ar:"أفريقيا", zh:"非洲", ja:"アフリカ", ia:"Africa", la:"Africa", grc:"Ἀφρική" },
+      { tema:"casa", it:"aggiornamento", en:"update", ge:"agiurnaméntu/agiornaménto" },
       { tema:"dialetti", livello:"A2", it:"aggiunta, rattoppo", mn:"zünta" },
       { tema:"verbi", it:"aggiustare", sp:"arangiaae/arangiae", mn:"arrangiâ", ge:"arrangiâ" },
       { tema:"verbi", it:"agguantare", sp:"güantae", mn:"agguanta", ge:"agguanta" },
@@ -1828,8 +1829,11 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", it:"ago", sp:"agocha/agócia", mn:"agoggia", ge:"agoggia" },
       { tema:"luoghi", livello:"A1", it:"agorà|foro", en:"forum", fr:"forum", es:"foro", de:"Forum", pt:"foro", ru:"площадь", ca:"plaça", ko:"광장", ar:"ساحة", zh:"广场", ja:"広場", ia:"foro", la:"forum", grc:"ἀγορά" },
       { tema:"mesi", livello:"A1", it:"agosto", en:"August", fr:"août", es:"agosto", de:"August", pt:"agosto", ru:"август", ca:"agost", sp:"agosto", mn:"agósto", cr:"agost", ge:"agósto", ko:"8월", ar:"أغسطس", zh:"八月", ja:"8月", ia:"augusto", la:"Augustus", grc:"Αὔγουστος" },
+      { tema:"mestieri", it:"agricoltore", en:"farmer", ge:"agricooltwo/agricoltô" },
       { tema:"mestieri", livello:"A2", it:"agricoltore|contadino", en:"farmer", fr:"agriculteur", es:"agricultor", de:"Bauer", pt:"agricultor", ru:"фермер", ca:"pagès|agricultor", sp:"cuntadin", mn:"agricoltô|contadìn", ge:"agricoltô|contadìn", ko:"농부", ar:"مزارع", zh:"农民", ja:"農家", ia:"agricultor", la:"agricola", grc:"γεωργός" },
+      { tema:"dialogo", it:"aiutami", en:"help me", ge:"agiù 'tame/agiûtame" },
       { tema:"verbi", livello:"B1", it:"aiutare", en:"help", fr:"aider", es:"ayudar", de:"helfen", pt:"ajudar", ru:"помогать", ca:"ajudar", sp:"aidaaae, agiütaae, giütaae/aidae|agiütae| giütae", mn:"agiutâ", ge:"agiutâ", ko:"돕다", ar:"يساعد", zh:"帮助", ja:"助ける", ia:"adjutar", la:"adiuvare", grc:"βοηθεῖν" },
+      { tema:"dialetti", it:"aiuto", ge:"aggiuttu/aggiutto" },
       { tema:"natura", livello:"A1", it:"ala", en:"wing", sp:"àa", mn:"àa", ge:"aa" },
       { tema:"giorni", livello:"A2", it:"alba", en:"dawn", fr:"aube", es:"alba", de:"Morgendämmerung", pt:"amanhecer", sp:"arba", mn:"arba", cr:"zornata", ia:"alba" },
       { tema:"luoghi", livello:"A1", it:"albergo", en:"hotel", fr:"hôtel", es:"hotel", de:"Hotel", pt:"hotel", sp:"arbergo, locanda", mn:"albèrgo| abèrgo", ge:"albèrgo| abèrgo", ko:"호텔", ar:"فندق", zh:"酒店", ja:"ホテル", ia:"hotel", la:"deversorium", grc:"πανδοχεῖον" },
@@ -3238,7 +3242,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"salute", it:"varicella", en:"chickenpox", sp:"voatìn", mn:"voatìn" },
       { tema:"casa", livello:"B1", it:"vasetto|barattolo", en:"jar", fr:"bocal|pot", es:"tarro|frasco", de:"Glas|Krug", pt:"pote|frasco", ru:"банка", ca:"pot|tarro", sp:"arbanela| bolaco", mn:"arbanèlla", ge:"arbanèlla", ko:"소병", la:"vasculum" },
       { tema:"aggettivi", livello:"A1", it:"vecchio", en:"old", fr:"vieux", es:"viejo", de:"alt", pt:"velho", ru:"старый", ca:"vell", sp:"vècio", mn:"vècio", cr:"vetch/vec", ge:"végiu/végio", ko:"오래된", ar:"قديم", zh:"旧", ja:"古い", ro:"vechi" },
-      { tema:"verbi", livello:"A1", it:"vedere", en:"see", fr:"voir", es:"ver", de:"sehen", pt:"ver", ru:"видеть", ca:"veure", sp:"vede", mn:"vede", cr:"", ge:"veddee/vedde", ko:"보다", ar:"يرى", zh:"看", ja:"見る", ia:"vider", la:"videre", grc:"ὁρᾶν", ro:"a vedea" },
+      { tema:"verbi", livello:"A1", it:"vedere", en:"see", fr:"voir", es:"ver", de:"sehen", pt:"ver", ru:"видеть", ca:"veure", sp:"vede", mn:"vede", ge:"veddee/vedde", ko:"보다", ar:"يرى", zh:"看", ja:"見る", ia:"vider", la:"videre", grc:"ὁρᾶν", ro:"a vedea" },
       { tema:"sport", livello:"B1", it:"vela", en:"sailing", fr:"voile", es:"vela", de:"Segeln", pt:"vela", ru:"парусный спорт", ca:"vela", sp:"véa", mn:"veéia/véia", ge:"veéia/véia" },
       { tema:"dialetti", it:"veleno", sp:"venìin| toossego/venin|tóssego", mn:"venin", ge:"venin" },
       { tema:"corpo", it:"vena", sp:"avéna", mn:"ven-na", ge:"ven-na" },
@@ -3330,7 +3334,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 212;
+const VOC_VERSION = 213;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
