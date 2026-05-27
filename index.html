@@ -1784,7 +1784,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // ── Vocabolario con temi e livelli ────────────────────────────────────────
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
-      // ── VOCABOLARIO_DEFAULT ──────────────────
+      // ── VOCABOLARIO ──────────────────────────
       { tema:"mestieri", livello:"A2", en:"office", fr:"bureau", es:"oficina", de:"Büro", pt:"escritório|escritorio", ru:"офис", ca:"oficina", ko:"사무실", ar:"مكتب", zh:"办公室", ja:"オフィス", ia:"officio", la:"officium", grc:"γραφεῖον" },
       { tema:"acquisto", livello:"A2", it:"a buon mercato", es:"barato", pt:"barato" },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu" },
@@ -2581,7 +2581,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"manovale", cr:"manoval" },
       { tema:"aggettivi", livello:"A2", it:"marcio", en:"rotten", fr:"pourri", es:"podrido", de:"faul", pt:"podre", sp:"marso", mn:"marso" },
       { tema:"natura", livello:"A1", it:"mare", en:"sea", fr:"mer", es:"mar", de:"Meer", pt:"mar", ru:"море", ca:"mar", sp:"mae", mn:"mae", cr:"", ko:"바다", ar:"بحر", zh:"海", ja:"海", ia:"mar", la:"mare", grc:"θάλασσα" },
-      { tema:"famiglia", livello:"A2", it:"marito", en:"husband", fr:"mari", es:"marido", de:"Ehemann", pt:"marido", ru:"муж", ca:"marit", sp:"maì", mn:"màrito", cr:"marit", ge:"màrito", ko:"남편", ar:"زوج", zh:"丈夫", ja:"夫", ia:"marito", la:"maritus", grc:"ἀνήρ", ro:"soț" },
+      { tema:"famiglia", livello:"A2", it:"marito", en:"husband", fr:"mari", es:"marido", de:"Ehemann", pt:"marido", ru:"муж", ca:"marit", sp:"maì", mn:"maì", cr:"marìtt/marit", ge:"mahiiu/maio", ko:"남편", ar:"زوج", zh:"丈夫", ja:"夫", ia:"marito", la:"maritus", grc:"ἀνήρ", ro:"soț" },
       { tema:"cibo", livello:"A2", it:"marmellata", en:"jam", fr:"confiture", es:"mermelada", de:"Marmelade", pt:"geléia|doce", ru:"варенье|джем", ca:"melmelada", ro:"gem" },
       { tema:"natura", livello:"B1", it:"marmo", sp:"màrmeo", mn:"màrmeo", cr:"marm" },
       { tema:"giorni", livello:"A1", it:"martedì", en:"Tuesday", fr:"mardi", es:"martes", de:"Dienstag", pt:"terça-feira|terca-feira", ru:"вторник", ca:"dimarts", sp:"martedì", mn:"martedì", ko:"화요일", ar:"الثلاثاء", zh:"星期二", ja:"火曜日", ia:"martedi", la:"dies Martis", grc:"Τρίτη", ro:"marți" },
@@ -3329,7 +3329,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 205;
+const VOC_VERSION = 206;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
