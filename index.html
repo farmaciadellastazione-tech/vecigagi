@@ -3640,12 +3640,12 @@ function vocaleDisponibile(bcp47) {
 }
 // Timer per serializzare chiamate consecutive a parla() (vedi sotto).
 let _parlaTimer = null;
-function parla(testo, bcp47) {
+function parla(testo, bcp47, lento = false) {
   if (!window.speechSynthesis || !bcp47) return;
   const synth = window.speechSynthesis;
   const u = new SpeechSynthesisUtterance(testo.replace(/\(.*?\)/g, "").split("/")[0].trim());
   u.lang = bcp47;
-  u.rate = 0.85;
+  u.rate = lento ? 0.55 : 0.85;
   // Forza una voce della lingua richiesta per evitare misdetection
   // (es. "can" letto come modale inglese invece che parola spezzina con voce italiana).
   // Preferisce voci "Google ..." (Chrome / Google Translate): garantisce che le
@@ -4166,11 +4166,18 @@ function BtnAudio({
     title: "Audio non disponibile",
     className: `text-zinc-700 p-1 ${size}`
   }, "\uD83D\uDD07");
-  return /*#__PURE__*/React.createElement("button", {
-    onClick: () => parla(testo, bcp47),
-    title: UI[localStorage.getItem("linguaUI") || "en"].pronuncia,
-    className: `text-sky-500 hover:text-sky-600 transition p-1 ${size}`
-  }, "\uD83D\uDD0A");
+  return /*#__PURE__*/React.createElement(React.Fragment, null,
+    /*#__PURE__*/React.createElement("button", {
+      onClick: () => parla(testo, bcp47),
+      title: UI[localStorage.getItem("linguaUI") || "en"].pronuncia,
+      className: `text-sky-500 hover:text-sky-600 transition p-1 ${size}`
+    }, "\uD83D\uDD0A"),
+    /*#__PURE__*/React.createElement("button", {
+      onClick: () => parla(testo, bcp47, true),
+      title: "Ascolta lentamente",
+      className: `text-sky-500 hover:text-sky-600 transition p-1 ${size}`
+    }, "\uD83D\uDC22")
+  );
 }
 function BarraProgresso({
   valore,
@@ -7030,10 +7037,14 @@ function SchermataVerbi({
     className: "px-3 py-2 text-slate-200 font-medium text-center"
   }, forma[l.codice] ? /*#__PURE__*/React.createElement("span", {
     className: "flex items-center justify-center gap-1"
-  }, /*#__PURE__*/React.createElement("span", null, formaDisplay(forma[l.codice], l.codice)), LINGUE_SENZA_AUDIO.has(l.codice) ? null : /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", null, formaDisplay(forma[l.codice], l.codice)), LINGUE_SENZA_AUDIO.has(l.codice) ? null : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
     onClick: () => parla(testoAudio(forma[l.codice], forma.p, l.codice), l.bcp47),
     className: "text-sky-600 hover:text-sky-400 text-xs transition"
-  }, "\uD83D\uDD0A")) : /*#__PURE__*/React.createElement("span", {
+  }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => parla(testoAudio(forma[l.codice], forma.p, l.codice), l.bcp47, true),
+    className: "text-sky-600 hover:text-sky-400 text-xs transition",
+    title: "Ascolta lentamente"
+  }, "\uD83D\uDC22"))) : /*#__PURE__*/React.createElement("span", {
     className: "text-slate-700"
   }, "\u2014"))))))))), /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-slate-500 text-center mt-4"
@@ -9339,7 +9350,11 @@ function SchermataSceltaMultipla({
     onClick: () => parla(formaTTS(carta.entry[carta.linguaPrompt?.codice || "it"]), carta.linguaPrompt?.bcp47),
     className: "mt-3 inline-flex items-center gap-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-1.5 rounded-lg text-sm transition",
     title: "Ascolta la parola"
-  }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("p", {
+  }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => parla(formaTTS(carta.entry[carta.linguaPrompt?.codice || "it"]), carta.linguaPrompt?.bcp47, true),
+    className: "mt-3 ml-2 inline-flex items-center gap-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-1.5 rounded-lg text-sm transition",
+    title: "Ascolta lentamente"
+  }, "\uD83D\uDC22"), /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-600 mt-2"
   }, carta.lingua.bandiera, " ", carta.lingua.nome)), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 gap-3 mb-4"
@@ -9361,7 +9376,12 @@ function SchermataSceltaMultipla({
       onClick: (ev) => { ev.stopPropagation(); parla(formaTTS(s.raw), carta.lingua?.bcp47); },
       className: "text-zinc-500 hover:text-amber-400 text-base px-2 -my-2 py-2",
       title: "Ascolta questa scelta"
-    }, "\uD83D\uDD0A"));
+    }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("span", {
+      role: "button",
+      onClick: (ev) => { ev.stopPropagation(); parla(formaTTS(s.raw), carta.lingua?.bcp47, true); },
+      className: "text-zinc-500 hover:text-amber-400 text-base px-1 -my-2 py-2",
+      title: "Ascolta lentamente"
+    }, "\uD83D\uDC22"));
   })), risposta && !risposta.corretta && /*#__PURE__*/React.createElement("button", {
     onClick: avanti,
     className: "w-full bg-amber-500 hover:bg-amber-400 text-black font-bold py-4 rounded-xl transition btn-shadow"
@@ -9377,11 +9397,15 @@ function SchermataSceltaMultipla({
       className: "text-2xl font-extrabold text-white mb-1"
     }, perc, "%"), /*#__PURE__*/React.createElement("p", {
       className: "text-zinc-400 mb-2"
-    }, punteggio, " / ", carte.length, " corrette"), fraseFine && /*#__PURE__*/React.createElement("button", {
+    }, punteggio, " / ", carte.length, " corrette"), fraseFine && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
       onClick: () => parla(fraseFine.tts, "it-IT"),
       className: "italic text-amber-400 text-base mb-3 inline-flex items-center gap-2 hover:text-amber-300 transition",
       title: "Riascolta"
-    }, "⚓ “", fraseFine.vis, "” 🔊"), /*#__PURE__*/React.createElement("p", {
+    }, "⚓ “", fraseFine.vis, "” 🔊"), /*#__PURE__*/React.createElement("button", {
+      onClick: () => parla(fraseFine.tts, "it-IT", true),
+      className: "italic text-amber-400 text-base mb-3 ml-2 hover:text-amber-300 transition",
+      title: "Riascolta lentamente"
+    }, "🐢")), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-600 mb-6"
     }, perc === 100 && stato.nDom >= 50 ? "🎉 +2 scelte, reset a 10 dom" : perc === 100 ? "⬆️ +5 dom al prossimo giro" : perc < 50 ? "⬇️ -5 dom al prossimo giro" : "➡️ Stesso livello"), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-700 mb-6"
@@ -9715,11 +9739,15 @@ function SchermataQuiz({
       className: "text-3xl font-extrabold text-white tracking-tight mb-1"
     }, isNS ? nuovoRecord ? t.nuovorecord2 : t.gameover : t.ottimolav), /*#__PURE__*/React.createElement("p", {
       className: "text-slate-500 text-sm mb-4"
-    }, iconaModalita, " ", t.sessione), fraseFine && /*#__PURE__*/React.createElement("button", {
+    }, iconaModalita, " ", t.sessione), fraseFine && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
       onClick: () => parla(fraseFine.tts, "it-IT"),
       className: "italic text-amber-400 text-base mb-4 inline-flex items-center gap-2 hover:text-amber-300 transition",
       title: "Riascolta"
-    }, "⚓ “", fraseFine.vis, "” 🔊"), (() => {
+    }, "⚓ “", fraseFine.vis, "” 🔊"), /*#__PURE__*/React.createElement("button", {
+      onClick: () => parla(fraseFine.tts, "it-IT", true),
+      className: "italic text-amber-400 text-base mb-4 ml-2 hover:text-amber-300 transition",
+      title: "Riascolta lentamente"
+    }, "🐢")), (() => {
       const str = streak || {
         count: 0,
         lastDay: 0
@@ -9814,16 +9842,24 @@ function SchermataQuiz({
       }, parola), /*#__PURE__*/React.createElement("button", {
         onClick: () => parla(parola, lDA.bcp47),
         className: "text-sky-600 hover:text-sky-400 text-base flex-shrink-0"
-      }, "\uD83D\uDD0A")), /*#__PURE__*/React.createElement("div", {
+      }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("button", {
+        onClick: () => parla(parola, lDA.bcp47, true),
+        className: "text-sky-600 hover:text-sky-400 text-base flex-shrink-0",
+        title: "Ascolta lentamente"
+      }, "\uD83D\uDC22")), /*#__PURE__*/React.createElement("div", {
         className: "flex items-center gap-2"
       }, /*#__PURE__*/React.createElement("span", {
         className: "text-lg"
       }, lA?.bandiera), /*#__PURE__*/React.createElement("span", {
         className: "text-green-400 font-bold text-2xl"
-      }, soloVisibile(e.atteso)), lA && /*#__PURE__*/React.createElement("button", {
+      }, soloVisibile(e.atteso)), lA && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
         onClick: () => parla(e.carta.tipo === "coniugazione" ? testoAudio(e.atteso, e.carta.persona, lA.codice) : e.atteso, lA.bcp47),
         className: "text-sky-600 hover:text-sky-400 text-base flex-shrink-0"
-      }, "\uD83D\uDD0A")), mostraTradB && /*#__PURE__*/React.createElement("div", {
+      }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("button", {
+        onClick: () => parla(e.carta.tipo === "coniugazione" ? testoAudio(e.atteso, e.carta.persona, lA.codice) : e.atteso, lA.bcp47, true),
+        className: "text-sky-600 hover:text-sky-400 text-base flex-shrink-0",
+        title: "Ascolta lentamente"
+      }, "\uD83D\uDC22"))), mostraTradB && /*#__PURE__*/React.createElement("div", {
         className: "flex items-center gap-2 mt-1"
       }, /*#__PURE__*/React.createElement("span", {
         className: "text-lg"
@@ -9973,10 +10009,16 @@ function SchermataQuiz({
     className: "text-2xl"
   }, lDA?.bandiera), /*#__PURE__*/React.createElement("span", {
     className: "text-sm uppercase tracking-widest text-slate-500 font-medium"
-  }, lDA?.nome)), /*#__PURE__*/React.createElement("button", {
+  }, lDA?.nome)), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-center gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
     onClick: () => parla(formaTTS(carta.entry[carta.da]), lDA?.bcp47),
-    className: "mx-auto flex items-center gap-2 bg-green-900 hover:bg-green-800 text-green-300 font-bold px-6 py-3 rounded-2xl transition text-lg border border-green-700"
-  }, t.riascolta), /*#__PURE__*/React.createElement("p", {
+    className: "flex items-center gap-2 bg-green-900 hover:bg-green-800 text-green-300 font-bold px-6 py-3 rounded-2xl transition text-lg border border-green-700"
+  }, t.riascolta), /*#__PURE__*/React.createElement("button", {
+    onClick: () => parla(formaTTS(carta.entry[carta.da]), lDA?.bcp47, true),
+    className: "flex items-center gap-2 bg-green-900 hover:bg-green-800 text-green-300 font-bold px-4 py-3 rounded-2xl transition text-lg border border-green-700",
+    title: "Riascolta lentamente"
+  }, "🐢")), /*#__PURE__*/React.createElement("p", {
     className: "text-slate-400 text-sm mt-3"
   }, "Scrivi la parola che hai sentito")) : modalitaEffettiva === "ascolto" ? /*#__PURE__*/React.createElement("div", {
     className: "text-center pt-2"
@@ -9986,10 +10028,16 @@ function SchermataQuiz({
     className: "text-2xl"
   }, lDA?.bandiera), /*#__PURE__*/React.createElement("span", {
     className: "text-sm uppercase tracking-widest text-slate-500 font-medium"
-  }, lDA?.nome)), /*#__PURE__*/React.createElement("button", {
+  }, lDA?.nome)), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-center gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
     onClick: () => parla(formaTTS(carta.entry[carta.da]), lDA?.bcp47),
-    className: "mx-auto flex items-center gap-2 bg-purple-900 hover:bg-purple-800 text-purple-300 font-bold px-6 py-3 rounded-2xl transition text-lg border border-purple-700"
-  }, t.riascolta), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 bg-purple-900 hover:bg-purple-800 text-purple-300 font-bold px-6 py-3 rounded-2xl transition text-lg border border-purple-700"
+  }, t.riascolta), /*#__PURE__*/React.createElement("button", {
+    onClick: () => parla(formaTTS(carta.entry[carta.da]), lDA?.bcp47, true),
+    className: "flex items-center gap-2 bg-purple-900 hover:bg-purple-800 text-purple-300 font-bold px-4 py-3 rounded-2xl transition text-lg border border-purple-700",
+    title: "Riascolta lentamente"
+  }, "🐢")), /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-center gap-2 text-slate-600 mt-4"
   }, /*#__PURE__*/React.createElement("span", {
     className: "text-sm text-slate-400"
