@@ -1911,7 +1911,9 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mestieri", livello:"A2", it:"arbitro", en:"referee", fr:"arbitre", es:"árbitro", de:"Schiedsrichter", pt:"árbitro|arbitro", ko:"심판", ar:"حكم", zh:"裁判", ja:"審判", ia:"arbitro", la:"arbiter", grc:"διαιτητής" },
       { tema:"mestieri", livello:"A1", it:"architetto", en:"architect", fr:"architecte", es:"arquitecto", de:"Architekt", pt:"arquiteto", ru:"архитектор", ca:"arquitecte", sp:"architeto", mn:"architeto", ge:"", ko:"건축가", ar:"مهندس معماري", zh:"建筑师", ja:"建築家", ia:"architecto", la:"architectus", grc:"ἀρχιτέκτων" },
       { tema:"natura", livello:"A2", it:"arcobaleno", en:"rainbow", fr:"arc-en-ciel|arc en ciel", es:"arco iris", de:"Regenbogen", pt:"arco-íris|arco-iris", sp:"arco", mn:"arcobalen", ge:"arcobalen", ko:"무지개", ar:"قوس قزح", zh:"彩虹", ja:"虹", ia:"arco-celo", la:"arcus", grc:"ἶρις" },
+      { tema:"natura", it:"aria", ge:"äia" },
       { tema:"dialogo", livello:"B1", it:"arma da fuoco", en:"gun", fr:"arme à feu", es:"arma de fuego", de:"Schusswaffe", pt:"arma de fogo", ru:"огнестрельное оружие", ca:"arma de foc" },
+      { tema:"casa", it:"armadio", ge:"armäio" },
       { tema:"dialetti", livello:"A2", it:"armeggiare", mn:"smànéciaaa/zmànéciaa" },
       { tema:"verbi", livello:"B1", it:"arrabbiarsi", en:"get angry", fr:"se fâcher|se mettre en colère", es:"enfadarse", de:"sich ärgern", pt:"ficar zangado |zangar-se", ca:"enfadar-se", sp:"aragiasse |vegnie ràgia", mn:"aragiasse |vegnie ràgia", ge:"araggiaasse /arraggiâse", ko:"화내다", ar:"يغضب", zh:"生气", ja:"怒る", ia:"irar se", la:"irasci" },
       { tema:"aggettivi", livello:"A2", it:"arrabbiato", en:"angry", fr:"en colère", es:"enfadado", de:"wütend", pt:"com raiva|zangado", ru:"злой", ca:"enfadat", sp:"aragiàa/aragià", mn:"aragiàa/aragià", ge:"arraggiohu/arraggiou", ko:"화난", ar:"غاضب", zh:"生气", ja:"怒った", ia:"irat", la:"iratus" },
@@ -3323,8 +3325,10 @@ const VOCABOLARIO_DEFAULT = [
       { it:"zitella", cr:"zavata" },
       { tema:"dialetti", livello:"A2", it:"zitto", en:"quiet", fr:"silencieux", es:"callado", de:"still", pt:"quieto", sp:"sito", mn:"sito" },
       { tema:"dialetti", livello:"A2", it:"zizzania|discordia", de:"Unkraut", ca:"zitzània", mn:"zizania/zizània" },
+      { tema:"dialetti", it:"zoppo", sp:"rango, sòpo", ge:"rangu/rango" },
       { tema:"dialetti", livello:"A2", it:"zoppo, claudicante", mn:"soopu/sòpu" },
       { tema:"dialetti", livello:"A2", it:"zozzone|sporcaccione|persona trasandata", mn:"zuzùn" },
+      { tema:"cibo", it:"zucca", ge:"succa" },
       { tema:"cibo", livello:"A1", it:"zucchero", sp:"süùcheo/sücheo", mn:"süccao", ge:"süccao" },
       { tema:"dialetti", livello:"A2", it:"zucchina", en:"courgette", fr:"courgette", es:"calabacín", de:"Zucchini", pt:"abobrinha", sp:"süchèo", mn:"süchèo" },
       { tema:"cibo", livello:"A2", it:"zucchine", en:"courgette", fr:"courgette", es:"calabacín", de:"Zucchini", pt:"abobrinha", sp:"süchèi", mn:"süchèi", ko:"애호박", ar:"كوسا", zh:"西葫芦", ja:"ズッキーニ", ia:"cucurbita" },
@@ -3343,7 +3347,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 216;
+const VOC_VERSION = 217;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
