@@ -775,6 +775,115 @@
     margin-left: 4px;
   }
   .btn-scarta-voce:hover { background: #fee2e2; color: #dc2626; }
+
+  /* ── Modal import (admin) ────────────────────────────────────────── */
+  #admin-import-modal .modal {
+    max-width: 900px;
+    width: 92vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .imp-file-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+  .imp-file-row input[type=file] { flex: 1; min-width: 200px; }
+  .imp-help {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    line-height: 1.45;
+  }
+  .imp-help code { background:#f1f5f9; padding:1px 4px; border-radius:3px; font-size:11px; }
+  .imp-summary {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 8px 0 4px;
+    font-size: 13px;
+  }
+  .imp-summary .pill {
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: var(--text);
+  }
+  .imp-summary .pill.nuove       { background: #ede9fe; color: #6d28d9; }
+  .imp-summary .pill.arricchisci { background: #d1fae5; color: #047857; }
+  .imp-summary .pill.conflitti   { background: #fef3c7; color: #b45309; }
+  .imp-summary .pill.duplicati   { background: #f1f5f9; color: #64748b; }
+  .imp-summary .pill.ignorate    { background: #fee2e2; color: #b91c1c; }
+  .imp-sections {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px;
+    background: #fafafa;
+    margin-top: 6px;
+  }
+  .imp-section { margin-bottom: 12px; }
+  .imp-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    background: #fff;
+    border-radius: 6px 6px 0 0;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .imp-section-header label {
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+  .imp-section-list {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 0 0 6px 6px;
+    max-height: 240px;
+    overflow-y: auto;
+  }
+  .imp-row {
+    display: grid;
+    gap: 8px;
+    padding: 4px 8px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 12px;
+    align-items: center;
+  }
+  .imp-row.row-nuova       { grid-template-columns: 22px 1fr 1fr 80px; }
+  .imp-row.row-arricchisci { grid-template-columns: 22px 1fr 1fr 80px; }
+  .imp-row.row-conflitto   { grid-template-columns: 1fr 1fr 1fr 200px; }
+  .imp-row:last-child { border-bottom: none; }
+  .imp-row .it-cell   { font-weight: 500; color: var(--text); }
+  .imp-row .tema-cell { font-size: 11px; color: var(--muted); font-style: italic; }
+  .imp-row .val-cell  { font-family: monospace; color: var(--accent); word-break: break-word; }
+  .imp-row .val-cell.attuale { color: var(--muted); text-decoration: line-through; }
+  .imp-row .val-cell.nuovo   { color: #047857; }
+  .imp-row .conflict-choice { display: flex; gap: 6px; flex-wrap: wrap; font-size: 11px; }
+  .imp-row .conflict-choice label { display: flex; gap: 3px; align-items: center; cursor: pointer; padding: 1px 4px; border-radius: 3px; }
+  .imp-row .conflict-choice label:hover { background: #f1f5f9; }
+  .imp-empty { padding: 10px; color: var(--muted); font-size: 12px; text-align: center; }
+  .imp-truncated {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 6px 8px;
+    text-align: center;
+    background: #fef3c7;
+    border-top: 1px solid var(--border);
+  }
 </style>
 </head>
 <body>
@@ -914,6 +1023,7 @@
   </div>
   <button class="btn-gh-reset" onclick="adminReset()">Annulla</button>
   <button class="btn-gh-reset" onclick="adminResetToken()" title="Cancella il PAT GitHub salvato">🔑</button>
+  <button class="btn-gh-reset" onclick="adminImportApri()" title="Importa traduzioni da un file (HTML/JS/JSON) e proponi modifiche">📤 Importa</button>
   <button class="btn-gh-save" id="btn-gh-save" onclick="adminSalvaSuGitHub()" disabled>
     ☁️ Salva su dialetti
   </button>
@@ -936,6 +1046,57 @@
     <div class="modal-actions">
       <button class="btn-close" onclick="closeModal()">Annulla</button>
       <button class="btn-copy" onclick="copyAndOpen()">📤 Invia al foglio →</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal import (admin) -->
+<div class="modal-overlay" id="admin-import-modal">
+  <div class="modal">
+    <h2>📤 Importa traduzioni</h2>
+    <p class="imp-help">
+      Carica un file <code>.html</code> (copia di dialetti.html), <code>.js</code> (solo array)
+      o <code>.json</code> (array di voci <code>{it, ge, ...}</code>). L'import agisce <strong>solo</strong>
+      sul dialetto selezionato in alto (chip attivo): <strong id="imp-dialect-name">—</strong>.
+      Le modifiche restano in memoria finché non clicchi <strong>☁️ Salva su dialetti</strong>.
+    </p>
+    <div class="imp-file-row">
+      <input type="file" id="imp-file" accept=".html,.js,.json,.txt" onchange="adminImportFile(event)">
+      <span id="imp-file-status" style="font-size:12px; color:var(--muted)"></span>
+    </div>
+    <div class="imp-summary" id="imp-summary" style="display:none">
+      <span class="pill nuove">🆕 Nuove: <strong id="imp-cnt-nuove">0</strong></span>
+      <span class="pill arricchisci">➕ Arricch.: <strong id="imp-cnt-arricch">0</strong></span>
+      <span class="pill conflitti">⚠️ Conflitti: <strong id="imp-cnt-conflitti">0</strong></span>
+      <span class="pill duplicati">= Dupl.: <strong id="imp-cnt-dupl">0</strong></span>
+      <span class="pill ignorate" title="Voci del file senza valore nel dialetto corrente">∅ Vuote: <strong id="imp-cnt-vuote">0</strong></span>
+    </div>
+    <div class="imp-sections" id="imp-sections" style="display:none">
+      <div class="imp-section">
+        <div class="imp-section-header">
+          <span>🆕 Nuove voci (IT non presente in CANDIDATI)</span>
+          <label><input type="checkbox" id="imp-toggle-nuove" onchange="adminImportToggleAll('nuova', this.checked)" checked> seleziona tutte</label>
+        </div>
+        <div class="imp-section-list" id="imp-list-nuove"></div>
+      </div>
+      <div class="imp-section">
+        <div class="imp-section-header">
+          <span>➕ Arricchimenti (campo attualmente vuoto)</span>
+          <label><input type="checkbox" id="imp-toggle-arricch" onchange="adminImportToggleAll('arricchisci', this.checked)" checked> seleziona tutte</label>
+        </div>
+        <div class="imp-section-list" id="imp-list-arricch"></div>
+      </div>
+      <div class="imp-section">
+        <div class="imp-section-header">
+          <span>⚠️ Conflitti (valore già presente, diverso dal file)</span>
+          <span style="font-size:11px; color:var(--muted)">scegli riga per riga</span>
+        </div>
+        <div class="imp-section-list" id="imp-list-conflitti"></div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-close" onclick="adminImportChiudi()">Annulla</button>
+      <button class="btn-copy" id="imp-btn-applica" onclick="adminImportApplica()" disabled>✅ Applica selezionate</button>
     </div>
   </div>
 </div>
@@ -2886,6 +3047,266 @@ function adminResetToken() {
     localStorage.removeItem(GH_TOKEN_KEY);
     alert('Token rimosso. Verrà richiesto al prossimo salvataggio.');
   }
+}
+
+// ─── IMPORT DA FILE (admin) ───────────────────────────────────────────
+// Carica un file con un array di voci e propone una preview di modifiche
+// SOLO sul campo del dialetto correntemente selezionato (currentDialect).
+// Formati accettati:
+//   - .html (copia di dialetti.html con CANDIDATI o index.html con
+//     VOCABOLARIO_DEFAULT): estrae l'array bracket-aware
+//   - .js: file con `const X = [...]` (qualsiasi nome)
+//   - .json: array JSON di voci `[{it, ge, ...}, ...]`
+// Le voci con campo currentDialect vuoto nel file vengono ignorate (è
+// inutile importare un nulla).
+const IMP_MAX_RENDER = 300; // safety cap per non esplodere il DOM
+let impParsed = null;       // {nuove:[], arricch:[], conflitti:[], dupl:0, vuote:0, dialect:''}
+
+function adminImportApri() {
+  if (!adminVoc || adminVoc.length === 0) {
+    alert('Carica prima i candidati da GitHub.');
+    return;
+  }
+  if (!DIALETTI_TTS_ITA.includes(currentDialect)) {
+    alert('Seleziona prima un dialetto (Manarolese, Spezzino, Carrarino o Genovese) nei chip in alto.');
+    return;
+  }
+  impParsed = null;
+  document.getElementById('imp-file').value = '';
+  document.getElementById('imp-file-status').textContent = '';
+  document.getElementById('imp-summary').style.display = 'none';
+  document.getElementById('imp-sections').style.display = 'none';
+  document.getElementById('imp-btn-applica').disabled = true;
+  document.getElementById('imp-dialect-name').textContent =
+    (DIALECT_NAMES[currentDialect] || currentDialect) + ` (campo "${currentDialect}")`;
+  document.getElementById('admin-import-modal').classList.add('visible');
+}
+
+function adminImportChiudi() {
+  document.getElementById('admin-import-modal').classList.remove('visible');
+  impParsed = null;
+}
+
+async function adminImportFile(ev) {
+  const file = ev.target.files && ev.target.files[0];
+  if (!file) return;
+  const status = document.getElementById('imp-file-status');
+  status.textContent = '⏳ lettura…';
+  try {
+    const text = await file.text();
+    const arr = adminImportEstrai(text, file.name);
+    adminImportAnalizza(arr);
+    status.textContent = `✅ ${arr.length} voci nel file`;
+  } catch (err) {
+    console.error(err);
+    status.textContent = '❌ ' + err.message;
+    alert('Impossibile leggere il file:\n' + err.message);
+  }
+}
+
+function adminImportEstrai(text, name) {
+  const lower = (name || '').toLowerCase();
+  // JSON puro
+  if (lower.endsWith('.json')) {
+    const data = JSON.parse(text);
+    if (!Array.isArray(data)) throw new Error('JSON deve essere un array di voci');
+    return data;
+  }
+  // HTML/JS: cerca prima CANDIDATI, poi VOCABOLARIO_DEFAULT, poi un generico const NOME = [
+  const tries = [
+    /^\s*const\s+CANDIDATI\s*=\s*\[/m,
+    /^\s*const\s+VOCABOLARIO_DEFAULT\s*=\s*\[/m,
+    /^\s*const\s+[A-Za-z_$][\w$]*\s*=\s*\[/m,
+  ];
+  for (const re of tries) {
+    try {
+      return adminEstraiArray(text, re, re.source);
+    } catch (e) { /* prova il prossimo */ }
+  }
+  throw new Error('Nessun array trovato (cerco CANDIDATI o VOCABOLARIO_DEFAULT o const = [...])');
+}
+
+function adminImportAnalizza(arr) {
+  const dialetto = currentDialect;
+  const byIt = new Map();
+  adminVoc.forEach(v => byIt.set(adminRowKey(v), v));
+
+  const nuove = [];       // {it, tema, val, sel}
+  const arricch = [];     // {it, tema, val, sel}
+  const conflitti = [];   // {it, tema, valAttuale, valNuovo, scelta:'attuale'|'nuovo'|'salta'}
+  let dupl = 0, vuote = 0;
+
+  for (const raw of arr) {
+    if (!raw || typeof raw !== 'object' || !raw.it) continue;
+    const valNuovo = (raw[dialetto] || '').trim();
+    if (!valNuovo) { vuote++; continue; }
+    const key = adminRowKey(raw);
+    const esistente = byIt.get(key);
+    if (!esistente) {
+      nuove.push({
+        it: raw.it.trim(),
+        tema: (raw.tema || '').trim(),
+        val: valNuovo,
+        sel: true,
+      });
+      continue;
+    }
+    const valAttuale = (esistente[dialetto] || '').trim();
+    if (!valAttuale) {
+      arricch.push({ it: esistente.it, tema: esistente.tema || '', val: valNuovo, sel: true });
+    } else if (valAttuale === valNuovo) {
+      dupl++;
+    } else {
+      conflitti.push({
+        it: esistente.it,
+        tema: esistente.tema || '',
+        valAttuale,
+        valNuovo,
+        scelta: 'attuale', // default conservativo: non sovrascrive senza decisione esplicita
+      });
+    }
+  }
+
+  impParsed = { nuove, arricch, conflitti, dupl, vuote, dialect: dialetto };
+  adminImportRender();
+}
+
+function adminImportRender() {
+  if (!impParsed) return;
+  const { nuove, arricch, conflitti, dupl, vuote } = impParsed;
+  document.getElementById('imp-summary').style.display = 'flex';
+  document.getElementById('imp-sections').style.display = 'block';
+  document.getElementById('imp-cnt-nuove').textContent = nuove.length;
+  document.getElementById('imp-cnt-arricch').textContent = arricch.length;
+  document.getElementById('imp-cnt-conflitti').textContent = conflitti.length;
+  document.getElementById('imp-cnt-dupl').textContent = dupl;
+  document.getElementById('imp-cnt-vuote').textContent = vuote;
+
+  document.getElementById('imp-list-nuove').innerHTML    = adminImportRenderList(nuove, 'nuova');
+  document.getElementById('imp-list-arricch').innerHTML  = adminImportRenderList(arricch, 'arricchisci');
+  document.getElementById('imp-list-conflitti').innerHTML = adminImportRenderListConflitti(conflitti);
+
+  document.getElementById('imp-toggle-nuove').checked = nuove.every(r => r.sel);
+  document.getElementById('imp-toggle-arricch').checked = arricch.every(r => r.sel);
+
+  const total = nuove.length + arricch.length + conflitti.length;
+  document.getElementById('imp-btn-applica').disabled = (total === 0);
+}
+
+function adminImportEscapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function adminImportRenderList(rows, kind) {
+  if (!rows.length) return '<div class="imp-empty">Nessuna voce in questa categoria</div>';
+  const slice = rows.slice(0, IMP_MAX_RENDER);
+  const cls = kind === 'nuova' ? 'row-nuova' : 'row-arricchisci';
+  let html = slice.map((r, i) => `
+    <div class="imp-row ${cls}">
+      <input type="checkbox" ${r.sel ? 'checked' : ''} onchange="adminImportToggleRow('${kind}', ${i}, this.checked)">
+      <span class="it-cell">${adminImportEscapeHtml(r.it)}</span>
+      <span class="val-cell nuovo">${adminImportEscapeHtml(r.val)}</span>
+      <span class="tema-cell">${adminImportEscapeHtml(r.tema)}</span>
+    </div>
+  `).join('');
+  if (rows.length > IMP_MAX_RENDER) {
+    html += `<div class="imp-truncated">…e altre ${rows.length - IMP_MAX_RENDER} righe non mostrate (verranno applicate comunque se la sezione è selezionata)</div>`;
+  }
+  return html;
+}
+
+function adminImportRenderListConflitti(rows) {
+  if (!rows.length) return '<div class="imp-empty">Nessun conflitto 🎉</div>';
+  const slice = rows.slice(0, IMP_MAX_RENDER);
+  let html = slice.map((r, i) => `
+    <div class="imp-row row-conflitto" data-idx="${i}">
+      <span class="it-cell">${adminImportEscapeHtml(r.it)}<br><span class="tema-cell">${adminImportEscapeHtml(r.tema)}</span></span>
+      <span class="val-cell attuale" title="valore attuale nei CANDIDATI">${adminImportEscapeHtml(r.valAttuale)}</span>
+      <span class="val-cell nuovo" title="valore dal file importato">${adminImportEscapeHtml(r.valNuovo)}</span>
+      <span class="conflict-choice">
+        <label><input type="radio" name="conf-${i}" value="attuale" ${r.scelta==='attuale'?'checked':''} onchange="adminImportSetConflitto(${i},'attuale')">tieni</label>
+        <label><input type="radio" name="conf-${i}" value="nuovo"   ${r.scelta==='nuovo'?'checked':''}   onchange="adminImportSetConflitto(${i},'nuovo')">usa nuovo</label>
+        <label><input type="radio" name="conf-${i}" value="salta"   ${r.scelta==='salta'?'checked':''}   onchange="adminImportSetConflitto(${i},'salta')">salta</label>
+      </span>
+    </div>
+  `).join('');
+  if (rows.length > IMP_MAX_RENDER) {
+    html += `<div class="imp-truncated">⚠️ ${rows.length - IMP_MAX_RENDER} conflitti non mostrati: usa un file più piccolo o promuovi a tappe per vederli tutti.</div>`;
+  }
+  return html;
+}
+
+function adminImportToggleAll(kind, checked) {
+  if (!impParsed) return;
+  const arr = kind === 'nuova' ? impParsed.nuove : impParsed.arricch;
+  arr.forEach(r => { r.sel = checked; });
+  // Re-render solo la sezione interessata per mantenere lo scroll del resto
+  const listEl = document.getElementById(kind === 'nuova' ? 'imp-list-nuove' : 'imp-list-arricch');
+  listEl.innerHTML = adminImportRenderList(arr, kind);
+}
+
+function adminImportToggleRow(kind, idx, checked) {
+  if (!impParsed) return;
+  const arr = kind === 'nuova' ? impParsed.nuove : impParsed.arricch;
+  if (arr[idx]) arr[idx].sel = checked;
+  // Aggiorna lo stato del toggle "seleziona tutte"
+  const all = arr.every(r => r.sel);
+  const tgl = document.getElementById(kind === 'nuova' ? 'imp-toggle-nuove' : 'imp-toggle-arricch');
+  if (tgl) tgl.checked = all;
+}
+
+function adminImportSetConflitto(idx, scelta) {
+  if (!impParsed) return;
+  if (impParsed.conflitti[idx]) impParsed.conflitti[idx].scelta = scelta;
+}
+
+function adminImportApplica() {
+  if (!impParsed) return;
+  const { nuove, arricch, conflitti, dialect } = impParsed;
+  let cN = 0, cA = 0, cC = 0;
+
+  // 1. Voci nuove → push in adminVoc + segna modificate
+  nuove.filter(r => r.sel).forEach(r => {
+    const v = { it: r.it };
+    if (r.tema) v.tema = r.tema;
+    v[dialect] = r.val;
+    adminVoc.push(v);
+    adminOriginalKeys.set(adminRowKey(v), new Set(Object.keys(v)));
+    adminModifiedKeys.add(r.it);
+    cN++;
+  });
+
+  // 2. Arricchimenti → aggiorna campo
+  arricch.filter(r => r.sel).forEach(r => {
+    adminAggiornaValore(r.it, dialect, r.val);
+    cA++;
+  });
+
+  // 3. Conflitti → applica solo dove la scelta è "nuovo"
+  conflitti.forEach(r => {
+    if (r.scelta === 'nuovo') {
+      adminAggiornaValore(r.it, dialect, r.valNuovo);
+      cC++;
+    }
+  });
+
+  // Reordina (le nuove voci vanno in ordine alfabetico)
+  if (cN > 0) adminVoc.sort((a, b) => (a.it || '').localeCompare(b.it || '', 'it'));
+
+  adminImportChiudi();
+  adminUpdateBadges();
+  renderTable();
+  updateStats();
+  adminLog(`✅ Import: +${cN} nuove · ${cA} arricch. · ${cC} conflitti risolti. Ora clicca ☁️ Salva.`, 'success');
+  alert(
+    `Import applicato:\n` +
+    `• ${cN} voci nuove aggiunte\n` +
+    `• ${cA} arricchimenti (campi vuoti riempiti)\n` +
+    `• ${cC} conflitti risolti con il valore nuovo\n\n` +
+    `Le modifiche sono in memoria: clicca ☁️ Salva su dialetti per persistere.`
+  );
 }
 
 // ─── SERIALIZZAZIONE ───────────────────────────────────────────────────
