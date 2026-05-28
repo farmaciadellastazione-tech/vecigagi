@@ -106,8 +106,9 @@
   .state-btn.state-on-g { background: #dcfce7; opacity: 1; box-shadow: inset 0 0 0 1px #22c55e; }
   .state-btn.state-on-r { background: #fee2e2; opacity: 1; box-shadow: inset 0 0 0 1px #ef4444; }
   .state-btn.state-on-y { background: #fefce8; opacity: 1; box-shadow: inset 0 0 0 1px #facc15; }
-  .src-select { font-size: 0.75rem; padding: 0.1rem 0.15rem; margin-left: 4px; border: 1px solid var(--border); border-radius: 4px; background: white; vertical-align: middle; }
-  .src-select.has-src { background: #e0e7ff; border-color: var(--primary); }
+  .src-input { font-size: 0.75rem; padding: 0.1rem 0.3rem; margin-left: 4px; width: 7rem; border: 1px solid var(--border); border-radius: 4px; background: white; vertical-align: middle; }
+  .src-input.has-src { background: #e0e7ff; border-color: var(--primary); }
+  .src-input:focus { width: 13rem; }
   .note-btn.has-note { background: #fef3c7; opacity: 1; }
   .footer-bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--card-bg); border-top: 2px solid var(--border); padding: 0.7rem 1rem; display: flex; gap: 0.5rem; align-items: center; box-shadow: 0 -2px 6px rgba(0,0,0,0.06); flex-wrap: wrap; z-index: 20; }
   .footer-bar .stats { margin-left: auto; }
@@ -244,7 +245,7 @@
     <span><i style="background:#fee2e2;border:2px solid #ef4444"></i> 🔴 sospetta (IA / dial=ita)</span>
     <span><i style="background:#fefce8;border:1px solid #facc15"></i> 🟡 da verificare</span>
     <span><i style="background:#dcfce7;border:2px solid #22c55e"></i> 🟢 verificata</span>
-    <span title="Sorgente cella dialettale (selettore 🏷️ accanto allo stato): 🤖 IA, ✋ Manuale, 📕 Capellini, 📘 altro dizionario, 🔗 dialetti.html. 📝 = nota libera per cella.">🏷️ sorgente: 🤖✋📕📘🔗 + 📝 nota</span>
+    <span title="Sorgente cella dialettale (input 🏷️ accanto allo stato): scegli un suggerimento (🤖 IA, ✋ Manuale, 📕 Capellini, 📘 altro dizionario, 🔗 dialetti.html) OPPURE scrivi libero (es. 'Bacigalupo p.17', 'nonno'). 📝 = nota libera lunga per cella.">🏷️ sorgente (libera) + 📝 nota</span>
     <span>💡 separa traduzioni alternative con <code style="background:var(--amber-light);padding:0 4px;border-radius:3px">|</code></span>
   </div>
 </header>
@@ -880,12 +881,15 @@ function campiVerificati(v) {
   return out;
 }
 
-// Sorgente per cella dialettale: 'ai' | 'man' | 'cap' | 'diz' | 'dia' (cinque tag fissi).
-// Salvata in v.src come csv "code:tag" (es. "mn:cap,sp:ai"). Le voci promosse da
-// dialetti.html ricevono in automatico src=":dia" + verif=":g" (vedi adminPromuovi
-// in dialetti.html). Le note libere stanno in v.note = { mn:"Conrad p.42", ... }:
-// oggetto JS letterale, JSON.stringify-friendly, parseato dall'eval del vocabolario.
-// index.html ignora entrambi i campi.
+// Sorgente per cella dialettale: 5 tag predefiniti + testo libero (combobox).
+// Salvata in v.src come oggetto { code: "testo" } (stesso schema di v.note),
+// JSON.stringify-friendly e parseato dall'eval del vocabolario.
+// Le voci promosse da dialetti.html ricevono in automatico src e verif tramite
+// adminPromuovi.
+// Backward-compat: il vecchio formato csv "code:tag" (es. "mn:cap,sp:ai") con tag
+// enum viene letto e mappato alle label predefinite; al primo salvataggio si
+// converge sul nuovo formato oggetto.
+// index.html ignora il campo.
 const SORGENTI = [
   { code: 'ai',  emoji: '🤖', label: 'IA' },
   { code: 'man', emoji: '✋', label: 'Manuale' },
@@ -893,30 +897,40 @@ const SORGENTI = [
   { code: 'diz', emoji: '📘', label: 'Altro dizionario' },
   { code: 'dia', emoji: '🔗', label: 'dialetti.html' },
 ];
-const SORGENTI_CODES = new Set(SORGENTI.map(s => s.code));
+const SORGENTI_LABEL = Object.fromEntries(SORGENTI.map(s => [s.code, `${s.emoji} ${s.label}`]));
 
 function _srcMap(v) {
   const m = new Map();
-  (v.src || '').split(',').map(s => s.trim()).filter(Boolean).forEach(tok => {
-    if (!tok.includes(':')) return;
-    const [code, tag] = tok.split(':');
-    if (SORGENTI_CODES.has(tag) && DIALETTI_TTS_ITA.includes(code)) m.set(code, tag);
+  if (!v.src) return m;
+  if (typeof v.src === 'object' && !Array.isArray(v.src)) {
+    Object.keys(v.src).forEach(k => {
+      if (DIALETTI_TTS_ITA.includes(k) && typeof v.src[k] === 'string' && v.src[k]) m.set(k, v.src[k]);
+    });
+    return m;
+  }
+  // Legacy csv "code:tag" → mappa tag enum alla label leggibile.
+  String(v.src).split(',').map(s => s.trim()).filter(Boolean).forEach(tok => {
+    const i = tok.indexOf(':'); if (i <= 0) return;
+    const code = tok.slice(0, i), tag = tok.slice(i + 1);
+    if (DIALETTI_TTS_ITA.includes(code)) m.set(code, SORGENTI_LABEL[tag] || tag);
   });
   return m;
 }
 function _serializzaSrcMap(m) {
-  return m.size ? [...m.entries()].map(([k, t]) => `${k}:${t}`).join(',') : '';
+  if (!m.size) return null;
+  const o = {}; for (const [k, val] of m) o[k] = val; return o;
 }
 function sorgenteCella(v, code) { return _srcMap(v).get(code) || ''; }
 function notaCella(v, code) { return (v.note && v.note[code]) || ''; }
 
-function setSorgenteCella(sel, code) {
-  const tr = sel.closest('tr'), v = tr._voce;
+function setSorgenteCella(inp, code) {
+  const tr = inp.closest('tr'), v = tr._voce;
   if (!v) return;
   const m = _srcMap(v);
-  if (sel.value) m.set(code, sel.value); else m.delete(code);
-  const ser = _serializzaSrcMap(m);
-  if (ser) v.src = ser; else delete v.src;
+  const val = (inp.value || '').trim();
+  if (val) m.set(code, val); else m.delete(code);
+  const obj = _serializzaSrcMap(m);
+  if (obj) v.src = obj; else delete v.src;
   if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v));
   render();
 }
@@ -1055,14 +1069,14 @@ function render() {
         stateButtons = mk('r','🔴','Sospetta — IA o dialetto=italiano')
                      + mk('y','🟡','Da verificare (click di nuovo per resettare all\'automatico)')
                      + mk('g','🟢','Verificata — controllata su dizionario');
-        // Sorgente + nota libera (5° tag): selettore compatto e bottone 📝.
+        // Sorgente (combobox: 5 suggerimenti predefiniti + testo libero) + nota.
         const currSrc = sorgenteCella(v, code);
         const currNota = notaCella(v, code);
-        const opts = [`<option value="" title="Sorgente non ancora indicata">🏷️ (nessuna)</option>`]
-          .concat(SORGENTI.map(s => `<option value="${s.code}" ${currSrc===s.code?'selected':''}>${s.emoji} ${s.label}</option>`))
-          .join('');
-        stateButtons += `<select class="src-select ${currSrc?'has-src':''}" onchange="setSorgenteCella(this,'${code}')" title="Sorgente di questa cella">${opts}</select>`;
-        stateButtons += `<button class="icon-btn note-btn ${currNota?'has-note':''}" onclick="editaNotaCella(this,'${code}')" title="${currNota?'Nota: '+escapeAttr(currNota):'Aggiungi nota libera (es. rif. dizionario, pagina, persona)'}">📝</button>`;
+        const dlId = `src-dl-${code}-${rowKey(v).replace(/[^a-z0-9]/gi, '_')}`;
+        const dlOpts = SORGENTI.map(s => `<option value="${escapeAttr(s.emoji + ' ' + s.label)}">`).join('');
+        stateButtons += `<input class="src-input ${currSrc?'has-src':''}" list="${dlId}" value="${escapeAttr(currSrc)}" placeholder="🏷️ sorgente" onchange="setSorgenteCella(this,'${code}')" title="Sorgente: scegli un suggerimento o scrivi libero (es. 'Bacigalupo p.17', 'nonno')">`;
+        stateButtons += `<datalist id="${dlId}">${dlOpts}</datalist>`;
+        stateButtons += `<button class="icon-btn note-btn ${currNota?'has-note':''}" onclick="editaNotaCella(this,'${code}')" title="${currNota?'Nota: '+escapeAttr(currNota):'Aggiungi nota libera lunga'}">📝</button>`;
       }
       html += `<td class="lang-cell ${idx===0?'':'lang-extra-cell'} ${isEmpty?'empty-cell':''} ${stateClass}" data-label="${info?info.name:code}">
         ${stateBadge}

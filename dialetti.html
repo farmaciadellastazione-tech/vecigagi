@@ -3601,25 +3601,27 @@ async function adminPromuovi() {
       ADMIN_KEY_ORDER_INDEX.forEach(k => {
         if (cand[k] !== undefined && cand[k] !== '') pulita[k] = cand[k];
       });
-      // Autotag celle dialettali: src=":dia" (sorgente dialetti.html) + verif=":g" (verificata).
-      // Mergea con gli eventuali src/verif gia' presenti nel candidato (i valori esistenti
-      // per la stessa cella vincono: se il candidato ha gia' src "mn:cap" non lo sovrascrivo).
-      const _parseCsv = s => {
-        const m = new Map();
-        (s || '').split(',').map(t => t.trim()).filter(Boolean).forEach(tok => {
-          const i = tok.indexOf(':'); if (i > 0) m.set(tok.slice(0, i), tok.slice(i + 1));
-        });
-        return m;
-      };
-      const _serCsv = m => m.size ? [...m.entries()].map(([k, val]) => `${k}:${val}`).join(',') : '';
-      const srcMap = _parseCsv(pulita.src), verifMap = _parseCsv(pulita.verif);
+      // Autotag celle dialettali: src oggetto { code:"🔗 dialetti.html" } + verif csv
+      // ":g" (verificata). Mergea con gli eventuali tag gia' presenti nel candidato
+      // (i valori esistenti per la stessa cella vincono).
+      // src in edit.html e' un oggetto JS letterale; il vecchio csv "code:tag" e' letto
+      // in backward-compat ma noi scriviamo direttamente nel nuovo formato.
+      const SRC_DIA_LABEL = '🔗 dialetti.html';
+      const srcObj = (pulita.src && typeof pulita.src === 'object' && !Array.isArray(pulita.src))
+        ? Object.assign({}, pulita.src)
+        : {};
+      // Se per qualche motivo arriva una stringa csv legacy, ignorala (raro nel candidato).
+      const verifMap = new Map();
+      (typeof pulita.verif === 'string' ? pulita.verif : '').split(',').map(t => t.trim()).filter(Boolean).forEach(tok => {
+        const i = tok.indexOf(':'); if (i > 0) verifMap.set(tok.slice(0, i), tok.slice(i + 1));
+      });
       DIA_AUTOTAG.forEach(c => {
         if (!pulita[c]) return;
-        if (!srcMap.has(c))   srcMap.set(c, 'dia');
-        if (!verifMap.has(c)) verifMap.set(c, 'g');
+        if (!srcObj[c])         srcObj[c] = SRC_DIA_LABEL;
+        if (!verifMap.has(c))   verifMap.set(c, 'g');
       });
-      const srcSer = _serCsv(srcMap), verifSer = _serCsv(verifMap);
-      if (srcSer)   pulita.src   = srcSer; else delete pulita.src;
+      if (Object.keys(srcObj).length) pulita.src = srcObj; else delete pulita.src;
+      const verifSer = verifMap.size ? [...verifMap.entries()].map(([k, val]) => `${k}:${val}`).join(',') : '';
       if (verifSer) pulita.verif = verifSer; else delete pulita.verif;
 
       if (esistente) {
