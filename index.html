@@ -1785,6 +1785,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"natura", livello:"B1", it:"foschia|nebbiolina", mn:"négìn" },
       { tema:"mestieri", livello:"A2", it:"ufficio", en:"office", fr:"bureau", es:"oficina", de:"Büro", pt:"escritório|escritorio", ru:"офис", ca:"oficina", ko:"사무실", ar:"مكتب", zh:"办公室", ja:"オフィス", ia:"officio", la:"officium", grc:"γραφεῖον" },
       { tema:"acquisto", livello:"A2", it:"a buon mercato", es:"barato", pt:"barato" },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu" },
@@ -3349,7 +3350,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 226;
+const VOC_VERSION = 227;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
