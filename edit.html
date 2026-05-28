@@ -238,8 +238,8 @@
     <span><i style="background:var(--green-light);border:1px solid #86efac"></i> nuova voce</span>
     <span><i style="background:#fefce8;border:1px solid #fde68a"></i> modificata</span>
     <span><i style="background:#fff7ed;border:1px solid #fed7aa"></i> da tradurre</span>
-    <span><i style="background:#fefce8;border:1px solid #facc15"></i> 🟡 da verificare</span>
     <span><i style="background:#fee2e2;border:2px solid #ef4444"></i> 🔴 sospetta (IA / dial=ita)</span>
+    <span><i style="background:#fefce8;border:1px solid #facc15"></i> 🟡 da verificare</span>
     <span><i style="background:#dcfce7;border:2px solid #22c55e"></i> 🟢 verificata</span>
     <span>💡 separa traduzioni alternative con <code style="background:var(--amber-light);padding:0 4px;border-radius:3px">|</code></span>
   </div>
@@ -592,7 +592,19 @@ function attaccaListener() {
   document.getElementById('livello-select').addEventListener('change', e => { currentLivello = e.target.value; currentPage = 1; render(); });
   document.getElementById('search').addEventListener('input', e => { currentSearch = e.target.value.toLowerCase().trim(); currentPage = 1; render(); });
   document.getElementById('only-empty').addEventListener('change', e => { onlyEmpty = e.target.checked; currentPage = 1; render(); });
-  document.getElementById('only-suspect').addEventListener('change', e => { onlySuspect = e.target.checked; currentPage = 1; render(); });
+  document.getElementById('only-suspect').addEventListener('change', e => {
+    onlySuspect = e.target.checked;
+    // Quando si attiva il filtro, mostra tutte le colonne dialettali (mn/sp/ge/cr)
+    // se non gia' visibili: altrimenti le righe filtrate non avrebbero alcuna cella
+    // 🔴 visibile (la sospetta puo' essere in una colonna dialettale nascosta).
+    if (onlySuspect) {
+      let added = false;
+      DIALETTI_TTS_ITA.forEach(d => { if (!currentLangs.includes(d)) { currentLangs.push(d); added = true; } });
+      if (added) renderLangBadges();
+    }
+    currentPage = 1;
+    render();
+  });
   document.querySelectorAll('th.sortable').forEach(th => {
     th.addEventListener('click', () => {
       const k = th.dataset.sort;
@@ -980,8 +992,8 @@ function render() {
       else if (stato === 'y') { stateClass = 'dialect-cell';  stateBadge = '<span class="state-badge" title="Dialetto da verificare">🟡</span>'; }
       if (stato) {
         const mk = (st, emoji, label) => `<button class="icon-btn state-btn ${stato===st?'state-on-'+st:''}" onclick="setStatoCella(this,'${code}','${st}')" title="${label}">${emoji}</button>`;
-        stateButtons = mk('y','🟡','Da verificare (click di nuovo per resettare all\'automatico)')
-                     + mk('r','🔴','Sospetta — IA o dialetto=italiano')
+        stateButtons = mk('r','🔴','Sospetta — IA o dialetto=italiano')
+                     + mk('y','🟡','Da verificare (click di nuovo per resettare all\'automatico)')
                      + mk('g','🟢','Verificata — controllata su dizionario');
       }
       html += `<td class="lang-cell ${idx===0?'':'lang-extra-cell'} ${isEmpty?'empty-cell':''} ${stateClass}" data-label="${info?info.name:code}">
