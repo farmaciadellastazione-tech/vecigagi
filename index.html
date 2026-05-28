@@ -2671,7 +2671,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A1", it:"nero", en:"black", fr:"noir", es:"negro", de:"schwarz", pt:"preto", ru:"чёрный", ca:"negre", sp:"negro", mn:"negro", cr:"ner", ge:"", ko:"검은", ar:"أسود", zh:"黑色", ja:"黒", ia:"nigre", la:"niger", grc:"μέλας", ro:"negru" },
       { tema:"natura", livello:"A1", it:"neve", en:"snow", fr:"neige", es:"nieve", de:"Schnee", pt:"neve", ru:"снег", ca:"neu", sp:"envelòpe, bùsta", mn:"envelòpe, bùsta", cr:"n'va", ko:"눈", ar:"ثلج", zh:"雪", ja:"雪", ia:"nive", la:"nix", grc:"χιών" },
       { tema:"natura", livello:"B1", it:"nevica", en:"it's snowing", fr:"il neige", es:"nieva", de:"es schneit", pt:"neva", sp:"la néva", mn:"la néva" },
-      { tema:"dialogo", livello:"A1", it:"niente", mn:"gnénte", cr:"gnennt/gnent" },
+      { tema:"dialetti", livello:"A1", it:"niente", mn:"gnénte", cr:"gnennt/gnent", ge:"ninte" },
       { tema:"famiglia", livello:"A1", it:"nipote", en:"grandchild", sp:"néHvo |néHssa/névo|nèssa", mn:"néHvo |néHssa/névo|nèssa" },
       { it:"nipotino", cr:"n'putin" },
       { tema:"saluti", livello:"A1", it:"no", en:"no", fr:"non", es:"no", de:"nein", pt:"não", ca:"no", sp:"no", mn:"no", cr:"no", ge:"no", la:"non", ro:"nu" },
@@ -2720,7 +2720,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"ottanta|80", en:"eighty", ru:"восемьдесят", sp:"otanta|80", mn:"òtànta", ge:"òtànta" },
       { tema:"numeri", livello:"A1", it:"otto", en:"eight", fr:"huit", es:"ocho", de:"acht", pt:"oito", ru:"восемь", ca:"vuit", sp:"òto", mn:"òto", cr:"", ko:"팔", ar:"ثمانية", zh:"八", ja:"八", ia:"octo", la:"octo", grc:"ὀκτώ", ro:"opt" },
       { tema:"mesi", livello:"A1", it:"ottobre", en:"October", fr:"octobre", es:"octubre", de:"Oktober", pt:"outubro", ru:"октябрь", ca:"octubre", sp:"otobre", mn:"otobre", ko:"10월", ar:"أكتوبر", zh:"十月", ja:"10月", ia:"octobre", la:"October", grc:"Ὀκτώβριος" },
-      { tema:"luoghi", livello:"B1", it:"pace", en:"peace", fr:"paix", es:"paz", de:"Frieden", pt:"paz", ru:"мир|покой", ca:"pau", ko:"평화", ar:"سلام", zh:"和平", ja:"平和", ia:"pace", la:"pax", grc:"εἰρήνη" },
+      { tema:"luoghi", livello:"B1", it:"pace", en:"peace", fr:"paix", es:"paz", de:"Frieden", pt:"paz", ru:"мир|покой", ca:"pau", ge:"pajhe/paxe", ko:"평화", ar:"سلام", zh:"和平", ja:"平和", ia:"pace", la:"pax", grc:"εἰρήνη" },
       { tema:"famiglia", livello:"A1", it:"padre|babbo|papà", en:"father", fr:"père", es:"padre", de:"Vater", pt:"pai", ru:"отец|папа", ca:"pare", sp:"pae|pa", mn:"poæ", cr:"ba|pa", ge:"poæ", ko:"아버지", ar:"أب", zh:"父亲", ja:"父", ia:"patre", la:"pater", grc:"πατήρ", ro:"tată" },
       { tema:"luoghi", livello:"A2", it:"paese", en:"country", fr:"pays", es:"país", de:"Land", pt:"país", ru:"деревня|страна", ca:"poble|país", sp:"", ko:"나라", ar:"بلد", zh:"国家", ja:"国", ia:"pais", la:"patria", grc:"χώρα" },
       { tema:"verbi", livello:"A1", it:"pagare", en:"pay", fr:"payer", es:"pagar", de:"zahlen|bezahlen", pt:"pagar", ru:"платить", ca:"pagar", sp:"pagae", mn:"pagae", ge:"pagaa/paga", ko:"지불하다", ar:"يدفع", zh:"付钱", ja:"払う", ia:"pagar", la:"solvere", grc:"πληρώνειν" },
@@ -3350,7 +3350,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 235;
+const VOC_VERSION = 236;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
