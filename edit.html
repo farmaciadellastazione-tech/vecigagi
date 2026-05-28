@@ -1058,7 +1058,7 @@ function render() {
         // Sorgente + nota libera (5° tag): selettore compatto e bottone 📝.
         const currSrc = sorgenteCella(v, code);
         const currNota = notaCella(v, code);
-        const opts = ['<option value="" title="Nessuna sorgente impostata">🏷️</option>']
+        const opts = [`<option value="" title="Sorgente non ancora indicata">🏷️ (nessuna)</option>`]
           .concat(SORGENTI.map(s => `<option value="${s.code}" ${currSrc===s.code?'selected':''}>${s.emoji} ${s.label}</option>`))
           .join('');
         stateButtons += `<select class="src-select ${currSrc?'has-src':''}" onchange="setSorgenteCella(this,'${code}')" title="Sorgente di questa cella">${opts}</select>`;
