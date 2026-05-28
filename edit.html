@@ -96,6 +96,14 @@
   .icon-btn.ai-pending { animation: pulse 1.2s infinite; }
   @keyframes pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
   .empty-cell input { background: #fff7ed !important; }
+  .dialect-cell input { background: #fefce8 !important; box-shadow: inset 0 0 0 1px #facc15; }
+  .suspect-cell input { background: #fee2e2 !important; box-shadow: inset 0 0 0 2px #ef4444; }
+  .verified-cell input { background: #dcfce7 !important; box-shadow: inset 0 0 0 2px #22c55e; }
+  .state-badge { position: absolute; left: 0.4rem; top: 50%; transform: translateY(-50%); font-size: 0.85rem; pointer-events: none; opacity: 0.85; }
+  .dialect-cell input, .suspect-cell input, .verified-cell input { padding-left: 1.6rem; }
+  .verif-btn { font-size: 0.95rem; }
+  .verif-btn.verif-on { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+  .verif-btn.verif-on:hover { background: #bbf7d0; }
   .footer-bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--card-bg); border-top: 2px solid var(--border); padding: 0.7rem 1rem; display: flex; gap: 0.5rem; align-items: center; box-shadow: 0 -2px 6px rgba(0,0,0,0.06); flex-wrap: wrap; z-index: 20; }
   .footer-bar .stats { margin-left: auto; }
   .badge { display: inline-block; padding: 0.1rem 0.45rem; border-radius: 4px; font-size: 0.74rem; font-weight: 600; background: #e0e7ff; color: var(--primary); }
@@ -217,6 +225,9 @@
     <label class="inline">
       <input type="checkbox" id="only-empty"> solo da tradurre
     </label>
+    <label class="inline" title="Filtra le voci con almeno una cella dialettale rossa (sospetta IA): dialetto identico all'italiano, non ancora verificato">
+      <input type="checkbox" id="only-suspect"> 🔴 solo sospette
+    </label>
     <button class="btn btn-secondary" onclick="apriConfigAI()" title="Configura AI">⚙️ AI</button>
     <button class="btn btn-secondary" id="btn-cols-toggle" onclick="toggleColonneSecondarie()" title="Nasconde/mostra Tema, Livello, Pron. TTS per far stare la tabella su schermi stretti">📐 Compatta</button>
     <span class="stats" id="stats"></span>
@@ -225,6 +236,9 @@
     <span><i style="background:var(--green-light);border:1px solid #86efac"></i> nuova voce</span>
     <span><i style="background:#fefce8;border:1px solid #fde68a"></i> modificata</span>
     <span><i style="background:#fff7ed;border:1px solid #fed7aa"></i> da tradurre</span>
+    <span><i style="background:#fefce8;border:1px solid #facc15"></i> 🟡 dialetto da controllare</span>
+    <span><i style="background:#fee2e2;border:2px solid #ef4444"></i> 🔴 sospetta IA</span>
+    <span><i style="background:#dcfce7;border:2px solid #22c55e"></i> 🟢 verificata</span>
     <span>💡 separa traduzioni alternative con <code style="background:var(--amber-light);padding:0 4px;border-radius:3px">|</code></span>
   </div>
 </header>
@@ -439,6 +453,7 @@ let currentTema = '';
 let currentLivello = '';
 let currentSearch = '';
 let onlyEmpty = false;
+let onlySuspect = false;
 let currentPage = 1;
 let modifiedKeys = new Set();
 let newKeys = new Set();
@@ -575,6 +590,7 @@ function attaccaListener() {
   document.getElementById('livello-select').addEventListener('change', e => { currentLivello = e.target.value; currentPage = 1; render(); });
   document.getElementById('search').addEventListener('input', e => { currentSearch = e.target.value.toLowerCase().trim(); currentPage = 1; render(); });
   document.getElementById('only-empty').addEventListener('change', e => { onlyEmpty = e.target.checked; currentPage = 1; render(); });
+  document.getElementById('only-suspect').addEventListener('change', e => { onlySuspect = e.target.checked; currentPage = 1; render(); });
   document.querySelectorAll('th.sortable').forEach(th => {
     th.addEventListener('click', () => {
       const k = th.dataset.sort;
@@ -793,12 +809,52 @@ function formaDisplay(val, langCode) {
   return parts[parts.length - 1];
 }
 
+// Heuristica "sospetto IA": campo dialettale (mn/sp/ge/cr) identico (norm-equal)
+// ad almeno una variante italiana. Le voci possono essere "biffate" con il bottone
+// ✅: i codici biffati sono salvati nel campo v.verif (stringa csv) e non figurano
+// piu' tra i sospetti, ma restano elencati tra i verificati (per poter annullare).
+function _normSospetto(s) {
+  return (s || '').toLowerCase().replace(/\s+/g, '')
+    .replace(/[àáâ]/g, 'a').replace(/[èéê]/g, 'e').replace(/[ìí]/g, 'i')
+    .replace(/[òóô]/g, 'o').replace(/[ùú]/g, 'u');
+}
+function _verifSet(v) {
+  return new Set((v.verif || '').split(',').map(s => s.trim()).filter(Boolean));
+}
+function _matchSospetto(v, code) {
+  const it = v.it || '';
+  if (!it) return false;
+  const itVars = it.split('|').map(s => _normSospetto(s.split('/')[0].trim())).filter(s => s.length >= 2);
+  if (!itVars.length) return false;
+  const val = v[code];
+  if (!val) return false;
+  const dVars = val.split('|').map(s => _normSospetto(s.split('/')[0].trim())).filter(s => s.length >= 2);
+  return dVars.some(dv => itVars.includes(dv));
+}
+function campiSospetti(v) {
+  const verif = _verifSet(v);
+  const out = new Set();
+  for (const k of DIALETTI_TTS_ITA) {
+    if (!verif.has(k) && _matchSospetto(v, k)) out.add(k);
+  }
+  return out;
+}
+function campiVerificati(v) {
+  const verif = _verifSet(v);
+  const out = new Set();
+  for (const k of DIALETTI_TTS_ITA) {
+    if (verif.has(k) && _matchSospetto(v, k)) out.add(k);
+  }
+  return out;
+}
+
 function filtroVoci() {
   const lang0 = currentLangs[0];
   return vocabolario.filter(v => {
     if (currentTema && v.tema !== currentTema) return false;
     if (currentLivello && v.livello !== currentLivello) return false;
     if (onlyEmpty && (v[lang0] || '').trim() !== '') return false;
+    if (onlySuspect && campiSospetti(v).size === 0) return false;
     if (currentSearch) {
       const it = (v.it || '').toLowerCase();
       const inLangs = currentLangs.some(c => (v[c] || '').toLowerCase().includes(currentSearch));
@@ -893,19 +949,31 @@ function render() {
       <td class="it-cell" data-label="Italiano"><input type="text" value="${escapeAttr(v.it||'')}" data-field="it" title="Usa | per traduzioni alternative">${itHidden ? `<span class="alt-badge" title="${itHidden} alt. nascoste">+${itHidden}</span>` : ''}</td>
     `;
 
+    const sospetti = campiSospetti(v);
+    const verificati = campiVerificati(v);
     currentLangs.forEach((code, idx) => {
       const info = LINGUE.find(l => l.code === code);
       const isDialetto = DIALETTI_TTS_ITA.includes(code);
       const valRaw = v[code] || '';
       const isEmpty = !valRaw.trim();
+      const isSuspect = sospetti.has(code);
+      const isVerified = verificati.has(code);
       const hasSlash = isDialetto && valRaw.split('|')[0].includes('/');
       const hidden = valRaw.includes('|') ? valRaw.split('|').length - 1 : 0;
-      html += `<td class="lang-cell ${idx===0?'':'lang-extra-cell'} ${isEmpty?'empty-cell':''}" data-label="${info?info.name:code}">
+      // Stato cella dialettale (priorita': verde > rosso > giallo). Le celle non-dialetto o vuote restano neutre.
+      let stateClass = '', stateBadge = '';
+      if (isVerified)      { stateClass = 'verified-cell'; stateBadge = '<span class="state-badge" title="Verificata: confermata da controllo manuale">🟢</span>'; }
+      else if (isSuspect)  { stateClass = 'suspect-cell';  stateBadge = '<span class="state-badge" title="Sospetta IA: dialetto identico all\'italiano, da verificare">🔴</span>'; }
+      else if (isDialetto && !isEmpty) { stateClass = 'dialect-cell'; stateBadge = '<span class="state-badge" title="Dialetto non controllato">🟡</span>'; }
+      html += `<td class="lang-cell ${idx===0?'':'lang-extra-cell'} ${isEmpty?'empty-cell':''} ${stateClass}" data-label="${info?info.name:code}">
+        ${stateBadge}
         <input type="text" value="${escapeAttr(valRaw)}" data-field="${code}" placeholder="(da tradurre)">
         ${hasSlash ? '<span class="slash-badge" title="TTS/grafia">TTS/⌨</span>' : ''}
         ${hidden ? `<span class="alt-badge" title="${hidden} alt. nascoste">+${hidden}</span>` : ''}
         <button class="icon-btn" onclick="ttsCella(this,'${code}')" title="Pronuncia" style="margin-left:4px">🔊</button>
         ${isDialetto ? `<button class="icon-btn ai" onclick="aiTrascriviTTSCella(this,'${code}')" title="Suggerisci trascrizione TTS">🔤</button>` : ''}
+        ${isSuspect ? `<button class="icon-btn verif-btn" onclick="toggleVerifica(this,'${code}')" title="Conferma come verificata (passa a 🟢 verde)">🟢</button>` : ''}
+        ${isVerified ? `<button class="icon-btn verif-btn verif-on" onclick="toggleVerifica(this,'${code}')" title="Annulla verifica (torna 🔴)">↩︎</button>` : ''}
       </td>`;
     });
 
@@ -1033,6 +1101,18 @@ function cancellaVoce(btn) {
   if (!confirm(`Cancellare la voce "${v.it}"?${altreConStessoIt > 0 ? `\n\n⚠️ Esistono altre ${altreConStessoIt} voci con lo stesso italiano.` : ''}`)) return;
   vocabolario.splice(idx, 1);
   if (altreConStessoIt === 0) { modifiedKeys.delete(key); newKeys.delete(key); }
+  render();
+}
+
+// Biffa/annulla biffatura per una cella sospetta: aggiorna v.verif (csv di codici).
+function toggleVerifica(btn, code) {
+  const tr = btn.closest('tr'), v = tr._voce;
+  if (!v) return;
+  const list = (v.verif || '').split(',').map(s => s.trim()).filter(Boolean);
+  const i = list.indexOf(code);
+  if (i >= 0) list.splice(i, 1); else list.push(code);
+  v.verif = list.join(',');
+  if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v));
   render();
 }
 
