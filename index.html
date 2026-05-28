@@ -1876,7 +1876,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", it:"angelo", ge:"aàngeo/angeo" },
       { tema:"luoghi", livello:"A2", it:"angolo", en:"corner", fr:"coin|angle", es:"esquina|rincón", de:"Ecke", pt:"canto|esquina", ru:"угол", ca:"racó|cantonada", sp:"canto", mn:"canto", cr:"canton" },
       { tema:"cibo", livello:"A2", it:"anguria", en:"watermelon", fr:"pastèque", es:"sandía", de:"Wassermelone", pt:"melancia", sp:"süca fetosa|patéca", mn:"süca fetosa|patéca", cr:"Cocòmbla", ko:"수박", ar:"بطيخ", zh:"西瓜", ja:"スイカ" },
-      { tema:"corpo", livello:"A2", it:"anima", sp:"anima", mn:"ànima", cr:"an'ma", ge:"ànima" },
+      { tema:"corpo", livello:"A2", it:"anima", sp:"anima", mn:"ànima", cr:"an'ma", ge:"ànima", verif:"mn" },
       { tema:"aggettivi", it:"anima/animo", en:"soul", ge:"ànima" },
       { tema:"natura", livello:"A2", it:"animale", en:"animal", fr:"animal", es:"animal", de:"Tier", pt:"animal", sp:"animaaho/animào", mn:"animaa/animâ", ge:"animaa/animâ", ko:"동물", ar:"حيوان", zh:"动物", ja:"動物", ia:"animal", la:"animal", grc:"ζῷον" },
       { tema:"animali", livello:"A2", it:"animale domestico", en:"pet", fr:"animal de compagnie", es:"mascota", de:"Haustier", pt:"animal de estimação", ru:"домашнее животное", ca:"animal de companyia", mn:"animaa deméstegu/animâ domèstego", ge:"animâ domèstego", ia:"animal domestic" },
@@ -3350,7 +3350,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 227;
+const VOC_VERSION = 228;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
