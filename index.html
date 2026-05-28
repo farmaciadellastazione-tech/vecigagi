@@ -1784,9 +1784,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // ── Vocabolario con temi e livelli ────────────────────────────────────────
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
-      // ── VOCABOLARIO ──────────────────────────
-      { tema:"natura", livello:"B1", it:"foschia|nebbiolina", mn:"négìn" },
-      { tema:"mestieri", livello:"A2", it:"ufficio", en:"office", fr:"bureau", es:"oficina", de:"Büro", pt:"escritório|escritorio", ru:"офис", ca:"oficina", ko:"사무실", ar:"مكتب", zh:"办公室", ja:"オフィス", ia:"officio", la:"officium", grc:"γραφεῖον" },
+      // ── VOCABOLARIO_DEFAULT ──────────────────
       { tema:"acquisto", livello:"A2", it:"a buon mercato", es:"barato", pt:"barato" },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu" },
       { tema:"istruzioni", livello:"A2", it:"a stomaco vuoto", en:"on an empty stomach", fr:"à jeun", es:"en ayunas", de:"auf nüchternen Magen", pt:"em jejum", mn:"a stémagu vèitu", ko:"공복에", ar:"على معدة فارغة", zh:"空腹服用", ja:"空腹時" },
@@ -1794,7 +1792,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"abbastanza", en:"enough", fr:"assez", es:"bastante", de:"genug", pt:"suficiente|bastante", ru:"достаточно", ca:"prou", sp:"abasta, assè", mn:"assæ", ge:"assæ" },
       { tema:"luoghi", livello:"B2", it:"abbazia", en:"abbey", fr:"abbaye", es:"abadía", de:"Abtei", pt:"abadia", ca:"abadia", sp:"abàdìa/abadìa", mn:"abadìa", ge:"abàdìa/abbadìa" },
       { tema:"insulti", livello:"B1", it:"abbelinato|sciocco|stupido", en:"elegant", fr:"élégant", ru:"нарядный", sp:"abelinà", mn:"abelinòu", ge:"abelinou" },
-      { tema:"verbi", it:"abbellire", cr:"ablìr/ablir" },
+      { tema:"verbi", it:"abbellire", cr:"ablìr/ablir", ge:"abelì" },
       { tema:"salute", livello:"B1", it:"abbronzatura", en:"suntan", fr:"bronzage", es:"bronceado", de:"Bräune", pt:"bronzeado", ru:"загар", ca:"bronzejat" },
       { tema:"animali", it:"abete", sp:"abéto", mn:"abetu", ge:"abetu/abeto" },
       { tema:"dialetti", livello:"A2", it:"abituato|avvezzo", sp:"abetüà", mn:"abituou", ge:"abituou" },
@@ -1859,7 +1857,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"amare", en:"love", fr:"aimer", es:"amar", de:"lieben", pt:"amar", ru:"любить", ca:"estimar|amar", sp:"voree ben", mn:"voree ben", ko:"사랑하다", ar:"يحب", zh:"爱", ja:"愛する", ia:"amar", la:"amare", grc:"φιλεῖν|ἀγαπᾶν" },
       { tema:"cibo", livello:"A2", it:"amaro", en:"bitter", fr:"amer", es:"amargo", de:"bitter", pt:"amargo", sp:"amao", mn:"amau", ge:"amao", ko:"쓴", ar:"مر", zh:"苦", ja:"苦い", ia:"amar", la:"amarus", grc:"πικρός" },
       { tema:"aggettivi", livello:"A1", it:"amico", en:"friend", fr:"ami", es:"amigo", de:"Freund", pt:"amigo", sp:"amigo", mn:"amigu", ge:"amigo", ko:"친구", ar:"صديق", zh:"朋友", ja:"友達", ia:"amico", la:"amicus", grc:"φίλος", ro:"prieten" },
-      { tema:"dialetti", it:"ammiraglio", sp:"armiralio", mn:"", ge:"ammiraglio" },
+      { tema:"dialetti", it:"ammiraglio", sp:"armiralio", ge:"ammiraglio" },
       { tema:"dialogo", livello:"A2", it:"amore", en:"love", fr:"amour", es:"amor", de:"Liebe", pt:"amor", ru:"любовь", ca:"amor", sp:"amoe", mn:"amùu/amu", ge:"amô" },
       { tema:"cibo", livello:"A2", it:"ananas", en:"pineapple", fr:"ananas", es:"piña", de:"Ananas", pt:"abacaxi", ru:"ананас", ca:"pinya", ko:"파인애플", ar:"أناناس", zh:"菠萝", ja:"パイナップル", ia:"ananas", ro:"ananas" },
       { tema:"animali", livello:"A2", it:"anatra", en:"duck", fr:"canard", es:"pato", de:"Ente", pt:"pato", ru:"утка", ca:"ànec" },
@@ -1876,7 +1874,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", it:"angelo", ge:"aàngeo/angeo" },
       { tema:"luoghi", livello:"A2", it:"angolo", en:"corner", fr:"coin|angle", es:"esquina|rincón", de:"Ecke", pt:"canto|esquina", ru:"угол", ca:"racó|cantonada", sp:"canto", mn:"canto", cr:"canton" },
       { tema:"cibo", livello:"A2", it:"anguria", en:"watermelon", fr:"pastèque", es:"sandía", de:"Wassermelone", pt:"melancia", sp:"süca fetosa|patéca", mn:"süca fetosa|patéca", cr:"Cocòmbla", ko:"수박", ar:"بطيخ", zh:"西瓜", ja:"スイカ" },
-      { tema:"corpo", livello:"A2", it:"anima", sp:"anima", mn:"ànima", cr:"an'ma", ge:"ànima", verif:"mn" },
+      { tema:"corpo", livello:"A2", it:"anima", sp:"anima", mn:"ànima", cr:"an'ma", ge:"ànima" },
       { tema:"aggettivi", it:"anima/animo", en:"soul", ge:"ànima" },
       { tema:"natura", livello:"A2", it:"animale", en:"animal", fr:"animal", es:"animal", de:"Tier", pt:"animal", sp:"animaaho/animào", mn:"animaa/animâ", ge:"animaa/animâ", ko:"동물", ar:"حيوان", zh:"动物", ja:"動物", ia:"animal", la:"animal", grc:"ζῷον" },
       { tema:"animali", livello:"A2", it:"animale domestico", en:"pet", fr:"animal de compagnie", es:"mascota", de:"Haustier", pt:"animal de estimação", ru:"домашнее животное", ca:"animal de companyia", mn:"animaa deméstegu/animâ domèstego", ge:"animâ domèstego", ia:"animal domestic" },
@@ -2392,6 +2390,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"fortuna", en:"luck", fr:"chance", es:"suerte", de:"Glück", pt:"sorte", ru:"удача|везение", ca:"sort" },
       { tema:"sentimenti", livello:"A2", it:"fortunato", mn:"afortunòu| fortunòu", ge:"afortunòu| fortunòu" },
       { tema:"salute", livello:"B1", it:"foruncolo", en:"boil", fr:"furoncle", es:"forúnculo", de:"Furunkel", pt:"furúnculo|furunculo", ca:"furó", sp:"ciavèo", mn:"ciavèo" },
+      { tema:"natura", livello:"B1", it:"foschia|nebbiolina", mn:"négìn" },
       { tema:"casa", livello:"B1", it:"fotocamera", en:"camera", fr:"appareil photo", es:"cámara", de:"Kamera", pt:"câmera|camera", ru:"камера", ca:"càmera", ko:"카메라", ar:"كاميرا", zh:"相机", ja:"カメラ", ia:"camera" },
       { tema:"casa", livello:"A2", it:"fotografia", en:"photo", fr:"photo", es:"foto", de:"Foto", pt:"fotografia", ko:"사진", ar:"صورة", zh:"照片", ja:"写真", ia:"photo", la:"imago", grc:"φωτογραφία" },
       { tema:"cibo", livello:"A2", it:"fragola", en:"strawberry", fr:"fraise", es:"fresa", de:"Erdbeere", pt:"morango", ru:"клубника", ca:"maduixa", sp:"moèo|morèo/moèo| morèo", mn:"mòroa", ge:"mòroa", ko:"딸기", ar:"فراولة", zh:"草莓", ja:"いちご", ia:"fraga", la:"fragum", grc:"φράουλα", ro:"căpșună" },
@@ -3214,6 +3213,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"turbato", en:"upset", fr:"bouleversé", es:"disgustado", de:"aufgebracht", pt:"perturbado", ru:"расстроенный", ca:"disgustat", sp:"" },
       { tema:"aggettivi", livello:"B1", it:"ubriaco", en:"drunk", fr:"ivre|soûl", es:"borracho", de:"betrunken", pt:"bêbado", ru:"пьяный", ca:"borratxo", sp:"enbriàgo| ciòco| lüstro", mn:"enbriàgo| ciòco| lüstro", ge:"imbriaegoo/imbriaego" },
       { tema:"animali", livello:"A2", it:"uccello", ru:"птица", ca:"ocell", sp:"osèo", mn:"osèo", cr:"uzed" },
+      { tema:"mestieri", livello:"A2", it:"ufficio", en:"office", fr:"bureau", es:"oficina", de:"Büro", pt:"escritório|escritorio", ru:"офис", ca:"oficina", ko:"사무실", ar:"مكتب", zh:"办公室", ja:"オフィス", ia:"officio", la:"officium", grc:"γραφεῖον" },
       { tema:"corpo", livello:"B1", it:"ugola", en:"uvula", fr:"luette", es:"úvula", de:"Zäpfchen", pt:"úvula|uvula", sp:"lünéta", mn:"lünéta" },
       { tema:"dialetti", livello:"A2", it:"ulcera", mn:"ùurciula/ùrciula" },
       { tema:"dialogo", livello:"A2", it:"ultimo|scorso", en:"last", fr:"dernier|passé", es:"último|pasado", de:"letzter", pt:"último|passado", ru:"последний|прошлый", ca:"últim|passat", sp:"ürtimo| daredéo", mn:"ürtimo| daredéo" },
