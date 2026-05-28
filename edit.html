@@ -101,9 +101,11 @@
   .verified-cell input { background: #dcfce7 !important; box-shadow: inset 0 0 0 2px #22c55e; }
   .state-badge { position: absolute; left: 0.4rem; top: 50%; transform: translateY(-50%); font-size: 0.85rem; pointer-events: none; opacity: 0.85; }
   .dialect-cell input, .suspect-cell input, .verified-cell input { padding-left: 1.6rem; }
-  .verif-btn { font-size: 0.95rem; }
-  .verif-btn.verif-on { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
-  .verif-btn.verif-on:hover { background: #bbf7d0; }
+  .state-btn { font-size: 0.85rem; padding: 0.2rem 0.3rem; opacity: 0.4; }
+  .state-btn:hover { opacity: 0.9; }
+  .state-btn.state-on-g { background: #dcfce7; opacity: 1; box-shadow: inset 0 0 0 1px #22c55e; }
+  .state-btn.state-on-r { background: #fee2e2; opacity: 1; box-shadow: inset 0 0 0 1px #ef4444; }
+  .state-btn.state-on-y { background: #fefce8; opacity: 1; box-shadow: inset 0 0 0 1px #facc15; }
   .footer-bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--card-bg); border-top: 2px solid var(--border); padding: 0.7rem 1rem; display: flex; gap: 0.5rem; align-items: center; box-shadow: 0 -2px 6px rgba(0,0,0,0.06); flex-wrap: wrap; z-index: 20; }
   .footer-bar .stats { margin-left: auto; }
   .badge { display: inline-block; padding: 0.1rem 0.45rem; border-radius: 4px; font-size: 0.74rem; font-weight: 600; background: #e0e7ff; color: var(--primary); }
@@ -225,7 +227,7 @@
     <label class="inline">
       <input type="checkbox" id="only-empty"> solo da tradurre
     </label>
-    <label class="inline" title="Filtra le voci con almeno una cella dialettale rossa (sospetta IA): dialetto identico all'italiano, non ancora verificato">
+    <label class="inline" title="Filtra le voci con almeno una cella dialettale rossa (sospetta): generata IA, dialetto=italiano, o marcata manualmente">
       <input type="checkbox" id="only-suspect"> 🔴 solo sospette
     </label>
     <button class="btn btn-secondary" onclick="apriConfigAI()" title="Configura AI">⚙️ AI</button>
@@ -236,8 +238,8 @@
     <span><i style="background:var(--green-light);border:1px solid #86efac"></i> nuova voce</span>
     <span><i style="background:#fefce8;border:1px solid #fde68a"></i> modificata</span>
     <span><i style="background:#fff7ed;border:1px solid #fed7aa"></i> da tradurre</span>
-    <span><i style="background:#fefce8;border:1px solid #facc15"></i> 🟡 dialetto da controllare</span>
-    <span><i style="background:#fee2e2;border:2px solid #ef4444"></i> 🔴 sospetta IA</span>
+    <span><i style="background:#fefce8;border:1px solid #facc15"></i> 🟡 da verificare</span>
+    <span><i style="background:#fee2e2;border:2px solid #ef4444"></i> 🔴 sospetta (IA / dial=ita)</span>
     <span><i style="background:#dcfce7;border:2px solid #22c55e"></i> 🟢 verificata</span>
     <span>💡 separa traduzioni alternative con <code style="background:var(--amber-light);padding:0 4px;border-radius:3px">|</code></span>
   </div>
@@ -809,17 +811,29 @@ function formaDisplay(val, langCode) {
   return parts[parts.length - 1];
 }
 
-// Heuristica "sospetto IA": campo dialettale (mn/sp/ge/cr) identico (norm-equal)
-// ad almeno una variante italiana. Le voci possono essere "biffate" con il bottone
-// ✅: i codici biffati sono salvati nel campo v.verif (stringa csv) e non figurano
-// piu' tra i sospetti, ma restano elencati tra i verificati (per poter annullare).
+// Stato per cella dialettale (mn/sp/ge/cr non vuota): 'y' giallo (da verificare),
+// 'r' rosso (sospetta IA o dialetto=italiano), 'g' verde (verificata).
+// Default da euristica norm-equal: dialetto identico a una variante italiana → 'r',
+// altrimenti → 'y'. L'utente puo' impostare un override manuale per singola cella
+// che vince sempre sull'euristica e viene salvato nel campo v.verif come csv di
+// token "code:stato" (es. "mn:g,sp:r"). Backward-compat: token senza ":" → ":g".
+// index.html ignora v.verif, niente VOC_VERSION da incrementare.
 function _normSospetto(s) {
   return (s || '').toLowerCase().replace(/\s+/g, '')
     .replace(/[àáâ]/g, 'a').replace(/[èéê]/g, 'e').replace(/[ìí]/g, 'i')
     .replace(/[òóô]/g, 'o').replace(/[ùú]/g, 'u');
 }
-function _verifSet(v) {
-  return new Set((v.verif || '').split(',').map(s => s.trim()).filter(Boolean));
+function _statoMap(v) {
+  const m = new Map();
+  (v.verif || '').split(',').map(s => s.trim()).filter(Boolean).forEach(tok => {
+    const [code, st] = tok.includes(':') ? tok.split(':') : [tok, 'g'];
+    if ((st === 'g' || st === 'r' || st === 'y') && DIALETTI_TTS_ITA.includes(code)) m.set(code, st);
+  });
+  return m;
+}
+function _serializzaStatoMap(m) {
+  if (!m.size) return '';
+  return [...m.entries()].map(([k, s]) => `${k}:${s}`).join(',');
 }
 function _matchSospetto(v, code) {
   const it = v.it || '';
@@ -831,20 +845,22 @@ function _matchSospetto(v, code) {
   const dVars = val.split('|').map(s => _normSospetto(s.split('/')[0].trim())).filter(s => s.length >= 2);
   return dVars.some(dv => itVars.includes(dv));
 }
+// Stato effettivo: override manuale > euristica. null se cella non dialettale o vuota.
+function statoCella(v, code) {
+  if (!DIALETTI_TTS_ITA.includes(code)) return null;
+  if (!(v[code] || '').trim()) return null;
+  const m = _statoMap(v);
+  if (m.has(code)) return m.get(code);
+  return _matchSospetto(v, code) ? 'r' : 'y';
+}
 function campiSospetti(v) {
-  const verif = _verifSet(v);
   const out = new Set();
-  for (const k of DIALETTI_TTS_ITA) {
-    if (!verif.has(k) && _matchSospetto(v, k)) out.add(k);
-  }
+  for (const k of DIALETTI_TTS_ITA) if (statoCella(v, k) === 'r') out.add(k);
   return out;
 }
 function campiVerificati(v) {
-  const verif = _verifSet(v);
   const out = new Set();
-  for (const k of DIALETTI_TTS_ITA) {
-    if (verif.has(k) && _matchSospetto(v, k)) out.add(k);
-  }
+  for (const k of DIALETTI_TTS_ITA) if (statoCella(v, k) === 'g') out.add(k);
   return out;
 }
 
@@ -949,22 +965,25 @@ function render() {
       <td class="it-cell" data-label="Italiano"><input type="text" value="${escapeAttr(v.it||'')}" data-field="it" title="Usa | per traduzioni alternative">${itHidden ? `<span class="alt-badge" title="${itHidden} alt. nascoste">+${itHidden}</span>` : ''}</td>
     `;
 
-    const sospetti = campiSospetti(v);
-    const verificati = campiVerificati(v);
     currentLangs.forEach((code, idx) => {
       const info = LINGUE.find(l => l.code === code);
       const isDialetto = DIALETTI_TTS_ITA.includes(code);
       const valRaw = v[code] || '';
       const isEmpty = !valRaw.trim();
-      const isSuspect = sospetti.has(code);
-      const isVerified = verificati.has(code);
       const hasSlash = isDialetto && valRaw.split('|')[0].includes('/');
       const hidden = valRaw.includes('|') ? valRaw.split('|').length - 1 : 0;
-      // Stato cella dialettale (priorita': verde > rosso > giallo). Le celle non-dialetto o vuote restano neutre.
-      let stateClass = '', stateBadge = '';
-      if (isVerified)      { stateClass = 'verified-cell'; stateBadge = '<span class="state-badge" title="Verificata: confermata da controllo manuale">🟢</span>'; }
-      else if (isSuspect)  { stateClass = 'suspect-cell';  stateBadge = '<span class="state-badge" title="Sospetta IA: dialetto identico all\'italiano, da verificare">🔴</span>'; }
-      else if (isDialetto && !isEmpty) { stateClass = 'dialect-cell'; stateBadge = '<span class="state-badge" title="Dialetto non controllato">🟡</span>'; }
+      // Stato cella dialettale: 'g' verde / 'r' rosso / 'y' giallo / null (non-dialetto o vuota).
+      const stato = statoCella(v, code);
+      let stateClass = '', stateBadge = '', stateButtons = '';
+      if (stato === 'g')      { stateClass = 'verified-cell'; stateBadge = '<span class="state-badge" title="Verificata: controllata e confermata">🟢</span>'; }
+      else if (stato === 'r') { stateClass = 'suspect-cell';  stateBadge = '<span class="state-badge" title="Sospetta: IA o dialetto identico all\'italiano">🔴</span>'; }
+      else if (stato === 'y') { stateClass = 'dialect-cell';  stateBadge = '<span class="state-badge" title="Dialetto da verificare">🟡</span>'; }
+      if (stato) {
+        const mk = (st, emoji, label) => `<button class="icon-btn state-btn ${stato===st?'state-on-'+st:''}" onclick="setStatoCella(this,'${code}','${st}')" title="${label}">${emoji}</button>`;
+        stateButtons = mk('y','🟡','Da verificare (click di nuovo per resettare all\'automatico)')
+                     + mk('r','🔴','Sospetta — IA o dialetto=italiano')
+                     + mk('g','🟢','Verificata — controllata su dizionario');
+      }
       html += `<td class="lang-cell ${idx===0?'':'lang-extra-cell'} ${isEmpty?'empty-cell':''} ${stateClass}" data-label="${info?info.name:code}">
         ${stateBadge}
         <input type="text" value="${escapeAttr(valRaw)}" data-field="${code}" placeholder="(da tradurre)">
@@ -972,8 +991,7 @@ function render() {
         ${hidden ? `<span class="alt-badge" title="${hidden} alt. nascoste">+${hidden}</span>` : ''}
         <button class="icon-btn" onclick="ttsCella(this,'${code}')" title="Pronuncia" style="margin-left:4px">🔊</button>
         ${isDialetto ? `<button class="icon-btn ai" onclick="aiTrascriviTTSCella(this,'${code}')" title="Suggerisci trascrizione TTS">🔤</button>` : ''}
-        ${isSuspect ? `<button class="icon-btn verif-btn" onclick="toggleVerifica(this,'${code}')" title="Conferma come verificata (passa a 🟢 verde)">🟢</button>` : ''}
-        ${isVerified ? `<button class="icon-btn verif-btn verif-on" onclick="toggleVerifica(this,'${code}')" title="Annulla verifica (torna 🔴)">↩︎</button>` : ''}
+        ${stateButtons}
       </td>`;
     });
 
@@ -1104,14 +1122,16 @@ function cancellaVoce(btn) {
   render();
 }
 
-// Biffa/annulla biffatura per una cella sospetta: aggiorna v.verif (csv di codici).
-function toggleVerifica(btn, code) {
+// Imposta/rimuove l'override manuale di stato (y/r/g) per una cella dialettale.
+// Click sullo stato gia' attivo come override → lo rimuove e ritorna all'euristica.
+function setStatoCella(btn, code, target) {
   const tr = btn.closest('tr'), v = tr._voce;
   if (!v) return;
-  const list = (v.verif || '').split(',').map(s => s.trim()).filter(Boolean);
-  const i = list.indexOf(code);
-  if (i >= 0) list.splice(i, 1); else list.push(code);
-  v.verif = list.join(',');
+  const m = _statoMap(v);
+  if (m.get(code) === target) m.delete(code);
+  else m.set(code, target);
+  v.verif = _serializzaStatoMap(m);
+  if (!v.verif) delete v.verif;
   if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v));
   render();
 }
