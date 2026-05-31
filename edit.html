@@ -234,6 +234,13 @@
     <label class="inline" title="Filtra le voci con almeno una cella dialettale rossa (sospetta): generata IA, dialetto=italiano, o marcata manualmente">
       <input type="checkbox" id="only-suspect"> 🔴 solo sospette
     </label>
+    <select id="suspect-lang" title="Restringi le sospette 🔴 a un solo dialetto" style="height:2.1rem;">
+      <option value="">in ogni dialetto</option>
+      <option value="mn">solo manarolese (mn)</option>
+      <option value="sp">solo spezzino (sp)</option>
+      <option value="ge">solo genovese (ge)</option>
+      <option value="cr">solo carrarino (cr)</option>
+    </select>
     <button class="btn btn-secondary" onclick="apriConfigAI()" title="Configura AI">⚙️ AI</button>
     <button class="btn btn-secondary" id="btn-cols-toggle" onclick="toggleColonneSecondarie()" title="Nasconde/mostra Tema, Livello, Pron. TTS per far stare la tabella su schermi stretti">📐 Compatta</button>
     <span class="stats" id="stats"></span>
@@ -374,7 +381,8 @@
         <option value="r">🔴 Da correggere (sospette / rosse)</option>
         <option value="manca">✍️ Non ancora tradotte</option>
         <option value="y">🟡 Da verificare</option>
-        <option value="tutte">Tutte le voci del dialetto</option>
+        <option value="tradotte">✅ Già tradotte (rosse + gialle + verdi)</option>
+        <option value="tutte">Tutte le voci (anche le vuote)</option>
       </select>
     </label>
     <div class="modal-actions">
@@ -490,6 +498,7 @@ let currentLivello = '';
 let currentSearch = '';
 let onlyEmpty = false;
 let onlySuspect = false;
+let suspectLang = '';   // '' = sospette di tutti i dialetti; 'mn'|'sp'|'ge'|'cr' = solo quel dialetto
 let currentPage = 1;
 let modifiedKeys = new Set();
 let newKeys = new Set();
@@ -621,6 +630,15 @@ function aggiungiLinguaASelect(l) {
   sel.appendChild(opt);
 }
 
+// Rende visibili in tabella le colonne dialettali rilevanti per il filtro 🔴.
+// code vuoto -> tutti i dialetti (mn/sp/ge/cr); code specifico -> solo quello.
+function mostraColonneDialetto(code) {
+  const target = code ? [code] : DIALETTI_TTS_ITA;
+  let added = false;
+  target.forEach(d => { if (!currentLangs.includes(d)) { currentLangs.push(d); added = true; } });
+  if (added) renderLangBadges();
+}
+
 function attaccaListener() {
   document.getElementById('tema-select').addEventListener('change', e => { currentTema = e.target.value; currentPage = 1; render(); });
   document.getElementById('livello-select').addEventListener('change', e => { currentLivello = e.target.value; currentPage = 1; render(); });
@@ -628,14 +646,21 @@ function attaccaListener() {
   document.getElementById('only-empty').addEventListener('change', e => { onlyEmpty = e.target.checked; currentPage = 1; render(); });
   document.getElementById('only-suspect').addEventListener('change', e => {
     onlySuspect = e.target.checked;
-    // Quando si attiva il filtro, mostra tutte le colonne dialettali (mn/sp/ge/cr)
-    // se non gia' visibili: altrimenti le righe filtrate non avrebbero alcuna cella
-    // 🔴 visibile (la sospetta puo' essere in una colonna dialettale nascosta).
-    if (onlySuspect) {
-      let added = false;
-      DIALETTI_TTS_ITA.forEach(d => { if (!currentLangs.includes(d)) { currentLangs.push(d); added = true; } });
-      if (added) renderLangBadges();
+    // Quando si attiva il filtro, mostra le colonne dialettali sospette se non
+    // gia' visibili: altrimenti le righe filtrate non avrebbero alcuna cella 🔴
+    // visibile (la sospetta puo' essere in una colonna dialettale nascosta).
+    if (onlySuspect) mostraColonneDialetto(suspectLang);
+    currentPage = 1;
+    render();
+  });
+  document.getElementById('suspect-lang').addEventListener('change', e => {
+    suspectLang = e.target.value;
+    // Scegliere un dialetto specifico attiva implicitamente il filtro 🔴.
+    if (suspectLang && !onlySuspect) {
+      onlySuspect = true;
+      document.getElementById('only-suspect').checked = true;
     }
+    if (onlySuspect) mostraColonneDialetto(suspectLang);
     currentPage = 1;
     render();
   });
@@ -985,7 +1010,10 @@ function filtroVoci() {
     if (currentTema && v.tema !== currentTema) return false;
     if (currentLivello && v.livello !== currentLivello) return false;
     if (onlyEmpty && (v[lang0] || '').trim() !== '') return false;
-    if (onlySuspect && campiSospetti(v).size === 0) return false;
+    if (onlySuspect) {
+      if (suspectLang) { if (statoCella(v, suspectLang) !== 'r') return false; }
+      else if (campiSospetti(v).size === 0) return false;
+    }
     if (currentSearch) {
       const it = (v.it || '').toLowerCase();
       const inLangs = currentLangs.some(c => (v[c] || '').toLowerCase().includes(currentSearch));
@@ -1315,6 +1343,7 @@ function scaricaCorr() {
   const sel = vocabolario.filter(v => {
     const val = (v[d] || '').trim();
     if (crit === 'manca') return !val || val === '?';
+    if (crit === 'tradotte') return val && val !== '?';   // tutte le tradotte (r+y+g)
     if (crit === 'tutte') return true;
     return statoCella(v, d) === crit;           // 'r' | 'y'
   }).sort((a, b) => (a.it || '').localeCompare(b.it || '', 'it'));
