@@ -1079,7 +1079,7 @@
       Le modifiche restano in memoria finché non clicchi <strong>☁️ Salva su dialetti</strong>.
     </p>
     <div class="imp-file-row">
-      <input type="file" id="imp-file" accept=".html,.js,.json,.txt" onchange="adminImportFile(event)">
+      <input type="file" id="imp-file" accept=".html,.js,.json,.txt,.csv" onchange="adminImportFile(event)">
       <span id="imp-file-status" style="font-size:12px; color:var(--muted)"></span>
     </div>
     <div class="imp-summary" id="imp-summary" style="display:none">
@@ -3492,7 +3492,9 @@ async function adminImportFile(ev) {
   status.textContent = '⏳ lettura…';
   try {
     const text = await file.text();
-    const arr = adminImportEstrai(text, file.name);
+    const arr = (file.name || '').toLowerCase().endsWith('.csv')
+      ? adminImportCsv(text)
+      : adminImportEstrai(text, file.name);
     adminImportAnalizza(arr);
     status.textContent = `✅ ${arr.length} voci nel file`;
   } catch (err) {
@@ -3522,6 +3524,56 @@ function adminImportEstrai(text, name) {
     } catch (e) { /* prova il prossimo */ }
   }
   throw new Error('Nessun array trovato (cerco CANDIDATI o VOCABOLARIO_DEFAULT o const = [...])');
+}
+
+// Import da CSV "Da correggere" (esportato da edit.html). Mappa ITALIANO + RAW sul
+// dialetto correntemente selezionato. La colonna DIALETTO, se presente, deve
+// corrispondere (altrimenti blocca, per non scrivere nel dialetto sbagliato).
+function adminImportCsv(text) {
+  const rows = adminParseCsv(text);
+  if (rows.length < 2) throw new Error('CSV vuoto o senza righe dati');
+  const head = rows[0].map(c => (c || '').trim().toUpperCase());
+  const idxIt = head.indexOf('ITALIANO');
+  if (idxIt < 0) throw new Error('Colonna "ITALIANO" non trovata nel CSV');
+  let idxVal = head.indexOf('RAW');
+  if (idxVal < 0) idxVal = head.findIndex(h => h.indexOf('GRAFIA') >= 0);
+  if (idxVal < 0) throw new Error('Colonna "RAW" (o GRAFIA) non trovata nel CSV');
+  const idxDial = head.indexOf('DIALETTO');
+  if (idxDial >= 0) {
+    let dCsv = '';
+    for (let i = 1; i < rows.length; i++) { const x = (rows[i][idxDial] || '').trim().toLowerCase(); if (x) { dCsv = x; break; } }
+    if (dCsv && dCsv !== currentDialect) {
+      throw new Error(`Il CSV è per il dialetto "${dCsv}", ma in alto è selezionato "${currentDialect}". Seleziona "${dCsv}" e reimporta.`);
+    }
+  }
+  const arr = [];
+  for (let i = 1; i < rows.length; i++) {
+    const it = (rows[i][idxIt] || '').trim();
+    const val = (rows[i][idxVal] || '').trim();
+    if (!it || !val) continue;
+    arr.push({ it, [currentDialect]: val });
+  }
+  return arr;
+}
+
+// Parser CSV minimale ma robusto (virgolette, "" escape, CRLF, BOM).
+function adminParseCsv(text) {
+  text = String(text).replace(/^﻿/, '');
+  const rows = []; let row = [], f = '', i = 0, q = false;
+  while (i < text.length) {
+    const c = text[i];
+    if (q) {
+      if (c === '"') { if (text[i + 1] === '"') { f += '"'; i += 2; continue; } q = false; i++; continue; }
+      f += c; i++; continue;
+    }
+    if (c === '"') { q = true; i++; continue; }
+    if (c === ',') { row.push(f); f = ''; i++; continue; }
+    if (c === '\r') { i++; continue; }
+    if (c === '\n') { row.push(f); rows.push(row); row = []; f = ''; i++; continue; }
+    f += c; i++;
+  }
+  if (f !== '' || row.length) { row.push(f); rows.push(row); }
+  return rows.filter(r => r.some(c => (c || '').trim() !== ''));
 }
 
 function adminImportAnalizza(arr) {

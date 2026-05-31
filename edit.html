@@ -1320,7 +1320,7 @@ function scaricaCorr() {
   }).sort((a, b) => (a.it || '').localeCompare(b.it || '', 'it'));
   if (!sel.length) { alert('Nessuna voce con questo criterio per ' + langInfo.name + '.'); return; }
 
-  const cols = ['ITALIANO', 'TEMA', 'LIVELLO', 'RAW', 'TTS (pronuncia)', 'ALTERNATIVA', 'GRAFIA (da mostrare)', 'NOTE'];
+  const cols = ['ITALIANO', 'DIALETTO', 'TEMA', 'LIVELLO', 'RAW', 'TTS (pronuncia)', 'ALTERNATIVA', 'GRAFIA (da mostrare)', 'NOTE'];
   const rows = [cols];
   sel.forEach(v => {
     const raw = v[d] || '';
@@ -1331,7 +1331,7 @@ function scaricaCorr() {
     if (parts.length <= 1) { tts = raw; alt = ''; grafia = raw; }
     else if (parts.length === 2) { tts = parts[0].trim(); alt = ''; grafia = parts[1].trim(); }
     else { tts = parts[0].trim(); alt = parts[1].trim(); grafia = parts[2].trim(); }
-    rows.push([v.it || '', v.tema || '', v.livello || '', raw, tts, alt, grafia, note]);
+    rows.push([v.it || '', d, v.tema || '', v.livello || '', raw, tts, alt, grafia, note]);
   });
   const csv = '﻿' + rows.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\r\n');
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
