@@ -284,6 +284,7 @@
   <button class="btn btn-ai" onclick="completaConAI()" id="btn-ai-batch" title="Completa con AI tutte le voci filtrate vuote">✨ Completa con AI</button>
   <button class="btn btn-secondary" onclick="apriDuplicati()" title="Trova e gestisci voci duplicate">🔍 Duplicati</button>
   <button class="btn btn-secondary" onclick="exportExcel()" title="Esporta lingua corrente (filtri applicati) come Excel">📥 Esporta</button>
+  <button class="btn btn-secondary" onclick="apriCorr()" title="Scarica un CSV per dialetto delle voci da correggere (rosse, non tradotte, ecc.) — formato reimportabile">📋 Da correggere</button>
   <button class="btn btn-secondary" onclick="apriImport()" title="Importa traduzioni da Excel o CSV">📤 Importa</button>
   <button class="btn btn-secondary" onclick="apriNuovaLingua()" title="Aggiungi una nuova lingua o dialetto">🌐 Nuova lingua</button>
   <button class="btn btn-secondary" onclick="apriFrasiSP()" title="Frasi scherzose in spezzino a fine esercizio">⚓ Frasi SP</button>
@@ -351,6 +352,34 @@
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="chiudiImport()">Annulla</button>
       <button class="btn btn-primary" id="btn-import-apply" onclick="applicaImport()" disabled>Applica</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Da correggere (per dialetto) -->
+<div class="modal-overlay" id="corr-modal">
+  <div class="modal" style="max-width: 520px;">
+    <h2>📋 Voci da correggere — per dialetto</h2>
+    <p style="color:var(--muted); font-size:0.85rem">Scarica un CSV (una voce per riga) da far correggere a chi conosce il dialetto. Stesso formato dell'export: la colonna <strong>RAW</strong> è quella da correggere e poi reimportare con 📤 (seleziona prima lo stesso dialetto nell'editor).</p>
+    <label>Dialetto
+      <select id="corr-dialetto">
+        <option value="mn">Manarolese (mn)</option>
+        <option value="sp">Spezzino (sp)</option>
+        <option value="ge">Genovese (ge)</option>
+        <option value="cr">Carrarino (cr)</option>
+      </select>
+    </label>
+    <label style="margin-top:0.8rem;">Criterio
+      <select id="corr-criterio">
+        <option value="r">🔴 Da correggere (sospette / rosse)</option>
+        <option value="manca">✍️ Non ancora tradotte</option>
+        <option value="y">🟡 Da verificare</option>
+        <option value="tutte">Tutte le voci del dialetto</option>
+      </select>
+    </label>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="document.getElementById('corr-modal').classList.remove('open')">Annulla</button>
+      <button class="btn btn-primary" onclick="scaricaCorr()">📥 Scarica CSV</button>
     </div>
   </div>
 </div>
@@ -1270,6 +1299,48 @@ function exportExcel() {
   a.download = `linguaequiz_${currentLangs[0]}_${filtroDesc}.csv`;
   a.click();
   setHelp(`📥 Esportate ${filtrate.length} voci in CSV. Apri con Excel e alla riapertura importa con "📤 Importa".`, 'success');
+}
+
+// Export "da correggere" per singolo dialetto, con criterio selezionabile.
+// Stesso formato di exportExcel (colonna RAW) -> reimportabile.
+function apriCorr() {
+  const cur = currentLangs[0];
+  document.getElementById('corr-dialetto').value = DIALETTI_TTS_ITA.includes(cur) ? cur : 'mn';
+  document.getElementById('corr-modal').classList.add('open');
+}
+function scaricaCorr() {
+  const d = document.getElementById('corr-dialetto').value;
+  const crit = document.getElementById('corr-criterio').value;
+  const langInfo = LINGUE.find(l => l.code === d) || { name: d };
+  const sel = vocabolario.filter(v => {
+    const val = (v[d] || '').trim();
+    if (crit === 'manca') return !val || val === '?';
+    if (crit === 'tutte') return true;
+    return statoCella(v, d) === crit;           // 'r' | 'y'
+  }).sort((a, b) => (a.it || '').localeCompare(b.it || '', 'it'));
+  if (!sel.length) { alert('Nessuna voce con questo criterio per ' + langInfo.name + '.'); return; }
+
+  const cols = ['ITALIANO', 'TEMA', 'LIVELLO', 'RAW', 'TTS (pronuncia)', 'ALTERNATIVA', 'GRAFIA (da mostrare)', 'NOTE'];
+  const rows = [cols];
+  sel.forEach(v => {
+    const raw = v[d] || '';
+    const st = statoCella(v, d);
+    const note = crit === 'manca' ? 'DA TRADURRE' : (st === 'r' ? 'DA CORREGGERE' : st === 'y' ? 'DA VERIFICARE' : '');
+    const parts = raw.split('/');
+    let tts, alt, grafia;
+    if (parts.length <= 1) { tts = raw; alt = ''; grafia = raw; }
+    else if (parts.length === 2) { tts = parts[0].trim(); alt = ''; grafia = parts[1].trim(); }
+    else { tts = parts[0].trim(); alt = parts[1].trim(); grafia = parts[2].trim(); }
+    rows.push([v.it || '', v.tema || '', v.livello || '', raw, tts, alt, grafia, note]);
+  });
+  const csv = '﻿' + rows.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `vecigagi_${d}_dacorreggere_${crit}.csv`;
+  a.click();
+  document.getElementById('corr-modal').classList.remove('open');
+  setHelp(`📋 ${sel.length} voci (${langInfo.name} · ${crit}) esportate. Correggi la colonna RAW e reimporta con 📤 (con ${langInfo.name} selezionato).`, 'success');
 }
 
 // ==========================================================================
