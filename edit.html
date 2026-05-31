@@ -1323,7 +1323,15 @@ function exportExcel() {
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  const filtroDesc = [currentTema, currentLivello].filter(Boolean).join('_') || 'tutto';
+  // Nome file: riflette TUTTI i filtri attivi, non solo tema/livello. '_tutto'
+  // solo quando l'export e' davvero l'intero vocabolario del dialetto.
+  const parti = [];
+  if (currentTema) parti.push(currentTema);
+  if (currentLivello) parti.push(currentLivello);
+  if (onlyEmpty) parti.push('da-tradurre');
+  if (onlySuspect) parti.push(suspectLang ? 'sospette-' + suspectLang : 'sospette');
+  if (currentSearch) parti.push('cerca-' + currentSearch.replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '').slice(0, 24));
+  const filtroDesc = parti.join('_').replace(/[\\/:*?"<>|]/g, '-') || 'tutto';
   a.download = `linguaequiz_${currentLangs[0]}_${filtroDesc}.csv`;
   a.click();
   setHelp(`📥 Esportate ${filtrate.length} voci in CSV. Apri con Excel e alla riapertura importa con "📤 Importa".`, 'success');
