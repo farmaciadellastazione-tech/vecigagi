@@ -247,6 +247,12 @@
     <label class="inline" title="Nasconde le voci che hanno almeno una cella dialettale 🟢 verificata: utile per concentrarsi su ciò che resta da controllare">
       <input type="checkbox" id="exclude-verified"> 🟢 escludi verificate
     </label>
+    <label class="inline" title="Mostra solo le voci con almeno una cella dialettale 🟡 da verificare (tradotta ma non ancora controllata)">
+      <input type="checkbox" id="only-yellow"> 🟡 solo da verificare
+    </label>
+    <label class="inline" title="Nasconde le voci che hanno almeno una cella dialettale 🟡 da verificare">
+      <input type="checkbox" id="exclude-yellow"> 🟡 escludi da verificare
+    </label>
     <button class="btn btn-secondary" onclick="apriConfigAI()" title="Configura AI">⚙️ AI</button>
     <button class="btn btn-secondary" id="btn-cols-toggle" onclick="toggleColonneSecondarie()" title="Nasconde/mostra Tema, Livello, Pron. TTS per far stare la tabella su schermi stretti">📐 Compatta</button>
     <span class="stats" id="stats"></span>
@@ -387,6 +393,7 @@
         <option value="r">🔴 Da correggere (sospette / rosse)</option>
         <option value="manca">✍️ Non ancora tradotte</option>
         <option value="y">🟡 Da verificare</option>
+        <option value="nony">🚫🟡 Tutto tranne le da verificare (gialle escluse)</option>
         <option value="g">🟢 Verificate (solo le verdi)</option>
         <option value="nong">🚫🟢 Tutto tranne le verificate (verdi escluse)</option>
         <option value="tradotte">✅ Già tradotte (rosse + gialle + verdi)</option>
@@ -509,6 +516,8 @@ let onlySuspect = false;
 let suspectLang = '';   // '' = sospette di tutti i dialetti; 'mn'|'sp'|'ge'|'cr' = solo quel dialetto
 let onlyVerified = false;    // mostra solo voci con almeno una cella 🟢 verificata
 let excludeVerified = false; // nasconde le voci con almeno una cella 🟢 verificata
+let onlyYellow = false;      // mostra solo voci con almeno una cella 🟡 da verificare
+let excludeYellow = false;   // nasconde le voci con almeno una cella 🟡 da verificare
 let currentPage = 1;
 let modifiedKeys = new Set();
 let newKeys = new Set();
@@ -687,6 +696,22 @@ function attaccaListener() {
   document.getElementById('exclude-verified').addEventListener('change', e => {
     excludeVerified = e.target.checked;
     if (excludeVerified) { onlyVerified = false; document.getElementById('only-verified').checked = false; }
+    currentPage = 1;
+    render();
+  });
+  document.getElementById('only-yellow').addEventListener('change', e => {
+    onlyYellow = e.target.checked;
+    // "solo" ed "escludi" si escludono a vicenda.
+    if (onlyYellow) { excludeYellow = false; document.getElementById('exclude-yellow').checked = false; }
+    // Mostra le colonne dialettali, altrimenti la cella 🟡 filtrata potrebbe
+    // essere in una colonna nascosta.
+    if (onlyYellow) mostraColonneDialetto('');
+    currentPage = 1;
+    render();
+  });
+  document.getElementById('exclude-yellow').addEventListener('change', e => {
+    excludeYellow = e.target.checked;
+    if (excludeYellow) { onlyYellow = false; document.getElementById('only-yellow').checked = false; }
     currentPage = 1;
     render();
   });
@@ -960,6 +985,11 @@ function campiVerificati(v) {
   for (const k of DIALETTI_TTS_ITA) if (statoCella(v, k) === 'g') out.add(k);
   return out;
 }
+function campiGialli(v) {
+  const out = new Set();
+  for (const k of DIALETTI_TTS_ITA) if (statoCella(v, k) === 'y') out.add(k);
+  return out;
+}
 
 // Sorgente per cella dialettale: 5 tag predefiniti + testo libero (combobox).
 // Salvata in v.src come oggetto { code: "testo" } (stesso schema di v.note),
@@ -1042,6 +1072,8 @@ function filtroVoci() {
     }
     if (onlyVerified && campiVerificati(v).size === 0) return false;
     if (excludeVerified && campiVerificati(v).size > 0) return false;
+    if (onlyYellow && campiGialli(v).size === 0) return false;
+    if (excludeYellow && campiGialli(v).size > 0) return false;
     if (currentSearch) {
       const it = (v.it || '').toLowerCase();
       const inLangs = currentLangs.some(c => (v[c] || '').toLowerCase().includes(currentSearch));
@@ -1360,6 +1392,8 @@ function exportExcel() {
   if (onlySuspect) parti.push(suspectLang ? 'sospette-' + suspectLang : 'sospette');
   if (onlyVerified) parti.push('verificate');
   if (excludeVerified) parti.push('non-verificate');
+  if (onlyYellow) parti.push('da-verificare');
+  if (excludeYellow) parti.push('non-da-verificare');
   if (currentSearch) parti.push('cerca-' + currentSearch.replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '').slice(0, 24));
   const filtroDesc = parti.join('_').replace(/[\\/:*?"<>|]/g, '-') || 'tutto';
   a.download = `linguaequiz_${currentLangs[0]}_${filtroDesc}.csv`;
@@ -1384,6 +1418,7 @@ function scaricaCorr() {
     if (crit === 'tradotte') return val && val !== '?';   // tutte le tradotte (r+y+g)
     if (crit === 'tutte') return true;
     if (crit === 'nong') return val && val !== '?' && statoCella(v, d) !== 'g';  // tradotte ma non verdi
+    if (crit === 'nony') return val && val !== '?' && statoCella(v, d) !== 'y';  // tradotte ma non gialle
     return statoCella(v, d) === crit;           // 'r' | 'y' | 'g'
   }).sort((a, b) => (a.it || '').localeCompare(b.it || '', 'it'));
   if (!sel.length) { alert('Nessuna voce con questo criterio per ' + langInfo.name + '.'); return; }
