@@ -1785,6 +1785,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"verbi", livello:"A2", it:"coprire", mn:"cruii", verif:"mn:g" },
       { tema:"cibo", livello:"A1", it:"birra", sp:"bira", mn:"bira", verif:"mn:g,sp:g" },
       { tema:"acquisto", livello:"A2", it:"a buon mercato", es:"barato", pt:"barato" },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", verif:"mn:g" },
@@ -2274,7 +2275,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"dimagrire", mn:"smàgrii/zmàgrii" },
       { tema:"verbi", livello:"B1", it:"dimenticare", en:"forget", fr:"oublier", es:"olvidar", de:"vergessen", pt:"esquecer", ru:"забывать", ca:"oblidar", sp:"scordae|desmentegae, descordasse", mn:"scurdaa", ge:"scordâ|scordà", ko:"잊다", ar:"ينسى", zh:"忘记", ja:"忘れる", ia:"oblidar", la:"oblivisci", grc:"ἐπιλανθάνειν", ro:"a uita", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"luoghi", livello:"B1", it:"diploma", en:"diploma", fr:"diplôme", es:"diploma", de:"Diplom", pt:"diploma", ko:"졸업장", ar:"شهادة", zh:"文凭", ja:"卒業証書", ia:"diploma", la:"diploma", grc:"δίπλωμα" },
-      { tema:"verbi", livello:"A1", it:"dire", en:"say", fr:"dire", es:"decir", de:"sagen", pt:"dizer", ru:"говорить|сказать", ca:"dir", sp:"die", mn:"die", cr:"dì", ge:"dii/di", ko:"말하다", ar:"يقول", zh:"说", ja:"言う", ia:"dicer", la:"dicere", grc:"λέγειν", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
+      { tema:"verbi", livello:"A1", it:"dire", en:"say", fr:"dire", es:"decir", de:"sagen", pt:"dizer", ru:"говорить|сказать", ca:"dir", sp:"die", mn:"dii", cr:"dì", ge:"dii/di", ko:"말하다", ar:"يقول", zh:"说", ja:"言う", ia:"dicer", la:"dicere", grc:"λέγειν", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"comunicazione", livello:"B1", it:"discorso", mn:"descursu/déscùrsu", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"disfare i nodi", mn:"sgrüpaaa/zgrüpaa" },
       { tema:"salute", livello:"B1", it:"dissenteria", en:"dysentery", fr:"dysenterie", es:"disentería", de:"Ruhr", pt:"disenteria", sp:"cagaròn|caghéta", mn:"cagaùn|caghéta", verif:"mn:g" },
@@ -2343,7 +2344,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"fanfarone", cr:"folon" },
       { it:"fannullone", cr:"palandron" },
       { tema:"dialogo", livello:"B1", it:"fantasma", en:"ghost", fr:"fantôme", es:"fantasma", de:"Geist", pt:"fantasma", ru:"привидение|призрак", ca:"fantasma" },
-      { tema:"cibo", livello:"A1", it:"fare", en:"do", fr:"faire", es:"hacer", de:"machen", pt:"fazer", ru:"делать", ca:"fer", sp:"fae", mn:"fae", cr:"far", ko:"하다", ar:"يفعل", zh:"做", ja:"する", ia:"facer", la:"facere", grc:"ποιεῖν", ro:"face" },
+      { tema:"cibo", livello:"A1", it:"fare", en:"do", fr:"faire", es:"hacer", de:"machen", pt:"fazer", ru:"делать", ca:"fer", sp:"fae", mn:"faa", cr:"far", ko:"하다", ar:"يفعل", zh:"做", ja:"する", ia:"facer", la:"facere", grc:"ποιεῖν", ro:"face", verif:"mn:g" },
       { tema:"dialogo", livello:"B1", it:"fare attenzione", en:"take care" },
       { tema:"dialogo", livello:"B1", it:"fare strada", en:"lead the way", fr:"montrer la voie", es:"liderar el camino", de:"den Weg weisen", pt:"abrir o caminho" },
       { tema:"mestieri", livello:"B1", it:"farmacista", en:"chemist", fr:"pharmacien", es:"farmacéutico", de:"Apotheker", pt:"farmacêutico", ru:"фармацевт|аптекарь", ca:"farmacèutic", sp:"spessiào", mn:"spessiào" },
@@ -3350,7 +3351,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 263;
+const VOC_VERSION = 264;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
