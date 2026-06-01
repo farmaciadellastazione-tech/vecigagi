@@ -241,6 +241,12 @@
       <option value="ge">solo genovese (ge)</option>
       <option value="cr">solo carrarino (cr)</option>
     </select>
+    <label class="inline" title="Mostra solo le voci con almeno una cella dialettale 🟢 verificata (controllata e confermata a mano)">
+      <input type="checkbox" id="only-verified"> 🟢 solo verificate
+    </label>
+    <label class="inline" title="Nasconde le voci che hanno almeno una cella dialettale 🟢 verificata: utile per concentrarsi su ciò che resta da controllare">
+      <input type="checkbox" id="exclude-verified"> 🟢 escludi verificate
+    </label>
     <button class="btn btn-secondary" onclick="apriConfigAI()" title="Configura AI">⚙️ AI</button>
     <button class="btn btn-secondary" id="btn-cols-toggle" onclick="toggleColonneSecondarie()" title="Nasconde/mostra Tema, Livello, Pron. TTS per far stare la tabella su schermi stretti">📐 Compatta</button>
     <span class="stats" id="stats"></span>
@@ -381,6 +387,8 @@
         <option value="r">🔴 Da correggere (sospette / rosse)</option>
         <option value="manca">✍️ Non ancora tradotte</option>
         <option value="y">🟡 Da verificare</option>
+        <option value="g">🟢 Verificate (solo le verdi)</option>
+        <option value="nong">🚫🟢 Tutto tranne le verificate (verdi escluse)</option>
         <option value="tradotte">✅ Già tradotte (rosse + gialle + verdi)</option>
         <option value="tutte">Tutte le voci (anche le vuote)</option>
       </select>
@@ -499,6 +507,8 @@ let currentSearch = '';
 let onlyEmpty = false;
 let onlySuspect = false;
 let suspectLang = '';   // '' = sospette di tutti i dialetti; 'mn'|'sp'|'ge'|'cr' = solo quel dialetto
+let onlyVerified = false;    // mostra solo voci con almeno una cella 🟢 verificata
+let excludeVerified = false; // nasconde le voci con almeno una cella 🟢 verificata
 let currentPage = 1;
 let modifiedKeys = new Set();
 let newKeys = new Set();
@@ -661,6 +671,22 @@ function attaccaListener() {
       document.getElementById('only-suspect').checked = true;
     }
     if (onlySuspect) mostraColonneDialetto(suspectLang);
+    currentPage = 1;
+    render();
+  });
+  document.getElementById('only-verified').addEventListener('change', e => {
+    onlyVerified = e.target.checked;
+    // "solo" ed "escludi" si escludono a vicenda.
+    if (onlyVerified) { excludeVerified = false; document.getElementById('exclude-verified').checked = false; }
+    // Mostra le colonne dialettali, altrimenti la cella 🟢 filtrata potrebbe
+    // essere in una colonna nascosta.
+    if (onlyVerified) mostraColonneDialetto('');
+    currentPage = 1;
+    render();
+  });
+  document.getElementById('exclude-verified').addEventListener('change', e => {
+    excludeVerified = e.target.checked;
+    if (excludeVerified) { onlyVerified = false; document.getElementById('only-verified').checked = false; }
     currentPage = 1;
     render();
   });
@@ -1014,6 +1040,8 @@ function filtroVoci() {
       if (suspectLang) { if (statoCella(v, suspectLang) !== 'r') return false; }
       else if (campiSospetti(v).size === 0) return false;
     }
+    if (onlyVerified && campiVerificati(v).size === 0) return false;
+    if (excludeVerified && campiVerificati(v).size > 0) return false;
     if (currentSearch) {
       const it = (v.it || '').toLowerCase();
       const inLangs = currentLangs.some(c => (v[c] || '').toLowerCase().includes(currentSearch));
@@ -1330,6 +1358,8 @@ function exportExcel() {
   if (currentLivello) parti.push(currentLivello);
   if (onlyEmpty) parti.push('da-tradurre');
   if (onlySuspect) parti.push(suspectLang ? 'sospette-' + suspectLang : 'sospette');
+  if (onlyVerified) parti.push('verificate');
+  if (excludeVerified) parti.push('non-verificate');
   if (currentSearch) parti.push('cerca-' + currentSearch.replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '').slice(0, 24));
   const filtroDesc = parti.join('_').replace(/[\\/:*?"<>|]/g, '-') || 'tutto';
   a.download = `linguaequiz_${currentLangs[0]}_${filtroDesc}.csv`;
@@ -1353,7 +1383,8 @@ function scaricaCorr() {
     if (crit === 'manca') return !val || val === '?';
     if (crit === 'tradotte') return val && val !== '?';   // tutte le tradotte (r+y+g)
     if (crit === 'tutte') return true;
-    return statoCella(v, d) === crit;           // 'r' | 'y'
+    if (crit === 'nong') return val && val !== '?' && statoCella(v, d) !== 'g';  // tradotte ma non verdi
+    return statoCella(v, d) === crit;           // 'r' | 'y' | 'g'
   }).sort((a, b) => (a.it || '').localeCompare(b.it || '', 'it'));
   if (!sel.length) { alert('Nessuna voce con questo criterio per ' + langInfo.name + '.'); return; }
 
