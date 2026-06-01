@@ -1785,6 +1785,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"verbi", livello:"A2", it:"pare|sembra", mn:"a pàa" },
       { tema:"verbi", livello:"A2", it:"coprire", mn:"cruii", verif:"mn:g" },
       { tema:"cibo", livello:"A1", it:"birra", sp:"bira", mn:"bira", verif:"mn:g,sp:g" },
       { tema:"acquisto", livello:"A2", it:"a buon mercato", es:"barato", pt:"barato" },
@@ -2671,7 +2672,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"citazioni", livello:"B1", it:"Nella misura, sta la virtù", la:"In medio stat virtus", grc:"Μηδὲν ἄγαν (niente di troppo)" },
       { tema:"aggettivi", livello:"A1", it:"nero", en:"black", fr:"noir", es:"negro", de:"schwarz", pt:"preto", ru:"чёрный", ca:"negre", sp:"negro", mn:"negro", cr:"ner", ge:"", ko:"검은", ar:"أسود", zh:"黑色", ja:"黒", ia:"nigre", la:"niger", grc:"μέλας", ro:"negru" },
       { tema:"natura", livello:"A1", it:"neve", en:"snow", fr:"neige", es:"nieve", de:"Schnee", pt:"neve", ru:"снег", ca:"neu", sp:"", mn:"", cr:"n'va", ko:"눈", ar:"ثلج", zh:"雪", ja:"雪", ia:"nive", la:"nix", grc:"χιών" },
-      { tema:"natura", livello:"B1", it:"nevica", en:"it's snowing", fr:"il neige", es:"nieva", de:"es schneit", pt:"neva", sp:"la néva", mn:"la néva" },
+      { tema:"natura", livello:"B1", it:"nevica", en:"it's snowing", fr:"il neige", es:"nieva", de:"es schneit", pt:"neva", sp:"la néva", mn:"a nëva", verif:"mn:g" },
       { tema:"dialetti", livello:"A1", it:"niente", mn:"gnénte", cr:"gnennt/gnent", ge:"ninte", src:{"mn":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,ge:g,cr:g" },
       { tema:"famiglia", livello:"A1", it:"nipote", en:"grandchild", sp:"néHvo |néHssa/névo|nèssa", mn:"néHvo |néHssa/névo|nèssa" },
       { it:"nipotino", cr:"n'putin" },
@@ -2802,8 +2803,8 @@ const VOCABOLARIO_DEFAULT = [
       { it:"pigrone / scansafatiche", cr:"ganç da nient" },
       { tema:"mestieri", livello:"A2", it:"pilota", en:"pilot", fr:"pilote", es:"piloto", de:"Pilot", pt:"piloto", ru:"пилот", ca:"pilot", ko:"조종사", ar:"طيار", zh:"飞行员", ja:"パイロット", ia:"pilota", la:"gubernator", grc:"κυβερνήτης" },
       { tema:"natura", livello:"A1", it:"pioggia", en:"rain", fr:"pluie", es:"lluvia", de:"Regen", pt:"chuva", ru:"дождь", ca:"pluja", sp:"aigua/àigoa", mn:"aigua/àigua", cr:"piogia / aqua", ge:"egua/àégua", ko:"비", ar:"مطر", zh:"雨", ja:"雨", ia:"pluvia", la:"pluvia", grc:"ὑετός", verif:"mn:g" },
-      { tema:"natura", livello:"B1", it:"piove ", en:"it's raining", fr:"il pleut", es:"llueve", de:"es regnet", pt:"chove", ca:"plou", sp:"cèva", mn:"ceve", ge:"cieue", ro:"plouă", src:{"mn":"🤖 IA"}, verif:"mn:g" },
-      { tema:"tempo", livello:"A2", it:"piove piove pian pianino", en:"rains gently", fr:"il pleut doucement", es:"llueve suavemente", pt:"chove suavemente", ca:"plou suaument", sp:"cèva cèva cian cianìn", mn:"ceve ceve cian cianìn", ge:"cieue cieue cian cianin", ro:"plou lin", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"natura", livello:"B1", it:"piove ", en:"it's raining", fr:"il pleut", es:"llueve", de:"es regnet", pt:"chove", ca:"plou", sp:"cèva", mn:"a ceva", ge:"cieue", ro:"plouă", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"tempo", livello:"A2", it:"piove piove pian pianino", en:"rains gently", fr:"il pleut doucement", es:"llueve suavemente", pt:"chove suavemente", ca:"plou suaument", sp:"cèva cèva cian cianìn", mn:"ceva ceva cian cianìn", ge:"cieue cieue cian cianin", ro:"plou lin", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialogo", livello:"B1", it:"pipa/tubo", en:"pipe", fr:"pipe|tuyau", es:"pipa|tubería", de:"Pfeife|Rohr", pt:"cachimbo|cano", ru:"трубка|труба", ca:"pipa|tub" },
       { tema:"natura", livello:"A2", it:"pipistrello", en:"bat", fr:"chauve-souris", es:"murciélago", de:"Fledermaus", pt:"morcego", ru:"летучая мышь", ca:"ratpenat", sp:"rato penùo", mn:"parpagiùn", cr:"parpaion", ge:"ràtto penûgo", ko:"박쥐", ar:"خفاش", zh:"蝙蝠", ja:"こうもり", ia:"vespertilio", la:"vespertilio", grc:"νυκτερίς", ro:"liliac", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"sport", livello:"A2", it:"piscina", en:"pool", fr:"piscine", es:"piscina", de:"Schwimmbad", pt:"piscina", ru:"бассейн", ca:"piscina" },
@@ -3077,7 +3078,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"sorridere/sorriso", en:"smile", fr:"sourire", es:"sonreír|sonrisa", de:"lächeln|Lächeln", pt:"sorrir|sorriso", ru:"улыбаться|улыбка", ca:"somriure" },
       { tema:"aggettivi", livello:"A2", it:"sottile", en:"thin", fr:"mince", es:"delgado", de:"dünn", pt:"fino", sp:"soti| fin", mn:"sutii", ge:"sotti", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"verbi", livello:"B1", it:"sparare", en:"shoot", fr:"tirer|fusiller", es:"disparar", de:"schießen", pt:"atirar|disparar", ru:"стрелять", ca:"disparar|tirar", sp:"spaàe", mn:"spaàe" },
-      { it:"sparecchiare| sparpagliare", sp:"levàe de tòa", mn:"levàe de tòa", cr:"sparpaiar" },
+      { it:"sparecchiare| sparpagliare", sp:"levàe de tòa", mn:"levàa de tòa", cr:"sparpaiar" },
       { it:"spauracchio", cr:"barbantana" },
       { tema:"aggettivi", livello:"A2", it:"spaventato", en:"scared", fr:"effrayé", es:"asustado", de:"ängstlich", pt:"assustado", ru:"испуганный", ca:"espantat", sp:"spaventà", mn:"spaventà", ko:"무서운", ar:"خائف", zh:"害怕", ja:"怖い", ia:"timide", la:"timidus", grc:"φοβερός" },
       { tema:"cosmetica", livello:"A2", it:"spazzolino", en:"toothbrush", fr:"brosse à dents", es:"cepillo de dientes", de:"Zahnbürste", pt:"escova de dentes", ko:"칫솔", ar:"فرشاة أسنان", zh:"牙刷", ja:"歯ブラシ" },
@@ -3351,7 +3352,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 264;
+const VOC_VERSION = 265;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
