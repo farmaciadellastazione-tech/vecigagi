@@ -2145,12 +2145,12 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"animali", livello:"A2", it:"cinghiale", en:"wild boar", fr:"sanglier", es:"jabalí", de:"Wildschwein", pt:"javali", ru:"вместе", ca:"junts", sp:"singhiale", mn:"singhiale", ko:"멧돼지", ar:"خنزير بري", zh:"野猪", ja:"イノシシ", ia:"insimul" },
       { tema:"numeri", livello:"A2", it:"cinquanta|50", en:"fifty", fr:"cinquante", es:"cincuenta", de:"fünfzig", pt:"cinquenta", ru:"пятьдесят", ca:"cinquanta", sp:"sinquanta", mn:"sinquànta", cr:"Zinquanta", ge:"çinquànta", ko:"오십", ar:"خمسون", zh:"五十", ja:"五十", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"numeri", it:"cinque", en:"five", sp:"sìnque", mn:"sìnque", ro:"cinci" },
-      { tema:"numeri", livello:"A1", it:"cinque|5", en:"five", fr:"cinq", es:"cinco", de:"fünf", pt:"cinco", ru:"пять", ca:"cinc", sp:"sìnque", mn:"sìnque", cr:"Zinqui", ko:"오", ar:"خمسة", zh:"五", ja:"五", ia:"cinque", la:"quinque", grc:"πέντε" },
+      { tema:"numeri", livello:"A1", it:"cinque|5", en:"five", fr:"cinq", es:"cinco", de:"fünf", pt:"cinco", ru:"пять", ca:"cinc", sp:"sìnque", mn:"sìnque", cr:"Zinqui", ko:"오", ar:"خمسة", zh:"五", ja:"五", ia:"cinque", la:"quinque", grc:"πέντε", verif:"mn:g" },
       { tema:"numeri", livello:"A1", it:"cinquecento|500", en:"five hundred", ru:"пятьсот", sp:"sinquesento|500", mn:"sinquessentu/sinquesentu|500", verif:"mn:g" },
       { tema:"vestiti", livello:"A1", it:"cintura", en:"belt", fr:"ceinture", es:"cinturón", de:"Gürtel", pt:"cinto", ru:"ремень", ca:"cinturó", sp:"sentüa", mn:"sintùa/sintüa", cr:"", ko:"벨트", ar:"حزام", zh:"腰带", ja:"ベルト", ia:"cinctura", la:"cingulum", grc:"ζώνη", verif:"mn:g" },
       { tema:"dialetti", livello:"A1", it:"ciotola", en:"bowl", fr:"bol", es:"cuenco", de:"Schüssel", pt:"tigela", sp:"cópa", mn:"" },
       { tema:"cibo", livello:"A1", it:"cipolla", en:"onion", ru:"лук", ca:"cebolla", sp:"sioòla, sigoòla/sióla, sigóla", mn:"sibula, sivolla", cr:"Cipòda", ge:"sibula, sivolla", ro:"ceapă" },
-      { tema:"luoghi", livello:"A1", it:"città", en:"city", fr:"ville", es:"ciudad", de:"Stadt", pt:"cidade", ru:"город", ca:"ciutat", sp:"sità", mn:"sità", ko:"도시", ar:"مدينة", zh:"城市", ja:"都市", ia:"citate", la:"urbs|civitas", grc:"πόλις", ro:"oraș" },
+      { tema:"luoghi", livello:"A1", it:"città", en:"city", fr:"ville", es:"ciudad", de:"Stadt", pt:"cidade", ru:"город", ca:"ciutat", sp:"sità", mn:"sità", ko:"도시", ar:"مدينة", zh:"城市", ja:"都市", ia:"citate", la:"urbs|civitas", grc:"πόλις", ro:"oraș", verif:"mn:g" },
       { tema:"luoghi", livello:"A1", it:"classe", en:"classroom", fr:"salle de classe", es:"clase", de:"Klassenzimmer", pt:"sala de aula", ko:"교실", ar:"فصل دراسي", zh:"教室", ja:"教室", ia:"classe", la:"schola", grc:"διδασκαλεῖον" },
       { tema:"dialetti", livello:"A2", it:"claudicante, traballante", mn:"sbiléncu/zbiléncu", verif:"mn:g" },
       { tema:"cibo", livello:"A2", it:"cocco", en:"coconut", fr:"noix de coco", es:"coco", de:"Kokosnuss", pt:"coco", ru:"кокос", ca:"coco", ko:"코코넛", ar:"جوز الهند", zh:"椰子", ja:"ヤシの実", ia:"coco", ro:"nucă de cocos" },
@@ -3327,7 +3327,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"zingaro, persona senza fissa dimora" },
       { tema:"famiglia", livello:"A1", it:"zio", en:"uncle", fr:"oncle", es:"tío", de:"Onkel", pt:"tio", ru:"дядя", ca:"oncle", sp:"dzìo/sio|barba", mn:"bàrba", ge:"bàrba", ko:"삼촌", ar:"عم", zh:"叔叔", ja:"叔父", ia:"oncle", la:"patruus", grc:"θεῖος", verif:"sp:g,mn:g" },
       { it:"zitella", cr:"zavata" },
-      { tema:"dialetti", livello:"A2", it:"zitto", en:"quiet", fr:"silencieux", es:"callado", de:"still", pt:"quieto", sp:"sito", mn:"sito" },
+      { tema:"dialetti", livello:"A2", it:"zitto", en:"quiet", fr:"silencieux", es:"callado", de:"still", pt:"quieto", sp:"sito", mn:"situ", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"zizzania|discordia", de:"Unkraut", ca:"zitzània", mn:"zizania/zizània" },
       { tema:"dialetti", it:"zoppo", sp:"rango, sòpo", ge:"rangu/rango", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"dialetti", livello:"A2", it:"zoppo, claudicante", mn:"soopu/sòpu" },
@@ -3351,7 +3351,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 278;
+const VOC_VERSION = 279;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
