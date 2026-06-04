@@ -1818,7 +1818,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", it:"adoperare", sp:"devoaaae/devoae", mn:"", ge:"dêuvia", src:{"mn":"🤖 IA"}, verif:"mn:r" },
       { tema:"luoghi", livello:"A1", it:"aereo", en:"plane", fr:"avion", es:"avión", de:"Flugzeug", pt:"avião|aviao", ru:"самолёт", ca:"avió", ge:"arioplaan/arioplân", ko:"비행기", ar:"طائرة", zh:"飞机", ja:"飛行機", ia:"avion", grc:"ἀεροπλάνον", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
       { tema:"luoghi", livello:"A1", it:"aeroporto", en:"airport", fr:"aéroport", es:"aeropuerto", de:"Flughafen", pt:"aeroporto", ru:"аэропорт", ca:"aeroport", ko:"공항", ar:"مطار", zh:"机场", ja:"空港", ia:"aeroporto", la:"aeroportus", grc:"ἀεροδρόμιο" },
-      { tema:"dialetti", livello:"A2", it:"afa", mn:"soofegu/sòfégu" },
+      { tema:"dialetti", livello:"A2", it:"afa", mn:"soofegu/sòfégu", verif:"mn:g" },
       { tema:"verbi", it:"affettare", sp:"fetàaae/fetae", mn:"tagiaa a fete", ge:"taggia a fette", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"casa", livello:"A2", it:"affitto", en:"rent", de:"Miete", ru:"аренда", sp:"afito", mn:"afìtu", ge:"afìtto| pixón", undefined:"📘 Altro dizionario", src:{"mn":"📘 Altro dizionario"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"B1", it:"affollato", en:"crowded", fr:"bondé", es:"abarrotado", de:"überfüllt", pt:"lotado", ru:"переполненный", ca:"ple de gent", ge:"afol-au/afolòu", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
@@ -3063,8 +3063,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"socio, compare", en:"partner", fr:"associé", mn:"sociu/sòciu" },
       { tema:"casa", livello:"A2", it:"soggiorno", en:"living room", fr:"salon", es:"salón", de:"Wohnzimmer", pt:"sala de estar", ru:"гостиная", ca:"saló" },
       { tema:"verbi", livello:"B1", it:"sognare", en:"dream", fr:"rêver", es:"soñar", de:"träumen", pt:"sonhar", sp:"asomiasse, somiasse", mn:"sügnaa", cr:"sognar", ko:"꿈꾸다", ar:"يحلم", zh:"做梦", ja:"夢を見る", verif:"mn:g" },
-      { tema:"aggettivi", livello:"B1", it:"sogno", en:"dream", fr:"rêve", es:"sueño", de:"Traum", pt:"sonho", ru:"мечта|сон", ca:"somni", sp:"sòmio", mn:"sòmio", ko:"꿈", ar:"حلم", zh:"梦", ja:"夢", ia:"somnio", la:"somnium", grc:"ὄνειρος" },
-      { tema:"verbi", livello:"A2", it:"sogno/sognare", en:"dream", fr:"rêve|rêver", es:"sueño|soñar", de:"Traum|träumen", pt:"sonho|sonhar", ru:"сон|мечта|мечтать", ca:"somni|somiar", sp:"sòmio", mn:"sòmio" },
+      { tema:"aggettivi", livello:"B1", it:"sogno", en:"dream", fr:"rêve", es:"sueño", de:"Traum", pt:"sonho", ru:"мечта|сон", ca:"somni", sp:"sòmio", mn:"sugnu", ko:"꿈", ar:"حلم", zh:"梦", ja:"夢", ia:"somnio", la:"somnium", grc:"ὄνειρος" },
+      { tema:"verbi", livello:"A2", it:"sogno|sognare", en:"dream", fr:"rêve|rêver", es:"sueño|soñar", de:"Traum|träumen", pt:"sonho|sonhar", ru:"сон|мечта|мечтать", ca:"somni|somiar", sp:"sòmio", mn:"sugnu|sùgnaa" },
       { tema:"mestieri", livello:"A2", it:"soldato", en:"soldier", fr:"soldat", es:"soldado", de:"Soldat", pt:"soldado", ru:"солдат", ca:"soldat", sp:"sordà|sordato", mn:"surdatu", ge:"sordatto", ko:"군인", ar:"جندي", zh:"士兵", ja:"兵士", ia:"soldato", la:"miles", grc:"στρατιώτης", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"natura", livello:"A1", it:"sole", en:"sun", fr:"soleil", es:"sol", de:"Sonne", pt:"sol", ru:"солнце", ca:"sol", sp:"sò", mn:"sò", cr:"sol", ko:"태양", ar:"شمس", zh:"太阳", ja:"太陽", ia:"sol", la:"sol", grc:"ἥλιος" },
       { tema:"natura", livello:"A2", it:"soleggiato", en:"sunny", fr:"ensoleillé", es:"soleado", de:"sonnig", pt:"ensolarado", ru:"солнечный", ca:"assolellat", sp:"soigià", mn:"soigià" },
@@ -3351,7 +3351,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 279;
+const VOC_VERSION = 280;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
