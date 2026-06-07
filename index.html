@@ -1785,6 +1785,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"condizioni fisiche", livello:"B1", it:"fradicio,zuppo", sp:"sgoo,süpo,sgoo" },
       { tema:"tempo", livello:"A1", it:"calendario", de:"Kalender" },
       { tema:"lavoro", livello:"A2", it:"studio", de:"Praxis", sp:"scàgno" },
       { tema:"casa", livello:"A2", it:"bucato", de:"wäsche", sp:"bugà" },
@@ -3277,7 +3278,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", it:"vescovo", sp:"vésco", mn:"", ge:"arente", src:{"mn":"🤖 IA"}, verif:"mn:y,sp:g" },
       { tema:"verbi", livello:"A2", it:"vestire", sp:"vestie", mn:"vestie", ia:"vestir", verif:"sp:g" },
       { tema:"natura", livello:"A2", it:"vetta", en:"peak", fr:"sommet", es:"cima", de:"Gipfel", pt:"cume", sp:"carmo", mn:"carmo", verif:"mn:g" },
-      { it:"vetta / cima", cr:"cucuz'l" },
+      { it:"vetta / cima", sp:"carmo", cr:"cucuz'l" },
       { it:"via", cr:"via" },
       { tema:"dialogo", livello:"A2", it:"via da", en:"off", fr:"loin de|éteint", es:"apagado|lejos", de:"aus|weg", pt:"desligado|longe", ru:"выключенный", ca:"apagat|fora" },
       { tema:"viaggi", livello:"A2", it:"viaggio", en:"journey", fr:"voyage", es:"viaje", de:"Reise", pt:"viagem", ru:"путешествие", ca:"viatge" },
@@ -3300,7 +3301,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"grammatica", livello:"A2", it:"voi amate", la:"amatis", grc:"φιλεῖτε" },
       { tema:"viaggi", livello:"A1", it:"voi partite", mn:"vautri a partii" },
       { tema:"verbi", it:"volare", en:"fly", sp:"svoaae/svoae", mn:"vêuâ", ge:"vêuâ", verif:"sp:g" },
-      { it:"volere", mn:"vree", ro:"a vrea" },
+      { it:"volere", sp:"vorée", mn:"vree", ro:"a vrea" },
       { tema:"dialogo", livello:"A1", it:"volerlo", en:"want it", fr:"le vouloir", es:"quererlo", de:"es wollen", pt:"querer isso" },
       { tema:"viaggi", livello:"A2", it:"volo", en:"flight", fr:"vol", es:"vuelo", de:"Flug", pt:"voo|vôo", ru:"рейс|полёт", ca:"vol", sp:"svolo", mn:"svolo", verif:"sp:g" },
       { tema:"natura", livello:"A1", it:"volpe", en:"fox", sp:"gorpe", mn:"gurpa", cr:"gólpa", verif:"mn:g" },
@@ -3315,22 +3316,21 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"zabaione", mn:"zanbaiùn" },
       { tema:"natura", it:"zafferano", en:"saffron", sp:"safràn", mn:"safràn", ge:"zaffaràn, sciagagnou", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"corpo", it:"zampa", sp:"pata, sanpa", mn:"", ge:"patta", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g" },
-      { tema:"dialetti", livello:"A2", it:"zavorra", mn:"zàvura" },
+      { tema:"dialetti", livello:"A2", it:"zavorra", sp:"zagóra", mn:"zàvura" },
       { tema:"animali", livello:"B1", it:"zecca", en:"tick", fr:"tique", es:"garrapata", de:"Zecke", pt:"carrapato", sp:"seétega/sétega", mn:"sètega/sëtéga", verif:"mn:g" },
-      { tema:"dialetti", livello:"A2", it:"zerbino, stuoino", mn:"zerbiìn/zérbìn" },
+      { tema:"dialetti", livello:"A2", it:"zerbino, stuoino", sp:"zerbin", mn:"zerbiìn/zérbìn" },
       { tema:"numeri", livello:"A1", it:"zero", en:"zero", fr:"zéro", es:"cero", de:"null", pt:"zero", sp:"zeo/zèo", mn:"zèu", ko:"영", ar:"صفر", zh:"零", ja:"ゼロ", ia:"zero", la:"nihil", grc:"μηδέν", verif:"sp:g" },
       { tema:"famiglia", livello:"A2", it:"zia", en:"aunt", fr:"tante", es:"tía", de:"Tante", pt:"tia", ru:"тётя", ca:"tia", sp:"làla  |séa/làla|séa", mn:"seia|làla", cr:"zia", ge:"seia", ko:"이모", ar:"عمة", ia:"tante", la:"amita", grc:"θεία", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"zibibbo", sp:"zebìbo", mn:"zebìbo" },
       { tema:"corpo", livello:"B1", it:"zigomo", en:"cheekbone", fr:"pommette", es:"pómulo", de:"Wangenknochen", pt:"maçã do rosto|maca do rosto", sp:"pométi", mn:"pumétu", ia:"zygoma", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"zimbello", mn:"zinbelu/zinbèlu" },
       { tema:"dialetti", livello:"A2", it:"zinco", mn:"zingu" },
-      { tema:"dialetti", livello:"A2", it:"zingaro, persona senza fissa dimora" },
       { tema:"famiglia", livello:"A1", it:"zio", en:"uncle", fr:"oncle", es:"tío", de:"Onkel", pt:"tio", ru:"дядя", ca:"oncle", sp:"dzìo/sio|barba", mn:"bàrba", ge:"bàrba", ko:"삼촌", ar:"عم", zh:"叔叔", ja:"叔父", ia:"oncle", la:"patruus", grc:"θεῖος", verif:"sp:g,mn:g" },
       { it:"zitella", cr:"zavata" },
       { tema:"dialetti", livello:"A2", it:"zitto", en:"quiet", fr:"silencieux", es:"callado", de:"still", pt:"quieto", sp:"sito", mn:"situ", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"zizzania|discordia", de:"Unkraut", ca:"zitzània", mn:"zizania/zizània" },
       { tema:"dialetti", it:"zoppo", sp:"rango, sòpo", ge:"rangu/rango", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
-      { tema:"dialetti", livello:"A2", it:"zoppo, claudicante", mn:"soopu/sòpu" },
+      { tema:"dialetti", livello:"A2", it:"zoppo, claudicante", sp:"rango,sòpo", mn:"soopu/sòpu" },
       { tema:"dialetti", livello:"A2", it:"zozzone|sporcaccione|persona trasandata", mn:"zuzùn" },
       { tema:"cibo", it:"zucca", ge:"succa", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
       { tema:"cibo", livello:"A1", it:"zucchero", sp:"süùcheo/sücheo", mn:"suùkeeu/sücheu", ge:"süccao", src:{"mn":"🤖 IA"}, verif:"mn:g" },
@@ -3351,7 +3351,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 293;
+const VOC_VERSION = 294;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
