@@ -1804,8 +1804,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", it:"accendere", sp:"assende", mn:"asende", ge:"assende/accende", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialetti", it:"accetta", sp:"picòsso, marassa", mn:"picossu", ge:"piccosso", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialetti", it:"acciaio", sp:"assào", mn:"assaa/asaa", ge:"asa", src:{"mn":"🤖 IA"}, verif:"mn:g" },
-      { tema:"cibo", it:"acciuga", sp:"anciùüa/anciüa", mn:"anciùüa/anciüa", ge:"anciùüa/anciua", src:{"mn":"🤖 IA"}, verif:"mn:g" },
-      { tema:"cibo", livello:"A2", it:"acciughe", sp:"anciue", mn:"anciüe", ge:"anciue/anciôe", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"cibo", it:"acciuga", sp:"anciùüa/anciüa", mn:"anciùüa/anciüa", ge:"anciùüa/anciua", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g" },
+      { tema:"cibo", livello:"A2", it:"acciughe", sp:"anciüe", mn:"anciüe", ge:"anciüe/anciôe", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"dialetti", it:"accordo", sp:"acòrdio", mn:"àcordiu", ge:"accordio", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"verbi", livello:"B1", it:"accorgersi/rendersi conto", en:"realise", fr:"se rendre compte", es:"darse cuenta", de:"merken|erkennen", pt:"perceber", ru:"понимать|осознавать", ca:"adonar-se", sp:"ascòrsese/ascòrzese", mn:"" },
       { tema:"verbi", it:"accucciarsi", sp:"cociasse", mn:"acuciaasse/acuciâse", ge:"accucciâtase", src:{"mn":"🤖 IA"}, verif:"mn:g" },
@@ -1864,11 +1864,11 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"amore", en:"love", fr:"amour", es:"amor", de:"Liebe", pt:"amor", ru:"любовь", ca:"amor", sp:"amo'e/amoe", mn:"amùu/amu", ge:"amùu/amô", verif:"mn:g,sp:g,ge:g" },
       { tema:"cibo", livello:"A2", it:"ananas", en:"pineapple", fr:"ananas", es:"piña", de:"Ananas", pt:"abacaxi", ru:"ананас", ca:"pinya", ko:"파인애플", ar:"أناناس", zh:"菠萝", ja:"パイナップル", ia:"ananas", ro:"ananas" },
       { tema:"animali", livello:"A2", it:"anatra", en:"duck", fr:"canard", es:"pato", de:"Ente", pt:"pato", ru:"утка", ca:"ànec" },
-      { tema:"dialogo", livello:"A1", it:"anche", en:"also", fr:"aussi", es:"también", de:"auch", pt:"também", ru:"тоже|также", ca:"també", sp:"anca|assì|essì| nicò| ènca", mn:"anca|assì|", cr:"ancka/anca", ge:"ascii/ascì|anche", verif:"mn:g" },
+      { tema:"dialogo", livello:"A1", it:"anche", en:"also", fr:"aussi", es:"también", de:"auch", pt:"também", ru:"тоже|также", ca:"també", sp:"anca|assì|essì| nicò| ènca", mn:"anca|assì|", cr:"ancka/anca", ge:"ascìi/ascì|anche", verif:"mn:g,ge:g,sp:g" },
       { tema:"dialetti", it:"ancora", ge:"ancùha/ancoa", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
       { tema:"dialetti", livello:"A2", it:"andar via velocemente", en:"rush away", fr:"partir vite", sp:"telaae/telae", mn:"telaae/telae" },
-      { tema:"verbi", livello:"A1", it:"andare", en:"go", fr:"aller", es:"ir", de:"gehen", pt:"ir", ru:"идти|ехать", ca:"anar", sp:"andaae/andae", mn:"andaa", cr:"andar", ge:"andâ|anâ", ko:"가다", ar:"يذهب", zh:"去", ja:"行く", ia:"ir", la:"ire", grc:"ἰέναι", ro:"a merge", src:{"mn":"🤖 IA"}, verif:"mn:g" },
-      { tema:"dialogo", it:"andare a casa", en:"go home", sp:"andae a ca", ge:"anaa a casa/andâ a câza", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
+      { tema:"verbi", livello:"A1", it:"andare", en:"go", fr:"aller", es:"ir", de:"gehen", pt:"ir", ru:"идти|ехать", ca:"anar", sp:"andaae/andae", mn:"andaa", cr:"andar", ge:"andaa/andâ|anâ", ko:"가다", ar:"يذهب", zh:"去", ja:"行く", ia:"ir", la:"ire", grc:"ἰέναι", ro:"a merge", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g" },
+      { tema:"dialogo", it:"andare a casa", en:"go home", sp:"andae a ca", mn:"andaa a ca", ge:"anaa a casa/andâ a câza", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"dialogo", it:"andare avanti", en:"move on", ge:"andaa avânti/andâ avânti", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
       { tema:"dialetti", livello:"B1", it:"andare di fretta", en:"be in a hurry", fr:"être pressé", es:"ir deprisa", de:"es eilig haben", pt:"ter pressa", sp:"andà è  de sprèssa/andàe de sprèssa", mn:"andaa de spressa", ge:"anâ de spresción|", la:"festinare", grc:"σπεύδειν", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"dialogo", it:"andare via ora", en:"leave now", ge:"andâvia òua/andâ via òua", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
@@ -2702,7 +2702,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"corpo", livello:"A1", it:"occhio", en:"eye", fr:"œil", es:"ojo", de:"Auge", pt:"olho", ru:"глаз", ca:"ull", sp:"òcio", mn:"òcio", cr:"Oc", ge:"êggiuuu/êuggio", ko:"눈", ar:"عين", zh:"眼睛", ja:"目", ia:"oculo", la:"oculus", grc:"ὀφθαλμός", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"aggettivi", livello:"A2", it:"occupato", en:"busy", fr:"occupé", es:"ocupado", de:"beschäftigt", pt:"ocupado", ru:"занятой", ca:"ocupat" },
       { tema:"verbi", livello:"A2", it:"odorare/odore", en:"smell", fr:"sentir|odeur", es:"oler|olor", de:"riechen|Geruch", pt:"cheirar|cheiro", ru:"нюхать|запах", ca:"olorar|olor", sp:"odoàae/odoae", mn:"uduàa/ùduaa", verif:"mn:g" },
-      { tema:"tempo", livello:"A1", it:"oggi", sp:"anché", mn:"anchè", cr:"ozi", ge:"ancheu", ro:"azi", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"tempo", livello:"A1", it:"oggi", sp:"anchè", mn:"anchè", cr:"ozi", ge:"ancheu", ro:"azi", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g,sp:g" },
       { tema:"cibo", livello:"A1", it:"oliva", en:"olive", sp:"oìva", mn:"ujiva/uìva", verif:"mn:g" },
       { tema:"corpo", livello:"B1", it:"ombelico", en:"navel", fr:"nombril", es:"ombligo", de:"Nabel", pt:"umbigo", sp:"lopìn| onbrisàlo", mn:"lupìn", verif:"mn:g" },
       { tema:"natura", livello:"A2", it:"ombra", en:"shadow", fr:"ombre", es:"sombra", de:"Schatten", pt:"sombra", ru:"тень", ca:"ombra", mn:"umbra", ko:"그림자", ar:"ظل", zh:"阴影", ja:"影", ia:"umbra", la:"umbra", grc:"σκιά" },
@@ -3351,7 +3351,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 282;
+const VOC_VERSION = 283;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
