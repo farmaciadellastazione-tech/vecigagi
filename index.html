@@ -2020,16 +2020,16 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A1", it:"blu", en:"blue", fr:"bleu", es:"azul", de:"blau", pt:"azul", ru:"синий|голубой", ca:"blau", mn:"blë", ko:"파란", ar:"أزرق", zh:"蓝色", ja:"青", ia:"blau", la:"caeruleus", grc:"κυανός", ro:"albastru", verif:"mn:g" },
       { tema:"corpo", livello:"A1", it:"bocca", en:"mouth", fr:"bouche", es:"boca", de:"Mund", pt:"boca", ru:"рот", ca:"boca", sp:"booca/boca", mn:"buca", cr:"boca", ge:"pê", ko:"입", ar:"فم", zh:"嘴", ja:"口", ia:"bucca", la:"os", grc:"στόμα", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"boccia", en:"ball", fr:"boule", es:"bola", de:"Ball", pt:"bola", sp:"bocia/bòcia", mn:"bocia/bòcia", verif:"mn:g,sp:g" },
-      { it:"bollire", cr:"bugir" },
+      { it:"bollire", sp:"bogi'e/bogie", cr:"bugir" },
       { tema:"natura", livello:"A1", it:"bosco", en:"forest", fr:"forêt", es:"bosque", de:"Wald", pt:"bosque", ru:"война", ca:"guerra", sp:"", ko:"숲", ar:"غابة", zh:"森林", ja:"森", ia:"bosco", la:"silva", grc:"ὕλη" },
-      { it:"botte", cr:"bota" },
+      { it:"botte", sp:"bote,zina", cr:"bota" },
       { tema:"dialetti", livello:"A2", it:"bottega| affare", mn:"butieéga/bütiéga  |negoosciu/négosciu", cr:"but ghin/but'ghin", verif:"mn:g" },
       { tema:"vestiti", livello:"A2", it:"bottone", en:"button", fr:"bouton", es:"botón", de:"Knopf", pt:"botão|botao", sp:"pomèo, animeta, animéta", mn:"pumèe", ge:"pomello", ia:"button", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"corpo", livello:"A1", it:"braccio", en:"arm", fr:"bras", es:"brazo", de:"Arm", pt:"braço|braco", ru:"рука", ca:"braç", sp:"brasso", mn:"bràssu/bràssu", ge:"bràssso/bràsso", ko:"팔", ar:"ذراع", zh:"手臂", ja:"腕", ia:"bracio", la:"brachium", grc:"βραχίων", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"cibo", livello:"A2", it:"branzino| spigola", en:"sea bass", fr:"loup de mer", es:"lubina", de:"Wolfsbarsch", pt:"robalo", ru:"морской окунь", ca:"llobarro", sp:"lovasso", mn:"luassu", cr:"branzin", ge:"loâso", ko:"바다농어", ar:"قاروص البحر", zh:"海鲈", ja:"スズキ", ia:"lup de mare", la:"lupus marinus", grc:"λαβράκι", ro:"șalău", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"abbigliamento", livello:"A2", it:"bretelle", sp:"bertéle", mn:"bertèle", ge:"bertèlle", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"natura", livello:"A2", it:"bricco", en:"jug", fr:"cruche", es:"jarra", de:"Kanne", pt:"chaleira", sp:"brico", mn:"bricu", verif:"mn:g,sp:g" },
-      { it:"briciola", cr:"brisa" },
+      { it:"briciola", sp:"fregógia,brüsàgia,brugiasa/fregógia,brüsàgia,brugiasa", cr:"brisa" },
       { tema:"verbi", it:"brillare", sp:"lüsie", mn:"lusii/lüzii", ge:"liujhii/lüxi", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"bruciare", en:"burn", fr:"brûler", es:"quemar", de:"brennen", pt:"queimar", ru:"гореть|сжигать", ca:"cremar", sp:"brusàaae/brusae", mn:"brusàaa/brüzaa", verif:"mn:g" },
       { tema:"sintomi", livello:"A2", it:"bruciore", en:"burning", fr:"brûlure", es:"ardor", de:"Brennen", pt:"queimação|queimacao", sp:"brusooe/brusoe", mn:"brusùu/bruzuu", ko:"작열감", ar:"حرقة", zh:"灼热", ja:"灼熱感", verif:"mn:g" },
@@ -3351,7 +3351,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 287;
+const VOC_VERSION = 288;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
