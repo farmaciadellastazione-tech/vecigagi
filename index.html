@@ -2977,7 +2977,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"schiaffo", en:"slap", pt:"bofetada", mn:"s'cià fu/sciàfu", verif:"mn:g" },
       { tema:"mestieri", livello:"B1", it:"schiavo", en:"slave", fr:"esclave", es:"esclavo", de:"Sklave", pt:"escravo", ko:"노예", ar:"عبد", zh:"奴隶", ja:"奴隷", ia:"servo", la:"servus", grc:"δοῦλος" },
       { tema:"corpo", livello:"A1", it:"schiena", en:"back", fr:"dos", es:"espalda", de:"Rücken", pt:"costas", ca:"esquena", sp:"skéna, skéne/schéna, schéne", mn:"schéna", cr:"s'cena", ge:"schénn-a", ia:"dorso", la:"dorsum", ro:"spate", src:{"mn":"🤖 IA"}, verif:"mn:g" },
-      { tema:"aggettivi", livello:"B1", it:"schietto", en:"frank", pt:"franco", cr:"s'ciet" },
+      { tema:"aggettivi", livello:"B1", it:"schietto", en:"frank", pt:"franco", sp:"s'ceto /sccéto", cr:"s'ciet" },
       { tema:"verbi", livello:"A2", it:"sci", en:"skiing", fr:"ski", es:"esquí", de:"Skifahren", pt:"esqui", ru:"лыжи", ca:"esquí", ko:"스키", ar:"التزلج", zh:"滑雪", ja:"スキー", ia:"ski" },
       { tema:"dialetti", livello:"A2", it:"sciancato, claudicante", mn:"s'cian cà/sciancà", verif:"mn:g" },
       { tema:"mestieri", livello:"A2", it:"scienziato", en:"scientist", fr:"scientifique", es:"científico", de:"Wissenschaftler", pt:"cientista", ko:"과학자", ar:"عالم", zh:"科学家", ja:"科学者", ia:"scientista", la:"physicus", grc:"ἐπιστήμων" },
@@ -3021,12 +3021,12 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"sei|6", en:"six", fr:"six", es:"seis", de:"sechs", pt:"seis", ru:"шесть", ca:"sis", sp:"sei", mn:"sciéi", cr:"Se", ko:"육", ar:"ستة", zh:"六", ja:"六", ia:"sex", la:"sex", grc:"ἕξ", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"B1", it:"selvatico", en:"wild", fr:"sauvage", es:"salvaje", de:"wild", pt:"selvagem", sp:"servàadégo/servàdego", mn:"", ia:"salvage", verif:"sp:g" },
       { it:"semplicione", sp:"luìso", cr:"pilancon", verif:"sp:g" },
-      { tema:"aggettivi", livello:"A1", it:"sempre", en:"always", fr:"toujours", es:"siempre", de:"immer", pt:"sempre", cr:"senpr", ko:"항상", ar:"دائماً", zh:"总是", ja:"いつも", ia:"semper", la:"semper", grc:"ἀεί" },
+      { tema:"aggettivi", livello:"A1", it:"sempre", en:"always", fr:"toujours", es:"siempre", de:"immer", pt:"sempre", sp:"senpre", cr:"senpr", ge:"sempre", ko:"항상", ar:"دائماً", zh:"总是", ja:"いつも", ia:"semper", la:"semper", grc:"ἀεί" },
       { tema:"verbi", livello:"A1", it:"sentire", en:"feel", fr:"sentir", es:"sentir", de:"fühlen", pt:"sentir", ru:"чувствовать|слышать", ca:"sentir", sp:"sentìe", mn:"sentìi", ko:"느끼다", ar:"يشعر", zh:"感觉", ja:"感じる", ia:"sentir", la:"sentire", grc:"αἰσθάνεσθαι", ro:"a auzi", verif:"mn:g" },
       { tema:"dialogo", livello:"A2", it:"sentirsi bene", en:"feel good", fr:"se sentir bien", es:"sentirse bien", de:"sich gut fühlen", pt:"sentir-se bem" },
       { tema:"dialogo", livello:"A2", it:"senza", en:"without", fr:"sans", es:"sin", de:"ohne", pt:"sem", ru:"без", ca:"sense", mn:"sensa", cr:"senza", verif:"mn:g" },
       { tema:"dialetti", livello:"A1", it:"sera", en:"evening", fr:"soir", es:"tarde", de:"Abend", pt:"noite", ru:"вечер", ca:"vespre|tarda", sp:"séa", mn:"", cr:"sera", verif:"sp:g" },
-      { it:"serpe / serpente", cr:"serp" },
+      { it:"serpe / serpente", sp:"bissa", cr:"serp" },
       { tema:"animali", livello:"A2", it:"serpente", en:"snake", fr:"serpent", es:"serpiente", de:"Schlange", pt:"cobra|serpente", ru:"змея", ca:"serp" },
       { it:"serpente / biscia", cr:"biss" },
       { tema:"numeri", livello:"A1", it:"sessanta|60", en:"sixty", ru:"шестьдесят", sp:"sesanta|60", mn:"sesanta", ge:"sciusciànta", src:{"mn":"🤖 IA"}, verif:"mn:g" },
@@ -3349,7 +3349,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 304;
+const VOC_VERSION = 305;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
