@@ -1785,7 +1785,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
-      { tema:"condizioni fisiche", livello:"B1", it:"fradicio,zuppo", sp:"sgoo,süpo,sgoo" },
+      { tema:"condizioni fisiche", livello:"B1", it:"fradicio,zuppo", sp:"s'go o, süpo/sgoo,süpo", verif:"sp:g" },
       { tema:"tempo", livello:"A1", it:"calendario", de:"Kalender" },
       { tema:"lavoro", livello:"A2", it:"studio", de:"Praxis", sp:"scàgno", ge:"scàgno", verif:"sp:g" },
       { tema:"casa", livello:"A2", it:"bucato", de:"wäsche", sp:"bugà", verif:"sp:g" },
@@ -2909,7 +2909,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A2", it:"rete", en:"network", fr:"filet", es:"red", de:"Netz", pt:"rede", ru:"сеть", ca:"xarxa", sp:"ré", mn:"rê", ge:"reè/ræ", la:"rete", grc:"δίκτυον", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"animali", livello:"B1", it:"riccio di mare", en:"sea urchin", fr:"oursin", es:"erizo de mar", de:"Seeigel", pt:"ouriço-do-mar|ourico-do-mar", sp:"dzìn/zin", mn:"zìn", verif:"sp:g" },
       { tema:"natura", livello:"A2", it:"ricco", en:"rich", fr:"riche", es:"rico", de:"reich", pt:"rico", ru:"богатый", ca:"ric", sp:"rico", mn:"ricu", cr:"", ko:"부유한", ar:"غني", zh:"富", ja:"金持ちの", ia:"ric", la:"dives", grc:"πλούσιος", verif:"mn:g" },
-      { tema:"salute", livello:"B1", it:"ricetta", en:"prescription", fr:"ordonnance", es:"receta", de:"Rezept", pt:"receita", mn:"resseta/resèta", ko:"처방전", ar:"وصفة طبية", zh:"处方", ja:"処方箋", ia:"recepta" },
+      { tema:"salute", livello:"B1", it:"ricetta", en:"prescription", fr:"ordonnance", es:"receta", de:"Rezept", pt:"receita", sp:"ressèta/ressèta", mn:"ressèta/ressèta", ko:"처방전", ar:"وصفة طبية", zh:"处方", ja:"処方箋", ia:"recepta", verif:"mn:y,sp:g" },
       { tema:"cibo", livello:"A2", it:"ricetta", en:"recipe", fr:"recette", es:"receta", de:"Rezept", pt:"receita", ru:"рецепт", ca:"recepta", sp:"ressèta", ko:"레시피", ar:"وصفة", zh:"食谱", ja:"レシピ", ia:"recepta", la:"praescriptum", grc:"συνταγή", ro:"rețetă", src:{"sp":"📕 Capellini"}, verif:"sp:g" },
       { tema:"verbi", livello:"A2", it:"ricevere", en:"receive", fr:"recevoir", es:"recibir", de:"erhalten|bekommen", pt:"receber", ru:"получать", ca:"rebre" },
       { tema:"verbi", livello:"B1", it:"ricordare", en:"remember", fr:"se souvenir", es:"recordar", de:"erinnern", pt:"lembrar", ru:"помнить", ca:"recordar", sp:"sovegnie, arecordae", mn:"sovegnie, arecordae", cr:"arcordar", ge:"sovvegnìsseh/sovvegnise", ko:"기억하다", ar:"يتذكر", zh:"记得", ja:"覚える", ia:"memorar", la:"meminisse", grc:"μνημονεύειν", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
@@ -3064,7 +3064,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A2", it:"soggiorno", en:"living room", fr:"salon", es:"salón", de:"Wohnzimmer", pt:"sala de estar", ru:"гостиная", ca:"saló" },
       { tema:"verbi", livello:"B1", it:"sognare", en:"dream", fr:"rêver", es:"soñar", de:"träumen", pt:"sonhar", sp:"assomiaae/asomiae, somiae", mn:"sügnaa", cr:"sognar", ko:"꿈꾸다", ar:"يحلم", zh:"做梦", ja:"夢を見る", verif:"mn:g,sp:g" },
       { tema:"aggettivi", livello:"B1", it:"sogno", en:"dream", fr:"rêve", es:"sueño", de:"Traum", pt:"sonho", ru:"мечта|сон", ca:"somni", sp:"sòmio", mn:"sugnu", ko:"꿈", ar:"حلم", zh:"梦", ja:"夢", ia:"somnio", la:"somnium", grc:"ὄνειρος", verif:"mn:g" },
-      { tema:"verbi", livello:"A2", it:"sognare|sogno", en:"dream", fr:"rêve|rêver", es:"sueño|soñar", de:"Traum|träumen", pt:"sonho|sonhar", ru:"сон|мечта|мечтать", ca:"somni|somiar", sp:"sòmio", mn:"sùgnaa|sugnu" },
+      { tema:"verbi", livello:"A2", it:"sognare|sogno", en:"dream", fr:"rêve|rêver", es:"sueño|soñar", de:"Traum|träumen", pt:"sonho|sonhar", ru:"сон|мечта|мечтать", ca:"somni|somiar", sp:"somiaae|somio/somiae|somio", mn:"sùgnaa|sugnu", verif:"sp:g" },
       { tema:"mestieri", livello:"A2", it:"soldato", en:"soldier", fr:"soldat", es:"soldado", de:"Soldat", pt:"soldado", ru:"солдат", ca:"soldat", sp:"sordà|sordato", mn:"surdatu", ge:"sordatto", ko:"군인", ar:"جندي", zh:"士兵", ja:"兵士", ia:"soldato", la:"miles", grc:"στρατιώτης", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"natura", livello:"A1", it:"sole", en:"sun", fr:"soleil", es:"sol", de:"Sonne", pt:"sol", ru:"солнце", ca:"sol", sp:"só", mn:"sò", cr:"sol", ko:"태양", ar:"شمس", zh:"太阳", ja:"太陽", ia:"sol", la:"sol", grc:"ἥλιος", verif:"sp:g" },
       { tema:"natura", livello:"A2", it:"soleggiato", en:"sunny", fr:"ensoleillé", es:"soleado", de:"sonnig", pt:"ensolarado", ru:"солнечный", ca:"assolellat", sp:"sói'già/soigià", mn:"soigià", verif:"sp:g" },
@@ -3093,7 +3093,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A1", it:"spiacente/dispiaciuto", en:"sorry", fr:"désolé", es:"lo siento", de:"es tut mir leid", pt:"desculpe", ru:"извините|жаль", ca:"ho sento", mn:"des cha zu     /desciazü", verif:"mn:g" },
       { tema:"famiglia", livello:"A1", it:"spiaggia", en:"beach", fr:"plage", es:"playa", de:"Strand", pt:"praia", ru:"пляж", ca:"platja", sp:"", cr:"", ko:"해변", ar:"شاطئ", zh:"海滩", ja:"ビーチ", ia:"plage", la:"litus", grc:"αἰγιαλός" },
       { tema:"dialetti", livello:"A2", it:"spicchio", en:"clove", fr:"gousse", es:"diente", de:"Zehe", pt:"dente de alho", sp:"spigo", mn:"spigo", verif:"sp:g" },
-      { tema:"verbi", livello:"A1", it:"spiegare", en:"explain", fr:"expliquer", es:"explicar", de:"erklären", pt:"explicar", ru:"четыре", ca:"quatre", sp:"spiegae", ko:"설명하다", ar:"يشرح", zh:"解释", ja:"説明する", ia:"explicar", la:"explicare", grc:"ἐξηγεῖν" },
+      { tema:"verbi", livello:"A1", it:"spiegare", en:"explain", fr:"expliquer", es:"explicar", de:"erklären", pt:"explicar", ru:"четыре", ca:"quatre", sp:"spiegae", ko:"설명하다", ar:"يشرح", zh:"解释", ja:"説明する", ia:"explicar", la:"explicare", grc:"ἐξηγεῖν", verif:"sp:g" },
       { tema:"dialetti", livello:"A2", it:"tigna|avaro", mn:"tigna", verif:"mn:g" },
       { tema:"cibo", livello:"A2", it:"spinaci", en:"spinach", fr:"épinard", es:"espinaca", de:"Spinat", pt:"espinafre", sp:"spinassi", mn:"spinassi", ko:"시금치", ar:"سبانخ", zh:"菠菜", ja:"ほうれん草", ia:"spinace", verif:"mn:g" },
       { tema:"verbi", livello:"A1", it:"spingere", sp:"spindse/spinze", mn:"spinze", verif:"sp:g" },
@@ -3108,7 +3108,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A1", it:"stanco", en:"tired", fr:"fatigué", es:"cansado", de:"müde", pt:"cansado", ru:"усталый", ca:"cansat", sp:"straco", mn:"stracu", cr:"strac", ko:"피곤한", ar:"متعب", zh:"疲惫", ja:"疲れた", ia:"fatiguate", la:"fessus", grc:"κοπιώδης", verif:"sp:g" },
       { tema:"verbi", livello:"B1", it:"starnutire", en:"sneeze", fr:"éternuer", es:"estornudar", de:"niesen", pt:"espirrar", sp:"stranüdae", mn:"starnuitii", ge:"stramuii/stramuî", ko:"재채기하다", ar:"يعطس", zh:"打喷嚏", ja:"くしゃみする", ia:"sternutar", src:{"mn":"🤖 IA","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"luoghi", livello:"A1", it:"stazione", en:"station", fr:"gare", es:"estación", de:"Bahnhof", pt:"estação|estacao", ru:"вокзал|станция", ca:"estació", sp:"stassion/stasion", mn:"stasciùn", ge:"stazion", ko:"역", ar:"محطة", zh:"车站", ja:"駅", ia:"station", la:"statio", grc:"σταθμός", ro:"gară", src:{"mn":"🤖 IA"}, verif:"mn:g" },
-      { it:"stecchito/rigido", sp:"sténco", cr:"stchit" },
+      { it:"stecchito/rigido", sp:"sténco", cr:"stchit", verif:"sp:g" },
       { tema:"natura", livello:"B1", it:"stella", en:"star", fr:"étoile", es:"estrella", de:"Stern", pt:"estrela", ru:"звезда", ca:"estrella", sp:"sté'a/stéa", mn:"stéa", cr:"stela", ko:"별", ar:"نجمة", zh:"星星", ja:"星", ia:"stella", la:"stella", grc:"ἀστήρ", verif:"sp:g" },
       { tema:"mestieri", livello:"A2", it:"stipendio", en:"salary", fr:"salaire", es:"salario", de:"Gehalt", pt:"salário|salario", ko:"급여", ar:"راتب", zh:"工资", ja:"給料", ia:"salario", la:"merces", grc:"μισθός" },
       { tema:"sintomi", livello:"A2", it:"stitichezza", en:"constipation", fr:"constipation", es:"estreñimiento", de:"Verstopfung", pt:"prisão de ventre|prisao de ventre", ko:"변비", ar:"إمساك", zh:"便秘", ja:"便秘" },
@@ -3139,7 +3139,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"B2", it:"t'ho detto otto etti di totanetti, tagliati a pezzetti", en:"I told you eight ounces of cuttlefish, cut into pieces", fr:"je t'ai dit huit onces de seiches, coupées en morceaux", es:"te dije ocho onzas de sepia, cortada en trozos", de:"ich habe dir gesagt acht Unzen Tintenfisch, in Stücke geschnitten", pt:"eu disse oito onças de lula, cortada em pedaços", ca:"et vaig dir vuit unces de sipia, tallada a trossos", sp:"A t'o ito oto eti de tota neti tuti tagià atoché ti/A t'o ito oto eti de totaneti tuti tagià a tocheti", mn:"A t'o ditu otu eti de tota neti tuti tagià atuché ti/A t'o ditu otu eti de totaneti tuti tagià a tuchéti", la:"tibi dixi octo uncias sepiæ, in frusta concisæ", ro:"ți-am spus opt uncii de sepia, tăiată în bucăți", verif:"mn:g" },
       { tema:"sintomi", livello:"A1", it:"tachicardia", en:"tachycardia", fr:"tachycardie", es:"taquicardia", de:"Tachykardie", pt:"taquicardia", sp:"", ko:"빈맥", ar:"تسارع القلب", zh:"心动过速", ja:"頻脈", ia:"plus" },
       { tema:"dialogo", livello:"A2", it:"taglia/dimensione", en:"size", fr:"taille|taille", es:"talla|tamaño", de:"Größe", pt:"tamanho", ru:"размер", ca:"talla|mida" },
-      { it:"tagliare", sp:"ta giae/tagiae", cr:"taiar" },
+      { it:"tagliare", sp:"ta giaà e/tagiae", cr:"taiar", verif:"sp:g" },
       { tema:"dialogo", livello:"A1", it:"tanto", mn:"tantu", verif:"mn:g" },
       { tema:"casa", livello:"A2", it:"tappeto/moquette", en:"carpet", fr:"tapis|moquette", es:"alfombra|moqueta", de:"Teppich", pt:"tapete|alcatifa", ru:"ковёр", ca:"catifa" },
       { tema:"dialogo", livello:"A1", it:"tardi|in ritardo", en:"late", fr:"tard|en retard", es:"tarde|con retraso", de:"spät|zu spät", pt:"tarde|atrasado", ru:"поздно|с опозданием", ca:"tard|amb retard", sp:"tàrdio, tardiòto", mn:"", verif:"sp:g" },
@@ -3194,7 +3194,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"B1", it:"tradurre", en:"translate", fr:"traduire", es:"traducir", de:"übersetzen", pt:"traduzir", ru:"переводить", ca:"traduir" },
       { tema:"dialetti", livello:"A2", it:"traffico, movimento", mn:"trà'féguu/tràfégu", verif:"mn:g" },
       { tema:"dialetti", livello:"B1", it:"tramontana", en:"north wind", fr:"tramontane", es:"tramontana", de:"Nordwind", pt:"tramontana", mn:"tramuntàna", ge:"tramuntànn-a", src:{"mn":"🤖 IA"}, verif:"mn:g" },
-      { tema:"dialetti", livello:"A2", it:"trapano manuale", sp:"trapan/trapàn" },
+      { tema:"dialetti", livello:"A2", it:"trapano", sp:"trapan/trapàn", verif:"sp:g" },
       { tema:"aspetto", livello:"B1", it:"trasandato", sp:"sbolina/zbolinà", mn:"sbulinàa/zbulinà", verif:"mn:g" },
       { tema:"numeri", it:"tre", en:"three", sp:"trèi", mn:"trèei/trèi", ro:"trei", verif:"sp:g" },
       { tema:"istruzioni", livello:"A2", it:"tre volte al giorno", en:"three times a day", fr:"trois fois par jour", es:"tres veces al día", de:"dreimal täglich", pt:"três vezes ao dia|tres vezes ao dia", ru:"тренировка", ca:"entrenament", ko:"하루 세 번", ar:"ثلاث مرات يومياً", zh:"每天三次", ja:"1日3回" },
@@ -3350,7 +3350,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 299;
+const VOC_VERSION = 300;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
