@@ -780,6 +780,35 @@
   body.admin th.col-ok, body.admin td.td-ok { display: table-cell; }
   th.col-ok, td.td-ok { display: none; }
 
+  /* Editor inline della parola italiana (admin) */
+  body.admin .td-it .it-edit {
+    width: 100%;
+    box-sizing: border-box;
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 15px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 5px 7px;
+    background: #f1f5f9;
+  }
+  body.admin .td-it .it-edit:hover { border-color: #cbd5e1; background: #fff; }
+  body.admin .td-it .it-edit:focus { outline: none; border-color: var(--accent); background: #fff; }
+
+  /* Vista "Tutti i dialetti" (admin) */
+  td.td-multi { vertical-align: top; }
+  .ad-dial-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .ad-dial-block { border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 8px; background: #fff; }
+  .ad-dial-head { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap; }
+  .ad-dial-label { font-weight: 700; font-size: 12px; }
+  .ad-dial-label.mn { color: var(--mn); }
+  .ad-dial-label.sp { color: var(--sp); }
+  .ad-dial-label.cr { color: var(--cr); }
+  .ad-dial-label.ge { color: var(--ge); }
+  .ad-dial-index { font-size: 12px; color: #94a3b8; font-style: italic; margin-bottom: 4px; }
+  .ad-dial-index.has { color: #0c4a6e; font-style: normal; }
+  .ad-dial-block .admin-cell { display: flex; }
+
   /* Pulsante scarta voce intera */
   .btn-scarta-voce {
     background: none;
@@ -937,6 +966,7 @@
       <div class="chip sp active" data-dialect="sp" onclick="setDialect('sp',this)">⚓ Spezzino</div>
       <div class="chip cr" data-dialect="cr" onclick="setDialect('cr',this)">🪨 Carrarino</div>
       <div class="chip ge" data-dialect="ge" onclick="setDialect('ge',this)">🏛️ Genovese</div>
+      <div class="chip all-dialects admin-only" data-dialect="all" onclick="setDialect('all',this)">🌐 Tutti i dialetti</div>
       <div class="chip new-dialect public-only" data-dialect="new" onclick="setDialect('new',this)">✨ Altro dialetto…</div>
     </div>
     <span class="filter-label" style="margin-left:8px">Cerca:</span>
@@ -1038,10 +1068,12 @@
     Modifiche: <strong id="admin-mod-count">0</strong> ·
     Pronte (OK): <strong id="admin-ok-count" style="color:#86efac">0</strong>
     <span style="color:rgba(255,255,255,0.55); font-size:12px; margin-left:8px" id="admin-gh-status">non caricato</span>
+    <span id="admin-branch-badge" style="display:none; font-size:12px; font-weight:700; margin-left:8px; padding:2px 8px; border-radius:6px"></span>
   </div>
   <button class="btn-gh-reset" onclick="adminReset()">Annulla</button>
   <button class="btn-gh-reset" onclick="adminResetToken()" title="Cancella il PAT GitHub salvato">🔑</button>
   <button class="btn-gh-reset" onclick="adminImportApri()" title="Importa traduzioni da un file (HTML/JS/JSON) e proponi modifiche">📤 Importa</button>
+  <button class="btn-gh-reset" onclick="adminPulisciGiaInIndex()" title="Svuota i valori dialetto identici a index e rimuove le voci interamente coperte da index">🧹 Pulisci già-in-index</button>
   <button class="btn-gh-save" id="btn-gh-save" onclick="adminSalvaSuGitHub()" disabled>
     ☁️ Salva su dialetti
   </button>
@@ -3216,6 +3248,9 @@ let contributions = {}; // {it_word: translation}
 
 const DIALECT_NAMES = {mn:'Manarolese', sp:'Spezzino', cr:'Carrarino', ge:'Genovese'};
 const DIALECT_COL = {mn:'mn', sp:'sp', cr:'cr', ge:'ge'};
+// Codici dialetto mostrati nella vista "Tutti i dialetti" (admin), in ordine
+const DIALECT_ALL_COLS = ['mn','sp','cr','ge'];
+const DIALECT_CHIP_LABEL = {mn:'🏖️ Manarolese', sp:'⚓ Spezzino', cr:'🪨 Carrarino', ge:'🏛️ Genovese'};
 
 // ──────────────────────────────────────────────────────────────────────────
 // MODALITÀ ADMIN — attivata con ?admin=1
@@ -3233,7 +3268,11 @@ const DIALECT_COL = {mn:'mn', sp:'sp', cr:'cr', ge:'ge'};
 const ADMIN = new URLSearchParams(location.search).has('admin');
 const GH_OWNER = 'farmaciadellastazione-tech';
 const GH_REPO  = 'vecigagi';
-const GH_BRANCH = 'main';
+// Branch target per lettura/scrittura admin. Default sicuro: 'main' (produzione).
+// In fase di test si può puntare a un altro branch con ?branch=dev, così Salva
+// e Promuovi NON toccano la produzione.
+const GH_BRANCH = (new URLSearchParams(location.search).get('branch') || 'main').trim() || 'main';
+const GH_BRANCH_IS_PROD = GH_BRANCH === 'main';
 const GH_PATH_INDEX    = 'index.html';
 const GH_PATH_DIALETTI = 'dialetti.html';
 const GH_TOKEN_KEY = 'gh_pat_vecigagi';
@@ -3406,6 +3445,135 @@ function adminScartaVoce(it) {
   adminModifiedKeys.add(it); // forza il save
   adminUpdateBadges();
   renderTable();
+}
+
+// "Mancante" per il dialetto `col`: il candidato non ha il valore E (in admin,
+// con index caricato) nemmeno index ce l'ha. In pubblico ricade sul solo
+// campo candidato (adminIndexVoc è vuoto). Evita di chiedere traduzioni che
+// index ha già.
+function dialMancante(e, col) {
+  if (e[col]) return false;
+  if (ADMIN && adminIndexVoc.length) {
+    const idx = adminIndexByIt.get(adminRowKey(e));
+    if (idx && idx[col]) return false;
+  }
+  return true;
+}
+
+// Una voce candidata è "utile" se offre qualcosa che index non ha già:
+// IT non in index (voce nuova) → sempre utile; altrimenti utile se almeno un
+// dialetto arricchisce (index vuoto) o è in conflitto (valore diverso).
+function voceUtile(e) {
+  const idx = adminIndexByIt.get(adminRowKey(e));
+  if (!idx) return true; // IT non presente in index → voce nuova
+  return DIALECT_ALL_COLS.some(col => {
+    const c = (e[col] || '').trim();
+    if (!c) return false;                 // candidato vuoto → niente da offrire
+    return c !== (idx[col] || '').trim(); // arricchisce o conflitto
+  });
+}
+
+// 🧹 Pulizia "già in index": rimuove dai candidati i valori dialetto identici a
+// index (= DUPLICATO) e le voci interamente coperte da index (nessun contributo
+// nuovo). Solo in memoria: serve ☁️ Salva per persistere.
+function adminPulisciGiaInIndex() {
+  if (!adminIndexVoc.length) {
+    alert('Index non caricato: impossibile confrontare.\nRicarica la pagina e riprova.');
+    return;
+  }
+  // Righe interamente coperte da index (da rimuovere) — calcolate sui valori attuali
+  const removable = new Set(adminVoc.filter(e => {
+    const idx = adminIndexByIt.get(adminRowKey(e));
+    return idx && !voceUtile(e);
+  }));
+  // Celle duplicate da svuotare, contate SOLO sulle righe che resteranno
+  let celleDup = 0;
+  adminVoc.forEach(e => {
+    if (removable.has(e)) return;
+    const idx = adminIndexByIt.get(adminRowKey(e));
+    if (!idx) return;
+    DIALECT_ALL_COLS.forEach(col => {
+      const c = (e[col] || '').trim();
+      if (c && c === (idx[col] || '').trim()) celleDup++;
+    });
+  });
+  if (!celleDup && !removable.size) {
+    alert('✅ Niente da pulire: nessun valore candidato risulta già presente identico in index.');
+    return;
+  }
+  if (!confirm(
+    `🧹 Pulizia "già in index":\n\n` +
+    `• ${celleDup} valori dialetto identici a index → svuotati dalle celle\n` +
+    `• ${removable.size} voci interamente coperte da index → rimosse dai candidati\n\n` +
+    `(le voci con IT non in index, gli arricchimenti e i conflitti restano intatti)\n\n` +
+    `Modifiche solo in memoria: premi ☁️ Salva per persistere su "${GH_BRANCH}".\n\nProcedere?`
+  )) return;
+  // Applica: svuota le celle duplicate sulle righe che restano
+  adminVoc.forEach(e => {
+    if (removable.has(e)) return;
+    const idx = adminIndexByIt.get(adminRowKey(e));
+    if (!idx) return;
+    DIALECT_ALL_COLS.forEach(col => {
+      const c = (e[col] || '').trim();
+      if (c && c === (idx[col] || '').trim()) { delete e[col]; adminModifiedKeys.add(e.it); }
+    });
+  });
+  // Rimuovi le righe interamente coperte
+  removable.forEach(e => {
+    const i = adminVoc.indexOf(e);
+    if (i >= 0) { adminVoc.splice(i, 1); adminModifiedKeys.add(e.it); }
+  });
+  adminUpdateBadges();
+  renderTable();
+  adminLog(`🧹 Svuotate ${celleDup} celle e rimosse ${removable.size} voci (in memoria — ricorda ☁️ Salva)`, 'success');
+}
+
+// Rinomina la parola italiana di una voce candidata.
+// `it` è la CHIAVE usata ovunque (adminVoc.find, adminModifiedKeys, data-it,
+// adminOriginalKeys), quindi va migrata con cura.
+function adminAggiornaIt(oldIt, newIt, inputEl) {
+  newIt = (newIt || '').trim();
+  if (newIt === oldIt) return;
+  const voce = adminVoc.find(v => v.it === oldIt);
+  if (!voce) return;
+  if (!newIt) {
+    alert('La parola italiana non può essere vuota.\nPer eliminare l\'intera voce usa "scarta riga".');
+    if (inputEl) inputEl.value = oldIt;
+    return;
+  }
+  const collide = adminVoc.find(v => v !== voce && (v.it || '').toLowerCase() === newIt.toLowerCase());
+  if (collide) {
+    alert(`Esiste già una voce candidata "${collide.it}".\nScegli un altro testo (o unisci le voci a mano).`);
+    if (inputEl) inputEl.value = oldIt;
+    return;
+  }
+  const oldKey = (oldIt || '').toLowerCase().trim();
+  const newKey = newIt.toLowerCase().trim();
+  voce.it = newIt;
+  // Migra il set delle modifiche (chiave = valore `it`)
+  adminModifiedKeys.delete(oldIt);
+  adminModifiedKeys.add(newIt);
+  // Migra la mappa delle chiavi originali (per preservare i campi `""`)
+  if (oldKey !== newKey && adminOriginalKeys.has(oldKey)) {
+    adminOriginalKeys.set(newKey, adminOriginalKeys.get(oldKey));
+    adminOriginalKeys.delete(oldKey);
+  }
+  adminUpdateBadges();
+  renderTable();
+}
+
+function onAdminItChange(input) {
+  adminAggiornaIt(input.dataset.it, input.value, input);
+}
+
+// Cella della parola italiana in admin: input editabile + "scarta riga".
+// `badgeHtml` (stato vs index) viene passato solo nella vista singolo dialetto.
+function adminItCellHtml(e, badgeHtml) {
+  const it = escapeAttr(e.it);
+  return `<input type="text" class="it-edit" value="${it}" data-it="${it}"
+            onchange="onAdminItChange(this)" title="Modifica la parola italiana">
+          ${badgeHtml || ''}
+          <button class="btn-scarta-voce" data-action="scarta" data-it="${it}" title="Scarta intera voce">scarta riga</button>`;
 }
 
 function adminContaOK() {
@@ -3847,7 +4015,7 @@ async function adminSalvaSuGitHub() {
   const n = adminModifiedKeys.size;
   if (!n) { alert('Nessuna modifica.'); return; }
   if (!adminAssicuraToken()) return;
-  if (!confirm(`Salvare ${n} voci modificate in dialetti.html?\n\nNessun bump di VOC_VERSION (non tocca index).`)) return;
+  if (!confirm(`Salvare ${n} voci modificate in dialetti.html?\n\nBranch: ${GH_BRANCH}${GH_BRANCH_IS_PROD ? ' (PRODUZIONE)' : ' (test)'}\nNessun bump di VOC_VERSION (non tocca index).`)) return;
   const btn = document.getElementById('btn-gh-save');
   btn.disabled = true; btn.textContent = '⏳ Salvataggio…';
   try {
@@ -4007,7 +4175,8 @@ async function adminPromuovi() {
   const anteprima = ok.slice(0, 10).map(v => '  · ' + v.it).join('\n');
   const extra = ok.length > 10 ? `\n  …e altre ${ok.length - 10}` : '';
   if (!confirm(
-    `🚀 Promuovere ${ok.length} voci a index.html?\n\n${anteprima}${extra}\n\n` +
+    `🚀 Promuovere ${ok.length} voci a index.html?\n\n` +
+    `Branch: ${GH_BRANCH}${GH_BRANCH_IS_PROD ? ' (PRODUZIONE)' : ' (test)'}\n\n${anteprima}${extra}\n\n` +
     `Sarà fatto:\n` +
     `  1. PUT index.html — aggiunge/aggiorna le voci, bumpa VOC_VERSION\n` +
     `  2. PUT dialetti.html — rimuove le voci promosse dai candidati\n\n` +
@@ -4353,7 +4522,9 @@ function setTipo(val, el) {
 }
 
 function getDialectName() {
-  return currentDialect === 'new' ? (customDialectName || 'Nuovo dialetto') : DIALECT_NAMES[currentDialect];
+  if (currentDialect === 'new') return customDialectName || 'Nuovo dialetto';
+  if (currentDialect === 'all') return 'Tutti i dialetti';
+  return DIALECT_NAMES[currentDialect];
 }
 
 function sortBy(col) {
@@ -4375,14 +4546,20 @@ function sortBy(col) {
 
 function renderTable() {
   const q = document.getElementById('search').value.trim().toLowerCase();
-  const col = DIALECT_COL[currentDialect];
   const isNew = currentDialect === 'new';
+  const isAll = ADMIN && currentDialect === 'all';
+  const col = isAll ? null : DIALECT_COL[currentDialect];
   const sourceVoc = ADMIN ? adminVoc : CANDIDATI;
 
   // Update column headers
   if (ADMIN) {
-    document.getElementById('col-existing').textContent = isNew ? '—' : `📚 In index (${getDialectName()})`;
-    document.getElementById('col-new').textContent = `✏️ Candidato — ${getDialectName()}`;
+    if (isAll) {
+      document.getElementById('col-existing').textContent = '🌐 Tutti i dialetti — 📚 index vs ✏️ candidato (editabile)';
+      document.getElementById('col-new').textContent = '';
+    } else {
+      document.getElementById('col-existing').textContent = isNew ? '—' : `📚 In index (${getDialectName()})`;
+      document.getElementById('col-new').textContent = `✏️ Candidato — ${getDialectName()}`;
+    }
   } else {
     document.getElementById('col-existing').textContent = isNew ? '—' : `Già in ${getDialectName()}`;
     document.getElementById('col-new').textContent = `✏️ ${getDialectName()}`;
@@ -4390,11 +4567,11 @@ function renderTable() {
 
   let rows = sourceVoc.filter(e => {
     if (q.length >= 2 && !e.it.toLowerCase().includes(q)) return false;
-    if (showMissing === 'missing' && !isNew && e[col]) return false;
+    if (showMissing === 'missing' && !isNew && !isAll && !dialMancante(e, col)) return false;
     if (ADMIN) {
       if (vaglioFilter === 'pronti' && !e.ok) return false;
       if (vaglioFilter === 'da-vagliare' && e.ok) return false;
-      if (tipoFilter !== 'all' && !isNew && adminIndexVoc.length) {
+      if (tipoFilter !== 'all' && !isNew && !isAll && adminIndexVoc.length) {
         if (adminVoceStato(e, col).kind !== tipoFilter) return false;
       }
     }
@@ -4405,6 +4582,49 @@ function renderTable() {
   tbody.innerHTML = '';
 
   rows.forEach(e => {
+    const tr = document.createElement('tr');
+    tr.dataset.it = e.it;
+    if (ADMIN && adminModifiedKeys.has(e.it)) tr.classList.add('row-modified');
+    if (ADMIN && e.ok) tr.classList.add('row-ok');
+
+    const okChecked = (ADMIN && e.ok) ? 'checked' : '';
+    const okCellHtml = ADMIN
+      ? `<td class="td-ok"><div class="ok-cell">
+           <input type="checkbox" class="ok-checkbox" ${okChecked}
+             data-action="toggle-ok" data-it="${escapeAttr(e.it)}"
+             title="Marca OK = pronta per promozione a index">
+         </div></td>`
+      : `<td class="td-ok"></td>`;
+
+    // ── Vista "Tutti i dialetti" (admin): tutti e 4 i dialetti affiancati ──
+    if (isAll) {
+      const blocks = DIALECT_ALL_COLS.map(dc => {
+        const idx = adminIndexByIt.get(adminRowKey(e));
+        const idxVal = idx ? (idx[dc] || '') : '';
+        let badge = '';
+        if (adminIndexVoc.length) {
+          const st = adminVoceStato(e, dc);
+          badge = `<span class="stato-badge stato-${st.kind}">${st.label}</span>`;
+        }
+        return `<div class="ad-dial-block">
+            <div class="ad-dial-head">
+              <span class="ad-dial-label ${dc}">${DIALECT_CHIP_LABEL[dc]}</span>
+              ${badge}
+            </div>
+            <div class="ad-dial-index ${idxVal?'has':''}">📚 ${idxVal ? escapeHtml(idxVal) : '— (non in index)'}</div>
+            ${adminCellHtml(e, dc)}
+          </div>`;
+      }).join('');
+      tr.innerHTML = `
+        ${okCellHtml}
+        <td class="td-it">${adminItCellHtml(e, '')}</td>
+        <td><span class="tema-badge">${TEMI_LABEL[e.tema]||e.tema||'–'}</span></td>
+        <td class="td-multi" colspan="2"><div class="ad-dial-grid">${blocks}</div></td>`;
+      tbody.appendChild(tr);
+      return;
+    }
+
+    // ── Vista singolo dialetto ──
     // In admin: la colonna "Già presente" mostra il valore di INDEX (per confronto).
     // In public: continua a mostrare il valore del candidato.
     let existing;
@@ -4416,10 +4636,6 @@ function renderTable() {
       existing = e[col] || '';
     }
     const contributed = contributions[e.it] || '';
-    const tr = document.createElement('tr');
-    tr.dataset.it = e.it;
-    if (ADMIN && adminModifiedKeys.has(e.it)) tr.classList.add('row-modified');
-    if (ADMIN && e.ok) tr.classList.add('row-ok');
 
     // Badge stato (solo admin, solo se index è caricato e dialetto non è "new")
     let badgeHtml = '';
@@ -4429,22 +4645,11 @@ function renderTable() {
                    <span class="stato-detail">${escapeHtml(st.detail)}</span>`;
     }
 
-    const okChecked = (ADMIN && e.ok) ? 'checked' : '';
-    const okCellHtml = ADMIN
-      ? `<td class="td-ok"><div class="ok-cell">
-           <input type="checkbox" class="ok-checkbox" ${okChecked}
-             data-action="toggle-ok" data-it="${escapeAttr(e.it)}"
-             title="Marca OK = pronta per promozione a index">
-         </div></td>`
-      : `<td class="td-ok"></td>`;
-
-    const itCellExtra = ADMIN
-      ? `${badgeHtml}<button class="btn-scarta-voce" data-action="scarta" data-it="${escapeAttr(e.it)}" title="Scarta intera voce">scarta riga</button>`
-      : '';
+    const itCellHtml = ADMIN ? adminItCellHtml(e, badgeHtml) : escapeHtml(e.it);
 
     tr.innerHTML = `
       ${okCellHtml}
-      <td class="td-it">${escapeHtml(e.it)}${itCellExtra}</td>
+      <td class="td-it">${itCellHtml}</td>
       <td><span class="tema-badge">${TEMI_LABEL[e.tema]||e.tema||'–'}</span></td>
       <td class="td-existing ${existing?'has-value':''}">${adminExistingCellHtml(existing)}</td>
       <td class="td-input-wrap">
@@ -4478,10 +4683,21 @@ function onInput(input) {
 }
 
 function updateProgress() {
-  const col = DIALECT_COL[currentDialect];
   const isNew = currentDialect === 'new';
+  const isAll = ADMIN && currentDialect === 'all';
+  const col = DIALECT_COL[currentDialect];
   const src = ADMIN ? adminVoc : CANDIDATI;
-  const missing = isNew ? src.length : src.filter(e => !e[col]).length;
+  // In vista "Tutti i dialetti" non ha senso un singolo conteggio di mancanti:
+  // mostra solo il totale delle voci candidate.
+  if (isAll) {
+    document.getElementById('prog-missing').textContent = src.length;
+    document.getElementById('prog-compiled').textContent = adminModifiedKeys.size;
+    document.getElementById('prog-fill').style.width = '0%';
+    document.getElementById('prog-label-text').textContent =
+      `Tutti i dialetti — ${src.length} voci candidate, ${adminModifiedKeys.size} modificate ora`;
+    return;
+  }
+  const missing = isNew ? src.length : src.filter(e => dialMancante(e, col)).length;
   const filled = Object.keys(contributions).length;
   const pct = missing > 0 ? Math.round(filled / missing * 100) : 0;
 
@@ -4493,10 +4709,15 @@ function updateProgress() {
 }
 
 function updateStats() {
-  const col = DIALECT_COL[currentDialect];
   const isNew = currentDialect === 'new';
+  const isAll = ADMIN && currentDialect === 'all';
+  const col = DIALECT_COL[currentDialect];
   const src = ADMIN ? adminVoc : CANDIDATI;
   const total = src.length;
+  if (isAll) {
+    document.getElementById('stats-badge').textContent = `Tutti i dialetti: ${total} voci`;
+    return;
+  }
   const present = isNew ? 0 : src.filter(e => e[col]).length;
   document.getElementById('stats-badge').textContent =
     isNew ? `${total} parole` : `${getDialectName()}: ${present}/${total} parole`;
@@ -4631,7 +4852,23 @@ if (ADMIN) {
   document.body.classList.add('admin');
   // In admin: carica subito il vocabolario reale da GitHub.
   // Nel frattempo la tabella è vuota; appena adminCaricaDaGitHub termina chiama renderTable().
-  document.title = '🔒 ADMIN — Editor dialetti | LinguaeQuiz';
+  document.title = (GH_BRANCH_IS_PROD ? '🔒' : '🧪 ' + GH_BRANCH + ' —') + ' ADMIN — Editor dialetti | LinguaeQuiz';
+  // Badge branch: verde "main" in produzione, arancione evidente per branch di test
+  const branchBadge = document.getElementById('admin-branch-badge');
+  if (branchBadge) {
+    branchBadge.style.display = 'inline-block';
+    if (GH_BRANCH_IS_PROD) {
+      branchBadge.textContent = '🌿 main';
+      branchBadge.style.background = 'rgba(34,197,94,0.25)';
+      branchBadge.style.color = '#86efac';
+      branchBadge.title = 'Salva/Promuovi scrivono sul branch di PRODUZIONE (main)';
+    } else {
+      branchBadge.textContent = '🧪 TEST: ' + GH_BRANCH;
+      branchBadge.style.background = '#d97706';
+      branchBadge.style.color = '#fff';
+      branchBadge.title = 'Branch di test: Salva/Promuovi scrivono su "' + GH_BRANCH + '", NON sulla produzione';
+    }
+  }
   adminCaricaConfigAI();
   // Ripristina la preferenza AI fill (default off)
   const aiOn = localStorage.getItem(AI_FILL_PREF_LS) === '1';
