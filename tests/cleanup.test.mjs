@@ -50,11 +50,15 @@ function makeCtx({ confirmReturns = true } = {}) {
   const sandbox = {
     ADMIN: true,
     DIALECT_ALL_COLS: COLS.slice(),
+    DIALECT_COL: { mn: 'mn', sp: 'sp', cr: 'cr', ge: 'ge' },
+    DIALECT_NAMES: { mn: 'Manarolese', sp: 'Spezzino', cr: 'Carrarino', ge: 'Genovese' },
     GH_BRANCH: 'dev',
+    currentDialect: 'sp',
     adminVoc: JSON.parse(JSON.stringify(CAND)),
     adminIndexVoc: VOC,
     adminIndexByIt: new Map(),
     adminModifiedKeys: new Set(),
+    adminOriginalKeys: new Map(),
     // stub DOM/IO
     alert: () => {},
     confirm: () => confirmReturns,
@@ -64,7 +68,7 @@ function makeCtx({ confirmReturns = true } = {}) {
   };
   const ctx = vm.createContext(sandbox);
   // funzioni reali estratte dal sorgente
-  const fns = ['adminRowKey', 'voceUtile', 'dialMancante', 'adminPulisciGiaInIndex']
+  const fns = ['adminRowKey', 'voceUtile', 'dialMancante', 'adminPulisciGiaInIndex', 'adminImportaDaIndex', 'adminScartaGiaInIndex']
     .map(n => extractFn(DIAL, n)).join('\n\n');
   vm.runInContext(fns, ctx);
   // popola la mappa di lookup come fa adminCaricaDaGitHub
@@ -80,27 +84,34 @@ test('ci sono candidati già coperti da index (precondizione del bug)', () => {
   assert.ok(sandbox.adminVoc.length === CAND.length, 'copia di lavoro intatta prima della pulizia');
 });
 
-test('la pulizia rimuove righe e svuota celle duplicate (confirm = OK)', () => {
+test('la pulizia: dopo l\'esecuzione non restano duplicati né voci interamente coperte', () => {
   const { ctx, sandbox } = makeCtx({ confirmReturns: true });
   const prima = sandbox.adminVoc.length;
   vm.runInContext('adminPulisciGiaInIndex();', ctx);
   const dopo = sandbox.adminVoc.length;
 
-  assert.ok(dopo < prima, `il totale deve calare: prima=${prima} dopo=${dopo}`);
+  // La pulizia non può AUMENTARE le voci (vale anche se i dati erano già puliti).
+  assert.ok(dopo <= prima, `il totale non deve crescere: prima=${prima} dopo=${dopo}`);
 
-  // Invariante: nessuna riga superstite deve avere una cella IDENTICA a index
   const byIt = new Map(); VOC.forEach(v => byIt.set((v.it || '').toLowerCase().trim(), v));
+  const utile = e => { // replica di voceUtile
+    const idx = byIt.get((e.it || '').toLowerCase().trim());
+    if (!idx) return true;
+    return COLS.some(c => { const v = (e[c] || '').trim(); return v && v !== (idx[c] || '').trim(); });
+  };
+  // Invariante 1: nessuna cella superstite identica a index (duplicato)
   let dupResidui = 0;
+  // Invariante 2: nessuna voce superstite interamente coperta da index
+  let copertiResidui = 0;
   for (const e of sandbox.adminVoc) {
     const idx = byIt.get((e.it || '').toLowerCase().trim());
     if (!idx) continue;
-    for (const c of COLS) {
-      const v = (e[c] || '').trim();
-      if (v && v === (idx[c] || '').trim()) dupResidui++;
-    }
+    for (const c of COLS) { const v = (e[c] || '').trim(); if (v && v === (idx[c] || '').trim()) dupResidui++; }
+    if (!utile(e)) copertiResidui++;
   }
   assert.equal(dupResidui, 0, 'non devono restare celle dialetto identiche a index');
-  console.log(`    rimosse ${prima - dopo} righe; ${sandbox.adminModifiedKeys.size} voci marcate modificate`);
+  assert.equal(copertiResidui, 0, 'non devono restare voci interamente coperte da index');
+  console.log(`    rimosse ${prima - dopo} righe (0 è ok se i dati erano già puliti)`);
 });
 
 test('annullando il confirm NON cambia nulla (confirm = Annulla)', () => {
@@ -109,6 +120,78 @@ test('annullando il confirm NON cambia nulla (confirm = Annulla)', () => {
   vm.runInContext('adminPulisciGiaInIndex();', ctx);
   assert.equal(sandbox.adminVoc.length, prima, 'con Annulla il totale resta invariato');
   assert.equal(sandbox.adminModifiedKeys.size, 0, 'con Annulla nessuna modifica registrata');
+});
+
+test('importa da index: aggiunge le voci index che mancano del dialetto (nessuna resta fuori)', () => {
+  const { ctx, sandbox } = makeCtx({ confirmReturns: true });
+  sandbox.currentDialect = 'sp';
+  const key = v => (v.it || '').toLowerCase().trim();
+  const haCand = new Set(CAND.map(key));
+  const atteso = VOC.filter(v => v.it && !(v.sp || '').trim() && !haCand.has(key(v))).length;
+
+  const prima = sandbox.adminVoc.length;
+  vm.runInContext('adminImportaDaIndex();', ctx);
+  const aggiunte = sandbox.adminVoc.length - prima;
+  assert.equal(aggiunte, atteso, `aggiunte ${aggiunte}, attese ${atteso} (0 è ok se già importate)`);
+
+  // Invariante: dopo l'import nessuna voce index senza sp resta fuori dai candidati
+  const candKeys = new Set(sandbox.adminVoc.map(key));
+  const restano = VOC.filter(v => v.it && !(v.sp || '').trim() && !candKeys.has(key(v))).length;
+  assert.equal(restano, 0, 'nessuna voce index senza sp deve restare fuori dai candidati');
+
+  // Le voci nuove (non presenti prima) devono avere sp vuoto
+  const nuove = sandbox.adminVoc.filter(v => !haCand.has(key(v)));
+  assert.ok(nuove.every(v => !(v.sp || '').trim()), 'le voci importate devono avere sp vuoto');
+  console.log(`    importate ${aggiunte} voci (sp) da index`);
+});
+
+test('importa da index: niente duplicati e no-op su Annulla', () => {
+  // Annulla: nessuna aggiunta
+  const a = makeCtx({ confirmReturns: false });
+  a.sandbox.currentDialect = 'sp';
+  const prima = a.sandbox.adminVoc.length;
+  vm.runInContext('adminImportaDaIndex();', a.ctx);
+  assert.equal(a.sandbox.adminVoc.length, prima, 'con Annulla non aggiunge nulla');
+
+  // Doppio import consecutivo: il secondo non deve aggiungere nulla (già candidate)
+  const b = makeCtx({ confirmReturns: true });
+  b.sandbox.currentDialect = 'sp';
+  vm.runInContext('adminImportaDaIndex();', b.ctx);
+  const dopoPrimo = b.sandbox.adminVoc.length;
+  vm.runInContext('adminImportaDaIndex();', b.ctx);
+  assert.equal(b.sandbox.adminVoc.length, dopoPrimo, 'il secondo import non deve creare duplicati');
+});
+
+test('scarta già-in-index: rimuove le voci con dialetto vuoto ma presente in index', () => {
+  const { ctx, sandbox } = makeCtx({ confirmReturns: true });
+  sandbox.currentDialect = 'sp';
+  const byIt = new Map(); VOC.forEach(v => byIt.set((v.it || '').toLowerCase().trim(), v));
+  // atteso: candidati con sp vuoto ma index ha sp
+  const atteso = sandbox.adminVoc.filter(e => {
+    if ((e.sp || '').trim()) return false;
+    const idx = byIt.get((e.it || '').toLowerCase().trim());
+    return idx && (idx.sp || '').trim();
+  }).length;
+  assert.ok(atteso > 0, 'precondizione: ci sono voci «già in index» per sp');
+  const prima = sandbox.adminVoc.length;
+  vm.runInContext('adminScartaGiaInIndex();', ctx);
+  assert.equal(prima - sandbox.adminVoc.length, atteso, `attese ${atteso} voci scartate`);
+  // nessuna voce superstite deve essere «già in index» per sp
+  const resta = sandbox.adminVoc.some(e => {
+    if ((e.sp || '').trim()) return false;
+    const idx = byIt.get((e.it || '').toLowerCase().trim());
+    return idx && (idx.sp || '').trim();
+  });
+  assert.equal(resta, false, 'non devono restare voci «già in index» per sp');
+  console.log(`    scartate ${atteso} voci «già in index» (sp)`);
+});
+
+test('scarta già-in-index: no-op su Annulla', () => {
+  const { ctx, sandbox } = makeCtx({ confirmReturns: false });
+  sandbox.currentDialect = 'sp';
+  const prima = sandbox.adminVoc.length;
+  vm.runInContext('adminScartaGiaInIndex();', ctx);
+  assert.equal(sandbox.adminVoc.length, prima, 'con Annulla non rimuove nulla');
 });
 
 test('dialMancante: una parola già in index NON è mancante', () => {
