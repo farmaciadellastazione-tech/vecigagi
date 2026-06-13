@@ -2203,7 +2203,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mestieri", livello:"A2", it:"contratto", en:"contract", fr:"contrat", es:"contrato", de:"Vertrag", pt:"contrato", ko:"계약", ar:"عقد", zh:"合同", ja:"契約", ia:"contracto", la:"pactum", grc:"συμβόλαιον" },
       { tema:"farmaci", livello:"B2", it:"controindicazione", en:"contraindication", fr:"contre-indication", es:"contraindicación", de:"Kontraindikation", pt:"contraindicação|contraindicacao", ko:"금기사항", ar:"موانع الاستخدام", zh:"禁忌症", ja:"禁忌" },
       { tema:"cibo", livello:"A2", it:"coppa", en:"cold cuts", fr:"charcuterie", es:"embutidos", de:"Aufschnitt", pt:"frios", ru:"чашка", ca:"copa", sp:"cópa", mn:"cupa", ge:"coppa", ro:"cană", src:{"mn":"🤖 IA"}, verif:"mn:g" },
-      { tema:"verbi", livello:"A2", it:"coprire", mn:"cruii", verif:"mn:g" },
+      { tema:"verbi", livello:"A2", it:"coprire", sp:"crovie", mn:"cruii", verif:"sp:g", src:{"sp":"🔗 dialetti.html"} },
       { tema:"biologia", livello:"B2", it:"copulare", en:"mate", fr:"baiser", es:"copular", de:"begatten", pt:"acoplar", ru:"спариваться", ca:"copular", sp:"beciaaae/beciae", mn:"becciaa/béciaa", ge:"beciaaa/beciâ", ko:"교미하다", ar:"تزاوج", zh:"交配", ja:"交尾する", ia:"copular", la:"coire", grc:"συζεύγνυμι", ro:"a copula", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"B1", it:"coraggioso", en:"brave", fr:"courageux", es:"valiente", de:"mutig", pt:"corajoso", ru:"храбрый", ca:"valent" },
       { tema:"aggettivi", livello:"A2", it:"cordiale|socievole|amichevole", en:"friendly", fr:"aimable|sociable", es:"simpático", de:"freundlich", pt:"simpático", ru:"дружелюбный", ca:"amable" },
@@ -2917,7 +2917,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A2", it:"ricetta", en:"recipe", fr:"recette", es:"receta", de:"Rezept", pt:"receita", ru:"рецепт", ca:"recepta", sp:"ressèta", ko:"레시피", ar:"وصفة", zh:"食谱", ja:"レシピ", ia:"recepta", la:"praescriptum", grc:"συνταγή", ro:"rețetă", src:{"sp":"📕 Capellini"}, verif:"sp:g" },
       { tema:"verbi", livello:"A2", it:"ricevere", en:"receive", fr:"recevoir", es:"recibir", de:"erhalten|bekommen", pt:"receber", ru:"получать", ca:"rebre" },
       { tema:"verbi", livello:"B1", it:"ricordare", en:"remember", fr:"se souvenir", es:"recordar", de:"erinnern", pt:"lembrar", ru:"помнить", ca:"recordar", sp:"sovegnie, arecordae", mn:"sovegnie, arecordae", cr:"arcordar", ge:"sovvegnìsseh/sovvegnise", ko:"기억하다", ar:"يتذكر", zh:"记得", ja:"覚える", ia:"memorar", la:"meminisse", grc:"μνημονεύειν", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
-      { tema:"verbi", livello:"A1", it:"ridere", en:"laugh", fr:"rire", es:"reír", de:"lachen", pt:"rir", ru:"смеяться", ca:"riure", sp:"", mn:"ride", cr:"rid'r", ge:"rî", ko:"웃다", ar:"يضحك", zh:"笑", ja:"笑う", ia:"rider", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"verbi", livello:"A1", it:"ridere", en:"laugh", fr:"rire", es:"reír", de:"lachen", pt:"rir", ru:"смеяться", ca:"riure", sp:"arìde, ride", mn:"ride", cr:"rid'r", ge:"rî", ko:"웃다", ar:"يضحك", zh:"笑", ja:"笑う", ia:"rider", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"verbi", livello:"A2", it:"riempire", en:"fill", fr:"remplir", es:"llenar", de:"füllen", pt:"encher", ru:"наполнять", ca:"omplir", sp:"areencie, reencie", mn:"areencii, reencii", ge:"impii/impi", ia:"plenar", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"verbi", livello:"B1", it:"rifiutare", en:"refuse", fr:"refuser", es:"rechazar", de:"ablehnen|verweigern", pt:"recusar", ru:"отказываться", ca:"refusar|negar-se", sp:"refüdààe/ refüdàe", mn:"refüdaa", ge:"refuâ", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"B2", it:"rigido", en:"stiff", fr:"raide|rigide", es:"rígido", de:"steif", pt:"rígido", ru:"жёсткий|негнущийся", ca:"rígid", sp:"sténco|rèdeno", mn:"sténcu, rédenu", verif:"sp:g" },
@@ -3357,7 +3357,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 311;
+const VOC_VERSION = 312;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
