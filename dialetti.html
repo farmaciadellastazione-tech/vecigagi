@@ -780,6 +780,35 @@
   body.admin th.col-ok, body.admin td.td-ok { display: table-cell; }
   th.col-ok, td.td-ok { display: none; }
 
+  /* Editor inline della parola italiana (admin) */
+  body.admin .td-it .it-edit {
+    width: 100%;
+    box-sizing: border-box;
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 15px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    padding: 5px 7px;
+    background: #f1f5f9;
+  }
+  body.admin .td-it .it-edit:hover { border-color: #cbd5e1; background: #fff; }
+  body.admin .td-it .it-edit:focus { outline: none; border-color: var(--accent); background: #fff; }
+
+  /* Vista "Tutti i dialetti" (admin) */
+  td.td-multi { vertical-align: top; }
+  .ad-dial-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .ad-dial-block { border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 8px; background: #fff; }
+  .ad-dial-head { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap; }
+  .ad-dial-label { font-weight: 700; font-size: 12px; }
+  .ad-dial-label.mn { color: var(--mn); }
+  .ad-dial-label.sp { color: var(--sp); }
+  .ad-dial-label.cr { color: var(--cr); }
+  .ad-dial-label.ge { color: var(--ge); }
+  .ad-dial-index { font-size: 12px; color: #94a3b8; font-style: italic; margin-bottom: 4px; }
+  .ad-dial-index.has { color: #0c4a6e; font-style: normal; }
+  .ad-dial-block .admin-cell { display: flex; }
+
   /* Pulsante scarta voce intera */
   .btn-scarta-voce {
     background: none;
@@ -937,6 +966,7 @@
       <div class="chip sp active" data-dialect="sp" onclick="setDialect('sp',this)">⚓ Spezzino</div>
       <div class="chip cr" data-dialect="cr" onclick="setDialect('cr',this)">🪨 Carrarino</div>
       <div class="chip ge" data-dialect="ge" onclick="setDialect('ge',this)">🏛️ Genovese</div>
+      <div class="chip all-dialects admin-only" data-dialect="all" onclick="setDialect('all',this)">🌐 Tutti i dialetti</div>
       <div class="chip new-dialect public-only" data-dialect="new" onclick="setDialect('new',this)">✨ Altro dialetto…</div>
     </div>
     <span class="filter-label" style="margin-left:8px">Cerca:</span>
@@ -3223,6 +3253,9 @@ let contributions = {}; // {it_word: translation}
 
 const DIALECT_NAMES = {mn:'Manarolese', sp:'Spezzino', cr:'Carrarino', ge:'Genovese'};
 const DIALECT_COL = {mn:'mn', sp:'sp', cr:'cr', ge:'ge'};
+// Codici dialetto mostrati nella vista "Tutti i dialetti" (admin), in ordine
+const DIALECT_ALL_COLS = ['mn','sp','cr','ge'];
+const DIALECT_CHIP_LABEL = {mn:'🏖️ Manarolese', sp:'⚓ Spezzino', cr:'🪨 Carrarino', ge:'🏛️ Genovese'};
 
 // ──────────────────────────────────────────────────────────────────────────
 // MODALITÀ ADMIN — attivata con ?admin=1
@@ -3413,6 +3446,54 @@ function adminScartaVoce(it) {
   adminModifiedKeys.add(it); // forza il save
   adminUpdateBadges();
   renderTable();
+}
+
+// Rinomina la parola italiana di una voce candidata.
+// `it` è la CHIAVE usata ovunque (adminVoc.find, adminModifiedKeys, data-it,
+// adminOriginalKeys), quindi va migrata con cura.
+function adminAggiornaIt(oldIt, newIt, inputEl) {
+  newIt = (newIt || '').trim();
+  if (newIt === oldIt) return;
+  const voce = adminVoc.find(v => v.it === oldIt);
+  if (!voce) return;
+  if (!newIt) {
+    alert('La parola italiana non può essere vuota.\nPer eliminare l\'intera voce usa "scarta riga".');
+    if (inputEl) inputEl.value = oldIt;
+    return;
+  }
+  const collide = adminVoc.find(v => v !== voce && (v.it || '').toLowerCase() === newIt.toLowerCase());
+  if (collide) {
+    alert(`Esiste già una voce candidata "${collide.it}".\nScegli un altro testo (o unisci le voci a mano).`);
+    if (inputEl) inputEl.value = oldIt;
+    return;
+  }
+  const oldKey = (oldIt || '').toLowerCase().trim();
+  const newKey = newIt.toLowerCase().trim();
+  voce.it = newIt;
+  // Migra il set delle modifiche (chiave = valore `it`)
+  adminModifiedKeys.delete(oldIt);
+  adminModifiedKeys.add(newIt);
+  // Migra la mappa delle chiavi originali (per preservare i campi `""`)
+  if (oldKey !== newKey && adminOriginalKeys.has(oldKey)) {
+    adminOriginalKeys.set(newKey, adminOriginalKeys.get(oldKey));
+    adminOriginalKeys.delete(oldKey);
+  }
+  adminUpdateBadges();
+  renderTable();
+}
+
+function onAdminItChange(input) {
+  adminAggiornaIt(input.dataset.it, input.value, input);
+}
+
+// Cella della parola italiana in admin: input editabile + "scarta riga".
+// `badgeHtml` (stato vs index) viene passato solo nella vista singolo dialetto.
+function adminItCellHtml(e, badgeHtml) {
+  const it = escapeAttr(e.it);
+  return `<input type="text" class="it-edit" value="${it}" data-it="${it}"
+            onchange="onAdminItChange(this)" title="Modifica la parola italiana">
+          ${badgeHtml || ''}
+          <button class="btn-scarta-voce" data-action="scarta" data-it="${it}" title="Scarta intera voce">scarta riga</button>`;
 }
 
 function adminContaOK() {
@@ -4360,7 +4441,9 @@ function setTipo(val, el) {
 }
 
 function getDialectName() {
-  return currentDialect === 'new' ? (customDialectName || 'Nuovo dialetto') : DIALECT_NAMES[currentDialect];
+  if (currentDialect === 'new') return customDialectName || 'Nuovo dialetto';
+  if (currentDialect === 'all') return 'Tutti i dialetti';
+  return DIALECT_NAMES[currentDialect];
 }
 
 function sortBy(col) {
@@ -4382,14 +4465,20 @@ function sortBy(col) {
 
 function renderTable() {
   const q = document.getElementById('search').value.trim().toLowerCase();
-  const col = DIALECT_COL[currentDialect];
   const isNew = currentDialect === 'new';
+  const isAll = ADMIN && currentDialect === 'all';
+  const col = isAll ? null : DIALECT_COL[currentDialect];
   const sourceVoc = ADMIN ? adminVoc : CANDIDATI;
 
   // Update column headers
   if (ADMIN) {
-    document.getElementById('col-existing').textContent = isNew ? '—' : `📚 In index (${getDialectName()})`;
-    document.getElementById('col-new').textContent = `✏️ Candidato — ${getDialectName()}`;
+    if (isAll) {
+      document.getElementById('col-existing').textContent = '🌐 Tutti i dialetti — 📚 index vs ✏️ candidato (editabile)';
+      document.getElementById('col-new').textContent = '';
+    } else {
+      document.getElementById('col-existing').textContent = isNew ? '—' : `📚 In index (${getDialectName()})`;
+      document.getElementById('col-new').textContent = `✏️ Candidato — ${getDialectName()}`;
+    }
   } else {
     document.getElementById('col-existing').textContent = isNew ? '—' : `Già in ${getDialectName()}`;
     document.getElementById('col-new').textContent = `✏️ ${getDialectName()}`;
@@ -4397,11 +4486,11 @@ function renderTable() {
 
   let rows = sourceVoc.filter(e => {
     if (q.length >= 2 && !e.it.toLowerCase().includes(q)) return false;
-    if (showMissing === 'missing' && !isNew && e[col]) return false;
+    if (showMissing === 'missing' && !isNew && !isAll && e[col]) return false;
     if (ADMIN) {
       if (vaglioFilter === 'pronti' && !e.ok) return false;
       if (vaglioFilter === 'da-vagliare' && e.ok) return false;
-      if (tipoFilter !== 'all' && !isNew && adminIndexVoc.length) {
+      if (tipoFilter !== 'all' && !isNew && !isAll && adminIndexVoc.length) {
         if (adminVoceStato(e, col).kind !== tipoFilter) return false;
       }
     }
@@ -4412,6 +4501,49 @@ function renderTable() {
   tbody.innerHTML = '';
 
   rows.forEach(e => {
+    const tr = document.createElement('tr');
+    tr.dataset.it = e.it;
+    if (ADMIN && adminModifiedKeys.has(e.it)) tr.classList.add('row-modified');
+    if (ADMIN && e.ok) tr.classList.add('row-ok');
+
+    const okChecked = (ADMIN && e.ok) ? 'checked' : '';
+    const okCellHtml = ADMIN
+      ? `<td class="td-ok"><div class="ok-cell">
+           <input type="checkbox" class="ok-checkbox" ${okChecked}
+             data-action="toggle-ok" data-it="${escapeAttr(e.it)}"
+             title="Marca OK = pronta per promozione a index">
+         </div></td>`
+      : `<td class="td-ok"></td>`;
+
+    // ── Vista "Tutti i dialetti" (admin): tutti e 4 i dialetti affiancati ──
+    if (isAll) {
+      const blocks = DIALECT_ALL_COLS.map(dc => {
+        const idx = adminIndexByIt.get(adminRowKey(e));
+        const idxVal = idx ? (idx[dc] || '') : '';
+        let badge = '';
+        if (adminIndexVoc.length) {
+          const st = adminVoceStato(e, dc);
+          badge = `<span class="stato-badge stato-${st.kind}">${st.label}</span>`;
+        }
+        return `<div class="ad-dial-block">
+            <div class="ad-dial-head">
+              <span class="ad-dial-label ${dc}">${DIALECT_CHIP_LABEL[dc]}</span>
+              ${badge}
+            </div>
+            <div class="ad-dial-index ${idxVal?'has':''}">📚 ${idxVal ? escapeHtml(idxVal) : '— (non in index)'}</div>
+            ${adminCellHtml(e, dc)}
+          </div>`;
+      }).join('');
+      tr.innerHTML = `
+        ${okCellHtml}
+        <td class="td-it">${adminItCellHtml(e, '')}</td>
+        <td><span class="tema-badge">${TEMI_LABEL[e.tema]||e.tema||'–'}</span></td>
+        <td class="td-multi" colspan="2"><div class="ad-dial-grid">${blocks}</div></td>`;
+      tbody.appendChild(tr);
+      return;
+    }
+
+    // ── Vista singolo dialetto ──
     // In admin: la colonna "Già presente" mostra il valore di INDEX (per confronto).
     // In public: continua a mostrare il valore del candidato.
     let existing;
@@ -4423,10 +4555,6 @@ function renderTable() {
       existing = e[col] || '';
     }
     const contributed = contributions[e.it] || '';
-    const tr = document.createElement('tr');
-    tr.dataset.it = e.it;
-    if (ADMIN && adminModifiedKeys.has(e.it)) tr.classList.add('row-modified');
-    if (ADMIN && e.ok) tr.classList.add('row-ok');
 
     // Badge stato (solo admin, solo se index è caricato e dialetto non è "new")
     let badgeHtml = '';
@@ -4436,22 +4564,11 @@ function renderTable() {
                    <span class="stato-detail">${escapeHtml(st.detail)}</span>`;
     }
 
-    const okChecked = (ADMIN && e.ok) ? 'checked' : '';
-    const okCellHtml = ADMIN
-      ? `<td class="td-ok"><div class="ok-cell">
-           <input type="checkbox" class="ok-checkbox" ${okChecked}
-             data-action="toggle-ok" data-it="${escapeAttr(e.it)}"
-             title="Marca OK = pronta per promozione a index">
-         </div></td>`
-      : `<td class="td-ok"></td>`;
-
-    const itCellExtra = ADMIN
-      ? `${badgeHtml}<button class="btn-scarta-voce" data-action="scarta" data-it="${escapeAttr(e.it)}" title="Scarta intera voce">scarta riga</button>`
-      : '';
+    const itCellHtml = ADMIN ? adminItCellHtml(e, badgeHtml) : escapeHtml(e.it);
 
     tr.innerHTML = `
       ${okCellHtml}
-      <td class="td-it">${escapeHtml(e.it)}${itCellExtra}</td>
+      <td class="td-it">${itCellHtml}</td>
       <td><span class="tema-badge">${TEMI_LABEL[e.tema]||e.tema||'–'}</span></td>
       <td class="td-existing ${existing?'has-value':''}">${adminExistingCellHtml(existing)}</td>
       <td class="td-input-wrap">
@@ -4485,9 +4602,20 @@ function onInput(input) {
 }
 
 function updateProgress() {
-  const col = DIALECT_COL[currentDialect];
   const isNew = currentDialect === 'new';
+  const isAll = ADMIN && currentDialect === 'all';
+  const col = DIALECT_COL[currentDialect];
   const src = ADMIN ? adminVoc : CANDIDATI;
+  // In vista "Tutti i dialetti" non ha senso un singolo conteggio di mancanti:
+  // mostra solo il totale delle voci candidate.
+  if (isAll) {
+    document.getElementById('prog-missing').textContent = src.length;
+    document.getElementById('prog-compiled').textContent = adminModifiedKeys.size;
+    document.getElementById('prog-fill').style.width = '0%';
+    document.getElementById('prog-label-text').textContent =
+      `Tutti i dialetti — ${src.length} voci candidate, ${adminModifiedKeys.size} modificate ora`;
+    return;
+  }
   const missing = isNew ? src.length : src.filter(e => !e[col]).length;
   const filled = Object.keys(contributions).length;
   const pct = missing > 0 ? Math.round(filled / missing * 100) : 0;
@@ -4500,10 +4628,15 @@ function updateProgress() {
 }
 
 function updateStats() {
-  const col = DIALECT_COL[currentDialect];
   const isNew = currentDialect === 'new';
+  const isAll = ADMIN && currentDialect === 'all';
+  const col = DIALECT_COL[currentDialect];
   const src = ADMIN ? adminVoc : CANDIDATI;
   const total = src.length;
+  if (isAll) {
+    document.getElementById('stats-badge').textContent = `Tutti i dialetti: ${total} voci`;
+    return;
+  }
   const present = isNew ? 0 : src.filter(e => e[col]).length;
   document.getElementById('stats-badge').textContent =
     isNew ? `${total} parole` : `${getDialectName()}: ${present}/${total} parole`;
