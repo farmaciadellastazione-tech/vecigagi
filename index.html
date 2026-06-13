@@ -1843,8 +1843,10 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A2", it:"albero", en:"tree", fr:"arbre", es:"árbol", de:"Baum", pt:"árvore|arvore", ru:"дерево", ca:"arbre", sp:"aàrbeoo/àrbeo", mn:"aàrbeeu/arbeu", ge:"èrbo", ko:"나무", ar:"شجرة", zh:"树", ja:"木", ia:"arbore", la:"arbor", grc:"δένδρον", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"albicocca", sp:"balicòcoàa/balicòcoa", mn:"bricocula", ge:"briccocalo, armognin", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"cibo", it:"alga", sp:"àrghena/àrghena", ge:"alga, aiga", verif:"mn:r,sp:g,ge:g" },
+      { tema:"dialetti", it:"alga marina in genere.", sp:"àrghena", mn:"èrbadémaa", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"aggettivi", it:"allampanato", sp:"lünganiòn, pertegòn/lüngagnón|pertegón", mn:"lüngagnùn", cr:"alampanat", ge:"lüngagnon", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"allargare", sp:"slargaae/slargae", mn:"slargaaa/zlargaa", verif:"mn:g" },
+      { tema:"dialetti", it:"allargare.", sp:"slargae", mn:"zlargaa", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"casa", it:"allarme/sveglia", en:"alarm", ge:"alarme/alârme", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
       { tema:"verbi", livello:"A2", it:"allenamento", en:"training", fr:"entraînement", es:"entrenamiento", de:"Training", pt:"treino", sp:"alenamento", mn:"alenaméntu", ge:"alenamentu/alenaménto", ko:"훈련", ar:"تدريب", zh:"训练", ja:"トレーニング", ia:"trainamento", verif:"mn:g,sp:g,ge:g" },
       { tema:"salute", it:"allergia", en:"allergy", ge:"alergîa", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
@@ -3354,7 +3356,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 309;
+const VOC_VERSION = 310;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
