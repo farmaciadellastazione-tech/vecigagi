@@ -1813,6 +1813,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"addormentato", en:"asleep", fr:"endormi", es:"dormido", de:"eingeschlafen", pt:"adormecido", ru:"спящий", ca:"adormit", sp:"adormì", mn:"adurmìi/adurmì", ge:"addurmìu/addormîo", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g,sp:g" },
       { tema:"aggettivi", it:"adesso|ora", en:"now", sp:"adèssa", mn:"aua", ge:"oùwa/oua", verif:"mn:g,sp:g" },
       { tema:"aggettivi", livello:"A1", it:"adesso|ora", en:"now", fr:"maintenant", es:"ahora", de:"jetzt", pt:"agora", sp:"adèssa| ooa/oa", mn:" àua/àua", ge:"oùwa/oua", ko:"지금", ar:"الآن", zh:"现在", ja:"今", ia:"nunc", la:"nunc", grc:"νῦν", verif:"mn:g,sp:g" },
+      { tema:"dialetti", it:"adocchiare, avvistare.", sp:"lumàae/lümàe", mn:"vistaa", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"verbi", it:"adoperare", sp:"devoaae/devoae", ge:"dêuvia", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g" },
       { tema:"luoghi", livello:"A1", it:"aereo", en:"plane", fr:"avion", es:"avión", de:"Flugzeug", pt:"avião|aviao", ru:"самолёт", ca:"avió", ge:"arioplaan/arioplân", ko:"비행기", ar:"طائرة", zh:"飞机", ja:"飛行機", ia:"avion", grc:"ἀεροπλάνον", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
       { tema:"luoghi", livello:"A1", it:"aeroporto", en:"airport", fr:"aéroport", es:"aeropuerto", de:"Flughafen", pt:"aeroporto", ru:"аэропорт", ca:"aeroport", ko:"공항", ar:"مطار", zh:"机场", ja:"空港", ia:"aeroporto", la:"aeroportus", grc:"ἀεροδρόμιο" },
@@ -3351,7 +3352,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 307;
+const VOC_VERSION = 308;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
