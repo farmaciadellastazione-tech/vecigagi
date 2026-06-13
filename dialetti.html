@@ -4409,13 +4409,13 @@ function adminCellHtml(e, col) {
           <span class="lbl-graf">grafia</span>
         </div>
         <div class="admin-fields">
-          <input type="text" class="field-pron" value="${escapeAttr(pron)}" placeholder="es. tintüüa"
+          <input type="text" class="field-pron" value="${escapeAttr(pron)}" placeholder=""
             data-it="${it}" data-col="${col}" data-kind="pron" oninput="onAdminTTSInput(this)">
-          <input type="text" class="field-graf" value="${escapeAttr(graf)}" placeholder="es. tintüa"
+          <input type="text" class="field-graf" value="${escapeAttr(graf)}" placeholder=""
             data-it="${it}" data-col="${col}" data-kind="graf" oninput="onAdminTTSInput(this)">
           <div class="admin-actions">
             <button type="button" class="btn-tts" data-action="speak" title="Ascolta pronuncia">🔊</button>
-            <button type="button" class="btn-del" data-action="cancella-campo" data-it="${it}" data-col="${col}" title="Cancella valore">🗑️</button>
+            <button type="button" class="btn-del" data-action="cancella-campo" data-it="${it}" data-col="${col}" title="Cancella solo il valore ${col} (per eliminare l'intera voce usa «scarta riga»)">🗑️</button>
           </div>
         </div>
       </div>`;
@@ -4423,10 +4423,10 @@ function adminCellHtml(e, col) {
     return `
       <div class="admin-cell">
         <div class="admin-fields">
-          <input type="text" class="field-single" value="${escapeAttr(val)}" placeholder="—"
+          <input type="text" class="field-single" value="${escapeAttr(val)}" placeholder=""
             data-it="${it}" data-col="${col}" data-kind="single" oninput="onAdminSingleInput(this)">
           <div class="admin-actions">
-            <button type="button" class="btn-del" data-action="cancella-campo" data-it="${it}" data-col="${col}" title="Cancella valore">🗑️</button>
+            <button type="button" class="btn-del" data-action="cancella-campo" data-it="${it}" data-col="${col}" title="Cancella solo il valore ${col} (per eliminare l'intera voce usa «scarta riga»)">🗑️</button>
           </div>
         </div>
       </div>`;
