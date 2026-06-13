@@ -122,22 +122,25 @@ test('annullando il confirm NON cambia nulla (confirm = Annulla)', () => {
   assert.equal(sandbox.adminModifiedKeys.size, 0, 'con Annulla nessuna modifica registrata');
 });
 
-test('importa da index: aggiunge le voci che mancano del dialetto selezionato', () => {
+test('importa da index: aggiunge le voci index che mancano del dialetto (nessuna resta fuori)', () => {
   const { ctx, sandbox } = makeCtx({ confirmReturns: true });
   sandbox.currentDialect = 'sp';
+  const key = v => (v.it || '').toLowerCase().trim();
+  const haCand = new Set(CAND.map(key));
+  const atteso = VOC.filter(v => v.it && !(v.sp || '').trim() && !haCand.has(key(v))).length;
+
   const prima = sandbox.adminVoc.length;
-
-  // quante voci index mancano di 'sp' e non sono già candidate (atteso)
-  const haCand = new Set(CAND.map(v => (v.it || '').toLowerCase().trim()));
-  const atteso = VOC.filter(v => v.it && !(v.sp || '').trim() && !haCand.has((v.it || '').toLowerCase().trim())).length;
-  assert.ok(atteso > 0, 'precondizione: ci sono voci index senza sp da importare');
-
   vm.runInContext('adminImportaDaIndex();', ctx);
   const aggiunte = sandbox.adminVoc.length - prima;
-  assert.equal(aggiunte, atteso, `attese ${atteso} voci aggiunte, trovate ${aggiunte}`);
+  assert.equal(aggiunte, atteso, `aggiunte ${aggiunte}, attese ${atteso} (0 è ok se già importate)`);
 
-  // le nuove voci NON devono avere il campo sp (è il lavoro da fare)
-  const nuove = sandbox.adminVoc.filter(v => !haCand.has((v.it || '').toLowerCase().trim()));
+  // Invariante: dopo l'import nessuna voce index senza sp resta fuori dai candidati
+  const candKeys = new Set(sandbox.adminVoc.map(key));
+  const restano = VOC.filter(v => v.it && !(v.sp || '').trim() && !candKeys.has(key(v))).length;
+  assert.equal(restano, 0, 'nessuna voce index senza sp deve restare fuori dai candidati');
+
+  // Le voci nuove (non presenti prima) devono avere sp vuoto
+  const nuove = sandbox.adminVoc.filter(v => !haCand.has(key(v)));
   assert.ok(nuove.every(v => !(v.sp || '').trim()), 'le voci importate devono avere sp vuoto');
   console.log(`    importate ${aggiunte} voci (sp) da index`);
 });
