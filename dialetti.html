@@ -1073,6 +1073,7 @@
   <button class="btn-gh-reset" onclick="adminReset()">Annulla</button>
   <button class="btn-gh-reset" onclick="adminResetToken()" title="Cancella il PAT GitHub salvato">🔑</button>
   <button class="btn-gh-reset" onclick="adminImportApri()" title="Importa traduzioni da un file (HTML/JS/JSON) e proponi modifiche">📤 Importa</button>
+  <button class="btn-gh-reset" onclick="adminPulisciGiaInIndex()" title="Svuota i valori dialetto identici a index e rimuove le voci interamente coperte da index">🧹 Pulisci già-in-index</button>
   <button class="btn-gh-save" id="btn-gh-save" onclick="adminSalvaSuGitHub()" disabled>
     ☁️ Salva su dialetti
   </button>
@@ -3453,6 +3454,87 @@ function adminScartaVoce(it) {
   renderTable();
 }
 
+// "Mancante" per il dialetto `col`: il candidato non ha il valore E (in admin,
+// con index caricato) nemmeno index ce l'ha. In pubblico ricade sul solo
+// campo candidato (adminIndexVoc è vuoto). Evita di chiedere traduzioni che
+// index ha già.
+function dialMancante(e, col) {
+  if (e[col]) return false;
+  if (ADMIN && adminIndexVoc.length) {
+    const idx = adminIndexByIt.get(adminRowKey(e));
+    if (idx && idx[col]) return false;
+  }
+  return true;
+}
+
+// Una voce candidata è "utile" se offre qualcosa che index non ha già:
+// IT non in index (voce nuova) → sempre utile; altrimenti utile se almeno un
+// dialetto arricchisce (index vuoto) o è in conflitto (valore diverso).
+function voceUtile(e) {
+  const idx = adminIndexByIt.get(adminRowKey(e));
+  if (!idx) return true; // IT non presente in index → voce nuova
+  return DIALECT_ALL_COLS.some(col => {
+    const c = (e[col] || '').trim();
+    if (!c) return false;                 // candidato vuoto → niente da offrire
+    return c !== (idx[col] || '').trim(); // arricchisce o conflitto
+  });
+}
+
+// 🧹 Pulizia "già in index": rimuove dai candidati i valori dialetto identici a
+// index (= DUPLICATO) e le voci interamente coperte da index (nessun contributo
+// nuovo). Solo in memoria: serve ☁️ Salva per persistere.
+function adminPulisciGiaInIndex() {
+  if (!adminIndexVoc.length) {
+    alert('Index non caricato: impossibile confrontare.\nRicarica la pagina e riprova.');
+    return;
+  }
+  // Righe interamente coperte da index (da rimuovere) — calcolate sui valori attuali
+  const removable = new Set(adminVoc.filter(e => {
+    const idx = adminIndexByIt.get(adminRowKey(e));
+    return idx && !voceUtile(e);
+  }));
+  // Celle duplicate da svuotare, contate SOLO sulle righe che resteranno
+  let celleDup = 0;
+  adminVoc.forEach(e => {
+    if (removable.has(e)) return;
+    const idx = adminIndexByIt.get(adminRowKey(e));
+    if (!idx) return;
+    DIALECT_ALL_COLS.forEach(col => {
+      const c = (e[col] || '').trim();
+      if (c && c === (idx[col] || '').trim()) celleDup++;
+    });
+  });
+  if (!celleDup && !removable.size) {
+    alert('✅ Niente da pulire: nessun valore candidato risulta già presente identico in index.');
+    return;
+  }
+  if (!confirm(
+    `🧹 Pulizia "già in index":\n\n` +
+    `• ${celleDup} valori dialetto identici a index → svuotati dalle celle\n` +
+    `• ${removable.size} voci interamente coperte da index → rimosse dai candidati\n\n` +
+    `(le voci con IT non in index, gli arricchimenti e i conflitti restano intatti)\n\n` +
+    `Modifiche solo in memoria: premi ☁️ Salva per persistere su "${GH_BRANCH}".\n\nProcedere?`
+  )) return;
+  // Applica: svuota le celle duplicate sulle righe che restano
+  adminVoc.forEach(e => {
+    if (removable.has(e)) return;
+    const idx = adminIndexByIt.get(adminRowKey(e));
+    if (!idx) return;
+    DIALECT_ALL_COLS.forEach(col => {
+      const c = (e[col] || '').trim();
+      if (c && c === (idx[col] || '').trim()) { delete e[col]; adminModifiedKeys.add(e.it); }
+    });
+  });
+  // Rimuovi le righe interamente coperte
+  removable.forEach(e => {
+    const i = adminVoc.indexOf(e);
+    if (i >= 0) { adminVoc.splice(i, 1); adminModifiedKeys.add(e.it); }
+  });
+  adminUpdateBadges();
+  renderTable();
+  adminLog(`🧹 Svuotate ${celleDup} celle e rimosse ${removable.size} voci (in memoria — ricorda ☁️ Salva)`, 'success');
+}
+
 // Rinomina la parola italiana di una voce candidata.
 // `it` è la CHIAVE usata ovunque (adminVoc.find, adminModifiedKeys, data-it,
 // adminOriginalKeys), quindi va migrata con cura.
@@ -4492,7 +4574,7 @@ function renderTable() {
 
   let rows = sourceVoc.filter(e => {
     if (q.length >= 2 && !e.it.toLowerCase().includes(q)) return false;
-    if (showMissing === 'missing' && !isNew && !isAll && e[col]) return false;
+    if (showMissing === 'missing' && !isNew && !isAll && !dialMancante(e, col)) return false;
     if (ADMIN) {
       if (vaglioFilter === 'pronti' && !e.ok) return false;
       if (vaglioFilter === 'da-vagliare' && e.ok) return false;
@@ -4622,7 +4704,7 @@ function updateProgress() {
       `Tutti i dialetti — ${src.length} voci candidate, ${adminModifiedKeys.size} modificate ora`;
     return;
   }
-  const missing = isNew ? src.length : src.filter(e => !e[col]).length;
+  const missing = isNew ? src.length : src.filter(e => dialMancante(e, col)).length;
   const filled = Object.keys(contributions).length;
   const pct = missing > 0 ? Math.round(filled / missing * 100) : 0;
 
