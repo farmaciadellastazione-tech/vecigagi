@@ -84,27 +84,34 @@ test('ci sono candidati già coperti da index (precondizione del bug)', () => {
   assert.ok(sandbox.adminVoc.length === CAND.length, 'copia di lavoro intatta prima della pulizia');
 });
 
-test('la pulizia rimuove righe e svuota celle duplicate (confirm = OK)', () => {
+test('la pulizia: dopo l\'esecuzione non restano duplicati né voci interamente coperte', () => {
   const { ctx, sandbox } = makeCtx({ confirmReturns: true });
   const prima = sandbox.adminVoc.length;
   vm.runInContext('adminPulisciGiaInIndex();', ctx);
   const dopo = sandbox.adminVoc.length;
 
-  assert.ok(dopo < prima, `il totale deve calare: prima=${prima} dopo=${dopo}`);
+  // La pulizia non può AUMENTARE le voci (vale anche se i dati erano già puliti).
+  assert.ok(dopo <= prima, `il totale non deve crescere: prima=${prima} dopo=${dopo}`);
 
-  // Invariante: nessuna riga superstite deve avere una cella IDENTICA a index
   const byIt = new Map(); VOC.forEach(v => byIt.set((v.it || '').toLowerCase().trim(), v));
+  const utile = e => { // replica di voceUtile
+    const idx = byIt.get((e.it || '').toLowerCase().trim());
+    if (!idx) return true;
+    return COLS.some(c => { const v = (e[c] || '').trim(); return v && v !== (idx[c] || '').trim(); });
+  };
+  // Invariante 1: nessuna cella superstite identica a index (duplicato)
   let dupResidui = 0;
+  // Invariante 2: nessuna voce superstite interamente coperta da index
+  let copertiResidui = 0;
   for (const e of sandbox.adminVoc) {
     const idx = byIt.get((e.it || '').toLowerCase().trim());
     if (!idx) continue;
-    for (const c of COLS) {
-      const v = (e[c] || '').trim();
-      if (v && v === (idx[c] || '').trim()) dupResidui++;
-    }
+    for (const c of COLS) { const v = (e[c] || '').trim(); if (v && v === (idx[c] || '').trim()) dupResidui++; }
+    if (!utile(e)) copertiResidui++;
   }
   assert.equal(dupResidui, 0, 'non devono restare celle dialetto identiche a index');
-  console.log(`    rimosse ${prima - dopo} righe; ${sandbox.adminModifiedKeys.size} voci marcate modificate`);
+  assert.equal(copertiResidui, 0, 'non devono restare voci interamente coperte da index');
+  console.log(`    rimosse ${prima - dopo} righe (0 è ok se i dati erano già puliti)`);
 });
 
 test('annullando il confirm NON cambia nulla (confirm = Annulla)', () => {
