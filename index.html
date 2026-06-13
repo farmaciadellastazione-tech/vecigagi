@@ -3341,6 +3341,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A1", it:"zucchero", sp:"süùcheo/sücheo", mn:"suùkeeu/sücheu", ge:"süccao", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"zucchina", en:"courgette", fr:"courgette", es:"calabacín", de:"Zucchini", pt:"abobrinha", sp:"süchèo", mn:"süchèo", verif:"sp:g" },
       { tema:"cibo", livello:"A2", it:"zucchine", en:"courgette", fr:"courgette", es:"calabacín", de:"Zucchini", pt:"abobrinha", sp:"süchèi", mn:"süchèi", ko:"애호박", ar:"كوسا", zh:"西葫芦", ja:"ズッキーニ", ia:"cucurbita", verif:"sp:g" },
+      { tema:"cibo", it:"zucchino", sp:"süchèo", cr:"zuched", src:{"sp":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"sp:g,cr:g" },
     ];
 
 // ── Storage ───────────────────────────────────────────────────────────────
@@ -3356,7 +3357,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 310;
+const VOC_VERSION = 311;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
