@@ -816,6 +816,8 @@
   .ad-legend .sw.con { background: #fffbeb; border-left-color: #f59e0b; }
   .ad-legend .sw.vuo { background: #fefce8; border-left-color: #eab308; }
   .ad-legend .sw.nuo { background: #faf5ff; border-left-color: #a855f7; }
+  .ad-hidden-note { display: none; font-size: 12px; color: #16a34a; margin: 2px 0 8px; }
+  body.admin .ad-hidden-note.visible { display: block; }
   .ad-dial-head { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; flex-wrap: wrap; }
   .ad-dial-label { font-weight: 700; font-size: 12px; }
   .ad-dial-label.mn { color: var(--mn); }
@@ -1044,6 +1046,7 @@
     <span class="k"><span class="sw vuo"></span>∅ manca (da raccogliere)</span>
     <span class="k"><span class="sw nuo"></span>🆕 parola non in index</span>
   </div>
+  <div class="ad-hidden-note" id="ad-hidden-note"></div>
 
   <!-- Tabella -->
   <div class="table-wrap">
@@ -4181,18 +4184,34 @@ function renderTable() {
     document.getElementById('col-new').textContent = `✏️ ${getDialectName()}`;
   }
 
+  // Vista singolo dialetto: nascondi del tutto le voci "già in index" per quel
+  // dialetto (le verdi) — lì non c'è nulla da fare. Le contiamo per trasparenza.
+  let nascosteGiaInIndex = 0;
   let rows = sourceVoc.filter(e => {
     if (q.length >= 2 && !e.it.toLowerCase().includes(q)) return false;
     if (showMissing === 'missing' && !isNew && !isAll && !dialMancante(e, col)) return false;
     if (ADMIN) {
       if (vaglioFilter === 'pronti' && !e.ok) return false;
       if (vaglioFilter === 'da-vagliare' && e.ok) return false;
-      if (tipoFilter !== 'all' && !isNew && !isAll && adminIndexVoc.length) {
-        if (adminVoceStato(e, col).kind !== tipoFilter) return false;
+      if (!isNew && !isAll && adminIndexVoc.length) {
+        const kind = adminVoceStato(e, col).kind;
+        if (kind === 'gia-in-index') { nascosteGiaInIndex++; return false; } // nascosta: già in index
+        if (tipoFilter !== 'all' && kind !== tipoFilter) return false;
       }
     }
     return true;
   });
+
+  // Nota trasparente sulle voci nascoste perché già in index
+  const hiddenNote = document.getElementById('ad-hidden-note');
+  if (hiddenNote) {
+    if (!isAll && nascosteGiaInIndex > 0) {
+      hiddenNote.textContent = `🟢 ${nascosteGiaInIndex} voci già in ${getDialectName()} nascoste (presenti in index)`;
+      hiddenNote.classList.add('visible');
+    } else {
+      hiddenNote.classList.remove('visible');
+    }
+  }
 
   const tbody = document.getElementById('table-body');
   tbody.innerHTML = '';
