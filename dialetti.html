@@ -1068,6 +1068,7 @@
     Modifiche: <strong id="admin-mod-count">0</strong> ·
     Pronte (OK): <strong id="admin-ok-count" style="color:#86efac">0</strong>
     <span style="color:rgba(255,255,255,0.55); font-size:12px; margin-left:8px" id="admin-gh-status">non caricato</span>
+    <span id="admin-branch-badge" style="display:none; font-size:12px; font-weight:700; margin-left:8px; padding:2px 8px; border-radius:6px"></span>
   </div>
   <button class="btn-gh-reset" onclick="adminReset()">Annulla</button>
   <button class="btn-gh-reset" onclick="adminResetToken()" title="Cancella il PAT GitHub salvato">🔑</button>
@@ -3273,7 +3274,11 @@ const DIALECT_CHIP_LABEL = {mn:'🏖️ Manarolese', sp:'⚓ Spezzino', cr:'🪨
 const ADMIN = new URLSearchParams(location.search).has('admin');
 const GH_OWNER = 'farmaciadellastazione-tech';
 const GH_REPO  = 'vecigagi';
-const GH_BRANCH = 'main';
+// Branch target per lettura/scrittura admin. Default sicuro: 'main' (produzione).
+// In fase di test si può puntare a un altro branch con ?branch=dev, così Salva
+// e Promuovi NON toccano la produzione.
+const GH_BRANCH = (new URLSearchParams(location.search).get('branch') || 'main').trim() || 'main';
+const GH_BRANCH_IS_PROD = GH_BRANCH === 'main';
 const GH_PATH_INDEX    = 'index.html';
 const GH_PATH_DIALETTI = 'dialetti.html';
 const GH_TOKEN_KEY = 'gh_pat_vecigagi';
@@ -3935,7 +3940,7 @@ async function adminSalvaSuGitHub() {
   const n = adminModifiedKeys.size;
   if (!n) { alert('Nessuna modifica.'); return; }
   if (!adminAssicuraToken()) return;
-  if (!confirm(`Salvare ${n} voci modificate in dialetti.html?\n\nNessun bump di VOC_VERSION (non tocca index).`)) return;
+  if (!confirm(`Salvare ${n} voci modificate in dialetti.html?\n\nBranch: ${GH_BRANCH}${GH_BRANCH_IS_PROD ? ' (PRODUZIONE)' : ' (test)'}\nNessun bump di VOC_VERSION (non tocca index).`)) return;
   const btn = document.getElementById('btn-gh-save');
   btn.disabled = true; btn.textContent = '⏳ Salvataggio…';
   try {
@@ -4095,7 +4100,8 @@ async function adminPromuovi() {
   const anteprima = ok.slice(0, 10).map(v => '  · ' + v.it).join('\n');
   const extra = ok.length > 10 ? `\n  …e altre ${ok.length - 10}` : '';
   if (!confirm(
-    `🚀 Promuovere ${ok.length} voci a index.html?\n\n${anteprima}${extra}\n\n` +
+    `🚀 Promuovere ${ok.length} voci a index.html?\n\n` +
+    `Branch: ${GH_BRANCH}${GH_BRANCH_IS_PROD ? ' (PRODUZIONE)' : ' (test)'}\n\n${anteprima}${extra}\n\n` +
     `Sarà fatto:\n` +
     `  1. PUT index.html — aggiunge/aggiorna le voci, bumpa VOC_VERSION\n` +
     `  2. PUT dialetti.html — rimuove le voci promosse dai candidati\n\n` +
@@ -4771,7 +4777,23 @@ if (ADMIN) {
   document.body.classList.add('admin');
   // In admin: carica subito il vocabolario reale da GitHub.
   // Nel frattempo la tabella è vuota; appena adminCaricaDaGitHub termina chiama renderTable().
-  document.title = '🔒 ADMIN — Editor dialetti | LinguaeQuiz';
+  document.title = (GH_BRANCH_IS_PROD ? '🔒' : '🧪 ' + GH_BRANCH + ' —') + ' ADMIN — Editor dialetti | LinguaeQuiz';
+  // Badge branch: verde "main" in produzione, arancione evidente per branch di test
+  const branchBadge = document.getElementById('admin-branch-badge');
+  if (branchBadge) {
+    branchBadge.style.display = 'inline-block';
+    if (GH_BRANCH_IS_PROD) {
+      branchBadge.textContent = '🌿 main';
+      branchBadge.style.background = 'rgba(34,197,94,0.25)';
+      branchBadge.style.color = '#86efac';
+      branchBadge.title = 'Salva/Promuovi scrivono sul branch di PRODUZIONE (main)';
+    } else {
+      branchBadge.textContent = '🧪 TEST: ' + GH_BRANCH;
+      branchBadge.style.background = '#d97706';
+      branchBadge.style.color = '#fff';
+      branchBadge.title = 'Branch di test: Salva/Promuovi scrivono su "' + GH_BRANCH + '", NON sulla produzione';
+    }
+  }
   adminCaricaConfigAI();
   // Ripristina la preferenza AI fill (default off)
   const aiOn = localStorage.getItem(AI_FILL_PREF_LS) === '1';
