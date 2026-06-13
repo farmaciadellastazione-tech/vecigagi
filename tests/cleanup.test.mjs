@@ -50,11 +50,15 @@ function makeCtx({ confirmReturns = true } = {}) {
   const sandbox = {
     ADMIN: true,
     DIALECT_ALL_COLS: COLS.slice(),
+    DIALECT_COL: { mn: 'mn', sp: 'sp', cr: 'cr', ge: 'ge' },
+    DIALECT_NAMES: { mn: 'Manarolese', sp: 'Spezzino', cr: 'Carrarino', ge: 'Genovese' },
     GH_BRANCH: 'dev',
+    currentDialect: 'sp',
     adminVoc: JSON.parse(JSON.stringify(CAND)),
     adminIndexVoc: VOC,
     adminIndexByIt: new Map(),
     adminModifiedKeys: new Set(),
+    adminOriginalKeys: new Map(),
     // stub DOM/IO
     alert: () => {},
     confirm: () => confirmReturns,
@@ -64,7 +68,7 @@ function makeCtx({ confirmReturns = true } = {}) {
   };
   const ctx = vm.createContext(sandbox);
   // funzioni reali estratte dal sorgente
-  const fns = ['adminRowKey', 'voceUtile', 'dialMancante', 'adminPulisciGiaInIndex']
+  const fns = ['adminRowKey', 'voceUtile', 'dialMancante', 'adminPulisciGiaInIndex', 'adminImportaDaIndex']
     .map(n => extractFn(DIAL, n)).join('\n\n');
   vm.runInContext(fns, ctx);
   // popola la mappa di lookup come fa adminCaricaDaGitHub
@@ -109,6 +113,43 @@ test('annullando il confirm NON cambia nulla (confirm = Annulla)', () => {
   vm.runInContext('adminPulisciGiaInIndex();', ctx);
   assert.equal(sandbox.adminVoc.length, prima, 'con Annulla il totale resta invariato');
   assert.equal(sandbox.adminModifiedKeys.size, 0, 'con Annulla nessuna modifica registrata');
+});
+
+test('importa da index: aggiunge le voci che mancano del dialetto selezionato', () => {
+  const { ctx, sandbox } = makeCtx({ confirmReturns: true });
+  sandbox.currentDialect = 'sp';
+  const prima = sandbox.adminVoc.length;
+
+  // quante voci index mancano di 'sp' e non sono già candidate (atteso)
+  const haCand = new Set(CAND.map(v => (v.it || '').toLowerCase().trim()));
+  const atteso = VOC.filter(v => v.it && !(v.sp || '').trim() && !haCand.has((v.it || '').toLowerCase().trim())).length;
+  assert.ok(atteso > 0, 'precondizione: ci sono voci index senza sp da importare');
+
+  vm.runInContext('adminImportaDaIndex();', ctx);
+  const aggiunte = sandbox.adminVoc.length - prima;
+  assert.equal(aggiunte, atteso, `attese ${atteso} voci aggiunte, trovate ${aggiunte}`);
+
+  // le nuove voci NON devono avere il campo sp (è il lavoro da fare)
+  const nuove = sandbox.adminVoc.filter(v => !haCand.has((v.it || '').toLowerCase().trim()));
+  assert.ok(nuove.every(v => !(v.sp || '').trim()), 'le voci importate devono avere sp vuoto');
+  console.log(`    importate ${aggiunte} voci (sp) da index`);
+});
+
+test('importa da index: niente duplicati e no-op su Annulla', () => {
+  // Annulla: nessuna aggiunta
+  const a = makeCtx({ confirmReturns: false });
+  a.sandbox.currentDialect = 'sp';
+  const prima = a.sandbox.adminVoc.length;
+  vm.runInContext('adminImportaDaIndex();', a.ctx);
+  assert.equal(a.sandbox.adminVoc.length, prima, 'con Annulla non aggiunge nulla');
+
+  // Doppio import consecutivo: il secondo non deve aggiungere nulla (già candidate)
+  const b = makeCtx({ confirmReturns: true });
+  b.sandbox.currentDialect = 'sp';
+  vm.runInContext('adminImportaDaIndex();', b.ctx);
+  const dopoPrimo = b.sandbox.adminVoc.length;
+  vm.runInContext('adminImportaDaIndex();', b.ctx);
+  assert.equal(b.sandbox.adminVoc.length, dopoPrimo, 'il secondo import non deve creare duplicati');
 });
 
 test('dialMancante: una parola già in index NON è mancante', () => {

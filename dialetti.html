@@ -1073,6 +1073,7 @@
   <button class="btn-gh-reset" onclick="adminReset()">Annulla</button>
   <button class="btn-gh-reset" onclick="adminResetToken()" title="Cancella il PAT GitHub salvato">🔑</button>
   <button class="btn-gh-reset" onclick="adminImportApri()" title="Importa traduzioni da un file (HTML/JS/JSON) e proponi modifiche">📤 Importa</button>
+  <button class="btn-gh-reset" onclick="adminImportaDaIndex()" title="Aggiunge ai candidati le voci di index che mancano del dialetto selezionato (da compilare)">⬇️ Importa da index</button>
   <button class="btn-gh-reset" onclick="adminPulisciGiaInIndex()" title="Svuota i valori dialetto identici a index e rimuove le voci interamente coperte da index">🧹 Pulisci già-in-index</button>
   <button class="btn-gh-save" id="btn-gh-save" onclick="adminSalvaSuGitHub()" disabled>
     ☁️ Salva su dialetti
@@ -3526,6 +3527,48 @@ function adminPulisciGiaInIndex() {
   adminUpdateBadges();
   renderTable();
   adminLog(`🧹 Svuotate ${celleDup} celle e rimosse ${removable.size} voci (in memoria — ricorda ☁️ Salva)`, 'success');
+}
+
+// ⬇️ Importa da index: aggiunge ai candidati le voci di index che MANCANO del
+// dialetto attualmente selezionato e non sono già in CANDIDATI. Il nuovo
+// candidato ha solo it/tema/livello (dialetto vuoto = lavoro da raccogliere).
+// Tiene allineato dialetti quando index cresce (es. nuove voci da edit.html).
+function adminImportaDaIndex() {
+  if (!adminIndexVoc.length) {
+    alert('Index non caricato: impossibile confrontare.\nRicarica la pagina e riprova.');
+    return;
+  }
+  const col = DIALECT_COL[currentDialect];
+  if (!col) {
+    alert('Seleziona prima un dialetto specifico (Manarolese / Spezzino / Carrarino / Genovese):\nl\'import aggiunge le voci di index che ne mancano.');
+    return;
+  }
+  const haCand = new Set(adminVoc.map(v => adminRowKey(v)));
+  const daAggiungere = adminIndexVoc.filter(v =>
+    v.it && !(v[col] || '').trim() && !haCand.has(adminRowKey(v))
+  );
+  if (!daAggiungere.length) {
+    alert(`✅ Niente da importare: tutte le voci di index che mancano di ${DIALECT_NAMES[col]} sono già tra i candidati.`);
+    return;
+  }
+  if (!confirm(
+    `⬇️ Importa da index (${DIALECT_NAMES[col]}):\n\n` +
+    `${daAggiungere.length} voci di index mancano di ${DIALECT_NAMES[col]} e non sono ancora candidate.\n` +
+    `Verranno aggiunte come nuovi candidati (campo ${DIALECT_NAMES[col]} vuoto, da compilare).\n\n` +
+    `Modifiche solo in memoria: premi ☁️ Salva per persistere su "${GH_BRANCH}".\n\nProcedere?`
+  )) return;
+  daAggiungere.forEach(v => {
+    const nuova = { it: v.it.trim() };
+    if (v.tema) nuova.tema = v.tema;
+    if (v.livello) nuova.livello = v.livello;
+    adminVoc.push(nuova);
+    adminModifiedKeys.add(nuova.it);
+    adminOriginalKeys.set(adminRowKey(nuova), new Set(Object.keys(nuova)));
+  });
+  adminVoc.sort((a, b) => (a.it || '').localeCompare(b.it || '', 'it'));
+  adminUpdateBadges();
+  renderTable();
+  adminLog(`⬇️ Aggiunte ${daAggiungere.length} voci da index — ${DIALECT_NAMES[col]} (in memoria — ricorda ☁️ Salva)`, 'success');
 }
 
 // Rinomina la parola italiana di una voce candidata.
