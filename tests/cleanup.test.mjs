@@ -68,7 +68,7 @@ function makeCtx({ confirmReturns = true } = {}) {
   };
   const ctx = vm.createContext(sandbox);
   // funzioni reali estratte dal sorgente
-  const fns = ['adminRowKey', 'voceUtile', 'dialMancante', 'adminPulisciGiaInIndex', 'adminImportaDaIndex']
+  const fns = ['adminRowKey', 'voceUtile', 'dialMancante', 'adminPulisciGiaInIndex', 'adminImportaDaIndex', 'adminScartaGiaInIndex']
     .map(n => extractFn(DIAL, n)).join('\n\n');
   vm.runInContext(fns, ctx);
   // popola la mappa di lookup come fa adminCaricaDaGitHub
@@ -150,6 +150,38 @@ test('importa da index: niente duplicati e no-op su Annulla', () => {
   const dopoPrimo = b.sandbox.adminVoc.length;
   vm.runInContext('adminImportaDaIndex();', b.ctx);
   assert.equal(b.sandbox.adminVoc.length, dopoPrimo, 'il secondo import non deve creare duplicati');
+});
+
+test('scarta già-in-index: rimuove le voci con dialetto vuoto ma presente in index', () => {
+  const { ctx, sandbox } = makeCtx({ confirmReturns: true });
+  sandbox.currentDialect = 'sp';
+  const byIt = new Map(); VOC.forEach(v => byIt.set((v.it || '').toLowerCase().trim(), v));
+  // atteso: candidati con sp vuoto ma index ha sp
+  const atteso = sandbox.adminVoc.filter(e => {
+    if ((e.sp || '').trim()) return false;
+    const idx = byIt.get((e.it || '').toLowerCase().trim());
+    return idx && (idx.sp || '').trim();
+  }).length;
+  assert.ok(atteso > 0, 'precondizione: ci sono voci «già in index» per sp');
+  const prima = sandbox.adminVoc.length;
+  vm.runInContext('adminScartaGiaInIndex();', ctx);
+  assert.equal(prima - sandbox.adminVoc.length, atteso, `attese ${atteso} voci scartate`);
+  // nessuna voce superstite deve essere «già in index» per sp
+  const resta = sandbox.adminVoc.some(e => {
+    if ((e.sp || '').trim()) return false;
+    const idx = byIt.get((e.it || '').toLowerCase().trim());
+    return idx && (idx.sp || '').trim();
+  });
+  assert.equal(resta, false, 'non devono restare voci «già in index» per sp');
+  console.log(`    scartate ${atteso} voci «già in index» (sp)`);
+});
+
+test('scarta già-in-index: no-op su Annulla', () => {
+  const { ctx, sandbox } = makeCtx({ confirmReturns: false });
+  sandbox.currentDialect = 'sp';
+  const prima = sandbox.adminVoc.length;
+  vm.runInContext('adminScartaGiaInIndex();', ctx);
+  assert.equal(sandbox.adminVoc.length, prima, 'con Annulla non rimuove nulla');
 });
 
 test('dialMancante: una parola già in index NON è mancante', () => {

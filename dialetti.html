@@ -1075,6 +1075,7 @@
   <button class="btn-gh-reset" onclick="adminImportApri()" title="Importa traduzioni da un file (HTML/JS/JSON) e proponi modifiche">📤 Importa</button>
   <button class="btn-gh-reset" onclick="adminImportaDaIndex()" title="Aggiunge ai candidati le voci di index che mancano del dialetto selezionato (da compilare)">⬇️ Importa da index</button>
   <button class="btn-gh-reset" onclick="adminPulisciGiaInIndex()" title="Svuota i valori dialetto identici a index e rimuove le voci interamente coperte da index">🧹 Pulisci già-in-index</button>
+  <button class="btn-gh-reset" onclick="adminScartaGiaInIndex()" title="Scarta TUTTE le voci «già in index» per il dialetto selezionato (anche se hanno un valore in un altro dialetto, che verrà perso)">🗑️ Scarta già-in-index</button>
   <button class="btn-gh-save" id="btn-gh-save" onclick="adminSalvaSuGitHub()" disabled>
     ☁️ Salva su dialetti
   </button>
@@ -3018,6 +3019,56 @@ function adminPulisciGiaInIndex() {
   adminUpdateBadges();
   renderTable();
   adminLog(`🧹 Svuotate ${celleDup} celle e rimosse ${removable.size} voci (in memoria — ricorda ☁️ Salva)`, 'success');
+}
+
+// 🗑️ Scarta TUTTE le voci "già in index" per il dialetto selezionato: rimuove i
+// candidati il cui campo del dialetto è vuoto ma index lo ha già (status "✓ già
+// in index"), ANCHE se la voce ha un valore in un ALTRO dialetto. Più aggressiva
+// di 🧹 (che invece conserva le voci con un possibile arricchimento altrove):
+// avvisa nel confirm quante voci perderebbero un valore non presente in index.
+function adminScartaGiaInIndex() {
+  if (!adminIndexVoc.length) {
+    alert('Index non caricato: impossibile confrontare.\nRicarica la pagina e riprova.');
+    return;
+  }
+  const col = DIALECT_COL[currentDialect];
+  if (!col) {
+    alert('Seleziona prima un dialetto specifico (Manarolese / Spezzino / Carrarino / Genovese).');
+    return;
+  }
+  const ALTRI = DIALECT_ALL_COLS.filter(c => c !== col);
+  // "già in index" per `col`: candidato vuoto in col, index ha il valore
+  const target = adminVoc.filter(e => {
+    if ((e[col] || '').trim()) return false;
+    const idx = adminIndexByIt.get(adminRowKey(e));
+    return idx && (idx[col] || '').trim();
+  });
+  if (!target.length) {
+    alert(`✅ Nessuna voce «già in index» per ${DIALECT_NAMES[col]}.`);
+    return;
+  }
+  // quante perderebbero un valore in un ALTRO dialetto non identico a index
+  const conAltro = target.filter(e => {
+    const idx = adminIndexByIt.get(adminRowKey(e));
+    return ALTRI.some(c => {
+      const v = (e[c] || '').trim();
+      return v && v !== ((idx && idx[c]) || '').trim();
+    });
+  });
+  let msg = `🗑️ Scartare ${target.length} voci «già in index» per ${DIALECT_NAMES[col]}?\n\n`;
+  if (conAltro.length) {
+    msg += `⚠️ ${conAltro.length} di queste hanno un valore in un ALTRO dialetto (spesso il genovese) DIVERSO da index, che verrà PERSO.\n` +
+           `Esempi: ${conAltro.slice(0, 5).map(e => e.it).join(', ')}${conAltro.length > 5 ? '…' : ''}\n\n`;
+  }
+  msg += `Modifiche solo in memoria: premi ☁️ Salva per persistere su "${GH_BRANCH}".\n\nProcedere?`;
+  if (!confirm(msg)) return;
+  const toRemove = new Set(target);
+  for (let i = adminVoc.length - 1; i >= 0; i--) {
+    if (toRemove.has(adminVoc[i])) { adminModifiedKeys.add(adminVoc[i].it); adminVoc.splice(i, 1); }
+  }
+  adminUpdateBadges();
+  renderTable();
+  adminLog(`🗑️ Scartate ${target.length} voci «già in index» per ${DIALECT_NAMES[col]} (in memoria — ricorda ☁️ Salva)`, 'success');
 }
 
 // ⬇️ Importa da index: aggiunge ai candidati le voci di index che MANCANO del
