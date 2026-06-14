@@ -1003,6 +1003,7 @@
     <div class="filter-group">
       <div class="chip active" data-missing="all" onclick="setMissing('all',this)">Tutte</div>
       <div class="chip" data-missing="missing" onclick="setMissing('missing',this)">Solo mancanti</div>
+      <div class="chip" data-missing="filled" onclick="setMissing('filled',this)" title="Solo i candidati che hanno già una traduzione proposta nel dialetto selezionato">Solo compilate</div>
     </div>
     <div class="filter-group admin-only">
       <span class="filter-label">Stato:</span>
@@ -4806,6 +4807,8 @@ function renderTable() {
     // (Per togliere il flag, usa la vista 🌐 Tutti i dialetti.)
     if (!isNew && !isAll && dialNT(e, col)) { nascosteNT++; return false; }
     if (showMissing === 'missing' && !isNew && !isAll && !dialMancante(e, col)) return false;
+    // "Solo compilate": tiene i candidati con una traduzione proposta in quel dialetto.
+    if (showMissing === 'filled' && !isNew && !isAll && !(e[col] && e[col].trim())) return false;
     if (ADMIN) {
       if (vaglioFilter === 'pronti' && !e.ok) return false;
       if (vaglioFilter === 'da-vagliare' && e.ok) return false;
