@@ -2967,7 +2967,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", it:"prevedere", en:"expect", sp:"prevéde", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"natura", livello:"A2", it:"previsioni", en:"forecast", fr:"prévisions", es:"previsión", de:"Vorhersage", pt:"previsão|previsao", ru:"прогноз", ca:"previsió", ko:"예보", ar:"توقعات", zh:"预报", ja:"予報", ia:"prevision", la:"praenuntium", grc:"πρόγνωση" },
       { tema:"valute", livello:"A2", it:"prezzo", en:"price", fr:"prix", es:"precio", de:"Preis", pt:"preço|preco", sp:"prèssio", mn:"prèssio", ge:"prejhio/prexo", ko:"가격", ar:"سعر", zh:"价格", ja:"値段", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
-      { tema:"dialogo", livello:"A1", it:"prima", de:"früher", sp:"prima,avante", verif:"sp:g" },
+      { tema:"dialogo", livello:"A1", it:"prima", de:"früher", sp:"prima,avante", mn:"prima", verif:"mn:g", src:{"mn":"🔗 dialetti.html"} },
       { tema:"istruzioni", livello:"A2", it:"prima dei pasti", en:"before meals", fr:"avant les repas", es:"antes de las comidas", de:"vor den Mahlzeiten", pt:"antes das refeições|antes das refeicoes", ko:"식사 전", ar:"قبل الوجبات", zh:"饭前", ja:"食前" },
       { tema:"natura", livello:"A1", it:"primavera", en:"spring", fr:"printemps", es:"primavera", de:"Frühling", pt:"primavera", ru:"весна", ca:"primavera", sp:"primavea", mn:"primavea", cr:"primavera", ge:"primavêia", ko:"봄", ar:"ربيع", zh:"春天", ja:"春", ia:"primavera", la:"ver", grc:"ἔαρ", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"numeri", livello:"A1", it:"primo", en:"first", fr:"premier", es:"primero", de:"erste", pt:"primeiro", sp:"primo|priméo", mn:"primu", ge:"primmo", ia:"prime", la:"primus", ro:"primul", src:{"mn":"🤖 IA"}, verif:"mn:g" },
@@ -3139,7 +3139,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"sei|6", en:"six", fr:"six", es:"seis", de:"sechs", pt:"seis", ru:"шесть", ca:"sis", sp:"sei", mn:"sciéi", cr:"Se", ko:"육", ar:"ستة", zh:"六", ja:"六", ia:"sex", la:"sex", grc:"ἕξ", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"B1", it:"selvatico", en:"wild", fr:"sauvage", es:"salvaje", de:"wild", pt:"selvagem", sp:"servàadégo/servàdego", ia:"salvage", verif:"sp:g" },
       { it:"semplicione", sp:"luìso", cr:"pilancon", verif:"sp:g" },
-      { tema:"aggettivi", livello:"A1", it:"sempre", en:"always", fr:"toujours", es:"siempre", de:"immer", pt:"sempre", sp:"senpre", cr:"senpr", ge:"sempre", ko:"항상", ar:"دائماً", zh:"总是", ja:"いつも", ia:"semper", la:"semper", grc:"ἀεί", verif:"sp:g" },
+      { tema:"aggettivi", livello:"A1", it:"sempre", en:"always", fr:"toujours", es:"siempre", de:"immer", pt:"sempre", sp:"senpre", mn:"sempre/sempré", cr:"senpr", ge:"sempre", ko:"항상", ar:"دائماً", zh:"总是", ja:"いつも", ia:"semper", la:"semper", grc:"ἀεί", verif:"mn:g", src:{"mn":"🔗 dialetti.html"} },
       { tema:"verbi", livello:"A1", it:"sentire", en:"feel", fr:"sentir", es:"sentir", de:"fühlen", pt:"sentir", ru:"чувствовать|слышать", ca:"sentir", sp:"sentìe", mn:"sentìi", ko:"느끼다", ar:"يشعر", zh:"感觉", ja:"感じる", ia:"sentir", la:"sentire", grc:"αἰσθάνεσθαι", ro:"a auzi", verif:"mn:g" },
       { tema:"dialogo", livello:"A2", it:"sentirsi bene", en:"feel good", fr:"se sentir bien", es:"sentirse bien", de:"sich gut fühlen", pt:"sentir-se bem" },
       { tema:"dialogo", livello:"A2", it:"senza", en:"without", fr:"sans", es:"sin", de:"ohne", pt:"sem", ru:"без", ca:"sense", mn:"sensa", cr:"senza", verif:"mn:g" },
@@ -3471,7 +3471,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 317;
+const VOC_VERSION = 318;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
