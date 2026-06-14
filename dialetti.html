@@ -418,6 +418,16 @@
     padding: 20px;
   }
   .modal-overlay.visible { display: flex; }
+  /* Export modal */
+  .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 8px 0 4px; }
+  @media (max-width: 520px) { .exp-grid { grid-template-columns: 1fr; } }
+  .exp-scope { border: 1px solid var(--border); border-radius: 10px; padding: 12px; background: #f8fafc; }
+  .exp-scope-title { font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+  .exp-scope-sub { font-size: 12px; color: var(--muted); margin: 2px 0 10px; }
+  .exp-cnt { background: var(--accent); color: #fff; border-radius: 999px; font-size: 12px; padding: 1px 8px; font-weight: 700; }
+  .exp-btns { display: flex; gap: 8px; }
+  .exp-btns button { flex: 1; padding: 8px 0; border: 1px solid var(--accent); color: var(--accent); background: #fff; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.12s; }
+  .exp-btns button:hover { background: var(--accent); color: #fff; }
   .modal {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -1114,6 +1124,7 @@
   <button class="btn-gh-reset" onclick="adminReset()">Annulla</button>
   <button class="btn-gh-reset" onclick="adminResetToken()" title="Cancella il PAT GitHub salvato">🔑</button>
   <button class="btn-gh-reset" onclick="adminImportApri()" title="Importa traduzioni da un file (HTML/JS/JSON) e proponi modifiche">📤 Importa</button>
+  <button class="btn-gh-reset" onclick="apriExportModal()" title="Esporta i candidati (filtrati o tutti) in CSV o JSON">📥 Esporta</button>
   <button class="btn-gh-reset" onclick="adminImportaDaIndex()" title="Aggiunge ai candidati le voci di index che mancano del dialetto selezionato (da compilare)">⬇️ Importa da index</button>
   <button class="btn-gh-reset" onclick="adminPulisciGiaInIndex()" title="Svuota i valori dialetto identici a index e rimuove le voci interamente coperte da index">🧹 Pulisci già-in-index</button>
   <button class="btn-gh-reset" onclick="adminScartaGiaInIndex()" title="Scarta TUTTE le voci «già in index» per il dialetto selezionato (anche se hanno un valore in un altro dialetto, che verrà perso)">🗑️ Scarta già-in-index</button>
@@ -1190,6 +1201,38 @@
     <div class="modal-actions">
       <button class="btn-close" onclick="adminImportChiudi()">Annulla</button>
       <button class="btn-copy" id="imp-btn-applica" onclick="adminImportApplica()" disabled>✅ Applica selezionate</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal export (admin) -->
+<div class="modal-overlay" id="export-modal">
+  <div class="modal">
+    <h2>📥 Esporta candidati</h2>
+    <p class="imp-help">
+      Scarica le voci candidate in un file. Scegli <strong>cosa</strong> e in che <strong>formato</strong>:
+      il JSON è fedele (tutti i campi, re-importabile), il CSV si apre in Excel/Google Sheets.
+    </p>
+    <div class="exp-grid">
+      <div class="exp-scope">
+        <div class="exp-scope-title">🔎 Filtrate / visibili <span class="exp-cnt" id="exp-cnt-filtrate">0</span></div>
+        <div class="exp-scope-sub">rispetta dialetto, ricerca e filtri attivi</div>
+        <div class="exp-btns">
+          <button onclick="adminEsporta('filtrate','csv')">CSV</button>
+          <button onclick="adminEsporta('filtrate','json')">JSON</button>
+        </div>
+      </div>
+      <div class="exp-scope">
+        <div class="exp-scope-title">🗂️ Tutti i candidati <span class="exp-cnt" id="exp-cnt-tutte">0</span></div>
+        <div class="exp-scope-sub">l'intero elenco, ignorando i filtri</div>
+        <div class="exp-btns">
+          <button onclick="adminEsporta('tutte','csv')">CSV</button>
+          <button onclick="adminEsporta('tutte','json')">JSON</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-close" onclick="chiudiExportModal()">Chiudi</button>
     </div>
   </div>
 </div>
@@ -4772,6 +4815,98 @@ function sortBy(col) {
   renderTable();
 }
 
+// ==========================================================================
+// ESPORTAZIONE CANDIDATI (admin)
+// ==========================================================================
+// Colonne del CSV (il JSON esporta invece l'oggetto completo).
+const EXPORT_COLS = ['tema','livello','it','sp','mn','cr','ge','en','fr','es','de','pt','src','note','nt','ok'];
+
+// Voci da esportare: il sottoinsieme filtrato/visibile, oppure tutto.
+function adminExportRighe(soloFiltrate) {
+  if (!soloFiltrate) return adminVoc.slice();
+  const ctx = {
+    q: (document.getElementById('search').value || '').trim().toLowerCase(),
+    isNew: currentDialect === 'new',
+    isAll: ADMIN && currentDialect === 'all',
+    col: DIALECT_COL[currentDialect] || null,
+  };
+  return adminVoc.filter(e => rigaPassaFiltri(e, ctx));
+}
+
+function apriExportModal() {
+  document.getElementById('exp-cnt-filtrate').textContent = adminExportRighe(true).length;
+  document.getElementById('exp-cnt-tutte').textContent = adminVoc.length;
+  document.getElementById('export-modal').classList.add('visible');
+}
+function chiudiExportModal() {
+  document.getElementById('export-modal').classList.remove('visible');
+}
+
+function scaricaFile(nome, contenuto, mime) {
+  const blob = new Blob([contenuto], { type: mime + ';charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = nome;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function csvCella(v) {
+  if (v === undefined || v === null) return '';
+  let s = Array.isArray(v) ? v.join('|') : (typeof v === 'object' ? JSON.stringify(v) : String(v));
+  if (/[",\r\n]/.test(s)) s = '"' + s.replace(/"/g, '""') + '"';
+  return s;
+}
+
+function vociToCSV(voci) {
+  const head = EXPORT_COLS.join(',');
+  const righe = voci.map(v => EXPORT_COLS.map(c => csvCella(v[c])).join(','));
+  return '﻿' + [head, ...righe].join('\r\n'); // BOM: Excel riconosce l'UTF-8
+}
+
+function vociToJSON(voci) {
+  // Oggetto fedele, senza chiavi interne (_*) — re-importabile.
+  const pulite = voci.map(v => {
+    const o = {};
+    Object.keys(v).forEach(k => { if (!k.startsWith('_') && v[k] !== undefined) o[k] = v[k]; });
+    return o;
+  });
+  return JSON.stringify(pulite, null, 2);
+}
+
+function adminEsporta(scope, formato) {
+  const soloFiltrate = scope === 'filtrate';
+  const voci = adminExportRighe(soloFiltrate);
+  if (!voci.length) { alert('Nessuna voce da esportare con la selezione corrente.'); return; }
+  const stamp = new Date().toISOString().slice(0, 10);
+  const tag = soloFiltrate ? 'filtrate' : 'tutte';
+  if (formato === 'csv') scaricaFile(`candidati-${tag}-${stamp}.csv`, vociToCSV(voci), 'text/csv');
+  else                   scaricaFile(`candidati-${tag}-${stamp}.json`, vociToJSON(voci), 'application/json');
+  chiudiExportModal();
+}
+
+// Predicato dei filtri della tabella, condiviso tra renderTable() ed export.
+// `ctx` = { q (ricerca lowercase), isNew, isAll, col (codice dialetto o null) }.
+function rigaPassaFiltri(e, ctx) {
+  const { q, isNew, isAll, col } = ctx;
+  if (q.length >= 2 && !e.it.toLowerCase().includes(q)) return false;
+  // Vista singolo dialetto: "non traducibili" e "già in index" spariscono.
+  if (!isNew && !isAll && dialNT(e, col)) return false;
+  if (showMissing === 'missing' && !isNew && !isAll && !dialMancante(e, col)) return false;
+  // "Solo compilate": tiene i candidati con una traduzione proposta in quel dialetto.
+  if (showMissing === 'filled' && !isNew && !isAll && !(e[col] && e[col].trim())) return false;
+  if (ADMIN) {
+    if (vaglioFilter === 'pronti' && !e.ok) return false;
+    if (vaglioFilter === 'da-vagliare' && e.ok) return false;
+    if (!isNew && !isAll && adminIndexVoc.length) {
+      const kind = adminVoceStato(e, col).kind;
+      if (kind === 'gia-in-index') return false;
+      if (tipoFilter !== 'all' && kind !== tipoFilter) return false;
+    }
+  }
+  return true;
+}
+
 function renderTable() {
   const q = document.getElementById('search').value.trim().toLowerCase();
   const isNew = currentDialect === 'new';
@@ -4799,26 +4934,18 @@ function renderTable() {
 
   // Vista singolo dialetto: nascondi del tutto le voci "già in index" per quel
   // dialetto (le verdi) — lì non c'è nulla da fare. Le contiamo per trasparenza.
+  const ctx = { q, isNew, isAll, col };
   let nascosteGiaInIndex = 0;
   let nascosteNT = 0;
   let rows = sourceVoc.filter(e => {
-    if (q.length >= 2 && !e.it.toLowerCase().includes(q)) return false;
-    // Vista singolo dialetto: le voci "non traducibili" in quel dialetto spariscono.
-    // (Per togliere il flag, usa la vista 🌐 Tutti i dialetti.)
-    if (!isNew && !isAll && dialNT(e, col)) { nascosteNT++; return false; }
-    if (showMissing === 'missing' && !isNew && !isAll && !dialMancante(e, col)) return false;
-    // "Solo compilate": tiene i candidati con una traduzione proposta in quel dialetto.
-    if (showMissing === 'filled' && !isNew && !isAll && !(e[col] && e[col].trim())) return false;
-    if (ADMIN) {
-      if (vaglioFilter === 'pronti' && !e.ok) return false;
-      if (vaglioFilter === 'da-vagliare' && e.ok) return false;
-      if (!isNew && !isAll && adminIndexVoc.length) {
-        const kind = adminVoceStato(e, col).kind;
-        if (kind === 'gia-in-index') { nascosteGiaInIndex++; return false; } // nascosta: già in index
-        if (tipoFilter !== 'all' && kind !== tipoFilter) return false;
-      }
+    const passa = rigaPassaFiltri(e, ctx);
+    // Conteggi trasparenza: tra le nascoste (che combaciano con la ricerca) segnala
+    // quelle "non traducibili" e quelle già coperte da index.
+    if (!passa && !isNew && !isAll && (q.length < 2 || e.it.toLowerCase().includes(q))) {
+      if (dialNT(e, col)) nascosteNT++;
+      else if (ADMIN && adminIndexVoc.length && adminVoceStato(e, col).kind === 'gia-in-index') nascosteGiaInIndex++;
     }
-    return true;
+    return passa;
   });
 
   // Nota trasparente sulle voci nascoste perché già in index
