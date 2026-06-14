@@ -1785,10 +1785,11 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO_DEFAULT ──────────────────
-      { tema:"acquisto", livello:"A2", it:"a buon mercato", es:"barato", pt:"barato" },
+      { tema:"acquisto", livello:"A2", it:"a buon mercato", es:"barato", pt:"barato", sp:"a bon páto", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", verif:"mn:g" },
       { tema:"dialetti", it:"a spasso, in giro senza meta.", sp:"scoratae", mn:"zùnzu (a)", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
-      { tema:"istruzioni", livello:"A2", it:"a stomaco vuoto", en:"on an empty stomach", fr:"à jeun", es:"en ayunas", de:"auf nüchternen Magen", pt:"em jejum", mn:"a stémagu véitu", ko:"공복에", ar:"على معدة فارغة", zh:"空腹服用", ja:"空腹時", verif:"mn:g" },
+      { tema:"istruzioni", livello:"A2", it:"a stomaco vuoto", en:"on an empty stomach", fr:"à jeun", es:"en ayunas", de:"auf nüchternen Magen", pt:"em jejum", sp:"a stè'mégo vèito/a stèmego vèito", mn:"a stémagu véitu", ge:"a stômago vêutto", ko:"공복에", ar:"على معدة فارغة", zh:"空腹服用", ja:"空腹時", verif:"sp:g,ge:g", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"} },
+      { tema:"dialetti", livello:"A2", it:"abbassare", sp:"sbassae,abassà'e,/sbassae,abassae,", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialetti", livello:"A2", it:"abbassare, diminuire", mn:"sbassaa/zbàssaa/sbàssaa", verif:"mn:g" },
       { tema:"dialetti", it:"abbassare, diminuire.", sp:"sbassae, abassà'e/sbassae, abassae", mn:"zbàsaa", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"dialogo", livello:"A2", it:"abbastanza", en:"enough", fr:"assez", es:"bastante", de:"genug", pt:"suficiente|bastante", ru:"достаточно", ca:"prou", sp:"abàsta, assè", mn:"abasta|assai/asai", ge:"assæ", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
@@ -1817,7 +1818,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", it:"adoperare", sp:"devoaae/devoae", ge:"dêuvia", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g" },
       { tema:"luoghi", livello:"A1", it:"aereo", en:"plane", fr:"avion", es:"avión", de:"Flugzeug", pt:"avião|aviao", ru:"самолёт", ca:"avió", ge:"arioplaan/arioplân", ko:"비행기", ar:"طائرة", zh:"飞机", ja:"飛行機", ia:"avion", grc:"ἀεροπλάνον", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
       { tema:"luoghi", livello:"A1", it:"aeroporto", en:"airport", fr:"aéroport", es:"aeropuerto", de:"Flughafen", pt:"aeroporto", ru:"аэропорт", ca:"aeroport", ko:"공항", ar:"مطار", zh:"机场", ja:"空港", ia:"aeroporto", la:"aeroportus", grc:"ἀεροδρόμιο" },
-      { tema:"dialetti", livello:"A2", it:"afa", mn:"soofegu/sòfégu", verif:"mn:g" },
+      { tema:"dialetti", livello:"A2", it:"afa", sp:"sòfego", mn:"soofegu/sòfégu", verif:"sp:g", src:{"sp":"🔗 dialetti.html"} },
       { tema:"verbi", it:"affettare", sp:"fetàaae/fetae", mn:"tagiaa a fete", ge:"taggia a fette", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"casa", livello:"A2", it:"affitto", en:"rent", de:"Miete", ru:"аренда", sp:"afito", mn:"afìtu", ge:"afìtto| pixón", undefined:"📘 Altro dizionario", src:{"mn":"📘 Altro dizionario"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"B1", it:"affollato", en:"crowded", fr:"bondé", es:"abarrotado", de:"überfüllt", pt:"lotado", ru:"переполненный", ca:"ple de gent", ge:"afol-au/afolòu", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
@@ -1836,7 +1837,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mestieri", livello:"A2", it:"agricoltore|contadino", en:"farmer", fr:"agriculteur", es:"agricultor", de:"Bauer", pt:"agricultor", ru:"фермер", ca:"pagès|agricultor", sp:"cuntadin", mn:"agrìculu|cuntadìn", ge:"agricoltô|contadìn", ko:"농부", ar:"مزارع", zh:"农民", ja:"農家", ia:"agricultor", la:"agricola", grc:"γεωργός", verif:"mn:g" },
       { tema:"dialogo", it:"aiutami", en:"help me", ge:"agiù 'tame/agiûtame", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
       { tema:"verbi", livello:"B1", it:"aiutare", en:"help", fr:"aider", es:"ayudar", de:"helfen", pt:"ajudar", ru:"помогать", ca:"ajudar", sp:"aidaaae| agiütaae| giütaae/aidae|agiütae| giütae", mn:"agiütaa", ge:"agiutaa/agiutâ", ko:"돕다", ar:"يساعد", zh:"帮助", ja:"助ける", ia:"adjutar", la:"adiuvare", grc:"βοηθεῖν", undefined:"📘 Altro dizionario", src:{"mn":"📘 Altro dizionario"}, verif:"mn:g,sp:g,ge:g" },
-      { tema:"dialetti", it:"aiuto", ge:"aggiuttu/aggiutto", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
+      { tema:"dialetti", it:"aiuto", sp:"agiüto", ge:"aggiuttu/aggiutto", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"natura", livello:"A1", it:"ala", en:"wing", sp:"aa/àa", mn:"àa", ge:"aa", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"giorni", livello:"A2", it:"alba", en:"dawn", fr:"aube", es:"alba", de:"Morgendämmerung", pt:"amanhecer", sp:"arba", mn:"ciàu", cr:"zornata", ge:"arba", ia:"alba", verif:"mn:g,sp:g" },
       { tema:"luoghi", livello:"A1", it:"albergo", en:"hotel", fr:"hôtel", es:"hotel", de:"Hotel", pt:"hotel", sp:"arbergo, locanda", mn:"arbèrgu/ arbèrgu", ge:"albergu/albèrgo| abèrgo", ko:"호텔", ar:"فندق", zh:"酒店", ja:"ホテル", ia:"hotel", la:"deversorium", grc:"πανδοχεῖον", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g,sp:g" },
@@ -1854,13 +1855,15 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"tempo", livello:"A1", it:"allora", en:"then", fr:"alors", es:"entonces", de:"dann", pt:"então", ru:"тогда", ca:"llavors", sp:"aloòa/aloa", mn:"alua", ge:"alua/alôa", ko:"그때", ar:"ثم", zh:"那么", ja:"それで", ia:"tunc", la:"tunc", grc:"τότε", ro:"atunci", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"alloro", sp:"arfògio, aofògio", ge:"ufeiggiu/öfeuggio", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g,ge:g" },
       { tema:"dialetti", livello:"A2", it:"allungarsi", sp:"slüngasse/slüngase", mn:" s'lun gasse/zlüngasé", verif:"mn:g" },
+      { tema:"dialetti", it:"allungarsi.", sp:"slüngasse", mn:"zlüngasé", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"natura", livello:"B1", it:"alluvione", en:"flood", fr:"inondation", es:"inundación", de:"Überschwemmung", pt:"inundação|inundacao", ru:"наводнение", ca:"inundació", sp:"aluviòhn/alüvión", mn:"aluviùn/aluviun", ge:"aluviùhn/alluvión", ko:"홍수", ar:"فيضان", zh:"洪水", ja:"洪水", ia:"inundation", la:"diluvium", grc:"κατακλυσμός", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g,sp:g" },
-      { tema:"dialetti", livello:"A2", it:"almeno", mn:"arménu/armënu", verif:"mn:g" },
+      { tema:"dialetti", livello:"A2", it:"almeno", sp:"armanco, armèno", mn:"àrmenu", verif:"mn:g,sp:g", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"} },
       { tema:"aggettivi", livello:"A2", it:"alto", en:"tall", fr:"grand", es:"alto", de:"hoch", pt:"alto", ru:"высокий", ca:"alt", sp:"à'oto, èrto/àoto|èrto", mn:"a'utu/autu", cr:"àlt", ge:"a'tu/âto, èrto", ko:"키 큰", ar:"عالي", zh:"高", ja:"高い", ia:"alte", la:"altus", grc:"ὑψηλός", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"verbi", it:"alzare", sp:"aossaa'e/aossaae, issaae, levaae/aossae, issae, levae", mn:"issaa", ge:"inså, alså", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"verbi", livello:"A1", it:"alzare|sollevare", sp:"aossaa he|issae|levae/aossae", mn:"issaaa", ge:"insaa/tia sciù|insâ", verif:"mn:g,ge:g,sp:g" },
       { tema:"verbi", livello:"A1", it:"alzarsi", en:"get up", fr:"se lever", es:"levantarse", de:"aufstehen", pt:"levantar-se", ru:"вставать", ca:"aixecar-se", sp:"staae sü, issasse/stae sü, issasse", mn:"staae sü, issasse/stae sü, issasse", ko:"일어나다", ar:"ينهض", ja:"起きる", ia:"levar se", la:"surgere", grc:"ἐγείρω", verif:"sp:g" },
       { tema:"verbi", livello:"A1", it:"amare", en:"love", fr:"aimer", es:"amar", de:"lieben", pt:"amar", ru:"любить", ca:"estimar|amar", sp:"voree ben", mn:"vréé'bén/vrëëbën", ko:"사랑하다", ar:"يحب", zh:"爱", ja:"愛する", ia:"amar", la:"amare", grc:"φιλεῖν|ἀγαπᾶν", verif:"mn:g" },
+      { tema:"dialetti", it:"amare.", sp:"voré ben/voree ben", mn:"vrëëbën", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"cibo", livello:"A2", it:"amaro", en:"bitter", fr:"amer", es:"amargo", de:"bitter", pt:"amargo", sp:"amao", mn:"amau", ge:"amau/amao", ko:"쓴", ar:"مر", zh:"苦", ja:"苦い", ia:"amar", la:"amarus", grc:"πικρός", verif:"mn:g,sp:g,ge:g" },
       { tema:"aggettivi", livello:"A1", it:"amico", en:"friend", fr:"ami", es:"amigo", de:"Freund", pt:"amigo", sp:"amigo", mn:"amigu", ge:"amigu/amigo", ko:"친구", ar:"صديق", zh:"朋友", ja:"友達", ia:"amico", la:"amicus", grc:"φίλος", ro:"prieten", verif:"mn:g,sp:g,ge:g" },
       { tema:"dialetti", it:"ammiraglio", sp:"armiralio", ge:"amiraliu/amiralio", verif:"ge:g,sp:g" },
@@ -2548,7 +2551,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"citazioni", livello:"B2", it:"L'uomo è la misura di tutte le cose", la:"Homo omnium rerum mensura", grc:"Πάντων χρημάτων μέτρον ἄνθρωπος" },
       { tema:"dialogo", livello:"B1", it:"ladro", en:"thief", fr:"voleur", es:"ladrón", de:"Dieb", pt:"ladrão", ru:"вор", ca:"lladre", sp:"làdro", mn:"làdrun", ia:"fur", la:"fur", grc:"κλέπτης", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"lama", en:"mud", fr:"boue", es:"lodo", de:"Schlamm", pt:"lama", sp:"lama", mn:"lama", src:{"mn":"🤖 IA"}, verif:"mn:g" },
-      { tema:"casa", livello:"A2", it:"lampada", en:"lamp", fr:"lampe", es:"lámpara", de:"Lampe", pt:"lâmpada|lampada", ru:"лампа", ca:"làmpada", sp:"", ko:"램프", ar:"مصباح", zh:"灯", ja:"ランプ", ia:"lampa", la:"lucerna", grc:"λύχνος" },
+      { tema:"casa", livello:"A2", it:"lampada", en:"lamp", fr:"lampe", es:"lámpara", de:"Lampe", pt:"lâmpada|lampada", ru:"лампа", ca:"làmpada", ko:"램프", ar:"مصباح", zh:"灯", ja:"ランプ", ia:"lampa", la:"lucerna", grc:"λύχνος" },
       { tema:"dialogo", livello:"B1", it:"lana", en:"wool", fr:"laine", es:"lana", de:"Wolle", pt:"lã", ru:"шерсть", ca:"llana" },
       { it:"latte", mn:"late", ro:"lapte", verif:"mn:g" },
       { tema:"verbi", livello:"A1", it:"lavare", en:"wash", fr:"laver", es:"lavar", de:"waschen", pt:"lavar", ru:"мыть", ca:"rentar" },
@@ -3135,6 +3138,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"suocera", cr:"soz'ra" },
       { tema:"famiglia", livello:"A1", it:"suocero", en:"father-in-law", fr:"beau-père", es:"suegro", de:"Schwiegervater", pt:"sogro", ru:"свёкор|тесть", ca:"sogre", sp:"sèsoo", mn:"sèseu/sëzeu", ko:"시아버지", ar:"حمو", zh:"公公", ja:"義父", ia:"socer", la:"socer", grc:"πενθερός", verif:"mn:g" },
       { tema:"dialogo", livello:"A2", it:"suono|sembrare", en:"sound", fr:"son|sembler", es:"sonido|parecer", de:"Klang|klingen", pt:"som|parecer", ru:"звук|звучать", ca:"so|semblar" },
+      { tema:"casa", it:"sveglia", sp:"resve gin/resvegin", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"verbi", livello:"A2", it:"svegliare", sp:"dé svégiàæ ,der vegià e,sve giae/desvegiae,dervegiae,svegiae", mn:"svegiaaa/zvegiaa", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"sveglio|scaltro|smaliziato", sp:"svegio", mn:"svégiu/zvégiu", verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"svelto", en:"quick", fr:"agile", es:"ágil", de:"flink", pt:"ágil|agil", sp:"asvèrto| svèrto| scodìncio, alèsto", mn:"asvertu/azvèrtu| svèrtu|alèstu", ia:"rapide", verif:"mn:g,sp:g" },
@@ -3357,7 +3361,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 313;
+const VOC_VERSION = 314;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
