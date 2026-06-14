@@ -547,6 +547,11 @@
     flex-wrap: wrap;
     gap: 6px;
     align-items: center;
+    /* Resta sempre a video mentre si scorre la tabella, ancorata sotto l'header */
+    position: sticky;
+    top: var(--header-h, 64px);
+    z-index: 90;
+    box-shadow: 0 4px 12px rgba(30,27,75,0.10);
   }
   #char-bar.visible { display: flex; }
   #char-bar .char-label {
@@ -672,6 +677,11 @@
   .admin-actions button:hover { background: #f1f5f9; border-color: var(--accent); }
   .admin-actions button.btn-tts:hover { background: #eef2ff; color: var(--accent); }
   .admin-actions button.btn-del:hover { background: #fee2e2; border-color: #dc2626; color: #dc2626; }
+  .admin-actions button.btn-nt { filter: grayscale(1); opacity: 0.5; }
+  .admin-actions button.btn-nt:hover { filter: none; opacity: 1; background: #fef3c7; border-color: var(--accent2); }
+  .admin-actions button.btn-nt.active { filter: none; opacity: 1; background: #fef3c7; border-color: var(--accent2); }
+  /* Cella segnata "non traducibile": input spenti per ricordare lo stato */
+  .admin-cell.nt-on .admin-fields input { opacity: 0.4; text-decoration: line-through; background: #f8fafc; }
 
   body.admin tr.row-modified { background: #fefce8; }
   body.admin tr.row-modified:hover { background: #fef9c3; }
@@ -3504,11 +3514,34 @@ function adminAggiornaValore(it, col, nuovoValore) {
     delete voce[col];
   } else {
     voce[col] = nuovoValore;
+    ntSet(voce, col, false); // se inserisco una traduzione, la cella non è più "non traducibile"
   }
   adminModifiedKeys.add(it);
   adminUpdateBadges();
   const tr = document.querySelector(`tr[data-it="${cssEscape(it)}"]`);
   if (tr) tr.classList.add('row-modified');
+}
+
+// Imposta/rimuove il flag "non traducibile" (campo `nt`: array di codici dialetto)
+// sulla voce. `nt` resta solo nei candidati (dialetti.html): index lo ignora.
+function ntSet(voce, col, on) {
+  const set = new Set(Array.isArray(voce.nt) ? voce.nt : []);
+  if (on) set.add(col); else set.delete(col);
+  if (set.size) voce.nt = [...set]; else delete voce.nt;
+}
+
+function adminToggleNT(it, col) {
+  const voce = adminVoc.find(v => v.it === it);
+  if (!voce) return;
+  const era = dialNT(voce, col);
+  ntSet(voce, col, !era);
+  if (!era) {
+    // marcandola non traducibile, svuoto l'eventuale valore residuo per quel dialetto
+    delete voce[col];
+  }
+  adminModifiedKeys.add(it);
+  adminUpdateBadges();
+  renderTable();
 }
 
 function adminToggleOK(it, checked) {
@@ -3549,7 +3582,14 @@ function adminScartaVoce(it) {
 // con index caricato) nemmeno index ce l'ha. In pubblico ricade sul solo
 // campo candidato (adminIndexVoc è vuoto). Evita di chiedere traduzioni che
 // index ha già.
+// Cella segnata "non traducibile": la parola non esiste in quel dialetto
+// (es. aereo, aggiornamento). Non va più proposta né contata come mancante.
+function dialNT(e, col) {
+  return Array.isArray(e.nt) && e.nt.includes(col);
+}
+
 function dialMancante(e, col) {
+  if (dialNT(e, col)) return false;
   if (e[col]) return false;
   if (ADMIN && adminIndexVoc.length) {
     const idx = adminIndexByIt.get(adminRowKey(e));
@@ -3562,6 +3602,7 @@ function dialMancante(e, col) {
 // IT non in index (voce nuova) → sempre utile; altrimenti utile se almeno un
 // dialetto arricchisce (index vuoto) o è in conflitto (valore diverso).
 function voceUtile(e) {
+  if (Array.isArray(e.nt) && e.nt.length) return true; // porta un flag "non traducibile" → da conservare (evita la re-importazione)
   const idx = adminIndexByIt.get(adminRowKey(e));
   if (!idx) return true; // IT non presente in index → voce nuova
   return DIALECT_ALL_COLS.some(col => {
@@ -4547,10 +4588,14 @@ function adminCellHtml(e, col) {
   const isTTS = DIALETTI_TTS_ITA.includes(col);
   const it = escapeAttr(e.it);
 
+  const nt = dialNT(e, col);
+  const ntBtn = `<button type="button" class="btn-nt${nt ? ' active' : ''}" data-action="toggle-nt" data-it="${it}" data-col="${col}" title="${nt ? 'Riattiva: parola traducibile in ' + (DIALECT_NAMES[col] || col) : 'Segna come non traducibile in ' + (DIALECT_NAMES[col] || col) + ' (nasconde la voce per questo dialetto)'}">🚫</button>`;
+  const cellClass = nt ? 'admin-cell nt-on' : 'admin-cell';
+
   if (isTTS) {
     const { pron, graf } = adminSplitDialetto(val);
     return `
-      <div class="admin-cell">
+      <div class="${cellClass}">
         <div class="admin-fields-labels">
           <span class="lbl-pron">pronuncia (TTS)</span>
           <span class="lbl-graf">grafia</span>
@@ -4563,17 +4608,19 @@ function adminCellHtml(e, col) {
           <div class="admin-actions">
             <button type="button" class="btn-tts" data-action="speak" title="Ascolta pronuncia">🔊</button>
             <button type="button" class="btn-del" data-action="cancella-campo" data-it="${it}" data-col="${col}" title="Cancella solo il valore ${col} (per eliminare l'intera voce usa «scarta riga»)">🗑️</button>
+            ${ntBtn}
           </div>
         </div>
       </div>`;
   } else {
     return `
-      <div class="admin-cell">
+      <div class="${cellClass}">
         <div class="admin-fields">
           <input type="text" class="field-single" value="${escapeAttr(val)}" placeholder=""
             data-it="${it}" data-col="${col}" data-kind="single" oninput="onAdminSingleInput(this)">
           <div class="admin-actions">
             <button type="button" class="btn-del" data-action="cancella-campo" data-it="${it}" data-col="${col}" title="Cancella solo il valore ${col} (per eliminare l'intera voce usa «scarta riga»)">🗑️</button>
+            ${ntBtn}
           </div>
         </div>
       </div>`;
@@ -4683,8 +4730,16 @@ document.addEventListener('focusin', e => {
   ultimoInputFocus = t;
 });
 
+// Tiene aggiornata l'altezza dell'header (sticky) così la barra caratteri
+// può ancorarsi appena sotto, restando sempre visibile durante lo scroll.
+function aggiornaHeaderH() {
+  const h = document.querySelector('header');
+  if (h) document.documentElement.style.setProperty('--header-h', h.offsetHeight + 'px');
+}
+
 // Inizializzazione iniziale (la pagina parte già con un dialetto attivo)
-window.addEventListener('DOMContentLoaded', aggiornaCharBar);
+window.addEventListener('DOMContentLoaded', () => { aggiornaCharBar(); aggiornaHeaderH(); });
+window.addEventListener('resize', aggiornaHeaderH);
 
 function updateCustomDialect() {
   customDialectName = document.getElementById('custom-dialect-name').value.trim();
@@ -4762,8 +4817,12 @@ function renderTable() {
   // Vista singolo dialetto: nascondi del tutto le voci "già in index" per quel
   // dialetto (le verdi) — lì non c'è nulla da fare. Le contiamo per trasparenza.
   let nascosteGiaInIndex = 0;
+  let nascosteNT = 0;
   let rows = sourceVoc.filter(e => {
     if (q.length >= 2 && !e.it.toLowerCase().includes(q)) return false;
+    // Vista singolo dialetto: le voci "non traducibili" in quel dialetto spariscono.
+    // (Per togliere il flag, usa la vista 🌐 Tutti i dialetti.)
+    if (!isNew && !isAll && dialNT(e, col)) { nascosteNT++; return false; }
     if (showMissing === 'missing' && !isNew && !isAll && !dialMancante(e, col)) return false;
     if (ADMIN) {
       if (vaglioFilter === 'pronti' && !e.ok) return false;
@@ -4780,8 +4839,13 @@ function renderTable() {
   // Nota trasparente sulle voci nascoste perché già in index
   const hiddenNote = document.getElementById('ad-hidden-note');
   if (hiddenNote) {
-    if (!isAll && nascosteGiaInIndex > 0) {
-      hiddenNote.textContent = `🟢 ${nascosteGiaInIndex} voci già in ${getDialectName()} nascoste (presenti in index)`;
+    const noteParts = [];
+    if (!isAll && nascosteGiaInIndex > 0)
+      noteParts.push(`🟢 ${nascosteGiaInIndex} già in ${getDialectName()} (in index)`);
+    if (!isAll && nascosteNT > 0)
+      noteParts.push(`🚫 ${nascosteNT} non traducibili in ${getDialectName()} (sblocca dalla vista 🌐 Tutti i dialetti)`);
+    if (noteParts.length) {
+      hiddenNote.textContent = noteParts.join(' · ') + ' — nascoste';
       hiddenNote.classList.add('visible');
     } else {
       hiddenNote.classList.remove('visible');
@@ -5097,6 +5161,7 @@ if (ADMIN) {
       const it = el.dataset.it;
       if (action === 'scarta')         adminScartaVoce(it);
       else if (action === 'cancella-campo') adminCancellaCampo(it, el.dataset.col);
+      else if (action === 'toggle-nt')  adminToggleNT(it, el.dataset.col);
       else if (action === 'speak')     onAdminSpeakRow(el);
       else if (action === 'speak-text') adminSpeak(el.dataset.text);
     });
