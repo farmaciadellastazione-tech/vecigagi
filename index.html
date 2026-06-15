@@ -1786,7 +1786,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // ── Vocabolario con temi e livelli ────────────────────────────────────────
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
-      // ── VOCABOLARIO_DEFAULT ──────────────────
+      // ── VOCABOLARIO ──────────────────────────
       { tema:"acquisto", livello:"A2", it:"a buon mercato", es:"barato", pt:"barato", sp:"a bon páto", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", verif:"mn:g" },
       { tema:"dialetti", it:"a spasso, in giro senza meta.", sp:"scoratae", mn:"zùnzu (a)", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
@@ -2411,7 +2411,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"disfare i nodi", sp:"desvogia'e/desvogiae", mn:"sgrüpa a/zgrüpaa", verif:"mn:g" },
       { tema:"dialetti", it:"disordinato, trasandato nel vestire.", mn:"s'bu linà/zbulinà", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"salute", livello:"B1", it:"dissenteria", en:"dysentery", fr:"dysenterie", es:"disentería", de:"Ruhr", pt:"disenteria", sp:"cagaròn|caghéta", mn:"cagaùn|caghéta", verif:"mn:g" },
-      { tema:"farmaci", livello:"A1", it:"dito|dita", en:"finger", fr:"doigt", es:"dedo", de:"Finger", pt:"dedo", ru:"палец", ca:"dit", sp:"dido|didi| dida| dite| dide", mn:"dìdu|dida", ge:"dîo|die", ko:"손가락", ar:"إصبع", zh:"手指", ja:"指", ia:"digito", la:"digitus", grc:"δάκτυλος", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"farmaci", livello:"A1", it:"dito|dita", en:"finger", fr:"doigt", es:"dedo", de:"Finger", pt:"dedo", ru:"палец", ca:"dit", sp:"dido|didi| dida| dite| dide", mn:"dìdu|dida", ge:"dîo|die", ko:"손가락", ar:"إصبع", zh:"手指", ja:"指", ia:"digito", la:"digitus", grc:"δάκτυλος", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"dialetti", livello:"A2", it:"ditta, esercizio", mn:"àsiënda/àziënda", verif:"mn:g" },
       { tema:"dialetti", it:"dividere in metà.", mn:"smèdzàa/zmèzaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"B2", it:"divino", en:"divine", fr:"divin", es:"divino", de:"göttlich", pt:"divino", ca:"diví", ko:"신성한", ar:"إلهي", zh:"神圣", ja:"神聖", ia:"divin", la:"divinus", grc:"θεῖος" },
@@ -3510,7 +3510,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 326;
+const VOC_VERSION = 327;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
