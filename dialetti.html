@@ -1139,6 +1139,10 @@
     <input type="checkbox" id="ai-fill-toggle" onchange="adminToggleAIFill(this.checked)">
     🤖 +AI <span id="ai-fill-provider" style="font-size:11px; color:rgba(255,255,255,0.6)"></span>
   </label>
+  <label class="ai-toggle" title="Se attivo, prima della promozione l'AI verifica le traduzioni en/fr/es/de/pt delle voci OK e segnala le incoerenze (errori di significato)">
+    <input type="checkbox" id="ai-verify-toggle" onchange="adminToggleAIVerify(this.checked)">
+    🔍 Verifica
+  </label>
   <button class="btn-gh-promote" id="btn-gh-promote" onclick="adminPromuovi()" disabled
     title="Aggiunge le voci OK a index.html e le rimuove da dialetti.html (doppio commit)">
     🚀 Promuovi
@@ -3517,6 +3521,7 @@ const AI_FILL_LANGS = ['en','fr','es','de','pt'];
 const AI_LANG_NAMES = { en:'English', fr:'français', es:'español', de:'Deutsch', pt:'português' };
 const AI_BATCH_SIZE = 15;
 const AI_FILL_PREF_LS = 'admin_ai_fill_on';
+const AI_VERIFY_PREF_LS = 'admin_ai_verify_on';
 
 let aiConfig = null;
 function adminCaricaConfigAI() {
@@ -3537,6 +3542,19 @@ function adminToggleAIFill(checked) {
 
 function adminAIFillIsOn() {
   return localStorage.getItem(AI_FILL_PREF_LS) === '1' && aiConfig && aiConfig.provider && aiConfig.key;
+}
+
+function adminToggleAIVerify(checked) {
+  localStorage.setItem(AI_VERIFY_PREF_LS, checked ? '1' : '0');
+  if (checked && (!aiConfig || !aiConfig.provider || !aiConfig.key)) {
+    alert('AI non configurata. Configura prima un provider in edit.html (è la stessa chiave: lq_ai_config in localStorage).');
+    document.getElementById('ai-verify-toggle').checked = false;
+    localStorage.setItem(AI_VERIFY_PREF_LS, '0');
+  }
+}
+
+function adminAIVerifyIsOn() {
+  return localStorage.getItem(AI_VERIFY_PREF_LS) === '1' && aiConfig && aiConfig.provider && aiConfig.key;
 }
 
 async function adminAICall(prompt) {
@@ -3632,6 +3650,45 @@ Includi solo i campi richiesti in "da_tradurre_in" per ogni voce.`;
   return { filled, errors: items.length - (parsed.results || []).length };
 }
 
+// Verifica con l'AI la coerenza delle traduzioni en/fr/es/de/pt rispetto
+// all'italiano per un batch di voci. NON modifica le voci: restituisce un array
+// di problemi { it, lang, valore, problema, suggerimento }.
+async function adminAIVerifyBatch(voci) {
+  const items = voci.map(v => {
+    const traduzioni = {};
+    AI_FILL_LANGS.forEach(c => { if (v[c]) traduzioni[c] = v[c]; });
+    return { it: v.it, traduzioni };
+  }).filter(x => Object.keys(x.traduzioni).length);
+
+  if (!items.length) return [];
+
+  const prompt = `Sei un revisore di un vocabolario didattico (livello CEFR A1-B2).
+Per ogni voce ti do la parola italiana e le sue traduzioni. Trova SOLO le traduzioni il cui significato è CHIARAMENTE DIVERSO dall'italiano (errore palese, es. it:"abbelinato" tradotto come "elegante").
+Regole (per non dare falsi positivi):
+- Nel campo it il carattere "|" separa sinonimi/significati: basta che la traduzione corrisponda a UNO di essi.
+- Anche nelle traduzioni "/" o "|" separano sinonimi: se UNA è giusta, la voce è OK.
+- NON segnalare sinonimi, quasi-sinonimi, varianti regionali, registro o differenze ortografiche minori. Solo errori semantici palesi.
+- Se non sei sicuro al ~90%, NON segnalare.
+
+INPUT (JSON):
+${JSON.stringify(items, null, 1)}
+
+OUTPUT: rispondi SOLO con JSON valido di questa forma esatta:
+{"errori":[{"it":"...","lang":"en|fr|es|de|pt","valore":"<traduzione attuale>","problema":"<cosa significa davvero, in italiano>","suggerimento":"<traduzione corretta>"}]}
+Se non ci sono errori: {"errori":[]}`;
+
+  const text = await adminAICall(prompt);
+  let parsed;
+  try {
+    const cleaned = text.replace(/```json|```/g, '').trim();
+    const m = cleaned.match(/\{[\s\S]*\}/);
+    parsed = JSON.parse(m ? m[0] : cleaned);
+  } catch (e) {
+    throw new Error('Risposta AI non in JSON: ' + text.slice(0, 200));
+  }
+  return Array.isArray(parsed.errori) ? parsed.errori : [];
+}
+
 // ─── PROMUOVI: voci OK → index.html, e le rimuove da dialetti.html ───────
 //
 // Strategia: per ogni voce candidata con ok:true,
@@ -3687,6 +3744,46 @@ async function adminPromuovi() {
           }
         }
         adminLog(`✅ AI: ${aiStats.filled} traduzioni aggiunte (${aiStats.batches} batch).`, 'success');
+      }
+    }
+
+    // 0b. (opzionale) Verifica AI: controlla la coerenza delle traduzioni
+    // en/fr/es/de/pt rispetto all'italiano e segnala gli errori palesi prima
+    // di promuovere. Non blocca: l'admin decide se procedere o correggere.
+    if (adminAIVerifyIsOn()) {
+      adminLog('🔍 Verifica AI traduzioni…');
+      btn.textContent = '🔍 Verifica…';
+      const problemi = [];
+      let verifyFallita = false;
+      for (let i = 0; i < ok.length; i += AI_BATCH_SIZE) {
+        const chunk = ok.slice(i, i + AI_BATCH_SIZE);
+        btn.textContent = `🔍 Verifica ${Math.min(i + chunk.length, ok.length)}/${ok.length}…`;
+        try {
+          const errs = await adminAIVerifyBatch(chunk);
+          problemi.push(...errs);
+        } catch (err) {
+          console.error('Verifica AI fallita:', err);
+          verifyFallita = true;
+          if (!confirm(`Verifica AI fallita: ${err.message}\n\nProcedere con la promozione SENZA verifica?`)) {
+            btn.disabled = false; btn.textContent = '🚀 Promuovi'; return;
+          }
+          break;
+        }
+      }
+      if (problemi.length) {
+        const lista = problemi.slice(0, 20).map(p =>
+          `  · ${p.it} [${p.lang}] "${p.valore}" → ${p.problema}${p.suggerimento ? '  (✓ ' + p.suggerimento + ')' : ''}`
+        ).join('\n');
+        const extra = problemi.length > 20 ? `\n  …e altri ${problemi.length - 20}` : '';
+        if (!confirm(
+          `⚠️ La verifica AI ha trovato ${problemi.length} possibili traduzioni errate:\n\n${lista}${extra}\n\n` +
+          `Promuovere COMUNQUE?\n(Annulla per correggerle prima nei candidati)`
+        )) {
+          adminLog(`🔍 Promozione annullata: ${problemi.length} traduzioni da rivedere.`, 'error');
+          btn.disabled = false; btn.textContent = '🚀 Promuovi'; return;
+        }
+      } else if (!verifyFallita) {
+        adminLog('🔍 Verifica AI: nessun problema rilevato.', 'success');
       }
     }
 
@@ -4402,6 +4499,10 @@ if (ADMIN) {
   const aiOn = localStorage.getItem(AI_FILL_PREF_LS) === '1';
   const cb = document.getElementById('ai-fill-toggle');
   if (cb) cb.checked = aiOn && aiConfig && aiConfig.provider && aiConfig.key;
+  // Ripristina la preferenza Verifica AI (default off)
+  const aiVerifyOn = localStorage.getItem(AI_VERIFY_PREF_LS) === '1';
+  const cbV = document.getElementById('ai-verify-toggle');
+  if (cbV) cbV.checked = aiVerifyOn && aiConfig && aiConfig.provider && aiConfig.key;
 
   // Event delegation per bottoni admin: evita problemi di escape JS in onclick
   // inline quando `it` contiene apostrofi (es. "L'uomo è la misura...").
