@@ -2506,6 +2506,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"B1", it:"fare strada", en:"lead the way", fr:"montrer la voie", es:"liderar el camino", de:"den Weg weisen", pt:"abrir o caminho" },
       { tema:"mestieri", livello:"B1", it:"farmacista", en:"chemist", fr:"pharmacien", es:"farmacéutico", de:"Apotheker", pt:"farmacêutico", ru:"фармацевт|аптекарь", ca:"farmacèutic", sp:"spessiào", mn:"spessiào", verif:"sp:g" },
       { tema:"salute", livello:"B1", it:"farmaco", en:"medicine", fr:"médicament", es:"medicamento", de:"Medikament", pt:"medicamento", ru:"лекарство", ca:"medicament|fàrmac", ko:"약", ar:"دواء", zh:"药", ja:"薬" },
+      { tema:"mestieri", it:"fatica", sp:"fatiga", cr:"fatica", ge:"breiga", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"sp:g,ge:g,cr:g" },
       { tema:"dialetti", livello:"A2", it:"favola", en:"fable|hollow", fr:"fable|troué", es:"fábula|agujereado", de:"Fabel|Märchen", pt:"fábula|furado", sp:"fòa", mn:"fòa", verif:"mn:g" },
       { tema:"vestiti", livello:"A2", it:"fazzoletto", en:"handkerchief", ru:"платок", sp:"mandilo", mn:"mandilu", verif:"mn:g" },
       { tema:"mesi", livello:"A1", it:"febbraio", en:"February", fr:"février", es:"febrero", de:"Februar", pt:"fevereiro", ru:"февраль", ca:"febrer", sp:"frevào", mn:"frevào", ge:"frevaa/freva", ko:"2월", ar:"فبراير", zh:"二月", ja:"2月", ia:"februario", la:"Februarius", grc:"Φεβρουάριος", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
@@ -2585,7 +2586,9 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"gemere|lamentarsi", mn:"zémee/zemé|lamentase", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"genero", en:"son-in-law", de:"Schwiegersohn", sp:"żéneo", mn:"tzè eneu/zeneu", ge:"zeneo", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"dialetti", livello:"A2", it:"gengiva", sp:"zénziìa/zénzia", mn:"zénziigia/zénzigia", verif:"mn:g" },
+      { tema:"dialetti", it:"gengiva.", mn:"zenzìjia/zénzigia", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"mesi", livello:"A1", it:"gennaio", en:"January", fr:"janvier", es:"enero", de:"Januar", pt:"janeiro", ru:"январь", ca:"gener", sp:"zenà'o/zanào", mn:"zenàu", ko:"1월", ar:"يناير", zh:"一月", ja:"1月", ia:"januario", la:"Ianuarius", grc:"Ἰανουάριος", verif:"sp:g" },
+      { tema:"dialetti", it:"gennaio.", mn:"zenàa/zénaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"viaggi", livello:"A1", it:"Genova", sp:"d'zena/Zena", mn:"jiéna/Jiéna", ge:"d'zena/Zena", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"genovese", mn:"zénèsé/zénëzé", verif:"mn:g" },
       { tema:"dialetti", it:"genovese.", mn:"zenese/zénëzé", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
@@ -2594,13 +2597,17 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A1", it:"ghiaccio", en:"ice", fr:"glace", es:"hielo", de:"Eis", pt:"gelo", sp:"giasso", mn:"giassu", verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"ghiotto", en:"greedy", fr:"gourmand", es:"goloso", de:"naschhaft", pt:"guloso", sp:"giòto, goòn, lecardòn, gióto, goón, lecardón", mn:"giòto,goòn,lecardòn", ge:"leccaeso", ia:"glutte", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"animali", livello:"B1", it:"ghiozzo", en:"goby", fr:"gobie", es:"gobio", de:"Grundel", pt:"góbio|gobio", sp:"ghigiòn", mn:"ghigiùn", cr:"ghiozz", verif:"mn:g" },
+      { tema:"dialetti", it:"ghiro, dormiglione.", mn:"s'ghì'u/zghìu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"ghiro| dormiglione", mn:"s'ghi u/zghìu", verif:"mn:g" },
       { tema:"dialogo", livello:"A2", it:"già", en:"already", fr:"déjà", es:"ya", de:"schon|bereits", pt:"já", ru:"уже", ca:"ja", sp:"d'za/zà", mn:"zà", verif:"sp:g" },
+      { tema:"dialetti", it:"già.", mn:"zà", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"vestiti", livello:"B1", it:"giacca", en:"jacket", fr:"veste", es:"chaqueta", de:"Jacke", pt:"jaqueta", ru:"куртка|пиджак", ca:"jaqueta", sp:"giaca", ia:"jaco", verif:"sp:g" },
       { tema:"aggettivi", livello:"A1", it:"giallo", en:"yellow", fr:"jaune", es:"amarillo", de:"gelb", pt:"amarelo", ru:"жёлтый", ca:"groc", sp:"zalo, żalo", mn:"zalo", ge:"giano", ko:"노란", ar:"أصفر", zh:"黄色", ja:"黄色", ia:"jalne", la:"flavus", grc:"ξανθός", ro:"galben", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
+      { tema:"dialetti", it:"giallo.", mn:"zàlu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"B1", it:"gigantesco", cr:"gigantesch" },
       { tema:"dialetti", livello:"A2", it:"ginepro", sp:"zené'pre/zenébre", mn:"zénèvru/zénëvru", verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"ginnastica", en:"gymnastics", fr:"gymnastique", es:"gimnasia", de:"Turnen", pt:"ginástica|ginastica", ko:"체조", ar:"الجمناستيك", zh:"体操", ja:"体操", ia:"gymnastica", la:"gymnasium", grc:"γυμναστική" },
+      { tema:"dialetti", it:"ginocchio.", mn:"zénuciu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"giocare", en:"play", fr:"jouer", es:"jugar", de:"spielen", pt:"jogar", ru:"играть", ca:"jugar", sp:"zügae", mn:"zügaa", ko:"놀다", ar:"يلعب", zh:"玩", ja:"遊ぶ", ia:"jocar", la:"ludere", grc:"παίζειν", verif:"sp:g" },
       { tema:"verbi", livello:"A1", it:"giocare|suonare", en:"play", fr:"jouer", es:"jugar|tocar", de:"spielen", pt:"jogar|tocar", ru:"играть", ca:"jugar|tocar", sp:"sügae,trepae,trepesae/zügae,trepae,trepezae", mn:"zügaa", verif:"mn:g" },
       { tema:"dialogo", livello:"A1", it:"gioco/partita", en:"game", fr:"jeu|match", es:"juego", de:"Spiel", pt:"jogo", ru:"игра", ca:"joc", sp:"zègo", mn:"zegu/zégu", verif:"mn:g" },
@@ -3476,6 +3483,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"volte", en:"times", fr:"fois", es:"veces", de:"Mal", pt:"vezes", ru:"раз|раза", ca:"vegades" },
       { tema:"dialetti", livello:"A2", it:"volto|porticato", mn:"vòrtu", verif:"mn:g" },
       { tema:"verbi", livello:"B2", it:"vomitare", en:"vomit", ru:"рвать", sp:"racae", mn:"racaa", verif:"mn:g" },
+      { tema:"dialetti", it:"vostre", mn:"vostre/vòstré", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"vostro", mn:"vòstru", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"votazioni, elezioni", mn:"vutasciùun/vutasciùn'", verif:"mn:g" },
       { tema:"luoghi", livello:"A1", it:"voto", en:"grade", fr:"note", es:"nota", de:"Note", pt:"nota", ko:"점수", ar:"درجة", zh:"成绩", ja:"成績", ia:"nota", la:"nota", grc:"βαθμός" },
       { it:"vuole la botte piena e la moglie ubriaca", cr:"I vo la bota piena e la moia 'mbriaca" },
@@ -3519,7 +3528,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 327;
+const VOC_VERSION = 328;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
