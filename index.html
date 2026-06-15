@@ -8720,10 +8720,12 @@ function ImpostazioniAI({
 function Glossario({
   vocabolario,
   lingue,
-  onIndietro
+  onIndietro,
+  linguaIniziale
 }) {
   const lingueAttive = lingue.filter(l => l.attiva);
-  const [linguaOrd, setLinguaOrd] = useState(lingueAttive[0]?.codice || "it");
+  const linguaValida = linguaIniziale && lingueAttive.some(l => l.codice === linguaIniziale) ? linguaIniziale : null;
+  const [linguaOrd, setLinguaOrd] = useState(linguaValida || lingueAttive[0]?.codice || "it");
   const [filtraLivello, setFiltraLivello] = useState("tutti");
   const [filtraTema, setFiltraTema] = useState("tutti");
   const [query, setQuery] = useState("");
@@ -10660,6 +10662,7 @@ function App() {
     livelli: []
   }));
   const [schermata, setSchermata] = useState("home"); // splash disabilitata
+  const [glossarioLang, setGlossarioLang] = useState(null); // dialetto preselezionato dal deep-link #glossario/<codice>
   const [aiSettings, setAiSettings] = useState(() => loadJSON(SK_AI, null) || {
     provider: "gemini",
     apiKey: ""
@@ -10706,6 +10709,21 @@ function App() {
   useEffect(() => {
     saveJSON(SK_AI, aiSettings);
   }, [aiSettings]);
+  // Deep-link: #glossario apre il Glossario; #glossario/<codice> lo apre ordinato
+  // per quel dialetto E lo attiva (i dialetti sono spenti di default), così chi
+  // arriva da dialetti.html lo vede subito. Es. linguaequiz.com/#glossario/sp
+  useEffect(() => {
+    const h = (window.location.hash || "").replace(/^#/, "");
+    if (h === "glossario" || h.startsWith("glossario/")) {
+      const code = h.split("/")[1] || null;
+      if (code) {
+        setGlossarioLang(code);
+        setLingue(prev => prev.map(l =>
+          (l.codice === code || l.codice === "it") ? { ...l, attiva: true } : l));
+      }
+      setSchermata("glossario");
+    }
+  }, []);
   function avvia(voc, st, mod, ling, fil, linguaDa, linguaA, nDom) {
     const v = voc || vocabolario,
       s = st || stats,
@@ -11064,7 +11082,8 @@ function App() {
   if (schermata === "glossario") return /*#__PURE__*/React.createElement(Glossario, {
     vocabolario: vocabolario,
     lingue: lingue,
-    onIndietro: () => setSchermata("home")
+    linguaIniziale: glossarioLang,
+    onIndietro: () => { setGlossarioLang(null); setSchermata("home"); }
   });
   if (schermata === "ricerca") return /*#__PURE__*/React.createElement(Ricerca, {
     vocabolario: vocabolario,

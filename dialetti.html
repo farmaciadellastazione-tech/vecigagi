@@ -992,6 +992,7 @@
   <div class="intro public-only">
     <h1>Salva il tuo dialetto: Cinque Terre, La Spezia, Lunigiana ⚓</h1>
     <p>Aiutaci a preservare i dialetti delle <strong>Cinque Terre</strong> (manarolese), del <strong>Golfo della Spezia</strong> (spezzino) e della <strong>Lunigiana storica</strong> (carrarino), insieme al genovese e ad altri dialetti liguri. Scegli il tuo dialetto, cerca le parole italiane che conosci e inserisci la traduzione. Quando hai finito, clicca <strong>Invia contributi</strong> — le traduzioni verranno aggiunte al <a href="https://linguaequiz.com/" class="inline-link">vocabolario del quiz di LinguaeQuiz</a>.</p>
+    <p class="quiz-cta">📖 Cerchi solo <strong>come si dice una parola</strong>? <a id="glossario-link" href="https://linguaequiz.com/#glossario/sp">Consulta il glossario dei dialetti →</a></p>
     <p class="quiz-cta">🎮 Vuoi <strong>imparare i dialetti giocando</strong>? <a href="https://linguaequiz.com/">Gioca al quiz sui dialetti liguri →</a></p>
   </div>
 
@@ -3899,10 +3900,20 @@ function onAdminSpeakRow(btn) {
   adminSpeak(pron || graf);
 }
 
+// Aggiorna il link al glossario di index.html così si apre ordinato per il
+// dialetto attualmente selezionato (sp/mn/cr/ge). Per 'new'/'all' resta generico.
+function aggiornaGlossarioLink() {
+  const a = document.getElementById('glossario-link');
+  if (!a) return;
+  const code = ['sp','mn','cr','ge'].includes(currentDialect) ? currentDialect : '';
+  a.href = 'https://linguaequiz.com/#glossario' + (code ? '/' + code : '');
+}
+
 function setDialect(d, el) {
   currentDialect = d;
   document.querySelectorAll('#dialect-chips .chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
+  aggiornaGlossarioLink();
   document.getElementById('custom-dialect-box').classList.toggle('visible', d === 'new');
   // In modalità admin non resettiamo contributions/modifiche: l'admin lavora direttamente su adminVoc
   if (!ADMIN) contributions = {};
@@ -4418,6 +4429,7 @@ if (ADMIN) {
   renderTable();
   updateProgress();
   updateStats();
+  aggiornaGlossarioLink();
 }
 </script>
 </body>
