@@ -1786,7 +1786,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // ── Vocabolario con temi e livelli ────────────────────────────────────────
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
-      // ── VOCABOLARIO ──────────────────────────
+      // ── VOCABOLARIO_DEFAULT ──────────────────
       { tema:"acquisto", livello:"A2", it:"a buon mercato", es:"barato", pt:"barato", sp:"a bon páto", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", verif:"mn:g" },
       { tema:"dialetti", it:"a spasso, in giro senza meta.", sp:"scoratae", mn:"zùnzu (a)", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
@@ -2230,11 +2230,12 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"animali", it:"cicala", sp:"sigàà, batacùo", ge:"çigaa", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"verbi", livello:"A2", it:"ciclismo", en:"cycling", fr:"cyclisme", es:"ciclismo", de:"Radfahren", pt:"ciclismo", ru:"велоспорт", ca:"ciclisme", ko:"사이클링", ar:"ركوب الدراجات", zh:"自行车", ja:"サイクリング", ia:"cyclismo" },
       { it:"cieco", sp:"gueèrso/guerso", cr:"guerz", verif:"sp:g" },
-      { tema:"natura", livello:"A2", it:"cielo", en:"sky", fr:"ciel", es:"cielo", de:"Himmel", pt:"céu|ceu", ru:"небо", ca:"cel", mn:"sci é/scié", cr:"zel", ge:"", ko:"하늘", ar:"سماء", zh:"天空", ja:"空", ia:"celo", la:"caelum", grc:"οὐρανός", verif:"mn:g" },
+      { tema:"natura", livello:"A2", it:"cielo", en:"sky", fr:"ciel", es:"cielo", de:"Himmel", pt:"céu|ceu", ru:"небо", ca:"cel", sp:"celo", mn:"sci é/scié", cr:"zel", ge:"çê", ko:"하늘", ar:"سماء", zh:"天空", ja:"空", ia:"celo", la:"caelum", grc:"οὐρανός", verif:"sp:g,ge:g", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"} },
       { tema:"famiglia", livello:"A2", it:"ciliegia", en:"cherry", fr:"cerise", es:"cereza", de:"Kirsche", pt:"cereja", ru:"вишня|черешня", ca:"cirera", sp:"siéza", mn:"siéza", cr:"ziresa", ia:"ceresia", verif:"sp:g" },
       { tema:"dialetti", livello:"A2", it:"cima, corda", de:"Seil", ca:"corda", sp:"sima", mn:"sìma/sìma", verif:"sp:g", src:{"sp":"🔗 dialetti.html"} },
       { tema:"animali", livello:"B1", it:"cimice", en:"bug", fr:"punaise", es:"chinche", de:"Wanze", pt:"percevejo", sp:"sìmesa/simesa", mn:"simsa/simesa", ia:"cimice", verif:"sp:g" },
       { tema:"animali", livello:"A2", it:"cinghiale", en:"wild boar", fr:"sanglier", es:"jabalí", de:"Wildschwein", pt:"javali", ru:"кабан", ca:"senglar", sp:"singhiale", mn:"cinghialu", ko:"멧돼지", ar:"خنزير بري", zh:"野猪", ja:"イノシシ", ia:"apro|porco salvage", verif:"mn:g" },
+      { tema:"numeri", it:"cinquanta", en:"fifty", sp:"sinquanta", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"numeri", livello:"A2", it:"cinquanta|50", en:"fifty", fr:"cinquante", es:"cincuenta", de:"fünfzig", pt:"cinquenta", ru:"пятьдесят", ca:"cinquanta", sp:"sinquanta", mn:"sinquànta", cr:"Zinquanta", ge:"çinquànta", ko:"오십", ar:"خمسون", zh:"五十", ja:"五十", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"numeri", it:"cinque", en:"five", sp:"sìnque", mn:"sìnque", ro:"cinci", verif:"mn:g" },
       { tema:"numeri", livello:"A1", it:"cinque|5", en:"five", fr:"cinq", es:"cinco", de:"fünf", pt:"cinco", ru:"пять", ca:"cinc", sp:"sìnque", mn:"sìnque", cr:"Zinqui", ko:"오", ar:"خمسة", zh:"五", ja:"五", ia:"cinque", la:"quinque", grc:"πέντε", verif:"mn:g" },
@@ -2378,6 +2379,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A1", it:"denaro", en:"money", sp:"dinàao/dinào", mn:"dinaa", ge:"dina, pl. dinae", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { it:"dente", sp:"dente|dento", cr:"dent", verif:"sp:g" },
       { tema:"corpo", livello:"A2", it:"denti", en:"teeth", fr:"dents", es:"dientes", de:"Zähne", pt:"dentes", ru:"зубы", ca:"dents", mn:"denti", cr:"denti", verif:"mn:g" },
+      { tema:"corpo", it:"dentiera", sp:"dentéa", ge:"dentea", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"casa", livello:"A2", it:"dentifricio", en:"toothpaste", fr:"dentifrice", es:"pasta de dientes", de:"Zahnpasta", pt:"pasta de dentes", ru:"зубная паста", ca:"pasta de dents" },
       { tema:"spazio", livello:"A1", it:"dentro", en:"inside", fr:"dedans", es:"dentro", de:"drinnen", pt:"dentro", ru:"внутри", ca:"dins", sp:"drento", mn:"drëntu", ge:"drénto", ko:"안에", ar:"داخل", zh:"里面", ja:"中", ia:"in", la:"intus", grc:"ἔσω", ro:"înăuntru", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"cosmetica", livello:"A2", it:"deodorante", en:"deodorant", fr:"déodorant", es:"desodorante", de:"Deodorant", pt:"desodorante", ko:"데오도란트", ar:"مزيل عرق", zh:"除臭剂", ja:"デオドラント" },
@@ -2389,6 +2391,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"sintomi", livello:"A2", it:"diarrea", en:"diarrhoea", fr:"diarrhée", es:"diarrea", de:"Durchfall", pt:"diarreia", sp:"caghéta|cagaròn|scorrentina", mn:"caghéta", ge:"diarrea", ko:"설사", ar:"إسهال", zh:"腹泻", ja:"下痢", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialetti", it:"diarrea.", mn:"cagaùn", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"mesi", livello:"A1", it:"dicembre", en:"December", fr:"décembre", es:"diciembre", de:"Dezember", pt:"dezembro", ru:"декабрь", ca:"desembre", sp:"dezenbre", mn:"desembre/dezembre", cr:"Dizembr", ko:"12월", ar:"ديسمبر", zh:"十二月", ja:"12月", ia:"decembre", la:"December", grc:"Δεκέμβριος", verif:"mn:g" },
+      { tema:"dialetti", it:"diceria", sp:"dita", ge:"dita", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"numeri", livello:"A1", it:"diciannove", en:"nineteen", ru:"девятнадцать", sp:"desaané ve", mn:"desaané ve/dézanévé", ge:"dixinêuve", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"numeri", livello:"A1", it:"diciassette|17", en:"seventeen", ru:"семнадцать", ca:"disset", sp:"dezasète|desete", mn:"dînsète", cr:"Dizisseta", ge:"dîsètte", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"numeri", livello:"A1", it:"diciotto|18", en:"eighteen", de:"achtzehn", ru:"восемнадцать", ca:"divuit", sp:"dezòto", mn:"desotu/dezotu", cr:"Dizòt", ge:"dixéutto", ia:"deces-octo", verif:"mn:g" },
@@ -2411,7 +2414,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"disfare i nodi", sp:"desvogia'e/desvogiae", mn:"sgrüpa a/zgrüpaa", verif:"mn:g" },
       { tema:"dialetti", it:"disordinato, trasandato nel vestire.", mn:"s'bu linà/zbulinà", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"salute", livello:"B1", it:"dissenteria", en:"dysentery", fr:"dysenterie", es:"disentería", de:"Ruhr", pt:"disenteria", sp:"cagaròn|caghéta", mn:"cagaùn|caghéta", verif:"mn:g" },
-      { tema:"farmaci", livello:"A1", it:"dito|dita", en:"finger", fr:"doigt", es:"dedo", de:"Finger", pt:"dedo", ru:"палец", ca:"dit", sp:"dido|didi| dida| dite| dide", mn:"dìdu|dida", ge:"dîo|die", ko:"손가락", ar:"إصبع", zh:"手指", ja:"指", ia:"digito", la:"digitus", grc:"δάκτυλος", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
+      { tema:"dialetti", it:"disturbo", sp:"destàsso", ge:"destascio", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
+      { tema:"farmaci", livello:"A1", it:"dito|dita", en:"finger", fr:"doigt", es:"dedo", de:"Finger", pt:"dedo", ru:"палец", ca:"dit", sp:"dido|didi| dida| dite| dide", mn:"dìdu|dida", ge:"dîo|die", ko:"손가락", ar:"إصبع", zh:"手指", ja:"指", ia:"digito", la:"digitus", grc:"δάκτυλος", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"ditta, esercizio", mn:"àsiënda/àziënda", verif:"mn:g" },
       { tema:"dialetti", it:"dividere in metà.", mn:"smèdzàa/zmèzaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"B2", it:"divino", en:"divine", fr:"divin", es:"divino", de:"göttlich", pt:"divino", ca:"diví", ko:"신성한", ar:"إلهي", zh:"神圣", ja:"神聖", ia:"divin", la:"divinus", grc:"θεῖος" },
@@ -2422,9 +2426,11 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"valute", livello:"A1", it:"dollaro", en:"dollar", fr:"dollar", es:"dólar", de:"Dollar", pt:"dólar|dolar", ko:"달러", ar:"دولار", zh:"美元", ja:"ドル" },
       { tema:"corpo", livello:"A2", it:"dolore", en:"pain", mn:"duuu/dùuu", verif:"mn:g" },
       { tema:"comunicazione", livello:"A2", it:"domanda", en:"question", mn:"dumanda", verif:"mn:g" },
+      { tema:"verbi", it:"domandare", sp:"domandae", ge:"domanda, dimanda", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"tempo", livello:"A1", it:"domani", en:"tomorrow", fr:"demain", es:"mañana", de:"morgen", pt:"amanhã|amanha", ru:"завтра", ca:"demà", mn:"duman", cr:"doman", ko:"내일", ar:"غداً", zh:"明天", ja:"明日", ia:"deman", la:"cras", grc:"αὔριον", ro:"mâine", verif:"mn:g" },
       { tema:"giorni", livello:"A1", it:"domenica", en:"Sunday", fr:"dimanche", es:"domingo", de:"Sonntag", pt:"domingo", ru:"воскресенье", ca:"diumenge", sp:"domeénega/domenega", mn:"duménega/dumenega", cr:"domenica", ko:"일요일", ar:"الأحد", zh:"星期日", ja:"日曜日", ia:"dominica", la:"dies Solis", grc:"Κυριακή", ro:"duminică", verif:"mn:g" },
       { tema:"famiglia", livello:"A1", it:"donna", en:"woman", fr:"femme", es:"mujer", de:"Frau", pt:"mulher", sp:"dòna", cr:"dona", ko:"여자", ar:"امرأة", zh:"女人", ja:"女性", ia:"femina", la:"femina", grc:"γυνή", verif:"sp:g" },
+      { tema:"animali", it:"donnola", en:"weasel", sp:"bèloa", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialogo", livello:"A1", it:"dopo", en:"after", ru:"после", mn:"dopu", verif:"mn:g" },
       { tema:"istruzioni", livello:"A2", it:"dopo i pasti", en:"after meals", fr:"après les repas", es:"después de las comidas", de:"nach den Mahlzeiten", pt:"após as refeições|apos as refeicoes", ko:"식사 후", ar:"بعد الوجبات", zh:"饭后", ja:"食後" },
       { tema:"dialetti", livello:"A1", it:"doppio", sp:"doccio/dócio", mn:"duciu", ge:"doggio", src:{"mn":"🤖 IA"}, verif:"mn:g" },
@@ -2439,6 +2445,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"due|2", en:"two", fr:"deux", es:"dos", de:"zwei", pt:"dois", ru:"два", ca:"dos", sp:"doi, doa", mn:"dui |", cr:"Do", ge:"doî | dôe", ko:"이", ar:"اثنان", zh:"二", ja:"二", ia:"duo", la:"duo", grc:"δύο", ro:"doi", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"numeri", livello:"A1", it:"duecento|200", en:"two hundred", ru:"двести", sp:"doisento|200", mn:"duisentu|200", verif:"mn:g,sp:g" },
       { tema:"dialogo", livello:"A2", it:"durante", en:"during", fr:"pendant", es:"durante", de:"während", pt:"durante", ru:"во время", ca:"durant" },
+      { tema:"verbi", it:"durare", sp:"düa'e/düae", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"caratteristiche", livello:"A2", it:"duro", en:"hard", sp:"düo", mn:"düu", ge:"düo", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialogo", livello:"A1", it:"È allergico a qualcosa?", en:"Are you allergic to anything?", fr:"Êtes-vous allergique à quelque chose?", es:"¿Es alérgico a algo?", de:"Sind Sie gegen etwas allergisch?", pt:"É alérgico a algo?|E alergico a algo?", ko:"알레르기가 있으신가요?", ar:"هل أنت مصاب بأي حساسية؟", zh:"您有什么过敏吗？", ja:"何かアレルギーはありますか？" },
       { tema:"dialetti", livello:"A2", it:"eccezionale" },
@@ -2452,6 +2459,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", it:"educazione.", mn:"édücasciùn", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"farmaci", livello:"B1", it:"effetto collaterale", en:"side effect", fr:"effet secondaire", es:"efecto secundario", de:"Nebenwirkung", pt:"efeito colateral", ca:"efecte secundari", ko:"부작용", ar:"آثار جانبية", zh:"副作用", ja:"副作用" },
       { tema:"dialetti", it:"effetto.", mn:"efètu/éfètu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"grammatica", it:"egli/ella ama", sp:"ama", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"animali", livello:"A1", it:"elefante", en:"elephant", fr:"éléphant", es:"elefante", de:"Elefant", pt:"elefante", ru:"слон", ca:"elefant", sp:"lefante", ko:"코끼리", ar:"فيل", zh:"大象", ja:"ゾウ", ia:"elephante", la:"elephantus", grc:"ἐλέφας", verif:"sp:g" },
       { tema:"dialetti", it:"elegante.", mn:"entapà/éntapà", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"mestieri", livello:"B1", it:"elettricista", en:"electrician", fr:"électricien", es:"electricista", de:"Elektriker", pt:"eletricista", ru:"электрик", ca:"electricista" },
@@ -2479,6 +2487,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"B1", it:"estraneo/sconosciuto", en:"stranger", fr:"étranger|inconnu", es:"extraño|desconocido", de:"Fremder", pt:"estranho|desconhecido", ru:"незнакомец", ca:"desconegut" },
       { tema:"dialetti", livello:"A2", it:"evaporare", sp:"svanpoì'e/svanpoie", mn:"zvàpuraa", verif:"mn:g", src:{"mn":"🔗 dialetti.html"} },
       { tema:"dialetti", it:"evaporato.", mn:"svapurà/zvapurà", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"verbi", it:"evitare / scansare", sp:"s'ghindae/sghindae", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialetti", it:"evitare, scansare.", mn:"s'ghin daa/zghìndaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialogo", livello:"A2", it:"fa", en:"ago", fr:"il y a", es:"hace", de:"vor", pt:"há|atrás", ru:"назад|тому назад", ca:"fa" },
       { tema:"avvertimenti", livello:"A1", it:"fa' attenzione", en:"take care", fr:"fais attention", es:"ten cuidado", de:"pass auf", pt:"tome cuidado", ru:"будь осторожен", ca:"vés amb compte|para atenció", sp:"ocio", mn:"òciu", verif:"mn:g" },
@@ -3347,7 +3356,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A2", it:"tovagliolo", en:"napkin", fr:"serviette", es:"servilleta", de:"Serviette", pt:"guardanapo", sp:"toagìn,picagéta", mn:"toagìn|picagéta", verif:"sp:g" },
       { tema:"dialetti", livello:"A2", it:"tracannare, ingurgitare", mn:"tràcanaaa/tràcanaa", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"tradire", mn:"tradii", verif:"mn:g" },
-      { tema:"dialetti", livello:"A2", it:"traditore|voltagabbana", en:"turncoat", fr:"renégat", es:"traidor", de:"Verräter", pt:"traíra", ca:"traïdor", sp:"traditoe", mn:"tradituu", ge:"traditô", ia:"traditor", la:"perfidus", ro:"trădător", verif:"mn:g,sp:g" },
+      { tema:"dialetti", livello:"A2", it:"traditore|voltagabbana", en:"turncoat", fr:"renégat", es:"traidor", de:"Verräter", pt:"traíra", ca:"traïdor", sp:"traditore", mn:"tradituu", ge:"traditô", ia:"traditor", la:"perfidus", ro:"trădător", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"tradizione, usanza", mn:"tradisciùn", verif:"mn:g" },
       { tema:"verbi", livello:"B1", it:"tradurre", en:"translate", fr:"traduire", es:"traducir", de:"übersetzen", pt:"traduzir", ru:"переводить", ca:"traduir" },
       { tema:"dialetti", livello:"A2", it:"traffico, movimento", mn:"trà'féguu/tràfégu", verif:"mn:g" },
@@ -3510,7 +3519,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 328;
+const VOC_VERSION = 327;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
