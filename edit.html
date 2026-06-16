@@ -1181,7 +1181,7 @@ function render() {
       const hasSlash = isDialetto && valRaw.split('|')[0].includes('/');
       const hidden = valRaw.includes('|') ? valRaw.split('|').length - 1 : 0;
       // Stato cella dialettale: 'g' verde / 'r' rosso / 'y' giallo / null (non-dialetto o vuota).
-      const nt = isDialetto && dialNT(v, code);
+      const nt = dialNT(v, code);
       const stato = nt ? null : statoCella(v, code);
       let stateClass = '', stateBadge = '', stateButtons = '';
       if (nt) { stateClass = 'nt-cell'; stateBadge = '<span class="state-badge" title="Non traducibile: la parola non esiste in questo dialetto">🚫</span>'; }
@@ -1209,7 +1209,7 @@ function render() {
         ${hidden ? `<span class="alt-badge" title="${hidden} alt. nascoste">+${hidden}</span>` : ''}
         <button class="icon-btn" onclick="ttsCella(this,'${code}')" title="Pronuncia" style="margin-left:4px">🔊</button>
         ${isDialetto ? `<button class="icon-btn ai" onclick="aiTrascriviTTSCella(this,'${code}')" title="Suggerisci trascrizione TTS">🔤</button>` : ''}
-        ${isDialetto ? `<button class="icon-btn nt-btn ${nt?'nt-on':''}" onclick="toggleNT(this,'${code}')" title="${nt?'Riattiva: parola traducibile in '+(info?info.name:code):'Segna come non traducibile in '+(info?info.name:code)+' (svuota e nasconde la cella)'}">🚫</button>` : ''}
+        <button class="icon-btn nt-btn ${nt?'nt-on':''}" onclick="toggleNT(this,'${code}')" title="${nt?'Riattiva: parola traducibile in '+(info?info.name:code):'Segna come non traducibile in '+(info?info.name:code)+' (svuota la cella)'}">🚫</button>
         ${stateButtons}
       </td>`;
     });
@@ -1285,7 +1285,7 @@ function onCellEdit(tr, voce, input) {
     const cell = input.parentElement, oldSlash = cell.querySelector('.slash-badge');
     if (oldSlash) oldSlash.remove();
     // Inserendo una traduzione la cella non è più "non traducibile"
-    if (DIALETTI_TTS_ITA.includes(field) && val.trim() && dialNT(voce, field)) {
+    if (val.trim() && dialNT(voce, field)) {
       ntSet(voce, field, false);
       cell.classList.remove('nt-cell');
       const ntBadge = cell.querySelector('.state-badge'); if (ntBadge) ntBadge.remove();
@@ -1362,9 +1362,10 @@ function setStatoCella(btn, code, target) {
   render();
 }
 
-// "Non traducibile" (campo `nt`: array di codici dialetto): la parola non esiste
-// in quel dialetto (es. aereo, computer). Stesso schema di dialetti.html.
-// index.html ignora `nt`: niente VOC_VERSION da incrementare.
+// "Non traducibile" (campo `nt`: array di codici lingua): la parola non esiste
+// in quella lingua/dialetto (es. termini culturali senza equivalente). Vale per
+// tutte le lingue, non solo i dialetti. Stesso schema di dialetti.html (che però
+// lo usa solo per i dialetti). index.html ignora `nt`: niente VOC_VERSION.
 function dialNT(v, code) { return Array.isArray(v.nt) && v.nt.includes(code); }
 function ntSet(v, code, on) {
   const set = new Set(Array.isArray(v.nt) ? v.nt : []);
