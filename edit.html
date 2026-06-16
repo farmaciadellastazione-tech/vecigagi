@@ -110,6 +110,11 @@
   .src-input.has-src { background: #e0e7ff; border-color: var(--primary); }
   .src-input:focus { width: 13rem; }
   .note-btn.has-note { background: #fef3c7; opacity: 1; }
+  /* Cella segnata "non traducibile" (campo nt): input spento, valore barrato */
+  .nt-cell input { opacity: 0.4 !important; text-decoration: line-through; background: #f8fafc !important; box-shadow: none !important; padding-left: 1.6rem; }
+  .nt-btn { font-size: 0.85rem; padding: 0.2rem 0.3rem; opacity: 0.4; filter: grayscale(1); }
+  .nt-btn:hover { opacity: 0.9; filter: none; }
+  .nt-btn.nt-on { background: #fef3c7; opacity: 1; filter: none; box-shadow: inset 0 0 0 1px #f59e0b; }
   .footer-bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--card-bg); border-top: 2px solid var(--border); padding: 0.7rem 1rem; display: flex; gap: 0.5rem; align-items: center; box-shadow: 0 -2px 6px rgba(0,0,0,0.06); flex-wrap: wrap; z-index: 20; }
   .footer-bar .stats { margin-left: auto; }
   .badge { display: inline-block; padding: 0.1rem 0.45rem; border-radius: 4px; font-size: 0.74rem; font-weight: 600; background: #e0e7ff; color: var(--primary); }
@@ -1065,7 +1070,7 @@ function filtroVoci() {
   return vocabolario.filter(v => {
     if (currentTema && v.tema !== currentTema) return false;
     if (currentLivello && v.livello !== currentLivello) return false;
-    if (onlyEmpty && (v[lang0] || '').trim() !== '') return false;
+    if (onlyEmpty && ((v[lang0] || '').trim() !== '' || dialNT(v, lang0))) return false;
     if (onlySuspect) {
       if (suspectLang) { if (statoCella(v, suspectLang) !== 'r') return false; }
       else if (campiSospetti(v).size === 0) return false;
@@ -1157,7 +1162,7 @@ function render() {
     const tr = document.createElement('tr');
     const key = rowKey(v);
     const lang0 = currentLangs[0];
-    const isEmpty0 = !(v[lang0] || '').trim();
+    const isEmpty0 = !(v[lang0] || '').trim() && !dialNT(v, lang0);
     const isNew = newKeys.has(key), isMod = modifiedKeys.has(key);
     if (isNew) tr.className = 'new-row'; else if (isMod) tr.className = 'modified';
 
@@ -1176,8 +1181,10 @@ function render() {
       const hasSlash = isDialetto && valRaw.split('|')[0].includes('/');
       const hidden = valRaw.includes('|') ? valRaw.split('|').length - 1 : 0;
       // Stato cella dialettale: 'g' verde / 'r' rosso / 'y' giallo / null (non-dialetto o vuota).
-      const stato = statoCella(v, code);
+      const nt = dialNT(v, code);
+      const stato = nt ? null : statoCella(v, code);
       let stateClass = '', stateBadge = '', stateButtons = '';
+      if (nt) { stateClass = 'nt-cell'; stateBadge = '<span class="state-badge" title="Non traducibile: la parola non esiste in questo dialetto">🚫</span>'; }
       if (stato === 'g')      { stateClass = 'verified-cell'; stateBadge = '<span class="state-badge" title="Verificata: controllata e confermata">🟢</span>'; }
       else if (stato === 'r') { stateClass = 'suspect-cell';  stateBadge = '<span class="state-badge" title="Sospetta: IA o dialetto identico all\'italiano">🔴</span>'; }
       else if (stato === 'y') { stateClass = 'dialect-cell';  stateBadge = '<span class="state-badge" title="Dialetto da verificare">🟡</span>'; }
@@ -1202,6 +1209,7 @@ function render() {
         ${hidden ? `<span class="alt-badge" title="${hidden} alt. nascoste">+${hidden}</span>` : ''}
         <button class="icon-btn" onclick="ttsCella(this,'${code}')" title="Pronuncia" style="margin-left:4px">🔊</button>
         ${isDialetto ? `<button class="icon-btn ai" onclick="aiTrascriviTTSCella(this,'${code}')" title="Suggerisci trascrizione TTS">🔤</button>` : ''}
+        <button class="icon-btn nt-btn ${nt?'nt-on':''}" onclick="toggleNT(this,'${code}')" title="${nt?'Riattiva: parola traducibile in '+(info?info.name:code):'Segna come non traducibile in '+(info?info.name:code)+' (svuota la cella)'}">🚫</button>
         ${stateButtons}
       </td>`;
     });
@@ -1229,7 +1237,7 @@ function render() {
   const lang0 = currentLangs[0];
   const info0 = LINGUE.find(l => l.code === lang0);
   const tot = vocabolario.length;
-  const totVuote = vocabolario.filter(v => !(v[lang0] || '').trim()).length;
+  const totVuote = vocabolario.filter(v => !(v[lang0] || '').trim() && !dialNT(v, lang0)).length;
   const modCount = modifiedKeys.size + newKeys.size;
   document.getElementById('stats').innerHTML = `<strong>${tot}</strong> voci · <span class="badge-empty badge">${totVuote}</span> da tradurre in ${info0 ? info0.name : lang0}`;
   document.getElementById('footer-stats').innerHTML = modCount ? `<span class="badge">${modCount}</span> modifiche non salvate` : '<em>nessuna modifica</em>';
@@ -1276,6 +1284,13 @@ function onCellEdit(tr, voce, input) {
   if (currentLangs.includes(field)) {
     const cell = input.parentElement, oldSlash = cell.querySelector('.slash-badge');
     if (oldSlash) oldSlash.remove();
+    // Inserendo una traduzione la cella non è più "non traducibile"
+    if (val.trim() && dialNT(voce, field)) {
+      ntSet(voce, field, false);
+      cell.classList.remove('nt-cell');
+      const ntBadge = cell.querySelector('.state-badge'); if (ntBadge) ntBadge.remove();
+      const ntBtn = cell.querySelector('.nt-btn'); if (ntBtn) ntBtn.classList.remove('nt-on');
+    }
     if (DIALETTI_TTS_ITA.includes(field) && val.split('|')[0].includes('/')) {
       const span = document.createElement('span'); span.className = 'slash-badge'; span.title = 'TTS/grafia'; span.textContent = 'TTS/⌨'; cell.appendChild(span);
     }
@@ -1343,6 +1358,26 @@ function setStatoCella(btn, code, target) {
   else m.set(code, target);
   v.verif = _serializzaStatoMap(m);
   if (!v.verif) delete v.verif;
+  if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v));
+  render();
+}
+
+// "Non traducibile" (campo `nt`: array di codici lingua): la parola non esiste
+// in quella lingua/dialetto (es. termini culturali senza equivalente). Vale per
+// tutte le lingue, non solo i dialetti. Stesso schema di dialetti.html (che però
+// lo usa solo per i dialetti). index.html ignora `nt`: niente VOC_VERSION.
+function dialNT(v, code) { return Array.isArray(v.nt) && v.nt.includes(code); }
+function ntSet(v, code, on) {
+  const set = new Set(Array.isArray(v.nt) ? v.nt : []);
+  if (on) set.add(code); else set.delete(code);
+  if (set.size) v.nt = [...set]; else delete v.nt;
+}
+function toggleNT(btn, code) {
+  const tr = btn.closest('tr'), v = tr._voce;
+  if (!v) return;
+  const era = dialNT(v, code);
+  ntSet(v, code, !era);
+  if (!era) delete v[code]; // marcando non traducibile, svuoto l'eventuale valore residuo
   if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v));
   render();
 }
