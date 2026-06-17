@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "description": "LinguaeQuiz — test infrastructure (l'app gira come single-file index.html via React CDN, nessun build step in prod)",
   "scripts": {
-    "test": "vitest run",
+    "test": "vitest run && node --test \"tests/**/*.test.mjs\"",
     "test:watch": "vitest"
   },
   "devDependencies": {

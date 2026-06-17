@@ -68,7 +68,7 @@ function makeCtx({ confirmReturns = true } = {}) {
   };
   const ctx = vm.createContext(sandbox);
   // funzioni reali estratte dal sorgente
-  const fns = ['adminRowKey', 'voceUtile', 'dialMancante', 'adminPulisciGiaInIndex', 'adminImportaDaIndex', 'adminScartaGiaInIndex']
+  const fns = ['adminRowKey', 'dialNT', 'voceUtile', 'dialMancante', 'adminPulisciGiaInIndex', 'adminImportaDaIndex', 'adminScartaGiaInIndex']
     .map(n => extractFn(DIAL, n)).join('\n\n');
   vm.runInContext(fns, ctx);
   // popola la mappa di lookup come fa adminCaricaDaGitHub
@@ -95,6 +95,7 @@ test('la pulizia: dopo l\'esecuzione non restano duplicati né voci interamente 
 
   const byIt = new Map(); VOC.forEach(v => byIt.set((v.it || '').toLowerCase().trim(), v));
   const utile = e => { // replica di voceUtile
+    if (Array.isArray(e.nt) && e.nt.length) return true; // voce non-traducibile (flag nt): sempre conservata
     const idx = byIt.get((e.it || '').toLowerCase().trim());
     if (!idx) return true;
     return COLS.some(c => { const v = (e[c] || '').trim(); return v && v !== (idx[c] || '').trim(); });
