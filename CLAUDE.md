@@ -2,10 +2,22 @@
 
 ## Architettura
 
-- **App React single-file**: tutto il quiz vive in `index.html` (React 18 + Babel + Tailwind via CDN, nessun build step).
+- **App React single-file**: tutto il quiz vive in `index.html` (React 18, JSX **già precompilato** in `React.createElement` — niente Babel a runtime). Nessun build step *a runtime* in produzione.
 - **Nessun backend**: hosting su GitHub Pages, dati utente in `localStorage`.
 - `edit.html` è l'editor del vocabolario (vedi sezione dedicata).
 - `index17.html` è una copia di backup di una versione precedente — non modificare salvo richiesta esplicita.
+
+### Tailwind — CSS statico (IMPORTANTE)
+
+`index.html` **non** usa più il Play CDN (`cdn.tailwindcss.com`): carica `tailwind.css`, un file **pre-buildato e committato** (Tailwind v3 CLI). Questo elimina ~400KB di JS render-blocking e la compilazione JIT in-browser.
+
+**Obbligo**: se cambi le **classi Tailwind nel JSX** di `index.html`, rigenera il CSS:
+
+```
+npm run build:css
+```
+
+e committa `tailwind.css` aggiornato. Se dimentichi, la classe nuova resta senza stile (degradazione visibile, non un crash). `edit.html` riscrive solo `VOCABOLARIO_DEFAULT` (non le classi), quindi le sue modifiche **non** richiedono il rebuild. La config delle classi/colori è in `tailwind.config.js`; le sorgenti scansionate sono `content: ['./index.html']`. Solo letterali: **niente classi costruite dinamicamente** (es. `` `bg-${x}-500` ``), altrimenti la CLI le elimina.
 
 ## Vocabolario
 
