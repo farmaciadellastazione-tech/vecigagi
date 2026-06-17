@@ -1875,7 +1875,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A2", it:"ananas", en:"pineapple", fr:"ananas", es:"piña", de:"Ananas", pt:"abacaxi", ru:"ананас", ca:"pinya", ko:"파인애플", ar:"أناناس", zh:"菠萝", ja:"パイナップル", ia:"ananas", ro:"ananas", nt:["sp","mn"] },
       { tema:"animali", livello:"A2", it:"anatra", en:"duck", fr:"canard", es:"pato", de:"Ente", pt:"pato", ru:"утка", ca:"ànec", mn:"pàpua", verif:"mn:g" },
       { tema:"dialogo", livello:"A1", it:"anche", en:"also", fr:"aussi", es:"también", de:"auch", pt:"também", ru:"тоже|также", ca:"també", sp:"anca|assì|essì| nicò| ènca", mn:"anca|assì|", cr:"ancka/anca", ge:"ascìi/ascì|anche", verif:"mn:g,ge:g,sp:g" },
-      { tema:"dialetti", it:"ancora", mn:"anca/ànca", ge:"ancùha/ancoa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"ancora", mn:"a'nca,ancùa/ànca, ancua", ge:"ancùha/ancoa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"andar via velocemente", en:"rush away", fr:"partir vite", sp:"telaae/telae", mn:"telaae/telae", verif:"sp:g" },
       { tema:"dialetti", it:"andar via velocemente.", mn:"smamàa/zmàmaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"verbi", livello:"A1", it:"andare", en:"go", fr:"aller", es:"ir", de:"gehen", pt:"ir", ru:"идти|ехать", ca:"anar", sp:"andaae/andae", mn:"andaa", cr:"andar", ge:"andaa/andâ|anâ", ko:"가다", ar:"يذهب", zh:"去", ja:"行く", ia:"ir", la:"ire", grc:"ἰέναι", ro:"a merge", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g" },
@@ -3524,7 +3524,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 335;
+const VOC_VERSION = 336;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
