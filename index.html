@@ -1421,6 +1421,13 @@ const UI = {
     desc_sceltamultipla: "🎯 5-12 opcions, nivell adaptatiu"
   }
 };
+// Fallback chiavi UI: le lingue tradotte solo parzialmente (ru/ca/zh/ko, e qualche
+// chiave sparsa in fr/es/pt) ereditano dall'inglese le chiavi mancanti, così la UI
+// non mostra mai "undefined". Non sovrascrive mai una traduzione già presente.
+for (const _l of Object.keys(UI)) {
+  if (_l === "en") continue;
+  UI[_l] = { ...UI.en, ...UI[_l] };
+}
 const UI_LINGUE = [{
   codice: "it",
   label: "🇮🇹 IT"
