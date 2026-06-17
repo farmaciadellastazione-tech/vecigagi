@@ -50,8 +50,11 @@
   }
 }
 </script>
+<!-- Google Fonts: link in <head> + preconnect (sostituisce l'@import, che serializzava le richieste e ritardava il render) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap');
 
   :root {
     --bg: #f8fafc;
