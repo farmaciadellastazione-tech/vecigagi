@@ -258,6 +258,9 @@
     <label class="inline" title="Nasconde le voci che hanno almeno una cella dialettale 🟡 da verificare">
       <input type="checkbox" id="exclude-yellow"> 🟡 escludi da verificare
     </label>
+    <label class="inline" title="Nasconde le voci marcate 🚫 intraducibili (parola inesistente nel dialetto) in una delle lingue mostrate">
+      <input type="checkbox" id="hide-nt"> 🚫 nascondi intraducibili
+    </label>
     <button class="btn btn-secondary" onclick="apriConfigAI()" title="Configura AI">⚙️ AI</button>
     <button class="btn btn-secondary" id="btn-cols-toggle" onclick="toggleColonneSecondarie()" title="Nasconde/mostra Tema, Livello, Pron. TTS per far stare la tabella su schermi stretti">📐 Compatta</button>
     <span class="stats" id="stats"></span>
@@ -523,6 +526,7 @@ let onlyVerified = false;    // mostra solo voci con almeno una cella 🟢 verif
 let excludeVerified = false; // nasconde le voci con almeno una cella 🟢 verificata
 let onlyYellow = false;      // mostra solo voci con almeno una cella 🟡 da verificare
 let excludeYellow = false;   // nasconde le voci con almeno una cella 🟡 da verificare
+let hideNT = false;          // nasconde le voci marcate 🚫 intraducibili in una delle lingue mostrate
 let currentPage = 1;
 let modifiedKeys = new Set();
 let newKeys = new Set();
@@ -720,6 +724,7 @@ function attaccaListener() {
     currentPage = 1;
     render();
   });
+  document.getElementById('hide-nt').addEventListener('change', e => { hideNT = e.target.checked; currentPage = 1; render(); });
   document.querySelectorAll('th.sortable').forEach(th => {
     th.addEventListener('click', () => {
       const k = th.dataset.sort;
@@ -1079,6 +1084,7 @@ function filtroVoci() {
     if (excludeVerified && campiVerificati(v).size > 0) return false;
     if (onlyYellow && campiGialli(v).size === 0) return false;
     if (excludeYellow && campiGialli(v).size > 0) return false;
+    if (hideNT && currentLangs.some(c => dialNT(v, c))) return false;
     if (currentSearch) {
       const it = (v.it || '').toLowerCase();
       const inLangs = currentLangs.some(c => (v[c] || '').toLowerCase().includes(currentSearch));
@@ -1429,6 +1435,7 @@ function exportExcel() {
   if (excludeVerified) parti.push('non-verificate');
   if (onlyYellow) parti.push('da-verificare');
   if (excludeYellow) parti.push('non-da-verificare');
+  if (hideNT) parti.push('no-intraducibili');
   if (currentSearch) parti.push('cerca-' + currentSearch.replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-+|-+$/g, '').slice(0, 24));
   const filtroDesc = parti.join('_').replace(/[\\/:*?"<>|]/g, '-') || 'tutto';
   a.download = `linguaequiz_${currentLangs[0]}_${filtroDesc}.csv`;
