@@ -1786,6 +1786,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"memoria", livello:"A2", it:"me lo ricorderò", de:"ich werde mich erinnern| das merke ich mir" },
       { tema:"acquisto", livello:"A2", it:"a buon mercato", es:"barato", pt:"barato", sp:"a bon páto", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"a spasso, in giro senza meta.", sp:"scoratae", mn:"zùnzu (a)", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
@@ -3523,7 +3524,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 336;
+const VOC_VERSION = 337;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
