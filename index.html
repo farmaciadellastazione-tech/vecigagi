@@ -10872,9 +10872,12 @@ function App() {
       lA
     }]);
     setStato(ok ? "corretto" : "sbagliato");
+    // Cap: la stessa carta conta al massimo 2 errori nel punteggio,
+    // anche se viene sbagliata più volte (ripetizione infinita).
+    const giaContata = (cardErrori[carta.key] || 0) >= 2;
     setPunteggio(p => ({
       giusti: p.giusti + (ok ? 1 : 0),
-      sbagliati: p.sbagliati + (ok ? 0 : 1)
+      sbagliati: p.sbagliati + (!ok && !giaContata ? 1 : 0)
     }));
     // Pronuncia automatica della risposta corretta (riusa lA già definita sopra)
     if (lA && atteso) setTimeout(() => parla(carta.tipo === "coniugazione" ? testoAudio(atteso, carta.persona, lA.codice) : formaTTS(atteso), lA.bcp47), 300);
@@ -10910,9 +10913,10 @@ function App() {
     setStats(ns);
     setInput("—");
     setStato("sbagliato");
+    const giaContata = (cardErrori[carta.key] || 0) >= 2;
     setPunteggio(p => ({
       ...p,
-      sbagliati: p.sbagliati + 1
+      sbagliati: p.sbagliati + (giaContata ? 0 : 1)
     }));
   }
   function avanti() {
@@ -10928,10 +10932,10 @@ function App() {
         ...prev,
         [c.key]: errCarta
       }));
-      if (errCarta <= 2) nc.push({
+      nc.push({
         ...c,
         _rimessa: true
-      }); // max 2 errori per carta
+      }); // ripetizione infinita: la carta torna finché non è corretta
     }
     // Non-stop: se corretto e siamo all'ultima carta, aggiungi nuove carte
     if (ok && modalita === "nonstop" && indice + 1 >= nc.length) {
