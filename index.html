@@ -1786,6 +1786,14 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"cibo", livello:"B1", it:"anacardo", en:"cashew| cashew nut" },
+      { tema:"natura", livello:"B1", it:"struzzo", en:"ostrich" },
+      { tema:"emozioni", livello:"B1", it:"eccitazione", en:"excitement, arousal" },
+      { tema:"verbi", livello:"A2", it:"vincere", en:"win, overcome" },
+      { tema:"natura", livello:"B1", it:"albero maestro", en:"mainmast| mast" },
+      { tema:"verbi", livello:"B1", it:"trattenere", en:"hold" },
+      { tema:"lavoro", livello:"B1", it:"impegno", en:"commitment" },
+      { tema:"lavoro", livello:"B1", it:"fattibile", en:"feasible" },
       { tema:"memoria", livello:"A2", it:"me lo ricorderò", de:"ich werde mich erinnern| das merke ich mir" },
       { tema:"acquisto", livello:"A2", it:"a buon mercato", es:"barato", pt:"barato", sp:"a bon páto", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", verif:"mn:g,sp:g" },
@@ -3521,7 +3529,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 341;
+const VOC_VERSION = 342;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
