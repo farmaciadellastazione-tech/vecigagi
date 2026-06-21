@@ -1786,6 +1786,12 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"lavoro", livello:"A2", it:"marinaio", en:"sailor", sp:"mainà o/mainao", mn:"mainàa/mainaa", verif:"sp:g,mn:g" },
+      { tema:"verbi", livello:"B1", it:"immaginare", en:"imagine", sp:"enma ginà'e/enmaginàe" },
+      { tema:"verbi", livello:"A2", it:"fischiare", en:"whistle", sp:"fiss cia'e/fisciae", mn:"fiss ciaa/fisciaà" },
+      { tema:"suoni", livello:"A1", it:"fischio", en:"whistle", sp:"fiss'cho/fiscio", mn:"fiss'chu/fisciu" },
+      { tema:"casa", livello:"A2", it:"mistura", sp:"mess'ciùua/mesciüa" },
+      { tema:"crimine", livello:"B1", it:"assassino", sp:"assassìn" },
       { tema:"materiale", livello:"A2", it:"cuoio", sp:"chèio", verif:"sp:g" },
       { tema:"avverbio", livello:"A1", it:"male", sp:"mao" },
       { tema:"natura", livello:"A2", it:"canale", sp:"canao" },
@@ -2130,7 +2136,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"calcio", en:"football", fr:"football", es:"fútbol", de:"Fußball", pt:"futebol", ru:"футбол", ca:"futbol", sp:"caosso", mn:"cau su/caussu", ko:"축구", ar:"كرة القدم", zh:"足球", ja:"サッカー", ia:"football", la:"pila pedalis", grc:"ποδόσφαιρο", verif:"mn:g" },
       { tema:"cibo", it:"caldarroste", sp:"rostìe/rostie", ge:"rostie", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"aggettivi", livello:"A2", it:"caldo", en:"hot", fr:"chaud", es:"caliente", de:"heiß", pt:"quente", ru:"горячий|тёплый", ca:"calent", sp:"caödo/caödo", mn:"cauhdu/caüdu", cr:"cald", ko:"뜨거운", ar:"حار", zh:"热", ja:"熱い", ia:"calide", la:"calidus", grc:"θερμός", ro:"cald", verif:"mn:g,sp:g" },
-      { tema:"tempo", livello:"A1", it:"calendario", de:"Kalender", sp:"calendaio", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
+      { tema:"tempo", livello:"A1", it:"calendario", de:"Kalender", sp:"calendaio, lünaio", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"aggettivi", livello:"A2", it:"calmo", en:"calm", fr:"calme", es:"calmo", de:"ruhig", pt:"calmo", ru:"спокойный", ca:"tranquil", sp:"carmo", mn:"carmu", verif:"mn:g" },
       { tema:"verbi", it:"calpestare", sp:"scafolaà'e, scaossigaà'e, baligiae/scafolae, scaossigae, baligiae", ge:"calpesta", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"casa", it:"calza", sp:"cà'ossa/càossa", ge:"cäsetta", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
@@ -2262,7 +2268,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A1", it:"ciotola", en:"bowl", fr:"bol", es:"cuenco", de:"Schüssel", pt:"tigela", sp:"cópa", verif:"sp:g" },
       { tema:"cibo", livello:"A1", it:"cipolla", en:"onion", ru:"лук", ca:"cebolla", sp:"sióla, sigóla/sióla, sigóla", mn:"sibula, sivolla", cr:"Cipòda", ge:"sibula, sivolla", ro:"ceapă", verif:"sp:g" },
       { tema:"natura", it:"cipresso", sp:"arsiprèsso, aosiprèsso", cr:"cipress", ge:"çipresso", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"sp:g,ge:g,cr:g" },
-      { tema:"luoghi", livello:"A1", it:"città", en:"city", fr:"ville", es:"ciudad", de:"Stadt", pt:"cidade", ru:"город", ca:"ciutat", sp:"sità", mn:"sità", ko:"도시", ar:"مدينة", zh:"城市", ja:"都市", ia:"citate", la:"urbs|civitas", grc:"πόλις", ro:"oraș", verif:"mn:g" },
+      { tema:"luoghi", livello:"A1", it:"città", en:"city", fr:"ville", es:"ciudad", de:"Stadt", pt:"cidade", ru:"город", ca:"ciutat", sp:"sità", mn:"sità", ko:"도시", ar:"مدينة", zh:"城市", ja:"都市", ia:"citate", la:"urbs|civitas", grc:"πόλις", ro:"oraș", verif:"mn:g,sp:g" },
       { tema:"animali", it:"civetta", sp:"sivéto'a/sivétoa", ge:"allarga", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"luoghi", livello:"A1", it:"classe", en:"classroom", fr:"salle de classe", es:"clase", de:"Klassenzimmer", pt:"sala de aula", sp:"crasse", ko:"교실", ar:"فصل دراسي", zh:"教室", ja:"教室", ia:"classe", la:"schola", grc:"διδασκαλεῖον", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialetti", livello:"A2", it:"claudicante, traballante", mn:"sbiléncu/zbiléncu", verif:"mn:g" },
@@ -2679,7 +2685,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A1", it:"Ha la ricetta?", en:"Do you have a prescription?", fr:"Avez-vous une ordonnance?", es:"¿Tiene receta?", de:"Haben Sie ein Rezept?", pt:"Tem a receita?", ko:"처방전이 있으신가요?", ar:"هل معك وصفة طبية؟", zh:"您有处方吗？", ja:"処方箋はありますか？" },
       { tema:"dialogo", livello:"B1", it:"Ha una tessera sanitaria?", en:"Do you have a health card?", fr:"Avez-vous une carte Vitale?", es:"¿Tiene tarjeta sanitaria?", de:"Haben Sie eine Krankenversicherungskarte?", pt:"Tem cartão de saúde?|Tem cartao de saude?", ko:"건강보험 카드가 있으신가요?", ar:"هل معك بطاقة التأمين الصحي؟", zh:"您有医保卡吗？", ja:"健康保険証はありますか？" },
       { it:"ho ... anni", mn:"me a gho ... ani", ro:"am ... ani" },
-      { tema:"cibo", livello:"A1", it:"ho fame", en:"I'm hungry", fr:"j'ai faim", es:"tengo hambre", de:"ich habe Hunger", pt:"estou com fome", ca:"tinc gana", sp:"a g'ho fame", mn:"a g'ho fame", ge:"g'ho famme", ia:"me es fama", la:"esurio", ro:"mi-e foame", verif:"mn:g" },
+      { tema:"cibo", livello:"A1", it:"ho fame", en:"I'm hungry", fr:"j'ai faim", es:"tengo hambre", de:"ich habe Hunger", pt:"estou com fome", ca:"tinc gana", sp:"a g'ho fame", mn:"a g'ho fame", ge:"g'ho famme", ia:"me es fama", la:"esurio", ro:"mi-e foame", verif:"mn:g", undefined:"sc", src:{"sp":"sc"} },
       { tema:"corpo", livello:"A1", it:"ho sete", en:"I'm thirsty", de:"ich habe durst", sp:"a g'ho sede", mn:"agòh sede/a g'ho séde", ge:"g'ho sae", ro:"mi-e sete", verif:"mn:g" },
       { tema:"denaro", livello:"B1", it:"i soldi non crescono sugli alberi", ge:"e palànche no créscian in scî èrboi", src:{"mn":"🤖 IA"}, verif:"mn:r" },
       { tema:"dialetti", livello:"A2", it:"identico|spiaccicato", mn:"s'ciat à/sciatà", verif:"mn:g" },
@@ -2758,7 +2764,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"animali", livello:"B1", it:"lupo", en:"wolf", fr:"loup", es:"lobo", de:"Wolf", pt:"lobo", ru:"волк", ca:"llop", sp:"lovo, Ioo, lòpa, lóvo, lóo, f. lópa", mn:"Iuu", ge:"lêuvo", ko:"늑대", ar:"ذئب", zh:"狼", ja:"オオカミ", ia:"lupo", verif:"mn:g" },
       { tema:"dialetti", livello:"B2", it:"Ma tu chi sei, il mostro di Pitelli?", en:"but who are you, the monster of Pitelli?", fr:"mais qui es-tu, le monstre de Pitelli?", es:"pero ¿quién eres, el monstruo de Pitelli?", de:"aber wer bist du, das Monster von Pitelli?", pt:"mas quem és, o monstro de Pitelli?", ca:"però qui ets, el monstre de Pitelli?", sp:"Ma te chi tei, er mostro de pitei?", ge:"ma ti chi ti, u mostro de Pitelli?", la:"sed quis es, mons Pitellorum?", ro:"dar cine eşti, monstrul din Pitelli?", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g" },
       { tema:"luoghi", livello:"A1", it:"macchina", en:"car", fr:"voiture", es:"coche", de:"Auto", pt:"carro", ru:"машина", ca:"cotxe", ko:"자동차", ar:"سيارة", zh:"汽车", ja:"車", ia:"auto", la:"vehiculum", grc:"ὄχημα" },
-      { tema:"mestieri", livello:"B1", it:"macellaio", en:"butcher", fr:"boucher", es:"carnicero", de:"Metzger", pt:"açougueiro|acougueiro", sp:"maselào", mn:"maselaa/mazélaa", ko:"정육점 주인|푸주한", ar:"جزار", zh:"屠夫", ja:"肉屋", ia:"macellero", verif:"mn:g" },
+      { tema:"mestieri", livello:"B1", it:"macellaio", en:"butcher", fr:"boucher", es:"carnicero", de:"Metzger", pt:"açougueiro|acougueiro", sp:"maselào", mn:"maselaa/mazélaa", ko:"정육점 주인|푸주한", ar:"جزار", zh:"屠夫", ja:"肉屋", ia:"macellero", verif:"mn:g,sp:g" },
       { tema:"famiglia", it:"madre", en:"mother", sp:"mae", mn:"maa", cr:"Mà", ge:"mæ", ro:"mamă", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { it:"madre / mamma", sp:"mae", cr:"ma / mama", verif:"sp:g" },
       { tema:"famiglia", livello:"A1", it:"madre|mamma", en:"mother", fr:"mère", es:"madre", de:"Mutter", pt:"mãe|mae", ru:"мать|мама", ca:"mare", sp:"mae", mn:"maa", cr:"Mà", ge:"mæ", ko:"어머니", ar:"أم", zh:"母亲", ja:"母", ia:"matre", la:"mater", grc:"μήτηρ", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
@@ -2774,7 +2780,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"B1", it:"malmenare", en:"beat", ru:"избивать", sp:"tombae", mn:"tombaa", verif:"sp:g" },
       { it:"malva", sp:"marva", cr:"malva", verif:"sp:g" },
       { tema:"viaggi", livello:"B1", it:"Manarola", mn:"Manaèa", verif:"mn:g" },
-      { tema:"casa", livello:"A1", it:"mangiare", en:"eat", fr:"manger", es:"comer", de:"essen", pt:"comer", ru:"есть|кушать", ca:"menjar", sp:"mangiae", mn:"mangiaa", cr:"Maniàr", ko:"먹다", ar:"يأكل", zh:"吃", ja:"食べる", ia:"mangiar", ro:"a mânca", verif:"mn:g" },
+      { tema:"casa", livello:"A1", it:"mangiare", en:"eat", fr:"manger", es:"comer", de:"essen", pt:"comer", ru:"есть|кушать", ca:"menjar", sp:"mangiae", mn:"mangiaa", cr:"Maniàr", ko:"먹다", ar:"يأكل", zh:"吃", ja:"食べる", ia:"mangiar", ro:"a mânca", verif:"mn:g,sp:g" },
       { tema:"cibo", livello:"A2", it:"mango", en:"mango", fr:"mangue", es:"mango", de:"Mango", pt:"manga", ru:"манго", ca:"mango", ko:"망고", ar:"مانجو", zh:"芒果", ja:"マンゴー", ia:"mango", ro:"mangou" },
       { tema:"vestiti", livello:"A2", it:"manica", en:"sleeve", fr:"manche", es:"manga", de:"Ärmel", pt:"manga", sp:"mànéga", mn:"mànéga", verif:"mn:g" },
       { it:"manico", sp:"màne'go/manego", cr:"manicot", verif:"sp:g" },
@@ -3452,7 +3458,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"vendere", en:"sell", fr:"vendre", es:"vender", de:"verkaufen", pt:"vender", ru:"продавать", ca:"vendre", cr:"vend", ko:"팔다", ar:"يبيع", zh:"卖", ja:"売る", ia:"vender", la:"vendere", grc:"πωλεῖν" },
       { tema:"giorni", livello:"A1", it:"venerdì", en:"Friday", fr:"vendredi", es:"viernes", de:"Freitag", pt:"sexta-feira", ru:"пятница", ca:"divendres", sp:"vernardì", mn:"vernardì", ko:"금요일", ar:"الجمعة", zh:"星期五", ja:"金曜日", ia:"venerdi", la:"dies Veneris", grc:"Παρασκευή", ro:"vineri", verif:"sp:g" },
       { it:"vengo dall'Italia", ro:"vin din Italia" },
-      { tema:"verbi", livello:"A1", it:"venire", en:"come", fr:"venir", es:"venir", de:"kommen", pt:"vir", ru:"приходить", ca:"venir", sp:"vegnì'e/vegnìe", mn:"vegnî", cr:"v' nir/v'nir", ge:"vegnî", ko:"오다", ar:"يأتي", zh:"来", ja:"来る", ia:"venir", la:"venire", grc:"ἔρχεσθαι", ro:"a veni", verif:"sp:g" },
+      { tema:"verbi", livello:"A1", it:"venire", en:"come", fr:"venir", es:"venir", de:"kommen", pt:"vir", ru:"приходить", ca:"venir", sp:"vegnì'e/vegnìe", mn:"vegnii", cr:"v' nir/v'nir", ge:"vegnî", ko:"오다", ar:"يأتي", zh:"来", ja:"来る", ia:"venir", la:"venire", grc:"ἔρχεσθαι", ro:"a veni", verif:"sp:g,mn:g" },
       { tema:"numeri", livello:"A1", it:"venti", en:"twenty", ru:"двадцать", sp:"vinti", mn:"vinti", ge:"vinti", ro:"douăzeci", verif:"mn:g" },
       { tema:"numeri", livello:"A1", it:"venticinque|25", sp:"vintisinque", mn:"vintissinque/vintisinque", cr:"Vintizinqui", verif:"mn:g" },
       { tema:"numeri", livello:"A1", it:"ventiquattro|24", sp:"vintiquatro", mn:"vintiquatru", cr:"Vintiquatr", verif:"mn:g" },
@@ -3542,7 +3548,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 345;
+const VOC_VERSION = 346;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
