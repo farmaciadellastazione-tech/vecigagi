@@ -1786,7 +1786,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
-      { tema:"materiale", livello:"A2", it:"cuoio", sp:"chèio" },
+      { tema:"materiale", livello:"A2", it:"cuoio", sp:"chèio", verif:"sp:g" },
       { tema:"avverbio", livello:"A1", it:"male", sp:"mao" },
       { tema:"natura", livello:"A2", it:"canale", sp:"canao" },
       { tema:"tempo", livello:"A1", it:"ora", sp:"óa" },
@@ -1808,7 +1808,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"lavoro", livello:"B1", it:"impegno", en:"commitment" },
       { tema:"lavoro", livello:"B1", it:"fattibile", en:"feasible" },
       { tema:"memoria", livello:"A2", it:"me lo ricorderò", de:"ich werde mich erinnern| das merke ich mir" },
-      { tema:"acquisto", livello:"A2", it:"a buon mercato", es:"barato", pt:"barato", sp:"a bon páto", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
+      { tema:"acquisto", livello:"A2", it:"a buon mercato", en:"cheap", es:"barato", pt:"barato", sp:"a bon páto", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"a spasso, in giro senza meta.", sp:"scoratae", mn:"zùnzu (a)", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"istruzioni", livello:"A2", it:"a stomaco vuoto", en:"on an empty stomach", fr:"à jeun", es:"en ayunas", de:"auf nüchternen Magen", pt:"em jejum", sp:"a stè'mégo vèito/a stèmego vèito", mn:"a stémagu véitu", ge:"a stômago vêutto", ko:"공복에", ar:"على معدة فارغة", zh:"空腹服用", ja:"空腹時", verif:"sp:g,ge:g,mn:g", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"} },
@@ -2680,7 +2680,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"B1", it:"Ha una tessera sanitaria?", en:"Do you have a health card?", fr:"Avez-vous une carte Vitale?", es:"¿Tiene tarjeta sanitaria?", de:"Haben Sie eine Krankenversicherungskarte?", pt:"Tem cartão de saúde?|Tem cartao de saude?", ko:"건강보험 카드가 있으신가요?", ar:"هل معك بطاقة التأمين الصحي؟", zh:"您有医保卡吗？", ja:"健康保険証はありますか？" },
       { it:"ho ... anni", mn:"me a gho ... ani", ro:"am ... ani" },
       { tema:"cibo", livello:"A1", it:"ho fame", en:"I'm hungry", fr:"j'ai faim", es:"tengo hambre", de:"ich habe Hunger", pt:"estou com fome", ca:"tinc gana", sp:"a g'ho fame", mn:"a g'ho fame", ge:"g'ho famme", ia:"me es fama", la:"esurio", ro:"mi-e foame", verif:"mn:g" },
-      { tema:"corpo", livello:"A1", it:"ho sete", de:"ich habe durst", sp:"a g'ho sede", mn:"agòh sede/a g'ho séde", ge:"g'ho sae", ro:"mi-e sete", verif:"mn:g" },
+      { tema:"corpo", livello:"A1", it:"ho sete", en:"I'm thirsty", de:"ich habe durst", sp:"a g'ho sede", mn:"agòh sede/a g'ho séde", ge:"g'ho sae", ro:"mi-e sete", verif:"mn:g" },
       { tema:"denaro", livello:"B1", it:"i soldi non crescono sugli alberi", ge:"e palànche no créscian in scî èrboi", src:{"mn":"🤖 IA"}, verif:"mn:r" },
       { tema:"dialetti", livello:"A2", it:"identico|spiaccicato", mn:"s'ciat à/sciatà", verif:"mn:g" },
       { tema:"cosmetica", livello:"A1", it:"idratante", en:"moisturiser", fr:"hydratant", es:"hidratante", de:"Feuchtigkeitscreme", pt:"hidratante", ru:"увлажняющий крем", ca:"hidratant", ko:"보습제", ar:"مرطب", zh:"保湿霜", ja:"保湿剤" },
@@ -3026,7 +3026,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"prendere", en:"take", fr:"prendre", es:"tomar", de:"nehmen", pt:"pegar", ru:"брать", ca:"agafar|prendre", sp:" piae, ciapàe", mn:"pigiaa| ciapaa", cr:".", ge:" pigiâ| aciapâ", ko:"잡다", ar:"يأخذ", zh:"拿", ja:"取る", ia:"prender", la:"capere", grc:"λαμβάνειν", ro:"a lua", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"verbi", livello:"B1", it:"prendere in prestito", en:"borrow", fr:"emprunter", es:"pedir prestado", de:"ausleihen", pt:"pedir emprestado", ru:"брать взаймы", ca:"manllevar" },
       { tema:"verbi", livello:"B1", it:"preoccuparsi", en:"worry", fr:"s'inquiéter", es:"preocuparse", de:"sich sorgen", pt:"preocupar-se", ru:"беспокоиться", ca:"preocupar-se" },
-      { tema:"salute", livello:"B2", it:"pressione", en:"blood pressure", fr:"tension", es:"presión", de:"Blutdruck", pt:"pressão|pressao", mn:"presiùn", ko:"혈압", ar:"ضغط الدم", zh:"血压", ja:"血圧", ia:"pression", verif:"mn:g" },
+      { tema:"salute", livello:"B2", it:"pressione arteriosa", en:"blood pressure|pressure", fr:"tension", es:"presión", de:"Blutdruck", pt:"pressão|pressao", sp:"pressyon/pressión", mn:"presiùn", ko:"혈압", ar:"ضغط الدم", zh:"血压", ja:"血圧", ia:"pression", verif:"mn:g" },
       { tema:"verbi", livello:"B1", it:"prestare", en:"lend", fr:"prêter", es:"prestar", de:"leihen", pt:"emprestar", ru:"одалживать", ca:"prestar", sp:"enprestae, anprestae, areméte", mn:"enprestae, anprestae, areméte", ge:"prestaa/presta", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"natura", livello:"A2", it:"prestare attenzione", en:"pay attention", fr:"faire attention", es:"prestar atención", de:"aufpassen", pt:"prestar atenção|prestar atencao" },
       { tema:"dialetti", livello:"A2", it:"presto", en:"soon", fr:"bientôt", es:"pronto", de:"bald", pt:"cedo", sp:"fito", mn:"prestu", ge:"fitu/fito", ia:"presto", src:{"mn":"🤖 IA","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
@@ -3542,7 +3542,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 344;
+const VOC_VERSION = 345;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
