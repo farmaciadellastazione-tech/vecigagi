@@ -1000,6 +1000,14 @@ function campiGialli(v) {
   for (const k of DIALETTI_TTS_ITA) if (statoCella(v, k) === 'y') out.add(k);
   return out;
 }
+// Restituisce true solo se ogni cella dialettale compilata ha verif esplicito :g.
+// Usato da excludeVerified per non confondere l'euristica-giallo con "non verificato".
+function tutteVerificateEsplicite(v) {
+  const nonVuoti = DIALETTI_TTS_ITA.filter(k => (v[k] || '').trim());
+  if (!nonVuoti.length) return false;
+  const m = _statoMap(v);
+  return nonVuoti.every(k => m.has(k) && m.get(k) === 'g');
+}
 
 // Sorgente per cella dialettale: 5 tag predefiniti + testo libero (combobox).
 // Salvata in v.src come oggetto { code: "testo" } (stesso schema di v.note),
@@ -1081,7 +1089,7 @@ function filtroVoci() {
       else if (campiSospetti(v).size === 0) return false;
     }
     if (onlyVerified && campiVerificati(v).size === 0) return false;
-    if (excludeVerified && campiVerificati(v).size > 0 && campiSospetti(v).size === 0 && campiGialli(v).size === 0) return false;
+    if (excludeVerified && tutteVerificateEsplicite(v)) return false;
     if (onlyYellow && campiGialli(v).size === 0) return false;
     if (excludeYellow && campiGialli(v).size > 0) return false;
     if (hideNT && currentLangs.some(c => dialNT(v, c))) return false;
