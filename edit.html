@@ -1081,7 +1081,7 @@ function filtroVoci() {
       else if (campiSospetti(v).size === 0) return false;
     }
     if (onlyVerified && campiVerificati(v).size === 0) return false;
-    if (excludeVerified && campiVerificati(v).size > 0) return false;
+    if (excludeVerified && campiVerificati(v).size > 0 && campiSospetti(v).size === 0 && campiGialli(v).size === 0) return false;
     if (onlyYellow && campiGialli(v).size === 0) return false;
     if (excludeYellow && campiGialli(v).size > 0) return false;
     if (hideNT && currentLangs.some(c => dialNT(v, c))) return false;
