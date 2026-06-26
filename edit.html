@@ -674,10 +674,6 @@ function attaccaListener() {
   document.getElementById('only-empty').addEventListener('change', e => { onlyEmpty = e.target.checked; currentPage = 1; render(); });
   document.getElementById('only-suspect').addEventListener('change', e => {
     onlySuspect = e.target.checked;
-    // Quando si attiva il filtro, mostra le colonne dialettali sospette se non
-    // gia' visibili: altrimenti le righe filtrate non avrebbero alcuna cella 🔴
-    // visibile (la sospetta puo' essere in una colonna dialettale nascosta).
-    if (onlySuspect) mostraColonneDialetto(suspectLang);
     currentPage = 1;
     render();
   });
@@ -688,7 +684,6 @@ function attaccaListener() {
       onlySuspect = true;
       document.getElementById('only-suspect').checked = true;
     }
-    if (onlySuspect) mostraColonneDialetto(suspectLang);
     currentPage = 1;
     render();
   });
@@ -696,9 +691,6 @@ function attaccaListener() {
     onlyVerified = e.target.checked;
     // "solo" ed "escludi" si escludono a vicenda.
     if (onlyVerified) { excludeVerified = false; document.getElementById('exclude-verified').checked = false; }
-    // Mostra le colonne dialettali, altrimenti la cella 🟢 filtrata potrebbe
-    // essere in una colonna nascosta.
-    if (onlyVerified) mostraColonneDialetto('');
     currentPage = 1;
     render();
   });
@@ -712,9 +704,6 @@ function attaccaListener() {
     onlyYellow = e.target.checked;
     // "solo" ed "escludi" si escludono a vicenda.
     if (onlyYellow) { excludeYellow = false; document.getElementById('exclude-yellow').checked = false; }
-    // Mostra le colonne dialettali, altrimenti la cella 🟡 filtrata potrebbe
-    // essere in una colonna nascosta.
-    if (onlyYellow) mostraColonneDialetto('');
     currentPage = 1;
     render();
   });
