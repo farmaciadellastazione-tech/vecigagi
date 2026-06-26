@@ -2014,7 +2014,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"avvisare", sp:"avisae", mn:"avizaa", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialetti", livello:"A2", it:"avvisare, avvertire", mn:"avisà a/àvizaa", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"avvistare", en:"spot", fr:"apercevoir", sp:"avistae", mn:"vistaaa/vistaa", verif:"sp:g", src:{"sp":"🔗 dialetti.html"} },
-      { tema:"verbi", it:"avvitare", sp:"envidà'e/envidae", mn:"anvidàa", ge:"inviaa/inviâ", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g" },
+      { tema:"verbi", it:"avvitare", sp:"envidà'e/envidae", mn:"anvidàa", ge:"inviaa/inviâ", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"mestieri", livello:"A1", it:"avvocato", en:"lawyer", fr:"avocat", es:"abogado", de:"Anwalt", pt:"advogado", ru:"адвокат", ca:"advocat", sp:"avocato", mn:"aucatu", ko:"변호사", ar:"محامٍ", zh:"律师", ja:"弁護士", ia:"advocato", la:"advocatus", grc:"δικηγόρος", verif:"sp:g,mn:g" },
       { tema:"dialetti", it:"avvolgere, arrotolare.", sp:"revogia'e/revogiae", mn:"vùgiaa", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"verbi", it:"azzimarsi", sp:"sperlecasse", ge:"perleccaasse/perleccâse", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g", nt:["mn"] },
@@ -2531,7 +2531,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mestieri", it:"fatica", sp:"fatiga", cr:"fatica", ge:"breiga", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"sp:g,ge:g,cr:g" },
       { tema:"dialetti", livello:"A2", it:"favola", en:"fable|hollow", fr:"fable|troué", es:"fábula|agujereado", de:"Fabel|Märchen", pt:"fábula|furado", sp:"fòa", mn:"fòa", verif:"mn:g" },
       { tema:"vestiti", livello:"A2", it:"fazzoletto", en:"handkerchief", ru:"платок", sp:"mandilo", mn:"mandilu", verif:"mn:g" },
-      { tema:"mesi", livello:"A1", it:"febbraio", en:"February", fr:"février", es:"febrero", de:"Februar", pt:"fevereiro", ru:"февраль", ca:"febrer", sp:"frevào", mn:"frevào", ge:"frevaa/freva", ko:"2월", ar:"فبراير", zh:"二月", ja:"2月", ia:"februario", la:"Februarius", grc:"Φεβρουάριος", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
+      { tema:"mesi", livello:"A1", it:"febbraio", en:"February", fr:"février", es:"febrero", de:"Februar", pt:"fevereiro", ru:"февраль", ca:"febrer", sp:"frevào", mn:"frévaa", ge:"frevaa/freva", ko:"2월", ar:"فبراير", zh:"二月", ja:"2月", ia:"februario", la:"Februarius", grc:"Φεβρουάριος", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"salute", livello:"A1", it:"febbre", en:"fever", fr:"fièvre", es:"fiebre", de:"Fieber", pt:"febre", ru:"лихорадка|температура", ca:"febre", sp:"fréve, frévia", mn:"friéva", cr:"fèbra", ge:"freve", ko:"열", ar:"حمى", zh:"发烧", ja:"熱", ia:"febre", src:{"mn":"🤖 IA","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"corpo", livello:"B1", it:"fegato", en:"liver", fr:"foie", es:"hígado", de:"Leber", pt:"fígado|figado", sp:"figaéto", mn:"fìigaetu    |figaëtu", ko:"간", ar:"كبد", zh:"肝", ja:"肝臓", ia:"hepate", la:"iecur", grc:"ἧπαρ", verif:"mn:g" },
       { tema:"aggettivi", livello:"A1", it:"felice", en:"happy", fr:"heureux", es:"feliz", de:"glücklich", pt:"feliz", ru:"счастливый", ca:"feliç", ko:"행복한", ar:"سعيد", zh:"快乐", ja:"幸せ", ia:"felice", la:"felix", grc:"εὐδαίμων", nt:["mn"] },
@@ -3540,7 +3540,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 365;
+const VOC_VERSION = 366;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
