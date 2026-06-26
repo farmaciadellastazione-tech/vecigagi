@@ -1071,18 +1071,24 @@ function editaNotaCella(btn, code) {
 
 function filtroVoci() {
   const lang0 = currentLangs[0];
+  const diaInVista = currentLangs.filter(c => DIALETTI_TTS_ITA.includes(c));
+  // hasStato(v, stato): true se almeno un dialetto in vista ha quello stato;
+  // se nessun dialetto è in vista, controlla tutti i dialetti.
+  const hasStato = (v, stato) => diaInVista.length
+    ? diaInVista.some(k => (v[k] || '').trim() && statoCella(v, k) === stato)
+    : (stato === 'y' ? campiGialli(v).size > 0 : stato === 'r' ? campiSospetti(v).size > 0 : campiVerificati(v).size > 0);
   return vocabolario.filter(v => {
     if (currentTema && v.tema !== currentTema) return false;
     if (currentLivello && v.livello !== currentLivello) return false;
     if (onlyEmpty && ((v[lang0] || '').trim() !== '' || dialNT(v, lang0))) return false;
     if (onlySuspect) {
       if (suspectLang) { if (statoCella(v, suspectLang) !== 'r') return false; }
-      else if (campiSospetti(v).size === 0) return false;
+      else if (!hasStato(v, 'r')) return false;
     }
-    if (onlyVerified && campiVerificati(v).size === 0) return false;
-    if (excludeVerified && tutteVerificateEsplicite(v, currentLangs.filter(c => DIALETTI_TTS_ITA.includes(c)))) return false;
-    if (onlyYellow && campiGialli(v).size === 0) return false;
-    if (excludeYellow && campiGialli(v).size > 0) return false;
+    if (onlyVerified && !hasStato(v, 'g')) return false;
+    if (excludeVerified && tutteVerificateEsplicite(v, diaInVista)) return false;
+    if (onlyYellow && !hasStato(v, 'y')) return false;
+    if (excludeYellow && hasStato(v, 'y')) return false;
     if (hideNT && currentLangs.some(c => dialNT(v, c))) return false;
     if (currentSearch) {
       const it = (v.it || '').toLowerCase();
