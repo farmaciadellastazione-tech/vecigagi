@@ -738,19 +738,13 @@ function fetchTimeout(url, opts, ms) {
 async function caricaIndexDaGitHub() {
   setHelp('⏳ Carico l\'ultima versione di index.html da GitHub...', 'info');
   try {
-    const apiUrl = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}?ref=${GH_BRANCH}`;
-    const token = localStorage.getItem(GH_TOKEN_KEY);
-    const headers = { 'Accept': 'application/vnd.github+json' };
-    if (token) headers['Authorization'] = 'Bearer ' + token;
-    const res = await fetchTimeout(apiUrl, { headers }, 25000);
-    if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
-    const meta = await res.json();
-    originalSourceSha = meta.sha;
-    const b64 = meta.content.replace(/\n/g, '');
-    const bin = atob(b64);
-    const bytes = new Uint8Array(bin.length);
-    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    originalSourceFile = new TextDecoder('utf-8').decode(bytes);
+    // Usa raw.githubusercontent.com: nessun limite 1 MB, nessun auth, risposta diretta.
+    // Lo SHA viene rifetchato al momento del salvataggio (vedi salvasuGitHub).
+    const rawUrl = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_PATH}?t=${Date.now()}`;
+    const res = await fetchTimeout(rawUrl, {}, 25000);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    originalSourceFile = await res.text();
+    originalSourceSha = null;
     vocabolario = estraiVocabolario(originalSourceFile);
     if (!vocabolario.length) throw new Error('VOCABOLARIO_DEFAULT vuoto o non trovato');
     frasiSP = estraiFrasiSP(originalSourceFile);
