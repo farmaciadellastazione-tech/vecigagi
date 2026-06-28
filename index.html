@@ -2241,7 +2241,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"comunicazione", livello:"A2", it:"chiacchiera", sp:"ciacea", mn:"chàcea/ciàcea", verif:"mn:g" },
       { tema:"dialogo", livello:"A1", it:"chiamami", en:"call me", fr:"appelle-moi", es:"llámame", de:"ruf mich an", pt:"me ligue", sp:"ciamame", mn:"chàmamé/ciamame", verif:"mn:g" },
       { tema:"aggettivi", livello:"B1", it:"chiassoso", en:"noisy", fr:"bruyant", es:"ruidoso", de:"laut", pt:"barulhento", ru:"шумный", ca:"sorollós", nt:["mn"] },
-      { tema:"oggetti", livello:"A1", it:"chiave", sp:"ciàve", mn:"ciàva", cr:"ciava", ge:"ciàve", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"oggetti", livello:"A1", it:"chiave", sp:"ciàve", mn:"ciàva", cr:"ciava", ge:"ciàve", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"dialetti", livello:"A2", it:"chiavistello", en:"latch", fr:"loquet", es:"pestillo", de:"Riegel", pt:"ferrolho", sp:"bàdacio", mn:"badaciu", verif:"mn:g" },
       { tema:"verbi", livello:"B1", it:"chiedere", en:"ask", fr:"demander", es:"preguntar", de:"fragen", pt:"perguntar", ru:"спрашивать", ca:"demanar", ko:"묻다", ar:"يسأل", zh:"问", ja:"聞く", ia:"demandar", la:"rogare", grc:"ἐρωτᾶν", nt:["mn"] },
       { tema:"dialogo", livello:"A2", it:"chiedere", en:"ask for", fr:"demander", es:"pedir", de:"fragen nach", pt:"pedir", ru:"спрашивать", ca:"demanar", mn:"dumandaa", verif:"mn:g" },
@@ -2266,7 +2266,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", it:"cinque", en:"five", sp:"sìnque", mn:"sìnque", ro:"cinci", verif:"mn:g" },
       { tema:"numeri", livello:"A1", it:"cinque|5", en:"five", fr:"cinq", es:"cinco", de:"fünf", pt:"cinco", ru:"пять", ca:"cinc", sp:"sìnque", mn:"sìnque", cr:"Zinqui", ko:"오", ar:"خمسة", zh:"五", ja:"五", ia:"cinque", la:"quinque", grc:"πέντε", verif:"mn:g" },
       { tema:"numeri", livello:"A1", it:"cinquecento|500", en:"five hundred", ru:"пятьсот", sp:"sinque sento/sinquesento|500", mn:"sinquessentu/sinquesentu|500", verif:"mn:g,sp:g" },
-      { tema:"vestiti", livello:"A1", it:"cintura", en:"belt", fr:"ceinture", es:"cinturón", de:"Gürtel", pt:"cinto", ru:"ремень", ca:"cinturó", sp:"sentüua/sentüa", mn:"sintùa/sintüa", ge:"corezìn", ko:"벨트", ar:"حزام", zh:"腰带", ja:"ベルト", ia:"cinctura", la:"cingulum", grc:"ζώνη", verif:"mn:g" },
+      { tema:"vestiti", livello:"A1", it:"cintura", en:"belt", fr:"ceinture", es:"cinturón", de:"Gürtel", pt:"cinto", ru:"ремень", ca:"cinturó", sp:"sentüua/sentüa", mn:"sintùa/sintüa", ge:"curesin/corezìn", ko:"벨트", ar:"حزام", zh:"腰带", ja:"ベルト", ia:"cinctura", la:"cingulum", grc:"ζώνη", verif:"mn:g,sp:g,ge:g" },
       { tema:"dialetti", livello:"A1", it:"ciotola", en:"bowl", fr:"bol", es:"cuenco", de:"Schüssel", pt:"tigela", sp:"cópa", verif:"sp:g" },
       { tema:"cibo", livello:"A1", it:"cipolla", en:"onion", ru:"лук", ca:"cebolla", sp:"sióla, sigóla/sióla, sigóla", mn:"siuula/siula", cr:"Cipòda", ge:"sibula, sivolla", ro:"ceapă", verif:"mn:g,sp:g" },
       { tema:"natura", it:"cipresso", sp:"arsiprèsso, aosiprèsso", cr:"cipress", ge:"çipresso", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"sp:g,ge:g,cr:g" },
@@ -3540,7 +3540,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 380;
+const VOC_VERSION = 381;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
@@ -8958,14 +8958,8 @@ function Ricerca({
   }, l.bandiera), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-zinc-600"
   }, l.nome), /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center gap-1"
-  }, /*#__PURE__*/React.createElement("span", {
     className: "text-sm font-semibold text-slate-200"
-  }, soloVisibile(entry[l.codice])), !LINGUE_SENZA_AUDIO.has(l.codice) && /*#__PURE__*/React.createElement("button", {
-    onClick: ev => { ev.stopPropagation(); parla(formaTTS(entry[l.codice]), l.bcp47); },
-    className: "text-zinc-600 hover:text-sky-400 transition-colors text-xs leading-none flex-shrink-0",
-    title: "Ascolta pronuncia"
-  }, "🔊"))))))), /*#__PURE__*/React.createElement("div", {
+  }, soloVisibile(entry[l.codice])))))))), /*#__PURE__*/React.createElement("div", {
     className: "text-center pt-4 pb-2"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-zinc-700 text-xs mb-2"
