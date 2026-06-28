@@ -3839,11 +3839,10 @@ function parla(testo, bcp47, lento = false) {
   u.rate = lento ? 0.55 : 0.85;
   // Forza una voce della lingua richiesta per evitare misdetection
   // (es. "can" letto come modale inglese invece che parola spezzina con voce italiana).
-  // Preferisce voci "Google ..." (Chrome / Google Translate): garantisce che le
-  // trascrizioni TTS calibrate in edit.html suonino identiche qui nell'app.
-  // Eccezione: in modalità lenta evitiamo le voci "Google ..." perché sono
-  // renderizzate lato server e ignorano u.rate (la tartaruga suonerebbe identica
-  // all'altoparlante normale). Preferiamo invece una voce locale che rispetta rate.
+  // Per it-IT (dialetti liguri) preferisce voci locali non-Google: Google italiano
+  // applica fonetica inglese su parole brevi ("bun" → "ban" invece di /bun/).
+  // Per le altre lingue preferisce Google per qualità e naturalezza.
+  // Eccezione aggiuntiva: in modalità lenta evitiamo Google perché ignorano u.rate.
   try {
     const voices = synth.getVoices() || [];
     const lower = bcp47.toLowerCase();
@@ -3851,7 +3850,7 @@ function parla(testo, bcp47, lento = false) {
     const isGoogle = v => /^google\b/i.test(v.name || "");
     const langExact = v => v.lang && v.lang.toLowerCase() === lower;
     const langBase  = v => v.lang && v.lang.toLowerCase().split("-")[0] === baseLang;
-    const voice = lento
+    const voice = (lento || baseLang === "it")
       ? (voices.find(v => !isGoogle(v) && langExact(v))
         || voices.find(v => !isGoogle(v) && langBase(v))
         || voices.find(langExact)
