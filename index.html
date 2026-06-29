@@ -8768,8 +8768,8 @@ function Glossario({
       res = res.filter(e => lingueAttive.some(l => (e[l.codice] || "").toLowerCase().includes(q)));
     }
     return [...res].sort((a, b) => {
-      const va = (a[linguaOrd] || "").split("/")[0].trim().toLowerCase();
-      const vb = (b[linguaOrd] || "").split("/")[0].trim().toLowerCase();
+      const va = (formaDisplay(a[linguaOrd], linguaOrd) || "").toLowerCase();
+      const vb = (formaDisplay(b[linguaOrd], linguaOrd) || "").toLowerCase();
       return va.localeCompare(vb);
     });
   }, [vocabolario, lingueAttive, linguaOrd, filtraLivello, filtraTema, query]);
@@ -8778,7 +8778,7 @@ function Glossario({
   const gruppi = useMemo(() => {
     const g = {};
     voci.forEach(e => {
-      const lettera = (e[linguaOrd] || "?")[0].toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const lettera = (formaDisplay(e[linguaOrd], linguaOrd) || "?")[0].toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       if (!g[lettera]) g[lettera] = [];
       g[lettera].push(e);
     });
@@ -8957,8 +8957,14 @@ function Ricerca({
   }, l.bandiera), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     className: "text-xs text-zinc-600"
   }, l.nome), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-1"
+  }, /*#__PURE__*/React.createElement("span", {
     className: "text-sm font-semibold text-slate-200"
-  }, formaDisplay(entry[l.codice], l.codice)))))))), /*#__PURE__*/React.createElement("div", {
+  }, formaDisplay(entry[l.codice], l.codice)), !LINGUE_SENZA_AUDIO.has(l.codice) && /*#__PURE__*/React.createElement("button", {
+    onClick: ev => { ev.stopPropagation(); parla(formaTTS(entry[l.codice]), l.bcp47); },
+    className: "text-zinc-600 hover:text-sky-400 transition-colors text-xs leading-none flex-shrink-0",
+    title: "Ascolta pronuncia"
+  }, "🔊"))))))))), /*#__PURE__*/React.createElement("div", {
     className: "text-center pt-4 pb-2"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-zinc-700 text-xs mb-2"
@@ -10041,10 +10047,10 @@ function SchermataQuiz({
       }, lDA.bandiera), /*#__PURE__*/React.createElement("span", {
         className: "text-slate-200 font-bold text-2xl truncate"
       }, parola), /*#__PURE__*/React.createElement("button", {
-        onClick: () => parla(rawValDA, lDA.bcp47),
+        onClick: () => parla(formaTTS(rawValDA), lDA.bcp47),
         className: "text-sky-600 hover:text-sky-400 text-base flex-shrink-0"
       }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("button", {
-        onClick: () => parla(rawValDA, lDA.bcp47, true),
+        onClick: () => parla(formaTTS(rawValDA), lDA.bcp47, true),
         className: "text-sky-600 hover:text-sky-400 text-base flex-shrink-0",
         title: "Ascolta lentamente"
       }, "\uD83D\uDC22")), /*#__PURE__*/React.createElement("div", {
@@ -10451,18 +10457,18 @@ function SchermataQuiz({
     if (carta.tipo === "coniugazione") {
       const formaUI = carta.entry?.[uiLang];
       if (formaUI) {
-        tradUI = formaUI;
+        tradUI = formaDisplay(formaUI, uiLang);
       } else {
         try {
           const vn = (CONIUGAZIONI[carta.verbKey]?.nome || "").toLowerCase().split("/")[0].trim();
           if (vocabolario && vn) {
             const ve = vocabolario.find(e => e && e.it && e.it.toLowerCase().split("/").some(v => v.trim() === vn));
-            if (ve) tradUI = ve[uiLang] || null;
+            if (ve) tradUI = formaDisplay(ve[uiLang], uiLang) || null;
           }
         } catch (e) {}
       }
     } else {
-      tradUI = carta.entry?.[uiLang];
+      tradUI = formaDisplay(carta.entry?.[uiLang], uiLang);
     }
     if (!tradUI || !lUI) return null;
     return /*#__PURE__*/React.createElement("div", {
