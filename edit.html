@@ -474,6 +474,7 @@ const GH_OWNER = 'farmaciadellastazione-tech';
 const GH_REPO  = 'vecigagi';
 const GH_BRANCH = 'main';
 const GH_PATH = 'index.html';
+const GH_PATH_VOCAB = 'vocab.js';
 const GH_TOKEN_KEY = 'gh_pat_vecigagi';
 const BLOCK_START_RE = /^\s*const VOCABOLARIO_DEFAULT = \[/m;
 
@@ -515,6 +516,7 @@ let frasiSP = [];                // array editabile di frasi a fine esercizio (s
 let frasiSPModificate = false;   // flag per save: le frasi sono state cambiate
 let originalSourceFile = null;
 let originalSourceSha = null;
+let originalVocabJs = null;
 let currentLangs = ['mn'];   // array ordinato di codici lingua visibili in tabella
 let currentTema = '';
 let currentLivello = '';
@@ -741,13 +743,18 @@ async function caricaIndexDaGitHub() {
     // Usa raw.githubusercontent.com: nessun limite 1 MB, nessun auth, risposta diretta.
     // Lo SHA viene rifetchato al momento del salvataggio (vedi salvasuGitHub).
     const rawUrl = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_PATH}?t=${Date.now()}`;
-    const res = await fetchTimeout(rawUrl, {}, 25000);
+    const vocabRawUrl = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_PATH_VOCAB}?t=${Date.now()}`;
+    const [res, vocabRes] = await Promise.all([
+      fetchTimeout(rawUrl, {}, 25000),
+      fetchTimeout(vocabRawUrl, {}, 15000).catch(() => null)
+    ]);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     originalSourceFile = await res.text();
     originalSourceSha = null;
+    originalVocabJs = (vocabRes && vocabRes.ok) ? await vocabRes.text() : null;
     vocabolario = estraiVocabolario(originalSourceFile);
     if (!vocabolario.length) throw new Error('VOCABOLARIO_DEFAULT vuoto o non trovato');
-    frasiSP = estraiFrasiSP(originalSourceFile);
+    frasiSP = estraiFrasiSP(originalVocabJs || originalSourceFile);
     frasiSPModificate = false;
     originalKeysByEntry.clear();
     vocabolario.forEach(v => originalKeysByEntry.set(rowKey(v), new Set(Object.keys(v))));
@@ -2354,6 +2361,16 @@ function ricostruisciSorgente() {
   return nuovoSrc;
 }
 
+function ricostruisciVocabJs() {
+  if (!originalVocabJs) return null;
+  const r = trovaBloccoArray(originalVocabJs, 'FRASI_FINE_SP');
+  if (!r) return null;
+  const corpo = frasiSP.length
+    ? '\n  ' + frasiSP.map(serializzaFraseSP).join(',\n  ') + '\n'
+    : '';
+  return originalVocabJs.slice(0, r.start) + corpo + originalVocabJs.slice(r.end);
+}
+
 function scaricaCopia() {
   let nuovoSrc; try { nuovoSrc = ricostruisciSorgente(); } catch(e) { alert('Errore: ' + e.message); return; }
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([nuovoSrc], { type: 'text/html;charset=utf-8' })); a.download = 'index.html'; a.click();
@@ -2385,6 +2402,20 @@ async function salvaSuGitHub() {
     const putRes = await fetchTimeout(apiBase, { method:'PUT', headers:Object.assign({}, headers, {'Content-Type':'application/json'}), body:JSON.stringify({ message:`Aggiornamento da edit.html (${tot} voci, ${modCount} modifiche)`, content:btoa(bin), branch:GH_BRANCH, sha }) }, 60000);
     if (!putRes.ok) { if (putRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('PUT fallito (' + putRes.status + ')'); }
     originalSourceFile = nuovoSrc; originalSourceSha = (await putRes.json()).content.sha;
+    // Salva vocab.js se le frasi spezzine sono state modificate
+    if (frasiSPModificate) {
+      const nuovoVocabJs = ricostruisciVocabJs();
+      if (nuovoVocabJs) {
+        const vocabApiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH_VOCAB}`;
+        const getVRes = await fetchTimeout(vocabApiBase + '?ref=' + GH_BRANCH, { headers }, 20000);
+        if (!getVRes.ok) throw new Error('GET vocab.js fallito (' + getVRes.status + ')');
+        const vocabSha = (await getVRes.json()).sha;
+        const vBytes = new TextEncoder().encode(nuovoVocabJs); let vBin = ''; for (let j = 0; j < vBytes.length; j++) vBin += String.fromCharCode(vBytes[j]);
+        const putVRes = await fetchTimeout(vocabApiBase, { method:'PUT', headers:Object.assign({}, headers, {'Content-Type':'application/json'}), body:JSON.stringify({ message:`Frasi spezzino: ${frasiSP.length} frasi aggiornate da edit.html`, content:btoa(vBin), branch:GH_BRANCH, sha: vocabSha }) }, 60000);
+        if (!putVRes.ok) throw new Error('PUT vocab.js fallito (' + putVRes.status + ')');
+        originalVocabJs = nuovoVocabJs;
+      }
+    }
     modifiedKeys.clear(); newKeys.clear(); frasiSPModificate = false; success = true;
     btn.textContent = '✅ Salvato!'; setHelp('✅ Salvataggio riuscito! GitHub Pages aggiornerà tra 1-2 min.', 'success');
     setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 3000); render();
