@@ -93,102 +93,111 @@ if (await input.count() > 0) {
   console.log('⚠️  Input ricerca non trovato');
 }
 
-// ── TEST 2: Words to review — no slash dialettale ───────────────────────────
-console.log('\n=== TEST 2: Words to review ===');
-await page.goto(URL, { waitUntil: 'networkidle' });
+// ── TEST 2: Words to review — no slash dialettale (via modalità Quiz) ─────────
+// "Words to review" appare in SchermataQuiz (quiz/allenamento/dettato/voce),
+// NON in SchermataSceltaMultipla che ha il proprio schermo risultati.
+// Quiz mode (key "quiz") non rimette in coda le risposte sbagliate (conRipetizione=false),
+// quindi finisce dopo nDomande risposte indipendentemente dagli errori.
+console.log('\n=== TEST 2: Words to review (via Quiz) ===');
+await page.goto(URL, { waitUntil: 'networkidle', timeout: 30000 });
 await skipOnboarding();
 
-// Inietta stats per sbloccare allenamento
+// Inietta stats con livello>0 per sbloccare quiz mode (isSbloccata usa Math.max(paroleViste, apprese))
+// + salta onboarding/tour al reload
 await page.evaluate(() => {
   const stats = {
-    'scusa': { livello: 1, nextReview: Date.now() - 86400000, viste: 3 },
-    'ciao':  { livello: 2, nextReview: Date.now() - 86400000, viste: 5 },
-    'grazie':{ livello: 1, nextReview: Date.now() - 86400000, viste: 3 },
-    'acqua': { livello: 1, nextReview: Date.now() - 86400000, viste: 2 },
-    'pane':  { livello: 1, nextReview: Date.now() - 86400000, viste: 2 },
+    'scusa': { livello: 1, prossima: Date.now() - 86400000 },
+    'ciao':  { livello: 2, prossima: Date.now() - 86400000 },
+    'grazie':{ livello: 1, prossima: Date.now() - 86400000 },
+    'acqua': { livello: 1, prossima: Date.now() - 86400000 },
+    'pane':  { livello: 1, prossima: Date.now() - 86400000 },
   };
   localStorage.setItem('qml_v10_stats', JSON.stringify(stats));
+  localStorage.setItem('qml_onboarding_done', 'true');
+  localStorage.setItem('qml_tour_done', 'true');
+  localStorage.setItem('qml_tour_seen', '1');
 });
 await page.reload({ waitUntil: 'networkidle' });
-await skipOnboarding();
+await page.screenshot({ path: SCRATCHPAD + '04_home_t2.png' });
 
-// Avvia "Scelta multipla" (prima modalità disponibile senza lock)
-const cardScelta = page.locator('text=Scelta multipla').first();
-if (await cardScelta.count() > 0) {
-  await cardScelta.click();
+// Trova e clicca il bottone Quiz (t.quiz = "🎯 Quiz" in tutte le lingue)
+// Nota: Scelta multipla non contiene "Quiz", quindi la stringa è univoca.
+const btnQuiz = page.locator('button').filter({ hasText: 'Quiz' }).first();
+if ((await btnQuiz.count()) === 0) {
+  console.log('⚠️  Bottone Quiz non trovato');
+  const allBtns = await page.locator('button').allTextContents();
+  console.log('  Bottoni disponibili:', allBtns.filter(t => t.trim()).slice(0, 25));
+} else {
+  await btnQuiz.click();
   await page.waitForTimeout(800);
-  await page.screenshot({ path: SCRATCHPAD + '04_scelta_start.png' });
+  await page.screenshot({ path: SCRATCHPAD + '05_config_quiz.png' });
 
-  // Rispondo sbagliato per N carte — clicca la card risposta via JS (evita icon buttons)
-  let attempts = 0;
-  while (attempts < 50) {
-    attempts++;
+  // ConfigurazioneQuiz: scegli 5 domande (meno attesa), poi "Inizia →"
+  const btn5 = page.locator('button').filter({ hasText: /^5$/ }).first();
+  if ((await btn5.count()) > 0) { await btn5.click(); await page.waitForTimeout(200); }
+  const btnInizia = page.locator('button').filter({ hasText: /Inizia/ }).first();
+  if ((await btnInizia.count()) > 0) {
+    await btnInizia.click();
+    await page.waitForTimeout(800);
+  }
+  await page.screenshot({ path: SCRATCHPAD + '06_quiz_start.png' });
 
-    const stato = await page.evaluate(() => {
-      // Cerca il pannello "Words to review"
-      const body = document.body.innerText;
-      if (body.includes('Words to review')) return 'done';
-      if (body.includes('Fine sessione')) return 'done';
-      if (body.includes('Session results')) return 'done';
+  // Loop quiz: 5 domande × (input "zzzzz" + Enter + "Continua →")
+  // Quiz mode non rimette in coda → finisce in esattamente nDomande passi.
+  let step = 0;
+  while (step < 40) {
+    step++;
+    const body = await page.locator('body').innerText().catch(() => '');
+    if (body.includes('Words to review')) break;
+    if (body.includes('corrette\n') && body.includes('%')) break; // schermata risultati senza errori
 
-      // Cerca le card risposta (div con testo "A.", "B.", ecc.) e clicca la prima sbagliata
-      // Cerca tutti gli elementi cliccabili che contengono "A. " come prefisso
-      const allDivs = [...document.querySelectorAll('div, li')];
-      const cardRisposte = allDivs.filter(el => {
-        const txt = el.innerText?.trim() || '';
-        return /^[A-E]\.\s+\w/.test(txt) && el.innerText.length < 100;
-      });
+    // Stato "domanda": input testuale visibile
+    const inp = page.locator('input[type="text"]').first();
+    if ((await inp.count()) > 0 && await inp.isVisible().catch(() => false)) {
+      await inp.fill('zzzzz');
+      await inp.press('Enter');
+      await page.waitForTimeout(600);
+      continue;
+    }
 
-      // Prendi l'ultima risposta (spesso sbagliata) o la prima disponibile
-      const target = cardRisposte[cardRisposte.length - 1] || cardRisposte[0];
-      if (target) {
-        target.click();
-        return 'clicked:' + target.innerText.trim().slice(0, 30);
-      }
+    // Stato "corretto" o "sbagliato": bottone Continua →
+    const continua = page.locator('button').filter({ hasText: /Continua|Continue/ }).first();
+    if ((await continua.count()) > 0 && await continua.isVisible().catch(() => false)) {
+      await continua.click();
+      await page.waitForTimeout(400);
+      continue;
+    }
 
-      // Fallback: cerca bottone "Avanti" / "Continua"
-      const btns = [...document.querySelectorAll('button')];
-      const avanti = btns.find(b => /avanti|next|continua|→/i.test(b.innerText));
-      if (avanti) { avanti.click(); return 'avanti'; }
-
-      return 'nothing';
-    });
-
-    await page.waitForTimeout(500);
-    if (stato === 'done') break;
-    if (stato === 'nothing') break;
-
-    // Dopo ogni risposta, cerca e clicca "Avanti"
-    const avanti = page.locator('button').filter({ hasText: /avanti|next|→/i }).first();
-    if (await avanti.count() > 0) { await avanti.click(); await page.waitForTimeout(400); }
+    await page.waitForTimeout(300); // breve attesa se né input né continua
   }
 
-  await page.screenshot({ path: SCRATCHPAD + '06_risultati.png' });
+  await page.screenshot({ path: SCRATCHPAD + '07_risultati_quiz.png' });
+  const bodyFinal = await page.locator('body').innerText().catch(() => '');
+  const hasReview = bodyFinal.includes('Words to review');
 
-  const hasReview = await page.locator('text=Words to review').count() > 0;
   if (hasReview) {
-    await page.screenshot({ path: SCRATCHPAD + '06b_words_to_review.png' });
-    const greenWords = await page.locator('.text-green-400').allTextContents();
-    const boldWhite = await page.locator('.text-slate-200.font-bold').allTextContents();
-    console.log('Parole risposta (verde):', greenWords.slice(0, 5));
-    console.log('Parole sorgente (bold):', boldWhite.slice(0, 5));
-
-    const slashGreen = greenWords.filter(w => w.includes('/'));
-    const slashWhite = boldWhite.filter(w => w.includes('/'));
-
-    if (slashGreen.length === 0 && slashWhite.length === 0) {
-      console.log('✅ TEST 2 PASS — nessuno slash nelle parole da rivedere');
+    await page.screenshot({ path: SCRATCHPAD + '07b_words_to_review.png' });
+    // Legge il testo della sezione Words to review e cerca slash dialettali (pronuncia/grafia)
+    const reviewDiv = page.locator('div').filter({ hasText: 'Words to review' }).first();
+    const reviewText = await reviewDiv.innerText().catch(() => '');
+    const lines = reviewText.split('\n').filter(l => l.trim() && l.trim() !== 'Words to review');
+    const withSlash = lines.filter(l => /[a-záàéèíìóòúùü'']+\/[a-záàéèíìóòúùü'']+/i.test(l));
+    if (withSlash.length === 0) {
+      console.log(`✅ TEST 2 PASS — nessuno slash dialettale in "Words to review" (${lines.length} righe)`);
     } else {
-      if (slashGreen.length) console.log('❌ TEST 2 FAIL — slash in verde:', slashGreen);
-      if (slashWhite.length) console.log('❌ TEST 2 FAIL — slash in bold:', slashWhite);
+      console.log(`❌ TEST 2 FAIL — ${withSlash.length} righe con slash:`, withSlash.slice(0, 5));
     }
   } else {
-    console.log('⚠️  "Words to review" non raggiunto (' + attempts + ' step), forse nessun errore');
-    console.log('  Testo:', (await page.locator('body').innerText()).slice(0, 200));
+    // Se non ci sono "Words to review" è perché tutte le risposte erano corrette (improbabile con "zzzzz")
+    // oppure il quiz non è arrivato alla fine
+    const hasResults = bodyFinal.includes('%') && bodyFinal.includes('corrette');
+    if (hasResults) {
+      console.log('⚠️  TEST 2 — quiz finito senza errori (nessuna "Words to review", inaspettato con "zzzzz")');
+    } else {
+      console.log(`⚠️  TEST 2 — risultati non raggiunto in ${step} passi`);
+      console.log('  Body:', bodyFinal.slice(0, 300));
+    }
   }
-} else {
-  console.log('⚠️  Card Scelta multipla non trovata');
-  console.log('  Testo pagina:', (await page.locator('body').innerText()).slice(0, 300));
 }
 
 // ── TEST 3: Glossario — no slash nei titoli ──────────────────────────────────
