@@ -10006,13 +10006,15 @@ function SchermataQuiz({
     }, carteErrate.map((e, i) => {
       const lDA = e.carta.tipo === "coniugazione" ? e.carta.lDA : lingue.find(l => l.codice === e.carta.da);
       const lA = e.lA;
-      const parola = soloVisibile(e.carta.tipo === "coniugazione" ? e.carta.entry[lDA?.codice] : e.carta.entry[e.carta.da]);
+      const codiceDA = e.carta.tipo === "coniugazione" ? lDA?.codice : e.carta.da;
+      const rawValDA = e.carta.tipo === "coniugazione" ? e.carta.entry[lDA?.codice] : e.carta.entry[e.carta.da];
+      const parola = formaDisplay(rawValDA, codiceDA);
       const isDettato = e.carta.tipo === "dettato";
       const linguaB = isDettato ? e.carta.linguaB : null;
       const lB = linguaB ? lingue.find(l => l.codice === linguaB) : null;
-      const tradB = linguaB ? soloVisibile(e.carta.entry[linguaB]) : null;
+      const tradB = linguaB ? formaDisplay(e.carta.entry[linguaB], linguaB) : null;
       const uiLang = localStorage.getItem("linguaUI") || "en";
-      const tradUI = soloVisibile(e.carta.entry?.[uiLang]);
+      const tradUI = formaDisplay(e.carta.entry?.[uiLang], uiLang);
       const lUI = lingue.find(l => l.codice === uiLang);
       // Dedup: traccia codici lingua già mostrati per evitare righe ripetute
       const linguaMostrate = new Set();
@@ -10039,10 +10041,10 @@ function SchermataQuiz({
       }, lDA.bandiera), /*#__PURE__*/React.createElement("span", {
         className: "text-slate-200 font-bold text-2xl truncate"
       }, parola), /*#__PURE__*/React.createElement("button", {
-        onClick: () => parla(parola, lDA.bcp47),
+        onClick: () => parla(rawValDA, lDA.bcp47),
         className: "text-sky-600 hover:text-sky-400 text-base flex-shrink-0"
       }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("button", {
-        onClick: () => parla(parola, lDA.bcp47, true),
+        onClick: () => parla(rawValDA, lDA.bcp47, true),
         className: "text-sky-600 hover:text-sky-400 text-base flex-shrink-0",
         title: "Ascolta lentamente"
       }, "\uD83D\uDC22")), /*#__PURE__*/React.createElement("div", {
@@ -10051,7 +10053,7 @@ function SchermataQuiz({
         className: "text-lg"
       }, lA?.bandiera), /*#__PURE__*/React.createElement("span", {
         className: "text-green-400 font-bold text-2xl"
-      }, soloVisibile(e.atteso)), lA && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+      }, formaDisplay(e.atteso, lA?.codice)), lA && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
         onClick: () => parla(e.carta.tipo === "coniugazione" ? testoAudio(e.atteso, e.carta.persona, lA.codice) : e.atteso, lA.bcp47),
         className: "text-sky-600 hover:text-sky-400 text-base flex-shrink-0"
       }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("button", {
