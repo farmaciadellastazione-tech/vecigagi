@@ -36,11 +36,11 @@ const NUMERI_DIALETTO = {
 //   - media: min:50, max:79
 //   - bassa: max:49    (bonario, mai offensivo)
 const FRASI_FINE_SP = [
-  { tts: "beelìiina dé... e chi tèèi ?", vis: "belina deh, e chi t'ei?", min: 80 },
+  { tts: "beelìiina dé... e chiteiiii ?", vis: "belina deh, e chi t'ei?", min: 80 },
   { tts: "mahcòstéféee??", vis: "ma costefé??", max: 49 },
   { tts: "te me pai naase", vis: "te me pai n'ase", max: 49 },
-  { tts: "mia che te miio'''''''''' :'''''''''ooòcho", vis: "mia che te mio  ocio", min: 50, max: 79 },
-  { tts: "tèin pagiasso", vis: "t'ei un pagiasso", max: 49 }
+  { tts: "mia che te miio'''''''''' :'''''''''ooòcio", vis: "mia che te mio  ocio", min: 50, max: 79 },
+  { tts: "teiin pagiasso", vis: "t'ei un pagiasso", max: 49 }
 ];
 
 // ── Estrazione e display ─────────────────────────────────────────────────
