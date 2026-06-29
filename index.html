@@ -8846,7 +8846,7 @@ function Glossario({
     className: "flex items-center gap-2 mb-1"
   }, /*#__PURE__*/React.createElement("span", {
     className: "font-bold text-slate-100 text-sm flex-1"
-  }, soloVisibile(entry[linguaOrd])), entry.livello && /*#__PURE__*/React.createElement("span", {
+  }, formaDisplay(entry[linguaOrd], linguaOrd)), entry.livello && /*#__PURE__*/React.createElement("span", {
     className: `text-xs px-1.5 py-0.5 rounded font-bold ${livColore[entry.livello] || "bg-zinc-800 text-zinc-400"}`
   }, entry.livello), entry.tema && TEMI[entry.tema] && /*#__PURE__*/React.createElement("span", {
     className: "text-xs text-zinc-600"
@@ -8859,7 +8859,7 @@ function Glossario({
     className: "text-xs text-zinc-500"
   }, /*#__PURE__*/React.createElement("span", {
     className: "mr-0.5"
-  }, l.bandiera), soloVisibile(entry[l.codice])))))))), voci.length === 0 && /*#__PURE__*/React.createElement("p", {
+  }, l.bandiera), formaDisplay(entry[l.codice], l.codice)))))))), voci.length === 0 && /*#__PURE__*/React.createElement("p", {
     className: "text-center text-zinc-600 pt-12 text-sm"
   }, "No words found.")));
 }
@@ -8958,7 +8958,7 @@ function Ricerca({
     className: "text-xs text-zinc-600"
   }, l.nome), /*#__PURE__*/React.createElement("div", {
     className: "text-sm font-semibold text-slate-200"
-  }, soloVisibile(entry[l.codice])))))))), /*#__PURE__*/React.createElement("div", {
+  }, formaDisplay(entry[l.codice], l.codice)))))))), /*#__PURE__*/React.createElement("div", {
     className: "text-center pt-4 pb-2"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-zinc-700 text-xs mb-2"
@@ -9198,7 +9198,7 @@ function Vocabolario({
       className: "text-slate-500"
     }, l.bandiera), " ", /*#__PURE__*/React.createElement("span", {
       className: "text-slate-200 font-medium"
-    }, soloVisibile(entry[l.codice]))))), /*#__PURE__*/React.createElement("div", {
+    }, formaDisplay(entry[l.codice], l.codice))))), /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-2 ml-2 flex-shrink-0"
     }, appresa && /*#__PURE__*/React.createElement("span", {
       className: "text-xs bg-green-100 text-green-600 px-2 py-0.5 rounded-full"
@@ -10180,7 +10180,7 @@ function SchermataQuiz({
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-5xl font-extrabold text-white"
   }, (() => {
-    const forma = soloVisibile(carta.entry[lDA?.codice] || "");
+    const forma = formaDisplay(carta.entry[lDA?.codice] || "", lDA?.codice);
     const sogg = LINGUE_CON_SOGGETTO.has(lDA?.codice) && SOGGETTI[lDA?.codice]?.[carta.persona?.replace(/ \(.*\)/, "").trim()];
     return sogg ? `${sogg} ${forma}` : forma;
   })()), lDA && /*#__PURE__*/React.createElement(BtnAudio, {
@@ -10359,13 +10359,13 @@ function SchermataQuiz({
     const uiLang = localStorage.getItem("linguaUI") || "en";
     if (uiLang === carta.a || uiLang === carta.da) return null;
     const lUI = lingue.find(l => l.codice === uiLang);
-    let tradUI = soloVisibile(carta.entry?.[uiLang]);
+    let tradUI = formaDisplay(carta.entry?.[uiLang], uiLang);
     if (!tradUI && carta.tipo === "coniugazione" && carta.verbKey) {
       try {
         const vn = (CONIUGAZIONI[carta.verbKey]?.nome || "").toLowerCase().split("/")[0].trim();
         if (vocabolario && vn) {
           const ve = vocabolario.find(e => e && e.it && e.it.toLowerCase().split("/").some(v => v.trim() === vn));
-          if (ve) tradUI = soloVisibile(ve[uiLang]) || null;
+          if (ve) tradUI = formaDisplay(ve[uiLang], uiLang) || null;
         }
       } catch (e) {}
     }
@@ -10380,10 +10380,10 @@ function SchermataQuiz({
   })(), carta.tipo === "dettato" && (() => {
     const lDA = lingue.find(l => l.codice === carta.da);
     const lB = carta.linguaB ? lingue.find(l => l.codice === carta.linguaB) : null;
-    const tradB = lB ? soloVisibile(carta.entry[carta.linguaB]) : null;
+    const tradB = lB ? formaDisplay(carta.entry[carta.linguaB], carta.linguaB) : null;
     const uiLang = localStorage.getItem("linguaUI") || "en";
     const lUI = lingue.find(l => l.codice === uiLang);
-    const tradUI = soloVisibile(carta.entry[uiLang]);
+    const tradUI = formaDisplay(carta.entry[uiLang], uiLang);
     return /*#__PURE__*/React.createElement("div", {
       className: "space-y-2 mb-4"
     }, tradB && lB && /*#__PURE__*/React.createElement("div", {
@@ -10475,10 +10475,10 @@ function SchermataQuiz({
   })(), carta.tipo === "dettato" && (() => {
     const lDA = lingue.find(l => l.codice === carta.da);
     const lB = carta.linguaB ? lingue.find(l => l.codice === carta.linguaB) : null;
-    const tradB = lB ? soloVisibile(carta.entry[carta.linguaB]) : null;
+    const tradB = lB ? formaDisplay(carta.entry[carta.linguaB], carta.linguaB) : null;
     const uiLang = localStorage.getItem("linguaUI") || "en";
     const lUI = lingue.find(l => l.codice === uiLang);
-    const tradUI = soloVisibile(carta.entry[uiLang]);
+    const tradUI = formaDisplay(carta.entry[uiLang], uiLang);
     return /*#__PURE__*/React.createElement("div", {
       className: "space-y-2 mb-4"
     }, tradB && lB && /*#__PURE__*/React.createElement("div", {
