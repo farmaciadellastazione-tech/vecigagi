@@ -1965,6 +1965,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"persone", livello:"A1", it:"ragazzo", en:"boy", sp:"fante, bardassòn", mn:"fante, bardassu", ge:"figgeu", ro:"băiat" },
       { tema:"persone", livello:"B1", it:"persona inaffidabile", en:"unreliable person", sp:"legéra ", mn:"legera/legéra ", verif:"sp:g,mn:g" },
       { tema:"verbi", livello:"B1", it:"godere", en:"enjoy", sp:"gòdeh/gòde", mn:"godé", verif:"mn:g,sp:g" },
       { tema:"lavoro", livello:"A2", it:"marinaio", en:"sailor", sp:"mainà o/mainao", mn:"mainàa/mainaa", verif:"sp:g,mn:g" },
@@ -2721,7 +2722,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"salute", livello:"B1", it:"fiatone", en:"breathlessness", fr:"essoufflement", es:"jadeo", de:"Kurzatmigkeit", pt:"falta de ar", sp:"pantàsso", mn:"pantàssu", verif:"mn:g" },
       { tema:"dialetti", livello:"A1", it:"fico", en:"fig", fr:"figue", es:"higo", de:"Feige", pt:"figo", sp:"figo", mn:"figu", cr:"fich", ia:"fico", verif:"mn:g" },
       { it:"fico secco", sp:"sgrabelon", cr:"fich sech", verif:"sp:g" },
-      { tema:"dialetti", livello:"A2", it:"fidanzata", en:"girlfriend", fr:"petite amie", es:"novia", de:"Freundin", pt:"noiva", ca:"xica", sp:"spavicia", mn:"fidansà|galànte", ge:"galànte", ia:"promissa", ro:"logodnică", src:{"mn":"🤖doni"}, verif:"mn:g" },
+      { tema:"dialetti", livello:"A2", it:"fidanzata", en:"girlfriend", fr:"petite amie", es:"novia", de:"Freundin", pt:"noiva", ca:"xica", sp:"spavicia, galante", mn:"fidansà|galànte", ge:"galànte", ia:"promissa", ro:"logodnică", src:{"mn":"🤖doni"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"B1", it:"fiducioso", en:"confident", fr:"confiant", es:"confiado", de:"zuversichtlich", pt:"confiante", ru:"уверенный", ca:"confiat", ge:"fiduciôzo", ko:"자신있는", ar:"واثق", zh:"自信", ja:"自信がある", ia:"confidiente", la:"fidens", grc:"πεποιθώς", src:{"mn":"🤖 IA"}, verif:"mn:r", nt:["mn"] },
       { tema:"dialetti", livello:"A2", it:"fiera", en:"fair", fr:"foire", es:"feria", de:"Messe", pt:"feira", sp:"féa", mn:"fiéa", ge:"feaa/fea", src:{"mn":"🤖 IA","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"giorni", livello:"A1", it:"figlia", en:"daughter", fr:"fille", es:"hija", de:"Tochter", pt:"filha", ru:"дочь", ca:"filla", sp:"figia", mn:"figia", ko:"딸", ar:"ابنة", zh:"女儿", ja:"娘", ia:"filia", la:"filia", grc:"θυγάτηρ", ro:"fiică", verif:"mn:g" },
@@ -2910,7 +2911,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"lama", en:"mud", fr:"boue", es:"lodo", de:"Schlamm", pt:"lama", sp:"lama", mn:"lama", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"casa", livello:"A2", it:"lampada", en:"lamp", fr:"lampe", es:"lámpara", de:"Lampe", pt:"lâmpada|lampada", ru:"лампа", ca:"làmpada", sp:"lanpa", ko:"램프", ar:"مصباح", zh:"灯", ja:"ランプ", ia:"lampa", la:"lucerna", grc:"λύχνος", verif:"sp:g" },
       { tema:"dialogo", livello:"B1", it:"lana", en:"wool", fr:"laine", es:"lana", de:"Wolle", pt:"lã", ru:"шерсть", ca:"llana", sp:"lana", verif:"sp:g" },
-      { it:"latte", mn:"late", ro:"lapte", verif:"mn:g" },
+      { tema:"cibo", livello:"A1", it:"latte", en:"milk", sp:"láte", mn:"late", ge:"laete", ro:"lapte", verif:"mn:g,sp:g,ge:g" },
       { tema:"verbi", livello:"A1", it:"lavare", en:"wash", fr:"laver", es:"lavar", de:"waschen", pt:"lavar", ru:"мыть", ca:"rentar", sp:"lavahe/lavae", verif:"sp:g" },
       { tema:"verbi", it:"lavorare", en:"work", sp:"travagiaae, lavoaae/travagiae, lavoaelavoae", mn:"travagia'a/travagiàa", cr:"lavorar", ro:"a lucra", verif:"sp:g,mn:g" },
       { tema:"verbi", livello:"A2", it:"lavorare/lavoro", en:"work", fr:"travailler", es:"trabajar", de:"arbeiten", pt:"trabalhar", ru:"работать", ca:"treballar", sp:"travagiaae/travagiae| lavoae,travagiae", mn:"travagiaa/travagiaa", ko:"일하다", ar:"يعمل", zh:"工作", ja:"働く", ia:"laborar", verif:"sp:g,mn:g" },
@@ -2976,7 +2977,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"espressioni", livello:"B1", it:"me ne frego", en:"I don't care", fr:"je m'en fiche", es:"me importa un bledo", de:"es ist mir egal", pt:"não me importo", ru:"мне все равно", ca:"no em fa res", sp:"amen bàto'rbe lin/a men bato er belin", mn:"amenbatur belin/a men batu er belin", ge:"amen batu u belin/a men bato o belin", ko:"관심 없다", ar:"لا أهتم", zh:"我不在乎", ja:"気にしない", ia:"me non importa", la:"non cura", grc:"ἀμελήσω", ro:"nu-mi pasă", verif:"mn:g,sp:g,ge:g" },
       { tema:"mestieri", livello:"A2", it:"medico", en:"doctor", fr:"médecin", es:"médico", de:"Arzt", pt:"médico|medico", ru:"врач", ca:"metge", sp:"médego, médegòn", mn:"miédegu", cr:"Dotòr", ko:"의사", ar:"طبيب", zh:"医生", ja:"医者", ia:"medico", la:"medicus", grc:"ἰατρός", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"meglio", en:"better", fr:"mieux", es:"mejor", de:"besser", pt:"melhor", sp:"mèi,megio", mn:"mégiu", verif:"mn:g" },
-      { tema:"cibo", livello:"A1", it:"mela", en:"apple", fr:"pomme", es:"manzana", de:"Apfel", pt:"maçã|maca", ru:"яблоко", ca:"poma", sp:"pomo", mn:"pümu", ge:"pómmo", ko:"사과", ar:"تفاحة", zh:"苹果", ja:"りんご", ia:"pomo", la:"malum", grc:"μῆλον", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"cibo", livello:"A1", it:"mela", en:"apple", fr:"pomme", es:"manzana", de:"Apfel", pt:"maçã|maca", ru:"яблоко", ca:"poma", sp:"pomo", mn:"puùmu/pumu", ge:"mei, meia", ko:"사과", ar:"تفاحة", zh:"苹果", ja:"りんご", ia:"pomo", la:"malum", grc:"μῆλον", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g", ro:"măr" },
       { tema:"cibo", livello:"A2", it:"melanzana", en:"aubergine", fr:"aubergine", es:"berenjena", de:"Aubergine", pt:"berinjela", ru:"баклажан", ca:"albergínia", sp:"meinzàna", mn:"méénzana", cr:"M'rlinzàna", ko:"가지", ar:"باذنجان", zh:"茄子", ia:"melongena", ro:"vânătă", verif:"mn:g" },
       { tema:"dialogo", livello:"A2", it:"memoria", en:"memory", fr:"mémoire", es:"memoria", de:"Gedächtnis", pt:"memória|memoria", ru:"память", ca:"memòria", sp:"memoia", ko:"기억", ar:"ذاكرة", zh:"记忆", ja:"記憶", ia:"memoria", la:"memoria", grc:"μνήμη", verif:"sp:g" },
       { tema:"dialogo", livello:"A1", it:"meno", mn:"ménu", verif:"mn:g" },
@@ -3104,7 +3105,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"sintomi", livello:"A2", it:"palpitazioni", en:"palpitations", fr:"palpitations", es:"palpitaciones", de:"Herzrasen", pt:"palpitações|palpitacoes", ru:"сердцебиение", ca:"palpitacions", sp:"parpitassiónh/parpitassión", ko:"심계항진", ar:"خفقان", zh:"心悸", ja:"動悸", verif:"sp:g" },
       { tema:"casa", livello:"A1", it:"panchina", mn:"banchina|bànchiea", verif:"mn:g" },
       { it:"pancia", sp:"pansa", cr:"buz", verif:"sp:g" },
-      { it:"pane", sp:"pan", mn:"pan", cr:"pan", ge:"pan", ro:"pâine", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"cibo", livello:"A1", it:"pane", en:"bread", sp:"pan", mn:"pan", cr:"pan", ge:"pan", ro:"pâine", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"mestieri", livello:"A2", it:"panettiere", en:"baker", fr:"boulanger", es:"panadero", de:"Bäcker", pt:"padeiro", sp:"panatéo, panadéo, paneréo, panetéo", mn:"panatéo, panadéo, paneréo", ge:"panatee/panatê", ko:"제빵사", ar:"خباز", zh:"面包师", ja:"パン屋", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"vestiti", livello:"A1", it:"pantaloni", en:"trousers", fr:"pantalon", es:"pantalones", de:"Hose", pt:"calças|calcas", ru:"брюки", ca:"pantalons", sp:"braghe", ko:"바지", ar:"بنطلون", zh:"裤子", ja:"ズボン", ia:"pantalones", verif:"sp:g" },
       { tema:"abbigliamento", livello:"A2", it:"pantofola|ciabatta", en:"slipper", fr:"pantoufle", es:"zapatilla", de:"Pantoffel", pt:"chinelo", ca:"pantufa", sp:"savata", mn:"savàta", ge:"savàtta", ia:"pantuflo", ro:"papuc", src:{"mn":"🤖 IA"}, verif:"mn:g" },
@@ -3254,7 +3255,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"quinto", en:"fifth", fr:"cinquième", es:"quinto", de:"fünfte", pt:"quinto", sp:"quinto", mn:"quìntu", ge:"quìnto", ia:"quinte", la:"quintus", ro:"al cincilea", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"emotivi", livello:"A2", it:"rabbia", sp:"ràgia, fóta", mn:"ragia/ràgia", ge:"ràggia", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"dialetti", livello:"A2", it:"rado", en:"sparse", fr:"clairsemé", es:"escaso", de:"dünn", pt:"ralo", sp:"rèo", mn:"radu", verif:"mn:g" },
-      { tema:"famiglia", livello:"A1", it:"ragazza", en:"girl", fr:"fille", es:"chica", de:"Mädchen", pt:"rapariga", ru:"девушка|девочка", ca:"noia", sp:"fantèla|fante", mn:"fantèla", cr:"Fanta", ge:"figétta", ko:"소녀", ar:"فتاة", zh:"女孩", ja:"少女", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"famiglia", livello:"A1", it:"ragazza", en:"girl", fr:"fille", es:"chica", de:"Mädchen", pt:"rapariga", ru:"девушка|девочка", ca:"noia", sp:"fantèla|fante", mn:"fantèla", cr:"Fanta", ge:"figgia", ko:"소녀", ar:"فتاة", zh:"女孩", ja:"少女", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"fată" },
       { tema:"dialetti", livello:"A2", it:"ragazza allegra e vivace", mn:"sgàr zuèla/zgàrzuèla", verif:"mn:g" },
       { tema:"verbi", livello:"B1", it:"raggiungere", en:"reach", fr:"atteindre", es:"alcanzar", de:"erreichen", pt:"alcançar", ru:"достигать", ca:"arribar a" },
       { tema:"natura", livello:"A1", it:"ragno", sp:"ragno", mn:"ragnu", ge:"ragno|ägno", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g" },
@@ -3605,7 +3606,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"luoghi", livello:"A2", it:"università", en:"university", fr:"université", es:"universidad", de:"Universität", pt:"universidade", ko:"대학교", ar:"جامعة", zh:"大学", ja:"大学", ia:"universitate", la:"universitas", grc:"πανεπιστήμιον" },
       { tema:"numeri", livello:"A1", it:"uno", en:"one", fr:"un", es:"uno", de:"ein|eins", pt:"um", ru:"один", ca:"un", sp:"ün", mn:"ün", ko:"일", ar:"واحد", zh:"一", ja:"一", ia:"un|uno", la:"unus", grc:"εἷς", ro:"unu", verif:"sp:g,mn:g" },
       { tema:"dialetti", livello:"A2", it:"unto, oliato", mn:"üntu", verif:"mn:g" },
-      { tema:"persona", livello:"A1", it:"uomo", sp:"omo", mn:"òmu", cr:"om", verif:"mn:g" },
+      { tema:"persona", livello:"A1", it:"uomo", en:"man", sp:"omo", mn:"òmu", cr:"om", ge:"òmmu/ommo", verif:"mn:g,sp:g,ge:g", ro:"bărbat" },
       { tema:"cibo", livello:"A1", it:"uovo", en:"egg", fr:"œuf", es:"huevo", de:"Ei", pt:"ovo", ru:"яйцо", ca:"ou", sp:"èvo", mn:"eu/éu", cr:"ov", ro:"ou", verif:"mn:g" },
       { tema:"natura", livello:"B1", it:"uragano", en:"hurricane", fr:"ouragan", es:"huracán", de:"Hurrikan", pt:"furacão|furacao", ko:"허리케인", ar:"إعصار", zh:"飓风", ja:"ハリケーン", ia:"uragano", la:"turbo", grc:"τυφών" },
       { tema:"verbi", it:"urlare / sbraitare", sp:"sbragiàae/sbragiae", mn:"sbragiàa/sbragiaa", verif:"mn:g" },
@@ -3718,7 +3719,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 391;
+const VOC_VERSION = 392;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
