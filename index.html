@@ -2218,7 +2218,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"animali", livello:"B1", it:"balena", en:"whale", fr:"baleine", es:"ballena", de:"Wal", pt:"baleia", ru:"кит", ca:"balena", sp:"balena", mn:"balëna", ko:"고래", ar:"حوت", zh:"鲸鱼", ja:"クジラ", ia:"balena", la:"cetus", grc:"κῆτος", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
       { tema:"verbi", livello:"A2", it:"ballare", en:"dance", fr:"danser", es:"bailar", de:"tanzen", pt:"dançar|dancar", ru:"танцевать", ca:"ballar", sp:"bala'e/balae", mn:"balaaa/balaa", ko:"춤추다", ar:"يرقص", zh:"跳舞", ja:"踊る", ia:"dansar", la:"saltare", grc:"χορεύειν", verif:"sp:g,mn:g", src:{"sp":"🔗 dialetti.html"} },
       { it:"bambina", sp:"ninina, petussa", mn:"fantela,fàntëta,fantéleta", cr:"m'nina", verif:"sp:g,mn:g" },
-      { tema:"famiglia", it:"bambino", en:"child", sp:"ninìn", mn:"piciénin/picénin", cr:"M'nin", ge:"bocia", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"famiglia", livello:"A1", it:"bambino", en:"child", sp:"ninìn, fantin, ", mn:"nénin", cr:"M'nin", ge:"figgeu", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g,sp:g", ro:"copil" },
       { it:"bambino / bimbo", sp:"ninìn,  petusso", mn:"nenìn, fante, fantëtu/nénin, fante, fantëtu", cr:"m'nin", verif:"sp:g,mn:g" },
       { tema:"cibo", livello:"A1", it:"banana", en:"banana", fr:"banane", es:"plátano", de:"Banane", pt:"banana", ru:"банан", ca:"plàtan", ko:"바나나", ar:"موز", zh:"香蕉", ja:"バナナ", ia:"banana", la:"musa", ro:"banană", nt:["sp","mn"] },
       { tema:"dialogo", livello:"A2", it:"bandiera", en:"flag", fr:"drapeau", es:"bandera", de:"Fahne", pt:"bandeira", ru:"флаг", ca:"bandera", sp:"bandéa", mn:"bandiéa", cr:"bandiera", ge:"bandea", verif:"sp:g,ge:g,mn:g", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"} },
@@ -3576,7 +3576,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A1", it:"troppo", mn:"tropu", verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"trovare", en:"find", fr:"trouver", es:"encontrar", de:"finden", pt:"encontrar", ru:"находить", ca:"trobar", ko:"발견하다", ar:"يجد", zh:"找到", ja:"見つける", ia:"trovar", la:"invenire", grc:"εὑρίσκειν" },
       { tema:"grammatica", livello:"A2", it:"tu ami", en:"you love", es:"amas", ia:"amas", la:"amas", grc:"φιλεῖς" },
-      { tema:"dialetti", livello:"A2", it:"tu eri", en:"you were", fr:"tu étais", es:"tú eras", de:"du warst", pt:"tu eras" },
+      { tema:"dialetti", livello:"A2", it:"tu eri", en:"you were", fr:"tu étais", es:"tú eras", de:"du warst", pt:"tu eras", mn:"të t'iei" },
       { tema:"dialetti", livello:"A1", it:"tu sei", en:"you are", fr:"tu es", es:"tú eres", de:"du bist", pt:"tu és", sp:"tèi", mn:"tèi", verif:"sp:g" },
       { tema:"natura", livello:"A2", it:"tuono", en:"thunder", fr:"tonnerre", es:"trueno", de:"Donner", pt:"trovão|trovao", ru:"гром", ca:"tro", sp:"tròn", mn:"trùn", ko:"천둥", ar:"رعد", zh:"雷", ja:"雷", ia:"tonitro", la:"tonitrus", grc:"βροντή", verif:"sp:g,mn:g" },
       { tema:"aggettivi", livello:"A2", it:"turbato", en:"upset", fr:"bouleversé", es:"disgustado", de:"aufgebracht", pt:"perturbado", ru:"расстроенный", ca:"disgustat", mn:"stürbà", verif:"mn:g" },
@@ -3718,7 +3718,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 390;
+const VOC_VERSION = 391;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
