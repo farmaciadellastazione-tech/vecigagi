@@ -1965,6 +1965,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"cibo", livello:"A2", it:"pagnotta", en:"loaf", sp:"mica", mn:"pan/pàn", ge:"micca", ro:"pâine" },
       { tema:"persone", livello:"A1", it:"ragazzo", en:"boy", sp:"fante, bardassòn", mn:"fante, bardassu", ge:"figgeu", ro:"băiat" },
       { tema:"persone", livello:"B1", it:"persona inaffidabile", en:"unreliable person", sp:"legéra ", mn:"legera/legéra ", verif:"sp:g,mn:g" },
       { tema:"verbi", livello:"B1", it:"godere", en:"enjoy", sp:"gòdeh/gòde", mn:"godé", verif:"mn:g,sp:g" },
@@ -2242,7 +2243,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A1", it:"bene", en:"well", fr:"bien", es:"bien", de:"gut", pt:"bem", ru:"хорошо", ca:"bé", sp:"ben", mn:"bën", ko:"잘", ar:"جيداً", zh:"好", ja:"よく", ia:"bon", la:"bene", grc:"καλῶς", verif:"mn:g" },
       { tema:"dialetti", it:"benessere", sp:"bon-èsse", ge:"ben-êse", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g", nt:["mn"] },
       { tema:"dialogo", livello:"B1", it:"benzina", en:"petrol", fr:"essence", es:"gasolina", de:"Benzin", pt:"gasolina", ru:"бензин", ca:"gasolina", nt:["sp","mn"] },
-      { tema:"verbi", livello:"A1", it:"bere", sp:"beve", mn:"beè/bëë", ro:"a bea", verif:"mn:g" },
+      { tema:"verbi", livello:"A1", it:"bere", en:"drink", sp:"beve", mn:"behe/bëë", ge:"beivve/beive", ro:"a bea", verif:"mn:g" },
       { it:"bianco", sp:"gianco", mn:"giancu", cr:"bianch", ro:"alb", verif:"mn:g,sp:g" },
       { tema:"aggettivi", livello:"A1", it:"bianco|bianca", en:"white", fr:"blanc", es:"blanco", de:"weiß", pt:"branco", ru:"белый", ca:"blanc", sp:"gianco|gianca", mn:"giancu|gianca", cr:"bianch", ko:"흰", ar:"أبيض", zh:"白色", ja:"白", ia:"blanc", la:"albus", grc:"λευκός", verif:"mn:g,sp:g" },
       { tema:"cibo", livello:"A1", it:"bibita", es:"bebida", pt:"bebida", mn:"menta", verif:"mn:g" },
@@ -2958,7 +2959,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"B1", it:"malmenare", en:"beat", ru:"избивать", sp:"tombae", mn:"tumbaa", verif:"sp:g,mn:g" },
       { it:"malva", sp:"marva", cr:"malva", verif:"sp:g" },
       { tema:"viaggi", livello:"B1", it:"Manarola", mn:"Manaèa", verif:"mn:g" },
-      { tema:"casa", livello:"A1", it:"mangiare", en:"eat", fr:"manger", es:"comer", de:"essen", pt:"comer", ru:"есть|кушать", ca:"menjar", sp:"mangiae", mn:"mangiaa", cr:"Maniàr", ko:"먹다", ar:"يأكل", zh:"吃", ja:"食べる", ia:"mangiar", ro:"a mânca", verif:"mn:g,sp:g" },
+      { tema:"casa", livello:"A1", it:"mangiare", en:"eat", fr:"manger", es:"comer", de:"essen", pt:"comer", ru:"есть|кушать", ca:"menjar", sp:"mangiae", mn:"mangiaa", cr:"Maniàr", ge:"mangia'a/mangiâ", ko:"먹다", ar:"يأكل", zh:"吃", ja:"食べる", ia:"mangiar", ro:"a mânca", verif:"mn:g,sp:g" },
       { tema:"cibo", livello:"A2", it:"mango", en:"mango", fr:"mangue", es:"mango", de:"Mango", pt:"manga", ru:"манго", ca:"mango", ko:"망고", ar:"مانجو", zh:"芒果", ja:"マンゴー", ia:"mango", ro:"mangou", nt:["sp"] },
       { tema:"vestiti", livello:"A2", it:"manica", en:"sleeve", fr:"manche", es:"manga", de:"Ärmel", pt:"manga", sp:"mànéga", mn:"mànéga", verif:"mn:g" },
       { it:"manico", sp:"màne'go/manego", cr:"manicot", verif:"sp:g" },
@@ -3492,7 +3493,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"arte", livello:"B1", it:"stucco e pittura fan bella figura", en:"plaster and painting look good", fr:"le plâtre et la peinture font bonne figure", es:"el yeso y la pintura tienen buena presencia", de:"Stuck und Malerei machen eine gute Figur", pt:"o gesso e a pintura têm boa aparência", ca:"l'estuc i la pintura fan bona figura", sp:"Stuco e pitùa fan bela fegùa", mn:"stucu e pittüa fan bela figüa", ge:"stucco e pittüa fan bèlla figüa", la:"gypsum et pictura habent bonam speciem", ro:"tencuiala și pictura arată bine", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"lavoro", livello:"A2", it:"studio", de:"Praxis", sp:"scàgno", ge:"scàgno", verif:"sp:g" },
       { tema:"verbi", livello:"A2", it:"succedere", en:"happen", fr:"arriver|se passer", es:"ocurrir|pasar", de:"passieren", pt:"acontecer", ru:"случаться", ca:"passar|succeir", sp:"sücede", verif:"sp:g" },
-      { tema:"cibo", livello:"A1", it:"succo", en:"juice", fr:"jus", es:"zumo|jugo", de:"Saft", pt:"suco|sumo", ru:"сок", ca:"suc", sp:"sügo", mn:"sügu", ro:"suc", verif:"mn:g" },
+      { tema:"cibo", livello:"A1", it:"succo", en:"juice", fr:"jus", es:"zumo|jugo", de:"Saft", pt:"suco|sumo", ru:"сок", ca:"suc", sp:"sügo", mn:"sügu", ge:"sugu/sugo", ro:"suc", verif:"mn:g" },
       { tema:"corpo", livello:"A2", it:"sudare", sp:"südae", mn:"südaa", ge:"süâ", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"corpo", livello:"A2", it:"sudore", sp:"südóe", mn:"suduu", cr:"sudor", ge:"süô", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"sugo di carne", en:"meat sauce", fr:"sauce de viande", es:"salsa de carne", de:"Fleischsoße", pt:"molho de carne", sp:"tóco", mn:"tucu", verif:"sp:g,mn:g" },
@@ -3719,7 +3720,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 392;
+const VOC_VERSION = 393;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
