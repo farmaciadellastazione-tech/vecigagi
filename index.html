@@ -2633,7 +2633,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", it:"domandare", sp:"domandae", ge:"domanda, dimanda", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"tempo", livello:"A1", it:"domani", en:"tomorrow", fr:"demain", es:"mañana", de:"morgen", pt:"amanhã|amanha", ru:"завтра", ca:"demà", mn:"duman", cr:"doman", ko:"내일", ar:"غداً", zh:"明天", ja:"明日", ia:"deman", la:"cras", grc:"αὔριον", ro:"mâine", verif:"mn:g" },
       { tema:"giorni", livello:"A1", it:"domenica", en:"Sunday", fr:"dimanche", es:"domingo", de:"Sonntag", pt:"domingo", ru:"воскресенье", ca:"diumenge", sp:"domeénega/domenega", mn:"duménega/dumenega", cr:"domenica", ko:"일요일", ar:"الأحد", zh:"星期日", ja:"日曜日", ia:"dominica", la:"dies Solis", grc:"Κυριακή", ro:"duminică", verif:"mn:g,sp:g" },
-      { tema:"famiglia", livello:"A1", it:"donna", en:"woman", fr:"femme", es:"mujer", de:"Frau", pt:"mulher", sp:"dòna", cr:"dona", ko:"여자", ar:"امرأة", zh:"女人", ja:"女性", ia:"femina", la:"femina", grc:"γυνή", verif:"sp:g" },
+      { tema:"famiglia", livello:"A1", it:"donna", en:"woman", fr:"femme", es:"mujer", de:"Frau", pt:"mulher", sp:"dòna", mn:"dona/dòna", cr:"dona", ge:"donna/dónna", ko:"여자", ar:"امرأة", zh:"女人", ja:"女性", ia:"femina", la:"femina", grc:"γυνή", verif:"sp:g,ge:g,mn:g", ro:"femeie" },
       { tema:"animali", it:"donnola", en:"weasel", sp:"bèloa", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialogo", livello:"A1", it:"dopo", en:"after", ru:"после", mn:"dopu", verif:"mn:g" },
       { tema:"istruzioni", livello:"A2", it:"dopo i pasti", en:"after meals", fr:"après les repas", es:"después de las comidas", de:"nach den Mahlzeiten", pt:"após as refeições|apos as refeicoes", ko:"식사 후", ar:"بعد الوجبات", zh:"饭后", ja:"食後", nt:["mn"] },
@@ -3720,7 +3720,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 393;
+const VOC_VERSION = 394;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
