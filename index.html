@@ -3052,7 +3052,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"comunicazione", livello:"A1", it:"non capisco", de:"ich verstehe nicht", sp:"a ne capisso", mn:"a nu capissu", ge:"nucapisciu/no accapiscio", ro:"nu înțeleg", verif:"mn:g" },
       { it:"non mi piace", sp:"ne me ciasa", mn:"nu me ciasa", ro:"nu-mi place", verif:"mn:g" },
       { tema:"famiglia", livello:"A1", it:"nonna", en:"grandmother", fr:"grand-mère", es:"abuela", de:"Oma|Großmutter", pt:"avó|avo", ru:"бабушка", ca:"àvia", sp:"nona", mn:"nona", cr:"nona", ge:"nona, madunaha /nònna, madonnâ", ko:"할머니", ar:"جدة", zh:"奶奶", ia:"avia", la:"avia", grc:"τήθη", ro:"bunică", verif:"mn:g,sp:g,ge:g" },
-      { tema:"famiglia", livello:"A1", it:"nonno", en:"grandfather", fr:"grand-père", es:"abuelo", de:"Großvater|Opa", pt:"avô|avo", ca:"avi", sp:"nono", mn:"nònu", cr:"Nono", ge:"nonnu, messiaavu/nònno, messiavo", ko:"할아버지", ar:"جد", zh:"祖父|爷爷", ja:"祖父", ia:"avo", la:"avus", grc:"πάππος", ro:"bunic", verif:"mn:g,sp:g" },
+      { tema:"famiglia", livello:"A1", it:"nonno", en:"grandfather", fr:"grand-père", es:"abuelo", de:"Großvater|Opa", pt:"avô|avo", ca:"avi", sp:"nono", mn:"nònu", cr:"Nono", ge:"nonnu, messiaavu, puegrande/nònno, messiavo, poæ grande", ko:"할아버지", ar:"جد", zh:"祖父|爷爷", ja:"祖父", ia:"avo", la:"avus", grc:"πάππος", ro:"bunic", verif:"mn:g,sp:g,ge:g" },
       { tema:"luoghi", livello:"A2", it:"nord", en:"north", fr:"nord", es:"norte", de:"Nord", pt:"norte", ru:"север", ca:"nord", nt:["sp"] },
       { tema:"aggettivi", livello:"B1", it:"nostalgia", en:"longing", fr:"nostalgie", es:"nostalgia", de:"Sehnsucht", pt:"saudade", ko:"그리움", ar:"حنين", zh:"思乡", ja:"郷愁", ia:"nostalgia" },
       { tema:"dialetti", livello:"A2", it:"notizia", en:"news", fr:"nouvelle", es:"noticia", de:"Nachricht", pt:"notícia|noticia", sp:"nèva", mn:"néva", verif:"mn:g" },
@@ -3720,7 +3720,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 397;
+const VOC_VERSION = 398;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
