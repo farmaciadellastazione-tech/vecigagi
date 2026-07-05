@@ -2752,7 +2752,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"fortuna", en:"luck", fr:"chance", es:"suerte", de:"Glück", pt:"sorte", ru:"удача|везение", ca:"sort", sp:"fortüna", mn:"furtüna", verif:"mn:g" },
       { tema:"sentimenti", livello:"A2", it:"fortunato", mn:"afortiünà| afurtünà", ge:"afortunòu| fortunòu", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"salute", livello:"B1", it:"foruncolo", en:"boil", fr:"furoncle", es:"forúnculo", de:"Furunkel", pt:"furúnculo|furunculo", ca:"floronco|furóncol", sp:"ciavèo", mn:"ciavée", verif:"mn:g" },
-      { tema:"natura", livello:"B1", it:"foschia|nebbiolina", mn:"négìn", verif:"mn:g" },
+      { tema:"natura", livello:"B1", it:"foschia|nebbiolina", en:"mist", sp:"garbin, calìgo", mn:"garbìn, caligu", ge:"fummegheha, caligu/fummeghea, calìgo", verif:"mn:g,sp:g" },
       { tema:"casa", livello:"B1", it:"fotocamera", en:"camera", fr:"appareil photo", es:"cámara", de:"Kamera", pt:"câmera|camera", ru:"камера", ca:"càmera", ko:"카메라", ar:"كاميرا", zh:"相机", ja:"カメラ", ia:"camera", nt:["mn"] },
       { tema:"casa", livello:"A2", it:"fotografia", en:"photo", fr:"photo", es:"foto", de:"Foto", pt:"fotografia", ko:"사진", ar:"صورة", zh:"照片", ja:"写真", ia:"photo", la:"imago", grc:"φωτογραφία", nt:["mn"] },
       { tema:"condizioni fisiche", livello:"B1", it:"fradicio,zuppo", sp:"s'go o, süpo/sgoo,süpo", verif:"sp:g" },
@@ -3720,7 +3720,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 394;
+const VOC_VERSION = 395;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
