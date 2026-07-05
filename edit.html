@@ -532,6 +532,13 @@ let hideNT = false;          // nasconde le voci marcate 🚫 intraducibili in u
 let currentPage = 1;
 let modifiedKeys = new Set();
 let newKeys = new Set();
+
+window.addEventListener('beforeunload', e => {
+  if (modifiedKeys.size + newKeys.size > 0 || frasiSPModificate) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
 let originalKeysByEntry = new Map();
 let sortKey = 'lang';
 let sortDir = 'asc';
