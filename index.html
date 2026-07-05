@@ -8284,8 +8284,14 @@ function Home({
     target: "_blank",
     rel: "noopener",
     title: "How it works",
-    className: "text-lg bg-zinc-900 hover:bg-zinc-800 p-2.5 rounded-xl transition flex items-center justify-center"
-  }, "\u2139\uFE0F"), /*#__PURE__*/React.createElement("button", {
+    className: "text-lg bg-zinc-900 hover:bg-zinc-800 p-2.5 rounded-xl transition flex items-center justify-center no-underline"
+  }, "\u2139\uFE0F"), /*#__PURE__*/React.createElement("a", {
+    href: "https://linguaequiz.com/dialetti.html",
+    target: "_blank",
+    rel: "noopener",
+    title: "Dialect dictionary",
+    className: "text-lg bg-zinc-900 hover:bg-zinc-800 p-2.5 rounded-xl transition flex items-center justify-center no-underline"
+  }, "\uD83D\uDDFA\uFE0F"), /*#__PURE__*/React.createElement("button", {
     onClick: onAggiungi,
     title: "Aggiungi parola",
     className: "text-lg bg-zinc-900 hover:bg-zinc-800 p-2.5 rounded-xl transition"
@@ -9042,7 +9048,8 @@ function Glossario({
 function Ricerca({
   vocabolario,
   lingue,
-  onIndietro
+  onIndietro,
+  onGiocaOra
 }) {
   const t = useUI();
   const [query, setQuery] = useState("");
@@ -9145,9 +9152,19 @@ function Ricerca({
   }, "Missing a translation or found an error?"), /*#__PURE__*/React.createElement("button", {
     onClick: segnalaEmail,
     className: "text-amber-600 hover:text-amber-400 text-xs underline"
-  }, "\u2709\uFE0F Suggest a correction"))), query.length < 2 && /*#__PURE__*/React.createElement("p", {
+  }, "\u2709\uFE0F Suggest a correction"), /*#__PURE__*/React.createElement("div", {
+    className: "pt-4"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onGiocaOra,
+    className: "bg-amber-500 hover:bg-amber-400 text-black font-bold px-6 py-3 rounded-xl transition"
+  }, "\uD83C\uDFAE Play the quiz")))), query.length < 2 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
     className: "text-center text-zinc-700 text-sm pt-8"
-  }, "Type at least 2 characters to search")));
+  }, "Type at least 2 characters to search"), /*#__PURE__*/React.createElement("div", {
+    className: "text-center pt-4"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onGiocaOra,
+    className: "bg-amber-500 hover:bg-amber-400 text-black font-bold px-6 py-3 rounded-xl transition"
+  }, "\uD83C\uDFAE Play the quiz")))));
 }
 function Statistiche({
   vocabolario,
@@ -11306,7 +11323,8 @@ function App() {
   if (schermata === "ricerca") return /*#__PURE__*/React.createElement(Ricerca, {
     vocabolario: vocabolario,
     lingue: lingue,
-    onIndietro: () => setSchermata("home")
+    onIndietro: () => setSchermata("home"),
+    onGiocaOra: () => scegli("quiz")
   });
   if (schermata === "statistiche") return /*#__PURE__*/React.createElement(Statistiche, {
     vocabolario: vocabolario,
