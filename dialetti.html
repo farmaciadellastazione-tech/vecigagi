@@ -120,6 +120,20 @@
     font-size: 12px;
     color: var(--muted);
   }
+  .header-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    font-size: 17px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .header-icon:hover { background: rgba(255,255,255,0.16); }
 
   /* Main */
   main {
@@ -994,6 +1008,7 @@
 <header>
   <div class="header-inner">
     <a href="https://linguaequiz.com/" class="logo" title="LinguaeQuiz — quiz sui dialetti liguri">🌍 Linguae<span>Quiz</span></a>
+    <a href="https://linguaequiz.com/#quiz" class="header-icon public-only" title="Gioca al quiz sui dialetti liguri">🎮</a>
     <span class="subtitle public-only">Contribuisci con il tuo dialetto</span>
     <span class="subtitle admin-only">Editor dialetti (admin)</span>
     <span class="admin-badge admin-only">🔒 ADMIN</span>
@@ -1005,8 +1020,8 @@
   <div class="intro public-only">
     <h1>Salva il tuo dialetto: Cinque Terre, La Spezia, Lunigiana ⚓</h1>
     <p>Aiutaci a preservare i dialetti delle <strong>Cinque Terre</strong> (manarolese), del <strong>Golfo della Spezia</strong> (spezzino) e della <strong>Lunigiana storica</strong> (carrarino), insieme al genovese e ad altri dialetti liguri. Scegli il tuo dialetto, cerca le parole italiane che conosci e inserisci la traduzione. Quando hai finito, clicca <strong>Invia contributi</strong> — le traduzioni verranno aggiunte al <a href="https://linguaequiz.com/" class="inline-link">vocabolario del quiz di LinguaeQuiz</a>.</p>
-    <p class="quiz-cta">📖 Cerchi solo <strong>come si dice una parola</strong>? <a id="glossario-link" href="https://linguaequiz.com/#glossario/sp">Consulta il glossario dei dialetti →</a></p>
-    <p class="quiz-cta">🎮 Vuoi <strong>imparare i dialetti giocando</strong>? <a href="https://linguaequiz.com/">Gioca al quiz sui dialetti liguri →</a></p>
+    <p class="quiz-cta">📖 Cerchi solo <strong>come si dice una parola</strong>? <a id="ricerca-link" href="https://linguaequiz.com/#ricerca/sp">Cerca nel dizionario →</a></p>
+    <p class="quiz-cta">🎮 Vuoi <strong>imparare i dialetti giocando</strong>? <a href="https://linguaequiz.com/#quiz">Gioca al quiz sui dialetti liguri →</a></p>
   </div>
 
   <div class="admin-help admin-only" id="admin-help">
@@ -3990,20 +4005,20 @@ function onAdminSpeakRow(btn) {
   adminSpeak(pron || graf);
 }
 
-// Aggiorna il link al glossario di index.html così si apre ordinato per il
-// dialetto attualmente selezionato (sp/mn/cr/ge). Per 'new'/'all' resta generico.
-function aggiornaGlossarioLink() {
-  const a = document.getElementById('glossario-link');
+// Aggiorna il link a Dictionary Search di index.html così si apre col
+// dialetto attualmente selezionato già attivo (sp/mn/cr/ge). Per 'new'/'all' resta generico.
+function aggiornaRicercaLink() {
+  const a = document.getElementById('ricerca-link');
   if (!a) return;
   const code = ['sp','mn','cr','ge'].includes(currentDialect) ? currentDialect : '';
-  a.href = 'https://linguaequiz.com/#glossario' + (code ? '/' + code : '');
+  a.href = 'https://linguaequiz.com/#ricerca' + (code ? '/' + code : '');
 }
 
 function setDialect(d, el) {
   currentDialect = d;
   document.querySelectorAll('#dialect-chips .chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
-  aggiornaGlossarioLink();
+  aggiornaRicercaLink();
   document.getElementById('custom-dialect-box').classList.toggle('visible', d === 'new');
   // In modalità admin non resettiamo contributions/modifiche: l'admin lavora direttamente su adminVoc
   if (!ADMIN) contributions = {};
@@ -4609,7 +4624,7 @@ if (ADMIN) {
   renderTable();
   updateProgress();
   updateStats();
-  aggiornaGlossarioLink();
+  aggiornaRicercaLink();
 }
 </script>
 </body>
