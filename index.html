@@ -1965,6 +1965,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"pronome", livello:"A1", it:"voi", en:"you", sp:"voiaotri, voi", mn:"vàutri", ge:"viatri|voiatri", ro:"voi" },
       { tema:"cibo", livello:"A1", it:"menù", en:"menu", sp:"menù", mn:"menù", ge:"menù", ro:"meniu", verif:"mn:g,sp:g,ge:g" },
       { tema:"pronome", livello:"A1", it:"noi", en:"we", sp:"noi, noiàotri", mn:"nuautri", ge:" gniatri/niatri", ro:"noi" },
       { tema:"cibo", livello:"A2", it:"pagnotta", en:"loaf", sp:"mica", mn:"pan/pàn", ge:"micca", ro:"pâine" },
@@ -3667,7 +3668,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"B1", it:"vivace", en:"lively", fr:"animé|vivant", es:"animado|vivaz", de:"lebhaft", pt:"animado|vivo", ru:"живой|оживлённый", ca:"viu|animat" },
       { tema:"salute", livello:"A1", it:"vivere", en:"live", fr:"vivre", es:"vivir", de:"leben", pt:"viver", ru:"жить", ca:"viure", sp:"vive", mn:"vive", ko:"살다", ar:"يعيش", zh:"生活", ja:"生きる", ia:"viver", la:"vivere", grc:"ζῆν", verif:"sp:g,mn:g" },
       { tema:"dialetti", livello:"A2", it:"viziare", mn:"visciiaa/vìsciaa", verif:"mn:g" },
-      { tema:"comunicazione", livello:"A1", it:"voce", en:"voice", ru:"голос", sp:"góse", mn:"gusa/guza", ge:"voxe", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"comunicazione", livello:"A1", it:"voce", en:"voice", ru:"голос", sp:"góse", mn:"gusa/guza", ge:"voxe", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"voce" },
       { tema:"fisica", livello:"B1", it:"vogata", en:"rowing", fr:"ramee", es:"remada", de:"Rudern", pt:"remada", ca:"remada", sp:"vega", mn:"vugà", ge:"vogâ", ia:"remada", la:"remigatio", ro:"vâslire", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"grammatica", livello:"A2", it:"voi amate", la:"amatis", grc:"φιλεῖτε" },
       { tema:"viaggi", livello:"A1", it:"voi partite", mn:"vautri a partii", verif:"mn:g" },
@@ -3722,7 +3723,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 399;
+const VOC_VERSION = 400;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
