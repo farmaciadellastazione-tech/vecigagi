@@ -1965,6 +1965,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"cibo", livello:"A1", it:"menù", en:"menu", sp:"menù", mn:"menù", ge:"menù", ro:"meniu", verif:"mn:g,sp:g,ge:g" },
+      { tema:"pronome", livello:"A1", it:"noi", en:"we", sp:"noi, noiàotri", mn:"nuautri", ge:" gniatri/niatri", ro:"noi" },
       { tema:"cibo", livello:"A2", it:"pagnotta", en:"loaf", sp:"mica", mn:"pan/pàn", ge:"micca", ro:"pâine" },
       { tema:"persone", livello:"A1", it:"ragazzo", en:"boy", sp:"fante, bardassòn", mn:"fante, bardassu", ge:"figgeu", ro:"băiat" },
       { tema:"persone", livello:"B1", it:"persona inaffidabile", en:"unreliable person", sp:"legéra ", mn:"legera/legéra ", verif:"sp:g,mn:g" },
@@ -2981,7 +2983,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A1", it:"mela", en:"apple", fr:"pomme", es:"manzana", de:"Apfel", pt:"maçã|maca", ru:"яблоко", ca:"poma", sp:"pomo", mn:"puùmu/pumu", ge:"mei, meia", ko:"사과", ar:"تفاحة", zh:"苹果", ja:"りんご", ia:"pomo", la:"malum", grc:"μῆλον", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g", ro:"măr" },
       { tema:"cibo", livello:"A2", it:"melanzana", en:"aubergine", fr:"aubergine", es:"berenjena", de:"Aubergine", pt:"berinjela", ru:"баклажан", ca:"albergínia", sp:"meinzàna", mn:"méénzana", cr:"M'rlinzàna", ge:"meizana", ko:"가지", ar:"باذنجان", zh:"茄子", ia:"melongena", ro:"vânătă", verif:"mn:g" },
       { tema:"dialogo", livello:"A2", it:"memoria", en:"memory", fr:"mémoire", es:"memoria", de:"Gedächtnis", pt:"memória|memoria", ru:"память", ca:"memòria", sp:"memoia", ko:"기억", ar:"ذاكرة", zh:"记忆", ja:"記憶", ia:"memoria", la:"memoria", grc:"μνήμη", verif:"sp:g" },
-      { tema:"dialogo", livello:"A1", it:"meno", mn:"ménu", verif:"mn:g" },
+      { tema:"dialogo", livello:"A1", it:"meno", mn:"ménu", verif:"mn:g", ro:"mai" },
       { tema:"luoghi", livello:"B1", it:"mensa", en:"canteen", fr:"cantine", es:"cantina", de:"Kantine", pt:"cantina", ru:"столовая", ca:"cantina", sp:"toa", verif:"sp:g" },
       { tema:"dialogo", livello:"A2", it:"mentre", en:"while", fr:"pendant que|tandis que", es:"mientras", de:"während", pt:"enquanto", ru:"пока", ca:"mentre", sp:" e'n mentre/enmentre", verif:"sp:g" },
       { tema:"aggettivi", livello:"A2", it:"meraviglioso", en:"wonderful", fr:"merveilleux", es:"maravilloso", de:"wunderbar", pt:"maravilhoso", ru:"чудесный", ca:"meravellós", sp:"maavigioso", verif:"sp:g" },
@@ -3048,7 +3050,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"viaggi", livello:"A2", it:"no, scendo più in là", en:"no, I'll get off further down", fr:"non, je descends plus loin", es:"no, bajo más abajo", de:"nein, ich steige weiter unten aus", pt:"não, desço mais adiante", ca:"no, baixo més avall", sp:"no, a chino ciü en là", mn:"no , a chinu ciü en là/nu, a chinu ciü en là", ia:"no, me descende plus in basso", ro:"nu, cobor mai jos", verif:"mn:g" },
       { it:"noce (frutto)", sp:"n'óse/nóse", cr:"nósa/noza", verif:"sp:g" },
       { tema:"grammatica", livello:"A2", it:"noi amiamo", la:"amamus", grc:"φιλοῦμεν" },
-      { tema:"verbi", livello:"A1", it:"noi diciamo", sp:"noiaötri a disému/noiaötri a dizémo", mn:"nuautri a disému/nuautri a dizému", verif:"mn:g" },
+      { tema:"verbi", livello:"A1", it:"noi diciamo", sp:"noiaötri a disémo/noiaötri a dizémo", mn:"nuautri a disému/nuautri a dizému", verif:"mn:g" },
       { tema:"comunicazione", livello:"A1", it:"non capisco", de:"ich verstehe nicht", sp:"a ne capisso", mn:"a nu capissu", ge:"nucapisciu/no accapiscio", ro:"nu înțeleg", verif:"mn:g" },
       { it:"non mi piace", sp:"ne me ciasa", mn:"nu me ciasa", ro:"nu-mi place", verif:"mn:g" },
       { tema:"famiglia", livello:"A1", it:"nonna", en:"grandmother", fr:"grand-mère", es:"abuela", de:"Oma|Großmutter", pt:"avó|avo", ru:"бабушка", ca:"àvia", sp:"nona", mn:"nona", cr:"nona", ge:"nona, madunaha /nònna, madonnâ", ko:"할머니", ar:"جدة", zh:"奶奶", ia:"avia", la:"avia", grc:"τήθη", ro:"bunică", verif:"mn:g,sp:g,ge:g" },
@@ -3720,7 +3722,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 398;
+const VOC_VERSION = 399;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
