@@ -2918,7 +2918,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A1", it:"latte", en:"milk", sp:"láte", mn:"late", ge:"laete", ro:"lapte", verif:"mn:g,sp:g,ge:g" },
       { tema:"verbi", livello:"A1", it:"lavare", en:"wash", fr:"laver", es:"lavar", de:"waschen", pt:"lavar", ru:"мыть", ca:"rentar", sp:"lavahe/lavae", verif:"sp:g" },
       { tema:"verbi", it:"lavorare", en:"work", sp:"travagiaae, lavoaae/travagiae, lavoaelavoae", mn:"travagia'a/travagiàa", cr:"lavorar", ro:"a lucra", verif:"sp:g,mn:g" },
-      { tema:"verbi", livello:"A2", it:"lavorare/lavoro", en:"work", fr:"travailler", es:"trabajar", de:"arbeiten", pt:"trabalhar", ru:"работать", ca:"treballar", sp:"travagiaae/travagiae| lavoae,travagiae", mn:"travagiaa/travagiaa", ko:"일하다", ar:"يعمل", zh:"工作", ja:"働く", ia:"laborar", verif:"sp:g,mn:g" },
+      { tema:"verbi", livello:"A2", it:"lavorare|lavoro", en:"work", fr:"travailler", es:"trabajar", de:"arbeiten", pt:"trabalhar", ru:"работать", ca:"treballar", sp:"travagiaae/travagiae| lavoae,travagiae", mn:"travagiaa/travagiaa", ko:"일하다", ar:"يعمل", zh:"工作", ja:"働く", ia:"laborar", verif:"sp:g,mn:g" },
       { tema:"mestieri", livello:"A2", it:"lavoro", en:"work", fr:"travail", es:"trabajo", de:"Arbeit", pt:"trabalho", sp:"travagio, lavòo", mn:"travagiu", ko:"일", ar:"عمل", zh:"工作", ja:"仕事", ia:"labor", la:"labor", grc:"ἐργασία", verif:"sp:g,mn:g" },
       { tema:"aggettivi", livello:"B1", it:"legge", en:"law", fr:"loi", es:"ley", de:"Gesetz", pt:"lei", sp:"lège", ko:"법", ar:"قانون", zh:"法律", ja:"法", ia:"lege", la:"lex", grc:"νόμος", verif:"sp:g" },
       { tema:"verbi", livello:"A2", it:"leggere", en:"read", fr:"lire", es:"leer", de:"lesen", pt:"ler", ru:"читать", ca:"llegir", sp:"lèze, lèże", mn:"lèze", ge:"lèzze/lezze", ko:"읽다", ar:"يقرأ", zh:"读", ja:"読む", ia:"leger", la:"legere", grc:"ἀναγιγνώσκειν", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
@@ -3694,7 +3694,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"zero", en:"zero", fr:"zéro", es:"cero", de:"null", pt:"zero", sp:"zeo/zèo", mn:"zeeuu/zëu", ko:"영", ar:"صفر", zh:"零", ja:"ゼロ", ia:"zero", la:"nihil", grc:"μηδέν", verif:"sp:g,mn:g" },
       { tema:"famiglia", livello:"A2", it:"zia", en:"aunt", fr:"tante", es:"tía", de:"Tante", pt:"tia", ru:"тётя", ca:"tia", sp:"làla, séa  |séa/làla|séa", mn:"seia|làla", cr:"zia", ge:"seia", ko:"이모", ar:"عمة", ia:"tante", la:"amita", grc:"θεία", verif:"mn:g,sp:g" },
       { tema:"dialetti", livello:"A2", it:"zibibbo", sp:"zebìbo", mn:"zebìbu", verif:"mn:g" },
-      { tema:"corpo", livello:"B1", it:"zigomo", en:"cheekbone", fr:"pommette", es:"pómulo", de:"Wangenknochen", pt:"maçã do rosto|maca do rosto", sp:"pométi", mn:"pumétu", ia:"zygoma", verif:"mn:g" },
+      { tema:"corpo", livello:"B1", it:"zigomo", en:"cheekbone", fr:"pommette", es:"pómulo", de:"Wangenknochen", pt:"maçã do rosto|maca do rosto", sp:"pométo", mn:"pumétu", ia:"zygoma", verif:"mn:g,sp:g" },
       { tema:"dialetti", livello:"A2", it:"zimbello", mn:"zinbelu/zinbèlu", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"zinco", mn:"zingu", verif:"mn:g" },
       { tema:"famiglia", livello:"A1", it:"zio", en:"uncle", fr:"oncle", es:"tío", de:"Onkel", pt:"tio", ru:"дядя", ca:"oncle", sp:"dzìo/sio|barba", mn:"bàrba", ge:"bàrba", ko:"삼촌", ar:"عم", zh:"叔叔", ja:"叔父", ia:"oncle", la:"patruus", grc:"θεῖος", verif:"sp:g,mn:g" },
@@ -3723,7 +3723,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 400;
+const VOC_VERSION = 401;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
