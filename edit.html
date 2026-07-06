@@ -319,6 +319,7 @@
   <button class="btn btn-secondary" onclick="scaricaCopia()" title="Scarica index.html localmente">💾 Scarica</button>
   <button class="btn btn-secondary" onclick="reimpostaToken()" title="Cambia token GitHub">🔑</button>
   <span class="stats" id="footer-stats"></span>
+  <span id="draft-indicator" style="color:var(--muted); font-size:0.8rem"></span>
 </div>
 
 <!-- Modal config AI -->
@@ -539,6 +540,69 @@ window.addEventListener('beforeunload', e => {
     e.returnValue = '';
   }
 });
+
+// ==========================================================================
+// BOZZA LOCALE (autosave in localStorage, per non perdere il lavoro in caso
+// di chiusura/refresh/crash accidentale prima del salvataggio su GitHub)
+// ==========================================================================
+const DRAFT_LS = 'lq_edit_draft_v1';
+let draftSaveTimer = null;
+
+function salvaBozzaLocale() {
+  clearTimeout(draftSaveTimer);
+  draftSaveTimer = setTimeout(() => {
+    if (modifiedKeys.size + newKeys.size === 0 && !frasiSPModificate) return;
+    try {
+      localStorage.setItem(DRAFT_LS, JSON.stringify({
+        savedAt: Date.now(),
+        vocabolario,
+        modifiedKeys: [...modifiedKeys],
+        newKeys: [...newKeys],
+        frasiSP,
+        frasiSPModificate
+      }));
+      mostraIndicatoreBozza();
+    } catch (_) {} // localStorage pieno o non disponibile: il beforeunload resta comunque attivo
+  }, 1500);
+}
+
+function mostraIndicatoreBozza() {
+  const el = document.getElementById('draft-indicator');
+  if (!el) return;
+  const ora = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+  el.textContent = `· bozza salvata alle ${ora}`;
+}
+
+function leggiBozzaLocale() {
+  try {
+    const raw = localStorage.getItem(DRAFT_LS);
+    if (!raw) return null;
+    const b = JSON.parse(raw);
+    if (!b || !Array.isArray(b.vocabolario) || !Array.isArray(b.modifiedKeys) || !Array.isArray(b.newKeys)) return null;
+    return b;
+  } catch (_) { return null; }
+}
+
+// Chiamata subito dopo aver caricato vocabolario/frasiSP freschi da GitHub:
+// se esiste una bozza locale con modifiche non salvate, propone di ripristinarla.
+// Ritorna il numero di modifiche ripristinate (0 se nessuna bozza o rifiutata).
+function provaRipristinoBozza() {
+  const bozza = leggiBozzaLocale();
+  if (!bozza || (bozza.modifiedKeys.length + bozza.newKeys.length === 0 && !bozza.frasiSPModificate)) return 0;
+  const data = new Date(bozza.savedAt).toLocaleString('it-IT');
+  const n = bozza.modifiedKeys.length + bozza.newKeys.length;
+  if (confirm(`Trovate ${n} modifiche non salvate del ${data} (sessione precedente interrotta).\nVuoi ripristinarle?`)) {
+    vocabolario = bozza.vocabolario;
+    modifiedKeys = new Set(bozza.modifiedKeys);
+    newKeys = new Set(bozza.newKeys);
+    if (Array.isArray(bozza.frasiSP)) frasiSP = bozza.frasiSP;
+    frasiSPModificate = !!bozza.frasiSPModificate;
+    return n;
+  }
+  localStorage.removeItem(DRAFT_LS);
+  return 0;
+}
+
 let originalKeysByEntry = new Map();
 let sortKey = 'lang';
 let sortDir = 'asc';
@@ -765,11 +829,14 @@ async function caricaIndexDaGitHub() {
     frasiSPModificate = false;
     originalKeysByEntry.clear();
     vocabolario.forEach(v => originalKeysByEntry.set(rowKey(v), new Set(Object.keys(v))));
+    const nRipristinate = provaRipristinoBozza();
     popolaTemiSelect();
     renderLangBadges();
     mostraBannerDialetto();
     aggiornaCharBar();
-    setHelp(`✅ Caricate <strong>${vocabolario.length}</strong> voci. Modifica i campi e clicca <strong>☁️ Salva su GitHub</strong> quando hai finito.`, 'success');
+    setHelp(nRipristinate
+      ? `♻️ Caricate <strong>${vocabolario.length}</strong> voci, ripristinate <strong>${nRipristinate}</strong> modifiche non salvate della sessione precedente.`
+      : `✅ Caricate <strong>${vocabolario.length}</strong> voci. Modifica i campi e clicca <strong>☁️ Salva su GitHub</strong> quando hai finito.`, 'success');
     render();
   } catch (err) {
     console.error(err);
@@ -1263,6 +1330,7 @@ function render() {
   document.getElementById('stats').innerHTML = `<strong>${tot}</strong> voci · <span class="badge-empty badge">${totVuote}</span> da tradurre in ${info0 ? info0.name : lang0}`;
   document.getElementById('footer-stats').innerHTML = modCount ? `<span class="badge">${modCount}</span> modifiche non salvate` : '<em>nessuna modifica</em>';
   renderPagination(filtrate.length, totalPages);
+  salvaBozzaLocale();
 }
 
 function ensureDatalists() {
@@ -1324,6 +1392,7 @@ function onCellEdit(tr, voce, input) {
   }
   const modCount = modifiedKeys.size + newKeys.size;
   document.getElementById('footer-stats').innerHTML = modCount ? `<span class="badge">${modCount}</span> modifiche non salvate` : '<em>nessuna modifica</em>';
+  salvaBozzaLocale();
 }
 
 async function aggiungiVoce() {
@@ -2426,6 +2495,8 @@ async function salvaSuGitHub() {
       }
     }
     modifiedKeys.clear(); newKeys.clear(); frasiSPModificate = false; success = true;
+    try { localStorage.removeItem(DRAFT_LS); } catch (_) {}
+    const indDraft = document.getElementById('draft-indicator'); if (indDraft) indDraft.textContent = '';
     btn.textContent = '✅ Salvato!'; setHelp('✅ Salvataggio riuscito! GitHub Pages aggiornerà tra 1-2 min.', 'success');
     setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 3000); render();
   } catch(err) { console.error('[GH]', err); alert('Errore:\n\n' + err.message); }
