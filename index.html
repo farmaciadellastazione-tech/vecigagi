@@ -10037,28 +10037,41 @@ Reply in ${userLangName}.`;
 // un'estensione futura, non fanno parte di questa prima versione.
 function SchermataLetturaGuidata({
   lingue,
+  aiSettings,
   onHome
 }) {
   const [storiaSel, setStoriaSel] = useState(null);
   const [idxFrase, setIdxFrase] = useState(0);
   const [showTrad, setShowTrad] = useState(false);
+  const [parolaSel, setParolaSel] = useState(null);
+  const [statoSpiega, setStatoSpiega] = useState("idle"); // idle | loading | risposta
+  const [spiegazione, setSpiegazione] = useState("");
+  const hasKey = (aiSettings?.apiKey || "").length > 10;
   const lingueAttive = lingue.filter(l => l.attiva);
   const storieDisponibili = STORIE_DEFAULT.filter(s => lingueAttive.some(l => l.codice === s.lingua));
+  function resetSpiega() {
+    setParolaSel(null);
+    setStatoSpiega("idle");
+    setSpiegazione("");
+  }
   function scegliStoria(s) {
     setStoriaSel(s);
     setIdxFrase(0);
     setShowTrad(false);
+    resetSpiega();
   }
   function tornaLista() {
     setStoriaSel(null);
     setIdxFrase(0);
     setShowTrad(false);
+    resetSpiega();
   }
   function vai(delta) {
     const next = idxFrase + delta;
     if (!storiaSel || next < 0 || next >= storiaSel.frasi.length) return;
     setIdxFrase(next);
     setShowTrad(false);
+    resetSpiega();
   }
   function badgeFonte(s) {
     const isAI = s.fonte?.generato === "ai";
@@ -10109,6 +10122,29 @@ function SchermataLetturaGuidata({
   const frase = storiaSel.frasi[idxFrase];
   const lng = lingue.find(l => l.codice === storiaSel.lingua);
   const isUltima = idxFrase === storiaSel.frasi.length - 1;
+  const testoDisplay = formaDisplay(frase.testo, storiaSel.lingua);
+  const parole = testoDisplay.split(" ");
+  async function spiegaParola(tokenGrezzo) {
+    const parola = tokenGrezzo.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "");
+    if (!parola) return;
+    if (!hasKey) {
+      alert("Inserisci una chiave API nelle impostazioni \ud83e\udd16\nGemini \u00e8 gratuito: ai.google.dev");
+      return;
+    }
+    setParolaSel(parola);
+    setStatoSpiega("loading");
+    setSpiegazione("");
+    const langName = lng?.nome || storiaSel.lingua;
+    const system = "Sei un insegnante di lingue conciso. Rispondi SOLO in italiano, massimo 2-3 frasi brevi, senza markdown.";
+    const user = `Frase in ${langName}: "${testoDisplay}"\nParola cliccata: "${parola}"\nSpiega cosa significa in questo contesto e, se utile, una breve nota grammaticale o d'uso.`;
+    try {
+      const r = await callAI(system, user, aiSettings);
+      setSpiegazione(r);
+    } catch (e) {
+      setSpiegazione("Errore. Riprova.");
+    }
+    setStatoSpiega("risposta");
+  }
   return React.createElement("div", {
     className: "min-h-screen bg-black flex flex-col p-4",
     style: { paddingBottom: "80px" }
@@ -10136,16 +10172,39 @@ function SchermataLetturaGuidata({
     className: "flex-1 card p-6 flex flex-col items-center justify-center text-center cursor-pointer select-none"
   }, React.createElement("p", {
     className: "text-2xl font-bold text-white leading-relaxed mb-4"
-  }, formaDisplay(frase.testo, storiaSel.lingua)), lng && React.createElement(BtnAudio, {
+  }, parole.map((tok, i) => {
+    const pulita = tok.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "");
+    const isSel = statoSpiega !== "idle" && parolaSel === pulita;
+    return React.createElement(React.Fragment, {
+      key: i
+    }, React.createElement("span", {
+      onClick: e => { e.stopPropagation(); spiegaParola(tok); },
+      className: `cursor-pointer rounded transition ${isSel ? "bg-sky-900/60 text-sky-300" : "hover:bg-zinc-800"}`
+    }, tok), i < parole.length - 1 ? " " : null);
+  })), React.createElement("div", {
+    onClick: e => e.stopPropagation()
+  }, lng && React.createElement(BtnAudio, {
     testo: formaTTS(frase.testo),
     bcp47: lng.bcp47,
     codice: lng.codice,
     size: "text-2xl"
-  }), React.createElement("p", {
+  })), (statoSpiega === "loading" || statoSpiega === "risposta") && React.createElement("div", {
+    onClick: e => e.stopPropagation(),
+    className: "bg-zinc-900 border border-zinc-700 rounded-xl p-3 mt-3 text-left w-full"
+  }, React.createElement("p", {
+    className: "text-xs text-sky-400 font-bold mb-1"
+  }, "\ud83e\udd16 ", parolaSel), statoSpiega === "loading" ? React.createElement("p", {
+    className: "text-sm text-zinc-500 animate-pulse"
+  }, "Un momento...") : React.createElement(React.Fragment, null, React.createElement("p", {
+    className: "text-sm text-slate-300 leading-relaxed whitespace-pre-wrap"
+  }, spiegazione), React.createElement("button", {
+    onClick: e => { e.stopPropagation(); resetSpiega(); },
+    className: "text-xs text-zinc-500 hover:text-zinc-400 transition mt-2"
+  }, "\u2715 Chiudi"))), React.createElement("p", {
     className: `text-base text-amber-300 mt-4 transition ${showTrad ? "opacity-100" : "opacity-0"}`
   }, showTrad ? frase.it : "\u00a0"), !showTrad && React.createElement("p", {
     className: "text-xs text-zinc-600 mt-2"
-  }, "Tocca per la traduzione")), React.createElement("div", {
+  }, "Tocca la card per la traduzione, una parola per la spiegazione")), React.createElement("div", {
     className: "flex gap-2 mt-4"
   }, React.createElement("button", {
     onClick: () => vai(-1),
@@ -11435,6 +11494,7 @@ function App() {
   });
   if (schermata === "letturaGuidata") return /*#__PURE__*/React.createElement(SchermataLetturaGuidata, {
     lingue: lingue,
+    aiSettings: aiSettings,
     onHome: () => setSchermata("home")
   });
   if (schermata === "impostazioniAI") return /*#__PURE__*/React.createElement(ImpostazioniAI, {
