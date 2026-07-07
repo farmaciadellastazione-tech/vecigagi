@@ -3722,6 +3722,7 @@ const SK_RECORD_PERC = "qml_v10_record_perc";
 const SK_STREAK = "qml_v10_streak"; // {lastDay: timestamp, count: n}
 const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
+const SK_CANDIDATI_LG = "qml_v1_candidati_lg"; // parole spiegate dall'AI in Lettura guidata, assenti dal vocabolario — in attesa di revisione
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
 const VOC_VERSION = 400;
@@ -10031,10 +10032,9 @@ Reply in ${userLangName}.`;
     className: "flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2.5 rounded-xl text-sm transition btn-shadow"
   }, "Nuova \u2192"))));
 }
-// Modalit\u00e0 "Lettura guidata": storie brevi (STORIE_DEFAULT, vedi storie.js) navigabili
-// frase per frase. Tap sulla card = mostra/nasconde la traduzione; bottoni = avanti/indietro.
-// Nessuna chiamata AI qui: domande di comprensione e spiegazioni parola-per-parola sono
-// un'estensione futura, non fanno parte di questa prima versione.
+// Modalità "Lettura guidata": storie brevi (STORIE_DEFAULT, vedi storie.js) navigabili
+// frase per frase. Tap sulla card = mostra/nasconde la traduzione; tap su una parola =
+// spiegazione (dal vocabolario se già presente, altrimenti dall'AI come fallback).
 // Cerca `parola` (già normalizzata/pulita) tra i sinonimi di una voce del vocabolario
 // per il codice lingua dato. "/" = sinonimi per le lingue non-dialettali (vedi CLAUDE.md).
 function trovaInVocabolario(parola, codice, vocabolario) {
@@ -10060,6 +10060,8 @@ function SchermataLetturaGuidata({
   const [statoSpiega, setStatoSpiega] = useState("idle"); // idle | loading | risposta
   const [fonteSpiega, setFonteSpiega] = useState("ai"); // "vocabolario" | "ai"
   const [spiegazione, setSpiegazione] = useState("");
+  const [candidatiLG, setCandidatiLG] = useState(() => loadJSON(SK_CANDIDATI_LG, []));
+  const [candidatiAperti, setCandidatiAperti] = useState(false);
   const hasKey = (aiSettings?.apiKey || "").length > 10;
   const lingueAttive = lingue.filter(l => l.attiva);
   const storieDisponibili = STORIE_DEFAULT.filter(s => lingueAttive.some(l => l.codice === s.lingua));
@@ -10067,6 +10069,26 @@ function SchermataLetturaGuidata({
     setParolaSel(null);
     setStatoSpiega("idle");
     setSpiegazione("");
+  }
+  // Salva una parola spiegata dall'AI (assente dal vocabolario) come candidato in
+  // attesa di revisione manuale. Dedup per parola normalizzata + lingua.
+  function aggiungiCandidato(c) {
+    setCandidatiLG(prev => {
+      const chiave = normalizza(c.parola) + "|" + c.lingua;
+      if (prev.some(p => normalizza(p.parola) + "|" + p.lingua === chiave)) return prev;
+      const next = [...prev, c];
+      saveJSON(SK_CANDIDATI_LG, next);
+      return next;
+    });
+  }
+  function svuotaCandidati() {
+    if (!confirm(`Svuotare i ${candidatiLG.length} candidati salvati in questo browser?`)) return;
+    setCandidatiLG([]);
+    saveJSON(SK_CANDIDATI_LG, []);
+  }
+  function copiaCandidati() {
+    const testo = JSON.stringify(candidatiLG.map(c => ({ tema: c.tema, it: c.it, [c.lingua]: c.parola })), null, 2);
+    navigator.clipboard?.writeText(testo).then(() => alert(`Copiati ${candidatiLG.length} candidati negli appunti.`)).catch(() => alert(testo));
   }
   function scegliStoria(s) {
     setStoriaSel(s);
@@ -10131,7 +10153,24 @@ function SchermataLetturaGuidata({
       }, s.livello)), React.createElement("p", {
         className: "text-sm text-slate-400 mb-2"
       }, s.titolo.it), badgeFonte(s));
-    }))));
+    })), candidatiLG.length > 0 && React.createElement("div", {
+      className: "mt-6"
+    }, React.createElement("button", {
+      onClick: () => setCandidatiAperti(v => !v),
+      className: "text-xs text-zinc-500 hover:text-zinc-400 transition"
+    }, `🧾 ${candidatiLG.length} candidat${candidatiLG.length === 1 ? "o" : "i"} da revisionare ${candidatiAperti ? "▲" : "▼"}`), candidatiAperti && React.createElement("div", {
+      className: "card p-4 mt-2"
+    }, React.createElement("ul", {
+      className: "text-xs text-slate-400 space-y-1 mb-3 max-h-48 overflow-y-auto"
+    }, candidatiLG.map((c, i) => React.createElement("li", { key: i }, `${c.parola} (${c.lingua}) → ${c.it}`))), React.createElement("div", {
+      className: "flex gap-2"
+    }, React.createElement("button", {
+      onClick: copiaCandidati,
+      className: "flex-1 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold py-2 rounded-lg transition"
+    }, "📋 Copia JSON"), React.createElement("button", {
+      onClick: svuotaCandidati,
+      className: "flex-1 bg-zinc-900 border border-zinc-700 text-red-400 text-xs font-bold py-2 rounded-lg transition hover:border-red-600"
+    }, "🗑 Svuota"))))));
   }
   const frase = storiaSel.frasi[idxFrase];
   const lng = lingue.find(l => l.codice === storiaSel.lingua);
@@ -10159,11 +10198,32 @@ function SchermataLetturaGuidata({
     setStatoSpiega("loading");
     setSpiegazione("");
     const langName = lng?.nome || storiaSel.lingua;
-    const system = "Sei un insegnante di lingue conciso. Rispondi SOLO in italiano, massimo 2-3 frasi brevi, senza markdown.";
-    const user = `Frase in ${langName}: "${testoDisplay}"\nParola cliccata: "${parola}"\nSpiega cosa significa in questo contesto e, se utile, una breve nota grammaticale o d'uso.`;
+    const system = `Sei un insegnante di lingue conciso. Rispondi con UN SOLO oggetto JSON (niente markdown, niente altro testo).
+Forma: {"spiegazione": string, "traduzione": string}
+- spiegazione: cosa significa la parola in questo contesto e, se utile, una breve nota grammaticale o d'uso. SOLO in italiano, massimo 2-3 frasi brevi.
+- traduzione: la sola traduzione italiana della parola isolata (1-3 parole, senza spiegazioni).`;
+    const user = `Frase in ${langName}: "${testoDisplay}"\nParola cliccata: "${parola}"`;
     try {
-      const r = await callAI(system, user, aiSettings);
-      setSpiegazione(r);
+      const raw = await callAI(system, user, aiSettings);
+      const clean = raw.replace(/```json|```/g, "").trim();
+      const jsonMatch = clean.match(/\{[\s\S]*\}/);
+      const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : null;
+      if (parsed && parsed.spiegazione) {
+        setSpiegazione(parsed.spiegazione);
+        if (parsed.traduzione) {
+          aggiungiCandidato({
+            parola,
+            lingua: storiaSel.lingua,
+            it: parsed.traduzione.trim(),
+            tema: storiaSel.tema,
+            frase: testoDisplay,
+            storiaId: storiaSel.id,
+            data: new Date().toISOString()
+          });
+        }
+      } else {
+        setSpiegazione(clean.slice(0, 300));
+      }
     } catch (e) {
       setSpiegazione("Errore. Riprova.");
     }
