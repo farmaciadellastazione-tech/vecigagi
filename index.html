@@ -10035,8 +10035,21 @@ Reply in ${userLangName}.`;
 // frase per frase. Tap sulla card = mostra/nasconde la traduzione; bottoni = avanti/indietro.
 // Nessuna chiamata AI qui: domande di comprensione e spiegazioni parola-per-parola sono
 // un'estensione futura, non fanno parte di questa prima versione.
+// Cerca `parola` (già normalizzata/pulita) tra i sinonimi di una voce del vocabolario
+// per il codice lingua dato. "/" = sinonimi per le lingue non-dialettali (vedi CLAUDE.md).
+function trovaInVocabolario(parola, codice, vocabolario) {
+  const target = normalizza(parola);
+  if (!target) return null;
+  return vocabolario.find(e => {
+    const raw = e[codice];
+    if (!raw) return false;
+    const varianti = soloVisibile(raw).split("/").map(v => normalizza(v.trim()));
+    return varianti.includes(target);
+  }) || null;
+}
 function SchermataLetturaGuidata({
   lingue,
+  vocabolario,
   aiSettings,
   onHome
 }) {
@@ -10045,6 +10058,7 @@ function SchermataLetturaGuidata({
   const [showTrad, setShowTrad] = useState(false);
   const [parolaSel, setParolaSel] = useState(null);
   const [statoSpiega, setStatoSpiega] = useState("idle"); // idle | loading | risposta
+  const [fonteSpiega, setFonteSpiega] = useState("ai"); // "vocabolario" | "ai"
   const [spiegazione, setSpiegazione] = useState("");
   const hasKey = (aiSettings?.apiKey || "").length > 10;
   const lingueAttive = lingue.filter(l => l.attiva);
@@ -10127,11 +10141,21 @@ function SchermataLetturaGuidata({
   async function spiegaParola(tokenGrezzo) {
     const parola = tokenGrezzo.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "");
     if (!parola) return;
+    // Prima cerca nel vocabolario interno: se la parola c'\u00e8 gi\u00e0, niente chiamata AI.
+    const trovata = trovaInVocabolario(parola, storiaSel.lingua, vocabolario || []);
+    if (trovata) {
+      setParolaSel(parola);
+      setFonteSpiega("vocabolario");
+      setSpiegazione(`${formaDisplay(trovata[storiaSel.lingua], storiaSel.lingua)} = ${formaDisplay(trovata.it, "it")}`);
+      setStatoSpiega("risposta");
+      return;
+    }
     if (!hasKey) {
       alert("Inserisci una chiave API nelle impostazioni \ud83e\udd16\nGemini \u00e8 gratuito: ai.google.dev");
       return;
     }
     setParolaSel(parola);
+    setFonteSpiega("ai");
     setStatoSpiega("loading");
     setSpiegazione("");
     const langName = lng?.nome || storiaSel.lingua;
@@ -10192,8 +10216,8 @@ function SchermataLetturaGuidata({
     onClick: e => e.stopPropagation(),
     className: "bg-zinc-900 border border-zinc-700 rounded-xl p-3 mt-3 text-left w-full"
   }, React.createElement("p", {
-    className: "text-xs text-sky-400 font-bold mb-1"
-  }, "\ud83e\udd16 ", parolaSel), statoSpiega === "loading" ? React.createElement("p", {
+    className: `text-xs font-bold mb-1 ${fonteSpiega === "vocabolario" ? "text-teal-300" : "text-sky-400"}`
+  }, fonteSpiega === "vocabolario" ? "\ud83d\udcd6 " : "\ud83e\udd16 ", parolaSel), statoSpiega === "loading" ? React.createElement("p", {
     className: "text-sm text-zinc-500 animate-pulse"
   }, "Un momento...") : React.createElement(React.Fragment, null, React.createElement("p", {
     className: "text-sm text-slate-300 leading-relaxed whitespace-pre-wrap"
@@ -11494,6 +11518,7 @@ function App() {
   });
   if (schermata === "letturaGuidata") return /*#__PURE__*/React.createElement(SchermataLetturaGuidata, {
     lingue: lingue,
+    vocabolario: vocabolario,
     aiSettings: aiSettings,
     onHome: () => setSchermata("home")
   });
