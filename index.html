@@ -10089,6 +10089,7 @@ function trovaInVocabolario(parola, codice, vocabolario) {
 }
 function SchermataLetturaGuidata({
   lingue,
+  setLingue,
   vocabolario,
   aiSettings,
   onHome
@@ -10145,6 +10146,15 @@ function SchermataLetturaGuidata({
   function copiaCandidati() {
     const testo = JSON.stringify(candidatiLG.map(c => ({ tema: c.tema, it: c.it, [c.lingua]: c.parola })), null, 2);
     navigator.clipboard?.writeText(testo).then(() => alert(`Copiati ${candidatiLG.length} candidati negli appunti.`)).catch(() => alert(testo));
+  }
+  // Attiva automaticamente la lingua di una storia privata appena caricata (creata o
+  // importata): altrimenti storieDisponibili la filtra via (richiede lingua attiva) e
+  // la storia sparisce dalla lista senza un motivo visibile per chi la importa.
+  function assicuraLinguaAttiva(codice) {
+    if (!codice) return;
+    setLingue(prev => prev.some(l => l.codice === codice && l.attiva)
+      ? prev
+      : prev.map(l => l.codice === codice ? { ...l, attiva: true } : l));
   }
   // Testi privati (eventualmente protetti da copyright): SOLO in localStorage, mai
   // committati né inviati altrove se non alla chiamata AI di spiegazione/traduzione
@@ -10207,6 +10217,7 @@ function SchermataLetturaGuidata({
       saveJSON(SK_STORIE_PRIVATE, next);
       return next;
     });
+    assicuraLinguaAttiva(formLingua);
     resetFormPrivata();
     setFormPrivataAperto(false);
   }
@@ -10313,6 +10324,7 @@ function SchermataLetturaGuidata({
           if (!nuove.length) { alert("Nessuna storia nuova da importare (o già presenti)."); return prev; }
           const next = [...prev, ...nuove];
           saveJSON(SK_STORIE_PRIVATE, next);
+          [...new Set(nuove.map(s => s.lingua))].forEach(assicuraLinguaAttiva);
           alert(`Importate ${nuove.length} storie private.`);
           return next;
         });
@@ -11911,6 +11923,7 @@ function App() {
   });
   if (schermata === "letturaGuidata") return /*#__PURE__*/React.createElement(SchermataLetturaGuidata, {
     lingue: lingue,
+    setLingue: setLingue,
     vocabolario: vocabolario,
     aiSettings: aiSettings,
     onHome: () => setSchermata("home")
