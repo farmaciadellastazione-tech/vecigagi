@@ -3724,6 +3724,7 @@ const SK_STREAK = "qml_v10_streak"; // {lastDay: timestamp, count: n}
 const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 const SK_CANDIDATI_LG = "qml_v1_candidati_lg"; // parole spiegate dall'AI in Lettura guidata, assenti dal vocabolario — in attesa di revisione
+const SK_STORIE_PRIVATE = "qml_v1_storie_private"; // testi privati (eventualmente protetti da copyright) caricati SOLO in questo browser, mai committati
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
 const VOC_VERSION = 405;
@@ -10063,9 +10064,23 @@ function SchermataLetturaGuidata({
   const [spiegazione, setSpiegazione] = useState("");
   const [candidatiLG, setCandidatiLG] = useState(() => loadJSON(SK_CANDIDATI_LG, []));
   const [candidatiAperti, setCandidatiAperti] = useState(false);
+  const [storiePrivate, setStoriePrivate] = useState(() => loadJSON(SK_STORIE_PRIVATE, []));
+  const [formPrivataAperto, setFormPrivataAperto] = useState(false);
+  const [formLingua, setFormLingua] = useState("en");
+  const [formLivello, setFormLivello] = useState("A1");
+  const [formTema, setFormTema] = useState("");
+  const [formTitolo, setFormTitolo] = useState("");
+  const [formTitoloIt, setFormTitoloIt] = useState("");
+  const [formTesto, setFormTesto] = useState("");
+  const [formTraduzione, setFormTraduzione] = useState("");
+  const [traducendo, setTraducendo] = useState(false);
+  const fileInputRef = useRef(null);
   const hasKey = (aiSettings?.apiKey || "").length > 10;
   const lingueAttive = lingue.filter(l => l.attiva);
-  const storieDisponibili = STORIE_DEFAULT.filter(s => lingueAttive.some(l => l.codice === s.lingua));
+  const storieDisponibili = [
+    ...STORIE_DEFAULT.filter(s => lingueAttive.some(l => l.codice === s.lingua)),
+    ...storiePrivate.filter(s => lingueAttive.some(l => l.codice === s.lingua))
+  ];
   function resetSpiega() {
     setParolaSel(null);
     setStatoSpiega("idle");
@@ -10091,6 +10106,119 @@ function SchermataLetturaGuidata({
     const testo = JSON.stringify(candidatiLG.map(c => ({ tema: c.tema, it: c.it, [c.lingua]: c.parola })), null, 2);
     navigator.clipboard?.writeText(testo).then(() => alert(`Copiati ${candidatiLG.length} candidati negli appunti.`)).catch(() => alert(testo));
   }
+  // Testi privati (eventualmente protetti da copyright): SOLO in localStorage, mai
+  // committati né inviati altrove se non alla chiamata AI di spiegazione/traduzione
+  // che l'utente stesso avvia (stessa infrastruttura già usata per le altre storie).
+  function resetFormPrivata() {
+    setFormLingua("en");
+    setFormLivello("A1");
+    setFormTema("");
+    setFormTitolo("");
+    setFormTitoloIt("");
+    setFormTesto("");
+    setFormTraduzione("");
+  }
+  async function traduciTuttoAI() {
+    const righe = formTesto.split("\n").map(r => r.trim()).filter(Boolean);
+    if (!righe.length) return;
+    if (!hasKey) {
+      alert("Inserisci una chiave API nelle impostazioni 🤖\nGemini è gratuito: ai.google.dev");
+      return;
+    }
+    setTraducendo(true);
+    const langName = lingue.find(l => l.codice === formLingua)?.nome || formLingua;
+    const system = `Sei un traduttore. Traduci in italiano ogni riga numerata data (lingua di partenza: ${langName}), mantenendo l'ordine e il numero di righe. Rispondi con UN SOLO array JSON di stringhe (una traduzione per riga, senza numeri), niente altro testo.`;
+    const user = righe.map((r, i) => `${i + 1}. ${r}`).join("\n");
+    try {
+      const raw = await callAI(system, user, aiSettings);
+      const clean = raw.replace(/```json|```/g, "").trim();
+      const match = clean.match(/\[[\s\S]*\]/);
+      const arr = match ? JSON.parse(match[0]) : null;
+      if (Array.isArray(arr) && arr.length) {
+        setFormTraduzione(arr.join("\n"));
+      } else {
+        alert("Risposta AI non valida. Riprova o traduci a mano.");
+      }
+    } catch (e) {
+      alert("Errore nella traduzione AI. Riprova o traduci a mano.");
+    }
+    setTraducendo(false);
+  }
+  function salvaStoriaPrivata() {
+    const righeTesto = formTesto.split("\n").map(r => r.trim()).filter(Boolean);
+    if (!formTitolo.trim() || !righeTesto.length) {
+      alert("Servono almeno un titolo e il testo (una riga = una frase).");
+      return;
+    }
+    const righeTrad = formTraduzione.split("\n").map(r => r.trim());
+    const frasi = righeTesto.map((testo, i) => ({ testo, it: righeTrad[i] || "" }));
+    const id = "privata-" + Date.now().toString(36);
+    const nuova = {
+      id,
+      lingua: formLingua,
+      livello: formLivello,
+      tema: formTema.trim(),
+      titolo: { testo: formTitolo.trim(), it: formTitoloIt.trim() || formTitolo.trim() },
+      fonte: { generato: "privato", note: "Uso personale — non pubblicato, resta solo su questo browser." },
+      frasi
+    };
+    setStoriePrivate(prev => {
+      const next = [...prev, nuova];
+      saveJSON(SK_STORIE_PRIVATE, next);
+      return next;
+    });
+    resetFormPrivata();
+    setFormPrivataAperto(false);
+  }
+  function eliminaStoriaPrivata(id) {
+    if (!confirm("Eliminare questo testo privato? Resta comunque solo su questo browser finché non lo elimini.")) return;
+    setStoriePrivate(prev => {
+      const next = prev.filter(s => s.id !== id);
+      saveJSON(SK_STORIE_PRIVATE, next);
+      return next;
+    });
+  }
+  // Esporta/importa i testi privati come file JSON: restano client-side (nessun
+  // upload), l'utente li salva dove vuole (anche su una chiavetta) per backup o
+  // per portarli su un altro dispositivo/browser.
+  function esportaStoriePrivate() {
+    if (!storiePrivate.length) return;
+    const blob = new Blob([JSON.stringify(storiePrivate, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    const data = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `storie-private-linguaequiz-${data}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+  function apriImportaStoriePrivate() {
+    fileInputRef.current?.click();
+  }
+  function onImportaStoriePrivateFile(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const importate = JSON.parse(reader.result);
+        if (!Array.isArray(importate)) throw new Error("Il file non contiene un array");
+        setStoriePrivate(prev => {
+          const idsEsistenti = new Set(prev.map(s => s.id));
+          const nuove = importate.filter(s => s && s.id && s.frasi && !idsEsistenti.has(s.id));
+          if (!nuove.length) { alert("Nessuna storia nuova da importare (o già presenti)."); return prev; }
+          const next = [...prev, ...nuove];
+          saveJSON(SK_STORIE_PRIVATE, next);
+          alert(`Importate ${nuove.length} storie private.`);
+          return next;
+        });
+      } catch (err) {
+        alert("File non valido: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = ""; // permette di reimportare lo stesso file
+  }
   function scegliStoria(s) {
     setStoriaSel(s);
     setIdxFrase(0);
@@ -10111,11 +10239,96 @@ function SchermataLetturaGuidata({
     resetSpiega();
   }
   function badgeFonte(s) {
-    const isAI = s.fonte?.generato === "ai";
+    const gen = s.fonte?.generato;
+    if (gen === "privato") {
+      return React.createElement("span", {
+        className: "text-xs font-semibold px-1.5 py-0.5 rounded-full border bg-violet-950 border-violet-800 text-violet-300",
+        title: s.fonte.note || "Uso personale \u2014 non pubblicato"
+      }, "\ud83d\udd12 Privata");
+    }
+    const isAI = gen === "ai";
     return React.createElement("span", {
       className: `text-xs font-semibold px-1.5 py-0.5 rounded-full border ${isAI ? "bg-amber-950 border-amber-800 text-amber-500" : "bg-teal-950 border-teal-800 text-teal-300"}`,
       title: isAI ? (s.fonte.note || "Testo generato dall'IA") : [s.fonte.autore, s.fonte.riferimento].filter(Boolean).join(" \u2014 ")
     }, isAI ? "\ud83e\udd16 Testo generato" : "\ud83d\udcdc Fonte autentica");
+  }
+  function renderAzioniImportExport() {
+    return React.createElement("div", {
+      className: "flex items-center gap-3 mt-1"
+    }, React.createElement("input", {
+      type: "file",
+      accept: ".json",
+      ref: fileInputRef,
+      onChange: onImportaStoriePrivateFile,
+      style: { display: "none" }
+    }), storiePrivate.length > 0 && React.createElement("button", {
+      onClick: esportaStoriePrivate,
+      className: "text-xs text-zinc-500 hover:text-white transition"
+    }, `⬇️ Esporta (${storiePrivate.length})`), React.createElement("button", {
+      onClick: apriImportaStoriePrivate,
+      className: "text-xs text-zinc-500 hover:text-white transition"
+    }, "⬆️ Importa"));
+  }
+  function renderFormPrivata() {
+    return React.createElement("div", {
+      className: "mt-6"
+    }, React.createElement("button", {
+      onClick: () => setFormPrivataAperto(v => !v),
+      className: "text-xs text-violet-400 hover:text-violet-300 transition"
+    }, `\ud83d\udce5 Carica testo privato (solo su questo browser) ${formPrivataAperto ? "\u25b2" : "\u25bc"}`), renderAzioniImportExport(), formPrivataAperto && React.createElement("div", {
+      className: "card p-4 mt-2 flex flex-col gap-3"
+    }, React.createElement("p", {
+      className: "text-xs text-violet-300 bg-violet-950 border border-violet-800 rounded-lg p-2"
+    }, "\ud83d\udd12 Resta solo su questo browser: non viene mai pubblicato n\u00e9 inviato a GitHub. Il repo del sito \u00e8 pubblico \u2014 \u00e8 l'unico modo per usare testi protetti da copyright senza pubblicarli."), React.createElement("div", {
+      className: "flex gap-2"
+    }, React.createElement("select", {
+      value: formLingua,
+      onChange: e => setFormLingua(e.target.value),
+      className: "flex-1 bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-white text-sm"
+    }, lingue.filter(l => l.codice !== "it").map(l => React.createElement("option", { key: l.codice, value: l.codice }, l.bandiera, " ", l.nome))), React.createElement("select", {
+      value: formLivello,
+      onChange: e => setFormLivello(e.target.value),
+      className: "bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-white text-sm"
+    }, ["A1", "A2", "B1", "B2", "C1", "C2"].map(lv => React.createElement("option", { key: lv, value: lv }, lv)))), React.createElement("input", {
+      type: "text",
+      value: formTema,
+      onChange: e => setFormTema(e.target.value),
+      placeholder: "Tema (opzionale)",
+      className: "bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-white text-sm"
+    }), React.createElement("input", {
+      type: "text",
+      value: formTitolo,
+      onChange: e => setFormTitolo(e.target.value),
+      placeholder: "Titolo originale",
+      className: "bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-white text-sm"
+    }), React.createElement("input", {
+      type: "text",
+      value: formTitoloIt,
+      onChange: e => setFormTitoloIt(e.target.value),
+      placeholder: "Titolo in italiano (opzionale)",
+      className: "bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-white text-sm"
+    }), React.createElement("textarea", {
+      value: formTesto,
+      onChange: e => setFormTesto(e.target.value),
+      placeholder: "Testo: una riga = una frase",
+      rows: 5,
+      className: "bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-white text-sm resize-y"
+    }), React.createElement("textarea", {
+      value: formTraduzione,
+      onChange: e => setFormTraduzione(e.target.value),
+      placeholder: "Traduzione italiana: una riga = una traduzione, stesso ordine (opzionale)",
+      rows: 5,
+      className: "bg-zinc-900 border border-zinc-700 rounded-lg px-2 py-1.5 text-white text-sm resize-y"
+    }), React.createElement("div", {
+      className: "flex gap-2"
+    }, React.createElement("button", {
+      onClick: traduciTuttoAI,
+      disabled: traducendo || !formTesto.trim(),
+      className: "flex-1 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 text-white text-xs font-bold py-2 rounded-lg transition"
+    }, traducendo ? "\u23f3 Traduco..." : "\ud83e\udd16 Traduci tutto con AI"), React.createElement("button", {
+      onClick: salvaStoriaPrivata,
+      className: "flex-1 bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold py-2 rounded-lg transition"
+    }, "\ud83d\udcbe Salva"))));
   }
   if (!storiaSel) {
     return React.createElement("div", {
@@ -10141,10 +10354,11 @@ function SchermataLetturaGuidata({
       className: "flex flex-col gap-3"
     }, storieDisponibili.map(s => {
       const lng = lingue.find(l => l.codice === s.lingua);
-      return React.createElement("button", {
+      const isPrivata = s.fonte?.generato === "privato";
+      return React.createElement("div", {
         key: s.id,
         onClick: () => scegliStoria(s),
-        className: "w-full text-left rounded-2xl border-2 border-zinc-800 bg-zinc-900 hover:border-zinc-600 transition p-4"
+        className: "w-full text-left rounded-2xl border-2 border-zinc-800 bg-zinc-900 hover:border-zinc-600 transition p-4 cursor-pointer"
       }, React.createElement("div", {
         className: "flex items-center justify-between mb-1"
       }, React.createElement("span", {
@@ -10153,8 +10367,13 @@ function SchermataLetturaGuidata({
         className: "text-xs font-bold px-1.5 py-0.5 rounded-full bg-zinc-800 text-zinc-400"
       }, s.livello)), React.createElement("p", {
         className: "text-sm text-slate-400 mb-2"
-      }, s.titolo.it), badgeFonte(s));
-    })), candidatiLG.length > 0 && React.createElement("div", {
+      }, s.titolo.it), React.createElement("div", {
+        className: "flex items-center justify-between"
+      }, badgeFonte(s), isPrivata && React.createElement("button", {
+        onClick: e => { e.stopPropagation(); eliminaStoriaPrivata(s.id); },
+        className: "text-xs text-zinc-600 hover:text-red-400 transition"
+      }, "🗑 Elimina")));
+    })), renderFormPrivata(), candidatiLG.length > 0 && React.createElement("div", {
       className: "mt-6"
     }, React.createElement("button", {
       onClick: () => setCandidatiAperti(v => !v),
@@ -10212,12 +10431,15 @@ Forma: {"spiegazione": string, "traduzione": string}
       if (parsed && parsed.spiegazione) {
         setSpiegazione(parsed.spiegazione);
         if (parsed.traduzione) {
+          // Per le storie private (eventuale copyright) NON salviamo mai la frase di
+          // contesto nel candidato: solo la singola parola isolata + traduzione.
+          const isPrivata = storiaSel.fonte?.generato === "privato";
           aggiungiCandidato({
             parola,
             lingua: storiaSel.lingua,
             it: parsed.traduzione.trim(),
             tema: storiaSel.tema,
-            frase: testoDisplay,
+            ...(isPrivata ? {} : { frase: testoDisplay }),
             storiaId: storiaSel.id,
             data: new Date().toISOString()
           });

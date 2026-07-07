@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Editor Storie — Lettura Guidata | LinguaeQuiz</title>
+<meta name="robots" content="noindex, nofollow" />
+<style>
+  :root {
+    --bg: #f8fafc; --card: #fff; --border: #e2e8f0; --muted: #64748b; --text: #0f172a;
+    --accent: #0ea5e9; --accent-dark: #0369a1; --danger: #dc2626; --ok: #16a34a; --warn: #d97706;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; }
+  header { position: sticky; top: 0; z-index: 10; background: #fff; border-bottom: 1px solid var(--border); padding: 0.8rem 1.2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+  header h1 { font-size: 1.05rem; margin: 0; flex: 1; min-width: 200px; }
+  main { max-width: 900px; margin: 0 auto; padding: 1.2rem; }
+  .btn { border: 1px solid var(--border); background: #fff; color: var(--text); padding: 0.45rem 0.8rem; border-radius: 8px; font-size: 0.85rem; cursor: pointer; font-weight: 600; }
+  .btn:hover { background: #f1f5f9; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent-dark); }
+  .btn-danger { color: var(--danger); border-color: #fecaca; }
+  .btn-danger:hover { background: #fef2f2; }
+  #help { font-size: 0.82rem; padding: 0.5rem 0.8rem; border-radius: 8px; margin-bottom: 1rem; }
+  #help.info { background: #eff6ff; color: #1e40af; }
+  #help.success { background: #f0fdf4; color: #166534; }
+  #help.error { background: #fef2f2; color: #991b1b; }
+  .story-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 1rem; overflow: hidden; }
+  .story-card.is-new { border-color: #86efac; box-shadow: 0 0 0 2px #dcfce7; }
+  .story-head { padding: 0.7rem 1rem; display: flex; align-items: center; gap: 0.6rem; cursor: pointer; background: #f8fafc; }
+  .story-head b { flex: 1; font-size: 0.92rem; }
+  .story-head .tag { font-size: 0.72rem; padding: 0.1rem 0.5rem; border-radius: 999px; background: #e2e8f0; color: var(--muted); font-weight: 700; }
+  .story-body { padding: 1rem; display: none; }
+  .story-body.open { display: block; }
+  .row { display: flex; gap: 0.6rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+  .field { flex: 1; min-width: 140px; display: flex; flex-direction: column; gap: 0.25rem; }
+  .field label { font-size: 0.72rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; }
+  .field input, .field select, .field textarea { border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 0.5rem; font-size: 0.88rem; font-family: inherit; background: #fff; color: var(--text); }
+  .field textarea { resize: vertical; min-height: 2.2rem; }
+  fieldset { border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem 0.8rem; margin: 0.8rem 0; }
+  legend { font-size: 0.78rem; font-weight: 700; color: var(--muted); padding: 0 0.4rem; }
+  .frase-row { display: flex; gap: 0.5rem; align-items: flex-start; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 1px dashed var(--border); }
+  .frase-row:last-child { border-bottom: none; }
+  .frase-num { font-size: 0.75rem; color: var(--muted); width: 1.4rem; padding-top: 0.5rem; flex-shrink: 0; }
+  .frase-fields { flex: 1; display: flex; flex-direction: column; gap: 0.35rem; }
+  .icon-btn { background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0.3rem; color: var(--muted); }
+  .icon-btn:hover { color: var(--danger); }
+  .card-actions { display: flex; justify-content: space-between; margin-top: 0.8rem; padding-top: 0.7rem; border-top: 1px solid var(--border); }
+  .empty { text-align: center; color: var(--muted); padding: 2rem; font-size: 0.9rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📖 Editor Storie — Lettura Guidata</h1>
+  <button class="btn" onclick="caricaDaGitHub()">🔄 Ricarica</button>
+  <button class="btn" onclick="nuovaStoria()">➕ Nuova storia</button>
+  <button class="btn btn-primary" id="btn-save" onclick="salvaSuGitHub()">☁️ Salva su GitHub</button>
+</header>
+
+<main>
+  <div id="help" class="info">⏳ Caricamento...</div>
+  <div id="lista"></div>
+</main>
+
+<script>
+const GH_OWNER = 'farmaciadellastazione-tech';
+const GH_REPO  = 'vecigagi';
+const GH_BRANCH = 'main';
+const GH_PATH = 'storie.js';
+const GH_TOKEN_KEY = 'gh_pat_vecigagi'; // stesso token usato da edit.html/dialetti.html
+const BLOCK_START_RE = /^\s*const STORIE_DEFAULT = \[/m;
+
+const LINGUE = [
+  { code:'en', name:'Inglese' }, { code:'de', name:'Tedesco' },
+  { code:'fr', name:'Francese' }, { code:'es', name:'Spagnolo' }, { code:'pt', name:'Portoghese' },
+  { code:'mn', name:'Manarolese (dialetto)' }, { code:'sp', name:'Spezzino (dialetto)' },
+  { code:'ge', name:'Genovese (dialetto)' }, { code:'cr', name:'Carrarino (dialetto)' },
+];
+const LIVELLI = ['A1','A2','B1','B2','C1','C2'];
+
+let storie = [];
+let originalSource = null;
+let openIds = new Set();
+let newIds = new Set();
+let modifiedIds = new Set();
+
+function setHelp(html, kind) {
+  const el = document.getElementById('help');
+  el.innerHTML = html;
+  el.className = kind || 'info';
+}
+
+function fetchTimeout(url, opts, ms) {
+  ms = ms || 20000;
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort('timeout'), ms);
+  return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(() => clearTimeout(tid));
+}
+
+// ── Parsing bracket-aware (stesso algoritmo di edit.html/tools/import_*.js) ──
+function trovaBloccoArray(src, re) {
+  const m = re.exec(src);
+  if (!m) return null;
+  const start = m.index + m[0].length;
+  let depth = 1, i = start, inStr = false, esc = false, q = null;
+  while (i < src.length) {
+    const c = src[i];
+    if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === q) inStr = false; }
+    else { if (c === '"' || c === "'") { inStr = true; q = c; } else if (c === '[') depth++; else if (c === ']') { depth--; if (depth === 0) break; } }
+    i++;
+  }
+  if (depth !== 0) throw new Error('Parentesi quadre non bilanciate in STORIE_DEFAULT');
+  return { start, end: i };
+}
+
+function estraiStorie(src) {
+  const blocco = trovaBloccoArray(src, BLOCK_START_RE);
+  if (!blocco) throw new Error('Marcatore "const STORIE_DEFAULT = [" non trovato');
+  return (new Function('return [' + src.slice(blocco.start, blocco.end) + ']'))();
+}
+
+function ricostruisciSorgente() {
+  const blocco = trovaBloccoArray(originalSource, BLOCK_START_RE);
+  const corpo = storie.length
+    ? '\n' + storie.map(s => '  ' + JSON.stringify(s, null, 2).replace(/\n/g, '\n  ')).join(',\n') + '\n'
+    : '';
+  return originalSource.slice(0, blocco.start) + corpo + originalSource.slice(blocco.end);
+}
+
+// ── Caricamento ──
+async function caricaDaGitHub() {
+  setHelp('⏳ Carico storie.js da GitHub...', 'info');
+  try {
+    const rawUrl = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_PATH}?t=${Date.now()}`;
+    const res = await fetchTimeout(rawUrl, {}, 20000);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    originalSource = await res.text();
+    storie = estraiStorie(originalSource);
+    openIds.clear(); newIds.clear(); modifiedIds.clear();
+    setHelp(`✅ Caricate <strong>${storie.length}</strong> storie. Modifica e clicca <strong>☁️ Salva su GitHub</strong> quando hai finito.`, 'success');
+    render();
+  } catch (err) {
+    console.error(err);
+    setHelp('❌ Errore caricamento: ' + err.message, 'error');
+  }
+}
+
+function slugify(s) {
+  return (s || 'storia').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60) || 'storia';
+}
+
+function idUnivoco(base) {
+  let id = base, n = 2;
+  while (storie.some(s => s.id === id)) { id = base + '-' + n; n++; }
+  return id;
+}
+
+function nuovaStoria() {
+  const lingua = 'en';
+  const id = idUnivoco(lingua + '-a1-nuova-storia');
+  const s = {
+    id, lingua, livello: 'A1', tema: '',
+    titolo: { testo: '', it: '' },
+    fonte: { generato: 'ai', modello: 'claude-sonnet-5', note: '' },
+    frasi: [{ testo: '', it: '' }]
+  };
+  storie.unshift(s);
+  newIds.add(id);
+  openIds.add(id);
+  render();
+  window.scrollTo(0, 0);
+}
+
+function eliminaStoria(id) {
+  const s = storie.find(s => s.id === id);
+  if (!s) return;
+  if (!confirm(`Eliminare la storia "${s.titolo?.testo || id}"?`)) return;
+  storie = storie.filter(s => s.id !== id);
+  newIds.delete(id); modifiedIds.delete(id); openIds.delete(id);
+  render();
+}
+
+function segnaModificata(id) {
+  if (!newIds.has(id)) modifiedIds.add(id);
+}
+
+function aggiungiFrase(id) {
+  const s = storie.find(s => s.id === id);
+  if (!s) return;
+  s.frasi.push({ testo: '', it: '' });
+  segnaModificata(id);
+  render();
+}
+
+function eliminaFrase(id, idx) {
+  const s = storie.find(s => s.id === id);
+  if (!s) return;
+  s.frasi.splice(idx, 1);
+  segnaModificata(id);
+  render();
+}
+
+// ── Rendering ──
+function campoStoria(s, path, value, tipo, opts) {
+  const inputId = `f_${s.id}_${path}`.replace(/[^a-zA-Z0-9_]/g, '_');
+  const onChange = `aggiornaCampo('${s.id}', '${path}', this.value)`;
+  if (tipo === 'select') {
+    const options = opts.map(o => `<option value="${o.v}" ${o.v === value ? 'selected' : ''}>${o.l}</option>`).join('');
+    return `<select id="${inputId}" onchange="${onChange}">${options}</select>`;
+  }
+  if (tipo === 'textarea') {
+    return `<textarea id="${inputId}" onchange="${onChange}" rows="2">${escapeHtml(value || '')}</textarea>`;
+  }
+  return `<input id="${inputId}" type="text" value="${escapeAttr(value || '')}" onchange="${onChange}" />`;
+}
+
+function escapeHtml(s) { return (s || '').replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+function escapeAttr(s) { return (s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function getPath(obj, path) { return path.split('.').reduce((o, k) => (o || {})[k], obj); }
+function setPath(obj, path, value) {
+  const keys = path.split('.');
+  let cur = obj;
+  for (let i = 0; i < keys.length - 1; i++) { if (!cur[keys[i]]) cur[keys[i]] = {}; cur = cur[keys[i]]; }
+  cur[keys[keys.length - 1]] = value;
+}
+
+function aggiornaCampo(id, path, value) {
+  const s = storie.find(s => s.id === id);
+  if (!s) return;
+  setPath(s, path, value);
+  segnaModificata(id);
+  if (path === 'lingua' || path === 'fonte.generato') render(); // ri-renderizza per aggiornare campi condizionali/badge
+}
+
+function aggiornaFrase(id, idx, campo, value) {
+  const s = storie.find(s => s.id === id);
+  if (!s) return;
+  s.frasi[idx][campo] = value;
+  segnaModificata(id);
+}
+
+function render() {
+  const lista = document.getElementById('lista');
+  if (!storie.length) { lista.innerHTML = '<div class="empty">Nessuna storia. Clicca "➕ Nuova storia" per iniziare.</div>'; return; }
+  lista.innerHTML = storie.map(s => renderCard(s)).join('');
+}
+
+function renderCard(s) {
+  const isOpen = openIds.has(s.id);
+  const isNew = newIds.has(s.id);
+  const isMod = modifiedIds.has(s.id);
+  const isAI = s.fonte?.generato === 'ai';
+  const lng = LINGUE.find(l => l.code === s.lingua);
+
+  const fonteFields = isAI ? `
+    <div class="row">
+      <div class="field"><label>Modello AI</label>${campoStoria(s, 'fonte.modello', s.fonte?.modello, 'text')}</div>
+      <div class="field" style="flex:2"><label>Nota</label>${campoStoria(s, 'fonte.note', s.fonte?.note, 'text')}</div>
+    </div>` : `
+    <div class="row">
+      <div class="field"><label>Autore</label>${campoStoria(s, 'fonte.autore', s.fonte?.autore, 'text')}</div>
+      <div class="field"><label>Riferimento</label>${campoStoria(s, 'fonte.riferimento', s.fonte?.riferimento, 'text')}</div>
+      <div class="field"><label>Licenza</label>${campoStoria(s, 'fonte.licenza', s.fonte?.licenza, 'text')}</div>
+    </div>`;
+
+  const fraseRows = (s.frasi || []).map((f, idx) => `
+    <div class="frase-row">
+      <div class="frase-num">${idx + 1}</div>
+      <div class="frase-fields">
+        <input type="text" placeholder="Testo originale" value="${escapeAttr(f.testo)}" onchange="aggiornaFrase('${s.id}', ${idx}, 'testo', this.value)" />
+        <input type="text" placeholder="Traduzione italiana" value="${escapeAttr(f.it)}" onchange="aggiornaFrase('${s.id}', ${idx}, 'it', this.value)" />
+      </div>
+      <button class="icon-btn" title="Elimina frase" onclick="eliminaFrase('${s.id}', ${idx})">🗑</button>
+    </div>`).join('');
+
+  return `
+  <div class="story-card ${isNew ? 'is-new' : ''}">
+    <div class="story-head" onclick="toggleCard('${s.id}')">
+      <span>${isOpen ? '▾' : '▸'}</span>
+      <b>${escapeHtml(s.titolo?.testo || '(senza titolo)')} <span style="color:var(--muted); font-weight:400">— ${escapeHtml(s.titolo?.it || '')}</span></b>
+      ${lng ? `<span class="tag">${lng.name}</span>` : ''}
+      <span class="tag">${s.livello || '?'}</span>
+      <span class="tag" style="${isAI ? 'background:#fef3c7;color:#92400e' : 'background:#dcfce7;color:#166534'}">${isAI ? '🤖 AI' : '📜 Autentico'}</span>
+      ${isNew ? '<span class="tag" style="background:#dcfce7;color:#166534">nuova</span>' : ''}
+      ${isMod ? '<span class="tag" style="background:#fef3c7;color:#92400e">modificata</span>' : ''}
+    </div>
+    <div class="story-body ${isOpen ? 'open' : ''}">
+      <div class="row">
+        <div class="field"><label>ID (slug)</label>${campoStoria(s, 'id', s.id, 'text')}</div>
+        <div class="field"><label>Lingua</label>${campoStoria(s, 'lingua', s.lingua, 'select', LINGUE.map(l => ({v:l.code, l:l.name})))}</div>
+        <div class="field"><label>Livello</label>${campoStoria(s, 'livello', s.livello, 'select', LIVELLI.map(l => ({v:l, l})))}</div>
+        <div class="field"><label>Tema</label>${campoStoria(s, 'tema', s.tema, 'text')}</div>
+      </div>
+      <div class="row">
+        <div class="field"><label>Titolo originale</label>${campoStoria(s, 'titolo.testo', s.titolo?.testo, 'text')}</div>
+        <div class="field"><label>Titolo italiano</label>${campoStoria(s, 'titolo.it', s.titolo?.it, 'text')}</div>
+      </div>
+      <fieldset>
+        <legend>Fonte</legend>
+        <div class="row">
+          <div class="field" style="max-width:220px">
+            <label>Tipo</label>
+            ${campoStoria(s, 'fonte.generato', s.fonte?.generato, 'select', [{v:'ai', l:'🤖 Generato da AI'}, {v:'autentico', l:'📜 Fonte autentica'}])}
+          </div>
+        </div>
+        ${fonteFields}
+      </fieldset>
+      <fieldset>
+        <legend>Frasi (${(s.frasi || []).length})</legend>
+        ${fraseRows || '<p style="color:var(--muted); font-size:0.85rem">Nessuna frase.</p>'}
+        <button class="btn" style="margin-top:0.4rem" onclick="aggiungiFrase('${s.id}')">➕ Aggiungi frase</button>
+      </fieldset>
+      <div class="card-actions">
+        <button class="btn btn-danger" onclick="eliminaStoria('${s.id}')">🗑 Elimina storia</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleCard(id) {
+  if (openIds.has(id)) openIds.delete(id); else openIds.add(id);
+  render();
+}
+
+// ── Salvataggio ──
+async function salvaSuGitHub() {
+  let token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!token) {
+    token = prompt('Incolla il tuo Personal Access Token GitHub (Contents: Read/Write su "vecigagi"):');
+    if (!token) return;
+    token = token.trim();
+    if (!token.startsWith('github_pat_') && !token.startsWith('ghp_')) { if (!confirm('Token non sembra GitHub standard. Continuare?')) return; }
+    localStorage.setItem(GH_TOKEN_KEY, token);
+  }
+  const modCount = newIds.size + modifiedIds.size;
+  if (!modCount && !confirm('Nessuna modifica rilevata. Salvare comunque?')) return;
+  if (!confirm(`Scrivere ${storie.length} storie su GitHub (branch "${GH_BRANCH}")?\n\n"storie.js" verrà sovrascritto.`)) return;
+
+  const idsVuoti = storie.filter(s => !s.id || !s.lingua || !(s.frasi || []).length);
+  if (idsVuoti.length && !confirm(`${idsVuoti.length} storia/e senza id/lingua/frasi valide. Salvare comunque?`)) return;
+
+  const btn = document.getElementById('btn-save'), orig = btn.textContent;
+  btn.disabled = true; btn.textContent = '⏳ Salvataggio...';
+  try {
+    const nuovoSrc = ricostruisciSorgente();
+    const apiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`;
+    const headers = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+    const getRes = await fetchTimeout(apiBase + '?ref=' + GH_BRANCH, { headers }, 20000);
+    if (!getRes.ok) { if (getRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('GET fallito (' + getRes.status + ')'); }
+    const sha = (await getRes.json()).sha;
+    const bytes = new TextEncoder().encode(nuovoSrc); let bin = ''; for (let j = 0; j < bytes.length; j++) bin += String.fromCharCode(bytes[j]);
+    const putRes = await fetchTimeout(apiBase, { method: 'PUT', headers: Object.assign({}, headers, {'Content-Type':'application/json'}), body: JSON.stringify({ message: `Aggiornamento storie.js da edit-storie.html (${storie.length} storie, ${modCount} modifiche)`, content: btoa(bin), branch: GH_BRANCH, sha }) }, 60000);
+    if (!putRes.ok) { if (putRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('PUT fallito (' + putRes.status + ')'); }
+    originalSource = nuovoSrc;
+    newIds.clear(); modifiedIds.clear();
+    btn.textContent = '✅ Salvato!';
+    setHelp('✅ Salvataggio riuscito! GitHub Pages aggiornerà tra 1-2 min.', 'success');
+    setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 3000);
+    render();
+  } catch (err) {
+    console.error('[GH]', err);
+    alert('Errore:\n\n' + err.message);
+    btn.textContent = orig; btn.disabled = false;
+  }
+}
+
+caricaDaGitHub();
+</script>
+</body>
+</html>
