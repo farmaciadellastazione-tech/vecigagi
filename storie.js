@@ -57,8 +57,52 @@ const STORIE_DEFAULT = [
     },
     "frasi": [
       {
-        "testo": "Crêuza de mä Umbre de muri muri de mainé dunde ne vegnì duve l’è ch’ané da ‘n scitu duve a l’ûn-a a se mustra nûa e a neutte a n’à puntou u cutellu ä gua e a muntä l’àse gh’é restou Diu u Diàu l’é in çë e u s’è gh’è faetu u nìu ne sciurtìmmu da u mä pe sciugà e osse da u Dria a a funtan-a di cumbi ‘nta cä de pria. E ‘nt’a cä de pria chi ghe saià int’à cä du Dria che u nu l’è mainà gente de Lûgan facce da mandillä qui che du luassu preferiscian l’ä figge de famiggia udù de bun che ti peu ammiàle senza u gundun. E a ‘ste panse veue cose che daià cose da beive, cose da mangiä frittûa de pigneu giancu de Purtufin çervelle de bae ‘nt’u meximu vin lasagne da fiddià ai quattru tucchi paciûgu in aegruduse de lévre de cuppi. E ‘nt’a barca du vin ghe naveghiemu ‘nsc’i scheuggi emigranti du rìe cu’i cioi ‘nt’i euggi finché u matin crescià da puéilu rechéugge frè di ganeuffeni e dè figge bacan d’a corda marsa d’aegua e de sä che a ne liga e a ne porta ‘nte ‘na creuza de mä.",
-        "it": "Creuza di mare Ombre di facce facce di marinai da dove venite dov’è che andate da un posto dove la luna si mostra nuda e la notte ci ha puntato il coltello alla gola e a montare l’asino c’è rimasto Dio il Diavolo è in cielo e ci si è fatto il nido usciamo dal mare per asciugare le ossa dall’Andrea alla fontana dei colombi nella casa di pietra. E nella casa di pietra chi ci sarà nella casa dell’Andrea che non è marinaio gente di Lugano facce da tagliaborse quelli che della spigola preferiscono l’ala ragazze di famiglia, odore di buono che puoi guardarle senza preservativo. E a queste pance vuote cosa gli darà cosa da bere, cosa da mangiare frittura di pesciolini, bianco di Portofino cervelle di agnello nello stesso vino lasagne da tagliare ai quattro sughi pasticcio in agrodolce di lepre di tegole. E nella barca del vino ci navigheremo sugli scogli emigranti della risata con i chiodi negli occhi finché il mattino crescerà da poterlo raccogliere fratello dei garofani e delle ragazze padrone della corda marcia d’acqua e di sale che ci lega e ci porta in una mulattiera di mare"
+        "testo": " Umbre de muri muri de mainé dunde ne vegnì duve l’è ch’ané    finché u matin crescià da puéilu rechéugge frè di ganeuffeni e dè figge bacan d’a corda marsa d’aegua e de sä che a ne liga e a ne porta ‘nte ‘na creuza de mä.",
+        "it": "Ombre di facce facce di marinai da dove venite dov’è che andate      finché il mattino crescerà da poterlo raccogliere fratello dei garofani e delle ragazze padrone della corda marcia d’acqua e di sale che ci lega e ci porta in una mulattiera di mare"
+      },
+      {
+        "testo": "da ‘n scitu duve a l’ûn-a a se mustra nûa e a neutte a n’à puntou u cutellu ä gua ",
+        "it": "da un posto dove la luna si mostra nuda e la notte ci ha puntato il coltello alla gola"
+      },
+      {
+        "testo": "e a muntä l’àse gh’é restou Diu u Diàu l’é in çë e u s’è gh’è faetu u nìu",
+        "it": "e a montare l’asino c’è rimasto Dio il Diavolo è in cielo e ci si è fatto il nido"
+      },
+      {
+        "testo": "ne sciurtìmmu da u mä pe sciugà e osse da u Dria a a funtan-a di cumbi ‘nta cä de pria. ",
+        "it": "usciamo dal mare per asciugare le ossa dall’Andrea alla fontana dei colombi nella casa di pietra."
+      },
+      {
+        "testo": "E ‘nt’a cä de pria chi ghe saià int’à cä du Dria che u nu l’è mainà ",
+        "it": "E nella casa di pietra chi ci sarà nella casa dell’Andrea che non è marinaio "
+      },
+      {
+        "testo": "gente de Lûgan facce da mandillä qui che du luassu preferiscian l’ä",
+        "it": "gente di Lugano facce da tagliaborse quelli che della spigola preferiscono l’ala"
+      },
+      {
+        "testo": "figge de famiggia udù de bun che ti peu ammiàle senza u gundun. ",
+        "it": " ragazze di famiglia, odore di buono che puoi guardarle senza preservativo."
+      },
+      {
+        "testo": "E a ‘ste panse veue cose che daià cose da beive, cose da mangiä ",
+        "it": "E a queste pance vuote cosa gli darà cosa da bere, cosa da mangiare"
+      },
+      {
+        "testo": "frittûa de pigneu giancu de Purtufin çervelle de bae ‘nt’u meximu vin",
+        "it": " frittura di pesciolini, bianco di Portofino cervelle di agnello nello stesso vino"
+      },
+      {
+        "testo": " lasagne da fiddià ai quattru tucchi paciûgu in aegruduse de lévre de cuppi.",
+        "it": " lasagne da tagliare ai quattro sughi pasticcio in agrodolce di lepre di tegole."
+      },
+      {
+        "testo": "E ‘nt’a barca du vin ghe naveghiemu ‘nsc’i scheuggi emigranti du rìe cu’i cioi ‘nt’i euggi ",
+        "it": "E nella barca del vino ci navigheremo sugli scogli emigranti della risata con i chiodi negli occhi "
+      },
+      {
+        "testo": "",
+        "it": ""
       }
     ]
   },
