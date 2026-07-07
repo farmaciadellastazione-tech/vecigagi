@@ -41,60 +41,133 @@
 
 const STORIE_DEFAULT = [
   {
-    id: "de-a1-ein-tag-im-park",
-    lingua: "de",
-    livello: "A1",
-    tema: "vita quotidiana",
-    titolo: { testo: "Ein Tag im Park", it: "Un giorno al parco" },
-    fonte: {
-      generato: "ai",
-      modello: "claude-sonnet-5",
-      note: "Testo generato per esercizio di lettura, calibrato su livello A1."
+    "id": "en-a1-nuova-storia",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Crêuza de mä",
+      "it": "Crêuza di mare"
     },
-    frasi: [
-      { testo: "Heute ist ein schöner Tag.", it: "Oggi è una bella giornata." },
-      { testo: "Anna geht mit ihrem Hund in den Park.", it: "Anna va al parco con il suo cane." },
-      { testo: "Der Hund heißt Bruno.", it: "Il cane si chiama Bruno." },
-      { testo: "Bruno läuft schnell zum Wasser.", it: "Bruno corre veloce verso l'acqua." },
-      { testo: "Anna lacht und setzt sich auf eine Bank.", it: "Anna ride e si siede su una panchina." },
-      { testo: "Am Ende gehen beide glücklich nach Hause.", it: "Alla fine tornano a casa entrambi felici." }
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "fabrizio de andre"
+    },
+    "frasi": [
+      {
+        "testo": "Crêuza de mä Umbre de muri muri de mainé dunde ne vegnì duve l’è ch’ané da ‘n scitu duve a l’ûn-a a se mustra nûa e a neutte a n’à puntou u cutellu ä gua e a muntä l’àse gh’é restou Diu u Diàu l’é in çë e u s’è gh’è faetu u nìu ne sciurtìmmu da u mä pe sciugà e osse da u Dria a a funtan-a di cumbi ‘nta cä de pria. E ‘nt’a cä de pria chi ghe saià int’à cä du Dria che u nu l’è mainà gente de Lûgan facce da mandillä qui che du luassu preferiscian l’ä figge de famiggia udù de bun che ti peu ammiàle senza u gundun. E a ‘ste panse veue cose che daià cose da beive, cose da mangiä frittûa de pigneu giancu de Purtufin çervelle de bae ‘nt’u meximu vin lasagne da fiddià ai quattru tucchi paciûgu in aegruduse de lévre de cuppi. E ‘nt’a barca du vin ghe naveghiemu ‘nsc’i scheuggi emigranti du rìe cu’i cioi ‘nt’i euggi finché u matin crescià da puéilu rechéugge frè di ganeuffeni e dè figge bacan d’a corda marsa d’aegua e de sä che a ne liga e a ne porta ‘nte ‘na creuza de mä.",
+        "it": "Creuza di mare Ombre di facce facce di marinai da dove venite dov’è che andate da un posto dove la luna si mostra nuda e la notte ci ha puntato il coltello alla gola e a montare l’asino c’è rimasto Dio il Diavolo è in cielo e ci si è fatto il nido usciamo dal mare per asciugare le ossa dall’Andrea alla fontana dei colombi nella casa di pietra. E nella casa di pietra chi ci sarà nella casa dell’Andrea che non è marinaio gente di Lugano facce da tagliaborse quelli che della spigola preferiscono l’ala ragazze di famiglia, odore di buono che puoi guardarle senza preservativo. E a queste pance vuote cosa gli darà cosa da bere, cosa da mangiare frittura di pesciolini, bianco di Portofino cervelle di agnello nello stesso vino lasagne da tagliare ai quattro sughi pasticcio in agrodolce di lepre di tegole. E nella barca del vino ci navigheremo sugli scogli emigranti della risata con i chiodi negli occhi finché il mattino crescerà da poterlo raccogliere fratello dei garofani e delle ragazze padrone della corda marcia d’acqua e di sale che ci lega e ci porta in una mulattiera di mare"
+      }
     ]
   },
   {
-    id: "en-a1-the-cat-and-the-milk",
-    lingua: "en",
-    livello: "A1",
-    tema: "vita quotidiana",
-    titolo: { testo: "The Cat and the Milk", it: "Il gatto e il latte" },
-    fonte: {
-      generato: "ai",
-      modello: "claude-sonnet-5",
-      note: "Testo generato per esercizio di lettura, calibrato su livello A1."
+    "id": "de-a1-ein-tag-im-park",
+    "lingua": "de",
+    "livello": "A1",
+    "tema": "vita quotidiana",
+    "titolo": {
+      "testo": "Ein Tag im Park",
+      "it": "Un giorno al parco"
     },
-    frasi: [
-      { testo: "There is a small white cat in the kitchen.", it: "C'è un gattino bianco in cucina." },
-      { testo: "Her name is Luna.", it: "Si chiama Luna." },
-      { testo: "Luna sees a glass of milk on the table.", it: "Luna vede un bicchiere di latte sul tavolo." },
-      { testo: "She jumps up and drinks it slowly.", it: "Salta sul tavolo e lo beve piano." },
-      { testo: "Then she falls asleep in the sun.", it: "Poi si addormenta al sole." }
+    "fonte": {
+      "generato": "ai",
+      "modello": "claude-sonnet-5",
+      "note": "Testo generato per esercizio di lettura, calibrato su livello A1."
+    },
+    "frasi": [
+      {
+        "testo": "Heute ist ein schöner Tag.",
+        "it": "Oggi è una bella giornata."
+      },
+      {
+        "testo": "Anna geht mit ihrem Hund in den Park.",
+        "it": "Anna va al parco con il suo cane."
+      },
+      {
+        "testo": "Der Hund heißt Bruno.",
+        "it": "Il cane si chiama Bruno."
+      },
+      {
+        "testo": "Bruno läuft schnell zum Wasser.",
+        "it": "Bruno corre veloce verso l'acqua."
+      },
+      {
+        "testo": "Anna lacht und setzt sich auf eine Bank.",
+        "it": "Anna ride e si siede su una panchina."
+      },
+      {
+        "testo": "Am Ende gehen beide glücklich nach Hause.",
+        "it": "Alla fine tornano a casa entrambi felici."
+      }
     ]
   },
   {
-    id: "de-a2-haenschen-klein",
-    lingua: "de",
-    livello: "A2",
-    tema: "canzone popolare",
-    titolo: { testo: "Hänschen klein", it: "Piccolo Hans" },
-    fonte: {
-      generato: "autentico",
-      autore: "Testo: Franz Wiedemann (1861); variante nota anche come Volkslied",
-      riferimento: "Canzone popolare tedesca tradizionale, ampiamente diffusa nel pubblico dominio",
-      licenza: "pubblico-dominio"
+    "id": "en-a1-the-cat-and-the-milk",
+    "lingua": "en",
+    "livello": "A1",
+    "tema": "vita quotidiana",
+    "titolo": {
+      "testo": "The Cat and the Milk",
+      "it": "Il gatto e il latte"
     },
-    frasi: [
-      { testo: "Hänschen klein ging allein in die weite Welt hinein.", it: "Il piccolo Hans se ne andò da solo nel grande mondo." },
-      { testo: "Stock und Hut steht ihm gut, ist ganz wohlgemut.", it: "Bastone e cappello gli stanno bene, è pieno di buonumore." },
-      { testo: "Aber Mutter weinet sehr, hat ja nun kein Hänschen mehr.", it: "Ma la madre piange molto, ora non ha più il suo piccolo Hans." }
+    "fonte": {
+      "generato": "ai",
+      "modello": "claude-sonnet-5",
+      "note": "Testo generato per esercizio di lettura, calibrato su livello A1."
+    },
+    "frasi": [
+      {
+        "testo": "There is a small white cat in the kitchen.",
+        "it": "C'è un gattino bianco in cucina."
+      },
+      {
+        "testo": "Her name is Luna.",
+        "it": "Si chiama Luna."
+      },
+      {
+        "testo": "Luna sees a glass of milk on the table.",
+        "it": "Luna vede un bicchiere di latte sul tavolo."
+      },
+      {
+        "testo": "She jumps up and drinks it slowly.",
+        "it": "Salta sul tavolo e lo beve piano."
+      },
+      {
+        "testo": "Then she falls asleep in the sun.",
+        "it": "Poi si addormenta al sole."
+      }
+    ]
+  },
+  {
+    "id": "de-a2-haenschen-klein",
+    "lingua": "de",
+    "livello": "A2",
+    "tema": "canzone popolare",
+    "titolo": {
+      "testo": "Hänschen klein",
+      "it": "Piccolo Hans"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "autore": "Testo: Franz Wiedemann (1861); variante nota anche come Volkslied",
+      "riferimento": "Canzone popolare tedesca tradizionale, ampiamente diffusa nel pubblico dominio",
+      "licenza": "pubblico-dominio"
+    },
+    "frasi": [
+      {
+        "testo": "Hänschen klein ging allein in die weite Welt hinein.",
+        "it": "Il piccolo Hans se ne andò da solo nel grande mondo."
+      },
+      {
+        "testo": "Stock und Hut steht ihm gut, ist ganz wohlgemut.",
+        "it": "Bastone e cappello gli stanno bene, è pieno di buonumore."
+      },
+      {
+        "testo": "Aber Mutter weinet sehr, hat ja nun kein Hänschen mehr.",
+        "it": "Ma la madre piange molto, ora non ha più il suo piccolo Hans."
+      }
     ]
   }
 ];
