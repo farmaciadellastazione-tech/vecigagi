@@ -261,6 +261,7 @@
   </style>
   <div id="root"></div>
   <script src="vocab.js"></script>
+  <script src="storie.js"></script>
   <script>
 const {
   useState,
@@ -7950,6 +7951,7 @@ function Home({
   const SBLOCCHI = {
     sceltamultipla: null,
     dettato: null,
+    letturaGuidata: null,
     allenamento: { tipo: "viste", soglia: 1 },
     voce: { tipo: "viste", soglia: 1 },
     ascolto: { tipo: "viste", soglia: 1 },
@@ -8028,6 +8030,15 @@ function Home({
     pastelborder: "border-cyan-800",
     pastelbadge: "bg-cyan-900",
     pasteltext: "text-cyan-300"
+  }, {
+    key: "letturaGuidata",
+    title: "Lettura guidata",
+    desc: "📖 Storie brevi con audio e traduzione, frase per frase",
+    lv: "Lv 0",
+    pastelbg: "bg-emerald-950",
+    pastelborder: "border-emerald-800",
+    pastelbadge: "bg-emerald-900",
+    pasteltext: "text-emerald-300"
   }, {
     key: "nonstop",
     title: t.nonstop,
@@ -8413,6 +8424,7 @@ function Home({
       voce: "🎤",
       ascolto: "🎧",
       fraseLibera: "🤖",
+      letturaGuidata: "📖",
       sceltamultipla: "🎯",
       nonstop: "⚡",
       quiz: "🏆"
@@ -10019,6 +10031,134 @@ Reply in ${userLangName}.`;
     className: "flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2.5 rounded-xl text-sm transition btn-shadow"
   }, "Nuova \u2192"))));
 }
+// Modalit\u00e0 "Lettura guidata": storie brevi (STORIE_DEFAULT, vedi storie.js) navigabili
+// frase per frase. Tap sulla card = mostra/nasconde la traduzione; bottoni = avanti/indietro.
+// Nessuna chiamata AI qui: domande di comprensione e spiegazioni parola-per-parola sono
+// un'estensione futura, non fanno parte di questa prima versione.
+function SchermataLetturaGuidata({
+  lingue,
+  onHome
+}) {
+  const [storiaSel, setStoriaSel] = useState(null);
+  const [idxFrase, setIdxFrase] = useState(0);
+  const [showTrad, setShowTrad] = useState(false);
+  const lingueAttive = lingue.filter(l => l.attiva);
+  const storieDisponibili = STORIE_DEFAULT.filter(s => lingueAttive.some(l => l.codice === s.lingua));
+  function scegliStoria(s) {
+    setStoriaSel(s);
+    setIdxFrase(0);
+    setShowTrad(false);
+  }
+  function tornaLista() {
+    setStoriaSel(null);
+    setIdxFrase(0);
+    setShowTrad(false);
+  }
+  function vai(delta) {
+    const next = idxFrase + delta;
+    if (!storiaSel || next < 0 || next >= storiaSel.frasi.length) return;
+    setIdxFrase(next);
+    setShowTrad(false);
+  }
+  function badgeFonte(s) {
+    const isAI = s.fonte?.generato === "ai";
+    return React.createElement("span", {
+      className: `text-xs font-semibold px-1.5 py-0.5 rounded-full border ${isAI ? "bg-amber-950 border-amber-800 text-amber-500" : "bg-teal-950 border-teal-800 text-teal-300"}`,
+      title: isAI ? (s.fonte.note || "Testo generato dall'IA") : [s.fonte.autore, s.fonte.riferimento].filter(Boolean).join(" \u2014 ")
+    }, isAI ? "\ud83e\udd16 Testo generato" : "\ud83d\udcdc Fonte autentica");
+  }
+  if (!storiaSel) {
+    return React.createElement("div", {
+      className: "min-h-screen bg-black p-4 md:p-8"
+    }, React.createElement("div", {
+      className: "max-w-xl mx-auto"
+    }, React.createElement("div", {
+      className: "flex items-center justify-between mb-6"
+    }, React.createElement("button", {
+      onClick: onHome,
+      className: "text-zinc-500 hover:text-white transition text-sm"
+    }, "\u2190 Home"), React.createElement("span", {
+      className: "text-zinc-600 text-xs"
+    }, "\ud83d\udcd6 Lettura guidata")), React.createElement("h2", {
+      className: "text-xl font-bold text-white mb-1"
+    }, "Scegli una storia"), React.createElement("p", {
+      className: "text-sm text-slate-400 mb-5"
+    }, "Leggi un breve testo, ascoltalo e scopri la traduzione frase per frase."), storieDisponibili.length === 0 ? React.createElement("div", {
+      className: "card p-6 text-center"
+    }, React.createElement("p", {
+      className: "text-zinc-400 text-sm"
+    }, "Attiva Inglese o Tedesco tra le lingue per usare la Lettura guidata.")) : React.createElement("div", {
+      className: "flex flex-col gap-3"
+    }, storieDisponibili.map(s => {
+      const lng = lingue.find(l => l.codice === s.lingua);
+      return React.createElement("button", {
+        key: s.id,
+        onClick: () => scegliStoria(s),
+        className: "w-full text-left rounded-2xl border-2 border-zinc-800 bg-zinc-900 hover:border-zinc-600 transition p-4"
+      }, React.createElement("div", {
+        className: "flex items-center justify-between mb-1"
+      }, React.createElement("span", {
+        className: "font-bold text-white"
+      }, lng?.bandiera, " ", s.titolo.testo), React.createElement("span", {
+        className: "text-xs font-bold px-1.5 py-0.5 rounded-full bg-zinc-800 text-zinc-400"
+      }, s.livello)), React.createElement("p", {
+        className: "text-sm text-slate-400 mb-2"
+      }, s.titolo.it), badgeFonte(s));
+    }))));
+  }
+  const frase = storiaSel.frasi[idxFrase];
+  const lng = lingue.find(l => l.codice === storiaSel.lingua);
+  const isUltima = idxFrase === storiaSel.frasi.length - 1;
+  return React.createElement("div", {
+    className: "min-h-screen bg-black flex flex-col p-4",
+    style: { paddingBottom: "80px" }
+  }, React.createElement("div", {
+    className: "flex items-center justify-between mb-4"
+  }, React.createElement("button", {
+    onClick: tornaLista,
+    className: "text-zinc-500 hover:text-white transition text-sm"
+  }, "\u2190 Storie"), React.createElement("span", {
+    className: "text-zinc-600 text-xs"
+  }, lng?.bandiera, " ", storiaSel.titolo.testo), React.createElement("button", {
+    onClick: onHome,
+    className: "text-zinc-500 hover:text-white transition text-sm"
+  }, "Home")), React.createElement("div", {
+    className: "flex items-center justify-between mb-2"
+  }, badgeFonte(storiaSel), React.createElement("span", {
+    className: "text-xs text-zinc-500"
+  }, idxFrase + 1, " / ", storiaSel.frasi.length)), React.createElement("div", {
+    className: "h-1 bg-zinc-800 rounded-full overflow-hidden mb-4"
+  }, React.createElement("div", {
+    className: "h-full bg-sky-500 rounded-full transition-all",
+    style: { width: `${(idxFrase + 1) / storiaSel.frasi.length * 100}%` }
+  })), React.createElement("div", {
+    onClick: () => setShowTrad(v => !v),
+    className: "flex-1 card p-6 flex flex-col items-center justify-center text-center cursor-pointer select-none"
+  }, React.createElement("p", {
+    className: "text-2xl font-bold text-white leading-relaxed mb-4"
+  }, formaDisplay(frase.testo, storiaSel.lingua)), lng && React.createElement(BtnAudio, {
+    testo: formaTTS(frase.testo),
+    bcp47: lng.bcp47,
+    codice: lng.codice,
+    size: "text-2xl"
+  }), React.createElement("p", {
+    className: `text-base text-amber-300 mt-4 transition ${showTrad ? "opacity-100" : "opacity-0"}`
+  }, showTrad ? frase.it : "\u00a0"), !showTrad && React.createElement("p", {
+    className: "text-xs text-zinc-600 mt-2"
+  }, "Tocca per la traduzione")), React.createElement("div", {
+    className: "flex gap-2 mt-4"
+  }, React.createElement("button", {
+    onClick: () => vai(-1),
+    disabled: idxFrase === 0,
+    className: `flex-1 font-bold py-3 rounded-xl transition text-sm ${idxFrase === 0 ? "bg-zinc-900 text-zinc-700 cursor-not-allowed" : "bg-zinc-800 text-white hover:bg-zinc-700"}`
+  }, "\u2190 Precedente"), isUltima ? React.createElement("button", {
+    onClick: tornaLista,
+    className: "flex-1 bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 rounded-xl text-sm transition btn-shadow"
+  }, "Fine \u2713") : React.createElement("button", {
+    onClick: () => vai(1),
+    className: "flex-1 bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 rounded-xl text-sm transition btn-shadow"
+  }, "Successiva \u2192")));
+}
 function SchermataQuiz({
   carta,
   indice,
@@ -11045,6 +11185,10 @@ function App() {
       setSchermata("sceltamultipla");
       return;
     }
+    if (mod === "letturaGuidata") {
+      setSchermata("letturaGuidata");
+      return;
+    }
     setModalita(mod);
     setModalitaInAttesa(mod);
     setConfigurando(true);
@@ -11287,6 +11431,10 @@ function App() {
     lingue: lingue,
     filtri: filtri,
     aiSettings: aiSettings,
+    onHome: () => setSchermata("home")
+  });
+  if (schermata === "letturaGuidata") return /*#__PURE__*/React.createElement(SchermataLetturaGuidata, {
+    lingue: lingue,
     onHome: () => setSchermata("home")
   });
   if (schermata === "impostazioniAI") return /*#__PURE__*/React.createElement(ImpostazioniAI, {
