@@ -1965,6 +1965,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"pronome", livello:"A1", it:"io", en:"I", sp:"me", mn:"më", ge:"mi", ro:"eu" },
       { tema:"pronome", livello:"A1", it:"voi", en:"you", sp:"voiaotri, voi", mn:"vàutri", ge:"viatri|voiatri", ro:"voi" },
       { tema:"cibo", livello:"A1", it:"menù", en:"menu", sp:"menù", mn:"menù", ge:"menù", ro:"meniu", verif:"mn:g,sp:g,ge:g" },
       { tema:"pronome", livello:"A1", it:"noi", en:"we", sp:"noi, noiàotri", mn:"nuautri", ge:" gniatri/niatri", ro:"noi" },
@@ -2311,9 +2312,9 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"cadere", en:"fall", fr:"tomber", es:"caer", de:"fallen", pt:"cair", ru:"падать", ca:"caure", sp:"caìhe/caie", mn:"kaiiì/caii", verif:"sp:g,mn:g" },
       { tema:"dialetti", it:"cadere.", sp:"caìhe/caìe", mn:"kaiiì/caii", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"caduto.", sp:"caìto", mn:"càitu", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
-      { tema:"cibo", it:"caffe", sp:"cafè", mn:"kafeéh/café", cr:"cafe", src:{"sp":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"sp:g,cr:g,mn:g" },
+      { tema:"cibo", livello:"A1", it:"caffe", en:"coffee", sp:"cafè", mn:"kafeéh/café", cr:"cafe", ge:"cafè", src:{"sp":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"sp:g,cr:g,mn:g,ge:g", ro:"cafea" },
       { it:"caffè", mn:"café", cr:"cafè", ro:"cafea", verif:"mn:g" },
-      { tema:"dialetti", it:"caffettiera.", sp:"cafetèa", mn:"càfétiéa", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
+      { tema:"dialetti", livello:"A2", it:"caffettiera.", en:"coffee maker", sp:"cafetèa", mn:"càfétiéa", ge:"cafettea", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g", ro:"cafetieră" },
       { tema:"insulti", livello:"B2", it:"cagare", en:"to shit", fr:"chier", es:"cagar", de:"scheißen", pt:"cagar", ru:"говно", ca:"cagar", sp:"cagàaee/cagàe", mn:"cagaa", cr:"cagà", ge:"cagâ", ko:"똥", ar:"قذارة", zh:"拉屎", ja:"うんこ", ia:"merda", la:"stercus", grc:"σκατά", ro:"a căca", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialetti", it:"cagnetto", sp:"cagneto", mn:"càgnetu", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"cagone", sp:"cagón", mn:"cagùn", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
@@ -2648,7 +2649,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A1", it:"Dove fa male?", en:"Where does it hurt?", fr:"Où avez-vous mal?", es:"¿Dónde le duele?", de:"Wo tut es weh?", pt:"Onde dói?|Onde doi?", ko:"어디가 아프세요?", ar:"أين يؤلمك؟", zh:"哪里疼？", ja:"どこが痛いですか？", ia:"Ubi il face mal?", nt:["mn"] },
       { tema:"dialogo", livello:"A2", it:"due volte", en:"twice", fr:"deux fois", es:"dos veces", de:"zweimal", pt:"duas vezes", ru:"дважды", ca:"dues vegades", nt:["mn"] },
       { tema:"istruzioni", livello:"A2", it:"due volte al giorno", en:"twice a day", fr:"deux fois par jour", es:"dos veces al día", de:"zweimal täglich", pt:"duas vezes ao dia", ko:"하루 두 번", ar:"مرتين يومياً", zh:"每天两次", ja:"1日2回", nt:["mn"] },
-      { tema:"numeri", livello:"A1", it:"due|2", en:"two", fr:"deux", es:"dos", de:"zwei", pt:"dois", ru:"два", ca:"dos", sp:"doi, doa", mn:"dui |", cr:"Do", ge:"doî | dôe", ko:"이", ar:"اثنان", zh:"二", ja:"二", ia:"duo", la:"duo", grc:"δύο", ro:"doi", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"numeri", livello:"A1", it:"due|2", en:"two", fr:"deux", es:"dos", de:"zwei", pt:"dois", ru:"два", ca:"dos", sp:"doi, doa", mn:"dui | due", cr:"Do", ge:"doî | dôe", ko:"이", ar:"اثنان", zh:"二", ja:"二", ia:"duo", la:"duo", grc:"δύο", ro:"doi, doua", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g,sp:g" },
       { tema:"numeri", livello:"A1", it:"duecento|200", en:"two hundred", ru:"двести", sp:"doisento|200", mn:"duisentu|200", verif:"mn:g,sp:g" },
       { tema:"dialogo", livello:"A2", it:"durante", en:"during", fr:"pendant", es:"durante", de:"während", pt:"durante", ru:"во время", ca:"durant", mn:"duàn't'e/düànte", verif:"mn:g" },
       { tema:"verbi", it:"durare", sp:"düa'e/düae", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
@@ -2815,7 +2816,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"giocare", en:"play", fr:"jouer", es:"jugar", de:"spielen", pt:"jogar", ru:"играть", ca:"jugar", sp:"zügae", mn:"zügaa", ko:"놀다", ar:"يلعب", zh:"玩", ja:"遊ぶ", ia:"jocar", la:"ludere", grc:"παίζειν", verif:"sp:g,mn:g" },
       { tema:"verbi", livello:"A1", it:"giocare|suonare", en:"play", fr:"jouer", es:"jugar|tocar", de:"spielen", pt:"jogar|tocar", ru:"играть", ca:"jugar|tocar", sp:"sügae,trepae,trepesae/zügae,trepae,trepezae", mn:"zügaa", verif:"mn:g" },
       { tema:"dialogo", livello:"A1", it:"gioco/partita", en:"game", fr:"jeu|match", es:"juego", de:"Spiel", pt:"jogo", ru:"игра", ca:"joc", sp:"zègo", mn:"zegu/zégu", verif:"mn:g" },
-      { tema:"dialogo", livello:"A2", it:"giornale", en:"newspaper", fr:"journal", es:"periódico", de:"Zeitung", pt:"jornal", ru:"газета", ca:"diari", nt:["sp"] },
+      { tema:"dialogo", livello:"A2", it:"giornale", en:"newspaper", fr:"journal", es:"periódico", de:"Zeitung", pt:"jornal", ru:"газета", ca:"diari", ge:"giurnaale/giornale", ro:"ziar" },
       { tema:"mestieri", livello:"A2", it:"giornalista", en:"journalist", fr:"journaliste", es:"periodista", de:"Journalist", pt:"jornalista", ru:"журналист", ca:"periodista", ko:"기자", ar:"صحفي", zh:"记者", ja:"ジャーナリスト", ia:"journalista", la:"diurnarius", grc:"δημοσιογράφος", nt:["mn"] },
       { it:"giorno", sp:"giorno", cr:"dì / zornata", verif:"sp:g" },
       { tema:"aggettivi", livello:"A1", it:"giovane", en:"young", fr:"jeune", es:"joven", de:"jung", pt:"jovem", ru:"молодой", ca:"jove", sp:"dzove,zòvena/zove,zovena", mn:"zuén| zuéna", cr:"zov'n", ge:"zóèno|zóvena|zóveno", verif:"mn:g,sp:g" },
@@ -2930,7 +2931,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"animali", livello:"B1", it:"libellula", en:"dragonfly", fr:"libellule", es:"libélula", de:"Libelle", pt:"libélula|libelula", sp:"libèrboa|carcasùco |massaprete| cavaòci", ia:"libellula", verif:"sp:g" },
       { tema:"aggettivi", livello:"A1", it:"libero", en:"free", fr:"libre", es:"libre", de:"frei", pt:"livre", ru:"свободный", ca:"lliure", sp:"libeo", mn:"lìbehu/libeu", ko:"자유로운", ar:"حر", zh:"自由", ja:"自由な", ia:"libere", la:"liber", grc:"ἐλεύθερος", verif:"mn:g" },
       { tema:"luoghi", livello:"A1", it:"libertà", en:"freedom", fr:"liberté", es:"libertad", de:"Freiheit", pt:"liberdade", ru:"свобода", ca:"llibertat", ko:"자유", ar:"حرية", zh:"自由", ja:"自由", ia:"libertate", la:"libertas", grc:"ἐλευθερία" },
-      { tema:"luoghi", livello:"A1", it:"libro", en:"book", fr:"livre", es:"libro", de:"Buch", pt:"livro", ru:"книга", ca:"llibre", mn:"lìbehu/libéu", cr:"libr", ko:"책", ar:"كتاب", zh:"书", ja:"本", ia:"libro", la:"liber", grc:"βιβλίον", verif:"mn:g" },
+      { tema:"luoghi", livello:"A1", it:"libro", en:"book", fr:"livre", es:"libro", de:"Buch", pt:"livro", ru:"книга", ca:"llibre", sp:"libro", mn:"lìbehu/libéu", cr:"libr", ge:"libru/libbro", ko:"책", ar:"كتاب", zh:"书", ja:"本", ia:"libro", la:"liber", grc:"βιβλίον", verif:"mn:g,sp:g,ge:g", ro:"carte" },
       { tema:"cibo", livello:"A1", it:"limone", en:"lemon", fr:"citron", es:"limón", de:"Zitrone", pt:"limão|limao", ru:"лимон", ca:"llimona", sp:"limon", mn:"limùn", ko:"레몬", ar:"ليمون", zh:"柠檬", ja:"レモン", ia:"limon", la:"citrus", grc:"λεμόνι", ro:"lămâie", verif:"mn:g" },
       { tema:"luoghi", livello:"A2", it:"lingua", en:"language", fr:"langue", es:"idioma", de:"Sprache", pt:"língua|lingua", ru:"язык", ca:"llengua", sp:"léngoa", mn:"lëngua", cr:"lengua", ko:"언어", ar:"لغة", zh:"语言", ja:"言語", ia:"lingua", la:"lingua", grc:"γλῶσσα", verif:"mn:g" },
       { tema:"animali", livello:"B1", it:"lucciola", en:"firefly", fr:"luciole", es:"luciérnaga", de:"Glühwürmchen", pt:"vaga-lume", sp:"nìssoa,lùsséga , scorlùssoa/nissoa, lüsséga, scorlüssoa", cr:"luzche", verif:"sp:g" },
@@ -3595,7 +3596,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A2", it:"umido", en:"humid", fr:"humide", es:"húmedo", de:"feucht", pt:"úmido|umido", ru:"влажный", ca:"humit", sp:"üùmeo/ümeo", mn:"ümédu", ko:"습한", ar:"رطب", zh:"潮湿", ja:"湿気", ia:"humide", la:"umidus", grc:"ὑγρός", verif:"sp:g,mn:g" },
       { tema:"dialetti", livello:"A2", it:"umile, modesto", sp:"ùmeo/ümeo", mn:"ümile/ümile", verif:"mn:g,sp:g" },
       { tema:"dialetti", livello:"A2", it:"umiliare", mn:"umigliaaa/ùmigliaa", verif:"mn:g" },
-      { tema:"cibo", livello:"A1", it:"un bicchier d'acqua", sp:"ün goto d'àigoa", mn:"ün gòtu d'aigua", ge:"ün gòto d'ægoa", src:{"mn":"🤖 IA"}, verif:"mn:g" },
+      { tema:"cibo", livello:"A1", it:"un bicchier d'acqua", en:"glass of water", sp:"ün goto d'àigoa", mn:"ün gòtu d'aigua", ge:"ün gòto d'ægoa", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"pahar de apă" },
       { tema:"saluti", livello:"A1", it:"un caffé per piacere", sp:"ün cafè pe' piasée", mn:"ün café per piasee/ün café per piazëë", ge:"ün caffè pe' piaxei", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"cibo", livello:"A2", it:"un calice di vino bianco", ru:"бокал белого вина", ca:"un got de vi blanc", sp:"ün goto de vin gianco", mn:"ün gotu de vin giancu", ge:"ün goto de vin gianco", ro:"un pahar de vin alb", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"cibo", livello:"A1", it:"un cappuccino", ru:"капучино", ca:"un caputxino", ro:"un cappuccino" },
@@ -3723,7 +3724,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 404;
+const VOC_VERSION = 405;
 
 // Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
 function mergeVocabolario(salvato) {
