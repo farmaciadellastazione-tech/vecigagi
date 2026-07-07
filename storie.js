@@ -147,6 +147,81 @@ const STORIE_DEFAULT = [
         "it": "Ma la madre piange molto, ora non ha più il suo piccolo Hans."
       }
     ]
+  },
+  {
+    "id": "sp-b1-nfra-tute-e-sita",
+    "lingua": "sp",
+    "livello": "B1",
+    "tema": "poesia",
+    "titolo": {
+      "testo": "'Nfra tüte e sità de l'üniverso",
+      "it": "Tra tutte le città dell'universo"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "autore": "Ubaldo Mazzini (\"Gamin\"), 1868-1923",
+      "riferimento": "Poesie in vernacolo, a cura di P.E. Faggioni, Cassa di Risparmio della Spezia, 1989",
+      "licenza": "pubblico-dominio (autore deceduto nel 1923, oltre 70 anni)",
+      "note": "Titolo non attestato: uso il primo verso, come da convenzione per componimenti senza titolo proprio noto."
+    },
+    "frasi": [
+      {
+        "testo": "'Nfra tüte e sità de l'üniverso",
+        "it": "Tra tutte le città dell'universo"
+      },
+      {
+        "testo": "me a credo che paege né ghe 'n sia;",
+        "it": "io credo non ve ne siano di pari"
+      },
+      {
+        "testo": "mia propio die che Cristo i agia perso,",
+        "it": "bisogna proprio dire che Cristo abbia perso,"
+      },
+      {
+        "testo": "dopo d'avela fabricà, a magìa!",
+        "it": "dopo averla creata, la magia!"
+      },
+      {
+        "testo": "Bela l'è bela, la la veda 'n guerso!",
+        "it": "Bella è bella, lo vede un cieco!"
+      },
+      {
+        "testo": "E ho sentì a die che per quanto se zia",
+        "it": "e ho sentito dire che per quanto si giri"
+      },
+      {
+        "testo": "er mondo 'n lüngo, e 'n largo, ne gh'è verso!",
+        "it": "il mondo in lungo e in largo, non c'è verso!"
+      },
+      {
+        "testo": "En gorfo cossì beo i ne s'amìa.",
+        "it": "Un golfo così bello non si ammira."
+      },
+      {
+        "testo": "Ma a ciü belessa bela e sorprendente",
+        "it": "Ma la bellezza più bella e sorprendente"
+      },
+      {
+        "testo": "l'è che se gh'è 'n spezin ch'agia 'nt'a testa",
+        "it": "è che se c'è uno spezzino che ha nella testa"
+      },
+      {
+        "testo": "doi ünse de criteio e de talento",
+        "it": "due once di criterio e di talento"
+      },
+      {
+        "testo": "I 'o schivo tüti, e i ne 'r consideo gnente;",
+        "it": "Lo schivano tutti e non lo considerano niente"
+      },
+      {
+        "testo": "ma se ven n'ase chi daa cà dea pesta",
+        "it": "ma se viene un asino qui da casa del diavolo"
+      },
+      {
+        "testo": "i' en capaci de faghe 'r monümento.",
+        "it": "sono capaci di fargli il monumento."
+      }
+    ]
   }
 ];
 
