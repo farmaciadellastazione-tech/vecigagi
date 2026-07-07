@@ -183,6 +183,37 @@ function eliminaStoria(id) {
   render();
 }
 
+// Rimuove la storia da STORIE_DEFAULT (effettivo solo dopo "☁️ Salva su GitHub") e la
+// scarica come JSON pronto per l'import in index.html → Lettura guidata → "⬆️ Importa",
+// così resta disponibile come testo privato solo sul browser di chi la importa. È l'unico
+// modo per renderla davvero privata: il repo è pubblico, quindi finché resta in
+// STORIE_DEFAULT chiunque può leggerla.
+function rendiPrivata(id) {
+  const s = storie.find(s => s.id === id);
+  if (!s) return;
+  if (!confirm(`Rendere privata "${s.titolo?.testo || id}"?\n\nVerrà rimossa da qui (serve poi "☁️ Salva su GitHub" per rendere effettiva la rimozione) e scaricata come file JSON da importare in index.html → Lettura guidata → "⬆️ Importa".`)) return;
+  const privata = {
+    id: s.id,
+    lingua: s.lingua,
+    livello: s.livello,
+    tema: s.tema,
+    titolo: s.titolo,
+    fonte: { generato: 'privato', note: `Resa privata da pubblica il ${new Date().toISOString().slice(0, 10)}.` },
+    frasi: s.frasi
+  };
+  const blob = new Blob([JSON.stringify([privata], null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `storia-privata-${s.id}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  storie = storie.filter(s => s.id !== id);
+  newIds.delete(id); modifiedIds.delete(id); openIds.delete(id);
+  render();
+  setHelp(`🔒 "${escapeHtml(privata.titolo?.testo || id)}" rimossa da qui e scaricata come JSON. Importala in index.html → Lettura guidata, poi clicca "☁️ Salva su GitHub" qui per rendere effettiva la rimozione dal sito pubblico.`, 'info');
+}
+
 function segnaModificata(id) {
   if (!newIds.has(id)) modifiedIds.add(id);
 }
@@ -315,6 +346,7 @@ function renderCard(s) {
         <button class="btn" style="margin-top:0.4rem" onclick="aggiungiFrase('${s.id}')">➕ Aggiungi frase</button>
       </fieldset>
       <div class="card-actions">
+        <button class="btn" onclick="rendiPrivata('${s.id}')">🔒 Rendi privata</button>
         <button class="btn btn-danger" onclick="eliminaStoria('${s.id}')">🗑 Elimina storia</button>
       </div>
     </div>

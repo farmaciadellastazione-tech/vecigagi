@@ -3726,6 +3726,44 @@ const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 const SK_CANDIDATI_LG = "qml_v1_candidati_lg"; // parole spiegate dall'AI in Lettura guidata, assenti dal vocabolario — in attesa di revisione
 const SK_STORIE_PRIVATE = "qml_v1_storie_private"; // testi privati (eventualmente protetti da copyright) caricati SOLO in questo browser, mai committati
 
+// Pubblicazione di una storia privata → STORIE_DEFAULT su GitHub (storie.js): stessa
+// infrastruttura di scrittura di edit-storie.html, stesso token admin (già presente in
+// questo browser se è stato usato edit.html/edit-storie.html/dialetti.html). Il bottone
+// "Pubblica" compare solo se il token è già salvato: nessun nuovo modo per un utente
+// qualunque di scrivere su GitHub.
+const GH_OWNER_STORIE = "farmaciadellastazione-tech";
+const GH_REPO_STORIE = "vecigagi";
+const GH_BRANCH_STORIE = "main";
+const GH_PATH_STORIE = "storie.js";
+const GH_TOKEN_KEY = "gh_pat_vecigagi"; // stesso token usato da edit.html/edit-storie.html/dialetti.html
+const STORIE_BLOCK_START_RE = /^\s*const STORIE_DEFAULT = \[/m;
+function trovaBloccoArrayStorie(src) {
+  const m = STORIE_BLOCK_START_RE.exec(src);
+  if (!m) return null;
+  const start = m.index + m[0].length;
+  let depth = 1, i = start, inStr = false, esc = false, q = null;
+  while (i < src.length) {
+    const c = src[i];
+    if (inStr) { if (esc) esc = false; else if (c === "\\") esc = true; else if (c === q) inStr = false; }
+    else { if (c === '"' || c === "'") { inStr = true; q = c; } else if (c === "[") depth++; else if (c === "]") { depth--; if (depth === 0) break; } }
+    i++;
+  }
+  if (depth !== 0) throw new Error("Parentesi quadre non bilanciate in STORIE_DEFAULT");
+  return { start, end: i };
+}
+function b64ToUtf8(b64) {
+  const bin = atob(b64.replace(/\n/g, ""));
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder("utf-8").decode(bytes);
+}
+function utf8ToB64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = "";
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
+}
+
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
 const VOC_VERSION = 405;
 
@@ -10074,8 +10112,10 @@ function SchermataLetturaGuidata({
   const [formTesto, setFormTesto] = useState("");
   const [formTraduzione, setFormTraduzione] = useState("");
   const [traducendo, setTraducendo] = useState(false);
+  const [pubblicandoId, setPubblicandoId] = useState(null);
   const fileInputRef = useRef(null);
   const hasKey = (aiSettings?.apiKey || "").length > 10;
+  const hasAdminToken = !!localStorage.getItem(GH_TOKEN_KEY);
   const lingueAttive = lingue.filter(l => l.attiva);
   const storieDisponibili = [
     ...STORIE_DEFAULT.filter(s => lingueAttive.some(l => l.codice === s.lingua)),
@@ -10177,6 +10217,70 @@ function SchermataLetturaGuidata({
       saveJSON(SK_STORIE_PRIVATE, next);
       return next;
     });
+  }
+  // Pubblica una storia privata su GitHub (STORIE_DEFAULT in storie.js, branch main):
+  // da quel momento è visibile a tutti gli utenti del sito, quindi va usata solo per testi
+  // di cui si hanno i diritti (il punto di essere "privata" era proprio l'eventuale copyright).
+  // Visibile solo se in questo browser è già salvato il token admin GitHub (stesso di
+  // edit.html/edit-storie.html/dialetti.html): non introduce un nuovo modo di scrivere su
+  // GitHub per un utente qualunque.
+  async function pubblicaStoriaPrivata(s) {
+    const token = localStorage.getItem(GH_TOKEN_KEY);
+    if (!token) {
+      alert("Nessun token GitHub salvato in questo browser. Configuralo da edit-storie.html.");
+      return;
+    }
+    if (!confirm(`Pubblicare "${s.titolo?.testo}" su GitHub (storie.js, branch "${GH_BRANCH_STORIE}")?\n\nDiventerà visibile a tutti gli utenti del sito e sarà rimossa dai testi privati di questo browser.\n\n⚠️ Pubblicala solo se hai i diritti sul testo o è di pubblico dominio: è per questo che era privata.`)) return;
+    setPubblicandoId(s.id);
+    try {
+      const apiBase = `https://api.github.com/repos/${GH_OWNER_STORIE}/${GH_REPO_STORIE}/contents/${GH_PATH_STORIE}`;
+      const headers = { Authorization: "Bearer " + token, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" };
+      const getRes = await fetch(apiBase + "?ref=" + GH_BRANCH_STORIE, { headers });
+      if (!getRes.ok) {
+        if (getRes.status === 401 && confirm("Token GitHub rifiutato. Cancello quello salvato?")) localStorage.removeItem(GH_TOKEN_KEY);
+        throw new Error("GET fallito (" + getRes.status + ")");
+      }
+      const meta = await getRes.json();
+      const src = b64ToUtf8(meta.content);
+      const blocco = trovaBloccoArrayStorie(src);
+      if (!blocco) throw new Error('Marcatore "const STORIE_DEFAULT = [" non trovato in storie.js');
+      const storiaPubblica = {
+        id: s.id,
+        lingua: s.lingua,
+        livello: s.livello,
+        tema: s.tema,
+        titolo: s.titolo,
+        fonte: { generato: "autentico", autore: "", riferimento: "", licenza: "" },
+        frasi: s.frasi
+      };
+      const corpoEsistente = src.slice(blocco.start, blocco.end);
+      const separatore = corpoEsistente.trim().length ? ",\n" : "\n";
+      const nuovaVoce = "  " + JSON.stringify(storiaPubblica, null, 2).replace(/\n/g, "\n  ") + "\n";
+      const nuovoSrc = src.slice(0, blocco.start) + corpoEsistente + separatore + nuovaVoce + src.slice(blocco.end);
+      const putRes = await fetch(apiBase, {
+        method: "PUT",
+        headers: { ...headers, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: `Pubblica storia "${s.id}" da Lettura guidata`,
+          content: utf8ToB64(nuovoSrc),
+          branch: GH_BRANCH_STORIE,
+          sha: meta.sha
+        })
+      });
+      if (!putRes.ok) {
+        if (putRes.status === 401 && confirm("Token GitHub rifiutato. Cancello quello salvato?")) localStorage.removeItem(GH_TOKEN_KEY);
+        throw new Error("PUT fallito (" + putRes.status + ")");
+      }
+      setStoriePrivate(prev => {
+        const next = prev.filter(x => x.id !== s.id);
+        saveJSON(SK_STORIE_PRIVATE, next);
+        return next;
+      });
+      alert("✅ Pubblicata! GitHub Pages aggiornerà tra 1-2 minuti.\nVai su edit-storie.html per completare i dati della fonte (autore, riferimento, licenza).");
+    } catch (e) {
+      alert("Errore nella pubblicazione: " + e.message);
+    }
+    setPubblicandoId(null);
   }
   // Esporta/importa i testi privati come file JSON: restano client-side (nessun
   // upload), l'utente li salva dove vuole (anche su una chiavetta) per backup o
@@ -10369,10 +10473,16 @@ function SchermataLetturaGuidata({
         className: "text-sm text-slate-400 mb-2"
       }, s.titolo.it), React.createElement("div", {
         className: "flex items-center justify-between"
-      }, badgeFonte(s), isPrivata && React.createElement("button", {
+      }, badgeFonte(s), isPrivata && React.createElement("div", {
+        className: "flex items-center gap-3"
+      }, hasAdminToken && React.createElement("button", {
+        onClick: e => { e.stopPropagation(); pubblicaStoriaPrivata(s); },
+        disabled: pubblicandoId === s.id,
+        className: "text-xs text-zinc-600 hover:text-teal-400 transition disabled:opacity-50"
+      }, pubblicandoId === s.id ? "⏳ Pubblico..." : "📤 Pubblica"), React.createElement("button", {
         onClick: e => { e.stopPropagation(); eliminaStoriaPrivata(s.id); },
         className: "text-xs text-zinc-600 hover:text-red-400 transition"
-      }, "🗑 Elimina")));
+      }, "🗑 Elimina"))));
     })), renderFormPrivata(), candidatiLG.length > 0 && React.createElement("div", {
       className: "mt-6"
     }, React.createElement("button", {
