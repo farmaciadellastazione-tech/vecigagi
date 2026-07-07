@@ -57,8 +57,8 @@ const STORIE_DEFAULT = [
     },
     "frasi": [
       {
-        "testo": " Umbre de muri muri de mainé dunde ne vegnì duve l’è ch’ané    finché u matin crescià da puéilu rechéugge frè di ganeuffeni e dè figge bacan d’a corda marsa d’aegua e de sä che a ne liga e a ne porta ‘nte ‘na creuza de mä.",
-        "it": "Ombre di facce facce di marinai da dove venite dov’è che andate      finché il mattino crescerà da poterlo raccogliere fratello dei garofani e delle ragazze padrone della corda marcia d’acqua e di sale che ci lega e ci porta in una mulattiera di mare"
+        "testo": " Umbre de muri muri de mainé dunde ne vegnì duve l’è ch’ané    ",
+        "it": "Ombre di facce facce di marinai da dove venite dov’è che andate       "
       },
       {
         "testo": "da ‘n scitu duve a l’ûn-a a se mustra nûa e a neutte a n’à puntou u cutellu ä gua ",
@@ -77,7 +77,7 @@ const STORIE_DEFAULT = [
         "it": "E nella casa di pietra chi ci sarà nella casa dell’Andrea che non è marinaio "
       },
       {
-        "testo": "gente de Lûgan facce da mandillä qui che du luassu preferiscian l’ä",
+        "testo": "gente de Lûgan facce da mandillä quei che du luassu preferiscian l’ä",
         "it": "gente di Lugano facce da tagliaborse quelli che della spigola preferiscono l’ala"
       },
       {
@@ -101,8 +101,12 @@ const STORIE_DEFAULT = [
         "it": "E nella barca del vino ci navigheremo sugli scogli emigranti della risata con i chiodi negli occhi "
       },
       {
-        "testo": "",
-        "it": ""
+        "testo": " finché u matin crescià da puéilu rechéugge frè di ganeuffeni e dè figge",
+        "it": "finché il mattino crescerà da poterlo raccogliere  fratello dei garofani e delle ragazze"
+      },
+      {
+        "testo": "bacan d’a corda marsa d’aegua e de sä che a ne liga e a ne porta ‘nte ‘na creuza de mä.",
+        "it": "padrone della corda marcia d’acqua e di sale che ci lega e ci porta in una mulattiera di mare"
       }
     ]
   },
