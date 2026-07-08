@@ -3755,6 +3755,10 @@ const GH_REPO_STORIE = "vecigagi";
 const GH_BRANCH_STORIE = "main";
 const GH_PATH_STORIE = "storie.js";
 const GH_TOKEN_KEY = "gh_pat_vecigagi"; // stesso token usato da edit.html/edit-storie.html/dialetti.html
+// Proposta di pubblicazione di una storia privata (per chi NON ha il token admin):
+// stessa filosofia "nessun backend" del form di storie.html — JSON via email, valutato a mano.
+const STORIE_CONTRIB_EMAIL = "linguaequiz@gmail.com"; // stesso indirizzo del form "Proponi una storia" di storie.html
+const STORIE_MAILTO_MAX_LEN = 1800; // oltre questa soglia alcuni client troncano il body del mailto
 const STORIE_BLOCK_START_RE = /^\s*const STORIE_DEFAULT = \[/m;
 function trovaBloccoArrayStorie(src) {
   const m = STORIE_BLOCK_START_RE.exec(src);
@@ -10253,6 +10257,42 @@ function SchermataLetturaGuidata({
     assicuraLinguaAttiva(formLingua);
     resetFormPrivata();
     setFormPrivataAperto(false);
+    // Invito a condividere (solo per chi non è admin: l'admin ha già "📤 Pubblica").
+    // La storia resta comunque privata su questo browser: la proposta viaggia via
+    // email come nel form di storie.html e viene valutata a mano prima di pubblicarla.
+    if (!hasAdminToken && confirm(`Salvata tra i testi privati di questo browser.\n\nVuoi proporla per la pubblicazione su LinguaeQuiz? Si aprirà un'email verso ${STORIE_CONTRIB_EMAIL} con il testo in formato JSON: verrà valutata, non pubblicata automaticamente. Puoi farlo anche in seguito con "📧 Proponi" accanto alla storia.\n\n⚠️ Proponila solo se hai i diritti sul testo o è di pubblico dominio.`)) {
+      proponiStoriaPrivata(nuova);
+    }
+  }
+  // Propone una storia privata per la pubblicazione: nessun backend, stesso meccanismo
+  // del form "Proponi una storia" di storie.html — scarica il JSON (schema storie.js),
+  // lo copia negli appunti e apre l'email verso chi modera. La storia resta privata
+  // sul browser: l'eventuale pubblicazione la fa l'admin dopo la valutazione.
+  function proponiStoriaPrivata(s) {
+    const proposta = {
+      id: s.id,
+      lingua: s.lingua,
+      livello: s.livello,
+      tema: s.tema,
+      titolo: s.titolo,
+      fonte: { generato: "autentico", note: "Proposta da Lettura guidata (testo privato)" },
+      frasi: s.frasi
+    };
+    const json = JSON.stringify([proposta], null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `storia-proposta-${s.id}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    navigator.clipboard?.writeText(json).catch(() => {});
+    const nomeLingua = lingue.find(l => l.codice === s.lingua)?.nome || s.lingua;
+    const subject = `Nuova storia proposta: ${nomeLingua} — ${s.titolo?.testo || s.id}`;
+    const bodyIntro = json.length > STORIE_MAILTO_MAX_LEN
+      ? `Il JSON era troppo lungo per essere incluso qui: è nel file scaricato "storia-proposta-${s.id}.json" — allegalo a questa email.`
+      : `JSON (formato storie.js):\n\n${json}`;
+    window.location.href = `mailto:${STORIE_CONTRIB_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyIntro)}`;
   }
   function eliminaStoriaPrivata(id) {
     if (!confirm("Eliminare questo testo privato? Resta comunque solo su questo browser finché non lo elimini.")) return;
@@ -10520,7 +10560,11 @@ function SchermataLetturaGuidata({
         className: "flex items-center justify-between"
       }, badgeFonte(s), isPrivata && React.createElement("div", {
         className: "flex items-center gap-3"
-      }, hasAdminToken && React.createElement("button", {
+      }, !hasAdminToken && React.createElement("button", {
+        onClick: e => { e.stopPropagation(); proponiStoriaPrivata(s); },
+        title: "Invia via email per proporne la pubblicazione (solo testi di cui hai i diritti o di pubblico dominio)",
+        className: "text-xs text-zinc-600 hover:text-teal-400 transition"
+      }, "📧 Proponi"), hasAdminToken && React.createElement("button", {
         onClick: e => { e.stopPropagation(); pubblicaStoriaPrivata(s); },
         disabled: pubblicandoId === s.id,
         className: "text-xs text-zinc-600 hover:text-teal-400 transition disabled:opacity-50"
