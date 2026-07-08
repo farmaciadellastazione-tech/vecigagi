@@ -261,7 +261,6 @@
   </style>
   <div id="root"></div>
   <script src="vocab.js"></script>
-  <script src="storie.js"></script>
   <script>
 const {
   useState,
@@ -273,6 +272,26 @@ const {
 
 // ── Costanti ──────────────────────────────────────────────────────────────
 const QUIZ_LEN = 10;
+// storie.js non è più caricato eager: contiene i testi di "Lettura Guidata"
+// (STORIE_DEFAULT) e cresce nel tempo, quindi lo iniettiamo solo quando serve
+// (tap su "Lettura Guidata" o deep link ?storia=). Evita che ogni caricamento
+// del sito scarichi testi che la maggioranza degli utenti non legge mai.
+let storieScriptPromise = null;
+function caricaStorieScript() {
+  if (typeof STORIE_DEFAULT !== "undefined") return Promise.resolve();
+  if (storieScriptPromise) return storieScriptPromise;
+  storieScriptPromise = new Promise((resolve, reject) => {
+    const s = document.createElement("script");
+    s.src = "storie.js";
+    s.onload = resolve;
+    s.onerror = () => {
+      storieScriptPromise = null;
+      reject(new Error("storie.js load failed"));
+    };
+    document.body.appendChild(s);
+  });
+  return storieScriptPromise;
+}
 // ── SM-2 Spaced Repetition ───────────────────────────────────────────────
 // Livelli 0-7: ogni risposta giusta aumenta l'intervallo esponenzialmente
 // Livelli:  0    1    2    3    4    5    6    7
@@ -7943,6 +7962,7 @@ function Home({
   record,
   recordPerc,
   streak,
+  caricandoStorie,
   onScegli,
   onVocabolario,
   onVerbi,
@@ -8470,21 +8490,25 @@ function Home({
       nonstop: "⚡",
       quiz: "🏆"
     };
+    // storie.js viene iniettato lazy al primo tap su questa modalità (vedi
+    // caricaStorieScript): mostriamo un breve stato di caricamento invece di
+    // un bottone silenziosamente inerte durante l'attesa.
+    const inCaricamento = m.key === "letturaGuidata" && caricandoStorie;
     return /*#__PURE__*/React.createElement("button", {
       key: m.key,
-      onClick: () => sbloccata && onScegli(m.key),
+      onClick: () => sbloccata && !inCaricamento && onScegli(m.key),
       className: `w-full rounded-2xl transition text-left border-2 ${sbloccata ? `${m.pastelbg} ${m.pastelborder} hover:opacity-90 cursor-pointer btn-shadow` : "bg-zinc-950 border-zinc-800 cursor-not-allowed"}`
     }, /*#__PURE__*/React.createElement("div", {
       className: "px-5 py-4 flex items-center gap-4"
     }, /*#__PURE__*/React.createElement("div", {
       className: `text-3xl w-12 h-12 flex items-center justify-center rounded-xl flex-shrink-0 ${sbloccata ? "bg-zinc-800" : "bg-zinc-900"}`
-    }, sbloccata ? EMOJI_MODI[m.key] : "🔒"), /*#__PURE__*/React.createElement("div", {
+    }, inCaricamento ? "⏳" : (sbloccata ? EMOJI_MODI[m.key] : "🔒")), /*#__PURE__*/React.createElement("div", {
       className: "flex-1 min-w-0"
     }, /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-2 mb-0.5"
     }, /*#__PURE__*/React.createElement("span", {
       className: `font-extrabold text-lg ${sbloccata ? "text-white" : "text-zinc-600"}`
-    }, m.title), isSbloccata(m.key) ? null : /*#__PURE__*/React.createElement("span", {
+    }, inCaricamento ? "Caricamento…" : m.title), isSbloccata(m.key) ? null : /*#__PURE__*/React.createElement("span", {
       className: "text-xs font-bold px-1.5 py-0.5 rounded-full flex-shrink-0 bg-zinc-800 text-zinc-600"
     }, m.lv)), /*#__PURE__*/React.createElement("div", {
       className: `text-sm ${sbloccata ? "text-slate-400" : "text-zinc-600"}`
@@ -10092,6 +10116,7 @@ function SchermataLetturaGuidata({
   setLingue,
   vocabolario,
   aiSettings,
+  storiaIniziale,
   onHome
 }) {
   const [storiaSel, setStoriaSel] = useState(null);
@@ -10122,6 +10147,14 @@ function SchermataLetturaGuidata({
     ...STORIE_DEFAULT.filter(s => lingueAttive.some(l => l.codice === s.lingua)),
     ...storiePrivate.filter(s => lingueAttive.some(l => l.codice === s.lingua))
   ];
+  // Deep-link #storia/<id> (da storie.html): preseleziona la storia pubblica
+  // indicata. Solo al mount: STORIE_DEFAULT è già garantito caricato dal
+  // chiamante (App) prima di impostare storiaIniziale.
+  useEffect(() => {
+    if (!storiaIniziale) return;
+    const s = STORIE_DEFAULT.find(x => x.id === storiaIniziale);
+    if (s) setStoriaSel(s);
+  }, []);
   function resetSpiega() {
     setParolaSel(null);
     setStatoSpiega("idle");
@@ -11525,6 +11558,8 @@ function App() {
   }));
   const [schermata, setSchermata] = useState("home"); // splash disabilitata
   const [glossarioLang, setGlossarioLang] = useState(null); // dialetto preselezionato dal deep-link #glossario/<codice>
+  const [caricandoStorie, setCaricandoStorie] = useState(false); // true mentre storie.js viene iniettato lazy
+  const [storiaIniziale, setStoriaIniziale] = useState(null); // id storia preselezionata dal deep-link #storia/<id>
   const [aiSettings, setAiSettings] = useState(() => loadJSON(SK_AI, null) || {
     provider: "gemini",
     apiKey: ""
@@ -11571,7 +11606,7 @@ function App() {
   useEffect(() => {
     saveJSON(SK_AI, aiSettings);
   }, [aiSettings]);
-  // Deep-link da dialetti.html/link esterni. Tre forme:
+  // Deep-link da dialetti.html/link esterni. Quattro forme:
   // - #glossario oppure #glossario/<codice>: apre il Glossario, ordinato e col
   //   dialetto attivato se specificato (i dialetti sono spenti di default).
   // - #ricerca oppure #ricerca/<codice>: apre Dictionary Search, col dialetto
@@ -11580,7 +11615,9 @@ function App() {
   //   sbloccata) — è la CTA generica "Gioca ora" per chi non ha ancora
   //   studiato nulla, quindi non può puntare a "quiz" (Lv9, richiede
   //   apprese>=1: si veda scegli()).
-  // Es. linguaequiz.com/#glossario/sp, linguaequiz.com/#ricerca/sp
+  // - #storia/<id>: da storie.html, apre Lettura Guidata con quella storia
+  //   preselezionata (richiede storie.js, caricato lazy: vedi caricaStorieScript).
+  // Es. linguaequiz.com/#glossario/sp, linguaequiz.com/#ricerca/sp, #storia/de-a1-ein-tag-im-park
   useEffect(() => {
     const h = (window.location.hash || "").replace(/^#/, "");
     if (h === "glossario" || h.startsWith("glossario/")) {
@@ -11600,6 +11637,24 @@ function App() {
       setSchermata("ricerca");
     } else if (h === "quiz") {
       scegli("sceltamultipla");
+    } else if (h.startsWith("storia/")) {
+      const id = h.split("/")[1] || null;
+      if (id) {
+        setCaricandoStorie(true);
+        caricaStorieScript().then(() => {
+          const storia = STORIE_DEFAULT.find(s => s.id === id);
+          if (storia) {
+            setLingue(prev => prev.map(l =>
+              (l.codice === storia.lingua || l.codice === "it") ? { ...l, attiva: true } : l));
+            setStoriaIniziale(id);
+          }
+          setCaricandoStorie(false);
+          setSchermata("letturaGuidata");
+        }).catch(() => {
+          setCaricandoStorie(false);
+          alert("Impossibile caricare le storie. Riprova.");
+        });
+      }
     }
   }, []);
   function avvia(voc, st, mod, ling, fil, linguaDa, linguaA, nDom) {
@@ -11674,7 +11729,15 @@ function App() {
       return;
     }
     if (mod === "letturaGuidata") {
-      setSchermata("letturaGuidata");
+      setStoriaIniziale(null); // apertura da Home: nessuna storia preselezionata
+      setCaricandoStorie(true);
+      caricaStorieScript().then(() => {
+        setCaricandoStorie(false);
+        setSchermata("letturaGuidata");
+      }).catch(() => {
+        setCaricandoStorie(false);
+        alert("Impossibile caricare le storie. Riprova.");
+      });
       return;
     }
     setModalita(mod);
@@ -11926,6 +11989,7 @@ function App() {
     setLingue: setLingue,
     vocabolario: vocabolario,
     aiSettings: aiSettings,
+    storiaIniziale: storiaIniziale,
     onHome: () => setSchermata("home")
   });
   if (schermata === "impostazioniAI") return /*#__PURE__*/React.createElement(ImpostazioniAI, {
@@ -11953,6 +12017,7 @@ function App() {
     record: record,
     recordPerc: recordPerc,
     streak: streak,
+    caricandoStorie: caricandoStorie,
     onScegli: scegli,
     onVocabolario: () => setSchermata("vocabolario"),
     onVerbi: () => setSchermata("verbi"),
@@ -12157,6 +12222,10 @@ if (!window.__TEST_MODE__) {
   <span style="color:#475569;font-size:14px;font-weight:300;">·</span>
   <a class="hw" href="https://linguaequiz.com/dialetti.html" target="_blank" rel="noopener">
     ⚓ Salva il tuo dialetto
+  </a>
+  <span style="color:#475569;font-size:14px;font-weight:300;">·</span>
+  <a class="hw" href="https://linguaequiz.com/storie.html" target="_blank" rel="noopener">
+    📖 Storie ed esercizi di lettura
   </a>
   <span style="color:#475569;font-size:14px;font-weight:300;">·</span>
   <a class="fb" href="https://www.facebook.com/LinguaeQuiz/" target="_blank" rel="noopener">

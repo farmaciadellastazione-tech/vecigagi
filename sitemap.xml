@@ -23,6 +23,16 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/dialetti.html"/>
   </url>
 
+  <!-- Storie brevi con lettura guidata (inglese, tedesco, dialetti liguri) -->
+  <url>
+    <loc>https://linguaequiz.com/storie.html</loc>
+    <lastmod>2026-07-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/storie.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/storie.html"/>
+  </url>
+
   <!-- Pagina informativa "How it works" (versione inglese) -->
   <url>
     <loc>https://linguaequiz.com/how-it-works.html</loc>
