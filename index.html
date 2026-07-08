@@ -3818,11 +3818,9 @@ function caricaVocabolario() {
     if (!Array.isArray(salvato) || salvato.length === 0) throw new Error("voc_invalid");
     return salvato;
   } catch (e) {
-    // localStorage corrotto — reset automatico
-    console.warn("LinguaeQuiz: reset localStorage.", e);
-    try {
-      localStorage.clear();
-    } catch (_) {}
+    // Stato app corrotto — reset mirato (preserva storie private, token, chiave API)
+    console.warn("LinguaeQuiz: reset stato app.", e);
+    resetStorageRecovery();
     saveJSON(SK_VOC_VER, VOC_VERSION);
     return VOCABOLARIO_DEFAULT;
   }
@@ -3839,6 +3837,21 @@ function saveJSON(key, val) {
   try {
     localStorage.setItem(key, JSON.stringify(val));
   } catch {}
+}
+// ── Recovery mirato ──────────────────────────────────────────────────────
+// Sostituisce il vecchio `localStorage.clear()` nei path di recovery (vocabolario
+// corrotto, crash al boot, ErrorBoundary): cancellava TUTTO, comprese le storie
+// private (che esistono SOLO in questo browser), il token GitHub admin, la chiave
+// API IA, tema e lingua UI. Qui rimuoviamo solo lo stato dell'app che può impedire
+// il boot. Whitelist esplicita: mai toccare chiavi sconosciute, perché
+// edit.html/dialetti.html condividono la stessa origin e salvano le loro.
+const SK_RESET_RECOVERY = [SK_VOC, SK_VOC_VER, SK_STATS, SK_LINGUE, SK_FILTRI, SK_RECORD, SK_RECORD_PERC, SK_STREAK, SK_NDOM, "qml_v11_sm_global" /* SK_SM, definita dentro SchermataSceltaMultipla */];
+function resetStorageRecovery() {
+  SK_RESET_RECOVERY.forEach(k => {
+    try {
+      localStorage.removeItem(k);
+    } catch (_) {}
+  });
 }
 function esportaProgressi(stats, vocabolario, lingue) {
   const ai = loadJSON(SK_AI, null);
@@ -11554,9 +11567,7 @@ function App() {
     try {
       return caricaVocabolario();
     } catch (e) {
-      try {
-        localStorage.clear();
-      } catch (_) {}
+      resetStorageRecovery();
       return VOCABOLARIO_DEFAULT;
     }
   });
@@ -12200,9 +12211,9 @@ class ErrorBoundary extends React.Component {
   }
   componentDidCatch(err) {
     console.error("LinguaeQuiz crash:", err);
-    try {
-      localStorage.clear();
-    } catch (_) {}
+    // Reset mirato: NON usare localStorage.clear() — cancellerebbe anche le
+    // storie private (uniche, solo su questo browser), token GitHub e chiave API.
+    resetStorageRecovery();
     setTimeout(() => window.location.reload(), 100);
   }
   render() {
