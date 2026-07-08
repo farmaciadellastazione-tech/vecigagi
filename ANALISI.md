@@ -164,3 +164,52 @@ Le restanti voci del gruppo D risultano anch'esse coerenti con la convenzione (P
 Il primo passaggio (score fonetico) aveva segnalato 33 candidati ma includeva molti falsi positivi (es. `sgualdrìna/zgùaldrina` è OK: P1 italianizzata, P2 con `z-` dialettale tipica). Le tre categorie A/B/C sono il filtraggio più affidabile.
 
 Non audited: voci con `/` nei campi non-dialetto (es. `cr:"branzin/branzino"` se vista come sinonimi vs. pronuncia/grafia — `cr` è dialetto secondo `DIALETTI_TTS_ITA`, quindi va trattata come pronuncia/grafia).
+
+---
+
+## Audit completo 2026-07-08
+
+File analizzato: `index.html` (12.304 righe, ~800KB — ~5.900 righe di dati, ~6.400 di codice). Letto integralmente il codice; blocchi dati (i18n UI, VOCABOLARIO_DEFAULT, CONIUGAZIONI, NUMERI/OMOFONI) solo mappati.
+
+### 🔴 R1. Recovery con `localStorage.clear()` cancella contenuti unici dell'utente
+
+`ErrorBoundary.componentDidCatch` (~:12204), catch di `caricaVocabolario` (~:3824) e init di `App` (~:11558) fanno `localStorage.clear()`. Nato quando cancellava solo progressi ricostruibili, oggi cancella anche `SK_STORIE_PRIVATE` (testi privati che esistono SOLO in quel browser), il token GitHub admin (`gh_pat_vecigagi`), la chiave API IA, tema e lingua UI. Un bug di render qualsiasi = perdita irreversibile.
+
+**Fix**: helper `resetStorageRecovery()` con whitelist esplicita delle sole chiavi di stato app (SK_VOC, SK_STATS, ecc.); mai `clear()`, mai chiavi sconosciute (edit.html/dialetti.html condividono l'origin).
+
+### 🔴 R2. Provider "Anthropic Claude" non funzionante dal browser
+
+`callAI` (~:8744) chiama `api.anthropic.com` senza l'header `anthropic-dangerous-direct-browser-access: true`, obbligatorio per CORS da browser: la fetch viene bloccata → "Errore connessione". Inoltre `callAI` non controlla `res.ok` per nessun provider (401/429 → "Errore risposta AI" generico).
+
+### 🟡 R3. Correzioni utente alle voci default perse a ogni bump di VOC_VERSION
+
+`mergeVocabolario` (~:3794) conserva solo le voci *nuove* dell'utente: le modifiche via ✏️/"Segnala errore" a voci default spariscono silenziosamente al successivo salvataggio da edit.html (che bumpa sempre). By design, ma senza avviso all'utente. Policy da decidere, non bug.
+
+### 🟡 R4. Quota localStorage senza segnalazione
+
+`SK_VOC` duplica l'intero vocabolario (~600KB) anche se identico al default; `saveJSON` ha `catch {}`: a quota piena (≈5MB mobile) i progressi smettono di salvarsi senza alcun errore visibile. Possibile: salvare solo le voci custom + avvisare al fallimento.
+
+### 🟡 R5. Streak incoerente tra modalità
+
+Aggiornato solo in `SchermataQuiz.avanti()`: Scelta multipla (modalità d'ingresso Lv0) e Lettura guidata non lo toccano mai.
+
+### 🟡 R6. `BtnAudio` sovrascrive handler globale
+
+Ogni istanza fa `window.speechSynthesis.onvoiceschanged = check` (~:4609) senza cleanup: con più bottoni montati solo l'ultimo riceve gli aggiornamenti. Usare `addEventListener` + cleanup nell'`useEffect`.
+
+### 🟢 Minori
+
+- Eliminazione parola dal Vocabolario senza `confirm` (~:9491); per voci default torna comunque al prossimo bump (vedi R3, direzione opposta).
+- Prop `"aria-label"` duplicata (~:4626, ~:9865).
+- `Home` ricalcola `parolaAppresa`/`contaScadute` su tutto il vocabolario a ogni render senza memo (~50k lookup con 6 lingue attive). Non misurato come problema reale.
+- Verificato OK: l'oggetto `UI` copre tutte le 10 lingue di `detectUILang` (nessun rischio `UI[lang] === undefined`); `TOUR_STEPS_I18N` idem.
+
+### Bundle
+
+~48% del file sono dati: CONIUGAZIONI (~2.250 righe), VOCABOLARIO (~1.750), i18n UI (~1.300), tour+numeri+omofoni (~600). Gzip di GitHub Pages mitiga la rete, resta il parse. Estrazioni possibili: i18n lingue non attive; CONIUGAZIONI (ma serve a `estraiCarte` → non lazy banale). **Vincolo**: `VOCABOLARIO_DEFAULT` resta in index.html finché edit.html/dialetti.html lo riscrivono lì.
+
+### Stato fix audit 2026-07-08
+
+- ✅ **R1 fatto (2026-07-08)** — `resetStorageRecovery()` con whitelist `SK_RESET_RECOVERY`; sostituiti i 3 `localStorage.clear()`. Preservate: storie private, candidati LG, chiave API, token GitHub, tema, lingua UI, tour visto. Test: `tests/recovery.test.mjs`.
+- ⬜ R2, R4, R5, R6 in attesa.
+- ⬜ R3: decidere policy (avviso? invio correzione via email?).
