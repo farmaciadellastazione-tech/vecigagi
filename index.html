@@ -4619,7 +4619,12 @@ function BtnAudio({
       setAudioOk(voci.some(v => v.lang.startsWith(lang)));
     };
     check();
-    window.speechSynthesis.onvoiceschanged = check;
+    // addEventListener (non assegnazione diretta a .onvoiceschanged): con più
+    // BtnAudio montati contemporaneamente, l'assegnazione diretta fa sì che solo
+    // l'ultimo registrato riceva gli aggiornamenti — e senza cleanup, le istanze
+    // smontate restano in ascolto su un componente non più presente.
+    window.speechSynthesis.addEventListener("voiceschanged", check);
+    return () => window.speechSynthesis.removeEventListener("voiceschanged", check);
   }, [bcp47, noAudio]);
   if (!audioOk) return /*#__PURE__*/React.createElement("span", {
     title: "Audio non disponibile",
