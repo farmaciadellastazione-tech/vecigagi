@@ -3790,17 +3790,23 @@ function utf8ToB64(str) {
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
 const VOC_VERSION = 405;
 
-// Merge automatico: aggiunge voci mancanti dal default senza toccare i progressi
-function mergeVocabolario(salvato) {
-  // Strategia sicura: parti sempre dal VOCABOLARIO_DEFAULT aggiornato
-  // e reintegra solo le voci personalizzate aggiunte dall'utente
-  // (quelle che NON esistono nel default, riconoscibili perché non hanno chiave nel default)
+// Le sole voci NON presenti in VOCABOLARIO_DEFAULT (per wordKey): quelle aggiunte
+// dall'utente. È quanto va persistito in SK_VOC — MAI l'intero array completo
+// (default + custom), che duplicherebbe ~600KB identici a ogni salvataggio e
+// avvicina inutilmente la quota di localStorage (~5MB tipico su mobile).
+// Funziona anche se l'input contiene ancora l'intero array (formato salvato da
+// versioni precedenti dell'app, prima di questo fix): il filtro rimuove comunque
+// i duplicati del default, quindi la migrazione avviene da sola al primo salvataggio.
+function vociCustom(vocabolario) {
   const chiaviDefault = new Set(VOCABOLARIO_DEFAULT.map(wordKey));
-  // Mantieni solo le voci custom dell'utente (non presenti nel default)
-  const vociCustom = Array.isArray(salvato) ? salvato.filter(e => e && typeof e === 'object' && !chiaviDefault.has(wordKey(e))) : [];
-  const merged = [...VOCABOLARIO_DEFAULT, ...vociCustom];
-  saveJSON(SK_VOC, merged);
-  return merged;
+  return Array.isArray(vocabolario) ? vocabolario.filter(e => e && typeof e === 'object' && !chiaviDefault.has(wordKey(e))) : [];
+}
+// Merge automatico: ricostruisce il vocabolario completo dal VOCABOLARIO_DEFAULT
+// aggiornato + le voci custom dell'utente, e ripersiste in SK_VOC SOLO il delta.
+function mergeVocabolario(salvato) {
+  const custom = vociCustom(salvato);
+  saveJSON(SK_VOC, custom);
+  return [...VOCABOLARIO_DEFAULT, ...custom];
 }
 function caricaVocabolario() {
   try {
@@ -3810,13 +3816,14 @@ function caricaVocabolario() {
       saveJSON(SK_VOC_VER, VOC_VERSION);
       return VOCABOLARIO_DEFAULT;
     }
-    if (verSalvata < VOC_VERSION) {
-      const aggiornato = mergeVocabolario(salvato);
-      saveJSON(SK_VOC_VER, VOC_VERSION);
-      return aggiornato;
-    }
-    if (!Array.isArray(salvato) || salvato.length === 0) throw new Error("voc_invalid");
-    return salvato;
+    if (!Array.isArray(salvato)) throw new Error("voc_invalid");
+    // Ricostruisce sempre dal default corrente + voci custom: il filtro per
+    // wordKey è economico (poche centinaia di voci) e corretto indipendentemente
+    // da quale formato sia salvato, quindi non serve distinguere "versione
+    // cambiata" da "invariata" per decidere se rifare il merge.
+    const aggiornato = mergeVocabolario(salvato);
+    if (verSalvata < VOC_VERSION) saveJSON(SK_VOC_VER, VOC_VERSION);
+    return aggiornato;
   } catch (e) {
     // Stato app corrotto — reset mirato (preserva storie private, token, chiave API)
     console.warn("LinguaeQuiz: reset stato app.", e);
@@ -3833,10 +3840,18 @@ function loadJSON(key, def) {
     return def;
   }
 }
+// Ritorna true se il salvataggio è riuscito. Il chiamante può ignorare il valore
+// (comportamento invariato: prima falliva in silenzio) o loggare/segnalare un
+// fallimento — utile soprattutto per SK_VOC, dove un fallimento silenzioso
+// significa perdere le parole aggiunte dall'utente al prossimo reload.
 function saveJSON(key, val) {
   try {
     localStorage.setItem(key, JSON.stringify(val));
-  } catch {}
+    return true;
+  } catch (e) {
+    console.warn(`LinguaeQuiz: salvataggio "${key}" fallito (quota localStorage piena?).`, e);
+    return false;
+  }
 }
 // ── Recovery mirato ──────────────────────────────────────────────────────
 // Sostituisce il vecchio `localStorage.clear()` nei path di recovery (vocabolario
@@ -11666,7 +11681,8 @@ function App() {
     count: 0
   }));
   useEffect(() => {
-    saveJSON(SK_VOC, vocabolario);
+    // Solo il delta (voci non presenti nel default): vedi vociCustom.
+    saveJSON(SK_VOC, vociCustom(vocabolario));
   }, [vocabolario]);
   useEffect(() => {
     saveJSON(SK_STATS, stats);
@@ -12030,7 +12046,7 @@ function App() {
         const nuove = data.vocabolario.filter(e => !chiavi.has(wordKey(e)));
         const vu = [...vocabolario, ...nuove];
         setVocabolario(vu);
-        saveJSON(SK_VOC, vu);
+        saveJSON(SK_VOC, vociCustom(vu));
       }
       if (data.lingue) {
         const cc = new Set(lingue.map(l => l.codice));
