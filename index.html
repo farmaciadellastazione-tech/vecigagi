@@ -9667,6 +9667,7 @@ function SchermataSceltaMultipla({
   aiSettings,
   stats,
   setStats,
+  onStreak,
   onHome
 }) {
   // Stato globale unico per la modalità: {nScelte, nDom, corrette}
@@ -9756,6 +9757,10 @@ function SchermataSceltaMultipla({
   const isFineSchermata = carte.length > 0 && indice === carte.length - 1 && !!risposta;
   useEffect(() => {
     if (!isFineSchermata) { setFraseFine(null); return; }
+    // Streak: stessa condizione (almeno 1 corretta) usata da SchermataQuiz. Fuori
+    // dal guard su fraseFine perché deve contare anche se frasaFineSP non trova
+    // una frase da mostrare (caso limite, non deve bloccare l'aggiornamento streak).
+    if (onStreak && punteggio > 0) onStreak();
     if (fraseFine) return;
     const perc = Math.round(punteggio / carte.length * 100);
     const f = frasaFineSP(perc);
@@ -10168,6 +10173,7 @@ function SchermataLetturaGuidata({
   vocabolario,
   aiSettings,
   storiaIniziale,
+  onStreak,
   onHome
 }) {
   const [storiaSel, setStoriaSel] = useState(null);
@@ -10191,6 +10197,15 @@ function SchermataLetturaGuidata({
   const [traducendo, setTraducendo] = useState(false);
   const [pubblicandoId, setPubblicandoId] = useState(null);
   const fileInputRef = useRef(null);
+  // Streak: conta al massimo una volta per visita in questa schermata, alla
+  // prima interazione sostanziale con una frase (rivelare la traduzione o
+  // cambiare frase) — non basta aver solo scelto una storia dalla lista.
+  const streakContata = useRef(false);
+  function contaStreakLettura() {
+    if (streakContata.current || !onStreak) return;
+    streakContata.current = true;
+    onStreak();
+  }
   const hasKey = (aiSettings?.apiKey || "").length > 10;
   const hasAdminToken = !!localStorage.getItem(GH_TOKEN_KEY);
   const lingueAttive = lingue.filter(l => l.attiva);
@@ -10470,6 +10485,7 @@ function SchermataLetturaGuidata({
   function vai(delta) {
     const next = idxFrase + delta;
     if (!storiaSel || next < 0 || next >= storiaSel.frasi.length) return;
+    contaStreakLettura();
     setIdxFrase(next);
     setShowTrad(false);
     resetSpiega();
@@ -10721,7 +10737,7 @@ Forma: {"spiegazione": string, "traduzione": string}
     className: "h-full bg-sky-500 rounded-full transition-all",
     style: { width: `${(idxFrase + 1) / storiaSel.frasi.length * 100}%` }
   })), React.createElement("div", {
-    onClick: () => setShowTrad(v => !v),
+    onClick: () => { if (!showTrad) contaStreakLettura(); setShowTrad(v => !v); },
     className: "flex-1 card p-6 flex flex-col items-center justify-center text-center cursor-pointer select-none"
   }, React.createElement("p", {
     className: "text-2xl font-bold text-white leading-relaxed mb-4"
@@ -11680,6 +11696,27 @@ function App() {
     lastDay: 0,
     count: 0
   }));
+  // Estratta a livello di App (prima era locale dentro avanti(), quindi usabile
+  // solo dal flusso SchermataQuiz): passata come onStreak a SchermataSceltaMultipla
+  // e SchermataLetturaGuidata, che altrimenti non facevano mai crescere lo streak
+  // per chi studia solo con quelle due modalità.
+  function aggiornaStreak() {
+    const g = oggi();
+    const s = loadJSON(SK_STREAK, {
+      lastDay: 0,
+      count: 0
+    });
+    const ieri = g - 86400000;
+    const nuovoStreak = s.lastDay === ieri ? {
+      lastDay: g,
+      count: s.count + 1
+    } : s.lastDay === g ? s : {
+      lastDay: g,
+      count: 1
+    };
+    setStreak(nuovoStreak);
+    saveJSON(SK_STREAK, nuovoStreak);
+  }
   useEffect(() => {
     // Solo il delta (voci non presenti nel default): vedi vociCustom.
     saveJSON(SK_VOC, vociCustom(vocabolario));
@@ -11970,24 +12007,7 @@ function App() {
         return;
       }
     }
-    // Aggiorna streak — funzione riusabile
-    function aggiornaStreak() {
-      const g = oggi();
-      const s = loadJSON(SK_STREAK, {
-        lastDay: 0,
-        count: 0
-      });
-      const ieri = g - 86400000;
-      const nuovoStreak = s.lastDay === ieri ? {
-        lastDay: g,
-        count: s.count + 1
-      } : s.lastDay === g ? s : {
-        lastDay: g,
-        count: 1
-      };
-      setStreak(nuovoStreak);
-      saveJSON(SK_STREAK, nuovoStreak);
-    }
+    // aggiornaStreak è definita a livello di App (vedi sopra): qui solo le chiamate.
     // Non-stop: se sbagliato, finisce
     if (!ok && modalita === "nonstop") {
       if (punteggio.giusti > 0) aggiornaStreak();
@@ -12065,6 +12085,7 @@ function App() {
     aiSettings: aiSettings,
     stats: stats,
     setStats: setStats,
+    onStreak: aggiornaStreak,
     onHome: () => setSchermata("home")
   });
   if (schermata === "fraseLibera") return /*#__PURE__*/React.createElement(SchermataFraseLibera, {
@@ -12080,6 +12101,7 @@ function App() {
     vocabolario: vocabolario,
     aiSettings: aiSettings,
     storiaIniziale: storiaIniziale,
+    onStreak: aggiornaStreak,
     onHome: () => setSchermata("home")
   });
   if (schermata === "impostazioniAI") return /*#__PURE__*/React.createElement(ImpostazioniAI, {
