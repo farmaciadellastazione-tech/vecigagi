@@ -104,6 +104,20 @@
     font-size: 13px;
     flex: 1;
   }
+  .header-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    font-size: 17px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .header-icon:hover { background: rgba(255,255,255,0.16); }
   main { max-width: 900px; margin: 0 auto; padding: 32px 20px 80px; }
   .intro { margin-bottom: 24px; }
   .intro h1 { font-size: 26px; margin-bottom: 8px; }
@@ -274,12 +288,14 @@
   <div class="header-inner">
     <a class="logo" href="https://linguaequiz.com/">📖 Lingua<span>e</span>Quiz</a>
     <div class="subtitle">Storie brevi per imparare leggendo</div>
+    <a class="header-icon" href="https://linguaequiz.com/#quiz" title="Gioca al quiz di LinguaeQuiz">🎮</a>
   </div>
 </header>
 <main>
   <div class="intro">
     <h1>Storie brevi, frase per frase</h1>
     <p>Testi corti in lingue moderne e nei dialetti liguri (spezzino, manarolese, genovese, carrarino), con traduzione italiana affiancata. Non solo racconti: anche proverbi, poesie, canzoni popolari, aneddoti e barzellette — qualunque testo breve valga la pena leggere frase per frase. Nell'app puoi ascoltare la pronuncia e toccare ogni parola per la spiegazione.</p>
+    <p class="hint">🎮 Vuoi imparare le lingue giocando? <a class="cta" href="https://linguaequiz.com/#quiz">Gioca al quiz di LinguaeQuiz →</a></p>
   </div>
   <div class="chips" id="chips"></div>
   <div id="lista"></div>
