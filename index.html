@@ -8750,6 +8750,14 @@ const GROQ_MODELS = {
     model: "gemini-2.5-flash"
   }
 };
+// Messaggio d'errore uniforme quando l'HTTP status non è 2xx: senza questo,
+// un 401 (chiave sbagliata) o 429 (rate limit) finiva silenziosamente nel
+// generico "Errore risposta AI", indistinguibile per l'utente da un JSON
+// inatteso ma valido. `d` è il body già parsato (se il parsing riesce).
+function messaggioErroreHttpAI(res, d) {
+  const dettaglio = d?.error?.message || d?.error?.type || "";
+  return `Errore AI (HTTP ${res.status})${dettaglio ? ": " + dettaglio : ""}`;
+}
 async function callAI(systemPrompt, userPrompt, aiCfg) {
   const cfg = GROQ_MODELS[aiCfg?.provider] || GROQ_MODELS.gemini;
   const key = aiCfg?.apiKey || "";
@@ -8760,7 +8768,10 @@ async function callAI(systemPrompt, userPrompt, aiCfg) {
         headers: {
           "Content-Type": "application/json",
           "x-api-key": key,
-          "anthropic-version": "2023-06-01"
+          "anthropic-version": "2023-06-01",
+          // Obbligatorio per chiamare l'API Anthropic via CORS direttamente dal
+          // browser (senza, la fetch viene bloccata e appare solo "Errore connessione").
+          "anthropic-dangerous-direct-browser-access": "true"
         },
         body: JSON.stringify({
           model: cfg.model,
@@ -8773,6 +8784,7 @@ async function callAI(systemPrompt, userPrompt, aiCfg) {
         })
       });
       const d = await res.json();
+      if (!res.ok) return messaggioErroreHttpAI(res, d);
       return d.content?.[0]?.text || "Errore risposta AI";
     } else if (aiCfg?.provider === "gemini") {
       const res = await fetch(`${cfg.url}?key=${key}`, {
@@ -8794,6 +8806,7 @@ ${userPrompt}`
         })
       });
       const d = await res.json();
+      if (!res.ok) return messaggioErroreHttpAI(res, d);
       return d.candidates?.[0]?.content?.parts?.[0]?.text || "Errore risposta AI";
     } else {
       // Groq / OpenAI
@@ -8816,6 +8829,7 @@ ${userPrompt}`
         })
       });
       const d = await res.json();
+      if (!res.ok) return messaggioErroreHttpAI(res, d);
       return d.choices?.[0]?.message?.content || "Errore risposta AI";
     }
   } catch (e) {

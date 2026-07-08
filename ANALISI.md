@@ -211,5 +211,6 @@ Ogni istanza fa `window.speechSynthesis.onvoiceschanged = check` (~:4609) senza 
 ### Stato fix audit 2026-07-08
 
 - ✅ **R1 fatto (2026-07-08)** — `resetStorageRecovery()` con whitelist `SK_RESET_RECOVERY`; sostituiti i 3 `localStorage.clear()`. Preservate: storie private, candidati LG, chiave API, token GitHub, tema, lingua UI, tour visto. Test: `tests/recovery.test.mjs`.
-- ⬜ R2, R4, R5, R6 in attesa.
+- ✅ **R2 fatto (2026-07-08)** — aggiunto header `anthropic-dangerous-direct-browser-access: true` alla chiamata Anthropic (obbligatorio per CORS da browser, senza restava bloccata silenziosamente come "Errore connessione"). Aggiunto controllo `res.ok` su tutti e tre i provider: un errore HTTP (401 chiave errata, 429 rate limit, ecc.) ora restituisce `Errore AI (HTTP <status>): <dettaglio>` invece del generico "Errore risposta AI" indistinguibile da un JSON valido ma inatteso. Nuova funzione `messaggioErroreHttpAI(res, d)`. Test: `tests/callAI.test.mjs` (funzione reale via vm, fetch mockato).
+- ⬜ R4, R5, R6 in attesa.
 - ⬜ R3: decidere policy (avviso? invio correzione via email?).
