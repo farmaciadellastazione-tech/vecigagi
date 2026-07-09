@@ -3790,23 +3790,111 @@ function utf8ToB64(str) {
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
 const VOC_VERSION = 405;
 
-// Le sole voci NON presenti in VOCABOLARIO_DEFAULT (per wordKey): quelle aggiunte
-// dall'utente. È quanto va persistito in SK_VOC — MAI l'intero array completo
+// Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
+// (wordKey assente dal default) E voci del default modificate localmente
+// (stesso wordKey, ma almeno un campo diverso — es. corretta con ✏️ nel
+// Vocabolario). È quanto va persistito in SK_VOC — MAI l'intero array completo
 // (default + custom), che duplicherebbe ~600KB identici a ogni salvataggio e
-// avvicina inutilmente la quota di localStorage (~5MB tipico su mobile).
-// Funziona anche se l'input contiene ancora l'intero array (formato salvato da
-// versioni precedenti dell'app, prima di questo fix): il filtro rimuove comunque
-// i duplicati del default, quindi la migrazione avviene da sola al primo salvataggio.
+// avvicina inutilmente la quota di localStorage (~5MB tipico su mobile). Un
+// semplice filtro "wordKey assente dal default" scarterebbe anche le voci
+// default MODIFICATE (stesso wordKey, campi diversi): sbagliato, le farebbe
+// sparire al caricamento successivo. Funziona anche se l'input contiene ancora
+// l'intero array (formato salvato da versioni precedenti dell'app, prima di
+// questo fix): il confronto rimuove comunque i duplicati IDENTICI del default,
+// quindi la migrazione avviene da sola al primo salvataggio.
+// Raggruppa un array di voci per wordKey (usata sia per il confronto in
+// vociCustom sia per la ricostruzione in mergeVocabolario): il vocabolario
+// contiene omonimi REALI, cioè coppie/gruppi di voci con lo stesso wordKey ma
+// tema o traduzioni diversi (es. due voci "adesso" per sensi diversi) — un
+// semplice Map(wordKey -> voce) ne perderebbe una per collisione.
+function raggruppaPerChiave(voci) {
+  const m = new Map();
+  voci.forEach(e => {
+    const k = wordKey(e);
+    if (!m.has(k)) m.set(k, []);
+    m.get(k).push(e);
+  });
+  return m;
+}
+// Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
+// (wordKey assente dal default) E voci del default modificate localmente
+// (stesso wordKey, ma diversa da OGNI voce default con quella chiave — non solo
+// dalla prima: vedi raggruppaPerChiave). È quanto va persistito in SK_VOC — MAI
+// l'intero array completo (default + custom), che duplicherebbe ~600KB
+// identici a ogni salvataggio e avvicina inutilmente la quota di localStorage
+// (~5MB tipico su mobile). Funziona anche se l'input contiene ancora l'intero
+// array (formato salvato da versioni precedenti dell'app, prima di questo
+// fix): il confronto rimuove comunque i duplicati IDENTICI del default, quindi
+// la migrazione avviene da sola al primo salvataggio.
 function vociCustom(vocabolario) {
-  const chiaviDefault = new Set(VOCABOLARIO_DEFAULT.map(wordKey));
-  return Array.isArray(vocabolario) ? vocabolario.filter(e => e && typeof e === 'object' && !chiaviDefault.has(wordKey(e))) : [];
+  const perChiaveDefault = raggruppaPerChiave(VOCABOLARIO_DEFAULT);
+  return Array.isArray(vocabolario) ? vocabolario.filter(e => {
+    if (!e || typeof e !== 'object') return false;
+    const candidati = perChiaveDefault.get(wordKey(e));
+    if (!candidati) return true; // parola nuova, non nel default
+    const es = JSON.stringify(e);
+    return !candidati.some(d => JSON.stringify(d) === es); // custom se non coincide con nessun omonimo default
+  }) : [];
 }
 // Merge automatico: ricostruisce il vocabolario completo dal VOCABOLARIO_DEFAULT
-// aggiornato + le voci custom dell'utente, e ripersiste in SK_VOC SOLO il delta.
+// aggiornato, sostituendo ogni voce con la sua versione custom se modificata, e
+// appendendo in coda le parole nuove. Ripersiste in SK_VOC SOLO il delta.
+// Per gli omonimi (stesso wordKey, più voci default): ogni voce custom con
+// quella chiave "consuma" un'istanza default non ancora sostituita, in ordine —
+// così una modifica su UNO dei due omonimi non tocca né duplica il gemello
+// invariato.
 function mergeVocabolario(salvato) {
   const custom = vociCustom(salvato);
   saveJSON(SK_VOC, custom);
-  return [...VOCABOLARIO_DEFAULT, ...custom];
+  const perChiaveCustom = raggruppaPerChiave(custom);
+  const consumati = new Map(); // wordKey -> quante voci custom già usate per sostituire
+  const aggiornate = VOCABOLARIO_DEFAULT.map(e => {
+    const k = wordKey(e);
+    const disponibili = perChiaveCustom.get(k);
+    if (!disponibili) return e;
+    const usati = consumati.get(k) || 0;
+    if (usati >= disponibili.length) return e; // nessuna voce custom residua per questa istanza
+    consumati.set(k, usati + 1);
+    return disponibili[usati];
+  });
+  // Voci custom in eccesso rispetto al numero di omonimi default con la stessa
+  // chiave: parole del tutto nuove, appese in coda.
+  const extra = [];
+  perChiaveCustom.forEach((lista, k) => {
+    const usati = consumati.get(k) || 0;
+    for (let i = usati; i < lista.length; i++) extra.push(lista[i]);
+  });
+  return [...aggiornate, ...extra];
+}
+// Calcola i campi cambiati tra due voci con lo stesso wordKey (usato per la
+// proposta di correzione via email — vedi proponiCorrezioneParola).
+function campiModificati(vecchia, nuova) {
+  const chiavi = new Set([...Object.keys(vecchia || {}), ...Object.keys(nuova || {})]);
+  const diff = {};
+  chiavi.forEach(k => {
+    const a = (vecchia?.[k] ?? "").toString().trim();
+    const b = (nuova?.[k] ?? "").toString().trim();
+    if (a !== b) diff[k] = { da: a, a: b };
+  });
+  return diff;
+}
+// Propone via email la correzione di una voce del vocabolario DEFAULT — chiamata
+// dal salvataggio di "🚩 Segnala errore" nel quiz, MAI dalla modifica ✏️ nel
+// Vocabolario (che resta intenzionalmente solo locale: l'utente può
+// personalizzare una voce per sé senza proporla a tutti — decisione di prodotto,
+// vedi ANALISI.md R3). Nessun backend: stesso meccanismo mailto già usato per
+// "Proponi una storia". Non propone nulla per le parole CUSTOM dell'utente (non
+// presenti nel default): sono già "sue", non ha senso che se le proponga da solo.
+function proponiCorrezioneParola(vecchia, nuova) {
+  const isDefaultWord = VOCABOLARIO_DEFAULT.some(e => wordKey(e) === wordKey(vecchia));
+  if (!isDefaultWord) return;
+  const diff = campiModificati(vecchia, nuova);
+  if (Object.keys(diff).length === 0) return;
+  const parolaIt = wordKey(vecchia) || wordKey(nuova) || "(parola)";
+  const corpo = Object.entries(diff).map(([campo, { da, a }]) => `${campo}: "${da}" → "${a}"`).join("\n");
+  const subject = `LinguaeQuiz – Correzione segnalata: ${parolaIt}`;
+  const testo = `Parola: ${parolaIt}\n\nCampi modificati:\n${corpo}\n\nVoce completa aggiornata:\n${JSON.stringify(nuova, null, 2)}`;
+  window.location.href = `mailto:${STORIE_CONTRIB_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(testo)}`;
 }
 function caricaVocabolario() {
   try {
@@ -12192,7 +12280,10 @@ function App() {
     lingue: lingue,
     onSalva: form => {
       const idx = vocabolario.findIndex(e => wordKey(e) === wordKey(cartaCorrente.entry));
-      if (idx >= 0) modificaParola(idx, form);
+      if (idx >= 0) {
+        modificaParola(idx, form);
+        proponiCorrezioneParola(cartaCorrente.entry, form);
+      }
       setSegnalando(false);
     },
     onAnnulla: () => setSegnalando(false)
