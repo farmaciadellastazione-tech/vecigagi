@@ -281,6 +281,12 @@
        sfumatura cielo delle altre pagine invece del bianco piatto */
     html.light .min-h-screen.bg-zinc-900 { background-color:#fafafa !important;
       background-image:linear-gradient(180deg,#e7f2fa 0%,#fafafa 340px); }
+    /* Testata brand in cima alla home su mobile: su schermi larghi (≥1024px)
+       il brand sta già nella card sinistra, quindi si nasconde */
+    .lq-brandbar { display:flex; align-items:center; gap:0.75rem; max-width:64rem; margin:0 auto 1rem; }
+    @media (min-width:1024px) { .lq-brandbar { display:none; } }
+    /* La variante con opacità sfugge all'override di .text-sky-300: era slavata in chiaro */
+    html.light .text-sky-300\/80 { color:rgba(2,90,130,0.9) !important; }
   </style>
   <script>
     /* Tema: default = chiaro. Applica .light prima del render React per evitare flash. */
@@ -8364,6 +8370,16 @@ function Home({
     onCambia: onCambiaFiltri,
     onChiudi: () => setMostraFiltri(false)
   }), /*#__PURE__*/React.createElement("div", {
+    className: "lq-brandbar"
+  }, /*#__PURE__*/React.createElement("img", {
+    src: "icon-192.png",
+    alt: "",
+    className: "lq-logo"
+  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    className: "lq-wordmark text-2xl font-extrabold tracking-tight"
+  }, "LinguaeQuiz"), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-500 text-xs"
+  }, t.trainer))), /*#__PURE__*/React.createElement("div", {
     className: "max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6"
   }, /*#__PURE__*/React.createElement("div", {
     className: "lg:col-span-1 space-y-5 order-2 lg:order-1"
