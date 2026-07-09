@@ -10255,6 +10255,35 @@ function trovaInVocabolario(parola, codice, vocabolario) {
     return varianti.includes(target);
   }) || null;
 }
+// Estrae la spiegazione dalla risposta IA anche quando il JSON arriva TRONCATO
+// (callAI ha max_tokens fisso a 300: se la risposta viene tagliata prima della
+// "}" di chiusura, il vecchio codice mostrava il testo grezzo, compreso il
+// `{"spiegazione": "...` iniziale, come se fosse la spiegazione — bug osservato
+// dal vivo in Lettura guidata, sia su una storia in spezzino che una in
+// tedesco). Prova prima il parse JSON completo (comportamento invariato quando
+// la risposta non è troncata); se fallisce, recupera comunque il valore di
+// "spiegazione" con un'estrazione tollerante (funziona anche a stringa non
+// chiusa); solo se il testo non assomiglia per niente al JSON atteso ricade sul
+// vecchio comportamento (utile se l'IA ha risposto in prosa libera).
+function estraiSpiegazioneDaTesto(clean) {
+  const jsonMatch = clean.match(/\{[\s\S]*\}/);
+  if (jsonMatch) {
+    try {
+      const parsed = JSON.parse(jsonMatch[0]);
+      if (parsed && typeof parsed.spiegazione === "string" && parsed.spiegazione.trim()) {
+        return { spiegazione: parsed.spiegazione, traduzione: parsed.traduzione || null };
+      }
+    } catch (e) {
+      // JSON malformato/troncato: prova l'estrazione tollerante sotto.
+    }
+  }
+  const m = clean.match(/"spiegazione"\s*:\s*"((?:[^"\\]|\\.)*)"?/);
+  if (m && m[1].trim()) {
+    const testo = m[1].replace(/\\n/g, "\n").replace(/\\"/g, "\"").replace(/\\\\/g, "\\");
+    return { spiegazione: testo, traduzione: null };
+  }
+  return { spiegazione: clean.slice(0, 300), traduzione: null };
+}
 function SchermataLetturaGuidata({
   lingue,
   setLingue,
@@ -10776,26 +10805,21 @@ Forma: {"spiegazione": string, "traduzione": string}
     try {
       const raw = await callAI(system, user, aiSettings);
       const clean = raw.replace(/```json|```/g, "").trim();
-      const jsonMatch = clean.match(/\{[\s\S]*\}/);
-      const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : null;
-      if (parsed && parsed.spiegazione) {
-        setSpiegazione(parsed.spiegazione);
-        if (parsed.traduzione) {
-          // Per le storie private (eventuale copyright) NON salviamo mai la frase di
-          // contesto nel candidato: solo la singola parola isolata + traduzione.
-          const isPrivata = storiaSel.fonte?.generato === "privato";
-          aggiungiCandidato({
-            parola,
-            lingua: storiaSel.lingua,
-            it: parsed.traduzione.trim(),
-            tema: storiaSel.tema,
-            ...(isPrivata ? {} : { frase: testoDisplay }),
-            storiaId: storiaSel.id,
-            data: new Date().toISOString()
-          });
-        }
-      } else {
-        setSpiegazione(clean.slice(0, 300));
+      const { spiegazione, traduzione } = estraiSpiegazioneDaTesto(clean);
+      setSpiegazione(spiegazione);
+      if (traduzione) {
+        // Per le storie private (eventuale copyright) NON salviamo mai la frase di
+        // contesto nel candidato: solo la singola parola isolata + traduzione.
+        const isPrivata = storiaSel.fonte?.generato === "privato";
+        aggiungiCandidato({
+          parola,
+          lingua: storiaSel.lingua,
+          it: traduzione.trim(),
+          tema: storiaSel.tema,
+          ...(isPrivata ? {} : { frase: testoDisplay }),
+          storiaId: storiaSel.id,
+          data: new Date().toISOString()
+        });
       }
     } catch (e) {
       setSpiegazione("Errore. Riprova.");
