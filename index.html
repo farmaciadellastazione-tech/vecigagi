@@ -204,8 +204,8 @@
        rosa antico, oliva, azzurro mare), a rotazione di 5. Classi custom
        (non Tailwind): nessun rebuild di tailwind.css necessario. */
     .mc-chip { display:inline-flex; align-items:center; justify-content:center;
-      width:2rem; height:2rem; border-radius:9999px; font-weight:800;
-      font-size:0.95rem; flex:none; }
+      width:2.25rem; height:2.25rem; border-radius:9999px; font-weight:800;
+      font-size:1.05rem; flex:none; }
     /* Tema scuro: versioni profonde, testo pastello */
     .mc-chip-0 { background:#43261a; color:#f2a988; }  /* terracotta */
     .mc-chip-1 { background:#403314; color:#eec96f; }  /* ocra */
@@ -233,6 +233,52 @@
     html.light .mc-track { background:#e4e4e7 !important; }
     /* Sottotitoli header ("N scelte · N dom"): leggibili anche in chiaro */
     html.light .mc-sub { color:#64748b !important; }
+    /* Parola della domanda in blu mare profondo (chiaro) */
+    html.light .mc-quest .text-5xl { color:#0b5c8d !important; }
+    /* Velo di colore per-opzione, in tinta col medaglione (solo stato "in attesa") */
+    html.light .mc-idle.mc-hue-0 { background:#fdf6f1 !important; }
+    html.light .mc-idle.mc-hue-1 { background:#fdfaee !important; }
+    html.light .mc-idle.mc-hue-2 { background:#fdf5f7 !important; }
+    html.light .mc-idle.mc-hue-3 { background:#fafcf1 !important; }
+    html.light .mc-idle.mc-hue-4 { background:#f2fafd !important; }
+    /* ri-dichiarato dopo i veli per vincere in cascata sull'hover */
+    html.light .mc-idle:hover { border-color:#7cc4e8 !important;
+      background:#f4fafd !important; box-shadow:0 4px 14px rgba(2,60,105,0.13); }
+
+    /* ===== Home e sfondo pagina (tema chiaro) ===== */
+    /* Sfumatura cielo→neutro in testa a ogni schermata */
+    html.light .min-h-screen.bg-black { background-image:linear-gradient(180deg,#e7f2fa 0%,#fafafa 340px); }
+    /* Wordmark col gradiente mare→ambra; logo accanto al titolo */
+    .lq-logo { width:2.4rem; height:2.4rem; border-radius:0.7rem; flex:none; }
+    .lq-wordmark { background-image:linear-gradient(92deg,#4db3e6,#38bdf8 45%,#fbbf24);
+      -webkit-background-clip:text; background-clip:text;
+      -webkit-text-fill-color:transparent; }
+    html.light .lq-wordmark { background-image:linear-gradient(92deg,#0b5c8d,#0e7ec2 45%,#d97706); }
+    /* Contatore "parole apprese": piastrella azzurro mare in chiaro */
+    html.light .home-contatore { background:linear-gradient(160deg,#e3f2fb,#f4fbfe) !important;
+      border-color:#bfdff2 !important; }
+    /* Card modalità: in chiaro tinte e bordi pieni (default troppo sbiaditi) */
+    html.light .home-modi .bg-yellow-950   { background-color:#fef9c3 !important; }
+    html.light .home-modi .border-yellow-800 { border-color:#fde047 !important; }
+    html.light .home-modi .bg-sky-950      { background-color:#e0f2fe !important; }
+    html.light .home-modi .border-sky-800  { border-color:#7dd3fc !important; }
+    html.light .home-modi .bg-teal-950     { background-color:#ccfbf1 !important; }
+    html.light .home-modi .border-teal-800 { border-color:#5eead4 !important; }
+    html.light .home-modi .bg-violet-950   { background-color:#ede9fe !important; }
+    html.light .home-modi .border-violet-800 { border-color:#c4b5fd !important; }
+    html.light .home-modi .bg-orange-950   { background-color:#ffedd5 !important; }
+    html.light .home-modi .border-orange-800 { border-color:#fdba74 !important; }
+    html.light .home-modi .bg-cyan-950     { background-color:#cffafe !important; }
+    html.light .home-modi .border-cyan-800 { border-color:#67e8f9 !important; }
+    html.light .home-modi .bg-emerald-950  { background-color:#d1fae5 !important; }
+    html.light .home-modi .border-emerald-800 { border-color:#6ee7b7 !important; }
+    html.light .home-modi .bg-red-950      { background-color:#fee2e2 !important; }
+    html.light .home-modi .border-red-800  { border-color:#fca5a5 !important; }
+    html.light .home-modi .bg-amber-950    { background-color:#fef3c7 !important; }
+    html.light .home-modi .border-amber-800 { border-color:#fcd34d !important; }
+    /* Riquadro emoji: bianco traslucido sulla tinta, non grigio */
+    html.light .home-modi .bg-zinc-800 { background-color:rgba(255,255,255,0.72) !important; }
+    html.light .home-modi > button { box-shadow:0 3px 12px rgba(2,60,105,0.08); }
   </style>
   <script>
     /* Tema: default = chiaro. Applica .light prima del render React per evitare flash. */
@@ -8323,8 +8369,12 @@ function Home({
     className: "card p-6 text-center"
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-center gap-2 mb-1"
-  }, /*#__PURE__*/React.createElement("h1", {
-    className: "text-2xl font-extrabold text-white tracking-tight"
+  }, /*#__PURE__*/React.createElement("img", {
+    src: "icon-192.png",
+    alt: "",
+    className: "lq-logo"
+  }), /*#__PURE__*/React.createElement("h1", {
+    className: "lq-wordmark text-2xl font-extrabold text-white tracking-tight"
   }, "LinguaeQuiz"), /*#__PURE__*/React.createElement("button", {
     onClick: () => setMostraTour(true),
     title: "How it works",
@@ -8332,7 +8382,7 @@ function Home({
   }, "?")), /*#__PURE__*/React.createElement("p", {
     className: "text-slate-500 text-xs mb-5"
   }, t.trainer), /*#__PURE__*/React.createElement("div", {
-    className: "bg-black rounded-2xl p-4 mb-4 border border-zinc-800"
+    className: "home-contatore bg-black rounded-2xl p-4 mb-4 border border-zinc-800"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-4xl font-extrabold text-sky-600"
   }, apprese), /*#__PURE__*/React.createElement("p", {
@@ -8639,7 +8689,7 @@ function Home({
   })()), /*#__PURE__*/React.createElement("h2", {
     className: "text-xl font-bold text-white mb-5"
   }, t.sceglimodo), /*#__PURE__*/React.createElement("div", {
-    className: "grid grid-cols-1 sm:grid-cols-2 gap-4"
+    className: "home-modi grid grid-cols-1 sm:grid-cols-2 gap-4"
   }, modalitaBtn.map(m => {
     let sbloccata = isSbloccata(m.key);
     const prog = progSblocco(m.key);
@@ -10037,7 +10087,7 @@ function SchermataSceltaMultipla({
     return /*#__PURE__*/React.createElement("button", {
       key: i,
       onClick: () => scegli(s),
-      className: `${cls} rounded-xl py-5 px-5 transition text-xl font-medium flex items-center gap-3`
+      className: `${cls} mc-hue-${i % 5} rounded-xl py-5 px-5 transition text-xl font-medium flex items-center gap-3`
     }, /*#__PURE__*/React.createElement("span", {
       className: `mc-chip mc-chip-${i % 5}`
     }, String.fromCharCode(65 + i)), /*#__PURE__*/React.createElement("span", {
