@@ -198,6 +198,41 @@
     html.light [class*="bg-gradient-to-br"][class*="from-purple-900"][class*="to-purple-950"] {
       background-image: linear-gradient(to bottom right, #f3e8ff, #faf5ff) !important;
     }
+
+    /* ===== Scelta multipla — palette "Cinque Terre" =====
+       Medaglioni A/B/C con i colori delle facciate liguri (terracotta, ocra,
+       rosa antico, oliva, azzurro mare), a rotazione di 5. Classi custom
+       (non Tailwind): nessun rebuild di tailwind.css necessario. */
+    .mc-chip { display:inline-flex; align-items:center; justify-content:center;
+      width:2rem; height:2rem; border-radius:9999px; font-weight:800;
+      font-size:0.95rem; flex:none; }
+    /* Tema scuro: versioni profonde, testo pastello */
+    .mc-chip-0 { background:#43261a; color:#f2a988; }  /* terracotta */
+    .mc-chip-1 { background:#403314; color:#eec96f; }  /* ocra */
+    .mc-chip-2 { background:#41222a; color:#f0a0b4; }  /* rosa antico */
+    .mc-chip-3 { background:#2d3319; color:#c6d48b; }  /* oliva */
+    .mc-chip-4 { background:#16303f; color:#7fc6ec; }  /* azzurro mare */
+    /* Tema chiaro: pastelli pieni, testo scuro dello stesso tono */
+    html.light .mc-chip-0 { background:#f6d9c9; color:#8a3a1d; }
+    html.light .mc-chip-1 { background:#f6e9c0; color:#7d5605; }
+    html.light .mc-chip-2 { background:#f7dbe0; color:#96374e; }
+    html.light .mc-chip-3 { background:#e5ecc9; color:#55682a; }
+    html.light .mc-chip-4 { background:#d3e9f5; color:#0f5e88; }
+    /* Dopo la risposta, i medaglioni delle opzioni non pertinenti si spengono */
+    .mc-dim .mc-chip { opacity:0.35; filter:saturate(0.3); }
+    /* Bottoni risposta (solo stato "in attesa"): in chiaro bordo visibile,
+       ombra soffice e hover azzurro mare */
+    html.light .mc-idle { background:#fff !important; border-color:#d8dade !important;
+      box-shadow:0 2px 10px rgba(2,60,105,0.07); }
+    html.light .mc-idle:hover { border-color:#7cc4e8 !important;
+      background:#f4fafd !important; box-shadow:0 4px 14px rgba(2,60,105,0.13); }
+    /* Card della domanda: velo azzurrino in chiaro */
+    html.light .mc-quest { background:linear-gradient(180deg,#ffffff,#eef7fc) !important;
+      border-color:#d3e6f2 !important; box-shadow:0 6px 20px rgba(2,60,105,0.08); }
+    /* Traccia progresso: in chiaro bg-zinc-900→#fff la rendeva invisibile */
+    html.light .mc-track { background:#e4e4e7 !important; }
+    /* Sottotitoli header ("N scelte · N dom"): leggibili anche in chiaro */
+    html.light .mc-sub { color:#64748b !important; }
   </style>
   <script>
     /* Tema: default = chiaro. Applica .light prima del render React per evitare flash. */
@@ -9964,20 +9999,20 @@ function SchermataSceltaMultipla({
   }, "\u2190 Home"), /*#__PURE__*/React.createElement("div", {
     className: "text-center"
   }, /*#__PURE__*/React.createElement("span", {
-    className: "text-zinc-600 text-xs"
+    className: "mc-sub text-zinc-600 text-xs"
   }, "\uD83C\uDFAF Scelta multipla"), /*#__PURE__*/React.createElement("div", {
-    className: "text-xs text-zinc-700"
+    className: "mc-sub text-xs text-zinc-700"
   }, statoDisplay.nScelte, " scelte \xB7 ", statoDisplay.nDom, " dom")), /*#__PURE__*/React.createElement("span", {
     className: "text-zinc-500 text-sm"
   }, indice + 1, "/", carte.length)), /*#__PURE__*/React.createElement("div", {
-    className: "h-1 bg-zinc-900 rounded-full mb-4"
+    className: "mc-track h-1 bg-zinc-900 rounded-full mb-4"
   }, /*#__PURE__*/React.createElement("div", {
     className: "h-full bg-amber-500 rounded-full transition-all",
     style: {
       width: `${indice / carte.length * 100}%`
     }
   })), !fine && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
-    className: "bg-zinc-900 border border-zinc-800 rounded-2xl p-6 mb-4 text-center"
+    className: "mc-quest bg-zinc-900 border border-zinc-800 rounded-2xl p-6 mb-4 text-center"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-500 mb-2"
   }, carta.linguaPrompt?.bandiera || "\uD83C\uDDEE\uD83C\uDDF9", " ", carta.linguaPrompt?.nome || "Italiano"), /*#__PURE__*/React.createElement("p", {
@@ -9995,17 +10030,17 @@ function SchermataSceltaMultipla({
   }, carta.lingua.bandiera, " ", carta.lingua.nome)), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 gap-3 mb-4"
   }, carta.scelte.map((s, i) => {
-    let cls = "bg-zinc-900 border-2 border-zinc-800 text-white";
+    let cls = "mc-idle bg-zinc-900 border-2 border-zinc-800 text-white";
     if (risposta) {
-      if (s.display === carta.corretta) cls = "bg-green-950 border-2 border-green-600 text-green-300 font-bold";else if (s.display === risposta.scelta && !risposta.corretta) cls = "bg-red-950 border-2 border-red-600 text-red-300";else cls = "bg-zinc-950 border-2 border-zinc-800 text-zinc-600";
+      if (s.display === carta.corretta) cls = "bg-green-950 border-2 border-green-600 text-green-300 font-bold";else if (s.display === risposta.scelta && !risposta.corretta) cls = "bg-red-950 border-2 border-red-600 text-red-300";else cls = "mc-dim bg-zinc-950 border-2 border-zinc-800 text-zinc-600";
     }
     return /*#__PURE__*/React.createElement("button", {
       key: i,
       onClick: () => scegli(s),
       className: `${cls} rounded-xl py-5 px-5 transition text-xl font-medium flex items-center gap-3`
     }, /*#__PURE__*/React.createElement("span", {
-      className: "text-zinc-500"
-    }, String.fromCharCode(65 + i), "."), /*#__PURE__*/React.createElement("span", {
+      className: `mc-chip mc-chip-${i % 5}`
+    }, String.fromCharCode(65 + i)), /*#__PURE__*/React.createElement("span", {
       className: "flex-1 text-left"
     }, s.display), /*#__PURE__*/React.createElement("span", {
       role: "button",
