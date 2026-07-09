@@ -90,7 +90,7 @@
     html.light .text-zinc-400 { color:#52525b !important; }
     html.light .text-zinc-500 { color:#71717a !important; }
     html.light .text-zinc-600 { color:#a1a1aa !important; }
-    html.light .text-zinc-700 { color:#d4d4d8 !important; }
+    html.light .text-zinc-700 { color:#a1a1aa !important; } /* #d4d4d8 era illeggibile come testo su fondo chiaro (es. 🔊 del quiz) */
     html.light .text-slate-100 { color:#0f172a !important; }
     html.light .text-slate-200 { color:#1e293b !important; }
     html.light .text-slate-300 { color:#334155 !important; }
@@ -206,12 +206,13 @@
     .mc-chip { display:inline-flex; align-items:center; justify-content:center;
       width:2.25rem; height:2.25rem; border-radius:9999px; font-weight:800;
       font-size:1.05rem; flex:none; }
-    /* Colori pieni delle facciate, lettera bianca (entrambi i temi) */
-    .mc-chip-0 { background:#d4643f; color:#fff; }  /* terracotta */
-    .mc-chip-1 { background:#cf9422; color:#fff; }  /* ocra */
-    .mc-chip-2 { background:#c95e74; color:#fff; }  /* rosa antico */
-    .mc-chip-3 { background:#7d8f3e; color:#fff; }  /* oliva */
-    .mc-chip-4 { background:#2683b5; color:#fff; }  /* azzurro mare */
+    /* Colori pieni delle facciate, lettera bianca (entrambi i temi).
+       Toni tarati per contrasto WCAG AA (≥4.5:1) col bianco. */
+    .mc-chip-0 { background:#a8431f; color:#fff; }  /* terracotta */
+    .mc-chip-1 { background:#a2660a; color:#fff; }  /* ocra */
+    .mc-chip-2 { background:#ab3a54; color:#fff; }  /* rosa antico */
+    .mc-chip-3 { background:#5e7026; color:#fff; }  /* oliva */
+    .mc-chip-4 { background:#1b6a97; color:#fff; }  /* azzurro mare */
     /* Dopo la risposta, i medaglioni delle opzioni non pertinenti si spengono */
     .mc-dim .mc-chip { opacity:0.35; filter:saturate(0.3); }
     /* Bottoni risposta (solo stato "in attesa"): in chiaro bordo visibile,
@@ -268,9 +269,18 @@
     html.light .home-modi .border-red-800  { border-color:#fca5a5 !important; }
     html.light .home-modi .bg-amber-950    { background-color:#fef3c7 !important; }
     html.light .home-modi .border-amber-800 { border-color:#fcd34d !important; }
-    /* Riquadro emoji: bianco traslucido sulla tinta, non grigio */
-    html.light .home-modi .bg-zinc-800 { background-color:rgba(255,255,255,0.72) !important; }
+    /* Riquadro emoji (solo il quadrato w-12, non il badge Lv): bianco traslucido sulla tinta */
+    html.light .home-modi .w-12.bg-zinc-800 { background-color:rgba(255,255,255,0.72) !important; }
     html.light .home-modi > button { box-shadow:0 3px 12px rgba(2,60,105,0.08); }
+
+    /* ===== Fix generali tema chiaro (altre sezioni) ===== */
+    /* Pillole, badge, tracce di progresso e pallini livello tondi: gli override
+       bg-zinc-800/900→bianco li rendevano invisibili su fondo chiaro */
+    html.light .rounded-full.bg-zinc-900, html.light .rounded-full.bg-zinc-800 { background-color:#e4e4e7 !important; }
+    /* Schermate quiz condivise (quiz/allenamento/dettato/ascolto/voce): stessa
+       sfumatura cielo delle altre pagine invece del bianco piatto */
+    html.light .min-h-screen.bg-zinc-900 { background-color:#fafafa !important;
+      background-image:linear-gradient(180deg,#e7f2fa 0%,#fafafa 340px); }
   </style>
   <script>
     /* Tema: default = chiaro. Applica .light prima del render React per evitare flash. */
@@ -11348,7 +11358,7 @@ function SchermataQuiz({
   })), livello >= SOGLIA_APPRESA && /*#__PURE__*/React.createElement("span", {
     className: "text-xs text-sky-400 font-bold ml-1"
   }, "\u2713")), /*#__PURE__*/React.createElement("div", {
-    className: "mt-6 mb-6 p-5 bg-black rounded-2xl border border-zinc-800 relative"
+    className: "mc-quest mt-6 mb-6 p-5 bg-black rounded-2xl border border-zinc-800 relative"
   }, tm && /*#__PURE__*/React.createElement("div", {
     className: "absolute -top-3 left-1/2 -translate-x-1/2"
   }, /*#__PURE__*/React.createElement("span", {
