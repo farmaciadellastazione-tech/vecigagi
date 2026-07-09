@@ -14,18 +14,42 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(fileURLToPath(import.meta.url)) + '/..';
 const INDEX = fs.readFileSync(ROOT + '/index.html', 'utf8');
 
+// Scansiona `src` da `start` bilanciando `apre`/`chiude`, saltando stringhe
+// ('/"/`), commenti riga (//) e commenti blocco (/* */). Necessario: i commenti
+// in italiano contengono spesso apostrofi (es. "l'utente") che un tokenizer
+// senza supporto commenti scambia per apertura di stringa, sballando il
+// bilanciamento graffe su lunghe distanze (bug osservato in tests/callAI.test.mjs
+// quando una modifica altrove nel file cambiava la parità di apostrofi
+// attraversati durante la scansione).
+function scansionaBilanciato(src, start, apre, chiude) {
+  let depth = 0, i = start, inStr = false, esc = false, q = null, inLineComment = false, inBlockComment = false, started = false;
+  for (; i < src.length; i++) {
+    const c = src[i], c2 = src[i + 1];
+    if (inLineComment) { if (c === '\n') inLineComment = false; continue; }
+    if (inBlockComment) { if (c === '*' && c2 === '/') { inBlockComment = false; i++; } continue; }
+    if (inStr) {
+      if (esc) esc = false;
+      else if (c === '\\') esc = true;
+      else if (c === q) inStr = false;
+      continue;
+    }
+    if (c === '/' && c2 === '/') { inLineComment = true; i++; continue; }
+    if (c === '/' && c2 === '*') { inBlockComment = true; i++; continue; }
+    if (c === '"' || c === "'" || c === '`') { inStr = true; q = c; continue; }
+    if (c === apre) { depth++; started = true; }
+    else if (c === chiude) { depth--; if (started && depth === 0) { i++; break; } }
+  }
+  return i;
+}
 // — estrae il sorgente di una funzione per nome (brace matching, come cleanup.test.mjs) —
 function extractFn(src, name) {
   const sig = 'function ' + name + '(';
   const at = src.indexOf(sig);
   if (at < 0) throw new Error('funzione non trovata: ' + name);
-  let i = src.indexOf('{', at), depth = 0, inStr = false, esc = false, q = null;
-  for (; i < src.length; i++) { const c = src[i];
-    if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === q) inStr = false; }
-    else if (c === '"' || c === "'" || c === '`') { inStr = true; q = c; }
-    else if (c === '{') depth++;
-    else if (c === '}') { depth--; if (depth === 0) { i++; break; } }
-  }
+  const parenOpen = src.indexOf('(', at);
+  const parenClose = scansionaBilanciato(src, parenOpen, '(', ')');
+  const bodyStart = src.indexOf('{', parenClose);
+  const i = scansionaBilanciato(src, bodyStart, '{', '}');
   return src.slice(at, i);
 }
 

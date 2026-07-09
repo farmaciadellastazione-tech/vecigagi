@@ -19,6 +19,33 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(fileURLToPath(import.meta.url)) + '/..';
 const INDEX = fs.readFileSync(ROOT + '/index.html', 'utf8');
 
+// Scansiona `src` da `start` saltando stringhe ('/"/`), commenti riga (//) e
+// commenti blocco (/* */) — necessario perché i commenti in italiano contengono
+// spesso apostrofi (es. "l'utente") che un tokenizer senza supporto commenti
+// scambia per apertura di stringa, sballando il bilanciamento su lunghe distanze
+// (bug osservato in tests/callAI.test.mjs). `tracked` è l'insieme di caratteri
+// apertura/chiusura da bilanciare insieme (qui `(`/`{`/`[` per i parametri
+// destrutturati, che possono contenere graffe/parentesi quadre annidate).
+function scansionaBilanciato(src, start, tracked) {
+  let depth = 0, i = start, inStr = false, esc = false, q = null, inLineComment = false, inBlockComment = false;
+  for (; i < src.length; i++) {
+    const c = src[i], c2 = src[i + 1];
+    if (inLineComment) { if (c === '\n') inLineComment = false; continue; }
+    if (inBlockComment) { if (c === '*' && c2 === '/') { inBlockComment = false; i++; } continue; }
+    if (inStr) {
+      if (esc) esc = false;
+      else if (c === '\\') esc = true;
+      else if (c === q) inStr = false;
+      continue;
+    }
+    if (c === '/' && c2 === '/') { inLineComment = true; i++; continue; }
+    if (c === '/' && c2 === '*') { inBlockComment = true; i++; continue; }
+    if (c === '"' || c === "'" || c === '`') { inStr = true; q = c; continue; }
+    if (tracked.apre.includes(c)) depth++;
+    else if (tracked.chiude.includes(c)) { depth--; if (depth === 0) { i++; break; } }
+  }
+  return i;
+}
 // Estrae il sorgente di una funzione per nome (brace-matching sul CORPO, non sui
 // parametri): a differenza di cleanup.test.mjs/recovery.test.mjs, i componenti React
 // di questo file usano parametri destrutturati — `function BtnAudio({ testo, ... })`
@@ -30,21 +57,9 @@ function extractFn(src, name) {
   if (at < 0) throw new Error('funzione non trovata: ' + name);
   if (src.slice(Math.max(0, at - 6), at) === 'async ') at -= 6;
   const parenOpen = src.indexOf('(', at);
-  // Trova la ')' che chiude la lista parametri (bilanciando anche le graffe interne).
-  let pDepth = 0, j = parenOpen, inStr = false, esc = false, q = null;
-  for (; j < src.length; j++) { const c = src[j];
-    if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === q) inStr = false; }
-    else if (c === '"' || c === "'" || c === '`') { inStr = true; q = c; }
-    else if (c === '(' || c === '{' || c === '[') pDepth++;
-    else if (c === ')' || c === '}' || c === ']') { pDepth--; if (pDepth === 0) break; }
-  }
-  let i = src.indexOf('{', j), depth = 0; inStr = false; esc = false; q = null;
-  for (; i < src.length; i++) { const c = src[i];
-    if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === q) inStr = false; }
-    else if (c === '"' || c === "'" || c === '`') { inStr = true; q = c; }
-    else if (c === '{') depth++;
-    else if (c === '}') { depth--; if (depth === 0) { i++; break; } }
-  }
+  const j = scansionaBilanciato(src, parenOpen, { apre: '({[', chiude: ')}]' });
+  const bodyStart = src.indexOf('{', j);
+  const i = scansionaBilanciato(src, bodyStart, { apre: '{', chiude: '}' });
   return src.slice(at, i);
 }
 
