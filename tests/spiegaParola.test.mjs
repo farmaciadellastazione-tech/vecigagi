@@ -86,6 +86,7 @@ function extractFn(src, name) {
 
 function run(code) {
   const ctx = vm.createContext({ console });
+  vm.runInContext(extractFn(INDEX, 'estraiCampoStringaJSON'), ctx);
   vm.runInContext(extractFn(INDEX, 'estraiSpiegazioneDaTesto'), ctx);
   return vm.runInContext(code, ctx);
 }

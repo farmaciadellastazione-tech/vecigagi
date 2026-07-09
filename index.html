@@ -10101,20 +10101,7 @@ Reply with JSON only, all text in ${langName}.`;
     try {
       const raw = await callAI(system, user, aiSettings);
       const clean = raw.replace(/```json|```/g, "").replace(/\n/g, " ").trim();
-      // Try to extract JSON even if there's extra text
-      const jsonMatch = clean.match(/\{[\s\S]*\}/);
-      const parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : null;
-      if (parsed && typeof parsed.correct !== "undefined") {
-        setFeedback(parsed);
-      } else {
-        // Fallback: treat response as grammar note
-        setFeedback({
-          correct: null,
-          correction: "",
-          grammar: clean.slice(0, 200),
-          example: ""
-        });
-      }
+      setFeedback(estraiFeedbackFrase(clean));
     } catch (e) {
       setFeedback({
         correct: null,
@@ -10255,16 +10242,32 @@ function trovaInVocabolario(parola, codice, vocabolario) {
     return varianti.includes(target);
   }) || null;
 }
-// Estrae la spiegazione dalla risposta IA anche quando il JSON arriva TRONCATO
-// (callAI ha max_tokens fisso a 300: se la risposta viene tagliata prima della
-// "}" di chiusura, il vecchio codice mostrava il testo grezzo, compreso il
-// `{"spiegazione": "...` iniziale, come se fosse la spiegazione — bug osservato
-// dal vivo in Lettura guidata, sia su una storia in spezzino che una in
-// tedesco). Prova prima il parse JSON completo (comportamento invariato quando
-// la risposta non è troncata); se fallisce, recupera comunque il valore di
-// "spiegazione" con un'estrazione tollerante (funziona anche a stringa non
-// chiusa); solo se il testo non assomiglia per niente al JSON atteso ricade sul
-// vecchio comportamento (utile se l'IA ha risposto in prosa libera).
+// Estrae il valore stringa di una chiave JSON anche da testo TRONCATO (stringa
+// non chiusa) o con testo extra intorno. Gestisce le sequenze di escape più
+// comuni (\n, \", \\). Riusata da estraiSpiegazioneDaTesto e
+// estraiFeedbackFrase: callAI ha max_tokens fisso a 300, quindi la risposta
+// dell'IA può arrivare tagliata prima della "}" di chiusura — senza questo, il
+// codice mostrava il JSON grezzo (compreso il `{"campo": "...` iniziale) al
+// posto del testo vero e proprio (bug osservato dal vivo in Lettura guidata).
+function estraiCampoStringaJSON(clean, chiave) {
+  const re = new RegExp('"' + chiave + '"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"?');
+  const m = clean.match(re);
+  if (!m || !m[1].trim()) return null;
+  return m[1].replace(/\\n/g, "\n").replace(/\\"/g, "\"").replace(/\\\\/g, "\\");
+}
+// Estrae un valore booleano JSON (true/false) per una chiave, anche da testo
+// troncato subito dopo il valore.
+function estraiCampoBoolean(clean, chiave) {
+  const re = new RegExp('"' + chiave + '"\\s*:\\s*(true|false)');
+  const m = clean.match(re);
+  return m ? m[1] === "true" : null;
+}
+// Estrae la spiegazione dalla risposta IA anche quando il JSON arriva TRONCATO.
+// Prova prima il parse JSON completo (comportamento invariato quando la
+// risposta non è troncata); se fallisce, recupera comunque il valore di
+// "spiegazione" con estraiCampoStringaJSON; solo se il testo non assomiglia per
+// niente al JSON atteso ricade sul vecchio comportamento (utile se l'IA ha
+// risposto in prosa libera ignorando il formato richiesto).
 function estraiSpiegazioneDaTesto(clean) {
   const jsonMatch = clean.match(/\{[\s\S]*\}/);
   if (jsonMatch) {
@@ -10277,12 +10280,32 @@ function estraiSpiegazioneDaTesto(clean) {
       // JSON malformato/troncato: prova l'estrazione tollerante sotto.
     }
   }
-  const m = clean.match(/"spiegazione"\s*:\s*"((?:[^"\\]|\\.)*)"?/);
-  if (m && m[1].trim()) {
-    const testo = m[1].replace(/\\n/g, "\n").replace(/\\"/g, "\"").replace(/\\\\/g, "\\");
-    return { spiegazione: testo, traduzione: null };
-  }
+  const spiegazione = estraiCampoStringaJSON(clean, "spiegazione");
+  if (spiegazione) return { spiegazione, traduzione: null };
   return { spiegazione: clean.slice(0, 300), traduzione: null };
+}
+// Estrae il feedback di "Frase libera" (correct/correction/grammar/example)
+// anche quando il JSON arriva TRONCATO — stessa logica di
+// estraiSpiegazioneDaTesto, ma su più campi: recupera quelli disponibili invece
+// di scartare tutto e mostrare il JSON grezzo nel campo "grammar".
+function estraiFeedbackFrase(clean) {
+  const jsonMatch = clean.match(/\{[\s\S]*\}/);
+  if (jsonMatch) {
+    try {
+      const parsed = JSON.parse(jsonMatch[0]);
+      if (parsed && typeof parsed.correct !== "undefined") return parsed;
+    } catch (e) {
+      // JSON malformato/troncato: prova l'estrazione tollerante sotto.
+    }
+  }
+  const correct = estraiCampoBoolean(clean, "correct");
+  const correction = estraiCampoStringaJSON(clean, "correction") || "";
+  const grammar = estraiCampoStringaJSON(clean, "grammar") || "";
+  const example = estraiCampoStringaJSON(clean, "example") || "";
+  if (correct !== null || correction || grammar || example) {
+    return { correct, correction, grammar, example };
+  }
+  return { correct: null, correction: "", grammar: clean.slice(0, 200), example: "" };
 }
 function SchermataLetturaGuidata({
   lingue,
