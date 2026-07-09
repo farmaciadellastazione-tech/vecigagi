@@ -206,44 +206,36 @@
     .mc-chip { display:inline-flex; align-items:center; justify-content:center;
       width:2.25rem; height:2.25rem; border-radius:9999px; font-weight:800;
       font-size:1.05rem; flex:none; }
-    /* Tema scuro: versioni profonde, testo pastello */
-    .mc-chip-0 { background:#43261a; color:#f2a988; }  /* terracotta */
-    .mc-chip-1 { background:#403314; color:#eec96f; }  /* ocra */
-    .mc-chip-2 { background:#41222a; color:#f0a0b4; }  /* rosa antico */
-    .mc-chip-3 { background:#2d3319; color:#c6d48b; }  /* oliva */
-    .mc-chip-4 { background:#16303f; color:#7fc6ec; }  /* azzurro mare */
-    /* Tema chiaro: pastelli pieni, testo scuro dello stesso tono */
-    html.light .mc-chip-0 { background:#f6d9c9; color:#8a3a1d; }
-    html.light .mc-chip-1 { background:#f6e9c0; color:#7d5605; }
-    html.light .mc-chip-2 { background:#f7dbe0; color:#96374e; }
-    html.light .mc-chip-3 { background:#e5ecc9; color:#55682a; }
-    html.light .mc-chip-4 { background:#d3e9f5; color:#0f5e88; }
+    /* Colori pieni delle facciate, lettera bianca (entrambi i temi) */
+    .mc-chip-0 { background:#d4643f; color:#fff; }  /* terracotta */
+    .mc-chip-1 { background:#cf9422; color:#fff; }  /* ocra */
+    .mc-chip-2 { background:#c95e74; color:#fff; }  /* rosa antico */
+    .mc-chip-3 { background:#7d8f3e; color:#fff; }  /* oliva */
+    .mc-chip-4 { background:#2683b5; color:#fff; }  /* azzurro mare */
     /* Dopo la risposta, i medaglioni delle opzioni non pertinenti si spengono */
     .mc-dim .mc-chip { opacity:0.35; filter:saturate(0.3); }
     /* Bottoni risposta (solo stato "in attesa"): in chiaro bordo visibile,
        ombra soffice e hover azzurro mare */
     html.light .mc-idle { background:#fff !important; border-color:#d8dade !important;
       box-shadow:0 2px 10px rgba(2,60,105,0.07); }
-    html.light .mc-idle:hover { border-color:#7cc4e8 !important;
-      background:#f4fafd !important; box-shadow:0 4px 14px rgba(2,60,105,0.13); }
-    /* Card della domanda: velo azzurrino in chiaro */
-    html.light .mc-quest { background:linear-gradient(180deg,#ffffff,#eef7fc) !important;
-      border-color:#d3e6f2 !important; box-shadow:0 6px 20px rgba(2,60,105,0.08); }
+    /* hover: scurisce la tinta del bottone senza cambiarne il colore */
+    html.light .mc-idle:hover { filter:brightness(0.96);
+      box-shadow:0 4px 14px rgba(2,60,105,0.15); }
+    /* Card della domanda: sfumatura mare decisa in chiaro */
+    html.light .mc-quest { background:linear-gradient(180deg,#ffffff,#dcedf8) !important;
+      border-color:#a9d2ec !important; box-shadow:0 6px 20px rgba(2,60,105,0.10); }
     /* Traccia progresso: in chiaro bg-zinc-900→#fff la rendeva invisibile */
     html.light .mc-track { background:#e4e4e7 !important; }
     /* Sottotitoli header ("N scelte · N dom"): leggibili anche in chiaro */
     html.light .mc-sub { color:#64748b !important; }
     /* Parola della domanda in blu mare profondo (chiaro) */
     html.light .mc-quest .text-5xl { color:#0b5c8d !important; }
-    /* Velo di colore per-opzione, in tinta col medaglione (solo stato "in attesa") */
-    html.light .mc-idle.mc-hue-0 { background:#fdf6f1 !important; }
-    html.light .mc-idle.mc-hue-1 { background:#fdfaee !important; }
-    html.light .mc-idle.mc-hue-2 { background:#fdf5f7 !important; }
-    html.light .mc-idle.mc-hue-3 { background:#fafcf1 !important; }
-    html.light .mc-idle.mc-hue-4 { background:#f2fafd !important; }
-    /* ri-dichiarato dopo i veli per vincere in cascata sull'hover */
-    html.light .mc-idle:hover { border-color:#7cc4e8 !important;
-      background:#f4fafd !important; box-shadow:0 4px 14px rgba(2,60,105,0.13); }
+    /* Tinta pastello piena + bordo colorato per-opzione (solo stato "in attesa") */
+    html.light .mc-idle.mc-hue-0 { background:#fbe3d8 !important; border-color:#e9a583 !important; }
+    html.light .mc-idle.mc-hue-1 { background:#faeec9 !important; border-color:#e2bd62 !important; }
+    html.light .mc-idle.mc-hue-2 { background:#f9dee5 !important; border-color:#e397ab !important; }
+    html.light .mc-idle.mc-hue-3 { background:#edf2d5 !important; border-color:#b5c47c !important; }
+    html.light .mc-idle.mc-hue-4 { background:#d8ecf8 !important; border-color:#7fc1e5 !important; }
 
     /* ===== Home e sfondo pagina (tema chiaro) ===== */
     /* Sfumatura cielo→neutro in testa a ogni schermata */
