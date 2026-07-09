@@ -4804,6 +4804,7 @@ function PannelloFiltri({
   }, Object.entries(LIVELLI).map(([k, v]) => /*#__PURE__*/React.createElement("button", {
     key: k,
     onClick: () => toggleLivello(k),
+    "aria-pressed": loc.livelli.includes(k),
     className: `text-xs px-3 py-1.5 rounded-full font-semibold transition ${loc.livelli.includes(k) ? v.colore : "bg-zinc-900 text-slate-500"}`
   }, v.label))), /*#__PURE__*/React.createElement("p", {
     className: "text-xs uppercase tracking-widest text-slate-500 mb-2"
@@ -4812,6 +4813,7 @@ function PannelloFiltri({
   }, Object.entries(TEMI).map(([k, v]) => /*#__PURE__*/React.createElement("button", {
     key: k,
     onClick: () => toggleTema(k),
+    "aria-pressed": loc.temi.includes(k),
     className: `text-xs px-3 py-1.5 rounded-full font-semibold transition ${loc.temi.includes(k) ? "bg-sky-500 text-white" : "bg-zinc-900 text-slate-400"}`
   }, v.emoji, " ", v.label))), /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-slate-500 mb-4"
@@ -4941,9 +4943,13 @@ function PannelloLingue({
     className: "text-xs text-zinc-600"
   }, "\uD83D\uDD07"), /*#__PURE__*/React.createElement("button", {
     onClick: () => toggleAttiva(l.codice),
+    "aria-pressed": l.attiva,
+    "aria-label": `${l.attiva ? "Disattiva" : "Attiva"} ${l.nome}`,
     className: `text-xs px-3 py-1 rounded-lg font-bold transition ${l.attiva ? "bg-sky-900 text-sky-600" : "bg-zinc-900 text-slate-500"}`
   }, l.attiva ? "ON" : "OFF"), /*#__PURE__*/React.createElement("button", {
     onClick: () => rimuovi(l.codice),
+    "aria-label": `Rimuovi ${l.nome}`,
+    title: `Rimuovi ${l.nome}`,
     className: "text-slate-700 hover:text-red-400 transition"
   }, "\uD83D\uDDD1")))), /*#__PURE__*/React.createElement("div", {
     className: "border-t border-zinc-800 pt-4"
@@ -5045,6 +5051,7 @@ function PannelloBilingue({
     return /*#__PURE__*/React.createElement("button", {
       key: l.codice,
       onClick: () => scegliB(l.codice),
+      "aria-pressed": selezionata,
       className: `w-full text-left rounded-xl p-3 flex items-center gap-2 transition border-2 ${selezionata ? "bg-sky-950 border-sky-700" : "bg-zinc-900 border-zinc-800 hover:border-zinc-700"}`
     }, /*#__PURE__*/React.createElement("span", {
       className: "text-xl"
@@ -7707,10 +7714,12 @@ function ConfigurazioneQuiz({
     className: "flex flex-wrap gap-2"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: () => setLinguaDa("qualsiasi"),
+    "aria-pressed": linguaDa === "qualsiasi",
     className: `text-xs px-3 py-1.5 rounded-full font-medium transition ${linguaDa === "qualsiasi" ? "bg-neutral-700 text-white" : "bg-zinc-900 text-slate-400"}`
   }, t.qualsiasi), lingueAttive.map(l => /*#__PURE__*/React.createElement("button", {
     key: l.codice,
     onClick: () => setLinguaDa(l.codice),
+    "aria-pressed": linguaDa === l.codice,
     className: `text-xs px-3 py-1.5 rounded-full font-medium transition ${linguaDa === l.codice ? "bg-neutral-700 text-white" : "bg-zinc-900 text-slate-400"}`
   }, l.bandiera, " ", l.nome)))), modalita !== "dettato" && /*#__PURE__*/React.createElement("div", {
     className: "mb-4"
@@ -7720,10 +7729,12 @@ function ConfigurazioneQuiz({
     className: "flex flex-wrap gap-2"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: () => setLinguaA("qualsiasi"),
+    "aria-pressed": linguaA === "qualsiasi",
     className: `text-xs px-3 py-1.5 rounded-full font-medium transition ${linguaA === "qualsiasi" ? "bg-neutral-700 text-white" : "bg-zinc-900 text-slate-400"}`
   }, t.qualsiasi), lingueAttive.map(l => /*#__PURE__*/React.createElement("button", {
     key: l.codice,
     onClick: () => setLinguaA(l.codice),
+    "aria-pressed": linguaA === l.codice,
     className: `text-xs px-3 py-1.5 rounded-full font-medium transition ${linguaA === l.codice ? "bg-neutral-700 text-white" : "bg-zinc-900 text-slate-400"}`
   }, l.bandiera, " ", l.nome)))), !isNS && !conRipetizione && /*#__PURE__*/React.createElement("div", {
     className: "mb-4"
@@ -7734,6 +7745,7 @@ function ConfigurazioneQuiz({
   }, opzioniDomande.map(n => /*#__PURE__*/React.createElement("button", {
     key: n,
     onClick: () => setNDomande(n),
+    "aria-pressed": nDomande === n,
     className: `text-xs px-3 py-1.5 rounded-full font-medium transition ${nDomande === n ? "bg-sky-500 text-white" : "bg-zinc-900 text-slate-400 border border-zinc-700"}`
   }, n === 0 ? t.illimitato : `${n}`))), recNDomBest !== null && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-amber-400 mt-2"
@@ -9681,6 +9693,8 @@ function InputVocale({
     className: "text-sm text-slate-400 mb-5"
   }, "Pronuncia ad alta voce in ", /*#__PURE__*/React.createElement("strong", null, lingaNome)), /*#__PURE__*/React.createElement("button", {
     onClick: avviaAscolto,
+    "aria-pressed": statoMic === "ascolto",
+    "aria-label": statoMic === "ascolto" ? "Ferma registrazione" : "Registra risposta vocale",
     className: `w-28 h-28 mx-auto rounded-full text-5xl flex items-center justify-center transition-all shadow-lg
               ${statoMic === "ascolto" ? "bg-red-500 text-white animate-pulse scale-110" : "bg-pink-500 hover:bg-pink-600 text-white btn-shadow"}`
   }, statoMic === "ascolto" ? "⏹" : "🎤"), statoMic === "ascolto" && /*#__PURE__*/React.createElement("p", {

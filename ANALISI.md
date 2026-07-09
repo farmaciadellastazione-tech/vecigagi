@@ -50,8 +50,12 @@ Verificare in `SceltaMultipla` (`~:9062`) e simili: se `[]` ma il corpo usa stat
 ### 7. `getJSON` non centralizzato
 `:3172` definisce un helper, ma `:3186-3207` e `:10197` non lo usano. Convergere su un'unica funzione protetta.
 
-### 8. Accessibilità: aria-label e focus visibile
-Tasti lingua/numero domande (`~:7025-7048`), pulsanti TTS/microfono: mancano `aria-label` espliciti e stato attivo non sempre veicolato (solo colore). Costa poco aggiungerli e aiuta su mobile screen reader.
+### 8. ✅ Accessibilità: aria-label e focus visibile — fatto (2026-07-09)
+Tasti lingua/numero domande, pulsanti TTS/microfono: mancavano `aria-label` espliciti e lo stato attivo non era mai veicolato oltre al colore (un ternario nel `className`, invisibile a uno screen reader).
+
+Aggiunto `aria-pressed` (riflette lo stato selezionato) a tutti i gruppi di bottoni "a scelta" individuati nel codice: `PannelloFiltri` (livello, tema), `PannelloLingue` (toggle ON/OFF), `PannelloBilingue` (scelta lingua B), `ConfigurazioneQuiz` (lingua-da, lingua-a, numero domande). Aggiunto `aria-label` dove mancava del tutto un testo accessibile: `PannelloLingue` (bottone 🗑 rimuovi, prima solo emoji senza etichetta) e `InputVocale` (bottone microfono 🎤/⏹, etichetta che riflette anche lo stato "in registrazione"). I pulsanti TTS "Ascolta lentamente" avevano già `aria-label`/`title` da un giro precedente (8 occorrenze), non toccati.
+
+Test: `tests/accessibilita.test.mjs` — verifica strutturale sul sorgente reale (nessun jsdom/React come dipendenza npm). Verificato anche dal vivo (server statico locale + Playwright): `aria-pressed` cambia correttamente `false`→`true` al click, `aria-label` corretti ("Disattiva Italiano", "Rimuovi Italiano"), nessuna regressione visiva (gli attributi ARIA non hanno impatto sullo stile).
 
 ### 9. i18n della UI: chiavi mancanti nelle traduzioni
 Gli ultimi commit (`5d0f66d`, `d6f05f5`) hanno rimosso duplicati in fr/de/pt/zh/ko/es: vale la pena un controllo automatico (script ad hoc) che ogni oggetto UI abbia le stesse chiavi della versione `it`, per evitare stringhe vuote silenti.
