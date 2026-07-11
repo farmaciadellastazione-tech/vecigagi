@@ -3881,7 +3881,10 @@ async function adminPromuovi() {
   }
 }
 
-// ─── TTS (replica edit.html: voce Google, cancel + setTimeout) ────────────
+// ─── TTS (replica edit.html: cancel + setTimeout) ──────────────────────────
+// Per it-IT (dialetti liguri) preferisce voci locali non-Google: Google
+// italiano applica fonetica inglese su parole brevi/ambigue (es. "bun" →
+// "ban" invece di /bun/). Per le altre lingue preferisce Google per qualità.
 function adminPickVoice(bcp47) {
   if (!window.speechSynthesis) return null;
   const voices = window.speechSynthesis.getVoices();
@@ -3891,6 +3894,13 @@ function adminPickVoice(bcp47) {
   const isGoogle = v => /^google\b/i.test(v.name || '');
   const langExact = v => (v.lang || '').toLowerCase() === lower;
   const langBase  = v => (v.lang || '').toLowerCase().split('-')[0] === pref;
+  if (pref === 'it') {
+    return voices.find(v => !isGoogle(v) && langExact(v))
+        || voices.find(v => !isGoogle(v) && langBase(v))
+        || voices.find(v => isGoogle(v) && langExact(v))
+        || voices.find(v => isGoogle(v) && langBase(v))
+        || null;
+  }
   return voices.find(v => isGoogle(v) && langExact(v))
       || voices.find(v => isGoogle(v) && langBase(v))
       || voices.find(langExact)
