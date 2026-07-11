@@ -2155,7 +2155,7 @@ function aggiornaFraseSP(i, campo, valore) {
 }
 function testaFraseSP(i, rate) {
   const t = (frasiSPDraft[i] && frasiSPDraft[i].tts || '').trim();
-  if (!t) return;
+  if (!t || !window.speechSynthesis) return;
   const u = new SpeechSynthesisUtterance(t);
   u.lang = 'it-IT';
   u.rate = (typeof rate === 'number' && rate > 0) ? rate : RATE_NORMALE;
@@ -2401,13 +2401,17 @@ function ttsRow(btn, rate) {
   window.speechSynthesis.cancel();
   setTimeout(() => {
     utterances.forEach(({ testo, bcp }) => {
-      const u = new SpeechSynthesisUtterance(testo);
-      u.lang = bcp;
-      u.rate = finalRate;
-      const v = _pickVoice(bcp, lento);
-      if (v) u.voice = v;
-      rallentaSeGoogle(u, v, lento);
-      window.speechSynthesis.speak(u);
+      // try/catch per utterance: un errore su una lingua (utterance o speak)
+      // non deve zittire le lingue successive della riga.
+      try {
+        const u = new SpeechSynthesisUtterance(testo);
+        u.lang = bcp;
+        u.rate = finalRate;
+        const v = _pickVoice(bcp, lento);
+        if (v) u.voice = v;
+        rallentaSeGoogle(u, v, lento);
+        window.speechSynthesis.speak(u);
+      } catch (e) {}
     });
   }, 80);
 }
