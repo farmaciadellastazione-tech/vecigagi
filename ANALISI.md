@@ -205,7 +205,7 @@ Ogni istanza fa `window.speechSynthesis.onvoiceschanged = check` (~:4609) senza 
 ### 🟢 Minori
 
 - Eliminazione parola dal Vocabolario senza `confirm` (~:9491); per voci default torna comunque al prossimo bump (vedi R3, direzione opposta).
-- Prop `"aria-label"` duplicata (~:4626, ~:9865).
+- Prop `"aria-label"` duplicata (~:4626, ~:9865). ✅ **Fatto 2026-07-11** (commit `a37f061`): rimossa la chiave ripetuta nei due bottoni 🐢 (BtnAudio e scelta multipla), valore identico quindi nessun cambio di comportamento.
 - `Home` ricalcola `parolaAppresa`/`contaScadute` su tutto il vocabolario a ogni render senza memo (~50k lookup con 6 lingue attive). Non misurato come problema reale.
 - Verificato OK: l'oggetto `UI` copre tutte le 10 lingue di `detectUILang` (nessun rischio `UI[lang] === undefined`); `TOUR_STEPS_I18N` idem.
 

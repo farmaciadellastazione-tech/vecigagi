@@ -62,7 +62,9 @@ const UI = extractEval('UI', '{', '}');
 const UI_LINGUE = extractEval('UI_LINGUE', '[', ']');
 
 const LINGUE = Object.keys(UI);
-const CHIAVI_IT = Object.keys(UI.it);
+// `|| {}`: se l'estrazione di it fallisse, meglio il messaggio chiaro del
+// primo test che un TypeError all'import del modulo.
+const CHIAVI_IT = Object.keys(UI.it || {});
 
 test('UI: l\'estrazione è sana (10 lingue, it presente e non banale)', () => {
   assert.ok(UI.it && UI.en, 'UI deve avere it e en');

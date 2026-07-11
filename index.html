@@ -1703,9 +1703,12 @@ const UI = {
     nota_verbi_en: "ℹ️ Els verbs anglesos no inclouen \"to\" (ex. \"go\" no \"to go\")"
   }
 };
-// Fallback chiavi UI: le lingue tradotte solo parzialmente (ru/ca/zh/ko, e qualche
-// chiave sparsa in fr/es/pt) ereditano dall'inglese le chiavi mancanti, così la UI
-// non mostra mai "undefined". Non sovrascrive mai una traduzione già presente.
+// Fallback chiavi UI: rete di sicurezza — se a una lingua manca una chiave,
+// eredita dall'inglese invece di mostrare "undefined". Non sovrascrive mai una
+// traduzione già presente. NOTA: oggi tutte le 10 lingue sono complete e
+// tests/i18nUI.test.mjs impone la parità (una chiave nuova va aggiunta in
+// TUTTE le lingue, il test elenca le mancanti); il fallback resta solo per
+// robustezza a runtime, non è un via libera a traduzioni parziali.
 for (const _l of Object.keys(UI)) {
   if (_l === "en") continue;
   UI[_l] = { ...UI.en, ...UI[_l] };
