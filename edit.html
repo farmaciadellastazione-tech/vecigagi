@@ -1309,7 +1309,7 @@ function render() {
       <td class="row-actions">
         <button class="icon-btn ai" onclick="aiCompletaRiga(this)" title="Completa con AI">✨</button>
         <button class="icon-btn" onclick="ttsRow(this)" title="Pronuncia">🔊</button>
-        <button class="icon-btn" onclick="ttsRow(this, 0.6)" title="Pronuncia lenta">🐢</button>
+        <button class="icon-btn" onclick="ttsRow(this, 0.55)" title="Pronuncia lenta">🐢</button>
         <button class="icon-btn danger" onclick="cancellaVoce(this)" title="Cancella">🗑️</button>
       </td>
     `;
@@ -2158,8 +2158,9 @@ function testaFraseSP(i, rate) {
   if (!t) return;
   const u = new SpeechSynthesisUtterance(t);
   u.lang = 'it-IT';
+  const lento = typeof rate === 'number' && rate > 0 && rate < 0.85;
   if (typeof rate === 'number' && rate > 0) u.rate = rate;
-  const v = _pickVoice(u.lang); if (v) u.voice = v;
+  const v = _pickVoice(u.lang, lento); if (v) u.voice = v;
   speechSynthesis.cancel();
   speechSynthesis.speak(u);
 }
@@ -2182,7 +2183,7 @@ function renderFrasiSP() {
         ${customOpt}
       </select>
       <button class="btn btn-secondary" onclick="testaFraseSP(${i})" title="Ascolta TTS" style="padding:0.35rem 0.55rem;">🔊</button>
-      <button class="btn btn-secondary" onclick="testaFraseSP(${i}, 0.6)" title="Ascolta lento" style="padding:0.35rem 0.55rem;">🐢</button>
+      <button class="btn btn-secondary" onclick="testaFraseSP(${i}, 0.55)" title="Ascolta lento" style="padding:0.35rem 0.55rem;">🐢</button>
       <button class="btn btn-secondary" onclick="eliminaFraseSP(${i})" title="Elimina" style="padding:0.35rem 0.55rem;">❌</button>
     </div>`;
   }).join('');
@@ -2298,7 +2299,9 @@ _initVoices();
 // Per it-IT (dialetti liguri) preferisce voci locali non-Google: Google italiano
 // applica fonetica inglese su parole ambigue (es. "bun" → "ban" invece di /bun/).
 // Per le altre lingue preferisce Google per qualità e naturalezza.
-function _pickVoice(bcp47) {
+// Eccezione: in modalità lenta (lento=true) evita Google per TUTTE le lingue,
+// perché le voci "Google ..." ignorano u.rate e la lettura resta a velocità normale.
+function _pickVoice(bcp47, lento) {
   const voices = window.speechSynthesis.getVoices();
   if (!voices.length) return null;
   const lower = bcp47.toLowerCase();
@@ -2306,7 +2309,7 @@ function _pickVoice(bcp47) {
   const isGoogle = v => /^google\b/i.test(v.name || '');
   const langExact = v => (v.lang || '').toLowerCase() === lower;
   const langBase  = v => (v.lang || '').toLowerCase().split('-')[0] === pref;
-  if (pref === 'it') {
+  if (lento || pref === 'it') {
     return voices.find(v => !isGoogle(v) && langExact(v))
         || voices.find(v => !isGoogle(v) && langBase(v))
         || voices.find(v => isGoogle(v) && langExact(v))
@@ -2358,6 +2361,7 @@ function ttsRow(btn, rate) {
   const tr = btn.closest('tr');
   if (!tr) return;
   const finalRate = (typeof rate === 'number' && rate > 0) ? rate : 0.85;
+  const lento = finalRate < 0.85;
   const pronInput = tr.querySelector('input[data-field="pron"]');
   const pronTesto = pronInput ? pronInput.value.trim() : '';
   const primaryLang = currentLangs[0];
@@ -2384,7 +2388,7 @@ function ttsRow(btn, rate) {
       const u = new SpeechSynthesisUtterance(testo);
       u.lang = bcp;
       u.rate = finalRate;
-      const v = _pickVoice(bcp);
+      const v = _pickVoice(bcp, lento);
       if (v) u.voice = v;
       window.speechSynthesis.speak(u);
     });

@@ -4315,6 +4315,14 @@ function parla(testo, bcp47, lento = false) {
         || voices.find(langExact)
         || voices.find(langBase));
     if (voice) u.voice = voice;
+    // Fallback lentezza: se in modalità lenta è disponibile solo una voce
+    // Google (o nessuna voce → default del browser), u.rate viene ignorato e
+    // la lettura resta a velocità normale. Per le frasi multi-parola simuliamo
+    // la lentezza inserendo virgole tra le parole (la virgola produce una
+    // pausa TTS). Per le parole singole non c'è rimedio senza voce locale.
+    if (lento && (!voice || isGoogle(voice)) && /\s/.test(u.text)) {
+      u.text = u.text.split(/\s+/).join(", ");
+    }
   } catch (e) {}
   // Serializza: cancel() è asincrono in Chromium → chiamare speak() subito dopo
   // può far scartare la nuova utterance o sovrapporla alla precedente.
