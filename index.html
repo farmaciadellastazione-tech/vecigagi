@@ -4845,7 +4845,6 @@ function BtnAudio({
     /*#__PURE__*/React.createElement("button", {
       onClick: () => parla(testo, bcp47, true),
       title: "Ascolta lentamente", "aria-label": "Ascolta lentamente",
-      "aria-label": "Ascolta lentamente",
       className: `text-sky-500 hover:text-sky-600 transition p-1 ${size}`
     }, "\uD83D\uDC22")
   );
@@ -10130,8 +10129,7 @@ function SchermataSceltaMultipla({
       role: "button",
       onClick: (ev) => { ev.stopPropagation(); parla(formaTTS(s.raw), carta.lingua?.bcp47, true); },
       className: "text-zinc-500 hover:text-amber-400 text-base px-1 -my-2 py-2",
-      title: "Ascolta lentamente", "aria-label": "Ascolta lentamente",
-      "aria-label": "Ascolta lentamente"
+      title: "Ascolta lentamente", "aria-label": "Ascolta lentamente"
     }, "\uD83D\uDC22"));
   })), risposta && !risposta.corretta && /*#__PURE__*/React.createElement("button", {
     onClick: avanti,
