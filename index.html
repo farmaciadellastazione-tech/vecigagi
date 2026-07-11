@@ -4318,10 +4318,12 @@ function parla(testo, bcp47, lento = false) {
     // Fallback lentezza: se in modalità lenta è disponibile solo una voce
     // Google (o nessuna voce → default del browser), u.rate viene ignorato e
     // la lettura resta a velocità normale. Per le frasi multi-parola simuliamo
-    // la lentezza inserendo virgole tra le parole (la virgola produce una
-    // pausa TTS). Per le parole singole non c'è rimedio senza voce locale.
-    if (lento && (!voice || isGoogle(voice)) && /\s/.test(u.text)) {
-      u.text = u.text.split(/\s+/).join(", ");
+    // la lentezza inserendo una virgola (pausa TTS) tra le parole, MA solo
+    // dove non c'è già punteggiatura: "no, a chino" deve diventare
+    // "no, a, chino", non "no,, a, chino". Per le parole singole non c'è
+    // rimedio senza voce locale (il replace non trova spazi ed è un no-op).
+    if (lento && (!voice || isGoogle(voice))) {
+      u.text = u.text.replace(/([^\s,;.!?:])\s+(?=[^\s,;.!?:])/g, "$1, ");
     }
   } catch (e) {}
   // Serializza: cancel() è asincrono in Chromium → chiamare speak() subito dopo
