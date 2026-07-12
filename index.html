@@ -2078,7 +2078,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // ── Vocabolario con temi e livelli ────────────────────────────────────────
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
-      // ── VOCABOLARIO_DEFAULT ──────────────────
+      // ── VOCABOLARIO ──────────────────────────
       { tema:"acquisto", livello:"A2", it:"a buon mercato", en:"cheap", es:"barato", pt:"barato", sp:"a bon páto", ge:"a buun mercouu/ a bon mercòu", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,ge:g", nt:["mn"] },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"a spasso, in giro senza meta.", sp:"scoratae", mn:"zùnzu (a)", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
@@ -2966,7 +2966,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"identico|spiaccicato", mn:"s'ciat à/sciatà", verif:"mn:g" },
       { tema:"cosmetica", livello:"A1", it:"idratante", en:"moisturiser", fr:"hydratant", es:"hidratante", de:"Feuchtigkeitscreme", pt:"hidratante", ru:"увлажняющий крем", ca:"hidratant", ko:"보습제", ar:"مرطب", zh:"保湿霜", ja:"保湿剤", nt:["mn"] },
       { tema:"tempo", livello:"A1", it:"ieri", sp:"aiei", mn:"aiei", cr:"aier", ge:"vêi", ro:"ieri", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g" },
-      { tema:"tempo", livello:"B1", it:"ieri era olio, ora è  oro", en:"yesterday oil, today gold", fr:"hier huile, aujourd'hui or", es:"ayer aceite, hoy oro", de:"gestern Öl, heute Gold", pt:"ontem óleo, hoje ouro", ca:"ahir oli, avui or", sp:"Aiei i ea eio' aoa i è oo/Aiei i ea eio aoa i è oo", mn:"Aiei i ea eiu aoa i è ou", la:"heri oleum, hodie aurum", ro:"ieri ulei, azi aur", verif:"mn:g,sp:g" },
+      { tema:"tempo", livello:"B1", it:"ieri era olio, ora è  oro", en:"yesterday oil, today gold", fr:"hier huile, aujourd'hui or", es:"ayer aceite, hoy oro", de:"gestern Öl, heute Gold", pt:"ontem óleo, hoje ouro", ca:"ahir oli, avui or", sp:"Aiei i ea eio' aoa i è oo/Aiei i ea eio aoa i è oo", mn:"Aiei i ea eiu aua i è ou", la:"heri oleum, hodie aurum", ro:"ieri ulei, azi aur", verif:"mn:g,sp:g" },
       { tema:"ristorante", livello:"A1", it:"il conto per favore", sp:"er conto pe' piasée", mn:"er cuntu per piasëhë/o cuntu per piazëhë", ge:"o conto pe' piaxei", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialogo", livello:"B1", it:"Il farmaco è esaurito, posso ordinarlo", en:"The medicine is out of stock, I can order it", fr:"Le médicament est épuisé, je peux le commander", es:"El medicamento está agotado, puedo pedirlo", de:"Das Medikament ist vergriffen, ich kann es bestellen", pt:"O medicamento está esgotado, posso encomendá-lo|O medicamento esta esgotado, posso encomenda-lo", ko:"약이 품절입니다, 주문할 수 있습니다", ar:"الدواء غير متوفر، يمكنني طلبه", zh:"药品已售完，我可以为您订购", ja:"在庫切れですが、注文できます", nt:["mn"] },
       { tema:"citazioni", livello:"B1", it:"Il tempo vola", la:"Tempus fugit", grc:"Ὁ χρόνος φεύγει", nt:["mn"] },
@@ -3177,7 +3177,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"occupato", en:"busy", fr:"occupé", es:"ocupado", de:"beschäftigt", pt:"ocupado", ru:"занятой", ca:"ocupat", sp:"okiupà/ocüpà", verif:"sp:g" },
       { tema:"verbi", livello:"A2", it:"odorare/odore", en:"smell", fr:"sentir|odeur", es:"oler|olor", de:"riechen|Geruch", pt:"cheirar|cheiro", ru:"нюхать|запах", ca:"olorar|olor", sp:"odoàae/odoae", mn:"uduàa/ùduaa", verif:"mn:g" },
       { tema:"tempo", livello:"A1", it:"oggi", sp:"anchè", mn:"anchè", cr:"ozi", ge:"ancheu", ro:"azi", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g,sp:g" },
-      { tema:"cibo", livello:"A1", it:"olio", en:"oil", sp:"eio/èio", mn:"eyou/èiu", verif:"mn:g" },
+      { tema:"cibo", livello:"A1", it:"olio", en:"oil", sp:"eio/èio", mn:"eyou/èiu", ge:"eyou/euio", verif:"mn:g" },
       { tema:"cibo", livello:"A1", it:"oliva", en:"olive", sp:"oìva", mn:"ujiva/uìva", verif:"mn:g,sp:g" },
       { tema:"corpo", livello:"B1", it:"ombelico", en:"navel", fr:"nombril", es:"ombligo", de:"Nabel", pt:"umbigo", sp:"lopìn| onbrisàlo", mn:"lupìn", verif:"mn:g" },
       { tema:"natura", livello:"A2", it:"ombra", en:"shadow", fr:"ombre", es:"sombra", de:"Schatten", pt:"sombra", ru:"тень", ca:"ombra", mn:"umbra", ko:"그림자", ar:"ظل", zh:"阴影", ja:"影", ia:"umbra", la:"umbra", grc:"σκιά", verif:"mn:g" },
@@ -3882,7 +3882,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 407;
+const VOC_VERSION = 408;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
