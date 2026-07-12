@@ -2475,6 +2475,7 @@ const CANDIDATI = [
       { tema:"dialetti", it:"varare, scivolare, sprofondare.", mn:"zvàaa", src:{"mn":"📕 Dizionario manarolese"}, verif:"mn:y", note:{"mn":"cat:v.i. | p:z_188"} },
       { tema:"dialetti", it:"varietà di uva bianca.", mn:"picabùn", src:{"mn":"📕 Dizionario manarolese"}, verif:"mn:y", note:{"mn":"cat:s.m. | p:p03_raw"} },
       { tema:"casa", it:"vasetto/barattolo", en:"jar" },
+      { tema:"casa", it:"vassoio", ge:"cabaré" },
       { tema:"aggettivi", it:"vecchio", ge:"végio" },
       { tema:"dialetti", it:"veccia germinata al buio.", mn:"pézèlin", src:{"mn":"📕 Dizionario manarolese"}, verif:"mn:y", note:{"mn":"cat:sm. | p:p03_raw"} },
       { tema:"verbi", it:"vedere", ge:"vedde" },
@@ -3810,6 +3811,24 @@ Se non ci sono errori: {"errori":[]}`;
 //                         SOVRASCRIVONO quelli di index (l'admin ha già
 //                         deciso, badge ⚠️ era visibile)
 // Poi: due PUT, prima index (bump VOC_VERSION) poi dialetti (rimuove le promosse).
+// Chiavi it presenti PIÙ volte nell'array (omonimi: stesso it, sensi diversi).
+function chiaviDoppie(voci) {
+  const viste = new Set(), doppie = new Set();
+  for (const v of voci) {
+    const k = adminRowKey(v);
+    if (viste.has(k)) doppie.add(k);
+    viste.add(k);
+  }
+  return doppie;
+}
+
+// Candidati rimasti dopo una promozione: rimozione per IDENTITÀ (Set di
+// riferimenti alle voci davvero promosse), mai per chiave it — un gemello
+// omonimo non promosso deve sopravvivere in staging.
+function candidatiDopoPromozione(voci, promosse) {
+  return voci.filter(v => !promosse.has(v));
+}
+
 async function adminPromuovi() {
   const ok = adminVoc.filter(v => v.ok);
   if (!ok.length) { alert('Nessuna voce marcata OK.'); return; }
@@ -3907,9 +3926,18 @@ async function adminPromuovi() {
     // Cosi' edit.html riconosce queste celle come provenienti da dialetti.html (🔗)
     // e gia' verificate (🟢). Vedi commento nel blocco SORGENTI di edit.html.
     const DIA_AUTOTAG = ['mn','sp','ge','cr'];
+    // Omonimi in index (stesso `it`, voci diverse per tema/senso — ci sono
+    // gruppi reali): la Map it→voce ne vede solo l'ultimo, quindi il merge
+    // finirebbe nel gemello sbagliato. Questi candidati vengono SALTATI con
+    // avviso (restano in staging con la loro ☑️): si gestiscono a mano.
+    const doppieIndex = chiaviDoppie(nuovoIndex);
+    const saltateOmonimi = [];
+    const promosse = new Set(); // per identità: solo ciò che viene davvero fuso
     let aggiunte = 0, aggiornate = 0;
     for (const cand of ok) {
       const key = adminRowKey(cand);
+      if (doppieIndex.has(key)) { saltateOmonimi.push(cand.it); continue; }
+      promosse.add(cand);
       const esistente = indexByIt.get(key);
       // Voce "pulita" (senza `ok` e `fonte`)
       const pulita = {};
@@ -3951,9 +3979,25 @@ async function adminPromuovi() {
     }
     nuovoIndex.sort((a, b) => (a.it || '').localeCompare(b.it || '', 'it'));
 
-    // 2. Costruisci il nuovo array candidati senza le voci promosse
-    const okKeys = new Set(ok.map(adminRowKey));
-    const nuoviCandidati = adminVoc.filter(v => !okKeys.has(adminRowKey(v)));
+    if (saltateOmonimi.length) {
+      alert(
+        `⚠️ ${saltateOmonimi.length} candidato/i NON promossi perché in index esistono ` +
+        `PIÙ voci con lo stesso italiano (omonimi con sensi diversi) e la promozione ` +
+        `non può sapere quale gemello aggiornare:\n\n  · ${saltateOmonimi.join('\n  · ')}\n\n` +
+        `Restano nei candidati con la loro ☑️: gestiscili a mano da edit.html (modalità Vocabolario).`
+      );
+    }
+    if (!promosse.size) {
+      adminLog('⏹ Nessuna voce promuovibile (tutte saltate per omonimi in index).', 'error');
+      btn.disabled = false; btn.textContent = '🚀 Promuovi';
+      return;
+    }
+
+    // 2. Costruisci il nuovo array candidati senza le voci promosse.
+    //    Rimozione per IDENTITÀ, non per chiave it: un gemello omonimo non
+    //    promosso deve restare in staging (bug storico: il secondo candidato
+    //    "vassoio" senza ☑️ veniva cancellato in silenzio).
+    const nuoviCandidati = candidatiDopoPromozione(adminVoc, promosse);
 
     // 3. Ricostruisci i sorgenti
     const nuovoIndexSrc    = adminRicostruisciIndex(nuovoIndex);
@@ -3962,9 +4006,9 @@ async function adminPromuovi() {
     // 4. PUT in sequenza: prima index, poi dialetti (se index fallisce, dialetti non viene toccato)
     const aiSuffix = aiStats ? ` + AI ${aiStats.filled} traduzioni en/fr/es/de/pt` : '';
     adminLog('⏳ PUT index.html…');
-    await adminGhPutFile(GH_PATH_INDEX, nuovoIndexSrc, `Promozione ${ok.length} voci da dialetti (${aggiunte} nuove, ${aggiornate} aggiornate)${aiSuffix}`);
+    await adminGhPutFile(GH_PATH_INDEX, nuovoIndexSrc, `Promozione ${promosse.size} voci da dialetti (${aggiunte} nuove, ${aggiornate} aggiornate)${aiSuffix}`);
     adminLog('⏳ PUT dialetti.html…');
-    await adminGhPutFile(GH_PATH_DIALETTI, nuoviDialettiSrc, `Rimozione ${ok.length} voci promosse a index`);
+    await adminGhPutFile(GH_PATH_DIALETTI, nuoviDialettiSrc, `Rimozione ${promosse.size} voci promosse a index`);
 
     // 5. Aggiorna stato locale
     adminIndexFile = nuovoIndexSrc;

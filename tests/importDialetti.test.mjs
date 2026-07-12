@@ -284,6 +284,47 @@ test('guardia dialetti: content assente dalla GET (file >1MB) → fail-open, PUT
   assert.deepEqual(chiamate, ['GET', 'PUT']);
 });
 
+// ── Promozione e omonimi (bug "vassoio"/"cacciare", 2026-07-12) ─────────────
+// 1. La rimozione post-promozione filtrava per CHIAVE it: un secondo candidato
+//    omonimo NON ☑️ (es. il gemello {tema:"casa", it:"vassoio"}) veniva
+//    cancellato in silenzio insieme a quello promosso. Ora si rimuove per
+//    IDENTITÀ: sparisce solo ciò che è stato davvero promosso.
+// 2. Se INDEX ha più voci con lo stesso it (26 gruppi di omonimi reali), la
+//    Map it→voce aggiornava un gemello a caso (l'ultimo). Ora il candidato
+//    ambiguo viene SALTATO con avviso, mai fuso nel gemello sbagliato.
+
+function makePromoCtx() {
+  const ctx = vm.createContext({ console });
+  vm.runInContext(extractFn(DIAL, 'adminRowKey'), ctx);
+  vm.runInContext(extractFn(DIAL, 'chiaviDoppie'), ctx);
+  vm.runInContext(extractFn(DIAL, 'candidatiDopoPromozione'), ctx);
+  return ctx;
+}
+
+test('chiaviDoppie: individua le chiavi it presenti più volte', () => {
+  const ctx = makePromoCtx();
+  const out = vm.runInContext(`[...chiaviDoppie([{ it: 'ora' }, { it: 'Ora ' }, { it: 'casa' }])]`, ctx);
+  assert.deepEqual(out, ['ora'], 'stessa chiave normalizzata (case/spazi) → doppia');
+});
+
+test('candidatiDopoPromozione: rimozione per identità — il gemello non promosso sopravvive', () => {
+  const ctx = makePromoCtx();
+  const superstiti = vm.runInContext(`
+    const promosso = { tema: 'dialetti', it: 'vassoio', mn: 'cabarè', ok: true };
+    const gemello  = { tema: 'casa', it: 'vassoio', ge: 'cabaré' };
+    const altro    = { it: 'sole', ge: 'sô' };
+    candidatiDopoPromozione([promosso, gemello, altro], new Set([promosso])).map(v => v.tema || v.it);
+  `, ctx);
+  assert.deepEqual(superstiti, ['casa', 'sole'], 'deve sparire SOLO la voce promossa, non il gemello omonimo');
+});
+
+test('adminPromuovi: usa i nuovi helper e salta i candidati con omonimi in index (con avviso)', () => {
+  const src = extractFn(DIAL, 'adminPromuovi');
+  assert.ok(src.includes('candidatiDopoPromozione('), 'la rimozione deve essere per identità');
+  assert.ok(src.includes('chiaviDoppie('), 'gli omonimi di index vanno individuati prima del merge');
+  assert.ok(/omonim/i.test(src), 'il salto per ambiguità deve essere spiegato all\'utente');
+});
+
 test('regressione: import dialettale classico (chip sp) — nuova, arricchimento e conflitto come prima', () => {
   const { analizza } = makeCtx([
     { it: 'casa', sp: 'ca' },       // conflitto (valore diverso nel file)
