@@ -243,6 +243,14 @@ Due interventi collegati sull'IA, entrambi con impatto principale su Lettura gui
 
 Verifica dal vivo (server statico Node + Playwright, rete Gemini interamente mockata): storia spezzina → spiegazione mostrata, avvertenza visibile, candidato salvato; storia tedesca → spiegazione senza avvertenza, candidato salvato; `maxOutputTokens: 1000` su tutte le chiamate intercettate; nessun errore console. Suite completa verde.
 
+### Import multi-lingua in dialetti.html (2026-07-12)
+
+Regola di processo fissata dall'autore: **qualunque candidato — dialettale o no — entra da dialetti.html (cuscinetto) e arriva a index solo con 🚀 Promuovi**. I candidati IA di Lettura guidata in lingue non dialettali (es. tedesco) però non avevano una porta d'ingresso: l'📤 Importa agiva solo sul dialetto del chip attivo e il resto finiva in "∅ Vuote".
+
+- ✅ **Import esteso a tutte le lingue** — `adminImportAnalizza` legge ora TUTTE le colonne-lingua dello schema (`ADMIN_KEY_ORDER_INDEX` meno tema/livello/it/pron) presenti nel file JSON/JS/HTML; le liste nuove/arricchimenti/conflitti portano il codice lingua (badge `[de]` nel modal). Il CSV resta vincolato al chip dialetto (guardia esplicita in `adminImportCsv`); il modal si apre anche senza chip selezionato.
+- ✅ **Pre-spunta ☑️ OK per le lingue affidabili** — nuova costante `LINGUE_AFFIDABILI_AI` (`en/fr/es/de/pt`): le voci NUOVE i cui campi importati sono tutti in quella lista nascono già `ok:true` (revisione-lampo: si scorrono i badge e si promuove). Mai pre-spuntati: voci con anche un solo campo dialettale, e arricchimenti su voci esistenti (potrebbero avere celle dialettali da vagliare). Una volta in CANDIDATI, la voce tedesca ha le celle dialettali libere → si può aggiungere a mano l'eventuale traduzione in dialetto; alla promozione il toggle "🤖 Riempimento AI" già esistente completa le altre lingue maggiori mancanti.
+- Test: `tests/importDialetti.test.mjs` (8 casi comportamentali via vm sulle funzioni reali: nuova tedesca pre-spuntata, dialettale e mista mai pre-spuntate, arricchimento senza toccare `ok`, duplicati per campo, regressione sul flusso dialettale classico). Verifica dal vivo con Playwright e GitHub raw mockato sui file locali: JSON misto de+sp → 2 nuove/0 vuote, tedesca `ok:true`, spezzina senza `ok`, nessun errore console.
+
 ### Stessa fragilità estesa a Frase libera (2026-07-09)
 
 `SchermataFraseLibera.verificaFrase` aveva lo stesso identico bug (fallback `clean.slice(0, 200)` sul campo `grammar` quando il JSON di `{"correct", "correction", "grammar", "example"}` arrivava troncato), non ancora segnalato/riprodotto ma con la stessa causa (`max_tokens` fisso).

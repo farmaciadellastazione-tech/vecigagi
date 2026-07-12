@@ -1198,8 +1198,11 @@
     <h2>📤 Importa traduzioni</h2>
     <p class="imp-help">
       Carica un file <code>.html</code> (copia di dialetti.html), <code>.js</code> (solo array)
-      o <code>.json</code> (array di voci <code>{it, ge, ...}</code>). L'import agisce <strong>solo</strong>
-      sul dialetto selezionato in alto (chip attivo): <strong id="imp-dialect-name">—</strong>.
+      o <code>.json</code> (array di voci <code>{it, de, sp, ...}</code> — anche i candidati
+      copiati da Lettura guidata). JSON/JS/HTML importano <strong>tutte le lingue</strong> presenti
+      nel file: le voci nuove con sole lingue affidabili (en/fr/es/de/pt) nascono già ☑️ OK,
+      quelle con campi dialettali sempre da vagliare. Il <code>.csv</code> agisce invece solo
+      sul dialetto selezionato in alto: <strong id="imp-dialect-name">—</strong>.
       Le modifiche restano in memoria finché non clicchi <strong>☁️ Salva su dialetti</strong>.
     </p>
     <div class="imp-file-row">
@@ -3112,10 +3115,8 @@ function adminImportApri() {
     alert('Carica prima i candidati da GitHub.');
     return;
   }
-  if (!DIALETTI_TTS_ITA.includes(currentDialect)) {
-    alert('Seleziona prima un dialetto (Manarolese, Spezzino, Carrarino o Genovese) nei chip in alto.');
-    return;
-  }
+  // Niente vincolo sul chip: JSON/JS/HTML importano tutte le lingue del file.
+  // Il chip serve solo per i CSV (vincolo verificato in adminImportCsv).
   impParsed = null;
   document.getElementById('imp-file').value = '';
   document.getElementById('imp-file-status').textContent = '';
@@ -3123,7 +3124,9 @@ function adminImportApri() {
   document.getElementById('imp-sections').style.display = 'none';
   document.getElementById('imp-btn-applica').disabled = true;
   document.getElementById('imp-dialect-name').textContent =
-    (DIALECT_NAMES[currentDialect] || currentDialect) + ` (campo "${currentDialect}")`;
+    DIALETTI_TTS_ITA.includes(currentDialect)
+      ? (DIALECT_NAMES[currentDialect] || currentDialect) + ` (campo "${currentDialect}")`
+      : 'nessuno (per un CSV seleziona un dialetto nei chip)';
   document.getElementById('admin-import-modal').classList.add('visible');
 }
 
@@ -3177,6 +3180,9 @@ function adminImportEstrai(text, name) {
 // dialetto correntemente selezionato. La colonna DIALETTO, se presente, deve
 // corrispondere (altrimenti blocca, per non scrivere nel dialetto sbagliato).
 function adminImportCsv(text) {
+  if (!DIALETTI_TTS_ITA.includes(currentDialect)) {
+    throw new Error('Per importare un CSV seleziona prima un dialetto (Manarolese, Spezzino, Carrarino o Genovese) nei chip in alto.');
+  }
   const rows = adminParseCsv(text);
   if (rows.length < 2) throw new Error('CSV vuoto o senza righe dati');
   const head = rows[0].map(c => (c || '').trim().toUpperCase());
@@ -3224,47 +3230,61 @@ function adminParseCsv(text) {
 }
 
 function adminImportAnalizza(arr) {
-  const dialetto = currentDialect;
+  // L'import NON è più limitato al dialetto del chip: considera TUTTE le
+  // colonne-lingua dello schema presenti nel file (dialetti compresi), escluse
+  // le meta-colonne. Così un JSON di candidati da Lettura guidata (es.
+  // [{tema, it, de:"heute"}]) importa il campo della sua lingua. Il CSV resta
+  // vincolato al chip (vedi adminImportCsv, che costruisce {it, [chip]: val}).
+  const LANG_COLS = ADMIN_KEY_ORDER_INDEX.filter(k => !['tema', 'livello', 'it', 'pron'].includes(k));
   const byIt = new Map();
   adminVoc.forEach(v => byIt.set(adminRowKey(v), v));
 
-  const nuove = [];       // {it, tema, val, sel}
-  const arricch = [];     // {it, tema, val, sel}
-  const conflitti = [];   // {it, tema, valAttuale, valNuovo, scelta:'attuale'|'nuovo'|'salta'}
+  const nuove = [];       // {it, tema, vals:{lang:val,...}, val:testo per la lista, sel}
+  const arricch = [];     // {it, tema, lang, val, sel}
+  const conflitti = [];   // {it, tema, lang, valAttuale, valNuovo, scelta:'attuale'|'nuovo'|'salta'}
   let dupl = 0, vuote = 0;
 
   for (const raw of arr) {
     if (!raw || typeof raw !== 'object' || !raw.it) continue;
-    const valNuovo = (raw[dialetto] || '').trim();
-    if (!valNuovo) { vuote++; continue; }
+    const vals = {};
+    for (const lang of LANG_COLS) {
+      const v = (raw[lang] || '').trim();
+      if (v) vals[lang] = v;
+    }
+    if (!Object.keys(vals).length) { vuote++; continue; }
     const key = adminRowKey(raw);
     const esistente = byIt.get(key);
     if (!esistente) {
       nuove.push({
         it: raw.it.trim(),
         tema: (raw.tema || '').trim(),
-        val: valNuovo,
+        vals,
+        val: Object.entries(vals).map(([l, v]) => `${l}: ${v}`).join(' · '),
         sel: true,
       });
       continue;
     }
-    const valAttuale = (esistente[dialetto] || '').trim();
-    if (!valAttuale) {
-      arricch.push({ it: esistente.it, tema: esistente.tema || '', val: valNuovo, sel: true });
-    } else if (valAttuale === valNuovo) {
-      dupl++;
-    } else {
-      conflitti.push({
-        it: esistente.it,
-        tema: esistente.tema || '',
-        valAttuale,
-        valNuovo,
-        scelta: 'attuale', // default conservativo: non sovrascrive senza decisione esplicita
-      });
+    // Voce già nei CANDIDATI: classifica campo per campo (dupl = per campo)
+    for (const [lang, valNuovo] of Object.entries(vals)) {
+      const valAttuale = (esistente[lang] || '').trim();
+      if (!valAttuale) {
+        arricch.push({ it: esistente.it, tema: esistente.tema || '', lang, val: valNuovo, sel: true });
+      } else if (valAttuale === valNuovo) {
+        dupl++;
+      } else {
+        conflitti.push({
+          it: esistente.it,
+          tema: esistente.tema || '',
+          lang,
+          valAttuale,
+          valNuovo,
+          scelta: 'attuale', // default conservativo: non sovrascrive senza decisione esplicita
+        });
+      }
     }
   }
 
-  impParsed = { nuove, arricch, conflitti, dupl, vuote, dialect: dialetto };
+  impParsed = { nuove, arricch, conflitti, dupl, vuote, dialect: currentDialect };
   adminImportRender();
 }
 
@@ -3303,7 +3323,7 @@ function adminImportRenderList(rows, kind) {
   let html = slice.map((r, i) => `
     <div class="imp-row ${cls}">
       <input type="checkbox" ${r.sel ? 'checked' : ''} onchange="adminImportToggleRow('${kind}', ${i}, this.checked)">
-      <span class="it-cell">${adminImportEscapeHtml(r.it)}</span>
+      <span class="it-cell">${adminImportEscapeHtml(r.it)}${r.lang ? ' <strong>[' + adminImportEscapeHtml(r.lang) + ']</strong>' : ''}</span>
       <span class="val-cell nuovo">${adminImportEscapeHtml(r.val)}</span>
       <span class="tema-cell">${adminImportEscapeHtml(r.tema)}</span>
     </div>
@@ -3319,7 +3339,7 @@ function adminImportRenderListConflitti(rows) {
   const slice = rows.slice(0, IMP_MAX_RENDER);
   let html = slice.map((r, i) => `
     <div class="imp-row row-conflitto" data-idx="${i}">
-      <span class="it-cell">${adminImportEscapeHtml(r.it)}<br><span class="tema-cell">${adminImportEscapeHtml(r.tema)}</span></span>
+      <span class="it-cell">${adminImportEscapeHtml(r.it)}${r.lang ? ' <strong>[' + adminImportEscapeHtml(r.lang) + ']</strong>' : ''}<br><span class="tema-cell">${adminImportEscapeHtml(r.tema)}</span></span>
       <span class="val-cell attuale" title="valore attuale nei CANDIDATI">${adminImportEscapeHtml(r.valAttuale)}</span>
       <span class="val-cell nuovo" title="valore dal file importato">${adminImportEscapeHtml(r.valNuovo)}</span>
       <span class="conflict-choice">
@@ -3361,30 +3381,35 @@ function adminImportSetConflitto(idx, scelta) {
 
 function adminImportApplica() {
   if (!impParsed) return;
-  const { nuove, arricch, conflitti, dialect } = impParsed;
-  let cN = 0, cA = 0, cC = 0;
+  const { nuove, arricch, conflitti } = impParsed;
+  let cN = 0, cA = 0, cC = 0, cOk = 0;
 
-  // 1. Voci nuove → push in adminVoc + segna modificate
+  // 1. Voci nuove → push in adminVoc + segna modificate.
+  //    Pre-spunta ☑️ ok SOLO se TUTTI i campi importati sono lingue affidabili
+  //    (LINGUE_AFFIDABILI_AI): revisione-lampo per i candidati en/de/ecc. da
+  //    Lettura guidata. Mai per i dialetti, che nascono sempre da vagliare.
   nuove.filter(r => r.sel).forEach(r => {
     const v = { it: r.it };
     if (r.tema) v.tema = r.tema;
-    v[dialect] = r.val;
+    Object.assign(v, r.vals);
+    if (Object.keys(r.vals).every(l => LINGUE_AFFIDABILI_AI.includes(l))) { v.ok = true; cOk++; }
     adminVoc.push(v);
     adminOriginalKeys.set(adminRowKey(v), new Set(Object.keys(v)));
     adminModifiedKeys.add(r.it);
     cN++;
   });
 
-  // 2. Arricchimenti → aggiorna campo
+  // 2. Arricchimenti → aggiorna campo. L'`ok` della voce esistente NON viene
+  //    toccato: potrebbe avere celle dialettali ancora da vagliare.
   arricch.filter(r => r.sel).forEach(r => {
-    adminAggiornaValore(r.it, dialect, r.val);
+    adminAggiornaValore(r.it, r.lang, r.val);
     cA++;
   });
 
   // 3. Conflitti → applica solo dove la scelta è "nuovo"
   conflitti.forEach(r => {
     if (r.scelta === 'nuovo') {
-      adminAggiornaValore(r.it, dialect, r.valNuovo);
+      adminAggiornaValore(r.it, r.lang, r.valNuovo);
       cC++;
     }
   });
@@ -3396,10 +3421,10 @@ function adminImportApplica() {
   adminUpdateBadges();
   renderTable();
   updateStats();
-  adminLog(`✅ Import: +${cN} nuove · ${cA} arricch. · ${cC} conflitti risolti. Ora clicca ☁️ Salva.`, 'success');
+  adminLog(`✅ Import: +${cN} nuove (${cOk} già ☑️ OK) · ${cA} arricch. · ${cC} conflitti risolti. Ora clicca ☁️ Salva.`, 'success');
   alert(
     `Import applicato:\n` +
-    `• ${cN} voci nuove aggiunte\n` +
+    `• ${cN} voci nuove aggiunte${cOk ? ` (${cOk} già ☑️ OK: sole lingue affidabili)` : ''}\n` +
     `• ${cA} arricchimenti (campi vuoti riempiti)\n` +
     `• ${cC} conflitti risolti con il valore nuovo\n\n` +
     `Le modifiche sono in memoria: clicca ☁️ Salva su dialetti per persistere.`
@@ -3526,6 +3551,12 @@ async function adminSalvaSuGitHub() {
 // ─────────────────────────────────────────────────────────────────────────
 const AI_KEY_LS = 'lq_ai_config';
 const AI_FILL_LANGS = ['en','fr','es','de','pt'];
+// Lingue in cui la traduzione IA è considerata affidabile: le voci NUOVE
+// importate con SOLI campi in queste lingue nascono già ☑️ OK (pre-spuntate,
+// revisione-lampo). I dialetti mn/sp/ge/cr non sono MAI pre-spuntati: l'IA
+// non li conosce e inventa (vedi bonifica voci mn "🤖 IA") — nascono sempre
+// da vagliare. Decisione autore 2026-07-12.
+const LINGUE_AFFIDABILI_AI = ['en','fr','es','de','pt'];
 const AI_LANG_NAMES = { en:'English', fr:'français', es:'español', de:'Deutsch', pt:'português' };
 const AI_BATCH_SIZE = 15;
 const AI_FILL_PREF_LS = 'admin_ai_fill_on';
