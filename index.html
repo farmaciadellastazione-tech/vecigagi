@@ -2078,7 +2078,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // ── Vocabolario con temi e livelli ────────────────────────────────────────
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
-      // ── VOCABOLARIO ──────────────────────────
+      // ── VOCABOLARIO_DEFAULT ──────────────────
       { tema:"acquisto", livello:"A2", it:"a buon mercato", en:"cheap", es:"barato", pt:"barato", sp:"a bon páto", ge:"a buun mercouu/ a bon mercòu", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,ge:g", nt:["mn"] },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"a spasso, in giro senza meta.", sp:"scoratae", mn:"zùnzu (a)", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
@@ -2385,7 +2385,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"bussare/picchiare", en:"knock", fr:"frapper", es:"llamar|golpear", de:"klopfen", pt:"bater|tocar", ru:"стучать", ca:"trucar|colpejar", sp:"picaahe/picae", mn:"picaa/picaa", verif:"mn:g" },
       { tema:"dialogo", it:"busta", en:"envelope", sp:"bùsta, enve lope/busta, envelope", mn:"biusta/büsta", ge:"anvelop", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
       { tema:"dialetti", it:"caccia.", sp:"ca'cia/cacia", mn:"ca'cia/càcia", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
-      { tema:"verbi", it:"cacciare", sp:"caciae", mn:"catchaah/caciaa", ge:"scorri", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
+      { tema:"dialetti", it:"cacciare", sp:"cacciahe/càciae", mn:"cacciaha/càciaa", ge:"cacciaha/cacciâ", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"dialetti", it:"cacciatore.", sp:"caciadoe", mn:"caciaduu", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"cacciavite", sp:"caciavì'de/caciavìde", mn:"càciavidé", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"caco", mn:"càcu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
@@ -2756,6 +2756,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"grammatica", it:"egli/ella ama", sp:"ama", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"animali", livello:"A1", it:"elefante", en:"elephant", fr:"éléphant", es:"elefante", de:"Elefant", pt:"elefante", ru:"слон", ca:"elefant", sp:"lefante", ko:"코끼리", ar:"فيل", zh:"大象", ja:"ゾウ", ia:"elephante", la:"elephantus", grc:"ἐλέφας", verif:"sp:g" },
       { tema:"dialetti", it:"elegante.", mn:"entapà/éntapà", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"elemento", mn:"élémentu", ge:"elementu/elemento", src:{"mn":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,ge:g" },
       { tema:"mestieri", livello:"B1", it:"elettricista", en:"electrician", fr:"électricien", es:"electricista", de:"Elektriker", pt:"eletricista", ru:"электрик", ca:"electricista", nt:["mn"] },
       { tema:"dialetti", it:"emozione.", mn:"emusciùn/émusciùn", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialogo", livello:"A2", it:"entrambi", en:"both", fr:"les deux|tous les deux", es:"ambos", de:"beide", pt:"ambos", ru:"оба", ca:"tots dos|ambdós", nt:["mn"] },
@@ -2971,6 +2972,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"B1", it:"Il farmaco è esaurito, posso ordinarlo", en:"The medicine is out of stock, I can order it", fr:"Le médicament est épuisé, je peux le commander", es:"El medicamento está agotado, puedo pedirlo", de:"Das Medikament ist vergriffen, ich kann es bestellen", pt:"O medicamento está esgotado, posso encomendá-lo|O medicamento esta esgotado, posso encomenda-lo", ko:"약이 품절입니다, 주문할 수 있습니다", ar:"الدواء غير متوفر، يمكنني طلبه", zh:"药品已售完，我可以为您订购", ja:"在庫切れですが、注文できます", nt:["mn"] },
       { tema:"citazioni", livello:"B1", it:"Il tempo vola", la:"Tempus fugit", grc:"Ὁ χρόνος φεύγει", nt:["mn"] },
       { tema:"luoghi", livello:"A1", it:"imbarazzato", en:"embarrassed", fr:"gêné", es:"avergonzado", de:"verlegen", pt:"envergonhado", ru:"смущённый", ca:"avergonyit", mn:"imbarassà", ko:"당황한", ar:"محرج", zh:"尴尬", ja:"恥ずかしい", ia:"vergoniose", la:"pudibundus", grc:"αἰδήμων", verif:"mn:g" },
+      { tema:"dialetti", it:"imbroglio", sp:"enbrogio, mastrusso, garbugio", mn:"émbrogiu", ge:"inbrògiu, mastrussu, manesu/imbròggio, mastrusso, manezzo", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"verbi", livello:"B1", it:"immaginare", en:"imagine", sp:"enma ginà'e/enmaginàe", verif:"sp:g" },
       { tema:"verbi", livello:"A2", it:"imparare", en:"learn", fr:"apprendre", es:"aprender", de:"lernen", pt:"aprender", ru:"учиться", ca:"aprendre", sp:"enpaae, anpaae,", mn:" ampaaa", ko:"배우다", ar:"يتعلم", zh:"学习", ja:"学ぶ", ia:"apprender", la:"discere", grc:"μανθάνειν", verif:"mn:g" },
       { tema:"dialogo", livello:"B1", it:"imparare in fretta", en:"learn fast", fr:"apprendre vite", es:"aprender rápido", de:"schnell lernen", pt:"aprender rápido|aprender rapido", nt:["mn"] },
@@ -3256,6 +3258,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A2", it:"pesca", en:"peach", fr:"pêche", es:"melocotón", de:"Pfirsich", pt:"pêssego|pessego", ru:"персик", ca:"pesca|préssec", sp:"pèrsego", mn:"pérsegu", ge:"persego", ko:"복숭아", ar:"خوخ", zh:"桃子", ja:"桃", ia:"persica", la:"persica", grc:"ῥοδάκινο", ro:"piersică", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"mestieri", livello:"B1", it:"pescatore", en:"fisherman", fr:"pêcheur", es:"pescador", de:"Fischer", pt:"pescador", sp:"pescadoe", mn:"pescaduu", ko:"어부", ar:"صياد", zh:"渔民", ja:"漁師", verif:"mn:g" },
       { tema:"cibo", livello:"A1", it:"pesce", de:"Fisch", mn:"pessu", cr:"pess", ro:"pește", verif:"mn:g" },
+      { tema:"dialetti", it:"pescecane.", sp:"pessocan", mn:"caniassu/càgnassu", ge:"pesciu can/pesciocan", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"natura", it:"pesco", sp:"peèrsego/pèrsego", mn:"peèrsegu/pèrsegu", cr:"pesch", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"pesto", en:"pesto", fr:"pesto", es:"pesto", de:"Pesto", pt:"pesto", sp:"pisto", mn:"pistu", ge:"pèsto", ia:"fullate", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"dialetti", livello:"A2", it:"peto", en:"fart", fr:"pet", es:"pedo", de:"Furz", pt:"pum", sp:"péto", mn:"pëtu", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
@@ -3741,6 +3744,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"vaneggiare", sp:"bacilà e,ciocae/bacilae,ciocae", mn:"svariàa/zvàriaa", verif:"mn:g" },
       { tema:"salute", it:"varicella", en:"chickenpox", sp:"voatìn", verif:"sp:g" },
       { tema:"casa", livello:"B1", it:"vasetto|barattolo", en:"jar", fr:"bocal|pot", es:"tarro|frasco", de:"Glas|Krug", pt:"pote|frasco", ru:"банка", ca:"pot|tarro", sp:"arbanela| bolaco", mn:"arbanèla", ge:"arbanèlla", ko:"소병", la:"vasculum", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g" },
+      { tema:"dialetti", it:"vassoio", sp:"cabarè, güantéa", mn:"cabarè", ge:"cabaree/cabarê", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"aggettivi", livello:"A1", it:"vecchio", en:"old", fr:"vieux", es:"viejo", de:"alt", pt:"velho", ru:"старый", ca:"vell", sp:"vècio", mn:"vècio", cr:"vetch/vec", ge:"végiu/végio", ko:"오래된", ar:"قديم", zh:"旧", ja:"古い", ro:"vechi", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"verbi", livello:"A1", it:"vedere", en:"see", fr:"voir", es:"ver", de:"sehen", pt:"ver", ru:"видеть", ca:"veure", sp:"vede", mn:"vede", ge:"veddee/vedde", ko:"보다", ar:"يرى", zh:"看", ja:"見る", ia:"vider", la:"videre", grc:"ὁρᾶν", ro:"a vedea", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"sport", livello:"B1", it:"vela", en:"sailing", fr:"voile", es:"vela", de:"Segeln", pt:"vela", ru:"парусный спорт", ca:"vela", sp:"véa", mn:"véa", ge:"veéia/véia", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
@@ -3882,7 +3886,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 408;
+const VOC_VERSION = 409;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
