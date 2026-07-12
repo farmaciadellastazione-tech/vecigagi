@@ -1187,7 +1187,7 @@ document.addEventListener('focusin', e => {
 // Chiave-voce: case/spazi-insensibile e SENZA punto/puntini finali (le voci
 // da dizionario finiscono con il punto della glossa: 'pescecane.' == 'pescecane').
 function rowKey(v) { return (v.it || '').toLowerCase().trim().replace(/[.…]+$/, '').trim(); }
-function visiblePart(s) { if (!s) return ''; const i = s.indexOf('|'); return (i === -1 ? s : s.slice(0, i)).trim(); }
+function visiblePart(s) { if (!s) return ''; if (typeof s !== 'string') s = String(s); const i = s.indexOf('|'); return (i === -1 ? s : s.slice(0, i)).trim(); }
 function normalizzaVarianti(s) {
   if (!s) return '';
   return visiblePart(String(s)).split(',').map(x => x.trim().toLowerCase()).filter(x => x.length > 0).sort().join(', ');
@@ -2328,14 +2328,30 @@ function punteggioCompletezza(v) {
 
 function riassuntoVoce(v) {
   const tradotte = [], meta = [];
-  Object.keys(v).forEach(k => { if (k === 'tema' || k === 'livello' || k === 'it' || k === 'pron') return; if (v[k] && String(v[k]).trim()) tradotte.push(`<code>${escapeAttr(k)}: ${escapeAttr(visiblePart(v[k]))}</code>`); });
+  // Solo i campi-stringa "dati": src/note (oggetti), nt (array) e le chiavi di
+  // servizio "_..." (es. _key0) non sono traduzioni e mandavano in crash visiblePart.
+  Object.keys(v).forEach(k => { if (k === 'tema' || k === 'livello' || k === 'it' || k === 'pron' || k.startsWith('_')) return; if (typeof v[k] !== 'string') return; if (v[k].trim()) tradotte.push(`<code>${escapeAttr(k)}: ${escapeAttr(visiblePart(v[k]))}</code>`); });
   if (v.tema) meta.push('<strong>tema:</strong> ' + escapeAttr(v.tema)); if (v.livello) meta.push('<strong>livello:</strong> ' + escapeAttr(v.livello));
   return { tradotte: tradotte.length ? tradotte.join(' ') : '<span style="color:var(--muted)">— nessuna traduzione —</span>', meta: meta.length ? meta.join(' · ') : '<span style="color:var(--muted)">— senza tema/livello —</span>', nTrad: tradotte.length };
 }
 
 let dupGroupsCache = [];
+let dupFiltro = 'tutti'; // 'tutti' | 'sicuri' | 'conflitti' | 'omonimi'
 function apriDuplicati() { dupGroupsCache = trovaDuplicati(); document.getElementById('dup-modal').classList.add('open'); renderDuplicati(); }
 function chiudiDuplicati() { document.getElementById('dup-modal').classList.remove('open'); }
+function setDupFiltro(f) { dupFiltro = f; renderDuplicati(); }
+
+// Categoria di un gruppo di duplicati:
+//   'omonimi'  — gli `it` sono IDENTICI come stringa: sensi/temi diversi della
+//                stessa parola (es. i due "adesso|ora") → da NON fondere mai;
+//   'conflitti'— it diversi (es. "giallo" vs "giallo.") ma campi in disaccordo:
+//                decisione manuale su quale valore è giusto;
+//   'sicuri'   — nessun campo in disaccordo: fondibili con un click.
+function classificaGruppoDup(indici, conflitti) {
+  const its = new Set(indici.map(i => (vocabolario[i] || {}).it));
+  if (its.size === 1) return 'omonimi';
+  return (conflitti && conflitti.length) ? 'conflitti' : 'sicuri';
+}
 
 // ==========================================================================
 // FRASI SCHERZOSE SPEZZINO (fine esercizio)
@@ -2438,7 +2454,7 @@ function analizzaConflitti(indici) {
   const conflitti = [], tuttiCampi = new Set();
   indici.forEach(i => Object.keys(vocabolario[i]).forEach(k => { if (k !== 'it') tuttiCampi.add(k); }));
   tuttiCampi.forEach(campo => {
-    if (campo === 'tema' || campo === 'livello') return;
+    if (campo === 'tema' || campo === 'livello' || campo.startsWith('_')) return; // _key0 e simili: chiavi di servizio, mai conflitti
     const valori = [];
     indici.forEach(i => { const val = vocabolario[i][campo]; if (val !== undefined && val !== null && String(val).trim() !== '') valori.push({ idx: i, val: String(val), visible: visiblePart(String(val)) }); });
     if (valori.length >= 2) { const distinti = new Set(valori.map(v => normalizzaVarianti(v.visible))); if (distinti.size >= 2) conflitti.push({ campo, valori }); }
@@ -2450,15 +2466,26 @@ function renderDuplicati() {
   const list = document.getElementById('dup-list');
   dupGroupsCache = trovaDuplicati();
   if (!dupGroupsCache.length) { list.innerHTML = '<div class="dup-empty">✅ Nessun duplicato trovato.</div>'; return; }
-  let nSicuri = 0, nSinonimi = 0;
-  dupGroupsCache.forEach(g => { g._conflitti = analizzaConflitti(g.indici); if (g._conflitti.length === 0) nSicuri++; else nSinonimi++; });
-  let html = `<p style="font-size:0.85rem; margin:0 0 0.8rem;"><strong>${dupGroupsCache.length}</strong> gruppi: <span style="color:var(--green); font-weight:600">${nSicuri} sicuri</span> · <span style="color:var(--accent); font-weight:600">${nSinonimi} con conflitti</span></p>`;
+  const conta = { sicuri: 0, conflitti: 0, omonimi: 0 };
+  dupGroupsCache.forEach(g => {
+    g._conflitti = analizzaConflitti(g.indici);
+    g._categoria = classificaGruppoDup(g.indici, g._conflitti);
+    conta[g._categoria]++;
+  });
+  const chip = (f, label) => `<button class="btn ${dupFiltro === f ? 'btn-primary' : 'btn-secondary'}" style="padding:0.2rem 0.6rem; font-size:0.8rem" onclick="setDupFiltro('${f}')">${label}</button>`;
+  let html = `<p style="font-size:0.85rem; margin:0 0 0.5rem;"><strong>${dupGroupsCache.length}</strong> gruppi: <span style="color:var(--green); font-weight:600">${conta.sicuri} sicuri</span> · <span style="color:var(--accent); font-weight:600">${conta.conflitti} con conflitti</span> · <span style="color:var(--muted); font-weight:600">${conta.omonimi} omonimi veri</span></p>`;
+  html += `<div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin:0 0 0.8rem;">${chip('tutti', 'Tutti')}${chip('sicuri', `🟢 Sicuri (${conta.sicuri})`)}${chip('conflitti', `🔴 Conflitti (${conta.conflitti})`)}${chip('omonimi', `👥 Omonimi veri (${conta.omonimi})`)}</div>`;
+  if (dupFiltro !== 'tutti' && conta[dupFiltro] === 0) html += '<div class="dup-empty">Nessun gruppo in questa categoria 🎉</div>';
   dupGroupsCache.forEach((gruppo, gIdx) => {
+    if (dupFiltro !== 'tutti' && gruppo._categoria !== dupFiltro) return;
     const haSinonimi = gruppo._conflitti.length > 0;
     let bestIdx = gruppo.indici[0], bestScore = -1;
     gruppo.indici.forEach(i => { const s = punteggioCompletezza(vocabolario[i]); if (s > bestScore) { bestScore = s; bestIdx = i; } });
     html += `<div class="dup-group ${haSinonimi ? 'dup-group-sinonimi' : 'dup-group-safe'}">`;
-    html += `<h3>📂 "${escapeAttr(vocabolario[gruppo.indici[0]].it)}" — ${gruppo.indici.length} voci · ${haSinonimi ? '<span style="color:var(--accent)">🔴 conflitti</span>' : '<span style="color:var(--green)">🟢 sicuro</span>'}</h3>`;
+    const etichetta = gruppo._categoria === 'omonimi'
+      ? '<span style="color:var(--muted)">👥 omonimi veri (sensi diversi) — da NON fondere</span>'
+      : haSinonimi ? '<span style="color:var(--accent)">🔴 conflitti</span>' : '<span style="color:var(--green)">🟢 sicuro</span>';
+    html += `<h3>📂 "${escapeAttr(vocabolario[gruppo.indici[0]].it)}" — ${gruppo.indici.length} voci · ${etichetta}</h3>`;
     if (haSinonimi) {
       html += `<div class="dup-conflitti"><ul style="margin:0.3rem 0 0.5rem 1.2rem; font-size:0.82rem;">`;
       gruppo._conflitti.forEach(c => { html += `<li><strong>${escapeAttr(c.campo)}:</strong> ${c.valori.map(v => `<code style="background:#fee2e2;padding:1px 4px;border-radius:3px">${escapeAttr(v.visible)}</code>`).join(' ≠ ')}</li>`; });

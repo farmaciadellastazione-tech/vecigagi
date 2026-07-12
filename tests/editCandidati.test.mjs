@@ -272,6 +272,35 @@ test('trovaDuplicati usa rowKey (i doppioni col punto vengono raggruppati)', () 
   assert.equal(groups[0].indici.length, 2, '"carota" e "carota." devono finire nello stesso gruppo');
 });
 
+// ── Filtro nel modale 🔍 Duplicati ───────────────────────────────────────────
+// I gruppi si dividono in tre categorie: 🟢 sicuri (fondibili con un click),
+// 🔴 conflitti (campi in disaccordo, decisione manuale), 👥 omonimi veri
+// (stesso it identico, sensi diversi: da NON fondere mai). Il filtro permette
+// di lavorare una categoria alla volta.
+
+test('classificaGruppoDup: sicuro / conflitto / omonimi veri', () => {
+  const ctx = vm.createContext({});
+  vm.runInContext('let vocabolario = [' +
+    '{ it: "carota", mn: "gnifra" }, { it: "carota.", mn: "gnifra" },' +          // 0,1: col punto, campi uguali → sicuro
+    '{ it: "giallo", mn: "zalo" }, { it: "giallo.", mn: "zàlu" },' +              // 2,3: col punto, campi diversi → conflitto
+    '{ it: "adesso|ora", tema: "dialogo" }, { it: "adesso|ora", tema: "tempo" }' + // 4,5: it IDENTICO → omonimi veri
+    '];', ctx);
+  vm.runInContext(extractFn(EDIT, 'classificaGruppoDup'), ctx);
+  const classifica = (indici, conflitti) => vm.runInContext(
+    `classificaGruppoDup(${JSON.stringify(indici)}, ${JSON.stringify(conflitti)})`, ctx);
+  assert.equal(classifica([0, 1], []), 'sicuri');
+  assert.equal(classifica([2, 3], [{ campo: 'mn' }]), 'conflitti');
+  assert.equal(classifica([4, 5], [{ campo: 'tema' }]), 'omonimi', 'it identici = sensi diversi, mai fondere');
+});
+
+test('UI Duplicati: chip di filtro presenti e usate dal render', () => {
+  assert.ok(EDIT.includes('setDupFiltro('), 'mancano le chip di filtro nel modale Duplicati');
+  const render = extractFn(EDIT, 'renderDuplicati');
+  assert.ok(render.includes('dupFiltro'), 'renderDuplicati deve rispettare il filtro attivo');
+  assert.ok(render.includes('classificaGruppoDup('), 'ogni gruppo va classificato (sicuri/conflitti/omonimi)');
+  assert.ok(/omonimi veri/i.test(render), 'gli omonimi veri vanno etichettati come da NON fondere');
+});
+
 test('UI: selettore sorgente e colonna OK presenti in edit.html', () => {
   assert.ok(EDIT.includes('id="source-select"'), 'manca il selettore di sorgente');
   assert.ok(EDIT.includes('cambiaSorgente('), 'manca il gestore del cambio sorgente');
