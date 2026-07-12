@@ -99,8 +99,10 @@ function makeCtx(candidatiIniziali, currentDialect = 'sp') {
     adminVoc: candidatiIniziali.map(v => ({ ...v })),
     adminAggiornaValore: (it, col, val) => { chiamateAggiorna.push([it, col, val]); },
   };
+  sandbox.localStorage = { removeItem: () => {}, getItem: () => null };
   const ctx = vm.createContext(sandbox);
   vm.runInContext('let impParsed = null;', ctx);
+  vm.runInContext('let impDaLG = false;', ctx);
   vm.runInContext(extractLineConst(DIAL, 'ADMIN_KEY_ORDER_INDEX'), ctx);
   vm.runInContext(extractLineConst(DIAL, 'LINGUE_AFFIDABILI_AI'), ctx);
   vm.runInContext(extractLineConst(DIAL, 'DIALETTI_TTS_ITA'), ctx);
@@ -180,6 +182,46 @@ test('duplicato esatto (stesso valore de) → conteggiato, nessuna modifica', ()
   assert.equal(p.nuove.length + p.arricch.length + p.conflitti.length, 0);
   applica();
   assert.equal(chiamateAggiorna.length, 0);
+});
+
+// ── Ponte "Importa da Lettura guidata" ───────────────────────────────────────
+// index.html e dialetti.html condividono l'origine: i candidati di Lettura
+// guidata (SK_CANDIDATI_LG, formato {parola, lingua, it, tema, frase?, ...})
+// sono leggibili direttamente dal localStorage, senza passare da file/appunti.
+// lgCandidatiToVoci li converte nel formato dell'import ({it, tema, [lingua]: parola}).
+
+test('lgCandidatiToVoci: converte i candidati LG nel formato import', () => {
+  const ctx = vm.createContext({});
+  vm.runInContext(extractFn(DIAL, 'lgCandidatiToVoci'), ctx);
+  const out = vm.runInContext(`lgCandidatiToVoci(${JSON.stringify([
+    { parola: 'Heute', lingua: 'de', it: 'oggi', tema: 'vita quotidiana', frase: 'Heute ist...', storiaId: 'x', data: '2026' },
+    { parola: 'ancö', lingua: 'sp', it: 'oggi (sp)' },
+    { parola: '', lingua: 'de', it: 'vuota' },        // scartata: parola vuota
+    { parola: 'x', lingua: '', it: 'senza lingua' },  // scartata: lingua vuota
+    null,                                              // scartata: non-oggetto
+  ])})`, ctx);
+  assert.equal(out.length, 2);
+  assert.deepEqual(out[0], { it: 'oggi', tema: 'vita quotidiana', de: 'Heute' });
+  assert.deepEqual(out[1], { it: 'oggi (sp)', sp: 'ancö' });
+});
+
+test('flusso LG completo: candidato tedesco da localStorage → voce nei CANDIDATI con ok:true', () => {
+  const { analizza, applica, ctx } = makeCtx([]);
+  vm.runInContext(extractFn(DIAL, 'lgCandidatiToVoci'), ctx);
+  const voci = vm.runInContext(`lgCandidatiToVoci(${JSON.stringify([
+    { parola: 'Heute', lingua: 'de', it: 'oggi', tema: 'vita quotidiana' },
+  ])})`, ctx);
+  analizza(voci);
+  const v = applica().find(x => x.it === 'oggi');
+  assert.ok(v && v.de === 'Heute' && v.ok === true);
+});
+
+test('UI: bottone "Importa da Lettura guidata" presente e proposta di svuotare la lista LG dopo l\'applica', () => {
+  assert.ok(DIAL.includes('adminImportDaLG()'), 'manca il bottone/handler adminImportDaLG');
+  assert.ok(DIAL.includes('qml_v1_candidati_lg'), 'manca la lettura di SK_CANDIDATI_LG dal localStorage');
+  const applicaSrc = extractFn(DIAL, 'adminImportApplica');
+  assert.ok(/impDaLG/.test(applicaSrc) && /removeItem/.test(applicaSrc),
+    'dopo un import da LG, adminImportApplica deve proporre di svuotare la lista in localStorage');
 });
 
 test('regressione: import dialettale classico (chip sp) — nuova, arricchimento e conflitto come prima', () => {

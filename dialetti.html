@@ -1158,6 +1158,7 @@
   <button class="btn-gh-reset" onclick="adminReset()">Annulla</button>
   <button class="btn-gh-reset" onclick="adminResetToken()" title="Cancella il PAT GitHub salvato">🔑</button>
   <button class="btn-gh-reset" onclick="adminImportApri()" title="Importa traduzioni da un file (HTML/JS/JSON) e proponi modifiche">📤 Importa</button>
+  <button class="btn-gh-reset" onclick="adminImportDaLG()" title="Importa i candidati raccolti in Lettura guidata in QUESTO browser (parole toccate nelle storie, salvate nel localStorage)">📖 Importa da Lettura guidata</button>
   <button class="btn-gh-reset" onclick="apriExportModal()" title="Esporta i candidati (filtrati o tutti) in CSV o JSON">📥 Esporta</button>
   <button class="btn-gh-reset" onclick="adminImportaDaIndex()" title="Aggiunge ai candidati le voci di index che mancano del dialetto selezionato (da compilare)">⬇️ Importa da index</button>
   <button class="btn-gh-reset" onclick="adminPulisciGiaInIndex()" title="Svuota i valori dialetto identici a index e rimuove le voci interamente coperte da index">🧹 Pulisci già-in-index</button>
@@ -3109,6 +3110,52 @@ function adminResetToken() {
 // inutile importare un nulla).
 const IMP_MAX_RENDER = 300; // safety cap per non esplodere il DOM
 let impParsed = null;       // {nuove:[], arricch:[], conflitti:[], dupl:0, vuote:0, dialect:''}
+let impDaLG = false;        // true se l'analisi corrente viene da "📖 Importa da Lettura guidata"
+
+// ── Importa da Lettura guidata ──────────────────────────────────────────
+// index.html e dialetti.html condividono l'origine: i candidati raccolti in
+// Lettura guidata (parole toccate nelle storie e spiegate dall'IA) vivono nel
+// localStorage di QUESTO browser e si importano con un click, senza passare
+// da file/appunti. Su un altro dispositivo resta la via 📋 Copia → 📤 Importa.
+const SK_CANDIDATI_LG = 'qml_v1_candidati_lg'; // stessa chiave di index.html
+
+// Converte i candidati LG ({parola, lingua, it, tema, frase?, storiaId, data})
+// nel formato dell'import ({it, tema, [lingua]: parola}).
+function lgCandidatiToVoci(arr) {
+  if (!Array.isArray(arr)) return [];
+  return arr
+    .filter(c => c && typeof c === 'object' &&
+      (c.it || '').trim() && (c.parola || '').trim() && (c.lingua || '').trim())
+    .map(c => {
+      const v = { it: c.it.trim() };
+      if ((c.tema || '').trim()) v.tema = c.tema.trim();
+      v[c.lingua.trim()] = c.parola.trim();
+      return v;
+    });
+}
+
+function adminImportDaLG() {
+  if (!adminVoc || adminVoc.length === 0) {
+    alert('Carica prima i candidati da GitHub.');
+    return;
+  }
+  let lg = [];
+  try { lg = JSON.parse(localStorage.getItem(SK_CANDIDATI_LG) || '[]'); } catch (e) { lg = []; }
+  const voci = lgCandidatiToVoci(lg);
+  if (!voci.length) {
+    alert(
+      'Nessun candidato di Lettura guidata in questo browser.\n\n' +
+      'I candidati si creano toccando le parole nelle storie (quando la parola non è già nel vocabolario) ' +
+      'e vivono nel localStorage: se leggi le storie su un altro dispositivo, ' +
+      'usa lì "📋 Copia" e qui "📤 Importa" con un file .json.'
+    );
+    return;
+  }
+  adminImportApri();
+  impDaLG = true;
+  document.getElementById('imp-file-status').textContent = `📖 ${voci.length} candidati da Lettura guidata (questo browser)`;
+  adminImportAnalizza(voci);
+}
 
 function adminImportApri() {
   if (!adminVoc || adminVoc.length === 0) {
@@ -3118,6 +3165,7 @@ function adminImportApri() {
   // Niente vincolo sul chip: JSON/JS/HTML importano tutte le lingue del file.
   // Il chip serve solo per i CSV (vincolo verificato in adminImportCsv).
   impParsed = null;
+  impDaLG = false;
   document.getElementById('imp-file').value = '';
   document.getElementById('imp-file-status').textContent = '';
   document.getElementById('imp-summary').style.display = 'none';
@@ -3133,6 +3181,7 @@ function adminImportApri() {
 function adminImportChiudi() {
   document.getElementById('admin-import-modal').classList.remove('visible');
   impParsed = null;
+  impDaLG = false;
 }
 
 async function adminImportFile(ev) {
@@ -3382,6 +3431,7 @@ function adminImportSetConflitto(idx, scelta) {
 function adminImportApplica() {
   if (!impParsed) return;
   const { nuove, arricch, conflitti } = impParsed;
+  const daLG = impDaLG; // catturato ora: adminImportChiudi() (sotto) azzera il flag
   let cN = 0, cA = 0, cC = 0, cOk = 0;
 
   // 1. Voci nuove → push in adminVoc + segna modificate.
@@ -3429,6 +3479,13 @@ function adminImportApplica() {
     `• ${cC} conflitti risolti con il valore nuovo\n\n` +
     `Le modifiche sono in memoria: clicca ☁️ Salva su dialetti per persistere.`
   );
+  // Import da Lettura guidata: proponi di svuotare la lista nel localStorage,
+  // così le parole non vengono ri-proposte al prossimo giro.
+  if (daLG && (cN + cA + cC) > 0) {
+    if (confirm('Svuotare ora i candidati di Lettura guidata salvati in questo browser?\n(La lista in index.html ripartirà vuota.)')) {
+      localStorage.removeItem(SK_CANDIDATI_LG);
+    }
+  }
 }
 
 // ─── SERIALIZZAZIONE ───────────────────────────────────────────────────
