@@ -294,6 +294,7 @@
         <tr id="thead-row">
           <th style="width:32px" title="Stato">·</th>
           <th id="th-ok" style="width:36px;display:none" title="Pronta per la promozione a index (🚀 Promuovi da dialetti.html?admin=1)">☑️</th>
+          <th id="th-vsindex" style="width:36px;display:none" title="Stato rispetto a index: 🆕 nuova · ➕ arricchisce · ⚠️ conflitto · = duplicato (identica) · ✓ già in index">📚</th>
           <th class="sortable" data-sort="it" style="min-width:140px;width:22%">Italiano <span class="sort-arrow"></span></th>
           <!-- le th delle lingue vengono inserite dinamicamente da renderTheadLingue() -->
           <th class="sortable col-tema" data-sort="tema" style="width:12%">Tema <span class="sort-arrow"></span></th>
@@ -845,7 +846,36 @@ function cambiaSorgente(v) {
   modifiedKeys.clear(); newKeys.clear(); frasiSPModificate = false;
   const thOk = document.getElementById('th-ok');
   if (thOk) thOk.style.display = isCandidatiMode() ? '' : 'none';
+  const thVs = document.getElementById('th-vsindex');
+  if (thVs) thVs.style.display = isCandidatiMode() ? '' : 'none';
   caricaIndexDaGitHub();
+}
+
+// Riferimento di sola lettura a index.html (solo modalità candidati):
+// mappa it→voce di VOCABOLARIO_DEFAULT per il badge "vs index" per riga.
+let indexRefByIt = new Map();
+
+// Stato del candidato rispetto a index (badge di riga in modalità candidati).
+// Confronta TUTTI i campi lingua valorizzati del candidato con la voce di
+// index che ha lo stesso `it`. Priorità: conflitto > arricchisce > duplicato.
+function statoVsIndex(v) {
+  if (!isCandidatiMode() || !indexRefByIt.size) return null;
+  const idx = indexRefByIt.get(rowKey(v));
+  if (!idx) return { kind: 'nuova', badge: '🆕', label: 'NUOVA: italiano non presente in index' };
+  const codes = KEY_ORDER.filter(k => !['tema', 'livello', 'it', 'pron'].includes(k));
+  let arricchisce = 0, conflitti = 0, uguali = 0;
+  for (const k of codes) {
+    const val = (v[k] || '').trim();
+    if (!val) continue;
+    const valIdx = (idx[k] || '').trim();
+    if (!valIdx) arricchisce++;
+    else if (valIdx === val) uguali++;
+    else conflitti++;
+  }
+  if (conflitti) return { kind: 'conflitto', badge: '⚠️', label: `CONFLITTO: ${conflitti} campo/i diversi da index (alla promozione vince il candidato)` };
+  if (arricchisce) return { kind: 'arricchisce', badge: '➕', label: `ARRICCHISCE: porta ${arricchisce} campo/i che in index mancano` };
+  if (uguali) return { kind: 'duplicato', badge: '=', label: 'DUPLICATO: identica a index — promuoverla non cambia nulla, si può scartare' };
+  return { kind: 'gia-in-index', badge: '✓', label: 'Già in index: il candidato non porta traduzioni nuove' };
 }
 
 // Colonna ☑️ OK (solo modalità candidati): marca la voce come pronta per la
@@ -867,10 +897,14 @@ async function caricaIndexDaGitHub() {
     // Lo SHA viene rifetchato al momento del salvataggio (vedi salvasuGitHub).
     const rawUrl = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${sorgentePath()}?t=${Date.now()}`;
     const vocabRawUrl = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_PATH_VOCAB}?t=${Date.now()}`;
-    const [res, vocabRes] = await Promise.all([
+    const indexRefUrl = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_PATH}?t=${Date.now()}`;
+    const [res, vocabRes, indexRefRes] = await Promise.all([
       fetchTimeout(rawUrl, {}, 25000),
       // vocab.js serve solo alle frasi spezzine, gestite in modalità index
-      isCandidatiMode() ? Promise.resolve(null) : fetchTimeout(vocabRawUrl, {}, 15000).catch(() => null)
+      isCandidatiMode() ? Promise.resolve(null) : fetchTimeout(vocabRawUrl, {}, 15000).catch(() => null),
+      // In modalità candidati carica anche index.html in SOLA LETTURA: serve al
+      // badge "vs index" per riga (🆕/➕/⚠️/=), così la revisione non gira a vuoto.
+      isCandidatiMode() ? fetchTimeout(indexRefUrl, {}, 25000).catch(() => null) : Promise.resolve(null)
     ]);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     originalSourceFile = await res.text();
@@ -878,6 +912,12 @@ async function caricaIndexDaGitHub() {
     originalVocabJs = (vocabRes && vocabRes.ok) ? await vocabRes.text() : null;
     vocabolario = estraiVocabolario(originalSourceFile);
     if (!vocabolario.length) throw new Error(`${sorgenteNomeBlocco()} vuoto o non trovato`);
+    indexRefByIt.clear();
+    if (isCandidatiMode() && indexRefRes && indexRefRes.ok) {
+      try {
+        estraiVocabolario(await indexRefRes.text(), BLOCK_START_RE).forEach(v => indexRefByIt.set(rowKey(v), v));
+      } catch (e) { console.warn('Riferimento index non disponibile per i badge vs-index:', e); }
+    }
     frasiSP = isCandidatiMode() ? [] : estraiFrasiSP(originalVocabJs || originalSourceFile);
     frasiSPModificate = false;
     originalKeysByEntry.clear();
@@ -898,8 +938,10 @@ async function caricaIndexDaGitHub() {
   }
 }
 
-function estraiVocabolario(src) {
-  const m = sorgenteMarkerRe().exec(src);
+function estraiVocabolario(src, markerRe) {
+  // markerRe opzionale: serve per leggere index.html (BLOCK_START_RE) come
+  // riferimento di sola lettura mentre la sorgente attiva è "candidati".
+  const m = (markerRe || sorgenteMarkerRe()).exec(src);
   if (!m) throw new Error(`Marcatore "const ${sorgenteNomeBlocco()} = [" non trovato`);
   const start = m.index + m[0].length;
   let depth = 1, i = start, inStr = false, esc = false, q = null;
@@ -1310,9 +1352,11 @@ function render() {
 
     const itHidden = (v.it || '').includes('|') ? (v.it.split('|').length - 1) : 0;
 
+    const vsIndex = statoVsIndex(v);
     let html = `
       <td class="row-status" title="${isNew?'Nuova voce':isEmpty0?'Da tradurre':isMod?'Modificata':'OK'}">${isNew?'🆕':isEmpty0?'⚠️':isMod?'✏️':'✓'}</td>
       ${isCandidatiMode() ? `<td class="ok-cell" data-label="OK"><input type="checkbox" ${v.ok ? 'checked' : ''} onchange="toggleOkVoce(this)" title="Pronta per la promozione a index (🚀 da dialetti.html admin)"></td>` : ''}
+      ${isCandidatiMode() ? `<td class="vsindex-cell" data-label="vs index" style="text-align:center" title="${vsIndex ? escapeAttr(vsIndex.label) : 'Riferimento index non caricato'}">${vsIndex ? vsIndex.badge : '·'}</td>` : ''}
       <td class="it-cell" data-label="Italiano"><input type="text" value="${escapeAttr(v.it||'')}" data-field="it" title="Usa | per traduzioni alternative">${itHidden ? `<span class="alt-badge" title="${itHidden} alt. nascoste">+${itHidden}</span>` : ''}</td>
     `;
 

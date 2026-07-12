@@ -193,6 +193,50 @@ test('guardia anti-clobber: salvaSuGitHub confronta il remoto con il caricato e 
     'deve confrontare il file remoto con quello caricato e spiegare che è cambiato');
 });
 
+// ── Badge "vs index" in modalità candidati ───────────────────────────────────
+// Per non far girare a vuoto la revisione, in modalità candidati edit.html
+// carica anche index.html (sola lettura) e mostra per ogni voce lo stato
+// rispetto alla produzione: 🆕 nuova / ➕ arricchisce / ⚠️ conflitto /
+// = duplicato (identica: lavoro inutile, da scartare) / ✓ già in index.
+
+function makeVsIndexCtx(indexVoci) {
+  const ctx = vm.createContext({ console });
+  vm.runInContext(extractLineConst(EDIT, 'KEY_ORDER'), ctx);
+  vm.runInContext("let currentSource = 'candidati';", ctx);
+  vm.runInContext(extractFn(EDIT, 'isCandidatiMode'), ctx);
+  vm.runInContext(extractFn(EDIT, 'rowKey'), ctx);
+  ctx.__idx = indexVoci;
+  vm.runInContext('let indexRefByIt = new Map(__idx.map(v => [rowKey(v), v]));', ctx);
+  vm.runInContext(extractFn(EDIT, 'statoVsIndex'), ctx);
+  return v => vm.runInContext(`statoVsIndex(${JSON.stringify(v)})`, ctx);
+}
+
+test('statoVsIndex: classifica nuova / arricchisce / conflitto / duplicato / già in index', () => {
+  const stato = makeVsIndexCtx([
+    { it: 'casa', ge: 'câ', sp: 'ca' },
+    { it: 'mare', sp: 'mâe' },
+  ]);
+  assert.equal(stato({ it: 'sole', ge: 'sô' }).kind, 'nuova');
+  assert.equal(stato({ it: 'mare', ge: 'mâ' }).kind, 'arricchisce', 'campo ge vuoto in index → arricchisce');
+  assert.equal(stato({ it: 'casa', ge: 'DIVERSO' }).kind, 'conflitto', 'valore diverso da index → conflitto');
+  assert.equal(stato({ it: 'casa', ge: 'câ' }).kind, 'duplicato', 'tutti i campi identici a index → lavoro inutile');
+  assert.equal(stato({ it: 'casa' }).kind, 'gia-in-index', 'solo IT, nessuna traduzione da portare');
+  // conflitto vince su arricchisce se coesistono
+  assert.equal(stato({ it: 'casa', ge: 'DIVERSO', mn: 'nuovo-campo' }).kind, 'conflitto');
+});
+
+test('estraiVocabolario accetta un marker esplicito (per leggere index restando in modalità candidati)', () => {
+  const ctx = makeCtx('candidati', DIAL);
+  ctx.__index = INDEX;
+  const n = vm.runInContext('estraiVocabolario(__index, BLOCK_START_RE).length', ctx);
+  assert.ok(n > 1500, `attese le voci di index anche con currentSource=candidati, trovate ${n}`);
+});
+
+test('UI: colonna vs-index presente e cablata nel render', () => {
+  assert.ok(EDIT.includes('id="th-vsindex"'), 'manca la th del badge vs index');
+  assert.ok(EDIT.includes('statoVsIndex(v)'), 'il render deve calcolare il badge per riga');
+});
+
 test('UI: selettore sorgente e colonna OK presenti in edit.html', () => {
   assert.ok(EDIT.includes('id="source-select"'), 'manca il selettore di sorgente');
   assert.ok(EDIT.includes('cambiaSorgente('), 'manca il gestore del cambio sorgente');
