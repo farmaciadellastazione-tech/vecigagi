@@ -84,7 +84,7 @@ The modes are designed as a learning progression. Harder modes start locked and 
 
 | Lv | Mode | Description |
 |----|------|-------------|
-| 0 | 🎯 Multiple Choice | Pick the right answer from 4 to 12 options. Adapts to your level. |
+| 0 | 🎯 Multiple Choice | Pick the right answer from 4 to 12 options. Adapts to your level; wrong answers come back until you get them right. |
 | 0 | 📖 Guided Reading | Short stories sentence by sentence, with audio and translation. Tap a word for an explanation (from the vocabulary, or from the AI as fallback). |
 | 1 | ✍️ Dictation | Hear a word and write it in the same language. |
 | 2 | 🏋️ Training | Type the translation. Wrong answers come back in the same session. |

@@ -9943,12 +9943,25 @@ function SchermataSceltaMultipla({
   const [carte, setCarte] = useState([]);
   const [risposta, setRisposta] = useState(null);
   const [punteggio, setPunteggio] = useState(0);
+  // Ripetizione delle sbagliate (come Allenamento): la carta torna in coda
+  // finché non si indovina. errateKeys: coppiaKey → n. errori (il punteggio
+  // conta solo le corrette AL PRIMO COLPO, così la progressione 100% resta
+  // "zero errori"). carteErrate: riepilogo per il quadro finale.
+  const [errateKeys, setErrateKeys] = useState({});
+  const [carteErrate, setCarteErrate] = useState([]);
   const [erroreSetup, setErroreSetup] = useState(null);
   // Frase di fine sessione: scelta una sola volta quando si entra in "fine" e riprodotta in autoplay.
   const [fraseFine, setFraseFine] = useState(null);
   // Timer per auto-avanti su risposta corretta (pulito su unmount/cambio carta)
   const autoNextTimer = useRef(null);
   useEffect(() => () => { if (autoNextTimer.current) clearTimeout(autoNextTimer.current); }, []);
+
+  // Domande base della sessione: le carte generate, SENZA le ripetizioni delle
+  // sbagliate (percentuale e progressione si calcolano solo su queste).
+  function nDomBase() {
+    const n = carte.filter(c => !c._rimessa).length;
+    return n || 1; // mai dividere per zero
+  }
 
   function generaCarte(statoOverride) {
     const st = statoOverride || stato;
@@ -9997,6 +10010,8 @@ function SchermataSceltaMultipla({
     setIndice(0);
     setRisposta(null);
     setPunteggio(0);
+    setErrateKeys({});
+    setCarteErrate([]);
   }
 
   // Mount-only: lingue/filtri/vocabolario cambiano solo dalla Home (componente
@@ -10014,7 +10029,7 @@ function SchermataSceltaMultipla({
     // una frase da mostrare (caso limite, non deve bloccare l'aggiornamento streak).
     if (onStreak && punteggio > 0) onStreak();
     if (fraseFine) return;
-    const perc = Math.round(punteggio / carte.length * 100);
+    const perc = Math.round(punteggio / nDomBase() * 100);
     const f = frasaFineSP(perc);
     if (!f) return;
     setFraseFine(f);
@@ -10026,13 +10041,15 @@ function SchermataSceltaMultipla({
     if (risposta) return;
     const carta = carte[indice];
     const ok = s.display === carta.corretta;
+    const key = coppiaKey(carta.entry, carta.linguaPrompt.codice, carta.lingua.codice);
     setRisposta({ scelta: s.display, corretta: ok });
     // Auto-play della risposta corretta nella lingua target (utile per imparare la pronuncia)
     parla(formaTTS(carta.entry[carta.lingua.codice]), carta.lingua?.bcp47);
     if (ok) {
-      setPunteggio(p => p + 1);
+      // Solo al primo colpo: una carta indovinata alla ripetizione non conta
+      // (altrimenti la progressione "100% → più domande" scatterebbe comunque).
+      if (!errateKeys[key]) setPunteggio(p => p + 1);
       if (setStats && carta.entry && carta.lingua && carta.linguaPrompt) {
-        const key = coppiaKey(carta.entry, carta.linguaPrompt.codice, carta.lingua.codice);
         setStats(prev => {
           const c = getCoppia(prev, key);
           if (c.livello > 0) return prev;
@@ -10049,6 +10066,12 @@ function SchermataSceltaMultipla({
           setRisposta(null);
         }, 600);
       }
+    } else {
+      // Ripetizione delle sbagliate (come Allenamento): la carta torna in coda
+      // finché non si indovina; il riepilogo tiene la PRIMA scelta sbagliata.
+      setErrateKeys(prev => ({ ...prev, [key]: (prev[key] || 0) + 1 }));
+      setCarteErrate(prev => prev.some(e => e.key === key) ? prev : [...prev, { key, carta, scelta: s.display }]);
+      setCarte(prev => [...prev, { ...carta, _rimessa: true }]);
     }
   }
 
@@ -10072,7 +10095,7 @@ function SchermataSceltaMultipla({
   }
 
   function giocaAncora() {
-    const percFinale = Math.round(punteggio / carte.length * 100);
+    const percFinale = Math.round(punteggio / nDomBase() * 100);
     const nuovoStato = calcolaProssimoStato(percFinale);
     salvaStato(nuovoStato);
     setStato(nuovoStato);
@@ -10098,7 +10121,7 @@ function SchermataSceltaMultipla({
   }, "Caricamento..."));
   const carta = carte[indice];
   const fine = indice === carte.length - 1 && risposta;
-  const perc = Math.round(punteggio / carte.length * 100);
+  const perc = Math.round(punteggio / nDomBase() * 100);
   return /*#__PURE__*/React.createElement("div", {
     className: "min-h-screen bg-black flex flex-col p-4",
     style: {
@@ -10182,7 +10205,38 @@ function SchermataSceltaMultipla({
       className: "text-2xl font-extrabold text-white mb-1"
     }, perc, "%"), /*#__PURE__*/React.createElement("p", {
       className: "text-zinc-400 mb-2"
-    }, punteggio, " / ", carte.length, " corrette"), fraseFine && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+    }, punteggio, " / ", nDomBase(), " corrette al primo colpo"), carteErrate.length > 0 && /*#__PURE__*/React.createElement("div", {
+      className: "w-full bg-red-950 border border-red-800 rounded-2xl p-4 mb-4 text-left"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-red-400 font-bold text-base mb-3"
+    }, "❌ Da rivedere (", carteErrate.length, ")"), /*#__PURE__*/React.createElement("div", {
+      className: "space-y-2"
+    }, carteErrate.map((e, i) => /*#__PURE__*/React.createElement("div", {
+      key: i,
+      className: "bg-black rounded-xl p-3"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-lg"
+    }, e.carta.linguaPrompt?.bandiera), /*#__PURE__*/React.createElement("span", {
+      className: "text-slate-200 font-bold truncate"
+    }, formaDisplay(e.carta.entry[e.carta.linguaPrompt?.codice || "it"], e.carta.linguaPrompt?.codice || "it"))), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2 mt-1"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-lg"
+    }, e.carta.lingua?.bandiera), /*#__PURE__*/React.createElement("span", {
+      className: "text-green-400 font-bold"
+    }, e.carta.corretta), /*#__PURE__*/React.createElement("button", {
+      onClick: () => parla(formaTTS(e.carta.entry[e.carta.lingua.codice]), e.carta.lingua?.bcp47),
+      className: "text-zinc-500 hover:text-amber-400 text-sm px-1",
+      title: "Ascolta", "aria-label": "Ascolta"
+    }, "🔊"), /*#__PURE__*/React.createElement("button", {
+      onClick: () => parla(formaTTS(e.carta.entry[e.carta.lingua.codice]), e.carta.lingua?.bcp47, true),
+      className: "text-zinc-500 hover:text-amber-400 text-sm px-1",
+      title: "Ascolta lentamente", "aria-label": "Ascolta lentamente"
+    }, "🐢")), /*#__PURE__*/React.createElement("div", {
+      className: "text-red-400 text-xs mt-1"
+    }, "hai scelto: ", e.scelta))))), fraseFine && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
       onClick: () => parla(fraseFine.tts, "it-IT"),
       className: "italic text-amber-400 text-base mb-3 inline-flex items-center gap-2 hover:text-amber-300 transition",
       title: "Riascolta"
