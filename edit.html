@@ -1272,8 +1272,33 @@ function filtroVoci() {
   });
 }
 
+// Rilevanza di una voce rispetto alla query di ricerca (già lowercase):
+// 0 = la variante VISIBILE (la prima, quella mostrata a schermo) è
+// ESATTAMENTE la query, 1 = una variante nascosta è esattamente la query,
+// 2 = inizia con la query, 3 = la contiene, 4 = nessun match. Le varianti sono i segmenti separati da
+// "|" (alternative) e "/" (sinonimi o pronuncia/grafia). Requisito: cercando
+// "ora" deve venire fuori prima "ora", non "ancora".
+function rilevanzaRicerca(voce, q, codici) {
+  let best = 4;
+  for (const c of codici) {
+    const raw = (voce[c] || '').toLowerCase();
+    if (!raw || !raw.includes(q)) continue;
+    const varianti = raw.split(/[|/]/);
+    for (let i = 0; i < varianti.length; i++) {
+      const vr = varianti[i].trim();
+      if (vr === q) { best = Math.min(best, i === 0 ? 0 : 1); if (best === 0) return 0; }
+      else if (vr.startsWith(q)) best = Math.min(best, 2);
+      else if (vr.includes(q)) best = Math.min(best, 3);
+    }
+  }
+  return best;
+}
+
 function ordinaVoci(arr) {
   const dir = sortDir === 'asc' ? 1 : -1;
+  // Con una ricerca attiva vince la RILEVANZA (esatto → inizia-con → contiene);
+  // l'ordinamento per colonna resta come spareggio a parità di rilevanza.
+  const codiciRicerca = currentSearch ? ['it', ...currentLangs] : null;
   const getter = v => {
     if (sortKey === 'it') return visiblePart(v.it).toLowerCase();
     if (sortKey === 'tema') return (v.tema || '').toLowerCase();
@@ -1288,6 +1313,11 @@ function ordinaVoci(arr) {
     return '';
   };
   return arr.slice().sort((a, b) => {
+    if (codiciRicerca) {
+      const ra = rilevanzaRicerca(a, currentSearch, codiciRicerca);
+      const rb = rilevanzaRicerca(b, currentSearch, codiciRicerca);
+      if (ra !== rb) return ra - rb;
+    }
     const va = getter(a), vb = getter(b);
     if (!va && !vb) return visiblePart(a.it).toLowerCase().localeCompare(visiblePart(b.it).toLowerCase(), 'it');
     if (!va) return 1; if (!vb) return -1;
