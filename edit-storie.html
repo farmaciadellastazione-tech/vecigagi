@@ -85,6 +85,7 @@ let originalSource = null;
 let openIds = new Set();
 let newIds = new Set();
 let modifiedIds = new Set();
+let incollaIds = new Set(); // storie con il pannello "📋 Incolla tutto" aperto
 
 function setHelp(html, kind) {
   const el = document.getElementById('help');
@@ -234,6 +235,61 @@ function eliminaFrase(id, idx) {
   render();
 }
 
+// ── 📋 Incolla tutto: genera le frasi da testo+traduzione in due incolla ──
+// Requisito: pubblicare una storia lunga senza copia-incolla frase per frase.
+
+// Divide un testo in righe non vuote. Se è tutto su UNA riga con più frasi,
+// divide per punteggiatura di fine frase (. ! ? …), tenendo attaccate le
+// eventuali virgolette di chiusura.
+function dividiInFrasi(testo) {
+  const righe = String(testo || '').split(/\r?\n/).map(r => r.trim()).filter(Boolean);
+  if (righe.length !== 1) return righe;
+  const pezzi = righe[0].match(/[^.!?…]+[.!?…]+["»”'’]?/g);
+  return pezzi && pezzi.length > 1 ? pezzi.map(p => p.trim()) : righe;
+}
+
+// Accoppia testo e traduzione riga per riga → array di frasi {testo, it}.
+// Ritorna { frasi } oppure { errore } se i conteggi non combaciano (mai
+// accoppiamenti sbagliati silenziosi). Traduzione vuota = frasi con it:""
+// (da completare dopo, a mano o con l'IA).
+function costruisciFrasiDaTesti(testo, traduzione) {
+  const t = dividiInFrasi(testo);
+  const tr = dividiInFrasi(traduzione);
+  if (!t.length) return { errore: 'Il testo è vuoto.' };
+  if (tr.length && tr.length !== t.length) {
+    return { errore: `Le righe non combaciano: ${t.length} frasi nel testo, ${tr.length} nella traduzione.\nSistema gli a-capo (una frase per riga in entrambe) e riprova.` };
+  }
+  return { frasi: t.map((testoFrase, i) => ({ testo: testoFrase, it: tr[i] || '' })) };
+}
+
+function apriIncollaTutto(id) {
+  if (incollaIds.has(id)) incollaIds.delete(id); else incollaIds.add(id);
+  render();
+}
+
+function applicaIncollaTutto(id) {
+  const s = storie.find(s => s.id === id);
+  if (!s) return;
+  const testo = document.getElementById(`incolla_testo_${id}`.replace(/[^a-zA-Z0-9_]/g, '_'))?.value || '';
+  const trad = document.getElementById(`incolla_trad_${id}`.replace(/[^a-zA-Z0-9_]/g, '_'))?.value || '';
+  const r = costruisciFrasiDaTesti(testo, trad);
+  if (r.errore) { alert(r.errore); return; }
+  const esistentiPiene = (s.frasi || []).filter(f => (f.testo || '').trim() || (f.it || '').trim());
+  if (esistentiPiene.length) {
+    if (confirm(`La storia ha già ${esistentiPiene.length} frasi.\n\nOK = SOSTITUISCI con le ${r.frasi.length} generate\nAnnulla = AGGIUNGILE in coda`)) {
+      s.frasi = r.frasi;
+    } else {
+      s.frasi = [...esistentiPiene, ...r.frasi];
+    }
+  } else {
+    s.frasi = r.frasi;
+  }
+  segnaModificata(id);
+  incollaIds.delete(id);
+  render();
+  setHelp(`📋 Generate ${r.frasi.length} frasi per "${escapeHtml(s.titolo?.testo || id)}". Controlla gli accoppiamenti e clicca "☁️ Salva su GitHub".`, 'success');
+}
+
 // ── Rendering ──
 function campoStoria(s, path, value, tipo, opts) {
   const inputId = `f_${s.id}_${path}`.replace(/[^a-zA-Z0-9_]/g, '_');
@@ -344,6 +400,19 @@ function renderCard(s) {
         <legend>Frasi (${(s.frasi || []).length})</legend>
         ${fraseRows || '<p style="color:var(--muted); font-size:0.85rem">Nessuna frase.</p>'}
         <button class="btn" style="margin-top:0.4rem" onclick="aggiungiFrase('${s.id}')">➕ Aggiungi frase</button>
+        <button class="btn" style="margin-top:0.4rem" onclick="apriIncollaTutto('${s.id}')" title="Genera tutte le frasi in due incolla: testo intero + traduzione intera (una frase per riga, o tutto di fila: divido io per punteggiatura)">📋 Incolla tutto…</button>
+        ${incollaIds.has(s.id) ? `
+        <div style="margin-top:0.6rem; padding:0.6rem; border:1px dashed var(--border); border-radius:6px; background:#fafafa">
+          <div class="field" style="margin-bottom:0.5rem">
+            <label>Testo intero (${lng ? lng.name : s.lingua}) — una frase per riga; se incolli tutto di fila, divido io per punteggiatura</label>
+            <textarea id="${`incolla_testo_${s.id}`.replace(/[^a-zA-Z0-9_]/g, '_')}" rows="7" placeholder="Frase 1&#10;Frase 2&#10;Frase 3"></textarea>
+          </div>
+          <div class="field" style="margin-bottom:0.5rem">
+            <label>Traduzione italiana — stesse righe (vuoto = da completare dopo)</label>
+            <textarea id="${`incolla_trad_${s.id}`.replace(/[^a-zA-Z0-9_]/g, '_')}" rows="7" placeholder="Traduzione 1&#10;Traduzione 2&#10;Traduzione 3"></textarea>
+          </div>
+          <button class="btn" onclick="applicaIncollaTutto('${s.id}')">✅ Genera frasi</button>
+        </div>` : ''}
       </fieldset>
       <div class="card-actions">
         <button class="btn" onclick="rendiPrivata('${s.id}')">🔒 Rendi privata</button>
