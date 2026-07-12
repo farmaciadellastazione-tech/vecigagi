@@ -8995,6 +8995,12 @@ function messaggioErroreHttpAI(res, d) {
   const dettaglio = d?.error?.message || d?.error?.type || "";
   return `Errore AI (HTTP ${res.status})${dettaglio ? ": " + dettaglio : ""}`;
 }
+// Tetto di output per tutte le chiamate IA, condiviso dai tre provider.
+// Era 300: troppo poco per le risposte JSON multi-campo (spiegazione+traduzione
+// in Lettura guidata, 4 campi in Frase libera) — arrivavano troncate a metà
+// frase. Gli estrattori tolleranti (estraiSpiegazioneDaTesto/estraiFeedbackFrase)
+// evitano il JSON grezzo a schermo, ma non possono recuperare testo mai generato.
+const AI_MAX_TOKENS = 1000;
 async function callAI(systemPrompt, userPrompt, aiCfg) {
   const cfg = GROQ_MODELS[aiCfg?.provider] || GROQ_MODELS.gemini;
   const key = aiCfg?.apiKey || "";
@@ -9012,7 +9018,7 @@ async function callAI(systemPrompt, userPrompt, aiCfg) {
         },
         body: JSON.stringify({
           model: cfg.model,
-          max_tokens: 300,
+          max_tokens: AI_MAX_TOKENS,
           system: systemPrompt,
           messages: [{
             role: "user",
@@ -9038,7 +9044,7 @@ ${userPrompt}`
             }]
           }],
           generationConfig: {
-            maxOutputTokens: 300
+            maxOutputTokens: AI_MAX_TOKENS
           }
         })
       });
@@ -9055,7 +9061,7 @@ ${userPrompt}`
         },
         body: JSON.stringify({
           model: cfg.model,
-          max_tokens: 300,
+          max_tokens: AI_MAX_TOKENS,
           messages: [{
             role: "system",
             content: systemPrompt
@@ -10375,10 +10381,11 @@ function trovaInVocabolario(parola, codice, vocabolario) {
 // Estrae il valore stringa di una chiave JSON anche da testo TRONCATO (stringa
 // non chiusa) o con testo extra intorno. Gestisce le sequenze di escape più
 // comuni (\n, \", \\). Riusata da estraiSpiegazioneDaTesto e
-// estraiFeedbackFrase: callAI ha max_tokens fisso a 300, quindi la risposta
-// dell'IA può arrivare tagliata prima della "}" di chiusura — senza questo, il
-// codice mostrava il JSON grezzo (compreso il `{"campo": "...` iniziale) al
-// posto del testo vero e proprio (bug osservato dal vivo in Lettura guidata).
+// estraiFeedbackFrase: callAI ha comunque un tetto di output (AI_MAX_TOKENS,
+// oggi 1000 — era 300 e troncava spesso), quindi la risposta dell'IA può
+// arrivare tagliata prima della "}" di chiusura — senza questo, il codice
+// mostrava il JSON grezzo (compreso il `{"campo": "...` iniziale) al posto del
+// testo vero e proprio (bug osservato dal vivo in Lettura guidata).
 function estraiCampoStringaJSON(clean, chiave) {
   const re = new RegExp('"' + chiave + '"\\s*:\\s*"((?:[^"\\\\]|\\\\.)*)"?');
   const m = clean.match(re);
@@ -10961,6 +10968,11 @@ Forma: {"spiegazione": string, "traduzione": string}
       const { spiegazione, traduzione } = estraiSpiegazioneDaTesto(clean);
       setSpiegazione(spiegazione);
       if (traduzione) {
+        // Anche per i dialetti (mn/sp/ge/cr): la traduzione IA è inaffidabile
+        // (l'IA inventa, vedi bonifica voci mn "🤖 IA"), ma i candidati passano
+        // SEMPRE dalla revisione manuale dell'autore prima di entrare nel
+        // vocabolario — decisione esplicita 2026-07-12. L'avvertenza a schermo
+        // (sotto, nel render) resta per chi legge la spiegazione.
         // Per le storie private (eventuale copyright) NON salviamo mai la frase di
         // contesto nel candidato: solo la singola parola isolata + traduzione.
         const isPrivata = storiaSel.fonte?.generato === "privato";
@@ -11031,7 +11043,9 @@ Forma: {"spiegazione": string, "traduzione": string}
     className: "text-sm text-zinc-500 animate-pulse"
   }, "Un momento...") : React.createElement(React.Fragment, null, React.createElement("p", {
     className: "text-sm text-slate-300 leading-relaxed whitespace-pre-wrap"
-  }, spiegazione), React.createElement("button", {
+  }, spiegazione), fonteSpiega === "ai" && DIALETTI_TTS_ITA.includes(storiaSel.lingua) && React.createElement("p", {
+    className: "text-xs text-amber-300 mt-2"
+  }, "⚠️ L'IA non conosce bene i dialetti: questa spiegazione può essere imprecisa o inventata."), React.createElement("button", {
     onClick: e => { e.stopPropagation(); resetSpiega(); },
     className: "text-xs text-zinc-500 hover:text-zinc-400 transition mt-2"
   }, "\u2715 Chiudi"))), React.createElement("p", {

@@ -234,6 +234,15 @@ Durante la verifica dal vivo di R3, richiesti alcuni screenshot Drive del 2026-0
   Non toccato `max_tokens` (cambio globale con impatto su costo/latenza di tutte le chiamate IA del sito, fuori scope di questo fix mirato).
   **Effetto collaterale nel tokenizer di test**: la regex di estrazione contiene caratteri `"` letterali (`/"spiegazione"\s*:.../`), che il tokenizer non-regex-aware dei file di test scambiava per apertura di stringa (terza variante dello stesso problema di R5/apostrofi nei commenti). Aggiunto riconoscimento dei letterali regex in `tests/spiegaParola.test.mjs`.
 
+### Fix IA Lettura guidata (2026-07-12) — causa radice troncamento + candidati dialettali
+
+Due interventi collegati sull'IA, entrambi con impatto principale su Lettura guidata:
+
+- ✅ **`max_tokens` 300 → `AI_MAX_TOKENS` = 1000** — rimossa la causa radice dei JSON troncati (i fix del 2026-07-09 su `estraiSpiegazioneDaTesto`/`estraiFeedbackFrase` evitavano il JSON grezzo a schermo, ma il testo restava tagliato a metà frase perché mai generato). Nuova costante condivisa dai tre provider (Anthropic/Gemini/Groq-OpenAI) al posto dei tre `300` hardcoded. Gli estrattori tolleranti restano come rete di sicurezza. Test: 3 casi nuovi in `tests/callAI.test.mjs` (catturano il body della fetch mockata e verificano il tetto ≥ 800 su ogni provider); l'harness `makeRunner` ora inietta anche `AI_MAX_TOKENS` nel sandbox vm.
+- ✅ **Avvertenza IA sui dialetti (candidati INVARIATI)** — prima proposta: bloccare il salvataggio in `SK_CANDIDATI_LG` per le parole dialettali (`mn/sp/ge/cr`), perché l'IA non conosce i dialetti e inventa traduzioni plausibili (vedi bonifica delle 283 voci mn "🤖 IA"). **Decisione dell'autore (2026-07-12): il blocco NON serve** — i candidati passano sempre dalla sua revisione manuale prima di entrare nel vocabolario, quindi il circuito è sicuro e la raccolta di parole dialettali dalle storie è anzi utile. Implementata solo l'**avvertenza a schermo** ("⚠️ L'IA non conosce bene i dialetti…"), mostrata quando `fonteSpiega === "ai"` e la storia è in dialetto — solo classi Tailwind già presenti nel file, nessun rebuild CSS. Test: 2 casi nuovi in `tests/spiegaParola.test.mjs` (candidato non filtrato per lingua + avvertenza presente e condizionata correttamente).
+
+Verifica dal vivo (server statico Node + Playwright, rete Gemini interamente mockata): storia spezzina → spiegazione mostrata, avvertenza visibile, candidato salvato; storia tedesca → spiegazione senza avvertenza, candidato salvato; `maxOutputTokens: 1000` su tutte le chiamate intercettate; nessun errore console. Suite completa verde.
+
 ### Stessa fragilità estesa a Frase libera (2026-07-09)
 
 `SchermataFraseLibera.verificaFrase` aveva lo stesso identico bug (fallback `clean.slice(0, 200)` sul campo `grammar` quando il JSON di `{"correct", "correction", "grammar", "example"}` arrivava troncato), non ancora segnalato/riprodotto ma con la stessa causa (`max_tokens` fisso).

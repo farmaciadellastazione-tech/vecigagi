@@ -64,6 +64,14 @@ function extractConst(src, name) {
   const i = scansionaBilanciato(src, start, '{', '}');
   return src.slice(m.index, i) + ';';
 }
+// Variante per costanti scalari su una riga (extractConst bilancia graffe e
+// non termina su `const X = 1000;`).
+function extractScalarConst(src, name) {
+  const re = new RegExp('const ' + name + ' = [^;\\n]+;');
+  const m = re.exec(src);
+  if (!m) throw new Error('costante non trovata: ' + name);
+  return m[0];
+}
 
 // Prepara un sandbox con GROQ_MODELS + callAI reali e fetch mockato.
 // Ritorna una funzione run(code) che esegue `code` nel sandbox e restituisce
@@ -72,6 +80,10 @@ function makeRunner(fetchImpl) {
   const sandbox = { fetch: fetchImpl, console };
   const ctx = vm.createContext(sandbox);
   vm.runInContext(extractConst(INDEX, 'GROQ_MODELS'), ctx);
+  // AI_MAX_TOKENS: tetto di output condiviso dai tre provider (fix troncamento).
+  // Iniettata solo se presente nel sorgente, così i test sul limite falliscono
+  // con un'asserzione chiara (300 < atteso) e non con "costante non trovata".
+  try { vm.runInContext(extractScalarConst(INDEX, 'AI_MAX_TOKENS'), ctx); } catch (e) {}
   vm.runInContext(extractFn(INDEX, 'messaggioErroreHttpAI'), ctx);
   vm.runInContext(extractFn(INDEX, 'callAI'), ctx);
   return (code) => vm.runInContext(code, ctx);
@@ -131,6 +143,51 @@ test('Groq/OpenAI: risposta 200 valida estrae il testo (nessuna regressione)', a
   const run = makeRunner(async () => jsonRes(200, { choices: [{ message: { content: 'hello' } }] }));
   const r = await run('callAI("sys", "user", { provider: "openai", apiKey: "k" })');
   assert.equal(r, 'hello');
+});
+
+// ── Limite di output (fix troncamento risposte IA) ──────────────────────────
+// max_tokens era fisso a 300 su tutti i provider: le risposte JSON multi-campo
+// (spiegazione+traduzione in Lettura guidata, 4 campi in Frase libera) arrivavano
+// tagliate a metà frase. Gli estrattori tolleranti (estraiSpiegazioneDaTesto,
+// estraiFeedbackFrase) evitano il JSON grezzo a schermo ma non possono recuperare
+// testo mai generato: la cura è un tetto più alto, condiviso (AI_MAX_TOKENS).
+const MIN_MAX_TOKENS = 800;
+
+test('Anthropic: il body ha un max_tokens abbastanza alto da non troncare le risposte JSON', async () => {
+  let body = null;
+  const run = makeRunner(async (url, opts) => {
+    body = JSON.parse(opts.body);
+    return jsonRes(200, { content: [{ text: 'ok' }] });
+  });
+  await run('callAI("sys", "user", { provider: "anthropic", apiKey: "k" })');
+  assert.ok(body, 'fetch non chiamata');
+  assert.ok(body.max_tokens >= MIN_MAX_TOKENS,
+    `max_tokens=${body.max_tokens}: troppo basso, tronca le risposte JSON (atteso >= ${MIN_MAX_TOKENS})`);
+});
+
+test('Gemini: il body ha un maxOutputTokens abbastanza alto da non troncare le risposte JSON', async () => {
+  let body = null;
+  const run = makeRunner(async (url, opts) => {
+    body = JSON.parse(opts.body);
+    return jsonRes(200, { candidates: [{ content: { parts: [{ text: 'ok' }] } }] });
+  });
+  await run('callAI("sys", "user", { provider: "gemini", apiKey: "k" })');
+  assert.ok(body, 'fetch non chiamata');
+  const n = body.generationConfig?.maxOutputTokens;
+  assert.ok(n >= MIN_MAX_TOKENS,
+    `maxOutputTokens=${n}: troppo basso, tronca le risposte JSON (atteso >= ${MIN_MAX_TOKENS})`);
+});
+
+test('Groq/OpenAI: il body ha un max_tokens abbastanza alto da non troncare le risposte JSON', async () => {
+  let body = null;
+  const run = makeRunner(async (url, opts) => {
+    body = JSON.parse(opts.body);
+    return jsonRes(200, { choices: [{ message: { content: 'ok' } }] });
+  });
+  await run('callAI("sys", "user", { provider: "groq", apiKey: "k" })');
+  assert.ok(body, 'fetch non chiamata');
+  assert.ok(body.max_tokens >= MIN_MAX_TOKENS,
+    `max_tokens=${body.max_tokens}: troppo basso, tronca le risposte JSON (atteso >= ${MIN_MAX_TOKENS})`);
 });
 
 test('Errore di rete (fetch che lancia) resta gestito come prima', async () => {

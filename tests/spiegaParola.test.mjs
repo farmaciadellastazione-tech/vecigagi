@@ -140,3 +140,25 @@ test('spiegaParola usa estraiSpiegazioneDaTesto invece del vecchio fallback clea
   const src = extractFn(INDEX, 'spiegaParola');
   assert.ok(src.includes('estraiSpiegazioneDaTesto('), 'spiegaParola deve usare estraiSpiegazioneDaTesto per evitare di mostrare JSON grezzo');
 });
+
+// ── Avvertenza IA sui dialetti ───────────────────────────────────────────────
+// L'IA non conosce i dialetti mn/sp/ge/cr e può inventare (vedi la bonifica
+// delle 283 voci mn taggate "🤖 IA"): chi legge una spiegazione IA su una
+// storia in dialetto deve vedere un'avvertenza. Il salvataggio come candidato
+// resta invece attivo ANCHE per i dialetti (decisione dell'autore 2026-07-12:
+// i candidati passano sempre dalla sua revisione manuale, quindi il circuito
+// è sicuro e la raccolta è utile).
+
+test('spiegaParola: aggiungiCandidato NON è filtrato per lingua (i candidati dialettali servono, revisione manuale a valle)', () => {
+  const src = extractFn(INDEX, 'spiegaParola');
+  assert.ok(src.includes('aggiungiCandidato('), 'spiegaParola deve salvare i candidati');
+  assert.ok(/if \(traduzione\) \{/.test(src),
+    'il salvataggio del candidato deve dipendere solo dalla presenza della traduzione, non dalla lingua');
+});
+
+test('la UI mostra l\'avvertenza quando la spiegazione IA riguarda un dialetto', () => {
+  assert.ok(INDEX.includes('non conosce bene i dialetti'),
+    'manca il testo di avvertenza per le spiegazioni IA sui dialetti');
+  assert.ok(/fonteSpiega === "ai" && DIALETTI_TTS_ITA\.includes\(storiaSel\.lingua\)/.test(INDEX),
+    'l\'avvertenza deve comparire solo per spiegazioni IA (non da vocabolario) su storie in dialetto');
+});
