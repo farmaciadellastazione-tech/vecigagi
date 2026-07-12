@@ -41,6 +41,31 @@
 
 const STORIE_DEFAULT = [
   {
+    "id": "en-a1-nuova-storia-2",
+    "lingua": "sp",
+    "livello": "A1",
+    "tema": "scioglilingua",
+    "titolo": {
+      "testo": "Cian cianin",
+      "it": ""
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": ""
+    },
+    "frasi": [
+      {
+        "testo": "Cian cianin",
+        "it": "Pian pianino"
+      },
+      {
+        "testo": "andemo fino aa Ciapa",
+        "it": "andiamo fino alla Chiappa"
+      }
+    ]
+  },
+  {
     "id": "en-a1-nuova-storia",
     "lingua": "sp",
     "livello": "A1",
