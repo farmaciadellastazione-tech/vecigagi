@@ -74,7 +74,7 @@ function extractFn(src, name) {
   return src.slice(at, i);
 }
 function extractLineConst(src, name) {
-  const re = new RegExp('const ' + name + ' = [^;\\n]+;');
+  const re = new RegExp('const ' + name + '\\s*=\\s*[^;\\n]+;');
   const m = re.exec(src);
   if (!m) throw new Error('costante non trovata: ' + name);
   return m[0];
@@ -222,6 +222,66 @@ test('UI: bottone "Importa da Lettura guidata" presente e proposta di svuotare l
   const applicaSrc = extractFn(DIAL, 'adminImportApplica');
   assert.ok(/impDaLG/.test(applicaSrc) && /removeItem/.test(applicaSrc),
     'dopo un import da LG, adminImportApplica deve proporre di svuotare la lista in localStorage');
+});
+
+// ── Guardia anti-clobber sui salvataggi admin (☁️ Salva e 🚀 Promuovi) ──────
+// Stessa protezione già in edit.html: prima del PUT, adminGhPutFile confronta
+// il contenuto remoto (GET /contents) con lo snapshot caricato all'apertura
+// (adminDialFile/adminIndexFile). Se il file è cambiato (altra scheda, push),
+// il salvataggio si ferma invece di sovrascrivere (clobber storico b8b23a0).
+
+function makeGuardCtx({ remoto, snapshot, senzaContent = false }) {
+  const chiamate = [];
+  const sandbox = {
+    console, atob, btoa, TextDecoder, TextEncoder,
+    confirm: () => false,
+    localStorage: { getItem: () => 'ghp_test', removeItem: () => {} },
+    location: { search: '' },
+    fetch: async (url, opts) => {
+      const method = (opts && opts.method) || 'GET';
+      chiamate.push(method);
+      if (method === 'GET') {
+        const body = senzaContent
+          ? { sha: 'sha1' }
+          : { sha: 'sha1', content: Buffer.from(remoto, 'utf8').toString('base64') };
+        return { ok: true, status: 200, json: async () => body };
+      }
+      return { ok: true, status: 200, json: async () => ({ content: { sha: 'sha2' } }) };
+    },
+  };
+  const ctx = vm.createContext(sandbox);
+  for (const c of ['GH_OWNER', 'GH_REPO', 'GH_TOKEN_KEY', 'GH_PATH_INDEX', 'GH_PATH_DIALETTI']) {
+    vm.runInContext(extractLineConst(DIAL, c), ctx);
+  }
+  vm.runInContext('const GH_BRANCH = "main";', ctx);
+  vm.runInContext(`let adminDialFile = ${JSON.stringify(snapshot)}; let adminIndexFile = null;`, ctx);
+  vm.runInContext(extractFn(DIAL, 'adminDecodificaContenutoGh'), ctx);
+  vm.runInContext(extractFn(DIAL, 'adminSnapshotPerPath'), ctx);
+  vm.runInContext(extractFn(DIAL, 'adminGhPutFile'), ctx);
+  return { ctx, chiamate };
+}
+
+test('guardia dialetti: remoto identico allo snapshot → PUT eseguita', async () => {
+  const { ctx, chiamate } = makeGuardCtx({ remoto: 'contenuto-v1', snapshot: 'contenuto-v1' });
+  const sha = await vm.runInContext('adminGhPutFile(GH_PATH_DIALETTI, "nuovo", "msg")', ctx);
+  assert.equal(sha, 'sha2');
+  assert.deepEqual(chiamate, ['GET', 'PUT']);
+});
+
+test('guardia dialetti: remoto CAMBIATO → salvataggio bloccato, PUT non chiamata', async () => {
+  const { ctx, chiamate } = makeGuardCtx({ remoto: 'contenuto-v2-modificato-altrove', snapshot: 'contenuto-v1' });
+  await assert.rejects(
+    () => vm.runInContext('adminGhPutFile(GH_PATH_DIALETTI, "nuovo", "msg")', ctx),
+    /cambiat/i,
+    'deve fermarsi spiegando che il file è cambiato'
+  );
+  assert.deepEqual(chiamate, ['GET'], 'la PUT non deve partire');
+});
+
+test('guardia dialetti: content assente dalla GET (file >1MB) → fail-open, PUT eseguita', async () => {
+  const { ctx, chiamate } = makeGuardCtx({ remoto: '', snapshot: 'contenuto-v1', senzaContent: true });
+  await vm.runInContext('adminGhPutFile(GH_PATH_DIALETTI, "nuovo", "msg")', ctx);
+  assert.deepEqual(chiamate, ['GET', 'PUT']);
 });
 
 test('regressione: import dialettale classico (chip sp) — nuova, arricchimento e conflitto come prima', () => {

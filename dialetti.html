@@ -3542,6 +3542,25 @@ function adminRicostruisciIndex(voci) {
 }
 
 // ─── PUT su GitHub per un file (usa SHA fresco per evitare race) ─────────
+// Decodifica il campo `content` (base64 spezzato da newline) della GET
+// /contents di GitHub in testo UTF-8. Null se assente (file > ~1 MB) o invalido.
+function adminDecodificaContenutoGh(json) {
+  if (!json || typeof json.content !== 'string' || !json.content) return null;
+  try {
+    const bin = atob(json.content.replace(/\s/g, ''));
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder('utf-8').decode(bytes);
+  } catch (e) { return null; }
+}
+
+// Snapshot caricato all'apertura per il file dato (per la guardia anti-clobber).
+function adminSnapshotPerPath(path) {
+  if (path === GH_PATH_DIALETTI) return adminDialFile;
+  if (path === GH_PATH_INDEX) return adminIndexFile;
+  return null;
+}
+
 async function adminGhPutFile(path, nuovoSrc, commitMessage) {
   const token = localStorage.getItem(GH_TOKEN_KEY);
   if (!token) throw new Error('Token GitHub mancante');
@@ -3552,7 +3571,24 @@ async function adminGhPutFile(path, nuovoSrc, commitMessage) {
     if (getRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY);
     throw new Error(`GET ${path} fallito: ${getRes.status}`);
   }
-  const sha = (await getRes.json()).sha;
+  const ghJson = await getRes.json();
+  const sha = ghJson.sha;
+  // ── Guardia anti-clobber (stessa protezione di edit.html) ──────────────
+  // Se il file su GitHub è cambiato dopo il caricamento di questa pagina
+  // (salvataggio da un'altra scheda/pagina/dispositivo, o un push),
+  // sovrascriverlo dallo snapshot in memoria cancellerebbe quelle modifiche
+  // (clobber storico: commit b8b23a0). Fail-open se l'API omette il
+  // contenuto (file oltre ~1 MB).
+  const snapshot = adminSnapshotPerPath(path);
+  const remoto = adminDecodificaContenutoGh(ghJson);
+  if (snapshot !== null && remoto !== null && remoto !== snapshot) {
+    throw new Error(
+      `"${path}" su GitHub è cambiato dopo il caricamento di questa pagina ` +
+      `(probabilmente un salvataggio da un'altra scheda o da edit.html).\n\n` +
+      `Operazione ANNULLATA per non sovrascrivere quelle modifiche: ` +
+      `ricarica la pagina e ripeti.`
+    );
+  }
   const bytes = new TextEncoder().encode(nuovoSrc);
   let bin = ''; for (let j = 0; j < bytes.length; j++) bin += String.fromCharCode(bytes[j]);
   const putRes = await fetch(apiBase, {
