@@ -9399,6 +9399,27 @@ function Glossario({
 }
 
 // ── Ricerca parola ────────────────────────────────────────────────────────
+// Rilevanza di una voce rispetto alla query di ricerca (già lowercase):
+// 0 = la variante VISIBILE (la prima, quella mostrata a schermo) è
+// ESATTAMENTE la query, 1 = una variante nascosta è esattamente la query,
+// 2 = inizia con la query, 3 = la contiene, 4 = nessun match. Le varianti sono i segmenti separati da
+// "|" (alternative) e "/" (sinonimi o pronuncia/grafia). Requisito: cercando
+// "ora" deve venire fuori prima "ora", non "ancora".
+function rilevanzaRicerca(voce, q, codici) {
+  let best = 4;
+  for (const c of codici) {
+    const raw = (voce[c] || '').toLowerCase();
+    if (!raw || !raw.includes(q)) continue;
+    const varianti = raw.split(/[|/]/);
+    for (let i = 0; i < varianti.length; i++) {
+      const vr = varianti[i].trim();
+      if (vr === q) { best = Math.min(best, i === 0 ? 0 : 1); if (best === 0) return 0; }
+      else if (vr.startsWith(q)) best = Math.min(best, 2);
+      else if (vr.includes(q)) best = Math.min(best, 3);
+    }
+  }
+  return best;
+}
 function Ricerca({
   vocabolario,
   lingue,
@@ -9409,16 +9430,19 @@ function Ricerca({
   const [query, setQuery] = useState("");
   const lingueAttive = lingue.filter(l => l.attiva);
 
-  // Cerca in tutte le lingue attive
+  // Cerca in tutte le lingue attive, poi ordina per RILEVANZA prima di
+  // tagliare ai primi 30 (prima si prendevano i primi 30 in ordine di file:
+  // cercando "ora" usciva "ancora" prima di "ora").
   const risultati = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (q.length < 2) return [];
+    const codici = lingueAttive.map(l => l.codice);
     return vocabolario.filter(entry => {
       return lingueAttive.some(l => {
         const val = (entry[l.codice] || "").toLowerCase();
         return val.split("/").some(v => v.trim().includes(q));
       });
-    }).slice(0, 30);
+    }).map(entry => [rilevanzaRicerca(entry, q, codici), entry]).sort((a, b) => a[0] - b[0] || (a[1].it || "").localeCompare(b[1].it || "", "it")).map(x => x[1]).slice(0, 30);
   }, [query, vocabolario, lingueAttive]);
 
   // Email per segnalare parola mancante
