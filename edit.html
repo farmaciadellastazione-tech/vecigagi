@@ -572,14 +572,46 @@ window.addEventListener('beforeunload', e => {
 const DRAFT_LS = 'lq_edit_draft_v1';
 let draftSaveTimer = null;
 
+// Versioni "di partenza" delle voci (come caricate da GitHub, PRIMA delle
+// modifiche in tabella): servono alla bozza per rilevare i conflitti al
+// ripristino. Cache lazy dall'originalSourceFile (che resta pristino: gli
+// edit mutano solo gli oggetti di `vocabolario`). Azzerata a ogni ricarica.
+let baseVoci = null;
+function vociBase() {
+  if (!baseVoci) {
+    baseVoci = new Map();
+    try { estraiVocabolario(originalSourceFile).forEach(v => baseVoci.set(rowKey(v), v)); } catch (_) {}
+  }
+  return baseVoci;
+}
+
 function salvaBozzaLocale() {
   clearTimeout(draftSaveTimer);
   draftSaveTimer = setTimeout(() => {
     if (modifiedKeys.size + newKeys.size === 0 && !frasiSPModificate) return;
     try {
+      // Bozza PER-RIGA (task #5): solo le voci toccate + la loro versione di
+      // partenza (basi, per il rilevamento conflitti al ripristino). Niente
+      // più fotografia dell'intero vocabolario: il ripristino integrale su una
+      // base diventata vecchia riportava indietro TUTTA la tabella.
+      const basiMap = vociBase();
+      const voci = {}, basi = {}, nuove = [];
+      vocabolario.forEach(v => {
+        const kLive = rowKey(v);
+        if (newKeys.has(kLive)) { nuove.push(v); return; }
+        // _key0 = identità stabile stampata al caricamento: se l'utente ha
+        // editato proprio l'IT, la chiave live cambia ma la base resta
+        // agganciata a quella di partenza.
+        const k0 = v._key0 || kLive;
+        if (!modifiedKeys.has(kLive) && !modifiedKeys.has(k0)) return;
+        voci[k0] = v;
+        const b = basiMap.get(k0);
+        if (b) basi[k0] = b;
+      });
       localStorage.setItem(draftKey(), JSON.stringify({
         savedAt: Date.now(),
-        vocabolario,
+        perRiga: true,
+        voci, basi, nuove,
         modifiedKeys: [...modifiedKeys],
         newKeys: [...newKeys],
         frasiSP,
@@ -602,29 +634,88 @@ function leggiBozzaLocale() {
     const raw = localStorage.getItem(draftKey());
     if (!raw) return null;
     const b = JSON.parse(raw);
-    if (!b || !Array.isArray(b.vocabolario) || !Array.isArray(b.modifiedKeys) || !Array.isArray(b.newKeys)) return null;
+    if (!b || !Array.isArray(b.modifiedKeys) || !Array.isArray(b.newKeys)) return null;
+    // Nuovo formato per-riga oppure legacy (fotografia intera): entrambi validi,
+    // applicaBozzaPerRiga li normalizza.
+    if (!(b.perRiga && b.voci) && !Array.isArray(b.vocabolario)) return null;
     return b;
   } catch (_) { return null; }
 }
 
+// Riapplica la bozza SULLA BASE FRESCA, riga per riga (puro, testabile).
+// Ritorna { vocabolario, applicate, gia, conflitti, aggiunte } — le liste
+// contengono { key, it }. Regole per ogni voce modificata della bozza:
+//   - il remoto è identico alla riga della bozza → "gia" (già salvata, skip);
+//   - il remoto è ancora uguale alla base della bozza → riapplica ("applicate");
+//   - il remoto è CAMBIATO dopo la bozza (≠ base) → "conflitti", riga intatta;
+//   - voce sparita dal remoto, o con omonimi (più righe stessa chiave) → "conflitti".
+// Le voci nuove della bozza vengono aggiunte solo se la chiave non esiste già.
+// Le bozze legacy (fotografia intera, senza `basi`) vengono ridotte alle sole
+// righe modificate e riapplicate senza rilevamento conflitti — comunque mai
+// più la sostituzione in blocco della tabella.
+function applicaBozzaPerRiga(vocFresco, bozza) {
+  const out = vocFresco.slice();
+  const applicate = [], gia = [], conflitti = [], aggiunte = [];
+  // Confronto ignorando le chiavi di servizio "_..." (es. _key0, stampata a
+  // runtime sulle righe fresche ma assente nelle basi/bozze): altrimenti ogni
+  // riga risulterebbe "diversa" e finirebbe in conflitto.
+  const pulisci = o => { const c = {}; Object.keys(o || {}).forEach(k => { if (!k.startsWith('_')) c[k] = o[k]; }); return c; };
+  const stessa = (a, b) => JSON.stringify(pulisci(a)) === JSON.stringify(pulisci(b));
+  let voci = bozza.voci || {}, basi = bozza.basi || {}, nuove = bozza.nuove || [];
+  if (!bozza.perRiga && Array.isArray(bozza.vocabolario)) {
+    voci = {}; nuove = [];
+    const mk = new Set(bozza.modifiedKeys || []), nk = new Set(bozza.newKeys || []);
+    bozza.vocabolario.forEach(v => {
+      const k = rowKey(v);
+      if (nk.has(k)) nuove.push(v);
+      else if (mk.has(k)) voci[k] = v;
+    });
+  }
+  for (const [k, riga] of Object.entries(voci)) {
+    const idxs = [];
+    out.forEach((v, i) => { if (rowKey(v) === k) idxs.push(i); });
+    if (idxs.length !== 1) { conflitti.push({ key: k, it: riga.it || k }); continue; } // sparita o omonimi
+    const fresca = out[idxs[0]];
+    if (stessa(fresca, riga)) { gia.push({ key: k, it: riga.it || k }); continue; }    // già salvata nel frattempo
+    const base = basi[k];
+    if (base && !stessa(fresca, base)) { conflitti.push({ key: k, it: riga.it || k }); continue; } // remoto cambiato dopo la bozza
+    out[idxs[0]] = riga;
+    applicate.push({ key: k, keyLive: rowKey(riga), it: riga.it || k });
+  }
+  for (const v of nuove) {
+    const k = rowKey(v);
+    if (out.some(x => rowKey(x) === k)) { conflitti.push({ key: k, it: v.it || k }); continue; }
+    out.push(v);
+    aggiunte.push({ key: k, it: v.it || k });
+  }
+  return { vocabolario: out, applicate, gia, conflitti, aggiunte };
+}
+
 // Chiamata subito dopo aver caricato vocabolario/frasiSP freschi da GitHub:
-// se esiste una bozza locale con modifiche non salvate, propone di ripristinarla.
-// Ritorna il numero di modifiche ripristinate (0 se nessuna bozza o rifiutata).
+// se esiste una bozza locale con modifiche non salvate, propone di riapplicarle
+// PER-RIGA sulla base fresca (mai più la sostituzione integrale della tabella).
+// Ritorna il numero di modifiche riapplicate (0 se nessuna bozza o rifiutata).
 function provaRipristinoBozza() {
   const bozza = leggiBozzaLocale();
   if (!bozza || (bozza.modifiedKeys.length + bozza.newKeys.length === 0 && !bozza.frasiSPModificate)) return 0;
   const data = new Date(bozza.savedAt).toLocaleString('it-IT');
   const n = bozza.modifiedKeys.length + bozza.newKeys.length;
-  if (confirm(`Trovate ${n} modifiche non salvate del ${data} (sessione precedente interrotta).\nVuoi ripristinarle?`)) {
-    vocabolario = bozza.vocabolario;
-    modifiedKeys = new Set(bozza.modifiedKeys);
-    newKeys = new Set(bozza.newKeys);
-    if (Array.isArray(bozza.frasiSP)) frasiSP = bozza.frasiSP;
-    frasiSPModificate = !!bozza.frasiSPModificate;
-    return n;
+  if (!confirm(`Trovate ${n} modifiche non salvate del ${data} (sessione precedente interrotta).\nVuoi riapplicarle sulla tabella aggiornata?\n(Solo le righe toccate: il resto resta quello di GitHub. Le righe cambiate su GitHub dopo la bozza NON vengono sovrascritte.)`)) {
+    localStorage.removeItem(draftKey());
+    return 0;
   }
-  localStorage.removeItem(draftKey());
-  return 0;
+  const r = applicaBozzaPerRiga(vocabolario, bozza);
+  vocabolario = r.vocabolario;
+  // Chiavi LIVE (post-edit): sono quelle che il resto dell'editor usa per
+  // evidenziare/contare le righe modificate.
+  modifiedKeys = new Set(r.applicate.map(x => x.keyLive || x.key));
+  newKeys = new Set(r.aggiunte.map(x => x.key));
+  if (Array.isArray(bozza.frasiSP) && bozza.frasiSPModificate) { frasiSP = bozza.frasiSP; frasiSPModificate = true; }
+  const msgs = [];
+  if (r.conflitti.length) msgs.push(`⚠️ NON riapplicate (cambiate su GitHub dopo la bozza, sparite o con voci doppie) — ricontrollale a mano:\n  · ${r.conflitti.map(x => x.it).join('\n  · ')}`);
+  if (r.gia.length) msgs.push(`✓ Già salvate nel frattempo (nulla da fare): ${r.gia.map(x => x.it).join(', ')}`);
+  if (msgs.length) alert(msgs.join('\n\n'));
+  return r.applicate.length + r.aggiunte.length;
 }
 
 let originalKeysByEntry = new Map();
@@ -909,9 +1000,14 @@ async function caricaIndexDaGitHub() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     originalSourceFile = await res.text();
     originalSourceSha = null;
+    baseVoci = null; // la cache delle versioni "di partenza" segue il file appena caricato
     originalVocabJs = (vocabRes && vocabRes.ok) ? await vocabRes.text() : null;
     vocabolario = estraiVocabolario(originalSourceFile);
     if (!vocabolario.length) throw new Error(`${sorgenteNomeBlocco()} vuoto o non trovato`);
+    // Identità stabile per riga (per la bozza per-riga): sopravvive anche se
+    // l'utente edita l'IT. Le chiavi che iniziano con "_" non vengono mai
+    // serializzate (vedi serializzaVoce), quindi non finisce su GitHub.
+    vocabolario.forEach(v => { v._key0 = rowKey(v); });
     indexRefByIt.clear();
     if (isCandidatiMode() && indexRefRes && indexRefRes.ok) {
       try {
