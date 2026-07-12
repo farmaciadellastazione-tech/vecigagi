@@ -41,6 +41,36 @@
 
 const STORIE_DEFAULT = [
   {
+    "id": "en-a1-nuova-storia",
+    "lingua": "sp",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Er figio der marinao",
+      "it": ""
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "anonimo"
+    },
+    "frasi": [
+      {
+        "testo": "Er figio der mainao",
+        "it": "Il figlio del marinaio"
+      },
+      {
+        "testo": "i è caito n'ter canao",
+        "it": "è caduto nel canale"
+      },
+      {
+        "testo": "e ne s'è fato manco mao",
+        "it": "e non si è neanche fatto male"
+      }
+    ]
+  },
+  {
     "id": "de-a1-ein-tag-im-park",
     "lingua": "de",
     "livello": "A1",
