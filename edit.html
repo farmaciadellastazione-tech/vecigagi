@@ -214,6 +214,12 @@
 <header>
   <h1>📝 LinguaeQuiz Editor <span id="ai-indicator" class="ai-status off">AI: off</span></h1>
   <div class="controls">
+    <label>Sorgente
+      <select id="source-select" onchange="cambiaSorgente(this.value)" title="Cosa stai editando: il vocabolario di produzione (index.html) o i candidati in staging (dialetti.html)">
+        <option value="index">📗 Vocabolario (index)</option>
+        <option value="candidati">🗂 Candidati (dialetti)</option>
+      </select>
+    </label>
     <label>Lingue visualizzate
       <div id="lang-multi-wrap" style="display:flex;flex-wrap:wrap;gap:0.3rem;align-items:center;margin-top:0.25rem;">
         <select id="lang-add-select" title="Aggiungi lingua alla vista" style="max-width:160px"></select>
@@ -287,6 +293,7 @@
       <thead>
         <tr id="thead-row">
           <th style="width:32px" title="Stato">·</th>
+          <th id="th-ok" style="width:36px;display:none" title="Pronta per la promozione a index (🚀 Promuovi da dialetti.html?admin=1)">☑️</th>
           <th class="sortable" data-sort="it" style="min-width:140px;width:22%">Italiano <span class="sort-arrow"></span></th>
           <!-- le th delle lingue vengono inserite dinamicamente da renderTheadLingue() -->
           <th class="sortable col-tema" data-sort="tema" style="width:12%">Tema <span class="sort-arrow"></span></th>
@@ -478,6 +485,22 @@ const GH_PATH = 'index.html';
 const GH_PATH_VOCAB = 'vocab.js';
 const GH_TOKEN_KEY = 'gh_pat_vecigagi';
 const BLOCK_START_RE = /^\s*const VOCABOLARIO_DEFAULT = \[/m;
+const GH_PATH_DIALETTI = 'dialetti.html';
+const BLOCK_CANDIDATI_RE = /^\s*const CANDIDATI = \[/m;
+
+// ── Sorgente dati ──────────────────────────────────────────────────────
+// 'index' (default): VOCABOLARIO_DEFAULT in index.html — produzione.
+// 'candidati': blocco CANDIDATI in dialetti.html — il cuscinetto di staging.
+// Un solo editor, due sorgenti: la modalità candidati NON bumpa VOC_VERSION,
+// preserva i campi extra dei candidati (ok, fonte) e mostra la colonna ☑️ OK.
+// La promozione a index resta in dialetti.html?admin=1 (🚀 Promuovi).
+let currentSource = 'index';
+function isCandidatiMode() { return currentSource === 'candidati'; }
+function sorgentePath() { return isCandidatiMode() ? GH_PATH_DIALETTI : GH_PATH; }
+function sorgenteMarkerRe() { return isCandidatiMode() ? BLOCK_CANDIDATI_RE : BLOCK_START_RE; }
+function sorgenteNomeBlocco() { return isCandidatiMode() ? 'CANDIDATI' : 'VOCABOLARIO_DEFAULT'; }
+// Bozze locali separate per sorgente: una bozza index non deve mai finire sui candidati.
+function draftKey() { return isCandidatiMode() ? DRAFT_LS + '_candidati' : DRAFT_LS; }
 
 // ==========================================================================
 // LINGUE
@@ -553,7 +576,7 @@ function salvaBozzaLocale() {
   draftSaveTimer = setTimeout(() => {
     if (modifiedKeys.size + newKeys.size === 0 && !frasiSPModificate) return;
     try {
-      localStorage.setItem(DRAFT_LS, JSON.stringify({
+      localStorage.setItem(draftKey(), JSON.stringify({
         savedAt: Date.now(),
         vocabolario,
         modifiedKeys: [...modifiedKeys],
@@ -575,7 +598,7 @@ function mostraIndicatoreBozza() {
 
 function leggiBozzaLocale() {
   try {
-    const raw = localStorage.getItem(DRAFT_LS);
+    const raw = localStorage.getItem(draftKey());
     if (!raw) return null;
     const b = JSON.parse(raw);
     if (!b || !Array.isArray(b.vocabolario) || !Array.isArray(b.modifiedKeys) || !Array.isArray(b.newKeys)) return null;
@@ -599,7 +622,7 @@ function provaRipristinoBozza() {
     frasiSPModificate = !!bozza.frasiSPModificate;
     return n;
   }
-  localStorage.removeItem(DRAFT_LS);
+  localStorage.removeItem(draftKey());
   return 0;
 }
 
@@ -808,24 +831,54 @@ function fetchTimeout(url, opts, ms) {
   return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(() => clearTimeout(tid));
 }
 
+// Cambio di sorgente (selettore in header): ricarica tutto dal file giusto.
+// Le modifiche non salvate restano nella bozza locale della sorgente lasciata
+// (chiavi separate, vedi draftKey), ma meglio salvarle prima.
+function cambiaSorgente(v) {
+  if (v === currentSource) return;
+  const mods = modifiedKeys.size + newKeys.size;
+  if (mods > 0 && !confirm(`Hai ${mods} modifiche non salvate su questa sorgente.\nLa bozza locale le conserva, ma per sicurezza salvale prima di cambiare.\n\nCambiare sorgente comunque?`)) {
+    document.getElementById('source-select').value = currentSource;
+    return;
+  }
+  currentSource = v;
+  modifiedKeys.clear(); newKeys.clear(); frasiSPModificate = false;
+  const thOk = document.getElementById('th-ok');
+  if (thOk) thOk.style.display = isCandidatiMode() ? '' : 'none';
+  caricaIndexDaGitHub();
+}
+
+// Colonna ☑️ OK (solo modalità candidati): marca la voce come pronta per la
+// promozione. Il flag `ok` è lo stesso che usa dialetti.html?admin=1.
+function toggleOkVoce(el) {
+  const tr = el.closest('tr'); const v = tr && tr._voce;
+  if (!v) return;
+  if (el.checked) v.ok = true; else delete v.ok;
+  const key = rowKey(v);
+  if (!newKeys.has(key)) modifiedKeys.add(key);
+  if (!tr.classList.contains('new-row')) tr.classList.add('modified');
+  salvaBozzaLocale();
+}
+
 async function caricaIndexDaGitHub() {
-  setHelp('⏳ Carico l\'ultima versione di index.html da GitHub...', 'info');
+  setHelp(`⏳ Carico l'ultima versione di ${sorgentePath()} da GitHub...`, 'info');
   try {
     // Usa raw.githubusercontent.com: nessun limite 1 MB, nessun auth, risposta diretta.
     // Lo SHA viene rifetchato al momento del salvataggio (vedi salvasuGitHub).
-    const rawUrl = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_PATH}?t=${Date.now()}`;
+    const rawUrl = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${sorgentePath()}?t=${Date.now()}`;
     const vocabRawUrl = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_PATH_VOCAB}?t=${Date.now()}`;
     const [res, vocabRes] = await Promise.all([
       fetchTimeout(rawUrl, {}, 25000),
-      fetchTimeout(vocabRawUrl, {}, 15000).catch(() => null)
+      // vocab.js serve solo alle frasi spezzine, gestite in modalità index
+      isCandidatiMode() ? Promise.resolve(null) : fetchTimeout(vocabRawUrl, {}, 15000).catch(() => null)
     ]);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     originalSourceFile = await res.text();
     originalSourceSha = null;
     originalVocabJs = (vocabRes && vocabRes.ok) ? await vocabRes.text() : null;
     vocabolario = estraiVocabolario(originalSourceFile);
-    if (!vocabolario.length) throw new Error('VOCABOLARIO_DEFAULT vuoto o non trovato');
-    frasiSP = estraiFrasiSP(originalVocabJs || originalSourceFile);
+    if (!vocabolario.length) throw new Error(`${sorgenteNomeBlocco()} vuoto o non trovato`);
+    frasiSP = isCandidatiMode() ? [] : estraiFrasiSP(originalVocabJs || originalSourceFile);
     frasiSPModificate = false;
     originalKeysByEntry.clear();
     vocabolario.forEach(v => originalKeysByEntry.set(rowKey(v), new Set(Object.keys(v))));
@@ -834,9 +887,10 @@ async function caricaIndexDaGitHub() {
     renderLangBadges();
     mostraBannerDialetto();
     aggiornaCharBar();
+    const cosa = isCandidatiMode() ? 'voci CANDIDATE (staging di dialetti.html — la promozione a index resta lì, 🚀)' : 'voci';
     setHelp(nRipristinate
-      ? `♻️ Caricate <strong>${vocabolario.length}</strong> voci, ripristinate <strong>${nRipristinate}</strong> modifiche non salvate della sessione precedente.`
-      : `✅ Caricate <strong>${vocabolario.length}</strong> voci. Modifica i campi e clicca <strong>☁️ Salva su GitHub</strong> quando hai finito.`, 'success');
+      ? `♻️ Caricate <strong>${vocabolario.length}</strong> ${cosa}, ripristinate <strong>${nRipristinate}</strong> modifiche non salvate della sessione precedente.`
+      : `✅ Caricate <strong>${vocabolario.length}</strong> ${cosa}. Modifica i campi e clicca <strong>☁️ Salva su GitHub</strong> quando hai finito.`, 'success');
     render();
   } catch (err) {
     console.error(err);
@@ -845,8 +899,8 @@ async function caricaIndexDaGitHub() {
 }
 
 function estraiVocabolario(src) {
-  const m = BLOCK_START_RE.exec(src);
-  if (!m) throw new Error('Marcatore "const VOCABOLARIO_DEFAULT = [" non trovato');
+  const m = sorgenteMarkerRe().exec(src);
+  if (!m) throw new Error(`Marcatore "const ${sorgenteNomeBlocco()} = [" non trovato`);
   const start = m.index + m[0].length;
   let depth = 1, i = start, inStr = false, esc = false, q = null;
   while (i < src.length) {
@@ -1258,6 +1312,7 @@ function render() {
 
     let html = `
       <td class="row-status" title="${isNew?'Nuova voce':isEmpty0?'Da tradurre':isMod?'Modificata':'OK'}">${isNew?'🆕':isEmpty0?'⚠️':isMod?'✏️':'✓'}</td>
+      ${isCandidatiMode() ? `<td class="ok-cell" data-label="OK"><input type="checkbox" ${v.ok ? 'checked' : ''} onchange="toggleOkVoce(this)" title="Pronta per la promozione a index (🚀 da dialetti.html admin)"></td>` : ''}
       <td class="it-cell" data-label="Italiano"><input type="text" value="${escapeAttr(v.it||'')}" data-field="it" title="Usa | per traduzioni alternative">${itHidden ? `<span class="alt-badge" title="${itHidden} alt. nascoste">+${itHidden}</span>` : ''}</td>
     `;
 
@@ -1316,7 +1371,11 @@ function render() {
     tr.innerHTML = html;
     tr.dataset.key = key;
     tr._voce = v;
-    tr.querySelectorAll('input').forEach(inp => inp.addEventListener('input', () => onCellEdit(tr, v, inp)));
+    // Solo gli input con data-field sono celle-voce: gli altri (checkbox OK,
+    // combobox sorgente 🏷️) hanno i loro handler dedicati — passarli a
+    // onCellEdit scriverebbe voce[undefined] (probabile origine storica delle
+    // chiavi "undefined" nel vocabolario, vedi commit 2764dce).
+    tr.querySelectorAll('input[data-field]').forEach(inp => inp.addEventListener('input', () => onCellEdit(tr, v, inp)));
     tbody.appendChild(tr);
   });
 
@@ -2123,6 +2182,10 @@ function minMaxDaFascia(fascia) {
   return {};
 }
 function apriFrasiSP() {
+  if (isCandidatiMode()) {
+    alert('Le frasi spezzine si gestiscono in modalità 📗 Vocabolario (index): cambia sorgente in alto.');
+    return;
+  }
   frasiSPDraft = frasiSP.map(f => ({ ...f }));
   renderFrasiSP();
   document.getElementById('frasi-sp-modal').classList.add('open');
@@ -2440,7 +2503,7 @@ function serializzaFraseSP(f) {
 
 function ricostruisciSorgente() {
   if (!originalSourceFile) throw new Error('Sorgente originale non caricato');
-  const m = BLOCK_START_RE.exec(originalSourceFile); if (!m) throw new Error('Marcatore non trovato');
+  const m = sorgenteMarkerRe().exec(originalSourceFile); if (!m) throw new Error('Marcatore non trovato');
   const start = m.index + m[0].length;
   let depth = 1, i = start, inStr = false, esc = false, q = null;
   while (i < originalSourceFile.length) {
@@ -2451,15 +2514,23 @@ function ricostruisciSorgente() {
   }
   if (depth !== 0) throw new Error('Parentesi non bilanciate');
   const lines = vocabolario.map(v => '      ' + serializzaVoce(v) + ',');
-  let nuovoSrc = originalSourceFile.slice(0, start) + '\n      // ── VOCABOLARIO ──────────────────────────\n' + lines.join('\n') + '\n    ' + originalSourceFile.slice(i);
-  nuovoSrc = nuovoSrc.replace(/^(\s*const\s+VOC_VERSION\s*=\s*)(\d+)(\s*;)/m, (match, prefix, num, suffix) => prefix + (parseInt(num, 10) + 1) + suffix);
-  // Re-inietta FRASI_FINE_SP se il marker è presente nel sorgente
-  const r = trovaBloccoArray(nuovoSrc, 'FRASI_FINE_SP');
-  if (r) {
-    const corpo = frasiSP.length
-      ? '\n  ' + frasiSP.map(serializzaFraseSP).join(',\n  ') + '\n'
-      : '';
-    nuovoSrc = nuovoSrc.slice(0, r.start) + corpo + nuovoSrc.slice(r.end);
+  // Commento-marcatore: in modalità candidati usa lo stesso testo che scrive
+  // l'admin di dialetti.html (adminRicostruisciBlocco), per diff stabili.
+  const commento = isCandidatiMode()
+    ? '\n      // ── CANDIDATI ──────────────────\n'
+    : '\n      // ── VOCABOLARIO ──────────────────────────\n';
+  let nuovoSrc = originalSourceFile.slice(0, start) + commento + lines.join('\n') + '\n    ' + originalSourceFile.slice(i);
+  if (!isCandidatiMode()) {
+    // Solo per index: bump di VOC_VERSION + re-iniezione FRASI_FINE_SP.
+    // I candidati NON invalidano la cache degli utenti (lo fa la promozione).
+    nuovoSrc = nuovoSrc.replace(/^(\s*const\s+VOC_VERSION\s*=\s*)(\d+)(\s*;)/m, (match, prefix, num, suffix) => prefix + (parseInt(num, 10) + 1) + suffix);
+    const r = trovaBloccoArray(nuovoSrc, 'FRASI_FINE_SP');
+    if (r) {
+      const corpo = frasiSP.length
+        ? '\n  ' + frasiSP.map(serializzaFraseSP).join(',\n  ') + '\n'
+        : '';
+      nuovoSrc = nuovoSrc.slice(0, r.start) + corpo + nuovoSrc.slice(r.end);
+    }
   }
   return nuovoSrc;
 }
@@ -2476,7 +2547,20 @@ function ricostruisciVocabJs() {
 
 function scaricaCopia() {
   let nuovoSrc; try { nuovoSrc = ricostruisciSorgente(); } catch(e) { alert('Errore: ' + e.message); return; }
-  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([nuovoSrc], { type: 'text/html;charset=utf-8' })); a.download = 'index.html'; a.click();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([nuovoSrc], { type: 'text/html;charset=utf-8' })); a.download = sorgentePath(); a.click();
+}
+
+// Decodifica il campo `content` (base64 spezzato da newline) della risposta
+// GET /contents di GitHub in testo UTF-8. Ritorna null se assente o non
+// decodificabile (es. file oltre ~1 MB: l'API omette il contenuto).
+function decodificaContenutoGh(json) {
+  if (!json || typeof json.content !== 'string' || !json.content) return null;
+  try {
+    const bin = atob(json.content.replace(/\s/g, ''));
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder('utf-8').decode(bytes);
+  } catch (e) { return null; }
 }
 
 async function salvaSuGitHub() {
@@ -2491,22 +2575,43 @@ async function salvaSuGitHub() {
   const tot = vocabolario.length, modCount = modifiedKeys.size + newKeys.size;
   if (!modCount && !frasiSPModificate && !confirm('Nessuna modifica. Salvare comunque?')) return;
   const dettagliFrasi = frasiSPModificate ? ` + ${frasiSP.length} frasi spezzine` : '';
-  if (!confirm(`Scrivere ${tot} voci su GitHub (modifiche: ${modCount})${dettagliFrasi}?\n\n"vecigagi/index.html" verrà sovrascritta.`)) return;
+  const cosaSalvo = isCandidatiMode() ? 'voci CANDIDATE' : 'voci';
+  if (!confirm(`Scrivere ${tot} ${cosaSalvo} su GitHub (modifiche: ${modCount})${dettagliFrasi}?\n\n"vecigagi/${sorgentePath()}" verrà sovrascritta.`)) return;
   const btn = document.getElementById('btn-gh-save'), orig = btn.textContent; btn.disabled = true; btn.textContent = '⏳ Salvataggio...';
   let success = false;
   try {
     const nuovoSrc = ricostruisciSorgente();
-    const apiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`;
+    const apiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${sorgentePath()}`;
     const headers = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
     const getRes = await fetchTimeout(apiBase + '?ref=' + GH_BRANCH, { headers }, 20000);
     if (!getRes.ok) { if (getRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('GET fallito (' + getRes.status + ')'); }
-    const sha = (await getRes.json()).sha;
+    const ghJson = await getRes.json();
+    const sha = ghJson.sha;
+    // ── Guardia anti-clobber ─────────────────────────────────────────────
+    // Se il file su GitHub è cambiato dopo il caricamento (salvataggio da
+    // un'altra scheda/pagina/dispositivo, o un push), sovrascriverlo con la
+    // versione ricostruita da QUESTO snapshot cancellerebbe quelle modifiche
+    // (è già successo: commit b8b23a0 azzerò 283 tag verif). Meglio fermarsi.
+    // Se l'API non include il contenuto (file > ~1 MB) il controllo è saltato.
+    const remoto = decodificaContenutoGh(ghJson);
+    if (remoto !== null && remoto !== originalSourceFile) {
+      throw new Error(
+        `"${sorgentePath()}" su GitHub è cambiato dopo il tuo caricamento ` +
+        `(probabilmente un salvataggio da un'altra pagina o dispositivo).\n\n` +
+        `Salvataggio ANNULLATO per non sovrascrivere quelle modifiche.\n\n` +
+        `Ricarica la pagina e ri-applica le modifiche: la bozza locale le conserva, ` +
+        `ma valuta il ripristino con attenzione (risale a prima delle modifiche remote).`
+      );
+    }
     const bytes = new TextEncoder().encode(nuovoSrc); let bin = ''; for (let j = 0; j < bytes.length; j++) bin += String.fromCharCode(bytes[j]);
-    const putRes = await fetchTimeout(apiBase, { method:'PUT', headers:Object.assign({}, headers, {'Content-Type':'application/json'}), body:JSON.stringify({ message:`Aggiornamento da edit.html (${tot} voci, ${modCount} modifiche)`, content:btoa(bin), branch:GH_BRANCH, sha }) }, 60000);
+    const msgCommit = isCandidatiMode()
+      ? `Candidati aggiornati da edit.html (${tot} voci, ${modCount} modifiche)`
+      : `Aggiornamento da edit.html (${tot} voci, ${modCount} modifiche)`;
+    const putRes = await fetchTimeout(apiBase, { method:'PUT', headers:Object.assign({}, headers, {'Content-Type':'application/json'}), body:JSON.stringify({ message: msgCommit, content:btoa(bin), branch:GH_BRANCH, sha }) }, 60000);
     if (!putRes.ok) { if (putRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('PUT fallito (' + putRes.status + ')'); }
     originalSourceFile = nuovoSrc; originalSourceSha = (await putRes.json()).content.sha;
-    // Salva vocab.js se le frasi spezzine sono state modificate
-    if (frasiSPModificate) {
+    // Salva vocab.js se le frasi spezzine sono state modificate (solo modalità index)
+    if (frasiSPModificate && !isCandidatiMode()) {
       const nuovoVocabJs = ricostruisciVocabJs();
       if (nuovoVocabJs) {
         const vocabApiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH_VOCAB}`;
@@ -2520,7 +2625,7 @@ async function salvaSuGitHub() {
       }
     }
     modifiedKeys.clear(); newKeys.clear(); frasiSPModificate = false; success = true;
-    try { localStorage.removeItem(DRAFT_LS); } catch (_) {}
+    try { localStorage.removeItem(draftKey()); } catch (_) {}
     const indDraft = document.getElementById('draft-indicator'); if (indDraft) indDraft.textContent = '';
     btn.textContent = '✅ Salvato!'; setHelp('✅ Salvataggio riuscito! GitHub Pages aggiornerà tra 1-2 min.', 'success');
     setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 3000); render();
