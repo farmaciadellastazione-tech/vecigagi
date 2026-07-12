@@ -11,6 +11,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url)) + '/..';
+// Oracolo-chiave allineato ad adminRowKey di dialetti.html (2026-07-12):
+// case/spazi-insensibile e SENZA punto/puntini finali ('pescecane.' == 'pescecane').
+const chiaveIt = s => (s || '').toLowerCase().trim().replace(/[.…]+$/, '').trim();
 const DIAL = fs.readFileSync(ROOT + '/dialetti.html', 'utf8');
 const INDEX = fs.readFileSync(ROOT + '/index.html', 'utf8');
 
@@ -78,8 +81,8 @@ function makeCtx({ confirmReturns = true } = {}) {
 
 test('ci sono candidati già coperti da index (precondizione del bug)', () => {
   const { sandbox } = makeCtx();
-  const byIt = new Map(); VOC.forEach(v => byIt.set((v.it || '').toLowerCase().trim(), v));
-  const conMatch = CAND.filter(e => byIt.has((e.it || '').toLowerCase().trim())).length;
+  const byIt = new Map(); VOC.forEach(v => byIt.set(chiaveIt(v.it), v));
+  const conMatch = CAND.filter(e => byIt.has(chiaveIt(e.it))).length;
   assert.ok(conMatch > 0, 'attesi candidati con IT presente in index');
   assert.ok(sandbox.adminVoc.length === CAND.length, 'copia di lavoro intatta prima della pulizia');
 });
@@ -93,10 +96,10 @@ test('la pulizia: dopo l\'esecuzione non restano duplicati né voci interamente 
   // La pulizia non può AUMENTARE le voci (vale anche se i dati erano già puliti).
   assert.ok(dopo <= prima, `il totale non deve crescere: prima=${prima} dopo=${dopo}`);
 
-  const byIt = new Map(); VOC.forEach(v => byIt.set((v.it || '').toLowerCase().trim(), v));
+  const byIt = new Map(); VOC.forEach(v => byIt.set(chiaveIt(v.it), v));
   const utile = e => { // replica di voceUtile
     if (Array.isArray(e.nt) && e.nt.length) return true; // voce non-traducibile (flag nt): sempre conservata
-    const idx = byIt.get((e.it || '').toLowerCase().trim());
+    const idx = byIt.get(chiaveIt(e.it));
     if (!idx) return true;
     return COLS.some(c => { const v = (e[c] || '').trim(); return v && v !== (idx[c] || '').trim(); });
   };
@@ -105,7 +108,7 @@ test('la pulizia: dopo l\'esecuzione non restano duplicati né voci interamente 
   // Invariante 2: nessuna voce superstite interamente coperta da index
   let copertiResidui = 0;
   for (const e of sandbox.adminVoc) {
-    const idx = byIt.get((e.it || '').toLowerCase().trim());
+    const idx = byIt.get(chiaveIt(e.it));
     if (!idx) continue;
     for (const c of COLS) { const v = (e[c] || '').trim(); if (v && v === (idx[c] || '').trim()) dupResidui++; }
     if (!utile(e)) copertiResidui++;
@@ -126,7 +129,7 @@ test('annullando il confirm NON cambia nulla (confirm = Annulla)', () => {
 test('importa da index: aggiunge le voci index che mancano del dialetto (nessuna resta fuori)', () => {
   const { ctx, sandbox } = makeCtx({ confirmReturns: true });
   sandbox.currentDialect = 'sp';
-  const key = v => (v.it || '').toLowerCase().trim();
+  const key = v => chiaveIt(v.it);
   const haCand = new Set(CAND.map(key));
   const atteso = VOC.filter(v => v.it && !(v.sp || '').trim() && !haCand.has(key(v))).length;
 
@@ -166,11 +169,11 @@ test('importa da index: niente duplicati e no-op su Annulla', () => {
 test('scarta già-in-index: rimuove le voci con dialetto vuoto ma presente in index', () => {
   const { ctx, sandbox } = makeCtx({ confirmReturns: true });
   sandbox.currentDialect = 'sp';
-  const byIt = new Map(); VOC.forEach(v => byIt.set((v.it || '').toLowerCase().trim(), v));
+  const byIt = new Map(); VOC.forEach(v => byIt.set(chiaveIt(v.it), v));
   // atteso: candidati con sp vuoto ma index ha sp
   const atteso = sandbox.adminVoc.filter(e => {
     if ((e.sp || '').trim()) return false;
-    const idx = byIt.get((e.it || '').toLowerCase().trim());
+    const idx = byIt.get(chiaveIt(e.it));
     return idx && (idx.sp || '').trim();
   }).length;
   assert.ok(atteso > 0, 'precondizione: ci sono voci «già in index» per sp');
@@ -180,7 +183,7 @@ test('scarta già-in-index: rimuove le voci con dialetto vuoto ma presente in in
   // nessuna voce superstite deve essere «già in index» per sp
   const resta = sandbox.adminVoc.some(e => {
     if ((e.sp || '').trim()) return false;
-    const idx = byIt.get((e.it || '').toLowerCase().trim());
+    const idx = byIt.get(chiaveIt(e.it));
     return idx && (idx.sp || '').trim();
   });
   assert.equal(resta, false, 'non devono restare voci «già in index» per sp');
@@ -198,8 +201,8 @@ test('scarta già-in-index: no-op su Annulla', () => {
 test('dialMancante: una parola già in index NON è mancante', () => {
   const { ctx } = makeCtx();
   // prendo un caso reale: candidato con sp vuoto ma index con sp valorizzato
-  const byIt = new Map(); VOC.forEach(v => byIt.set((v.it || '').toLowerCase().trim(), v));
-  const caso = CAND.find(e => !(e.sp || '').trim() && (byIt.get((e.it || '').toLowerCase().trim())?.sp || '').trim());
+  const byIt = new Map(); VOC.forEach(v => byIt.set(chiaveIt(v.it), v));
+  const caso = CAND.find(e => !(e.sp || '').trim() && (byIt.get(chiaveIt(e.it))?.sp || '').trim());
   assert.ok(caso, 'serve almeno un candidato sp-vuoto ma presente in index');
   const r = vm.runInContext(`dialMancante(${JSON.stringify(caso)}, 'sp')`, ctx);
   assert.equal(r, false, 'sp presente in index ⇒ non mancante');

@@ -325,6 +325,21 @@ test('adminPromuovi: usa i nuovi helper e salta i candidati con omonimi in index
   assert.ok(/omonim/i.test(src), 'il salto per ambiguità deve essere spiegato all\'utente');
 });
 
+test('adminRowKey: ignora punto/puntini finali ("pescecane." == "pescecane")', () => {
+  const ctx = vm.createContext({});
+  vm.runInContext(extractFn(DIAL, 'adminRowKey'), ctx);
+  const k = it => vm.runInContext(`adminRowKey(${JSON.stringify({ it })})`, ctx);
+  assert.equal(k('pescecane.'), k('pescecane'));
+  assert.equal(k('riccio di mare.'), k('riccio di mare'));
+  assert.notEqual(k('cameriere!'), k('cameriere'), 'il punto esclamativo resta significativo');
+});
+
+test('adminPromuovi: il merge NON sovrascrive l\'it esistente di index (niente rinomina in "pesce.")', () => {
+  const src = extractFn(DIAL, 'adminPromuovi');
+  assert.ok(/k !== ['"]it['"]/.test(src),
+    'il merge nel gemello esistente deve saltare il campo it: l\'identità in produzione resta quella pulita');
+});
+
 test('regressione: import dialettale classico (chip sp) — nuova, arricchimento e conflitto come prima', () => {
   const { analizza } = makeCtx([
     { it: 'casa', sp: 'ca' },       // conflitto (valore diverso nel file)

@@ -237,6 +237,41 @@ test('UI: colonna vs-index presente e cablata nel render', () => {
   assert.ok(EDIT.includes('statoVsIndex(v)'), 'il render deve calcolare il badge per riga');
 });
 
+// ── Chiave voce insensibile alla punteggiatura finale ────────────────────────
+// Le voci importate dai dizionari finiscono con il punto della glossa
+// ("pescecane.", "carota."): senza normalizzazione i doppioni non venivano
+// riconosciuti (né dal badge vs-index, né da 🔍 Duplicati, né dall'import) e
+// le promozioni hanno creato coppie tipo "carota"/"carota." in produzione.
+
+test('rowKey: ignora punto/puntini finali (e case/spazi come prima)', () => {
+  const ctx = vm.createContext({});
+  vm.runInContext(extractFn(EDIT, 'rowKey'), ctx);
+  const k = it => vm.runInContext(`rowKey(${JSON.stringify({ it })})`, ctx);
+  assert.equal(k('pescecane.'), k('pescecane'));
+  assert.equal(k('carota…'), k('carota'));
+  assert.equal(k(' Giovanni. '), k('giovanni'));
+  assert.notEqual(k('buon appetito!'), k('buon appetito'), 'il punto esclamativo resta significativo');
+  assert.notEqual(k('cacciare'), k('scacciare'));
+});
+
+test('statoVsIndex: candidato col punto riconosciuto come già presente in index (non 🆕)', () => {
+  const stato = makeVsIndexCtx([{ it: 'pesce', ge: 'pescio' }]);
+  assert.notEqual(stato({ it: 'pesce.', ge: 'pescio' }).kind, 'nuova',
+    '"pesce." deve matchare "pesce" in index');
+  assert.equal(stato({ it: 'pesce.', ge: 'pescio' }).kind, 'duplicato');
+  assert.equal(stato({ it: 'pesce.', mn: 'pescio-mn' }).kind, 'arricchisce');
+});
+
+test('trovaDuplicati usa rowKey (i doppioni col punto vengono raggruppati)', () => {
+  const ctx = vm.createContext({});
+  vm.runInContext(extractFn(EDIT, 'rowKey'), ctx);
+  vm.runInContext('let vocabolario = [{ it: "carota" }, { it: "carota." }, { it: "sole" }];', ctx);
+  vm.runInContext(extractFn(EDIT, 'trovaDuplicati'), ctx);
+  const groups = vm.runInContext('trovaDuplicati()', ctx);
+  assert.equal(groups.length, 1);
+  assert.equal(groups[0].indici.length, 2, '"carota" e "carota." devono finire nello stesso gruppo');
+});
+
 test('UI: selettore sorgente e colonna OK presenti in edit.html', () => {
   assert.ok(EDIT.includes('id="source-select"'), 'manca il selettore di sorgente');
   assert.ok(EDIT.includes('cambiaSorgente('), 'manca il gestore del cambio sorgente');

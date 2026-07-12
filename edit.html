@@ -1088,7 +1088,9 @@ document.addEventListener('focusin', e => {
   }
 });
 
-function rowKey(v) { return (v.it || '').toLowerCase().trim(); }
+// Chiave-voce: case/spazi-insensibile e SENZA punto/puntini finali (le voci
+// da dizionario finiscono con il punto della glossa: 'pescecane.' == 'pescecane').
+function rowKey(v) { return (v.it || '').toLowerCase().trim().replace(/[.…]+$/, '').trim(); }
 function visiblePart(s) { if (!s) return ''; const i = s.indexOf('|'); return (i === -1 ? s : s.slice(0, i)).trim(); }
 function normalizzaVarianti(s) {
   if (!s) return '';
@@ -2216,7 +2218,7 @@ async function completaConAI() {
 // ==========================================================================
 function trovaDuplicati() {
   const map = new Map();
-  vocabolario.forEach((v, idx) => { const k = (v.it || '').toLowerCase().trim(); if (!k) return; if (!map.has(k)) map.set(k, []); map.get(k).push(idx); });
+  vocabolario.forEach((v, idx) => { const k = rowKey(v); if (!k) return; if (!map.has(k)) map.set(k, []); map.get(k).push(idx); });
   const groups = []; map.forEach((indici, key) => { if (indici.length > 1) groups.push({ key, indici }); });
   return groups.sort((a, b) => a.key.localeCompare(b.key, 'it'));
 }
