@@ -41,6 +41,27 @@
 
 const STORIE_DEFAULT = [
   {
+    "id": "en-a1-nuova-storia-3",
+    "lingua": "en",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "",
+      "it": ""
+    },
+    "fonte": {
+      "generato": "ai",
+      "modello": "claude-sonnet-5",
+      "note": ""
+    },
+    "frasi": [
+      {
+        "testo": "",
+        "it": ""
+      }
+    ]
+  },
+  {
     "id": "en-a1-nuova-storia-2",
     "lingua": "sp",
     "livello": "A1",
