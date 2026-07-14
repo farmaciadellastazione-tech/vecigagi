@@ -2078,7 +2078,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // ── Vocabolario con temi e livelli ────────────────────────────────────────
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
-      // ── VOCABOLARIO_DEFAULT ──────────────────
+      // ── VOCABOLARIO ──────────────────────────
       { tema:"acquisto", livello:"A2", it:"a buon mercato", en:"cheap", es:"barato", pt:"barato", sp:"a bon páto", ge:"a buun mercouu/ a bon mercòu", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,ge:g", nt:["mn"] },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"a spasso, in giro senza meta.", sp:"scoratae", mn:"zùnzu (a)", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
@@ -3810,7 +3810,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", it:"vizio.", mn:"visciu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"comunicazione", livello:"A1", it:"voce", en:"voice", ru:"голос", sp:"góse", mn:"gusa/guza", ge:"voxe", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"voce" },
       { tema:"fisica", livello:"B1", it:"vogata", en:"rowing", fr:"ramee", es:"remada", de:"Rudern", pt:"remada", ca:"remada", sp:"vega", mn:"vugà", ge:"vogâ", ia:"remada", la:"remigatio", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"vâslire" },
-      { tema:"dialetti", it:"voglia", mn:"vògia", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"voglia", sp:"vògia", mn:"vògia", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"pronome", livello:"A1", it:"voi", en:"you", sp:"voiaotri, voi", mn:"vàutri", ge:"viatri|voiatri", ro:"voi" },
       { tema:"grammatica", livello:"A2", it:"voi amate", la:"amatis", grc:"φιλεῖτε" },
       { tema:"viaggi", livello:"A1", it:"voi partite", mn:"vautri a partii", verif:"mn:g" },
@@ -3911,7 +3911,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 419;
+const VOC_VERSION = 420;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
