@@ -3267,6 +3267,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"corpo", livello:"A1", it:"petto", en:"chest", fr:"poitrine", es:"pecho", de:"Brust", pt:"peito", ru:"грудь", ca:"pit", sp:"pèto", mn:"pèttu", verif:"mn:g" },
       { tema:"dialetti", it:"pezza", mn:"pessa/péssa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", it:"pezzente", mn:"pessenté", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"piacere", mn:"piazëë", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"natura", livello:"A2", it:"pianeta", en:"planet", fr:"planète", es:"planeta", de:"Planet", pt:"planeta", ru:"планета", ca:"planeta", nt:["sp"] },
       { it:"piangere", sp:"cian'se/cianze", mn:"cian ze/cianze", cr:"pianz'r", verif:"mn:g,sp:g" },
       { tema:"musica", livello:"A2", it:"piano", sp:"cian", verif:"sp:g" },
@@ -3792,6 +3793,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"vincitore", en:"winner", fr:"gagnant", es:"ganador", de:"Gewinner", pt:"vencedor", ko:"승자", ar:"فائز", zh:"赢家", ja:"勝者", ia:"vincitor", la:"victor", grc:"νικητής" },
       { tema:"cibo", livello:"A1", it:"vino", ru:"вино", ca:"vi", sp:"vin", mn:"vin", cr:"vin", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,cr:g", ro:"vin" },
       { tema:"aggettivi", livello:"A2", it:"viola", en:"purple", fr:"violet", es:"morado", de:"lila", pt:"roxo", ru:"фиолетовый", ca:"violeta", sp:"vièa", ko:"보라", ar:"بنفسجي", zh:"紫色", ja:"紫", ia:"violette", la:"purpureus", grc:"πορφύρεος", verif:"sp:g" },
+      { tema:"dialetti", it:"violento", mn:"viu lentu/viùlëntu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"violenza", mn:"viul en sa/viùlënsa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"arte", livello:"A2", it:"violino", en:"violin", fr:"violon", es:"violín", de:"Geige", pt:"violino", mn:"viulìn/viùlin", ko:"바이올린", ar:"كمان", zh:"小提琴", ja:"バイオリン", ia:"violin", verif:"mn:g" },
       { tema:"dialetti", it:"vipera", mn:"vipera/vìpéra", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"virare", mn:"viraa", verif:"mn:g" },
@@ -3802,11 +3805,12 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", it:"vitello.", mn:"vìtèlu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"vitellone| scapolone", mn:"zitellùn/zitélùn", verif:"mn:g" },
       { tema:"aggettivi", livello:"B1", it:"vivace", en:"lively", fr:"animé|vivant", es:"animado|vivaz", de:"lebhaft", pt:"animado|vivo", ru:"живой|оживлённый", ca:"viu|animat" },
-      { tema:"salute", livello:"A1", it:"vivere", en:"live", fr:"vivre", es:"vivir", de:"leben", pt:"viver", ru:"жить", ca:"viure", sp:"vive", mn:"vive", ko:"살다", ar:"يعيش", zh:"生活", ja:"生きる", ia:"viver", la:"vivere", grc:"ζῆν", verif:"sp:g,mn:g" },
+      { tema:"dialetti", livello:"A1", it:"vivere", en:"live", fr:"vivre", es:"vivir", de:"leben", pt:"viver", ru:"жить", ca:"viure", sp:"vive", mn:"vìvé", ko:"살다", ar:"يعيش", zh:"生活", ja:"生きる", ia:"viver", la:"vivere", grc:"ζῆν", verif:"mn:g", src:{"mn":"🔗 dialetti.html"} },
       { tema:"dialetti", livello:"A2", it:"viziare", mn:"visciiaa/vìsciaa", verif:"mn:g" },
       { tema:"dialetti", it:"vizio.", mn:"visciu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"comunicazione", livello:"A1", it:"voce", en:"voice", ru:"голос", sp:"góse", mn:"gusa/guza", ge:"voxe", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"voce" },
       { tema:"fisica", livello:"B1", it:"vogata", en:"rowing", fr:"ramee", es:"remada", de:"Rudern", pt:"remada", ca:"remada", sp:"vega", mn:"vugà", ge:"vogâ", ia:"remada", la:"remigatio", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"vâslire" },
+      { tema:"dialetti", it:"voglia", mn:"vògia", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"pronome", livello:"A1", it:"voi", en:"you", sp:"voiaotri, voi", mn:"vàutri", ge:"viatri|voiatri", ro:"voi" },
       { tema:"grammatica", livello:"A2", it:"voi amate", la:"amatis", grc:"φιλεῖτε" },
       { tema:"viaggi", livello:"A1", it:"voi partite", mn:"vautri a partii", verif:"mn:g" },
@@ -3907,7 +3911,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 418;
+const VOC_VERSION = 419;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
