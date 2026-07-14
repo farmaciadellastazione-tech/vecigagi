@@ -557,9 +557,15 @@ let hideNT = false;          // nasconde le voci marcate 🚫 intraducibili in u
 let currentPage = 1;
 let modifiedKeys = new Set();
 let newKeys = new Set();
+// Cancellare una voce "pulita" (mai toccata prima) non lascia traccia in
+// modifiedKeys/newKeys: senza questo contatore il salvataggio la vedrebbe
+// come "nessuna modifica" e la riga cancellata rischiava di non essere mai
+// scritta su GitHub (l'utente annullava il prompt fuorviante, la riga
+// "tornava" al reload successivo).
+let deletedCount = 0;
 
 window.addEventListener('beforeunload', e => {
-  if (modifiedKeys.size + newKeys.size > 0 || frasiSPModificate) {
+  if (modifiedKeys.size + newKeys.size + deletedCount > 0 || frasiSPModificate) {
     e.preventDefault();
     e.returnValue = '';
   }
@@ -710,6 +716,7 @@ function provaRipristinoBozza() {
   // evidenziare/contare le righe modificate.
   modifiedKeys = new Set(r.applicate.map(x => x.keyLive || x.key));
   newKeys = new Set(r.aggiunte.map(x => x.key));
+  deletedCount = 0;
   if (Array.isArray(bozza.frasiSP) && bozza.frasiSPModificate) { frasiSP = bozza.frasiSP; frasiSPModificate = true; }
   const msgs = [];
   if (r.conflitti.length) msgs.push(`⚠️ NON riapplicate (cambiate su GitHub dopo la bozza, sparite o con voci doppie) — ricontrollale a mano:\n  · ${r.conflitti.map(x => x.it).join('\n  · ')}`);
@@ -928,13 +935,13 @@ function fetchTimeout(url, opts, ms) {
 // (chiavi separate, vedi draftKey), ma meglio salvarle prima.
 function cambiaSorgente(v) {
   if (v === currentSource) return;
-  const mods = modifiedKeys.size + newKeys.size;
-  if (mods > 0 && !confirm(`Hai ${mods} modifiche non salvate su questa sorgente.\nLa bozza locale le conserva, ma per sicurezza salvale prima di cambiare.\n\nCambiare sorgente comunque?`)) {
+  const mods = modifiedKeys.size + newKeys.size + deletedCount;
+  if (mods > 0 && !confirm(`Hai ${mods} modifiche non salvate su questa sorgente.\nLa bozza locale le conserva (le cancellazioni no: verranno perse), ma per sicurezza salvale prima di cambiare.\n\nCambiare sorgente comunque?`)) {
     document.getElementById('source-select').value = currentSource;
     return;
   }
   currentSource = v;
-  modifiedKeys.clear(); newKeys.clear(); frasiSPModificate = false;
+  modifiedKeys.clear(); newKeys.clear(); deletedCount = 0; frasiSPModificate = false;
   const thOk = document.getElementById('th-ok');
   if (thOk) thOk.style.display = isCandidatiMode() ? '' : 'none';
   const thVs = document.getElementById('th-vsindex');
@@ -1557,7 +1564,7 @@ function render() {
   const info0 = LINGUE.find(l => l.code === lang0);
   const tot = vocabolario.length;
   const totVuote = vocabolario.filter(v => !(v[lang0] || '').trim() && !dialNT(v, lang0)).length;
-  const modCount = modifiedKeys.size + newKeys.size;
+  const modCount = modifiedKeys.size + newKeys.size + deletedCount;
   document.getElementById('stats').innerHTML = `<strong>${tot}</strong> voci · <span class="badge-empty badge">${totVuote}</span> da tradurre in ${info0 ? info0.name : lang0}`;
   document.getElementById('footer-stats').innerHTML = modCount ? `<span class="badge">${modCount}</span> modifiche non salvate` : '<em>nessuna modifica</em>';
   renderPagination(filtrate.length, totalPages);
@@ -1621,7 +1628,7 @@ function onCellEdit(tr, voce, input) {
     const isEmpty = !(voce[currentLangs[0]] || '').trim(), k2 = rowKey(voce);
     if (newKeys.has(k2)) statusCell.textContent = '🆕'; else if (isEmpty) statusCell.textContent = '⚠️'; else statusCell.textContent = '✏️';
   }
-  const modCount = modifiedKeys.size + newKeys.size;
+  const modCount = modifiedKeys.size + newKeys.size + deletedCount;
   document.getElementById('footer-stats').innerHTML = modCount ? `<span class="badge">${modCount}</span> modifiche non salvate` : '<em>nessuna modifica</em>';
   salvaBozzaLocale();
 }
@@ -1666,6 +1673,7 @@ function cancellaVoce(btn) {
   if (!confirm(`Cancellare la voce "${v.it}"?${altreConStessoIt > 0 ? `\n\n⚠️ Esistono altre ${altreConStessoIt} voci con lo stesso italiano.` : ''}`)) return;
   vocabolario.splice(idx, 1);
   if (altreConStessoIt === 0) { modifiedKeys.delete(key); newKeys.delete(key); }
+  deletedCount++;
   render();
 }
 
@@ -2506,7 +2514,7 @@ function cancellaDup(idx) {
   const key = rowKey(v), altre = vocabolario.filter((x, i) => i !== idx && rowKey(x) === key).length;
   if (!confirm(`Cancellare "${v.it}"?\n${riassuntoVoce(v).meta}`)) return;
   vocabolario.splice(idx, 1);
-  if (!vocabolario.some(x => rowKey(x) === key)) { modifiedKeys.delete(key); newKeys.delete(key); } else if (!newKeys.has(key)) modifiedKeys.add(key);
+  if (!vocabolario.some(x => rowKey(x) === key)) { modifiedKeys.delete(key); newKeys.delete(key); deletedCount++; } else if (!newKeys.has(key)) modifiedKeys.add(key);
   renderDuplicati(); render();
 }
 
@@ -2771,7 +2779,7 @@ async function salvaSuGitHub() {
     if (!token.startsWith('github_pat_') && !token.startsWith('ghp_')) { if (!confirm('Token non sembra GitHub standard. Continuare?')) return; }
     localStorage.setItem(GH_TOKEN_KEY, token);
   }
-  const tot = vocabolario.length, modCount = modifiedKeys.size + newKeys.size;
+  const tot = vocabolario.length, modCount = modifiedKeys.size + newKeys.size + deletedCount;
   if (!modCount && !frasiSPModificate && !confirm('Nessuna modifica. Salvare comunque?')) return;
   const dettagliFrasi = frasiSPModificate ? ` + ${frasiSP.length} frasi spezzine` : '';
   const cosaSalvo = isCandidatiMode() ? 'voci CANDIDATE' : 'voci';
@@ -2823,7 +2831,7 @@ async function salvaSuGitHub() {
         originalVocabJs = nuovoVocabJs;
       }
     }
-    modifiedKeys.clear(); newKeys.clear(); frasiSPModificate = false; success = true;
+    modifiedKeys.clear(); newKeys.clear(); deletedCount = 0; frasiSPModificate = false; success = true;
     try { localStorage.removeItem(draftKey()); } catch (_) {}
     const indDraft = document.getElementById('draft-indicator'); if (indDraft) indDraft.textContent = '';
     btn.textContent = '✅ Salvato!'; setHelp('✅ Salvataggio riuscito! GitHub Pages aggiornerà tra 1-2 min.', 'success');
