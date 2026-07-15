@@ -2078,7 +2078,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // ── Vocabolario con temi e livelli ────────────────────────────────────────
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
-      // ── VOCABOLARIO ──────────────────────────
+      // ── VOCABOLARIO_DEFAULT ──────────────────
       { tema:"acquisto", livello:"A2", it:"a buon mercato", en:"cheap", es:"barato", pt:"barato", sp:"a bon páto", ge:"a buun mercouu/ a bon mercòu", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,ge:g", nt:["mn"] },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"a spasso, in giro senza meta.", sp:"scoratae", mn:"zùnzu (a)", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
@@ -2792,6 +2792,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"corpo", livello:"B1", it:"fegato", en:"liver", fr:"foie", es:"hígado", de:"Leber", pt:"fígado|figado", sp:"figaéto", mn:"fìigaetu    |figaëtu", ko:"간", ar:"كبد", zh:"肝", ja:"肝臓", ia:"hepate", la:"iecur", grc:"ἧπαρ", verif:"mn:g" },
       { tema:"aggettivi", livello:"A1", it:"felice", en:"happy", fr:"heureux", es:"feliz", de:"glücklich", pt:"feliz", ru:"счастливый", ca:"feliç", ko:"행복한", ar:"سعيد", zh:"快乐", ja:"幸せ", ia:"felice", la:"felix", grc:"εὐδαίμων", nt:["mn"] },
       { tema:"dialogo", livello:"B1", it:"felicità", en:"happiness", fr:"bonheur", es:"felicidad", de:"Glück", pt:"felicidade", ru:"счастье", ca:"felicitat", nt:["mn"] },
+      { tema:"dialetti", it:"ferita", mn:"sbe'ru/zbèru", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialogo", livello:"A1", it:"fermati qui", en:"stop here", fr:"arrête-toi ici", es:"para aquí", de:"halt hier", pt:"pare aqui", sp:"fermete chi", verif:"sp:g" },
       { tema:"casa", livello:"A2", it:"ferro da stiro", en:"iron", fr:"fer à repasser", es:"plancha", de:"Bügeleisen", pt:"ferro de engomar", ru:"утюг", ca:"planxa", sp:"fero", mn:"feru", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"fessura| spaccatura nella roccia", en:"crevice", fr:"fissure", sp:"fissidùa/fissidüa", mn:"sgrëndia/zgrëndia", verif:"mn:g" },
@@ -3444,16 +3445,26 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"sapere", en:"know", fr:"savoir", es:"saber", de:"wissen", pt:"saber", ru:"знать", ca:"saber", sp:"savée", mn:"savée", cr:"sap'r", ko:"알다", ar:"يعرف", zh:"知道", ja:"知る", ia:"saper", la:"scire", grc:"εἰδέναι", verif:"mn:g", ro:"a ști" },
       { tema:"cosmetica", livello:"A2", it:"sapone", en:"soap", fr:"savon", es:"jabón", de:"Seife", pt:"sabão|sabao", sp:"saòn|savòn", mn:"saùn", ko:"비누", ar:"صابون", zh:"肥皂", ja:"石鹸", ia:"sapon", verif:"mn:g" },
       { tema:"cibo", livello:"A2", it:"sapore", en:"flavour", fr:"saveur", es:"sabor", de:"Geschmack", pt:"sabor", ru:"вкус", ca:"sabor", sp:"savòe", mn:"savòe", ko:"맛", ar:"نكهة", zh:"味道", ja:"味", ia:"sapor", la:"sapor", grc:"γεῦσις", verif:"mn:g", ro:"gust" },
+      { tema:"dialetti", it:"sbagliare", mn:"sbagiàà/zbàgiaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"sbagliato", en:"wrong", fr:"faux|erroné", es:"incorrecto", de:"falsch", pt:"errado", ru:"неправильный", ca:"incorrecte|erroni", sp:"sbagià", mn:"sbagià", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"sbaglio", en:"mistake", fr:"erreur", es:"error", de:"Fehler", pt:"erro", sp:"sbagio", mn:"sbagiu/zbagiu", verif:"mn:g" },
+      { tema:"dialetti", it:"sbaglio/errore", mn:"sbagiu/zbàgiu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", it:"sbarbatello", mn:"sbarbatèlu/zbàrbatèlu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"sbarramento", mn:"sbaramentu/zbàramentu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"sbarramento, ostacolo", en:"barrier", fr:"obstacle", es:"obstáculo", de:"Hindernis", pt:"obstáculo", ca:"obstacle", mn:"sbaramentu/zbàramentu/sbàramentu", verif:"mn:g" },
+      { tema:"dialetti", it:"sbattere", mn:"sbaate/zbàté", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"sbattere, urtare", mn:"sbàte/zbàté/sbàté", verif:"mn:g" },
+      { tema:"dialetti", it:"sbattersene", mn:"sbaaàtense/zbàténsé", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", it:"sbattuto", mn:"s'batù/zbàtü", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"sbieco", mn:"sbiecu/zbiécu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"sbieco, inclinato", sp:"sbieco", mn:"sbiecu/zbiecu", verif:"mn:g" },
+      { tema:"dialetti", it:"sbirro", mn:"sbiru/zbìru", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"sbollire, fermentare", mn:"sbugìi/zbùgii/sbùgii", verif:"mn:g" },
+      { tema:"dialetti", it:"sbraitare", mn:"sbraitàa/zbràitaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"sbrigarsi/fare in fretta", mn:"sbrigasse/zbrìgasé", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"sbrogliare", sp:"desgarbüjaae, desbrogiaae/desgarbügiae, desbrogiae", mn:"desgarbüggiaa/desgarbüggia", ge:"desgarbüggia", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"sbuffare", mn:"sbüfaaa/zbüfaa/sbüfaa", verif:"mn:g" },
+      { tema:"dialetti", it:"scacciare", mn:"sburii/zbùrii", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"farmaci", livello:"B1", it:"scadenza", en:"expiry date", fr:"date de péremption", es:"fecha de caducidad", de:"Ablaufdatum", pt:"validade", ko:"유효기간", ar:"تاريخ انتهاء الصلاحية", zh:"有效期", ja:"有効期限", nt:["sp"] },
       { tema:"casa", livello:"B1", it:"scala a pioli", en:"ladder", fr:"échelle", es:"escalera", de:"Leiter", pt:"escada", ru:"лестница", ca:"escala", sp:"scaa", verif:"sp:g" },
       { tema:"corpo", livello:"B1", it:"scapola", en:"shoulder blade", fr:"omoplate", es:"escápula", de:"Schulterblatt", pt:"escápula|escapula", sp:"paéta da schena/paeta da schena", mn:"paéta da schena/paeta da schena", ia:"scapula", verif:"mn:g" },
@@ -3742,6 +3753,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A1", it:"uovo", en:"egg", fr:"œuf", es:"huevo", de:"Ei", pt:"ovo", ru:"яйцо", ca:"ou", sp:"èvo", mn:"eu/éu", cr:"ov", verif:"mn:g", ro:"ou" },
       { tema:"natura", livello:"B1", it:"uragano", en:"hurricane", fr:"ouragan", es:"huracán", de:"Hurrikan", pt:"furacão|furacao", ko:"허리케인", ar:"إعصار", zh:"飓风", ja:"ハリケーン", ia:"uragano", la:"turbo", grc:"τυφών" },
       { tema:"verbi", it:"urlare / sbraitare", sp:"sbragiàae/sbragiae", mn:"sbragiàa/sbragiaa", verif:"mn:g" },
+      { tema:"dialetti", it:"urlo", mn:"sbragiu/zbràgiu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"urlo sguaiato|bercio", en:"loud cry", fr:"cri perçant", es:"grito estruendoso", de:"lautes Geschrei", pt:"grito alto", ca:"crit estrident", sp:"sbèco", mn:"zbècu", ge:"urlo|urlo sguaiòu", ia:"clamor forte", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"strigăt puternic" },
       { tema:"dialetti", livello:"A2", it:"urlo|rimprovero", en:"shout", fr:"cri", es:"grito", de:"Schrei", pt:"grito", ca:"crit", sp:"ürlo|sbragio", mn:"zbragiu", ge:"ürlo", ia:"clamo", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"strigăt" },
       { tema:"dialogo", livello:"A1", it:"usare", en:"use it", fr:"l'utiliser", es:"usarlo", de:"es benutzen", pt:"usá-lo|usa-lo", ru:"использовать", ca:"usar|fer servir", sp:"üsaà'e/üsae", mn:"iüsaàh/üzaa", verif:"sp:g,mn:g" },
@@ -3808,25 +3820,31 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A1", it:"vivere", en:"live", fr:"vivre", es:"vivir", de:"leben", pt:"viver", ru:"жить", ca:"viure", sp:"vive", mn:"vìvé", ko:"살다", ar:"يعيش", zh:"生活", ja:"生きる", ia:"viver", la:"vivere", grc:"ζῆν", verif:"mn:g", src:{"mn":"🔗 dialetti.html"} },
       { tema:"dialetti", livello:"A2", it:"viziare", mn:"visciiaa/vìsciaa", verif:"mn:g" },
       { tema:"dialetti", it:"vizio.", mn:"visciu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"comunicazione", livello:"A1", it:"voce", en:"voice", ru:"голос", sp:"góse", mn:"gusa/guza", ge:"voxe", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"voce" },
+      { tema:"dialetti", it:"vocabolario", mn:"vùcabulaiu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", livello:"A1", it:"voce", en:"voice", ru:"голос", sp:"góse", mn:"vusa/vùza", ge:"voxe", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g", ro:"voce" },
+      { tema:"dialetti", it:"vogare", mn:"vùgaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"fisica", livello:"B1", it:"vogata", en:"rowing", fr:"ramee", es:"remada", de:"Rudern", pt:"remada", ca:"remada", sp:"vega", mn:"vugà", ge:"vogâ", ia:"remada", la:"remigatio", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"vâslire" },
       { tema:"dialetti", it:"voglia", sp:"vògia", mn:"vògia", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"pronome", livello:"A1", it:"voi", en:"you", sp:"voiaotri, voi", mn:"vàutri", ge:"viatri|voiatri", ro:"voi" },
       { tema:"grammatica", livello:"A2", it:"voi amate", la:"amatis", grc:"φιλεῖτε" },
       { tema:"viaggi", livello:"A1", it:"voi partite", mn:"vautri a partii", verif:"mn:g" },
-      { tema:"verbi", it:"volare", en:"fly", sp:"svoaae/svoae", mn:"svéaa/zvéaa", ge:"vêuâ", verif:"mn:g,sp:g" },
+      { tema:"dialetti", it:"volare", en:"fly", sp:"svoaae/svoae", mn:"vùaa", ge:"vêuâ", verif:"mn:g", src:{"mn":"🔗 dialetti.html"} },
       { tema:"dialetti", it:"volentieri", mn:"véntiéa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { it:"volere", sp:"vorée", mn:"vree/vrëë", verif:"mn:g", ro:"a vrea" },
       { tema:"dialogo", livello:"A1", it:"volerlo", en:"want it", fr:"le vouloir", es:"quererlo", de:"es wollen", pt:"querer isso" },
       { tema:"viaggi", livello:"A2", it:"volo", en:"flight", fr:"vol", es:"vuelo", de:"Flug", pt:"voo|vôo", ru:"рейс|полёт", ca:"vol", sp:"svolo", mn:"svéuhu/zvéu", verif:"sp:g,mn:g" },
+      { tema:"dialetti", it:"volontà", mn:"vuloon tà/vuluntà", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"natura", livello:"A1", it:"volpe", en:"fox", sp:"gorpe", mn:"gurpa", cr:"gólpa", verif:"mn:g" },
       { tema:"dialogo", livello:"A2", it:"volte", en:"times", fr:"fois", es:"veces", de:"Mal", pt:"vezes", ru:"раз|раза", ca:"vegades" },
       { tema:"dialetti", livello:"A2", it:"volto|porticato", mn:"vòrtu", verif:"mn:g" },
       { tema:"verbi", livello:"B2", it:"vomitare", en:"vomit", ru:"рвать", sp:"racae", mn:"racaa", verif:"mn:g" },
       { tema:"dialetti", it:"vostre", mn:"vostre/vòstré", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", it:"vostro", mn:"vòstru", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"votare", mn:"vùtaha/vutaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"votazioni", mn:"vutasciuùn /vutasciùn", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"votazioni, elezioni", mn:"vutasciùun/vutasciùn'", verif:"mn:g" },
       { tema:"luoghi", livello:"A1", it:"voto", en:"grade", fr:"note", es:"nota", de:"Note", pt:"nota", ko:"점수", ar:"درجة", zh:"成绩", ja:"成績", ia:"nota", la:"nota", grc:"βαθμός" },
+      { tema:"dialetti", it:"vulcano", mn:"vurkàan/vurcàn", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", it:"vulva", mn:"petera/pétéra", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"A1", it:"vuoto", en:"empty", fr:"vide", es:"vacío", de:"leer", pt:"vazio", ru:"пустой", ca:"buit", sp:"vèito", mn:"vè'i tu/véitu", ko:"빈", ar:"فارغ", zh:"空", ja:"空の", ia:"vacue", la:"vacuus", grc:"κενός", verif:"sp:g,mn:g" },
       { tema:"dialetti", livello:"A2", it:"zabaione", mn:"zanbaiùn", verif:"mn:g" },
@@ -3911,7 +3929,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 420;
+const VOC_VERSION = 421;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
