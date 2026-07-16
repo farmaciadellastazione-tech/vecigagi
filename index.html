@@ -2078,7 +2078,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // ── Vocabolario con temi e livelli ────────────────────────────────────────
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
-      // ── VOCABOLARIO_DEFAULT ──────────────────
+      // ── VOCABOLARIO ──────────────────────────
       { tema:"acquisto", livello:"A2", it:"a buon mercato", en:"cheap", es:"barato", pt:"barato", sp:"a bon páto", ge:"a buun mercouu/ a bon mercòu", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,ge:g", nt:["mn"] },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"a spasso, in giro senza meta.", sp:"scoratae", mn:"zùnzu (a)", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
@@ -2263,7 +2263,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"avanzare", sp:"avansae", mn:"avansàa", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"avariato", en:"damaged", sp:"avarià", mn:"avarià", ge:"avaiòu", verif:"mn:g" },
       { tema:"aggettivi", it:"avaro", sp:"avaón, pissaporséme", mn:"tirchiu", cr:"avaron", ge:"avaron", verif:"mn:g,sp:g" },
-      { it:"avaro| tignoso", sp:"avaón", mn:"tià", verif:"sp:g,mn:g" },
       { tema:"verbi", livello:"A1", it:"avere", en:"have", fr:"avoir", es:"tener", de:"haben", pt:"ter", ru:"иметь", ca:"tenir|haver", sp:"ave e/avée", mn:"avee/avëë", ge:"avei", ko:"가지다", ar:"يملك", zh:"有", ja:"持つ", ia:"haver", la:"habere", verif:"mn:g,sp:g", ro:"a avea" },
       { tema:"dialetti", livello:"B1", it:"avere garbo", en:"have grace", fr:"avoir du savoir-faire", es:"tener gracia", de:"Charme haben", pt:"ter graça", sp:"avée manéa", ja:"品がいい", verif:"sp:g", nt:["mn"] },
       { tema:"dialetti", livello:"A2", it:"avversario", sp:"aversaio", mn:"aversaiu/àvérsaiu", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
@@ -2309,7 +2308,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", it:"barilotto", sp:"barisèo", mn:"barilotu", ge:"barilotto", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"natura", livello:"A1", it:"basilico", en:"basil", fr:"basilic", es:"albahaca", de:"Basilikum", pt:"manjericão|manjericao", sp:"basèrco, basìrco", mn:"bajiéercuu/bajiercu", ge:"basaicò/baxaicò", ko:"바질", ar:"ريحان", zh:"罗勒", ja:"バジル", ia:"basilico", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"basso", en:"short|low", fr:"bas|petit", es:"bajo", de:"niedrig|klein", pt:"baixo", ru:"низкий", ca:"baix", sp:"basso", mn:"bassu", ko:"낮은", ar:"قصير", zh:"矮", ja:"低い", ia:"basse", la:"humilis", grc:"χαμηλός", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
-      { tema:"dialetti", it:"battere, percuotere, bussare.", sp:"bate", mn:"picaa", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
+      { tema:"dialetti", it:"battere", sp:"bate", mn:"picàa", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"casa", livello:"A2", it:"batteria/pila", en:"battery", fr:"batterie", es:"batería|pila", de:"Batterie", pt:"bateria|pilha", ru:"батарея", ca:"bateria", nt:["sp","mn"] },
       { tema:"dialetti", it:"battesimo", sp:"batéżo", mn:"batésimu/batëzimu", ge:"batteso/battezzo", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { it:"Befana", sp:"pefana,befana", cr:"P'fana", verif:"sp:g", nt:["mn"] },
@@ -2647,7 +2646,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"da dove vieni?", sp:"donde tevén/donde te vén", mn:"dunde teve egnii/d'unde te vegni", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g", ro:"de unde ești?" },
       { tema:"dialogo", livello:"B1", it:"da qualche parte", en:"somewhere", fr:"quelque part", es:"en algún lugar", de:"irgendwo", pt:"em algum lugar", ru:"где-то", ca:"en algun lloc", nt:["mn"] },
       { tema:"dialogo", livello:"A2", it:"Da quanto tempo ha questi sintomi?", en:"How long have you had these symptoms?", fr:"Depuis combien de temps avez-vous ces symptômes?", es:"¿Desde cuándo tiene estos síntomas?", de:"Seit wann haben Sie diese Symptome?", pt:"Há quanto tempo tem esses sintomas?|Ha quanto tempo tem esses sintomas?", ko:"이 증상이 얼마나 됐나요?", ar:"منذ متى وأنت تعاني من هذه الأعراض؟", zh:"这些症状有多久了？", ja:"この症状はいつからですか？", nt:["mn"] },
-      { tema:"dialogo", livello:"B1", it:"da/da quando", en:"since", fr:"depuis", es:"desde|desde que", de:"seit", pt:"desde", ru:"с тех пор как", ca:"des de", mn:"de dopu che", verif:"mn:g" },
+      { tema:"dialogo", livello:"B1", it:"da quando| da", en:"since", fr:"depuis", es:"desde|desde que", de:"seit", pt:"desde", ru:"с тех пор как", ca:"des de", mn:"de dopu che", verif:"mn:g" },
       { tema:"dialogo", livello:"B1", it:"danni", en:"damage", fr:"dommages", es:"daños", de:"Schaden", pt:"danos", ru:"ущерб|повреждение", ca:"dany", sp:"dani", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialetti", it:"danno", sp:"dano", ge:"danno", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"verbi", livello:"A1", it:"dare", en:"give", fr:"donner", es:"dar", de:"geben", pt:"dar", ru:"давать", ca:"donar", sp:"dae", mn:"daa", ko:"주다", ar:"يعطي", zh:"给", ja:"あげる", ia:"dar", la:"dare", grc:"δίδωναι", verif:"mn:g,sp:g" },
@@ -2713,7 +2712,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"istruzioni", livello:"A2", it:"dopo i pasti", en:"after meals", fr:"après les repas", es:"después de las comidas", de:"nach den Mahlzeiten", pt:"após as refeições|apos as refeicoes", ko:"식사 후", ar:"بعد الوجبات", zh:"饭后", ja:"食後", nt:["mn"] },
       { tema:"dialetti", livello:"A1", it:"doppio", sp:"doccio/dócio", mn:"duciu", ge:"doggio", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"dormire", en:"sleep", ru:"спать", ca:"dormir", sp:"dormie, polae", mn:"dormie, polae", cr:"durmir", ge:"dormii/dormi", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g", ro:"a dormi" },
-      { tema:"farmaci", livello:"A1", it:"dosaggio/dose", en:"dosage", fr:"posologie", es:"dosis", de:"Dosierung", pt:"dosagem", ko:"복용량", ar:"جرعة", zh:"剂量", ja:"用量", nt:["mn"] },
+      { tema:"farmaci", livello:"A1", it:"dosaggio|dose", en:"dosage", fr:"posologie", es:"dosis", de:"Dosierung", pt:"dosagem", ko:"복용량", ar:"جرعة", zh:"剂量", ja:"用量", nt:["mn"] },
       { tema:"viaggi", livello:"A1", it:"dov'è il bagno?", en:"where is the toilet", fr:"où sont les toilettes", es:"¿dónde está el baño", de:"wo ist die Toilette", pt:"onde fica o banheiro", sp:"dov'i è 'r bagno", mn:"in di l'é 'r bagnu", ge:"dove l'é o bagno", ia:"ube es le toilette", la:"ubi est latrina", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"unde este baia?" },
       { tema:"dialetti", livello:"A2", it:"dove", sp:"donde,onde", mn:"unde/ùndé", verif:"mn:g" },
       { tema:"dialogo", livello:"A1", it:"Dove fa male?", en:"Where does it hurt?", fr:"Où avez-vous mal?", es:"¿Dónde le duele?", de:"Wo tut es weh?", pt:"Onde dói?|Onde doi?", ko:"어디가 아프세요?", ar:"أين يؤلمك؟", zh:"哪里疼？", ja:"どこが痛いですか？", ia:"Ubi il face mal?", nt:["mn"] },
@@ -2735,7 +2734,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"educato", en:"polite", fr:"poli", es:"educado", de:"höflich", pt:"educado", ru:"вежливый", ca:"educat", mn:"edu kà/edücà", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", it:"educazione.", mn:"édücasciùn", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"farmaci", livello:"B1", it:"effetto collaterale", en:"side effect", fr:"effet secondaire", es:"efecto secundario", de:"Nebenwirkung", pt:"efeito colateral", ca:"efecte secundari", ko:"부작용", ar:"آثار جانبية", zh:"副作用", ja:"副作用", nt:["mn"] },
-      { tema:"dialetti", it:"effetto.", mn:"efètu/éfètu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"effetto", mn:"efèttu/éfètu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"grammatica", it:"egli/ella ama", sp:"ama", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"animali", livello:"A1", it:"elefante", en:"elephant", fr:"éléphant", es:"elefante", de:"Elefant", pt:"elefante", ru:"слон", ca:"elefant", sp:"lefante", ko:"코끼리", ar:"فيل", zh:"大象", ja:"ゾウ", ia:"elephante", la:"elephantus", grc:"ἐλέφας", verif:"sp:g" },
       { tema:"dialetti", it:"elegante.", mn:"entapà/éntapà", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
@@ -2764,8 +2763,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"B1", it:"estraneo/sconosciuto", en:"stranger", fr:"étranger|inconnu", es:"extraño|desconocido", de:"Fremder", pt:"estranho|desconhecido", ru:"незнакомец", ca:"desconegut", sp:"scognossù", mn:"fuestru", verif:"sp:g,mn:g" },
       { tema:"dialetti", livello:"A2", it:"evaporare", sp:"svanpoì'e/svanpoie", mn:"zvàpuraa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", it:"evaporato.", mn:"svapurà/zvapurà", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"verbi", it:"evitare / scansare", sp:"s'ghindae/sghindae", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
-      { tema:"dialetti", it:"evitare, scansare.", mn:"s'ghin daa/zghìndaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"verbi", it:"evitare |scansare", sp:"s'ghindae/sghindae", mn:"s'ghin daa/zghìndaa", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialogo", livello:"A2", it:"fa", en:"ago", fr:"il y a", es:"hace", de:"vor", pt:"há|atrás", ru:"назад|тому назад", ca:"fa" },
       { tema:"avvertimenti", livello:"A1", it:"fa' attenzione", en:"take care", fr:"fais attention", es:"ten cuidado", de:"pass auf", pt:"tome cuidado", ru:"будь осторожен", ca:"vés amb compte|para atenció", sp:"ocio", mn:"òciu", verif:"mn:g" },
       { tema:"luoghi", livello:"A2", it:"fabbrica", en:"factory", fr:"usine|fabrique", es:"fábrica", de:"Fabrik", pt:"fábrica", ru:"завод|фабрика", ca:"fàbrica", sp:"fabrica,fràbica", mn:"fabrica", verif:"mn:g" },
@@ -2964,7 +2962,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"B1", it:"immaginare", en:"imagine", sp:"enma ginà'e/enmaginàe", verif:"sp:g" },
       { tema:"verbi", livello:"A2", it:"imparare", en:"learn", fr:"apprendre", es:"aprender", de:"lernen", pt:"aprender", ru:"учиться", ca:"aprendre", sp:"enpaae, anpaae,", mn:" ampaaa", ko:"배우다", ar:"يتعلم", zh:"学习", ja:"学ぶ", ia:"apprender", la:"discere", grc:"μανθάνειν", verif:"mn:g" },
       { tema:"dialogo", livello:"B1", it:"imparare in fretta", en:"learn fast", fr:"apprendre vite", es:"aprender rápido", de:"schnell lernen", pt:"aprender rápido|aprender rapido", nt:["mn"] },
-      { it:"impastare", sp:"pastae , enpastae ", cr:"npastar", verif:"sp:g" },
+      { it:"impastare", sp:"pastàa'e, empastahe/apastae , enpastae ", cr:"npastar", verif:"sp:g" },
       { tema:"aggettivi", livello:"A2", it:"impaurito", en:"afraid", fr:"apeuré", es:"asustado", de:"verängstigt", pt:"assustado", ru:"испуганный", ca:"espantat" },
       { tema:"lavoro", livello:"B1", it:"impegno", en:"commitment", mn:"impegnu", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"impeto, slancio", mn:"asbriviu/àzbriviu", verif:"mn:g" },
@@ -3255,12 +3253,12 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"persona sempre in giro", mn:"ziatùn", verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"pesante", en:"heavy", fr:"lourd", es:"pesado", de:"schwer", pt:"pesado", ru:"тяжёлый", ca:"pesat", sp:"pesante", ko:"무거운", ar:"ثقيل", zh:"重", ja:"重い", ia:"pesante", la:"gravis", grc:"βαρύς", verif:"sp:g" },
       { tema:"dialetti", it:"pesantezza", mn:"pesantessa/pézantëssa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"dialetti", it:"pesare", mn:"pesaha/pézaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"pesare", mn:"pesa'a/pézaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"cibo", livello:"A2", it:"pesca", en:"peach", fr:"pêche", es:"melocotón", de:"Pfirsich", pt:"pêssego|pessego", ru:"персик", ca:"pesca|préssec", sp:"pèrsego", mn:"pérsegu", ge:"persego", ko:"복숭아", ar:"خوخ", zh:"桃子", ja:"桃", ia:"persica", la:"persica", grc:"ῥοδάκινο", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"piersică" },
-      { tema:"dialetti", it:"pescare", mn:"pescaha/péscaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"pescare", mn:"pesca'a/péscaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"mestieri", livello:"B1", it:"pescatore", en:"fisherman", fr:"pêcheur", es:"pescador", de:"Fischer", pt:"pescador", sp:"pescadoe", mn:"pescaduu", ko:"어부", ar:"صياد", zh:"渔民", ja:"漁師", verif:"mn:g" },
       { tema:"cibo", livello:"A1", it:"pesce", de:"Fisch", mn:"pessu/pëssu", cr:"pess", verif:"mn:g", ro:"pește" },
-      { tema:"dialetti", it:"pescecane.", sp:"pessocan", mn:"caniassu/càgnassu", ge:"pesciu can/pesciocan", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
+      { tema:"dialetti", it:"pescecane.", sp:"pessocan", mn:"caniassu/càgnassu", ge:"pesciu kan/pesciocan", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"natura", it:"pesco", sp:"peèrsego/pèrsego", mn:"peèrsegu/pèrsegu", cr:"pesch", verif:"mn:g" },
       { tema:"dialetti", it:"pessimo", mn:"pessimu/pèsimu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"pesto", en:"pesto", fr:"pesto", es:"pesto", de:"Pesto", pt:"pesto", sp:"pisto", mn:"pistu", ge:"pèsto", ia:"fullate", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g" },
@@ -3555,7 +3553,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", it:"sgarbo/offesa", mn:"sgarbu/zgàrbu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"sgobbone", mn:"sgubbuun/zgubùn", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"sgraffignare|rubare", mn:"sgrafigna a/zgràfignaa/sgràfignaa", verif:"mn:g" },
-      { tema:"dialetti", livello:"A2", it:"sgualdrina", mn:"sgualdrìna/zgùaldrina", verif:"mn:g" },
+      { tema:"dialetti", livello:"A2", it:"sgualdrina", mn:"sgualdriìna/zgùaldrina", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"sgusciare", en:"to drip", fr:"s'écouler", mn:"sgüssaaa/zgüssaa", verif:"mn:g" },
       { tema:"cosmetica", livello:"A2", it:"shampoo", en:"shampoo", fr:"shampooing", es:"champú", de:"Shampoo", pt:"shampoo", ko:"샴푸", ar:"شامبو", zh:"洗发水", ja:"シャンプー", nt:["sp"] },
       { tema:"saluti", livello:"A1", it:"sì", en:"yes", fr:"oui", es:"sí", de:"ja", pt:"sim", ca:"sí", sp:"si", mn:"si", cr:"si", ge:"si", la:"ita", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"da" },
@@ -3768,7 +3766,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", it:"uscire", en:"exit", sp:"sortì e, nessì e, renessi'e/sortie,nessie, renessie", mn:"surtii/sùrtii", verif:"sp:g,mn:g" },
       { tema:"dialetti", livello:"B1", it:"uscita", en:"exit", fr:"sortie", es:"salida", de:"Ausgang", pt:"saída|saida", sp:"sortida", mn:"surtìda", ia:"exito", verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"utile", en:"useful", fr:"utile", es:"útil", de:"nützlich", pt:"útil", ru:"полезный", ca:"útil" },
-      { tema:"cibo", livello:"A1", it:"uva", sp:"üa,üva", mn:"iüa|üa", verif:"sp:g,mn:g" },
+      { tema:"cibo", livello:"A1", it:"uva", sp:"üa, üva", mn:"iüa/üa", verif:"sp:g,mn:g" },
       { it:"vagabondo", cr:"vagabond" },
       { tema:"dialetti", it:"vaiolo", sp:"vaè'o/vaèo", verif:"sp:g" },
       { tema:"proverbi", livello:"B2", it:"vale più l'undici che il dodici", en:"eleven is better than twelve", fr:"onze vaut mieux que douze", es:"once es mejor que doce", de:"elf ist besser als zwölf", pt:"onze é melhor do que doze", ca:"onze és millor que dotze", sp:"la vaa ciu lunse codose/La vaa ciü l'ünze ch’o doze", mn:"avaciül'ühnze che u duse/a vaa ciü l'ünze ch'u dùze", ia:"undece es melior que dece-duo", verif:"mn:g,sp:g", ro:"unsprezece este mai bun decât doisprezece" },
@@ -3939,7 +3937,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 422;
+const VOC_VERSION = 423;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
