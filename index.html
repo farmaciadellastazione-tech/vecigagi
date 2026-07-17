@@ -2078,7 +2078,12 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // ── Vocabolario con temi e livelli ────────────────────────────────────────
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
-      // ── VOCABOLARIO_DEFAULT ──────────────────
+      // ── VOCABOLARIO ──────────────────────────
+      { tema:"casa", livello:"A1", it:"la mia casa", sp:"a mé kà /a me ca" },
+      { tema:"possesso", livello:"A1", it:"il cane è tuo", sp:"erca ni èttoho/er can i è o too" },
+      { tema:"animale", livello:"A1", it:"il tuo cane", sp:"o te can" },
+      { tema:"possesso", livello:"A1", it:"il cane è mio", sp:"ercani è ermeo/ er can i è er meo" },
+      { tema:"famiglia", livello:"A1", it:"il mio cane", sp:"er'me kan/er me can" },
       { tema:"acquisto", livello:"A2", it:"a buon mercato", en:"cheap", es:"barato", pt:"barato", sp:"a bon páto", ge:"a buun mercouu/ a bon mercòu", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,ge:g", nt:["mn"] },
       { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"a spasso, in giro senza meta.", sp:"scoratae", mn:"zùnzu (a)", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
@@ -3940,7 +3945,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 426;
+const VOC_VERSION = 427;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
