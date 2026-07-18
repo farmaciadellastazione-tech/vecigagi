@@ -2636,7 +2636,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A1", it:"crosta", sp:"gró'ste/gróste", mn:"grusta", ge:"crosta", src:{"mn":"🤖nmc"}, verif:"mn:g,sp:g" },
       { tema:"dialetti", it:"cruccio", sp:"crüsso", ge:"crusso", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { it:"cuccagna", sp:"cücàgna", cr:"napulitana", verif:"sp:g" },
-      { tema:"luoghi", livello:"A1", it:"cucchiaio", en:"spoon", fr:"cuillère", es:"cuchara", de:"Löffel", pt:"colher", sp:"cüciao", mn:"cüciaa", cr:"Cuciàr", ko:"숟가락", ar:"ملعقة", zh:"勺子", ja:"スプーン", ia:"coclear", la:"cochlear", grc:"κοχλιάριον", verif:"mn:g" },
+      { tema:"luoghi", livello:"A1", it:"cucchiaio", en:"spoon", fr:"cuillère", es:"cuchara", de:"Löffel", pt:"colher", sp:"cüciao", mn:"cüciaa", cr:"cuciàrr/cuciàr", ko:"숟가락", ar:"ملعقة", zh:"勺子", ja:"スプーン", ia:"coclear", la:"cochlear", grc:"κοχλιάριον", verif:"mn:g,cr:g" },
       { tema:"casa", it:"cucina", en:"kitchen", sp:"cosina", ge:"coxiña", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"verbi", livello:"A2", it:"cucinare", en:"cook", fr:"cuisiner", es:"cocinar", de:"kochen", pt:"cozinhar", ru:"готовить", ca:"cuinar", mn:"cuzinàa", ko:"요리하다", ar:"يطبخ", zh:"做饭", ja:"料理する", ia:"coquinar", la:"coquere", grc:"μαγειρεύειν", verif:"mn:g" },
       { tema:"verbi", it:"cucire", sp:"qüsi'e, quse/cüsìe,, cüše", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
@@ -3525,7 +3525,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A1", it:"scusare", en:"excuse", fr:"excuser", es:"disculpar", de:"entschuldigen", pt:"desculpar", ru:"извинять", ca:"excusar", sp:"skiùsaahe/scüsae", mn:"skiùsaàh/scüsaa", verif:"sp:g,mn:g" },
       { tema:"dialogo", livello:"B1", it:"se", en:"whether", fr:"si", es:"si", de:"ob", pt:"se", ru:"ли", ca:"si", sp:"se", verif:"sp:g" },
       { tema:"denaro", livello:"A2", it:"se non ce sono non si spendono", en:"no money no spend", fr:"pas d'argent pas de dépense", es:"sin dinero no se gasta", de:"kein Geld keine Ausgabe", pt:"sem dinheiro não se gasta", ca:"sense diners no es gasta", sp:"Se ne ghenè ne se'n spenda/Se ne ghe n'è ne se'n spenda", mn:"Se nughenè nussen spenda/Se nu ghe n'è nu se'n spenda", la:"sine pecunia non expeditur", verif:"sp:g,mn:g", ro:"fără bani nu se cheltuie" },
-      { tema:"casa", livello:"B1", it:"secchio", en:"bucket", fr:"seau", es:"cubo", de:"Eimer", pt:"balde", ru:"ведро", ca:"galleda", sp:"stagnòn| sécia| possadòa", mn:"stagnùn, sécia, bùgéé", verif:"sp:g,mn:g" },
+      { tema:"casa", livello:"B1", it:"secchio", en:"bucket", fr:"seau", es:"cubo", de:"Eimer", pt:"balde", ru:"ведро", ca:"galleda", sp:"stagnòn| sécia| possadòa", mn:"stagnùn, sécia, bùgéé", cr:"setch/sec", verif:"sp:g,mn:g" },
       { tema:"natura", livello:"A2", it:"secco", en:"dry", fr:"sec", es:"seco", de:"trocken", pt:"seco", ru:"сухой", ca:"sec", sp:"seco", ko:"건조한", ar:"جاف", zh:"干燥", ja:"乾燥", ia:"sic", la:"siccus", grc:"ξηρός", verif:"sp:g" },
       { tema:"numeri", livello:"A2", it:"secondo", en:"second", fr:"deuxième", es:"segundo", de:"zweite", pt:"segundo", sp:"segondo", mn:"secundu", ge:"segóndo", ko:"두 번째", ar:"الثاني", zh:"第二", ja:"二番目", ia:"secunde", la:"secundus", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"al doilea" },
       { tema:"verbi", livello:"A1", it:"sedersi", en:"sit down", fr:"s'asseoir", es:"sentarse", de:"sitzen", pt:"sentar-se", ru:"садиться", ca:"seure|asseure's", sp:"setarse", mn:"setasse/setase", ko:"앉다", ar:"يجلس", zh:"坐下", ja:"座る", ia:"seder se", la:"sedere", grc:"καθίζειν", verif:"mn:g" },
@@ -3945,7 +3945,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 427;
+const VOC_VERSION = 428;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
