@@ -11096,8 +11096,10 @@ function SchermataLetturaGuidata({
     const system = `Sei un insegnante di lingue conciso. Rispondi con UN SOLO oggetto JSON (niente markdown, niente altro testo).
 Forma: {"spiegazione": string, "traduzione": string}
 - spiegazione: cosa significa la parola in questo contesto e, se utile, una breve nota grammaticale o d'uso. SOLO in italiano, massimo 2-3 frasi brevi.
-- traduzione: la sola traduzione italiana della parola isolata (1-3 parole, senza spiegazioni).`;
-    const user = `Frase in ${langName}: "${testoDisplay}"\nParola cliccata: "${parola}"`;
+- traduzione: la sola traduzione italiana della parola isolata (1-3 parole, senza spiegazioni).
+- Se ti viene fornita la traduzione italiana già verificata dell'intera frase, usala come riferimento primario: è più affidabile di quanto tu possa dedurre da solo, specialmente per dialetti poco documentati.`;
+    const traduzioneNota = frase.it ? `\nTraduzione italiana della frase (già verificata): "${frase.it}"` : "";
+    const user = `Frase in ${langName}: "${testoDisplay}"${traduzioneNota}\nParola cliccata: "${parola}"`;
     try {
       const raw = await callAI(system, user, aiSettings);
       const clean = raw.replace(/```json|```/g, "").trim();
