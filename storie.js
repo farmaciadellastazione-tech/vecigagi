@@ -58,8 +58,60 @@ const STORIE_DEFAULT = [
     },
     "frasi": [
       {
-        "testo": "Quand'a eimo trei gati de spezin Ciü luisi che quei de Riomazoe, E a Speza l'ea tegnü pe' 'n cagadoe, E e serve i ne portavo 'r capelin;  Quand'aa sea ne ziava de signoe A cacia d'ufissiali e de lechin; Quando s'andava ao tridoo e ae quaant'oe, E a reze 'r Cristo e l'asta ar bardachin;  Quand'andaimo 'nt'er prado dea maina A mete ai fisc-ci a guardia nassionale, Dì quelo che te vè, sangue de dina!  L'ea n'autra Speza, serv'assè, Pasquale. -Ma aloa te ne gh'andavi ogni matina, Per no fae gnente, drento a l'arsenale!",
-        "it": ""
+        "testo": "Quand'a eimo trei gati de spezin",
+        "it": "Quando eravamo tre gatti di spezzini"
+      },
+      {
+        "testo": "Ciü luisi che quei de Riomazoe,",
+        "it": "più sempliciotti di quelli di Riomaggiore"
+      },
+      {
+        "testo": "E a Speza l'ea tegnü pe' 'n cagadoe,",
+        "it": "E La Spezia era tenuta per un  cesso"
+      },
+      {
+        "testo": "E e serve i ne portavo 'r capelin;",
+        "it": "e le serve non portavano il cappellino"
+      },
+      {
+        "testo": "Quand'aa sea ne ziava de signoe",
+        "it": "Quando alla sera non giravano delle signore"
+      },
+      {
+        "testo": "A cacia d'ufissiali e de lechin;",
+        "it": "A caccia di ufficiali e di lecchini,"
+      },
+      {
+        "testo": "Quando s'andava ao tridoo e ae quaant'oe,",
+        "it": "Quando si andava al triduo ed alle quarant'ore"
+      },
+      {
+        "testo": "E a reze 'r Cristo e l'asta ar bardachin;",
+        "it": "E a reggere il Cristo e l'asta al baldacchino"
+      },
+      {
+        "testo": "Quand'andaimo 'nt'er prado dea maina",
+        "it": "Quando andavamo nel prato della marina"
+      },
+      {
+        "testo": "A mete ai fisc-ci a guardia nassionale,",
+        "it": "a fischiare la guardia nazionale."
+      },
+      {
+        "testo": "Dì quelo che te vè, sangue de dina!",
+        "it": "Di quello che ti pare, sangue die dina!"
+      },
+      {
+        "testo": "L'ea n'autra Speza, serv'assè, Pasquale.",
+        "it": "Era un'altra Spezia, servo tuo, Pasquale."
+      },
+      {
+        "testo": "-Ma aloa te ne gh'andavi ogni matina,",
+        "it": "Ma allora non ci andavi ogni mattina"
+      },
+      {
+        "testo": "Per no fae gnente, drento a l'arsenale!",
+        "it": "Per non fare niente, dentro all'arsenale!"
       }
     ]
   },
