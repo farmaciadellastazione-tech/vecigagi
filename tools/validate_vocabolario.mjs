@@ -16,7 +16,7 @@ import fs from 'node:fs';
 const VERBOSE = process.argv.includes('--verbose');
 const SRC_HTML = process.argv.find(a => a.endsWith('.html')) || 'index.html';
 
-const META = new Set(['tema', 'livello', 'tipo', 'src', 'verif', 'note', 'nt']);
+const META = new Set(['tema', 'livello', 'tipo', 'src', 'verif', 'note', 'nt', 'audio']);
 const DIALETTI = new Set(['mn', 'sp', 'ge', 'cr']);
 const LIVELLI = new Set(['A1', 'A2', 'B1', 'B2']);
 const VERIF_ST = new Set(['g', 'y', 'r']);
@@ -135,6 +135,16 @@ voci.forEach((v, idx) => {
 
   if (v.note !== undefined && (typeof v.note !== 'object' || Array.isArray(v.note)))
     E(`"note" deve essere un oggetto`);
+
+  // audio: { lang: "file.mp3" }
+  if (v.audio !== undefined) {
+    if (typeof v.audio !== 'object' || Array.isArray(v.audio)) E(`"audio" deve essere un oggetto`);
+    else for (const lang of Object.keys(v.audio)) {
+      const val = v.audio[lang];
+      if (typeof val !== 'string' || !val.trim()) E(`"audio.${lang}" deve essere un nome file non vuoto: ${JSON.stringify(val)}`);
+      else if (v[lang] === undefined) W(`audio orfano: "${lang}" non ha valore nella voce`);
+    }
+  }
 
   // duplicati (tema|it)
   if (v.it) {
