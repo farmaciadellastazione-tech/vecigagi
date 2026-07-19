@@ -99,7 +99,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Dì quelo che te vè, sangue de dina!",
-        "it": "Di quello che ti pare, sangue die dina!"
+        "it": "Di quello che ti pare, sangue de dina!"
       },
       {
         "testo": "L'ea n'autra Speza, serv'assè, Pasquale.",
