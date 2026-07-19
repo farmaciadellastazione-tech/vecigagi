@@ -44,6 +44,7 @@
   .frase-row:last-child { border-bottom: none; }
   .frase-num { font-size: 0.75rem; color: var(--muted); width: 1.4rem; padding-top: 0.5rem; flex-shrink: 0; }
   .frase-fields { flex: 1; display: flex; flex-direction: column; gap: 0.35rem; }
+  .frase-fields textarea { font-family: inherit; font-size: 0.88rem; padding: 0.4rem 0.5rem; border: 1px solid var(--border); border-radius: 6px; resize: vertical; }
   .icon-btn { background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0.3rem; color: var(--muted); }
   .icon-btn:hover { color: var(--danger); }
   .card-actions { display: flex; justify-content: space-between; margin-top: 0.8rem; padding-top: 0.7rem; border-top: 1px solid var(--border); }
@@ -358,7 +359,7 @@ function renderCard(s) {
     <div class="frase-row">
       <div class="frase-num">${idx + 1}</div>
       <div class="frase-fields">
-        <input type="text" placeholder="Testo originale" value="${escapeAttr(f.testo)}" onchange="aggiornaFrase('${s.id}', ${idx}, 'testo', this.value)" />
+        <textarea placeholder="Testo originale" rows="2" onchange="aggiornaFrase('${s.id}', ${idx}, 'testo', this.value)">${escapeHtml(f.testo)}</textarea>
         <input type="text" placeholder="Traduzione italiana" value="${escapeAttr(f.it)}" onchange="aggiornaFrase('${s.id}', ${idx}, 'it', this.value)" />
       </div>
       <button class="icon-btn" title="Elimina frase" onclick="eliminaFrase('${s.id}', ${idx})">🗑</button>
