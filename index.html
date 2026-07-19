@@ -3697,7 +3697,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"timoniere", mn:"timunié", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"tino, botte verticale", sp:"tina", mn:"tina", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"tintura, colorante", en:"dye", fr:"teinture", es:"tintura", de:"Farbe", pt:"tintura", ca:"tint", mn:"tintüüa/tintüa", verif:"mn:g" },
-      { tema:"verbi", livello:"A1", it:"tirare", sp:"tià'e/tiae", mn:"stia'a, tia'a/stiaa,tiaa", verif:"sp:g,mn:g" },
+      { tema:"verbi", livello:"A1", it:"tirare", sp:"tià'e/tiae", mn:"stia'a, tia'a/stiaa,tiaa", verif:"sp:g,mn:g", audio:{sp:"tiae.mp3"} },
       { it:"tondo", sp:"tondo", mn:"tundu", cr:"tond", ge:"tundu/tondo", verif:"sp:g,mn:g" },
       { it:"tonno", sp:"tóno", cr:"tunina", ge:"tunnu/tonno", verif:"sp:g" },
       { tema:"animali", it:"topo", sp:"rato", mn:"ratu", cr:"top", src:{"mn":"🤖 IA"}, verif:"mn:g" },
@@ -3946,7 +3946,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 434;
+const VOC_VERSION = 435;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
@@ -4351,9 +4351,30 @@ function vocaleDisponibile(bcp47) {
   if (voci.length === 0) return true; // non ancora caricate, ottimistico
   return voci.some(v => v.lang.startsWith(bcp47.split("-")[0]));
 }
+// File audio registrato per una voce (entry.audio = { sp:"tiae.mp3", ... }):
+// ritorna il path relativo sotto audio/ oppure null (→ si usa il TTS).
+function audioVoce(entry, codice) {
+  const f = entry && entry.audio && entry.audio[codice];
+  return f ? codice + "/" + f : null;
+}
+// Riproduzione in corso di un file registrato: fermata quando parte una nuova
+// riproduzione (audio o TTS) — l'ultimo vince, come per le utterance TTS.
+let _audioCorrente = null;
 // Timer per serializzare chiamate consecutive a parla() (vedi sotto).
 let _parlaTimer = null;
-function parla(testo, bcp47, lento = false) {
+function parla(testo, bcp47, lento = false, audioFile = null) {
+  if (_audioCorrente) { _audioCorrente.pause(); _audioCorrente = null; }
+  if (audioFile) {
+    const a = new Audio("audio/" + audioFile);
+    a.playbackRate = lento ? 0.7 : 1; // preservesPitch è il default: rallenta senza alterare il tono
+    _audioCorrente = a;
+    // File mancante, formato non supportato o autoplay bloccato → fallback TTS.
+    a.play().catch(() => { _audioCorrente = null; parlaTTS(testo, bcp47, lento); });
+    return;
+  }
+  parlaTTS(testo, bcp47, lento);
+}
+function parlaTTS(testo, bcp47, lento = false) {
   if (!window.speechSynthesis || !bcp47) return;
   const synth = window.speechSynthesis;
   const u = new SpeechSynthesisUtterance(testo.replace(/\(.*?\)/g, "").split("/")[0].trim());
@@ -9584,7 +9605,7 @@ function Ricerca({
   }, /*#__PURE__*/React.createElement("span", {
     className: "text-sm font-semibold text-slate-200"
   }, formaDisplay(entry[l.codice], l.codice)), !LINGUE_SENZA_AUDIO.has(l.codice) && /*#__PURE__*/React.createElement("button", {
-    onClick: ev => { ev.stopPropagation(); parla(formaTTS(entry[l.codice]), l.bcp47); },
+    onClick: ev => { ev.stopPropagation(); parla(formaTTS(entry[l.codice]), l.bcp47, false, audioVoce(entry, l.codice)); },
     className: "text-zinc-600 hover:text-sky-400 transition-colors text-xs leading-none flex-shrink-0",
     title: "Ascolta pronuncia", "aria-label": "Ascolta pronuncia"
   }, "🔊")))))))), /*#__PURE__*/React.createElement("div", {
@@ -10105,7 +10126,7 @@ function SchermataSceltaMultipla({
     const key = coppiaKey(carta.entry, carta.linguaPrompt.codice, carta.lingua.codice);
     setRisposta({ scelta: s.display, corretta: ok });
     // Auto-play della risposta corretta nella lingua target (utile per imparare la pronuncia)
-    parla(formaTTS(carta.entry[carta.lingua.codice]), carta.lingua?.bcp47);
+    parla(formaTTS(carta.entry[carta.lingua.codice]), carta.lingua?.bcp47, false, audioVoce(carta.entry, carta.lingua.codice));
     if (ok) {
       // Solo al primo colpo: una carta indovinata alla ripetizione non conta
       // (altrimenti la progressione "100% → più domande" scatterebbe comunque).
@@ -10215,11 +10236,11 @@ function SchermataSceltaMultipla({
   }, carta.linguaPrompt?.bandiera || "\uD83C\uDDEE\uD83C\uDDF9", " ", carta.linguaPrompt?.nome || "Italiano"), /*#__PURE__*/React.createElement("p", {
     className: "text-5xl font-extrabold text-white tracking-tight"
   }, formaDisplay(carta.entry[carta.linguaPrompt?.codice || "it"], carta.linguaPrompt?.codice || "it")), /*#__PURE__*/React.createElement("button", {
-    onClick: () => parla(formaTTS(carta.entry[carta.linguaPrompt?.codice || "it"]), carta.linguaPrompt?.bcp47),
+    onClick: () => parla(formaTTS(carta.entry[carta.linguaPrompt?.codice || "it"]), carta.linguaPrompt?.bcp47, false, audioVoce(carta.entry, carta.linguaPrompt?.codice || "it")),
     className: "mt-3 inline-flex items-center gap-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-1.5 rounded-lg text-sm transition",
     title: "Ascolta la parola", "aria-label": "Ascolta la parola"
   }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => parla(formaTTS(carta.entry[carta.linguaPrompt?.codice || "it"]), carta.linguaPrompt?.bcp47, true),
+    onClick: () => parla(formaTTS(carta.entry[carta.linguaPrompt?.codice || "it"]), carta.linguaPrompt?.bcp47, true, audioVoce(carta.entry, carta.linguaPrompt?.codice || "it")),
     className: "mt-3 ml-2 inline-flex items-center gap-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-3 py-1.5 rounded-lg text-sm transition",
     title: "Ascolta lentamente", "aria-label": "Ascolta lentamente"
   }, "\uD83D\uDC22"), /*#__PURE__*/React.createElement("p", {
@@ -11606,10 +11627,10 @@ function SchermataQuiz({
   }, lDA?.nome)), /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-center gap-2"
   }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => parla(formaTTS(carta.entry[carta.da]), lDA?.bcp47),
+    onClick: () => parla(formaTTS(carta.entry[carta.da]), lDA?.bcp47, false, audioVoce(carta.entry, carta.da)),
     className: "flex items-center gap-2 bg-green-900 hover:bg-green-800 text-green-300 font-bold px-6 py-3 rounded-2xl transition text-lg border border-green-700"
   }, t.riascolta), /*#__PURE__*/React.createElement("button", {
-    onClick: () => parla(formaTTS(carta.entry[carta.da]), lDA?.bcp47, true),
+    onClick: () => parla(formaTTS(carta.entry[carta.da]), lDA?.bcp47, true, audioVoce(carta.entry, carta.da)),
     className: "flex items-center gap-2 bg-green-900 hover:bg-green-800 text-green-300 font-bold px-4 py-3 rounded-2xl transition text-lg border border-green-700",
     title: "Riascolta lentamente", "aria-label": "Riascolta lentamente"
   }, "🐢")), /*#__PURE__*/React.createElement("p", {
@@ -11625,10 +11646,10 @@ function SchermataQuiz({
   }, lDA?.nome)), /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-center gap-2"
   }, /*#__PURE__*/React.createElement("button", {
-    onClick: () => parla(formaTTS(carta.entry[carta.da]), lDA?.bcp47),
+    onClick: () => parla(formaTTS(carta.entry[carta.da]), lDA?.bcp47, false, audioVoce(carta.entry, carta.da)),
     className: "flex items-center gap-2 bg-purple-900 hover:bg-purple-800 text-purple-300 font-bold px-6 py-3 rounded-2xl transition text-lg border border-purple-700"
   }, t.riascolta), /*#__PURE__*/React.createElement("button", {
-    onClick: () => parla(formaTTS(carta.entry[carta.da]), lDA?.bcp47, true),
+    onClick: () => parla(formaTTS(carta.entry[carta.da]), lDA?.bcp47, true, audioVoce(carta.entry, carta.da)),
     className: "flex items-center gap-2 bg-purple-900 hover:bg-purple-800 text-purple-300 font-bold px-4 py-3 rounded-2xl transition text-lg border border-purple-700",
     title: "Riascolta lentamente", "aria-label": "Riascolta lentamente"
   }, "🐢")), /*#__PURE__*/React.createElement("div", {
