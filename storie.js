@@ -41,6 +41,29 @@
 
 const STORIE_DEFAULT = [
   {
+    "id": "en-a1-nuova-storia-4",
+    "lingua": "sp",
+    "livello": "A1",
+    "tema": "poesia",
+    "titolo": {
+      "testo": "Aloa e aoa",
+      "it": "allora e ora"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Ubaldo Mazzini",
+      "riferimento": "Strafugi"
+    },
+    "frasi": [
+      {
+        "testo": "Quand'a eimo trei gati de spezin Ciü luisi che quei de Riomazoe, E a Speza l'ea tegnü pe' 'n cagadoe, E e serve i ne portavo 'r capelin;  Quand'aa sea ne ziava de signoe A cacia d'ufissiali e de lechin; Quando s'andava ao tridoo e ae quaant'oe, E a reze 'r Cristo e l'asta ar bardachin;  Quand'andaimo 'nt'er prado dea maina A mete ai fisc-ci a guardia nassionale, Dì quelo che te vè, sangue de dina!  L'ea n'autra Speza, serv'assè, Pasquale. -Ma aloa te ne gh'andavi ogni matina, Per no fae gnente, drento a l'arsenale!",
+        "it": ""
+      }
+    ]
+  },
+  {
     "id": "en-a1-nuova-storia-3",
     "lingua": "en",
     "livello": "A1",
