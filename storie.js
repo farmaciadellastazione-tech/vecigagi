@@ -41,9 +41,9 @@
 
 const STORIE_DEFAULT = [
   {
-    "id": "en-a1-nuova-storia-4",
-    "lingua": "en",
-    "livello": "A1",
+    "id": "sp-a2-padrone-e-mezzadro4",
+    "lingua": "sp",
+    "livello": "A2",
     "tema": "",
     "titolo": {
       "testo": "",
