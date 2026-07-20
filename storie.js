@@ -75,7 +75,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Lü, ch'i è 'n fantame cen de presümì,",
-        "it": "Lui, che è un fantoccio pieno di boria,"
+        "it": "Lui, che è un giovinastro pieno di presunzione,"
       },
       {
         "testo": "I ne vè daghe manco de risposta;",
@@ -95,7 +95,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E le la ghe fa a spia, da 'r gran ghignon,",
-        "it": "e lei,  gli fa la spia, dal gran dispetto,"
+        "it": "e lei,  gli fa la spia, dal gran rancore,"
       },
       {
         "testo": "Che se mugee... de chì, de sà e de là.",
@@ -111,7 +111,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E i t'o destenda lì come 'n strasson.",
-        "it": "E te lo stende lì come uno straccio."
+        "it": "E te lo stende lì come uno straccione."
       }
     ]
   },
