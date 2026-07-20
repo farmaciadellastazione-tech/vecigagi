@@ -43,20 +43,74 @@ const STORIE_DEFAULT = [
   {
     "id": "sp-a2-nuova-storia-4",
     "lingua": "sp",
-    "livello": "A1",
+    "livello": "A2",
     "tema": "",
     "titolo": {
-      "testo": "",
-      "it": ""
+      "testo": "A \"Cavalaìa rüsticana\"",
+      "it": "La Cavalleria rusticana"
     },
     "fonte": {
-      "generato": "ai",
+      "generato": "autentico",
       "modello": "claude-sonnet-5",
-      "note": ""
+      "note": "",
+      "autore": "Ubaldo Mazzini",
+      "riferimento": "Strufugi"
     },
     "frasi": [
       {
-        "testo": "",
+        "testo": "I en dui che se vè ben, ma lü ir fa aposta,",
+        "it": ""
+      },
+      {
+        "testo": "Ch'i gh'ha n'autra pe e man che l'ha maì;",
+        "it": ""
+      },
+      {
+        "testo": "Le, che la o sa, 'n beo dì la ghe fa a posta,",
+        "it": ""
+      },
+      {
+        "testo": "E la ghe disa sc-ciao: te m'è tradì.",
+        "it": ""
+      },
+      {
+        "testo": "Lü, ch'i è 'n fantame cen de presümì,",
+        "it": ""
+      },
+      {
+        "testo": "I ne vè daghe manco de risposta;",
+        "it": ""
+      },
+      {
+        "testo": "Mentre che le la cianza, i se gh'acosta",
+        "it": ""
+      },
+      {
+        "testo": "e i ghe fa, diza: levete de chì!",
+        "it": ""
+      },
+      {
+        "testo": "Aloa ven er maì, e lü i se 'n va,",
+        "it": ""
+      },
+      {
+        "testo": "E le la ghe fa a spia, da 'r gran ghignon,",
+        "it": ""
+      },
+      {
+        "testo": "Che se mugee... de chì, de sà e de là.",
+        "it": ""
+      },
+      {
+        "testo": "Lü i mangia a fogia, e i grida: pelandron!",
+        "it": ""
+      },
+      {
+        "testo": "I me l'ha fata, ma i la pagheà!",
+        "it": ""
+      },
+      {
+        "testo": "E i t'o destenda lì come 'n strasson.",
         "it": ""
       }
     ]
