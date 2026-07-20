@@ -41,6 +41,83 @@
 
 const STORIE_DEFAULT = [
   {
+    "id": "en-a1-nuova-storia-4",
+    "lingua": "en",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "",
+      "it": ""
+    },
+    "fonte": {
+      "generato": "ai",
+      "modello": "claude-sonnet-5",
+      "note": ""
+    },
+    "frasi": [
+      {
+        "testo": "(dialetto della campagna)",
+        "it": ""
+      },
+      {
+        "testo": "Anguano, sior patron, l’è ’n gramo afae!",
+        "it": "Quest'anno, signor padrone, è una magra annata!"
+      },
+      {
+        "testo": "E oive i n’han brica, e ’nquanto a l’üa,",
+        "it": "Gli olivi non ne hanno affatto, e in quanto all'uva,"
+      },
+      {
+        "testo": "A voreai sbagiame, ma ho paüa",
+        "it": "vorrei sbagliarmi, ma ho paura"
+      },
+      {
+        "testo": "Ch’a südeemo pogo a vendegnae!",
+        "it": "che suderemo poco a vendemmiare!"
+      },
+      {
+        "testo": "Der granon la ne gh’è manco ciü a püa,",
+        "it": "Del granturco non ce n'è più nemmeno la polvere,"
+      },
+      {
+        "testo": "E castagne s’i n’han, posti crepae,",
+        "it": "e castagne, se ne hanno, ch'io possa crepare!,"
+      },
+      {
+        "testo": "E ’nca de ciü la m’è ’nca morta a müa,",
+        "it": "e per di più mi è anche morta la mula,"
+      },
+      {
+        "testo": "E a vaca la ne posse ’ngravedae.",
+        "it": "e la vacca non riesce a restare pregna."
+      },
+      {
+        "testo": "Donca siché, ’oi die, Ussignoia",
+        "it": "Dunque insomma, voglio dire, Vossignoria,"
+      },
+      {
+        "testo": "’Nta che la se daga ’n po’ passensia",
+        "it": "che Lei porti un po' di pazienza,"
+      },
+      {
+        "testo": "Se anguano ne ghe toca n’assidente.",
+        "it": "se quest'anno non Le spetta un accidente."
+      },
+      {
+        "testo": "Donca a me ’n vago, adio. -Ma dame odensia:",
+        "it": "Dunque me ne vado, addio. — Ma dammi retta:"
+      },
+      {
+        "testo": "Come te fè a campae se ne gh’è gnente?",
+        "it": "come fai a campare, se non c'è niente?"
+      },
+      {
+        "testo": "-Per me ghe n’è; bongiorno signoia!",
+        "it": "— Per me ce n'è; buongiorno, signoria!"
+      }
+    ]
+  },
+  {
     "id": "sp-a2-nuova-storia-4",
     "lingua": "sp",
     "livello": "A2",
