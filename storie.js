@@ -59,7 +59,7 @@ const STORIE_DEFAULT = [
     "frasi": [
       {
         "testo": "I en dui che se vè ben, ma lü ir fa aposta,",
-        "it": "Sono in due che si vogliono bene, ma lui lo fa apposta,"
+        "it": "Ci sono due che si vogliono bene, ma lui lo fa apposta,"
       },
       {
         "testo": "Ch'i gh'ha n'autra pe e man che l'ha maì;",
