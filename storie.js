@@ -46,8 +46,8 @@ const STORIE_DEFAULT = [
     "livello": "A2",
     "tema": "",
     "titolo": {
-      "testo": "",
-      "it": ""
+      "testo": "Patron e mezadro",
+      "it": "Padrone e mezzadro"
     },
     "fonte": {
       "generato": "autentico",
@@ -63,7 +63,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Anguano, sior patron, l’è ’n gramo afae!",
-        "it": "Quest'anno, signor padrone, è una magra annata!"
+        "it": "Quest'anno, signor padrone, è un gramo affare!"
       },
       {
         "testo": "E oive i n’han brica, e ’nquanto a l’üa,",
@@ -79,11 +79,11 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Der granon la ne gh’è manco ciü a püa,",
-        "it": "Del granturco non ce n'è più nemmeno la polvere,"
+        "it": "Del granturco non c'è  nemmeno più la polvere,"
       },
       {
         "testo": "E castagne s’i n’han, posti crepae,",
-        "it": "e castagne, se ne hanno, ch'io possa crepare!,"
+        "it": "e castagne, se ci sono, ch'io possa crepare!,"
       },
       {
         "testo": "E ’nca de ciü la m’è ’nca morta a müa,",
@@ -107,7 +107,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Donca a me ’n vago, adio. -Ma dame odensia:",
-        "it": "Dunque me ne vado, addio. — Ma dammi retta:"
+        "it": "Dunque me ne vado, addio. — Ma dammi udienza:"
       },
       {
         "testo": "Come te fè a campae se ne gh’è gnente?",
