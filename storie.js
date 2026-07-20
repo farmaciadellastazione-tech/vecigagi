@@ -50,9 +50,11 @@ const STORIE_DEFAULT = [
       "it": ""
     },
     "fonte": {
-      "generato": "ai",
+      "generato": "autentico",
       "modello": "claude-sonnet-5",
-      "note": ""
+      "note": "",
+      "autore": "Ubaldo Mazzini",
+      "riferimento": "Strafugi"
     },
     "frasi": [
       {
