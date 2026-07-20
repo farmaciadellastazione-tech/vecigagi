@@ -320,3 +320,39 @@ Feedback dell'autore: "edit dialetti è fatto malissimo… perché dovrei avere 
 `SchermataFraseLibera.verificaFrase` aveva lo stesso identico bug (fallback `clean.slice(0, 200)` sul campo `grammar` quando il JSON di `{"correct", "correction", "grammar", "example"}` arrivava troncato), non ancora segnalato/riprodotto ma con la stessa causa (`max_tokens` fisso).
 
 - ✅ **Fatto (2026-07-09)** — estratti due helper condivisi riusati da entrambe le funzioni: `estraiCampoStringaJSON(clean, chiave)` (valore stringa tollerante a JSON troncato, gestisce `\n`/`\"`/`\\`) e `estraiCampoBoolean(clean, chiave)`. `estraiSpiegazioneDaTesto` rifattorizzata per usare il primo (DRY, comportamento invariato — riverificato con la sua suite esistente). Nuova `estraiFeedbackFrase(clean)`: prova il parse JSON completo, poi recupera OGNI campo disponibile singolarmente (a differenza di spiegazione, qui sono 4 campi: se il taglio avviene a metà di uno, gli altri già ricevuti restano utilizzabili), e solo se NESSUN campo è recuperabile ricade sul vecchio comportamento. `verificaFrase` ora la usa al posto del parsing inline. Test: `tests/verificaFrase.test.mjs` (7 casi, incluso troncamento a metà campo e subito dopo il primo campo). Verificato anche dal vivo: intercettata la stessa risposta troncata via rete, confermato che il pannello di feedback mostra "✏️ Io vado a casa." / "📚 Manca la preposizione" invece del JSON grezzo.
+
+---
+
+## Idee proposte e non sviluppate / problematiche aperte (ricognizione 2026-07-21)
+
+Ricognizione fatta incrociando `ANALISI.md`/memoria locale con la cronologia chat su claude.ai. Solo voci **non ancora chiuse** a oggi (verificate contro il codice reale dove possibile, non solo contro quanto detto in chat).
+
+### 🔴 Audit mai processato: voci dialettali sospette
+
+`ANALISI_dialetti_sospetti.md` (generato 2026-05-28 da uno script di scansione, mai lavorato): **168 voci** mn/sp/ge/cr identiche all'italiano (Sezione A — alcune sono cognati legittimi, altre probabili errori mai corretti) + **44 voci** `pronuncia/grafia` con differenza di soli accenti/spazi (Sezione B — probabilmente intenzionali ma mai confermate). Richiede revisione manuale caso per caso consultando i dizionari (vedi `reference_dizionari_drive.md`). È l'unico punto rimasto aperto del ciclo di hardening 2026-05-16→07-17 (vedi memoria `project_fix_in_corso`).
+
+### 🟡 Audio dialettale — fase 1 di 4 completata
+
+Il campo `audio:{sp:"file.mp3"}` con fallback TTS è in produzione dal 2026-07-19 (commit `91dca1b`), ma solo 1 voce reale lo usa finora (sp "tirare"). Restano da fare (vedi memoria `project_audio_dialettale`):
+- **Fase 2**: propagare `entry.audio` ai call site rimanenti (suggerimenti, coniugazioni, recap) — oggi letto solo nel punto principale.
+- **Fase 3**: campo audio gestibile da `edit.html`/`edit-storie.html` (oggi va aggiunto a mano via commit).
+- **Fase 4**: registrazione in-browser (MediaRecorder + salvataggio via GitHub API, come fa già `edit.html`) per svincolarsi dal workflow manuale Drive→ffmpeg→Claude — **discusso ma non avviato**, rimandato per mancanza di tempo di Dino ("qualità del file dipenderebbe dal microfono senza la pulizia ffmpeg, a meno di ffmpeg.wasm ~30MB").
+
+### 🟡 Lettura Guidata: dialetti fermi a solo Spezzino
+
+Il piano originale (chat "Genere del nome rumeno 'mela'", 7 lug) prevedeva: fase 1 pilota su EN/DE con testi generabili da IA (fatto), poi estensione ai dialetti usando **solo fonti autentiche verificate** — Celsi (Abbecedario, Manarolese), Fucigna (*'L Cararin*, Carrarino), GEPHRAS/TIG (Genovese) — mai testi generati da IA per i dialetti, licenza da verificare volta per volta (escluse fonti coperte da copyright come De André). **Stato attuale** (verificato in `storie.js`): 6 storie in spezzino (`sp`), **zero** in genovese/manarolese/carrarino. L'estensione a `ge`/`mn`/`cr` non è mai partita.
+
+### 🟢 App Android — esplicitamente rimandata
+
+Chat "Pubblicare un'app su Google Play" (8 mag): proposta di avvolgere il sito in una **Trusted Web Activity** (TWA, via Bubblewrap) per pubblicarlo su Google Play senza riscriverlo. Risposta di Dino: *"Al momento è prematuro"* — idea esplicitamente parcheggiata, nessun lavoro iniziato. Da riconsiderare solo se/quando il traffico giustifica l'investimento (25 USD + keystore + review Google).
+
+### 🟢 Minori mai chiusi (già in ANALISI.md, non riconfermati qui perché ancora validi)
+
+- **Eliminazione parola dal Vocabolario senza `confirm()`** (~`:9491`) — per le voci default non è distruttivo (torna al prossimo bump di `VOC_VERSION`, vedi R3), ma per le voci custom dell'utente è una cancellazione secca senza conferma.
+- **Avviso utente su `saveJSON` fallito** (quota `localStorage` piena) — la funzione logga `console.warn` ma non c'è ancora un avviso visibile in UI; deciso esplicitamente come "decisione UX a parte" al momento del fix R4 (2026-07-08), mai implementata.
+- **Estrazione dati dal bundle** (~48% del file sono dati) — idee mai realizzate: lazy-load dell'i18n per le lingue non attive, e di `CONIUGAZIONI` (quest'ultima bloccata dal fatto che serve a `estraiCarte`, quindi non è lazy-loading banale).
+- **`Home` ricalcola `parolaAppresa`/`contaScadute` senza memo** ad ogni render — mai misurato come problema reale, quindi mai ottimizzato.
+
+### Note sul metodo
+
+Molte idee proposte in chat nei mesi scorsi **sono già state realizzate** e non compaiono qui: Glossario alfabetico 📖 (proposto 10 apr, oggi in `index.html` con deep-link `#glossario/<lingua>`), badge di versione colorato (proposto 15 mag, oggi in `index.html:8730`), editor unico index+candidati (proposto 9 mag, fatto 12 lug), import multi-lingua in `dialetti.html` (fatto 12 lug). La lista sopra contiene solo ciò che risulta **verificabilmente ancora aperto** nel codice/nei file locali al 2026-07-21.
