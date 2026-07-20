@@ -5,6 +5,59 @@ File analizzato: `index.html` (~10.787 righe, React 18 + Babel + Tailwind via CD
 
 Elenco ordinato per priorità.
 
+---
+
+## Origini e sviluppo del progetto (ricostruito da claude.ai + git log, 2026-07-20)
+
+Ricostruzione fatta incrociando la cronologia delle chat su claude.ai (account di Dino) con `git log` del repo `vecigagi`. Le due fonti coincidono al giorno esatto, quindi la timeline è affidabile.
+
+### Nascita: Claude Artifact + Netlify (prima del 2026-03-25)
+
+Il progetto nasce come **Artifact di Claude** chiamato "Quiz multilingue": HTML/React generato in chat, con TTS, `localStorage`, quiz IT/EN/FR/ES/PT/DE, livelli A1/A2. Non esiste una singola chat "fondativa" recuperabile — l'app viene iterata per sessioni successive (la prima chat ritrovabile allega già `index-6.html`, cioè almeno 6 iterazioni precedenti) e nel frattempo pubblicata su **Netlify** per condividerla/usarla fuori da Claude.
+
+### 2026-03-25 — crisi Netlify → nasce il repo GitHub
+
+La chat "Il" (25 mar) si apre con due screenshot: alle 11:32 l'app funziona su Netlify, alle 15:43 è bloccata da "Site not available" per limite banda del piano gratuito. Claude propone la migrazione (GitHub Pages / Vercel / Cloudflare Pages) e, scoperto che Dino non ha un account GitHub, lo guida passo-passo alla creazione + al primo upload manuale di `index-6.html`.
+
+**Riscontro in git log**: il primo commit del repo (`Add files via upload`) è datato **2026-03-25**, stesso giorno. Per settimane lo sviluppo prosegue solo dall'interfaccia web di GitHub (nessun git locale): da qui il pattern di commit `Rename index (N).html to index.html` / `Add files via upload` visibile nei primi mesi di storia — ogni "salvataggio" da Claude produceva un nuovo file scaricato e ricaricato a mano.
+
+### Marzo–aprile 2026 — assestamento infrastruttura
+
+- **2026-03-28**: primo `README.md`.
+- **2026-03-29**: primo `LICENCE`.
+- **2026-04-02**: creato `CNAME` → dominio custom **linguaequiz.com** agganciato a **GitHub Pages** (non Vercel/Cloudflare, nonostante il consiglio iniziale — scelta poi confermata e mai più cambiata).
+- **2026-04-20**: prima comparsa di `dialetti.html`.
+- **2026-04-30**: prima comparsa di `edit.html` (l'editor dedicato del vocabolario, oggi l'unico editor per `index.html` e `CANDIDATI`).
+
+### Volume di sviluppo per mese (numero di commit)
+
+| Mese | Commit |
+|---|---|
+| 2026-03 | 69 |
+| 2026-04 | 505 |
+| 2026-05 | 655 |
+| 2026-06 | 241 |
+| 2026-07 (parziale, fino al 20) | 169 |
+
+Aprile-maggio sono il picco: costruzione rapida di dialetti, editor, i18n UI, quiz mode multiple. Da giugno il ritmo si stabilizza, coerente con un progetto che passa da "costruzione" a "manutenzione/rifinitura".
+
+### 2026-05-13 — privacy: "Dino Storti" → pseudonimo "vecigagi"
+
+Chat "Rimozione del nome dai diritti riservati": il nome reale viene tolto dai diritti/licenza del repo e sostituito con lo pseudonimo pubblico **vecigagi** (poi diventato anche il nome del repo GitHub).
+
+### Metà/fine maggio 2026 — passaggio a Claude Code
+
+Dalla chat "Claude vs Claudecode comparison" (21 mag) risulta l'inizio dell'uso di **Claude Code in locale** su `C:\Progetti\vecigagi`, in affiancamento (non sostituzione) alle chat su claude.ai. Da qui lo sviluppo diventa ibrido: chat web per decisioni/contenuti linguistici e sessioni Claude Code per refactor, test, audit del codice — culminato nel refactor di `index.html` che ha aperto questo stesso file (`ANALISI.md`, 2026-05-16) e nella suite di test in `tests/`.
+
+### Giugno–luglio 2026 — SEO, dialetti, audio
+
+- Spinta SEO su query di nicchia ("quiz dialetto spezzino" ecc.), sitemap/robots.txt, monitoraggio Search Console (vedi [[project_seo_dialetti_traffico]] in memoria).
+- Bonifica vocabolario dialettale: identificazione di voci manarolesi generate erroneamente da IA (fine maggio), poi estesa con CSV/dizionari esterni da Google Drive.
+- Consolidamento workflow: `dialetti.html` → cuscinetto candidati, `edit.html` → unico editor (index + candidati) con guardia anti-clobber (12 lug).
+- Registrazioni audio dialettali reali per sostituire/affiancare il TTS (fase 1, 19-20 lug — vedi [[project_audio_dialettale]]).
+
+---
+
 ## 🔴 Alta priorità
 
 ### 1. `mn` (manarolese) trattato in modo incoerente come dialetto
