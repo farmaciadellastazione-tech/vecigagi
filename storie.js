@@ -59,59 +59,59 @@ const STORIE_DEFAULT = [
     "frasi": [
       {
         "testo": "I en dui che se vè ben, ma lü ir fa aposta,",
-        "it": ""
+        "it": "Sono in due che si vogliono bene, ma lui lo fa apposta,"
       },
       {
         "testo": "Ch'i gh'ha n'autra pe e man che l'ha maì;",
-        "it": ""
+        "it": "ché ha un'altra fra le mani, che ha marito;"
       },
       {
         "testo": "Le, che la o sa, 'n beo dì la ghe fa a posta,",
-        "it": ""
+        "it": "lei, che lo sa, un bel giorno gli fa la posta"
       },
       {
         "testo": "E la ghe disa sc-ciao: te m'è tradì.",
-        "it": ""
+        "it": "e gli dice chiaro: m'hai tradito!"
       },
       {
         "testo": "Lü, ch'i è 'n fantame cen de presümì,",
-        "it": ""
+        "it": "Lui, che è un fantoccio pieno di boria,"
       },
       {
         "testo": "I ne vè daghe manco de risposta;",
-        "it": ""
+        "it": "non le vuole dare nemmeno una risposta;"
       },
       {
         "testo": "Mentre che le la cianza, i se gh'acosta",
-        "it": ""
+        "it": "mentre lei piange, lui le si accosta"
       },
       {
         "testo": "e i ghe fa, diza: levete de chì!",
-        "it": ""
+        "it": "e le fa, dice: togliti di qui!"
       },
       {
         "testo": "Aloa ven er maì, e lü i se 'n va,",
-        "it": ""
+        "it": "Allora arriva il marito, e lui se ne va,"
       },
       {
         "testo": "E le la ghe fa a spia, da 'r gran ghignon,",
-        "it": ""
+        "it": "e lei,  gli fa la spia, dal gran dispetto,"
       },
       {
         "testo": "Che se mugee... de chì, de sà e de là.",
-        "it": ""
+        "it": "che sua moglie... di qui, di qua e di là."
       },
       {
         "testo": "Lü i mangia a fogia, e i grida: pelandron!",
-        "it": ""
+        "it": "Lui mangia la foglia, e grida: pelandrone!"
       },
       {
         "testo": "I me l'ha fata, ma i la pagheà!",
-        "it": ""
+        "it": "Me l'ha fatta, ma la pagherà!"
       },
       {
         "testo": "E i t'o destenda lì come 'n strasson.",
-        "it": ""
+        "it": "E te lo stende lì come uno straccio."
       }
     ]
   },
