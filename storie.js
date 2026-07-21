@@ -67,7 +67,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E oive i n’han brica, e ’nquanto a l’üa,",
-        "it": "Gli olivi non ne hanno affatto, e in quanto all'uva,"
+        "it": "Gli olivi non ne hanno niente, e in quanto all'uva,"
       },
       {
         "testo": "A voreai sbagiame, ma ho paüa",
@@ -83,7 +83,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E castagne s’i n’han, posti crepae,",
-        "it": "e castagne, se ci sono, ch'io possa crepare!,"
+        "it": "e i castagni, se ne hanno, ch'io possa crepare!,"
       },
       {
         "testo": "E ’nca de ciü la m’è ’nca morta a müa,",
@@ -91,19 +91,19 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E a vaca la ne posse ’ngravedae.",
-        "it": "e la vacca non riesce a restare pregna."
+        "it": "e la vacca non riuscì a ingravidare ."
       },
       {
         "testo": "Donca siché, ’oi die, Ussignoia",
-        "it": "Dunque insomma, voglio dire, Vossignoria,"
+        "it": "Dunque sicché, voglio dire, Vossignoria,"
       },
       {
         "testo": "’Nta che la se daga ’n po’ passensia",
-        "it": "che Lei porti un po' di pazienza,"
+        "it": "occorre che Lei porti un po' di pazienza,"
       },
       {
         "testo": "Se anguano ne ghe toca n’assidente.",
-        "it": "se quest'anno non Le spetta un accidente."
+        "it": "se quest'anno non le tocca un accidente."
       },
       {
         "testo": "Donca a me ’n vago, adio. -Ma dame odensia:",
