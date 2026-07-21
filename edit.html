@@ -94,6 +94,7 @@
   .icon-btn.danger:hover { background: #fee2e2; }
   .icon-btn.ai:hover { background: var(--purple-light); }
   .icon-btn.ai-pending { animation: pulse 1.2s infinite; }
+  .icon-btn.has-audio { opacity: 1; color: #16a34a; }
   @keyframes pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
   .empty-cell input { background: #fff7ed !important; }
   .dialect-cell input { background: #fefce8 !important; box-shadow: inset 0 0 0 1px #facc15; }
@@ -471,6 +472,32 @@
     <div class="modal-actions">
       <button class="btn btn-secondary" onclick="chiudiFrasiSP()">Annulla</button>
       <button class="btn btn-primary" onclick="confermaFrasiSP()">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal registrazione audio in-browser (voce dialettale) -->
+<div class="modal-overlay" id="reg-modal">
+  <div class="modal" style="max-width: 480px;">
+    <h2 id="reg-titolo">🎙️ Registra audio</h2>
+    <div id="reg-attuale" style="margin-bottom:0.6rem; font-size:0.85rem"></div>
+    <div id="reg-stato" style="margin:0.6rem 0; font-size:0.85rem; color:var(--muted)">Pronto.</div>
+    <div style="display:flex; gap:0.5rem; margin-bottom:0.6rem">
+      <button class="btn btn-primary" id="reg-btn-start" onclick="avviaRegistrazione()">⏺️ Registra</button>
+      <button class="btn btn-secondary" id="reg-btn-stop" onclick="fermaRegistrazione()" disabled>⏹️ Stop</button>
+      <button class="btn btn-secondary" id="reg-btn-redo" onclick="resetPannelloRegistratore()" disabled>🔄 Ricomincia</button>
+    </div>
+    <audio id="reg-preview" controls style="width:100%; display:none; margin-bottom:0.6rem"></audio>
+    <label style="display:flex; align-items:center; gap:0.5rem; flex-direction:row; margin-bottom:0.6rem">
+      <input type="checkbox" id="reg-normalizza" style="width:auto" checked>
+      <span style="font-size:0.85rem">Normalizza il volume di picco (leggero)</span>
+    </label>
+    <label>Nome file (senza estensione, aggiunta automaticamente)
+      <input type="text" id="reg-nomefile">
+    </label>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="chiudiRegistratore()">Annulla</button>
+      <button class="btn btn-primary" id="reg-btn-salva" onclick="salvaAudioRegistrato()" disabled>💾 Salva audio</button>
     </div>
   </div>
 </div>
@@ -1531,6 +1558,7 @@ function render() {
         ${hidden ? `<span class="alt-badge" title="${hidden} alt. nascoste">+${hidden}</span>` : ''}
         <button class="icon-btn" onclick="ttsCella(this,'${code}')" title="Pronuncia" style="margin-left:4px">🔊</button>
         ${isDialetto ? `<button class="icon-btn ai" onclick="aiTrascriviTTSCella(this,'${code}')" title="Suggerisci trascrizione TTS">🔤</button>` : ''}
+        ${isDialetto ? `<button class="icon-btn ${v.audio && v.audio[code] ? 'has-audio' : ''}" onclick="apriRegistratore('${code}', this)" title="${v.audio && v.audio[code] ? 'Audio: ' + escapeAttr(v.audio[code]) + ' — gestisci' : 'Registra audio per questa voce'}">${v.audio && v.audio[code] ? '🎵' : '🎙️'}</button>` : ''}
         <button class="icon-btn nt-btn ${nt?'nt-on':''}" onclick="toggleNT(this,'${code}')" title="${nt?'Riattiva: parola traducibile in '+(info?info.name:code):'Segna come non traducibile in '+(info?info.name:code)+' (svuota la cella)'}">🚫</button>
         ${stateButtons}
       </td>`;
@@ -2841,6 +2869,255 @@ async function salvaSuGitHub() {
 }
 
 function reimpostaToken() { if (confirm('Cancellare il token GitHub?')) { localStorage.removeItem(GH_TOKEN_KEY); alert('Token rimosso.'); } }
+
+// ==========================================================================
+// REGISTRAZIONE AUDIO IN-BROWSER (voce dialettale)
+// ==========================================================================
+// Alternativa al workflow manuale (telefono → Drive → ffmpeg → commit): registra,
+// taglia il silenzio iniziale/finale e carica direttamente su GitHub. Nessuna
+// riduzione del rumore di fondo (nessun equivalente di loudnorm/silenceremove di
+// ffmpeg) — solo trim + normalizzazione di picco opzionale.
+let regCtx = null; // { code }
+let mediaRecorder = null, micStream = null, recordedChunks = [], recordedBlob = null;
+
+function sceltaMimeType() {
+  const candidati = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus', 'audio/ogg'];
+  for (const c of candidati) if (window.MediaRecorder && MediaRecorder.isTypeSupported(c)) return c;
+  return '';
+}
+function estensioneDaMime(mime) { return /ogg/.test(mime) ? 'ogg' : 'webm'; }
+
+function sluggifyAudio(s) {
+  return (s || 'audio').toLowerCase().normalize('NFD').replace(new RegExp('[̀-ͯ]', 'g'), '')
+    .replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60) || 'audio';
+}
+function nomeFileAudioProposto(v, code) {
+  const raw = (v[code] || '').split('|')[0].split('/')[0].trim();
+  return sluggifyAudio(raw);
+}
+
+function apriRegistratore(code, btn) {
+  const tr = btn.closest('tr'), v = tr && tr._voce;
+  if (!v) return;
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert('Microfono non disponibile in questo contesto.\n\nServe HTTPS o "localhost" (file:// non è supportato dai browser per getUserMedia). Per testare in locale prima del push, avvia un server statico (es. "npx serve ." o "python -m http.server") e apri http://localhost:.../edit.html.');
+    return;
+  }
+  resetPannelloRegistratore();
+  regCtx = { voce: v, code };
+  const info = LINGUE.find(l => l.code === code);
+  document.getElementById('reg-titolo').textContent = `🎙️ Audio — ${info ? info.name : code}: "${v.it || ''}"`;
+  const attuale = v.audio && v.audio[code];
+  document.getElementById('reg-attuale').innerHTML = attuale
+    ? `Audio attuale: <code>${escapeAttr(attuale)}</code> <button class="btn btn-secondary" onclick="rimuoviAudioAttuale()">🗑️ Rimuovi riferimento</button>`
+    : '<em>Nessun audio registrato per questa voce/lingua.</em>';
+  document.getElementById('reg-nomefile').value = nomeFileAudioProposto(v, code);
+  document.getElementById('reg-modal').classList.add('open');
+}
+
+function rimuoviAudioAttuale() {
+  if (!regCtx) return;
+  const v = regCtx.voce, code = regCtx.code;
+  if (!v.audio || !v.audio[code]) return;
+  if (!confirm('Rimuovere solo il riferimento nel vocabolario? Il file resta su GitHub (rimozione fisica manuale, fuori scope).')) return;
+  delete v.audio[code];
+  if (!Object.keys(v.audio).length) delete v.audio;
+  if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v));
+  chiudiRegistratore();
+  render();
+}
+
+function chiudiRegistratore() {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+  document.getElementById('reg-modal').classList.remove('open');
+  regCtx = null;
+}
+
+function resetPannelloRegistratore() {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+  recordedChunks = []; recordedBlob = null;
+  const prev = document.getElementById('reg-preview'); prev.style.display = 'none'; prev.removeAttribute('src');
+  document.getElementById('reg-stato').textContent = 'Pronto.';
+  document.getElementById('reg-btn-start').disabled = false;
+  document.getElementById('reg-btn-stop').disabled = true;
+  document.getElementById('reg-btn-redo').disabled = true;
+  document.getElementById('reg-btn-salva').disabled = true;
+}
+
+async function avviaRegistrazione() {
+  try { micStream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+  catch (e) { alert('Impossibile accedere al microfono: ' + e.message); return; }
+  recordedChunks = []; recordedBlob = null;
+  const mimeType = sceltaMimeType();
+  mediaRecorder = new MediaRecorder(micStream, mimeType ? { mimeType } : undefined);
+  mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recordedChunks.push(e.data); };
+  mediaRecorder.onstop = onRegistrazioneStop;
+  mediaRecorder.start();
+  document.getElementById('reg-stato').textContent = '⏺️ Registrazione in corso...';
+  document.getElementById('reg-btn-start').disabled = true;
+  document.getElementById('reg-btn-stop').disabled = false;
+  document.getElementById('reg-btn-redo').disabled = true;
+}
+
+function fermaRegistrazione() {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+  document.getElementById('reg-btn-stop').disabled = true;
+}
+
+async function onRegistrazioneStop() {
+  document.getElementById('reg-stato').textContent = '⏳ Elaboro (taglio silenzio)...';
+  const tipo = (mediaRecorder && mediaRecorder.mimeType) || (recordedChunks[0] && recordedChunks[0].type) || 'audio/webm';
+  const grezzo = new Blob(recordedChunks, { type: tipo });
+  const normalizza = document.getElementById('reg-normalizza').checked;
+  try { recordedBlob = await tagliaSilenzio(grezzo, tipo, normalizza); }
+  catch (e) { console.warn('[audio] trim fallito, uso il grezzo', e); recordedBlob = grezzo; }
+  const prev = document.getElementById('reg-preview');
+  prev.src = URL.createObjectURL(recordedBlob);
+  prev.style.display = '';
+  document.getElementById('reg-stato').textContent = '✅ Pronto per l\'anteprima.';
+  document.getElementById('reg-btn-redo').disabled = false;
+  document.getElementById('reg-btn-salva').disabled = false;
+}
+
+// Pura: cerca il primo/ultimo blocco sopra soglia di ampiezza. Testabile senza
+// AudioContext (solo Float32Array). Fallback "nessun taglio" se tutto silenzio.
+function trovaConfiniSilenzio(canali, sampleRate, sogliaAmpiezza, minMs) {
+  sogliaAmpiezza = sogliaAmpiezza || 0.02; minMs = minMs || 30;
+  const nSamples = canali[0].length;
+  const finestra = Math.max(1, Math.round(sampleRate * minMs / 1000));
+  const ampiezzaAt = i => { let m = 0; for (const c of canali) m = Math.max(m, Math.abs(c[i])); return m; };
+  // trovatoStart/trovatoEnd tracciano se la ricerca ha davvero incontrato audio
+  // sopra soglia (non solo "il ciclo si è fermato"): senza questo, un buffer
+  // interamente silenzioso farebbe avanzare "start" fino quasi alla fine
+  // dell'array (il ciclo termina per esaurimento, non per rottura), tagliando
+  // via quasi tutto invece di non tagliare nulla.
+  let start = 0, trovatoStart = false;
+  for (; start < nSamples - finestra; start += finestra) {
+    let sopra = false;
+    for (let k = 0; k < finestra; k++) if (ampiezzaAt(start + k) > sogliaAmpiezza) { sopra = true; break; }
+    if (sopra) { trovatoStart = true; break; }
+  }
+  let end = nSamples, trovatoEnd = false;
+  for (; end > start + finestra; end -= finestra) {
+    let sopra = false;
+    for (let k = 0; k < finestra; k++) if (ampiezzaAt(end - finestra + k) > sogliaAmpiezza) { sopra = true; break; }
+    if (sopra) { trovatoEnd = true; break; }
+  }
+  if (!trovatoStart || !trovatoEnd || end <= start) return { start: 0, end: nSamples };
+  return { start, end };
+}
+
+async function tagliaSilenzio(blob, mimeType, normalizza) {
+  const buf = await blob.arrayBuffer();
+  const AC = window.AudioContext || window.webkitAudioContext;
+  const ctx = new AC();
+  let audioBuffer;
+  try { audioBuffer = await ctx.decodeAudioData(buf.slice(0)); } finally { ctx.close(); }
+  const canali = [];
+  for (let c = 0; c < audioBuffer.numberOfChannels; c++) canali.push(audioBuffer.getChannelData(c));
+  const { start, end } = trovaConfiniSilenzio(canali, audioBuffer.sampleRate);
+  return riregistraSegmento(audioBuffer, start, end, mimeType, normalizza);
+}
+
+// MediaRecorder non offre un modo diretto di ri-codificare un AudioBuffer: lo si
+// "riproduce" attraverso un MediaStreamAudioDestinationNode e lo si ricattura con
+// un secondo MediaRecorder — nessuna libreria esterna, ma richiede un tempo ~pari
+// alla durata del segmento tagliato.
+function riregistraSegmento(audioBuffer, startSample, endSample, mimeType, normalizza) {
+  return new Promise((resolve, reject) => {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AC({ sampleRate: audioBuffer.sampleRate });
+    const nSamples = endSample - startSample;
+    const tagliato = ctx.createBuffer(audioBuffer.numberOfChannels, nSamples, audioBuffer.sampleRate);
+    for (let c = 0; c < audioBuffer.numberOfChannels; c++) {
+      const src = audioBuffer.getChannelData(c).subarray(startSample, endSample);
+      if (normalizza) {
+        let picco = 0; for (let i = 0; i < src.length; i++) picco = Math.max(picco, Math.abs(src[i]));
+        const guadagno = picco > 0 ? Math.min(4, 0.9 / picco) : 1;
+        const out = new Float32Array(src.length);
+        for (let i = 0; i < src.length; i++) out[i] = src[i] * guadagno;
+        tagliato.copyToChannel(out, c);
+      } else {
+        tagliato.copyToChannel(src, c);
+      }
+    }
+    const dest = ctx.createMediaStreamDestination();
+    const nodo = ctx.createBufferSource(); nodo.buffer = tagliato; nodo.connect(dest);
+    const rec = new MediaRecorder(dest.stream, mimeType && MediaRecorder.isTypeSupported(mimeType) ? { mimeType } : undefined);
+    const chunks = [];
+    rec.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+    rec.onstop = () => { ctx.close(); resolve(new Blob(chunks, { type: rec.mimeType || mimeType })); };
+    rec.onerror = e => { ctx.close(); reject(e.error || e); };
+    rec.start();
+    nodo.start();
+    nodo.onended = () => setTimeout(() => rec.stop(), 50);
+  });
+}
+
+// Stesso schema byte→binary-string→base64 già usato da salvaSuGitHub() per il
+// testo, ma chunked per evitare problemi di stack su file audio più grandi.
+function arrayBufferToBase64(buf, chunkSize) {
+  chunkSize = chunkSize || 8192;
+  const bytes = new Uint8Array(buf);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += chunkSize) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+  return btoa(bin);
+}
+
+async function otteniShaFile(path, token) {
+  const apiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`;
+  const headers = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+  const res = await fetchTimeout(apiBase + '?ref=' + GH_BRANCH, { headers }, 20000);
+  if (res.status === 404) return null;
+  if (!res.ok) { if (res.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('GET fallito (' + res.status + ')'); }
+  return (await res.json()).sha;
+}
+
+async function caricaFileBinarioSuGitHub(path, blob, messaggio, token, shaNoto) {
+  const apiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`;
+  const headers = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'Content-Type': 'application/json' };
+  const buf = await blob.arrayBuffer();
+  const body = { message: messaggio, content: arrayBufferToBase64(buf), branch: GH_BRANCH };
+  if (shaNoto) body.sha = shaNoto;
+  const res = await fetchTimeout(apiBase, { method: 'PUT', headers, body: JSON.stringify(body) }, 60000);
+  if (!res.ok) { if (res.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('PUT fallito (' + res.status + ')'); }
+  return res.json();
+}
+
+async function salvaAudioRegistrato() {
+  if (!recordedBlob || !regCtx) { alert('Registra prima l\'audio.'); return; }
+  let token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!token) {
+    token = prompt('Incolla il tuo Personal Access Token GitHub (Contents: Read/Write su "vecigagi"):');
+    if (!token) return;
+    token = token.trim();
+    localStorage.setItem(GH_TOKEN_KEY, token);
+  }
+  const nomeBase = document.getElementById('reg-nomefile').value.trim();
+  if (!nomeBase) { alert('Inserisci un nome file.'); return; }
+  const ext = estensioneDaMime(recordedBlob.type);
+  const nomeFile = nomeBase.replace(new RegExp('\\.' + ext + '$'), '') + '.' + ext;
+  const code = regCtx.code, v = regCtx.voce;
+  const path = `audio/${code}/${nomeFile}`;
+  const btn = document.getElementById('reg-btn-salva'), orig = btn.textContent;
+  btn.disabled = true; btn.textContent = '⏳ Verifico...';
+  try {
+    const sha = await otteniShaFile(path, token);
+    if (sha && !confirm(`Esiste già "${path}" su GitHub. Sovrascrivere?`)) { btn.disabled = false; btn.textContent = orig; return; }
+    btn.textContent = '⏳ Carico...';
+    await caricaFileBinarioSuGitHub(path, recordedBlob, `Audio ${path} da edit.html`, token, sha);
+    v.audio = Object.assign({}, v.audio, { [code]: nomeFile });
+    if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v));
+    chiudiRegistratore();
+    render();
+    setHelp(`✅ Audio caricato su GitHub (${path}). Il testo NON è ancora salvato: usa "💾 Salva su GitHub" per registrare anche il riferimento.`, 'success');
+  } catch (e) {
+    alert('Errore upload audio:\n\n' + e.message);
+  } finally { btn.disabled = false; btn.textContent = orig; }
+}
 </script>
 </body>
 </html>

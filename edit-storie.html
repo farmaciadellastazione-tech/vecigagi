@@ -47,6 +47,15 @@
   .frase-fields textarea { font-family: inherit; font-size: 0.88rem; padding: 0.4rem 0.5rem; border: 1px solid var(--border); border-radius: 6px; resize: vertical; }
   .icon-btn { background: none; border: none; cursor: pointer; font-size: 1rem; padding: 0.3rem; color: var(--muted); }
   .icon-btn:hover { color: var(--danger); }
+  .icon-btn.audio-btn:hover { color: var(--accent-dark); }
+  .icon-btn.audio-btn.has-audio { color: var(--ok); }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #fff; border-radius: 12px; padding: 1.2rem; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; }
+  .modal h2 { margin-top: 0; font-size: 1rem; }
+  .modal label { display: block; font-size: 0.82rem; color: var(--muted); font-weight: 600; margin-top: 0.6rem; }
+  .modal label input[type="text"] { width: 100%; margin-top: 0.25rem; border: 1px solid var(--border); border-radius: 6px; padding: 0.4rem 0.5rem; font-size: 0.88rem; font-family: inherit; box-sizing: border-box; }
+  .modal-actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1.2rem; }
   .card-actions { display: flex; justify-content: space-between; margin-top: 0.8rem; padding-top: 0.7rem; border-top: 1px solid var(--border); }
   .empty { text-align: center; color: var(--muted); padding: 2rem; font-size: 0.9rem; }
 </style>
@@ -64,6 +73,65 @@
   <div id="help" class="info">⏳ Caricamento...</div>
   <div id="lista"></div>
 </main>
+
+<!-- Modal registrazione audio in-browser (frase/verso) -->
+<div class="modal-overlay" id="reg-modal">
+  <div class="modal">
+    <h2 id="reg-titolo">🎙️ Registra audio</h2>
+    <div id="reg-attuale" style="margin-bottom:0.6rem; font-size:0.85rem"></div>
+    <div id="reg-stato" style="margin:0.6rem 0; font-size:0.85rem; color:var(--muted)">Pronto.</div>
+    <div style="display:flex; gap:0.5rem; margin-bottom:0.6rem">
+      <button class="btn btn-primary" id="reg-btn-start" onclick="avviaRegistrazione()">⏺️ Registra</button>
+      <button class="btn" id="reg-btn-stop" onclick="fermaRegistrazione()" disabled>⏹️ Stop</button>
+      <button class="btn" id="reg-btn-redo" onclick="resetPannelloRegistratore()" disabled>🔄 Ricomincia</button>
+    </div>
+    <audio id="reg-preview" controls style="width:100%; display:none; margin-bottom:0.6rem"></audio>
+    <label style="display:flex; align-items:center; gap:0.5rem; flex-direction:row">
+      <input type="checkbox" id="reg-normalizza" style="width:auto" checked>
+      <span style="font-size:0.85rem; font-weight:400; text-transform:none">Normalizza il volume di picco (leggero)</span>
+    </label>
+    <label>Nome file (senza estensione, aggiunta automaticamente)
+      <input type="text" id="reg-nomefile">
+    </label>
+    <div class="modal-actions">
+      <button class="btn" onclick="chiudiRegistratore()">Annulla</button>
+      <button class="btn btn-primary" id="reg-btn-salva" onclick="salvaAudioRegistrato()" disabled>💾 Salva audio</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal registrazione intera poesia con segmentazione automatica sulle pause -->
+<div class="modal-overlay" id="reg-multi-modal">
+  <div class="modal" style="max-width: 640px;">
+    <h2 id="reg-multi-titolo">🎙️ Registra tutta la poesia</h2>
+    <div style="font-size:0.82rem; color:var(--muted); margin-bottom:0.6rem">Leggi tutti i versi in un'unica ripresa, con una pausa netta (~1 secondo) tra un verso e l'altro. Alla fine controlla che ogni segmento corrisponda al verso giusto prima di salvare.</div>
+    <div id="reg-multi-stato" style="margin:0.6rem 0; font-size:0.85rem; color:var(--muted)">Pronto.</div>
+    <div style="display:flex; gap:0.5rem; margin-bottom:0.6rem">
+      <button class="btn btn-primary" id="reg-multi-btn-start" onclick="avviaRegistrazioneMulti()">⏺️ Registra</button>
+      <button class="btn" id="reg-multi-btn-stop" onclick="fermaRegistrazioneMulti()" disabled>⏹️ Stop</button>
+      <button class="btn" id="reg-multi-btn-redo" onclick="resetPannelloMulti()" disabled>🔄 Ricomincia</button>
+    </div>
+    <div id="reg-multi-controlli" style="display:none">
+      <div id="reg-multi-conteggio" style="font-weight:700; font-size:0.9rem; margin-bottom:0.4rem"></div>
+      <label style="display:block; margin-bottom:0.6rem">Pausa minima tra i versi: <span id="reg-multi-pausa-label">700</span> ms
+        <input type="range" id="reg-multi-pausa" min="300" max="1500" step="50" value="700" style="width:100%" oninput="risegmenta()">
+        <span style="font-size:0.75rem; color:var(--muted); font-weight:400; text-transform:none">Muovendo lo slider la divisione si ricalcola e le unioni manuali (⤴) si azzerano.</span>
+      </label>
+      <div id="reg-multi-lista" style="max-height:40vh; overflow-y:auto; border:1px solid var(--border); border-radius:8px; padding:0.4rem"></div>
+      <label style="display:flex; align-items:center; gap:0.5rem; flex-direction:row; margin-top:0.6rem">
+        <input type="checkbox" id="reg-multi-normalizza" style="width:auto" checked>
+        <span style="font-size:0.85rem; font-weight:400; text-transform:none">Normalizza il volume di picco (leggero)</span>
+      </label>
+      <label>Nome file base (i file diventano base-01, base-02, …)
+        <input type="text" id="reg-multi-slug">
+      </label>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="chiudiRegistratoreMulti()">Annulla</button>
+      <button class="btn btn-primary" id="reg-multi-btn-salva" onclick="salvaAudioMulti()" disabled>💾 Salva tutto</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const GH_OWNER = 'farmaciadellastazione-tech';
@@ -362,6 +430,7 @@ function renderCard(s) {
         <textarea placeholder="Testo originale" rows="2" onchange="aggiornaFrase('${s.id}', ${idx}, 'testo', this.value)">${escapeHtml(f.testo)}</textarea>
         <input type="text" placeholder="Traduzione italiana" value="${escapeAttr(f.it)}" onchange="aggiornaFrase('${s.id}', ${idx}, 'it', this.value)" />
       </div>
+      <button class="icon-btn audio-btn ${f.audio ? 'has-audio' : ''}" title="${f.audio ? 'Audio: ' + escapeAttr(f.audio) : 'Registra audio per questa frase'}" onclick="apriRegistratoreFrase('${s.id}', ${idx})">${f.audio ? '🎵' : '🎙️'}</button>
       <button class="icon-btn" title="Elimina frase" onclick="eliminaFrase('${s.id}', ${idx})">🗑</button>
     </div>`).join('');
 
@@ -402,6 +471,7 @@ function renderCard(s) {
         ${fraseRows || '<p style="color:var(--muted); font-size:0.85rem">Nessuna frase.</p>'}
         <button class="btn" style="margin-top:0.4rem" onclick="aggiungiFrase('${s.id}')">➕ Aggiungi frase</button>
         <button class="btn" style="margin-top:0.4rem" onclick="apriIncollaTutto('${s.id}')" title="Genera tutte le frasi in due incolla: testo intero + traduzione intera (una frase per riga, o tutto di fila: divido io per punteggiatura)">📋 Incolla tutto…</button>
+        ${(s.frasi || []).some(f => (f.testo || '').trim()) ? `<button class="btn" style="margin-top:0.4rem" onclick="apriRegistratoreMulti('${s.id}')" title="Leggi tutta la poesia in un'unica ripresa con pause nette tra i versi: la divido automaticamente in un file audio per verso">🎙️ Registra tutta la poesia…</button>` : ''}
         ${incollaIds.has(s.id) ? `
         <div style="margin-top:0.6rem; padding:0.6rem; border:1px dashed var(--border); border-radius:6px; background:#fafafa">
           <div class="field" style="margin-bottom:0.5rem">
@@ -467,6 +537,502 @@ async function salvaSuGitHub() {
     console.error('[GH]', err);
     alert('Errore:\n\n' + err.message);
     btn.textContent = orig; btn.disabled = false;
+  }
+}
+
+// ==========================================================================
+// REGISTRAZIONE AUDIO IN-BROWSER (frase/verso)
+// ==========================================================================
+// Alternativa al workflow manuale (telefono → Drive → ffmpeg → commit): registra,
+// taglia il silenzio iniziale/finale e carica direttamente su GitHub. Nessuna
+// riduzione del rumore di fondo (nessun equivalente di loudnorm/silenceremove di
+// ffmpeg) — solo trim + normalizzazione di picco opzionale.
+let regCtx = null; // { storiaId, idx }
+let mediaRecorder = null, micStream = null, recordedChunks = [], recordedBlob = null;
+
+function sceltaMimeType() {
+  const candidati = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus', 'audio/ogg'];
+  for (const c of candidati) if (window.MediaRecorder && MediaRecorder.isTypeSupported(c)) return c;
+  return '';
+}
+function estensioneDaMime(mime) { return /ogg/.test(mime) ? 'ogg' : 'webm'; }
+
+function nomeFileAudioFraseProposto(s, idx) {
+  const base = slugify(s.titolo?.testo || s.id);
+  const num = String(idx + 1).padStart(2, '0');
+  return `${base}-${num}`;
+}
+
+function apriRegistratoreFrase(storiaId, idx) {
+  const s = storie.find(s => s.id === storiaId);
+  if (!s) return;
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert('Microfono non disponibile in questo contesto.\n\nServe HTTPS o "localhost" (file:// non è supportato dai browser per getUserMedia). Per testare in locale prima del push, avvia un server statico (es. "npx serve ." o "python -m http.server") e apri http://localhost:.../edit-storie.html.');
+    return;
+  }
+  resetPannelloRegistratore();
+  regCtx = { storiaId, idx };
+  const f = s.frasi[idx];
+  document.getElementById('reg-titolo').textContent = `🎙️ Audio — frase ${idx + 1}: "${(f.testo || '').slice(0, 60)}"`;
+  document.getElementById('reg-attuale').innerHTML = f.audio
+    ? `Audio attuale: <code>${escapeAttr(f.audio)}</code> <button class="btn" onclick="rimuoviAudioAttuale()">🗑️ Rimuovi riferimento</button>`
+    : '<em>Nessun audio registrato per questa frase.</em>';
+  document.getElementById('reg-nomefile').value = nomeFileAudioFraseProposto(s, idx);
+  document.getElementById('reg-modal').classList.add('open');
+}
+
+function rimuoviAudioAttuale() {
+  if (!regCtx) return;
+  const s = storie.find(s => s.id === regCtx.storiaId);
+  if (!s || !s.frasi[regCtx.idx] || !s.frasi[regCtx.idx].audio) return;
+  if (!confirm('Rimuovere solo il riferimento nella storia? Il file resta su GitHub (rimozione fisica manuale, fuori scope).')) return;
+  delete s.frasi[regCtx.idx].audio;
+  segnaModificata(s.id);
+  chiudiRegistratore();
+  render();
+}
+
+function chiudiRegistratore() {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+  document.getElementById('reg-modal').classList.remove('open');
+  regCtx = null;
+}
+
+function resetPannelloRegistratore() {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+  recordedChunks = []; recordedBlob = null;
+  const prev = document.getElementById('reg-preview'); prev.style.display = 'none'; prev.removeAttribute('src');
+  document.getElementById('reg-stato').textContent = 'Pronto.';
+  document.getElementById('reg-btn-start').disabled = false;
+  document.getElementById('reg-btn-stop').disabled = true;
+  document.getElementById('reg-btn-redo').disabled = true;
+  document.getElementById('reg-btn-salva').disabled = true;
+}
+
+async function avviaRegistrazione() {
+  try { micStream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+  catch (e) { alert('Impossibile accedere al microfono: ' + e.message); return; }
+  recordedChunks = []; recordedBlob = null;
+  const mimeType = sceltaMimeType();
+  mediaRecorder = new MediaRecorder(micStream, mimeType ? { mimeType } : undefined);
+  mediaRecorder.ondataavailable = e => { if (e.data.size > 0) recordedChunks.push(e.data); };
+  mediaRecorder.onstop = onRegistrazioneStop;
+  mediaRecorder.start();
+  document.getElementById('reg-stato').textContent = '⏺️ Registrazione in corso...';
+  document.getElementById('reg-btn-start').disabled = true;
+  document.getElementById('reg-btn-stop').disabled = false;
+  document.getElementById('reg-btn-redo').disabled = true;
+}
+
+function fermaRegistrazione() {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+  if (micStream) { micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+  document.getElementById('reg-btn-stop').disabled = true;
+}
+
+async function onRegistrazioneStop() {
+  document.getElementById('reg-stato').textContent = '⏳ Elaboro (taglio silenzio)...';
+  const tipo = (mediaRecorder && mediaRecorder.mimeType) || (recordedChunks[0] && recordedChunks[0].type) || 'audio/webm';
+  const grezzo = new Blob(recordedChunks, { type: tipo });
+  const normalizza = document.getElementById('reg-normalizza').checked;
+  try { recordedBlob = await tagliaSilenzio(grezzo, tipo, normalizza); }
+  catch (e) { console.warn('[audio] trim fallito, uso il grezzo', e); recordedBlob = grezzo; }
+  const prev = document.getElementById('reg-preview');
+  prev.src = URL.createObjectURL(recordedBlob);
+  prev.style.display = '';
+  document.getElementById('reg-stato').textContent = '✅ Pronto per l\'anteprima.';
+  document.getElementById('reg-btn-redo').disabled = false;
+  document.getElementById('reg-btn-salva').disabled = false;
+}
+
+// Pura: cerca il primo/ultimo blocco sopra soglia di ampiezza. Testabile senza
+// AudioContext (solo Float32Array). Fallback "nessun taglio" se tutto silenzio.
+function trovaConfiniSilenzio(canali, sampleRate, sogliaAmpiezza, minMs) {
+  sogliaAmpiezza = sogliaAmpiezza || 0.02; minMs = minMs || 30;
+  const nSamples = canali[0].length;
+  const finestra = Math.max(1, Math.round(sampleRate * minMs / 1000));
+  const ampiezzaAt = i => { let m = 0; for (const c of canali) m = Math.max(m, Math.abs(c[i])); return m; };
+  // trovatoStart/trovatoEnd tracciano se la ricerca ha davvero incontrato audio
+  // sopra soglia (non solo "il ciclo si è fermato"): senza questo, un buffer
+  // interamente silenzioso farebbe avanzare "start" fino quasi alla fine
+  // dell'array (il ciclo termina per esaurimento, non per rottura), tagliando
+  // via quasi tutto invece di non tagliare nulla.
+  let start = 0, trovatoStart = false;
+  for (; start < nSamples - finestra; start += finestra) {
+    let sopra = false;
+    for (let k = 0; k < finestra; k++) if (ampiezzaAt(start + k) > sogliaAmpiezza) { sopra = true; break; }
+    if (sopra) { trovatoStart = true; break; }
+  }
+  let end = nSamples, trovatoEnd = false;
+  for (; end > start + finestra; end -= finestra) {
+    let sopra = false;
+    for (let k = 0; k < finestra; k++) if (ampiezzaAt(end - finestra + k) > sogliaAmpiezza) { sopra = true; break; }
+    if (sopra) { trovatoEnd = true; break; }
+  }
+  if (!trovatoStart || !trovatoEnd || end <= start) return { start: 0, end: nSamples };
+  return { start, end };
+}
+
+async function tagliaSilenzio(blob, mimeType, normalizza) {
+  const buf = await blob.arrayBuffer();
+  const AC = window.AudioContext || window.webkitAudioContext;
+  const ctx = new AC();
+  let audioBuffer;
+  try { audioBuffer = await ctx.decodeAudioData(buf.slice(0)); } finally { ctx.close(); }
+  const canali = [];
+  for (let c = 0; c < audioBuffer.numberOfChannels; c++) canali.push(audioBuffer.getChannelData(c));
+  const { start, end } = trovaConfiniSilenzio(canali, audioBuffer.sampleRate);
+  return riregistraSegmento(audioBuffer, start, end, mimeType, normalizza);
+}
+
+// MediaRecorder non offre un modo diretto di ri-codificare un AudioBuffer: lo si
+// "riproduce" attraverso un MediaStreamAudioDestinationNode e lo si ricattura con
+// un secondo MediaRecorder — nessuna libreria esterna, ma richiede un tempo ~pari
+// alla durata del segmento tagliato.
+function riregistraSegmento(audioBuffer, startSample, endSample, mimeType, normalizza) {
+  return new Promise((resolve, reject) => {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AC({ sampleRate: audioBuffer.sampleRate });
+    const nSamples = endSample - startSample;
+    const tagliato = ctx.createBuffer(audioBuffer.numberOfChannels, nSamples, audioBuffer.sampleRate);
+    for (let c = 0; c < audioBuffer.numberOfChannels; c++) {
+      const src = audioBuffer.getChannelData(c).subarray(startSample, endSample);
+      if (normalizza) {
+        let picco = 0; for (let i = 0; i < src.length; i++) picco = Math.max(picco, Math.abs(src[i]));
+        const guadagno = picco > 0 ? Math.min(4, 0.9 / picco) : 1;
+        const out = new Float32Array(src.length);
+        for (let i = 0; i < src.length; i++) out[i] = src[i] * guadagno;
+        tagliato.copyToChannel(out, c);
+      } else {
+        tagliato.copyToChannel(src, c);
+      }
+    }
+    const dest = ctx.createMediaStreamDestination();
+    const nodo = ctx.createBufferSource(); nodo.buffer = tagliato; nodo.connect(dest);
+    const rec = new MediaRecorder(dest.stream, mimeType && MediaRecorder.isTypeSupported(mimeType) ? { mimeType } : undefined);
+    const chunks = [];
+    rec.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+    rec.onstop = () => { ctx.close(); resolve(new Blob(chunks, { type: rec.mimeType || mimeType })); };
+    rec.onerror = e => { ctx.close(); reject(e.error || e); };
+    rec.start();
+    nodo.start();
+    nodo.onended = () => setTimeout(() => rec.stop(), 50);
+  });
+}
+
+// Stesso schema byte→binary-string→base64 già usato da salvaSuGitHub() per il
+// testo, ma chunked per evitare problemi di stack su file audio più grandi.
+function arrayBufferToBase64(buf, chunkSize) {
+  chunkSize = chunkSize || 8192;
+  const bytes = new Uint8Array(buf);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += chunkSize) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+  return btoa(bin);
+}
+
+async function otteniShaFile(path, token) {
+  const apiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`;
+  const headers = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+  const res = await fetchTimeout(apiBase + '?ref=' + GH_BRANCH, { headers }, 20000);
+  if (res.status === 404) return null;
+  if (!res.ok) { if (res.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('GET fallito (' + res.status + ')'); }
+  return (await res.json()).sha;
+}
+
+async function caricaFileBinarioSuGitHub(path, blob, messaggio, token, shaNoto) {
+  const apiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`;
+  const headers = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'Content-Type': 'application/json' };
+  const buf = await blob.arrayBuffer();
+  const body = { message: messaggio, content: arrayBufferToBase64(buf), branch: GH_BRANCH };
+  if (shaNoto) body.sha = shaNoto;
+  const res = await fetchTimeout(apiBase, { method: 'PUT', headers, body: JSON.stringify(body) }, 60000);
+  if (!res.ok) { if (res.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('PUT fallito (' + res.status + ')'); }
+  return res.json();
+}
+
+async function salvaAudioRegistrato() {
+  if (!recordedBlob || !regCtx) { alert('Registra prima l\'audio.'); return; }
+  let token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!token) {
+    token = prompt('Incolla il tuo Personal Access Token GitHub (Contents: Read/Write su "vecigagi"):');
+    if (!token) return;
+    token = token.trim();
+    localStorage.setItem(GH_TOKEN_KEY, token);
+  }
+  const s = storie.find(s => s.id === regCtx.storiaId);
+  if (!s) return;
+  const nomeBase = document.getElementById('reg-nomefile').value.trim();
+  if (!nomeBase) { alert('Inserisci un nome file.'); return; }
+  const ext = estensioneDaMime(recordedBlob.type);
+  const nomeFile = nomeBase.replace(new RegExp('\\.' + ext + '$'), '') + '.' + ext;
+  const path = `audio/${s.lingua}/${nomeFile}`;
+  const btn = document.getElementById('reg-btn-salva'), orig = btn.textContent;
+  btn.disabled = true; btn.textContent = '⏳ Verifico...';
+  try {
+    const sha = await otteniShaFile(path, token);
+    if (sha && !confirm(`Esiste già "${path}" su GitHub. Sovrascrivere?`)) { btn.disabled = false; btn.textContent = orig; return; }
+    btn.textContent = '⏳ Carico...';
+    await caricaFileBinarioSuGitHub(path, recordedBlob, `Audio ${path} da edit-storie.html`, token, sha);
+    s.frasi[regCtx.idx].audio = nomeFile;
+    segnaModificata(s.id);
+    chiudiRegistratore();
+    render();
+    setHelp(`✅ Audio caricato su GitHub (${path}). Il testo NON è ancora salvato: usa "☁️ Salva su GitHub" per registrare anche il riferimento.`, 'success');
+  } catch (e) {
+    alert('Errore upload audio:\n\n' + e.message);
+  } finally { btn.disabled = false; btn.textContent = orig; }
+}
+
+// ==========================================================================
+// REGISTRAZIONE INTERA POESIA — segmentazione automatica sulle pause
+// ==========================================================================
+// Un'unica ripresa con pause nette tra i versi → un file audio per verso.
+// La revisione (anteprima per segmento, slider pausa minima, unione manuale)
+// avviene PRIMA di caricare qualsiasi cosa; il salvataggio è abilitato solo
+// quando il numero di segmenti coincide col numero di versi.
+let multiCtx = null;        // { storiaId }
+let multiRecorder = null, multiStream = null, multiChunks = [];
+let multiBuffer = null;     // AudioBuffer dell'intera ripresa, decodificato una sola volta
+let multiMime = '';
+let multiSegmenti = [];     // [{start,end}] in campioni
+let multiPreviewCtx = null, multiPreviewSource = null;
+
+// Pura: divide il segnale in N segmenti separati da pause di silenzio di durata
+// >= minPausaMs. Le pause più brevi (respiri, cesure) restano interne al
+// segmento. I bordi vengono estesi di padMs (clampato ai limiti del buffer) per
+// non tranciare attacchi/code delle consonanti. Buffer tutto silenzio → [].
+function trovaSegmentiAudio(canali, sampleRate, sogliaAmpiezza, minPausaMs, padMs) {
+  sogliaAmpiezza = sogliaAmpiezza || 0.02;
+  minPausaMs = minPausaMs || 700;
+  padMs = padMs === undefined ? 50 : padMs;
+  const nSamples = canali[0].length;
+  const finestra = Math.max(1, Math.round(sampleRate * 30 / 1000));
+  const pad = Math.round(sampleRate * padMs / 1000);
+  const minPausaFinestre = Math.max(1, Math.round((sampleRate * minPausaMs / 1000) / finestra));
+  const ampiezzaAt = i => { let m = 0; for (const c of canali) m = Math.max(m, Math.abs(c[i])); return m; };
+  const nFinestre = Math.ceil(nSamples / finestra);
+  const sonora = new Array(nFinestre);
+  for (let w = 0; w < nFinestre; w++) {
+    const a = w * finestra, b = Math.min(nSamples, a + finestra);
+    let s = false;
+    for (let i = a; i < b; i++) if (ampiezzaAt(i) > sogliaAmpiezza) { s = true; break; }
+    sonora[w] = s;
+  }
+  const segmenti = [];
+  let inizio = -1, ultimaSonora = -1;
+  for (let w = 0; w < nFinestre; w++) {
+    if (sonora[w]) {
+      if (inizio === -1) inizio = w;
+      else if (w - ultimaSonora - 1 >= minPausaFinestre) { segmenti.push([inizio, ultimaSonora]); inizio = w; }
+      ultimaSonora = w;
+    }
+  }
+  if (inizio !== -1) segmenti.push([inizio, ultimaSonora]);
+  return segmenti.map(([wA, wB]) => ({
+    start: Math.max(0, wA * finestra - pad),
+    end: Math.min(nSamples, (wB + 1) * finestra + pad)
+  }));
+}
+
+function apriRegistratoreMulti(storiaId) {
+  const s = storie.find(s => s.id === storiaId);
+  if (!s) return;
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert('Microfono non disponibile in questo contesto.\n\nServe HTTPS o "localhost" (file:// non è supportato dai browser per getUserMedia). Per testare in locale prima del push, avvia un server statico (es. "npx serve ." o "python -m http.server") e apri http://localhost:.../edit-storie.html.');
+    return;
+  }
+  multiCtx = { storiaId };
+  resetPannelloMulti();
+  document.getElementById('reg-multi-titolo').textContent = `🎙️ Registra tutta la poesia — "${(s.titolo?.testo || s.id).slice(0, 50)}" (${(s.frasi || []).length} versi)`;
+  document.getElementById('reg-multi-slug').value = slugify(s.titolo?.testo || s.id);
+  document.getElementById('reg-multi-modal').classList.add('open');
+}
+
+function chiudiRegistratoreMulti() {
+  fermaAnteprimaSegmento();
+  if (multiRecorder && multiRecorder.state !== 'inactive') multiRecorder.stop();
+  if (multiStream) { multiStream.getTracks().forEach(t => t.stop()); multiStream = null; }
+  multiBuffer = null; multiSegmenti = [];
+  document.getElementById('reg-multi-modal').classList.remove('open');
+  multiCtx = null;
+}
+
+function resetPannelloMulti() {
+  fermaAnteprimaSegmento();
+  if (multiRecorder && multiRecorder.state !== 'inactive') multiRecorder.stop();
+  if (multiStream) { multiStream.getTracks().forEach(t => t.stop()); multiStream = null; }
+  multiChunks = []; multiBuffer = null; multiSegmenti = [];
+  document.getElementById('reg-multi-stato').textContent = 'Pronto.';
+  document.getElementById('reg-multi-controlli').style.display = 'none';
+  document.getElementById('reg-multi-btn-start').disabled = false;
+  document.getElementById('reg-multi-btn-stop').disabled = true;
+  document.getElementById('reg-multi-btn-redo').disabled = true;
+  document.getElementById('reg-multi-btn-salva').disabled = true;
+}
+
+async function avviaRegistrazioneMulti() {
+  try { multiStream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+  catch (e) { alert('Impossibile accedere al microfono: ' + e.message); return; }
+  multiChunks = []; multiBuffer = null; multiSegmenti = [];
+  const mimeType = sceltaMimeType();
+  multiRecorder = new MediaRecorder(multiStream, mimeType ? { mimeType } : undefined);
+  multiRecorder.ondataavailable = e => { if (e.data.size > 0) multiChunks.push(e.data); };
+  multiRecorder.onstop = onRegistrazioneMultiStop;
+  multiRecorder.start();
+  document.getElementById('reg-multi-stato').textContent = '⏺️ Registrazione in corso... leggi con pause nette tra i versi.';
+  document.getElementById('reg-multi-btn-start').disabled = true;
+  document.getElementById('reg-multi-btn-stop').disabled = false;
+  document.getElementById('reg-multi-btn-redo').disabled = true;
+  document.getElementById('reg-multi-controlli').style.display = 'none';
+}
+
+function fermaRegistrazioneMulti() {
+  if (multiRecorder && multiRecorder.state !== 'inactive') multiRecorder.stop();
+  if (multiStream) { multiStream.getTracks().forEach(t => t.stop()); multiStream = null; }
+  document.getElementById('reg-multi-btn-stop').disabled = true;
+}
+
+async function onRegistrazioneMultiStop() {
+  document.getElementById('reg-multi-stato').textContent = '⏳ Elaboro (divido sulle pause)...';
+  multiMime = (multiRecorder && multiRecorder.mimeType) || (multiChunks[0] && multiChunks[0].type) || 'audio/webm';
+  const grezzo = new Blob(multiChunks, { type: multiMime });
+  try {
+    const buf = await grezzo.arrayBuffer();
+    const AC = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AC();
+    try { multiBuffer = await ctx.decodeAudioData(buf); } finally { ctx.close(); }
+  } catch (e) {
+    console.error('[audio] decodifica fallita', e);
+    document.getElementById('reg-multi-stato').textContent = '❌ Decodifica fallita: ' + e.message;
+    document.getElementById('reg-multi-btn-redo').disabled = false;
+    return;
+  }
+  document.getElementById('reg-multi-btn-redo').disabled = false;
+  risegmenta();
+}
+
+function risegmenta() {
+  if (!multiBuffer) return;
+  const minPausa = parseInt(document.getElementById('reg-multi-pausa').value, 10);
+  document.getElementById('reg-multi-pausa-label').textContent = minPausa;
+  const canali = [];
+  for (let c = 0; c < multiBuffer.numberOfChannels; c++) canali.push(multiBuffer.getChannelData(c));
+  multiSegmenti = trovaSegmentiAudio(canali, multiBuffer.sampleRate, 0.02, minPausa, 50);
+  document.getElementById('reg-multi-controlli').style.display = '';
+  document.getElementById('reg-multi-stato').textContent = '✅ Controlla la divisione qui sotto.';
+  renderListaSegmenti();
+}
+
+function renderListaSegmenti() {
+  const s = storie.find(s => s.id === multiCtx.storiaId);
+  if (!s) return;
+  const frasi = s.frasi || [];
+  const n = multiSegmenti.length, m = frasi.length, ok = n === m && n > 0;
+  const conteggio = document.getElementById('reg-multi-conteggio');
+  conteggio.textContent = `${n} segmenti / ${m} versi ${ok ? '✅' : '❌'}`;
+  conteggio.style.color = ok ? 'var(--ok)' : 'var(--danger)';
+  const sr = multiBuffer.sampleRate;
+  const righe = Math.max(n, m);
+  let html = '';
+  for (let i = 0; i < righe; i++) {
+    const f = frasi[i], seg = multiSegmenti[i];
+    const durata = seg ? ((seg.end - seg.start) / sr).toFixed(1) : null;
+    html += `<div style="display:flex; align-items:center; gap:0.5rem; padding:0.3rem 0.2rem; border-bottom:1px dashed var(--border); font-size:0.82rem">
+      <span style="width:1.4rem; color:var(--muted); flex-shrink:0">${i + 1}</span>
+      <span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; ${f ? '' : 'color:var(--danger)'}">${f ? escapeHtml((f.testo || '(verso vuoto)').slice(0, 60)) : '⚠️ nessun verso corrispondente'}</span>
+      ${seg
+        ? `<span style="color:var(--muted); flex-shrink:0">${durata}s</span>
+           <button class="btn" style="padding:0.2rem 0.5rem" onclick="anteprimaSegmento(${i})" title="Ascolta questo segmento">▶️</button>
+           ${i > 0 ? `<button class="btn" style="padding:0.2rem 0.5rem" onclick="unisciColPrecedente(${i})" title="Unisci questo segmento al precedente (il verso era stato spezzato in due da una pausa interna)">⤴</button>` : ''}`
+        : '<span style="color:var(--danger); flex-shrink:0">⚠️ nessun segmento</span>'}
+    </div>`;
+  }
+  document.getElementById('reg-multi-lista').innerHTML = html || '<div style="color:var(--muted); padding:0.5rem">Nessun segmento rilevato (tutto silenzio?).</div>';
+  document.getElementById('reg-multi-btn-salva').disabled = !ok;
+}
+
+// Anteprima istantanea: riproduce il tratto direttamente dall'AudioBuffer già
+// decodificato (nessun encoding necessario prima del salvataggio).
+function anteprimaSegmento(i) {
+  const seg = multiSegmenti[i];
+  if (!seg || !multiBuffer) return;
+  fermaAnteprimaSegmento();
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!multiPreviewCtx || multiPreviewCtx.state === 'closed') multiPreviewCtx = new AC();
+  const src = multiPreviewCtx.createBufferSource();
+  src.buffer = multiBuffer;
+  src.connect(multiPreviewCtx.destination);
+  const sr = multiBuffer.sampleRate;
+  src.start(0, seg.start / sr, (seg.end - seg.start) / sr);
+  multiPreviewSource = src;
+}
+
+function fermaAnteprimaSegmento() {
+  if (multiPreviewSource) { try { multiPreviewSource.stop(); } catch (_) {} multiPreviewSource = null; }
+}
+
+function unisciColPrecedente(i) {
+  if (i <= 0 || i >= multiSegmenti.length) return;
+  multiSegmenti[i - 1].end = multiSegmenti[i].end; // pausa interna inclusa: stacco naturale
+  multiSegmenti.splice(i, 1);
+  renderListaSegmenti();
+}
+
+async function salvaAudioMulti() {
+  const s = storie.find(s => s.id === multiCtx.storiaId);
+  if (!s || !multiBuffer) return;
+  const frasi = s.frasi || [];
+  if (multiSegmenti.length !== frasi.length || !frasi.length) return;
+  let token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!token) {
+    token = prompt('Incolla il tuo Personal Access Token GitHub (Contents: Read/Write su "vecigagi"):');
+    if (!token) return;
+    token = token.trim();
+    localStorage.setItem(GH_TOKEN_KEY, token);
+  }
+  const slugBase = document.getElementById('reg-multi-slug').value.trim();
+  if (!slugBase) { alert('Inserisci un nome file base.'); return; }
+  const ext = estensioneDaMime(multiMime);
+  const normalizza = document.getElementById('reg-multi-normalizza').checked;
+  const nomi = frasi.map((_, i) => `${slugBase}-${String(i + 1).padStart(2, '0')}.${ext}`);
+  const stato = document.getElementById('reg-multi-stato');
+  const btn = document.getElementById('reg-multi-btn-salva'), orig = btn.textContent;
+  btn.disabled = true;
+  try {
+    // Verifica esistenza di tutti i file prima di caricare: un solo confirm cumulativo.
+    stato.textContent = '⏳ Verifico i file esistenti su GitHub...';
+    const shas = [];
+    for (const nome of nomi) shas.push(await otteniShaFile(`audio/${s.lingua}/${nome}`, token));
+    const esistenti = shas.filter(Boolean).length;
+    if (esistenti && !confirm(`${esistenti} file audio esistono già su GitHub con questi nomi. Sovrascriverli tutti?`)) {
+      stato.textContent = 'Salvataggio annullato.';
+      btn.disabled = false; btn.textContent = orig;
+      return;
+    }
+    for (let i = 0; i < frasi.length; i++) {
+      stato.textContent = `⏳ Verso ${i + 1}/${frasi.length}: preparo l'audio...`;
+      btn.textContent = `⏳ ${i + 1}/${frasi.length}`;
+      const seg = multiSegmenti[i];
+      const blob = await riregistraSegmento(multiBuffer, seg.start, seg.end, multiMime, normalizza);
+      stato.textContent = `⏳ Verso ${i + 1}/${frasi.length}: carico su GitHub...`;
+      const path = `audio/${s.lingua}/${nomi[i]}`;
+      await caricaFileBinarioSuGitHub(path, blob, `Audio ${path} da edit-storie.html (poesia intera)`, token, shas[i]);
+      frasi[i].audio = nomi[i];
+    }
+    segnaModificata(s.id);
+    chiudiRegistratoreMulti();
+    render();
+    setHelp(`✅ ${frasi.length} file audio caricati su GitHub (audio/${s.lingua}/${slugBase}-NN.${ext}). Il testo NON è ancora salvato: usa "☁️ Salva su GitHub" per registrare anche i riferimenti.`, 'success');
+  } catch (e) {
+    console.error('[audio multi]', e);
+    // I versi già caricati restano assegnati: si può ripetere il salvataggio
+    // (i file già presenti verranno riconfermati per la sovrascrittura).
+    alert('Errore durante il salvataggio multiplo:\n\n' + e.message + '\n\nI versi già caricati restano assegnati; puoi riprovare per completare i rimanenti.');
+    stato.textContent = '❌ Interrotto: ' + e.message;
+    btn.disabled = false; btn.textContent = orig;
+    renderListaSegmenti();
   }
 }
 
