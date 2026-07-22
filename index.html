@@ -3301,7 +3301,7 @@ const VOCABOLARIO_DEFAULT = [
       { it:"pigrone / scansafatiche", sp:"schenadrita", cr:"ganç da nient", verif:"sp:g" },
       { tema:"mestieri", livello:"A2", it:"pilota", en:"pilot", fr:"pilote", es:"piloto", de:"Pilot", pt:"piloto", ru:"пилот", ca:"pilot", ko:"조종사", ar:"طيار", zh:"飞行员", ja:"パイロット", ia:"pilota", la:"gubernator", grc:"κυβερνήτης", nt:["sp"] },
       { tema:"natura", livello:"A1", it:"pioggia", en:"rain", fr:"pluie", es:"lluvia", de:"Regen", pt:"chuva", ru:"дождь", ca:"pluja", sp:"aigua/àigoa", mn:"aigua/àigua", cr:"piogia / aqua", ge:"eigua/ægoa", ko:"비", ar:"مطر", zh:"雨", ja:"雨", ia:"pluvia", la:"pluvia", grc:"ὑετός", verif:"mn:g,ge:g,sp:g" },
-      { tema:"natura", livello:"B1", it:"piove ", en:"it's raining", fr:"il pleut", es:"llueve", de:"es regnet", pt:"chove", ca:"plou", sp:"cèva", mn:"a ceva", ge:"cieue", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"plouă" },
+      { tema:"natura", livello:"B1", it:"piove ", en:"it's raining", fr:"il pleut", es:"llueve", de:"es regnet", pt:"chove", ca:"plou", sp:"cèva", mn:"a ceva", ge:"cieue", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"plouă", audio:{"mn":"a-ceva.webm"} },
       { tema:"tempo", livello:"A2", it:"piove piove pian pianino", en:"rains gently", fr:"il pleut doucement", es:"llueve suavemente", pt:"chove suavemente", ca:"plou suaument", sp:"cèva cèva cian cianìn", mn:"ceva ceva cian cianìn", ge:"cieue cieue cian cianin", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"plou lin" },
       { tema:"dialogo", livello:"B1", it:"pipa/tubo", en:"pipe", fr:"pipe|tuyau", es:"pipa|tubería", de:"Pfeife|Rohr", pt:"cachimbo|cano", ru:"трубка|труба", ca:"pipa|tub", mn:"pipa", verif:"mn:g" },
       { tema:"natura", livello:"A2", it:"pipistrello", en:"bat", fr:"chauve-souris", es:"murciélago", de:"Fledermaus", pt:"morcego", ru:"летучая мышь", ca:"ratpenat", sp:"rato penùo", mn:"parpagiùn", cr:"parpaiòn/parpaion", ge:"ràtto penûgo", ko:"박쥐", ar:"خفاش", zh:"蝙蝠", ja:"こうもり", ia:"vespertilio", la:"vespertilio", grc:"νυκτερίς", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g", ro:"liliac" },
@@ -3697,7 +3697,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"timoniere", mn:"timunié", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"tino, botte verticale", sp:"tina", mn:"tina", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"tintura, colorante", en:"dye", fr:"teinture", es:"tintura", de:"Farbe", pt:"tintura", ca:"tint", mn:"tintüüa/tintüa", verif:"mn:g" },
-      { tema:"verbi", livello:"A1", it:"tirare", sp:"tià'e/tiae", mn:"stia'a, tia'a/stiaa,tiaa", verif:"sp:g,mn:g", audio:{sp:"tiae.mp3"} },
+      { tema:"verbi", livello:"A1", it:"tirare", sp:"tià'e/tiae", mn:"stia'a, tia'a/stiaa,tiaa", verif:"sp:g,mn:g", audio:{"sp":"tiae.mp3"} },
       { it:"tondo", sp:"tondo", mn:"tundu", cr:"tond", ge:"tundu/tondo", verif:"sp:g,mn:g" },
       { it:"tonno", sp:"tóno", cr:"tunina", ge:"tunnu/tonno", verif:"sp:g" },
       { tema:"animali", it:"topo", sp:"rato", mn:"ratu", cr:"top", src:{"mn":"🤖 IA"}, verif:"mn:g" },
@@ -3946,7 +3946,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 435;
+const VOC_VERSION = 436;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
