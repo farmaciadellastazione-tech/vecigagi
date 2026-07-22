@@ -85,6 +85,10 @@
       <button class="btn" id="reg-btn-stop" onclick="fermaRegistrazione()" disabled>⏹️ Stop</button>
       <button class="btn" id="reg-btn-redo" onclick="resetPannelloRegistratore()" disabled>🔄 Ricomincia</button>
     </div>
+    <div style="margin-bottom:0.6rem; font-size:0.85rem">
+      oppure carica un file audio esistente (vocale WhatsApp, registrazione da cellulare...):
+      <input type="file" accept="audio/*" id="reg-file-input" onchange="caricaFileAudioEsistente(event)">
+    </div>
     <audio id="reg-preview" controls style="width:100%; display:none; margin-bottom:0.6rem"></audio>
     <label style="display:flex; align-items:center; gap:0.5rem; flex-direction:row">
       <input type="checkbox" id="reg-normalizza" style="width:auto" checked>
@@ -110,6 +114,10 @@
       <button class="btn btn-primary" id="reg-multi-btn-start" onclick="avviaRegistrazioneMulti()">⏺️ Registra</button>
       <button class="btn" id="reg-multi-btn-stop" onclick="fermaRegistrazioneMulti()" disabled>⏹️ Stop</button>
       <button class="btn" id="reg-multi-btn-redo" onclick="resetPannelloMulti()" disabled>🔄 Ricomincia</button>
+    </div>
+    <div style="margin-bottom:0.6rem; font-size:0.85rem">
+      oppure carica un file audio esistente con tutta la poesia già letta (vocale WhatsApp, registrazione da cellulare...):
+      <input type="file" accept="audio/*" id="reg-multi-file-input" onchange="caricaFileAudioMultiEsistente(event)">
     </div>
     <div id="reg-multi-controlli" style="display:none">
       <div id="reg-multi-conteggio" style="font-weight:700; font-size:0.9rem; margin-bottom:0.4rem"></div>
@@ -555,7 +563,13 @@ function sceltaMimeType() {
   for (const c of candidati) if (window.MediaRecorder && MediaRecorder.isTypeSupported(c)) return c;
   return '';
 }
-function estensioneDaMime(mime) { return /ogg/.test(mime) ? 'ogg' : 'webm'; }
+function estensioneDaMime(mime) {
+  if (/ogg/.test(mime)) return 'ogg';
+  if (/mpeg|mp3/.test(mime)) return 'mp3';
+  if (/mp4|m4a|aac/.test(mime)) return 'm4a';
+  if (/wav/.test(mime)) return 'wav';
+  return 'webm';
+}
 
 function nomeFileAudioFraseProposto(s, idx) {
   const base = slugify(s.titolo?.testo || s.id);
@@ -575,10 +589,15 @@ function apriRegistratoreFrase(storiaId, idx) {
   const f = s.frasi[idx];
   document.getElementById('reg-titolo').textContent = `🎙️ Audio — frase ${idx + 1}: "${(f.testo || '').slice(0, 60)}"`;
   document.getElementById('reg-attuale').innerHTML = f.audio
-    ? `Audio attuale: <code>${escapeAttr(f.audio)}</code> <button class="btn" onclick="rimuoviAudioAttuale()">🗑️ Rimuovi riferimento</button>`
+    ? `Audio attuale: <code>${escapeAttr(f.audio)}</code> <button class="btn" onclick="ascoltaAudioAttuale('${s.lingua}', '${escapeAttr(f.audio)}')">▶️ Ascolta</button> <button class="btn" onclick="rimuoviAudioAttuale()">🗑️ Rimuovi riferimento</button>`
     : '<em>Nessun audio registrato per questa frase.</em>';
   document.getElementById('reg-nomefile').value = nomeFileAudioFraseProposto(s, idx);
   document.getElementById('reg-modal').classList.add('open');
+}
+
+function ascoltaAudioAttuale(lingua, nomeFile) {
+  const url = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/audio/${lingua}/${nomeFile}?t=${Date.now()}`;
+  new Audio(url).play().catch(e => alert('Impossibile riprodurre il file (non ancora su GitHub? errore: ' + e.message + ')'));
 }
 
 function rimuoviAudioAttuale() {
@@ -643,6 +662,29 @@ async function onRegistrazioneStop() {
   prev.src = URL.createObjectURL(recordedBlob);
   prev.style.display = '';
   document.getElementById('reg-stato').textContent = '✅ Pronto per l\'anteprima.';
+  document.getElementById('reg-btn-redo').disabled = false;
+  document.getElementById('reg-btn-salva').disabled = false;
+}
+
+async function caricaFileAudioEsistente(event) {
+  const file = event.target.files && event.target.files[0];
+  event.target.value = ''; // permette di riselezionare lo stesso file in seguito
+  if (!file) return;
+  resetPannelloRegistratore();
+  document.getElementById('reg-btn-start').disabled = true;
+  document.getElementById('reg-stato').textContent = '⏳ Elaboro file caricato...';
+  const mimeType = sceltaMimeType();
+  const normalizza = document.getElementById('reg-normalizza').checked;
+  try {
+    recordedBlob = await tagliaSilenzio(file, mimeType, normalizza);
+  } catch (e) {
+    console.warn('[audio] trim/riconversione falliti sul file caricato, uso il file originale', e);
+    recordedBlob = file;
+  }
+  const prev = document.getElementById('reg-preview');
+  prev.src = URL.createObjectURL(recordedBlob);
+  prev.style.display = '';
+  document.getElementById('reg-stato').textContent = "✅ Pronto per l'anteprima (file caricato).";
   document.getElementById('reg-btn-redo').disabled = false;
   document.getElementById('reg-btn-salva').disabled = false;
 }
@@ -900,6 +942,33 @@ async function onRegistrazioneMultiStop() {
   const grezzo = new Blob(multiChunks, { type: multiMime });
   try {
     const buf = await grezzo.arrayBuffer();
+    const AC = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AC();
+    try { multiBuffer = await ctx.decodeAudioData(buf); } finally { ctx.close(); }
+  } catch (e) {
+    console.error('[audio] decodifica fallita', e);
+    document.getElementById('reg-multi-stato').textContent = '❌ Decodifica fallita: ' + e.message;
+    document.getElementById('reg-multi-btn-redo').disabled = false;
+    return;
+  }
+  document.getElementById('reg-multi-btn-redo').disabled = false;
+  risegmenta();
+}
+
+async function caricaFileAudioMultiEsistente(event) {
+  const file = event.target.files && event.target.files[0];
+  event.target.value = ''; // permette di riselezionare lo stesso file in seguito
+  if (!file) return;
+  resetPannelloMulti();
+  document.getElementById('reg-multi-btn-start').disabled = true;
+  document.getElementById('reg-multi-stato').textContent = '⏳ Elaboro file caricato...';
+  // Nessun MediaRecorder in questo path (il file arriva già codificato): si
+  // sceglie comunque il mimeType di registrazione del browser per ri-codificare
+  // i segmenti in salvaAudioMulti/riregistraSegmento in un formato coerente con
+  // gli altri audio già presenti in audio/, invece del formato originale del file.
+  multiMime = sceltaMimeType() || file.type || 'audio/webm';
+  try {
+    const buf = await file.arrayBuffer();
     const AC = window.AudioContext || window.webkitAudioContext;
     const ctx = new AC();
     try { multiBuffer = await ctx.decodeAudioData(buf); } finally { ctx.close(); }

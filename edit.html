@@ -487,6 +487,10 @@
       <button class="btn btn-secondary" id="reg-btn-stop" onclick="fermaRegistrazione()" disabled>⏹️ Stop</button>
       <button class="btn btn-secondary" id="reg-btn-redo" onclick="resetPannelloRegistratore()" disabled>🔄 Ricomincia</button>
     </div>
+    <div style="margin-bottom:0.6rem; font-size:0.85rem">
+      oppure carica un file audio esistente (vocale WhatsApp, registrazione da cellulare...):
+      <input type="file" accept="audio/*" id="reg-file-input" onchange="caricaFileAudioEsistente(event)">
+    </div>
     <audio id="reg-preview" controls style="width:100%; display:none; margin-bottom:0.6rem"></audio>
     <label style="display:flex; align-items:center; gap:0.5rem; flex-direction:row; margin-bottom:0.6rem">
       <input type="checkbox" id="reg-normalizza" style="width:auto" checked>
@@ -2649,8 +2653,26 @@ function preparaTestoTTS(valore) {
 // in colonna o quando il bottone in fondo riga è fuori schermo su portatile).
 function ttsCella(btn, langCode) {
   const td = btn.closest('td');
+  const tr = btn.closest('tr');
+  const voce = tr && tr._voce;
   const input = td && td.querySelector(`input[data-field="${langCode}"]`);
   if (!input) return;
+  // Se la voce ha già un audio registrato (anche appena caricato, prima del
+  // "Salva su GitHub" del testo: il file binario è già su GitHub a quel punto),
+  // riproduce quello invece della sintesi — altrimenti il bottone 🔊 in riga
+  // farebbe sempre sentire la voce sintetica anche dopo aver registrato/caricato
+  // un audio vero. Cache-busting perché raw.githubusercontent.com può servire
+  // una versione cache stale appena dopo un upload/sovrascrittura.
+  const audioFile = voce && voce.audio && voce.audio[langCode];
+  if (audioFile) {
+    const url = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/audio/${langCode}/${audioFile}?t=${Date.now()}`;
+    const a = new Audio(url);
+    a.play().catch(() => parlaTTSCella(input, langCode));
+    return;
+  }
+  parlaTTSCella(input, langCode);
+}
+function parlaTTSCella(input, langCode) {
   const testo = preparaTestoTTS(input.value);
   if (!testo || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
@@ -2885,7 +2907,13 @@ function sceltaMimeType() {
   for (const c of candidati) if (window.MediaRecorder && MediaRecorder.isTypeSupported(c)) return c;
   return '';
 }
-function estensioneDaMime(mime) { return /ogg/.test(mime) ? 'ogg' : 'webm'; }
+function estensioneDaMime(mime) {
+  if (/ogg/.test(mime)) return 'ogg';
+  if (/mpeg|mp3/.test(mime)) return 'mp3';
+  if (/mp4|m4a|aac/.test(mime)) return 'm4a';
+  if (/wav/.test(mime)) return 'wav';
+  return 'webm';
+}
 
 function sluggifyAudio(s) {
   return (s || 'audio').toLowerCase().normalize('NFD').replace(new RegExp('[̀-ͯ]', 'g'), '')
@@ -2978,6 +3006,29 @@ async function onRegistrazioneStop() {
   prev.src = URL.createObjectURL(recordedBlob);
   prev.style.display = '';
   document.getElementById('reg-stato').textContent = '✅ Pronto per l\'anteprima.';
+  document.getElementById('reg-btn-redo').disabled = false;
+  document.getElementById('reg-btn-salva').disabled = false;
+}
+
+async function caricaFileAudioEsistente(event) {
+  const file = event.target.files && event.target.files[0];
+  event.target.value = ''; // permette di riselezionare lo stesso file in seguito
+  if (!file) return;
+  resetPannelloRegistratore();
+  document.getElementById('reg-btn-start').disabled = true;
+  document.getElementById('reg-stato').textContent = '⏳ Elaboro file caricato...';
+  const mimeType = sceltaMimeType();
+  const normalizza = document.getElementById('reg-normalizza').checked;
+  try {
+    recordedBlob = await tagliaSilenzio(file, mimeType, normalizza);
+  } catch (e) {
+    console.warn('[audio] trim/riconversione falliti sul file caricato, uso il file originale', e);
+    recordedBlob = file;
+  }
+  const prev = document.getElementById('reg-preview');
+  prev.src = URL.createObjectURL(recordedBlob);
+  prev.style.display = '';
+  document.getElementById('reg-stato').textContent = "✅ Pronto per l'anteprima (file caricato).";
   document.getElementById('reg-btn-redo').disabled = false;
   document.getElementById('reg-btn-salva').disabled = false;
 }
