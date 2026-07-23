@@ -67,6 +67,7 @@
   <button class="btn" onclick="caricaDaGitHub()">🔄 Ricarica</button>
   <button class="btn" onclick="nuovaStoria()">➕ Nuova storia</button>
   <button class="btn btn-primary" id="btn-save" onclick="salvaSuGitHub()">☁️ Salva su GitHub</button>
+  <button class="btn" onclick="reimpostaToken()" title="Cambia token GitHub">🔑</button>
 </header>
 
 <main>
@@ -148,6 +149,8 @@ const GH_BRANCH = 'main';
 const GH_PATH = 'storie.js';
 const GH_TOKEN_KEY = 'gh_pat_vecigagi'; // stesso token usato da edit.html/dialetti.html
 const BLOCK_START_RE = /^\s*const STORIE_DEFAULT = \[/m;
+
+function reimpostaToken() { if (confirm('Cancellare il token GitHub?')) { localStorage.removeItem(GH_TOKEN_KEY); alert('Token rimosso.'); } }
 
 const LINGUE = [
   { code:'en', name:'Inglese' }, { code:'de', name:'Tedesco' },
