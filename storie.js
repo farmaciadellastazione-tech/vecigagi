@@ -528,6 +528,57 @@ const STORIE_DEFAULT = [
       }
     ]
   }
+,
+  {
+    "id": "cr-a1-bastian-contrari-4",
+    "lingua": "cr",
+    "livello": "A1",
+    "tema": "poesia",
+    "titolo": {
+      "testo": "'L Bastian contrari",
+      "it": " Il Bastian contrario"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "autore": "",
+      "riferimento": "",
+      "licenza": ""
+    },
+    "frasi": [
+      {
+        "testo": "Tor d' chi è sta 'l Bastian:",
+        "it": "In questi pressi abita il Bastiano:"
+      },
+      {
+        "testo": "si è un gat i t' diz chi è un can,",
+        "it": "se è un gatto ti dice che è un cane,"
+      },
+      {
+        "testo": "si i è bianch il dà p'r ner",
+        "it": "se è bianco lo dà per nero,"
+      },
+      {
+        "testo": "si i è un fich p'r lù i è un per.",
+        "it": "se è un fico per lui è una pera."
+      },
+      {
+        "testo": "An s' sa propi come far!",
+        "it": "Non si sa proprio come fare!"
+      },
+      {
+        "testo": "I sirè da bastonar:",
+        "it": "Sarebbe da bastonare:"
+      },
+      {
+        "testo": "diri po' chi n'è un baston,",
+        "it": "dirgli poi che non è un bastone,"
+      },
+      {
+        "testo": "ma 'na filza d' macaron!!",
+        "it": "ma una filza di maccheroni."
+      }
+    ]
+  }
 ];
 
 // ── Export per browser + Node ────────────────────────────────────────────
