@@ -12177,7 +12177,7 @@ function App() {
   useEffect(() => {
     saveJSON(SK_AI, aiSettings);
   }, [aiSettings]);
-  // Deep-link da dialetti.html/link esterni. Quattro forme:
+  // Deep-link da dialetti.html/link esterni. Cinque forme:
   // - #glossario oppure #glossario/<codice>: apre il Glossario, ordinato e col
   //   dialetto attivato se specificato (i dialetti sono spenti di default).
   // - #ricerca oppure #ricerca/<codice>: apre Dictionary Search, col dialetto
@@ -12188,7 +12188,9 @@ function App() {
   //   apprese>=1: si veda scegli()).
   // - #storia/<id>: da storie.html, apre Lettura Guidata con quella storia
   //   preselezionata (richiede storie.js, caricato lazy: vedi caricaStorieScript).
-  // Es. linguaequiz.com/#glossario/sp, linguaequiz.com/#ricerca/sp, #storia/de-a1-ein-tag-im-park
+  // - #letturaguidata: apre Lettura Guidata senza storia preselezionata
+  //   (elenco storie), stessa via di scegli("letturaGuidata") da Home.
+  // Es. linguaequiz.com/#glossario/sp, linguaequiz.com/#ricerca/sp, #storia/de-a1-ein-tag-im-park, #letturaguidata
   useEffect(() => {
     const h = (window.location.hash || "").replace(/^#/, "");
     if (h === "glossario" || h.startsWith("glossario/")) {
@@ -12226,6 +12228,8 @@ function App() {
           alert("Impossibile caricare le storie. Riprova.");
         });
       }
+    } else if (h === "letturaguidata") {
+      scegli("letturaGuidata");
     }
   }, []);
   function avvia(voc, st, mod, ling, fil, linguaDa, linguaA, nDom) {
