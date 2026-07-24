@@ -527,8 +527,7 @@ const STORIE_DEFAULT = [
         "it": "sono capaci di fargli il monumento."
       }
     ]
-  }
-,
+  },
   {
     "id": "cr-a1-bastian-contrari-4",
     "lingua": "cr",
@@ -540,8 +539,8 @@ const STORIE_DEFAULT = [
     },
     "fonte": {
       "generato": "autentico",
-      "autore": "",
-      "riferimento": "",
+      "autore": "Auda Fucigna",
+      "riferimento": "'L cararin. Artigianelli, 1968",
       "licenza": ""
     },
     "frasi": [
