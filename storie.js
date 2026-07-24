@@ -370,11 +370,13 @@ const STORIE_DEFAULT = [
     "frasi": [
       {
         "testo": "Cian cianin",
-        "it": "Pian pianino"
+        "it": "Pian pianino",
+        "audio": "cian-cianin-01.webm"
       },
       {
         "testo": "andemo fino aa Ciapa",
-        "it": "andiamo fino alla Chiappa"
+        "it": "andiamo fino alla Chiappa",
+        "audio": "cian-cianin-02.webm"
       }
     ]
   },
