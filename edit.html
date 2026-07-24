@@ -326,6 +326,7 @@
   <button class="btn btn-secondary" onclick="apriFrasiSP()" title="Frasi scherzose in spezzino a fine esercizio">⚓ Frasi SP</button>
   <button id="btn-gh-save" class="btn btn-success" onclick="salvaSuGitHub()">☁️ Salva su GitHub</button>
   <button class="btn btn-secondary" onclick="scaricaCopia()" title="Scarica index.html localmente">💾 Scarica</button>
+  <button class="btn btn-secondary" onclick="mostraToken()" title="Mostra/copia il token GitHub salvato in questo browser">👁️</button>
   <button class="btn btn-secondary" onclick="reimpostaToken()" title="Cambia token GitHub">🔑</button>
   <span class="stats" id="footer-stats"></span>
   <span id="draft-indicator" style="color:var(--muted); font-size:0.8rem"></span>
@@ -2891,6 +2892,11 @@ async function salvaSuGitHub() {
 }
 
 function reimpostaToken() { if (confirm('Cancellare il token GitHub?')) { localStorage.removeItem(GH_TOKEN_KEY); alert('Token rimosso.'); } }
+function mostraToken() {
+  const token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!token) { alert('Nessun token GitHub salvato in questo browser.'); return; }
+  prompt('Token GitHub salvato (selezionato: Ctrl+C per copiare, poi Annulla):', token);
+}
 
 // ==========================================================================
 // REGISTRAZIONE AUDIO IN-BROWSER (voce dialettale)
