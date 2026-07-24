@@ -69,6 +69,7 @@
   <button class="btn btn-primary" id="btn-save" onclick="salvaSuGitHub()">☁️ Salva su GitHub</button>
   <button class="btn" onclick="mostraToken()" title="Mostra/copia il token GitHub salvato in questo browser">👁️</button>
   <button class="btn" onclick="reimpostaToken()" title="Cambia token GitHub">🔑</button>
+  <span id="draft-indicator" style="color:var(--muted); font-size:0.8rem"></span>
 </header>
 
 <main>
@@ -216,6 +217,85 @@ function ricostruisciSorgente() {
   return originalSource.slice(0, blocco.start) + corpo + originalSource.slice(blocco.end);
 }
 
+// ==========================================================================
+// BOZZA LOCALE (autosave in localStorage, per non perdere il lavoro in caso
+// di chiusura/refresh/crash accidentale prima del salvataggio su GitHub).
+// Stesso principio di edit.html (vedi DRAFT_LS lì), ma a documento intero
+// invece che per-riga: storie.js ha un solo punto di scrittura reale (questo
+// editor), a differenza del vocabolario che ha più fonti concorrenti — qui
+// la protezione dai conflitti si limita al confronto di sourceSnapshot col
+// testo fresco scaricato da GitHub al ricaricamento.
+// ==========================================================================
+const DRAFT_LS = 'lq_editstorie_draft_v1';
+let draftSaveTimer = null;
+
+window.addEventListener('beforeunload', e => {
+  if (newIds.size + modifiedIds.size > 0) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+
+function salvaBozzaLocale() {
+  clearTimeout(draftSaveTimer);
+  draftSaveTimer = setTimeout(() => {
+    if (newIds.size + modifiedIds.size === 0) {
+      localStorage.removeItem(DRAFT_LS);
+      const el = document.getElementById('draft-indicator'); if (el) el.textContent = '';
+      return;
+    }
+    try {
+      localStorage.setItem(DRAFT_LS, JSON.stringify({
+        savedAt: Date.now(),
+        sourceSnapshot: originalSource,
+        storie,
+        newIds: [...newIds],
+        modifiedIds: [...modifiedIds]
+      }));
+      mostraIndicatoreBozza();
+    } catch (_) {} // localStorage pieno o non disponibile: il beforeunload resta comunque attivo
+  }, 1500);
+}
+
+function mostraIndicatoreBozza() {
+  const el = document.getElementById('draft-indicator');
+  if (!el) return;
+  const ora = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+  el.textContent = `· bozza salvata alle ${ora}`;
+}
+
+function leggiBozzaLocale() {
+  try {
+    const raw = localStorage.getItem(DRAFT_LS);
+    if (!raw) return null;
+    const b = JSON.parse(raw);
+    if (!b || typeof b.sourceSnapshot !== 'string' || !Array.isArray(b.storie)) return null;
+    return b;
+  } catch (_) { return null; }
+}
+
+// Propone il ripristino della bozza sulla base del confronto col testo fresco
+// appena scaricato da GitHub: se combacia con quello al momento del
+// salvataggio della bozza, nessuno ha scritto su GitHub nel frattempo ed è
+// sicuro riapplicarla; altrimenti avvisa esplicitamente del rischio.
+function proponiRipristinoBozza(sorgenteFresca) {
+  const bozza = leggiBozzaLocale();
+  if (!bozza) return false;
+  const n = bozza.newIds.length + bozza.modifiedIds.length;
+  if (!n) { localStorage.removeItem(DRAFT_LS); return false; }
+  const data = new Date(bozza.savedAt).toLocaleString('it-IT');
+  const invariato = bozza.sourceSnapshot === sorgenteFresca;
+  const msg = invariato
+    ? `Trovate ${n} modifiche non salvate del ${data} (sessione precedente interrotta).\nVuoi ripristinarle? (storie.js non è stato modificato su GitHub nel frattempo)`
+    : `Trovate ${n} modifiche non salvate del ${data}, MA storie.js è stato modificato su GitHub dopo il salvataggio di questa bozza (probabilmente da un'altra sessione).\n\nRipristinare comunque la bozza rischia di far perdere quelle modifiche più recenti quando salverai di nuovo.\n\nRipristinare comunque?`;
+  if (!confirm(msg)) { localStorage.removeItem(DRAFT_LS); return false; }
+  storie = bozza.storie;
+  newIds = new Set(bozza.newIds);
+  modifiedIds = new Set(bozza.modifiedIds);
+  mostraIndicatoreBozza();
+  return true;
+}
+
 // ── Caricamento ──
 async function caricaDaGitHub() {
   setHelp('⏳ Carico storie.js da GitHub...', 'info');
@@ -226,7 +306,8 @@ async function caricaDaGitHub() {
     originalSource = await res.text();
     storie = estraiStorie(originalSource);
     openIds.clear(); newIds.clear(); modifiedIds.clear();
-    setHelp(`✅ Caricate <strong>${storie.length}</strong> storie. Modifica e clicca <strong>☁️ Salva su GitHub</strong> quando hai finito.`, 'success');
+    const ripristinata = proponiRipristinoBozza(originalSource);
+    setHelp(`✅ Caricate <strong>${storie.length}</strong> storie.${ripristinata ? ' Bozza locale ripristinata.' : ''} Modifica e clicca <strong>☁️ Salva su GitHub</strong> quando hai finito.`, 'success');
     render();
   } catch (err) {
     console.error(err);
@@ -257,6 +338,7 @@ function nuovaStoria() {
   storie.unshift(s);
   newIds.add(id);
   openIds.add(id);
+  salvaBozzaLocale();
   render();
   window.scrollTo(0, 0);
 }
@@ -267,6 +349,7 @@ function eliminaStoria(id) {
   if (!confirm(`Eliminare la storia "${s.titolo?.testo || id}"?`)) return;
   storie = storie.filter(s => s.id !== id);
   newIds.delete(id); modifiedIds.delete(id); openIds.delete(id);
+  salvaBozzaLocale();
   render();
 }
 
@@ -297,12 +380,14 @@ function rendiPrivata(id) {
   URL.revokeObjectURL(url);
   storie = storie.filter(s => s.id !== id);
   newIds.delete(id); modifiedIds.delete(id); openIds.delete(id);
+  salvaBozzaLocale();
   render();
   setHelp(`🔒 "${escapeHtml(privata.titolo?.testo || id)}" rimossa da qui e scaricata come JSON. Importala in index.html → Lettura guidata, poi clicca "☁️ Salva su GitHub" qui per rendere effettiva la rimozione dal sito pubblico.`, 'info');
 }
 
 function segnaModificata(id) {
   if (!newIds.has(id)) modifiedIds.add(id);
+  salvaBozzaLocale();
 }
 
 function aggiungiFrase(id) {
@@ -546,6 +631,8 @@ async function salvaSuGitHub() {
     if (!putRes.ok) { if (putRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('PUT fallito (' + putRes.status + ')'); }
     originalSource = nuovoSrc;
     newIds.clear(); modifiedIds.clear();
+    try { localStorage.removeItem(DRAFT_LS); } catch (_) {}
+    const indDraft = document.getElementById('draft-indicator'); if (indDraft) indDraft.textContent = '';
     btn.textContent = '✅ Salvato!';
     setHelp('✅ Salvataggio riuscito! GitHub Pages aggiornerà tra 1-2 min.', 'success');
     setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 3000);
