@@ -89,6 +89,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö commensa, c'ûn pö de commozion:",
         "it": "Comincia, con un po' di commozione:"
+      },
+      {
+        "testo": "Mi nö fasso pe dî, bèlla reginn-a,",
+        "it": "Non faccio per dire, bella regina,"
+      },
+      {
+        "testo": "Ma se parlo, mi ö fasso pe vosciâ",
+        "it": "Ma se parlo, lo faccio per vossia (per voi)"
+      },
+      {
+        "testo": "Quando penso ai mæ caxi, ä mæ rovinn-a,",
+        "it": "Quando penso ai miei casi, alla mia rovina,"
+      },
+      {
+        "testo": "A morte de Creûsa e dö pappâ,",
+        "it": "Alla morte di Creusa e del papà,"
+      },
+      {
+        "testo": "Mi ghe confesso che n'ho a mussa pinn-a",
+        "it": "Io le confesso che ne ho la mussa piena,"
+      },
+      {
+        "testo": "Sciâ scûse l'esprescion, ma chi a ghe stâ,",
+        "it": "Scusi l'espressione, ma qui ci sta,"
+      },
+      {
+        "testo": "E invece de contâ di avvenimenti",
+        "it": "E invece di raccontare degli avvenimenti"
+      },
+      {
+        "testo": "Mi tieivo zû di tacchi e di aççidenti.",
+        "it": "Tirerei giù delle imprecazioni e degli accidenti."
       }
     ]
   },
