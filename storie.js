@@ -47,7 +47,7 @@ const STORIE_DEFAULT = [
     "tema": "",
     "titolo": {
       "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese",
-      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese"
+      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese [test-bozza] [BOZZA-A]"
     },
     "fonte": {
       "generato": "autentico",
@@ -121,6 +121,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Mi tieivo zû di tacchi e di aççidenti.",
         "it": "Tirerei giù delle imprecazioni e degli accidenti."
+      },
+      {
+        "testo": "Ma andemmo là, sebben segge za l'ôa",
+        "it": "Ma andiamo là, sebbene sia già l'ora"
+      },
+      {
+        "testo": "D'andâse a inghœûgge in mezo a duî lensœû,",
+        "it": "Di andarsi a infilare in mezzo a due lenzuola,"
+      },
+      {
+        "testo": "Benché sente ö magon, serrâme a gôa",
+        "it": "Benché senta il magone serrarmi la gola"
+      },
+      {
+        "testo": "E me vegne ö sappin comme ai figgiœû,",
+        "it": "E mi venga da piangere come ai bambini,"
+      },
+      {
+        "testo": "Se sciâ vœû che ghe conte, câ scignôa",
+        "it": "Se lei vuole che glielo racconti, cara signora"
+      },
+      {
+        "testo": "Mi m'arrendo e faiô comme sciâ vœû,",
+        "it": "Io mi arrendo e farò come lei vuole,"
+      },
+      {
+        "testo": "E ghe desteghiô zû tutta a mæ stoia",
+        "it": "E le sbroglierò giù tutta la mia storia"
+      },
+      {
+        "testo": "E l'incendio terribile de Troia.",
+        "it": "E l'incendio terribile di Troia."
+      },
+      {
+        "testo": "Sti bonægia de greci inveninæ",
+        "it": "Questa gentaglia di Greci avvelenati"
+      },
+      {
+        "testo": "De no pûeinelo mette ciû derë,",
+        "it": "Di non potercelo più mettere di dietro,"
+      },
+      {
+        "testo": "Doppo avei caccioû via sangue e dinæ",
+        "it": "Dopo aver buttato via sangue e denari"
+      },
+      {
+        "testo": "Senza costrûto e mette avanti ûn pë,",
+        "it": "Senza costrutto e senza fare un passo avanti,"
+      },
+      {
+        "testo": "Comme tûtti i batösi e i mandilæ",
+        "it": "Come tutti i farabutti e i borseggiatori"
+      },
+      {
+        "testo": "Han misso man ai færi dö mestë,",
+        "it": "Hanno messo mano ai ferri del mestiere,"
+      },
+      {
+        "testo": "All'inganno, ai manezzi, all'impostûa:",
+        "it": "All'inganno, ai maneggi, all'impostura:"
+      },
+      {
+        "testo": "Arti che riescian dacché ö mondo ö dûa!",
+        "it": "Arti che riescono da che il mondo dura!"
       }
     ]
   },
