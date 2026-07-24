@@ -41,6 +41,58 @@
 
 const STORIE_DEFAULT = [
   {
+    "id": "ge-a1-eneide-4",
+    "lingua": "en",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese",
+      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
+      {
+        "testo": "Appenn-a han visto Enea tiâ sciû ö mandillo",
+        "it": "Appena hanno visto Enea tirar fuori il fazzoletto"
+      },
+      {
+        "testo": "Sciûsciase ö naso e mettise a scraccâ,",
+        "it": "Soffiarsi il naso e mettersi a scracchiare,"
+      },
+      {
+        "testo": "Tutti han çercôu dove pösâ ö bacillo,",
+        "it": "Tutti han cercato dove posare il bacino (il sedere),"
+      },
+      {
+        "testo": "Pe sentilo ciû comodi a parlâ.",
+        "it": "Per sentirlo parlare più comodi."
+      },
+      {
+        "testo": "Quando l'é stæto ognûn quieto e tranquillo",
+        "it": "Quando ognuno è stato quieto e tranquillo"
+      },
+      {
+        "testo": "Che se pûeiva sentî ûnn-a mosca sghæuâ,",
+        "it": "Che si poteva sentire una mosca volare,"
+      },
+      {
+        "testo": "Enea, dall'äto dö so caregon",
+        "it": "Enea, dall'alto del suo cadregone"
+      },
+      {
+        "testo": "Ö commensa, c'ûn pö de commozion:",
+        "it": "Comincia, con un po' di commozione:"
+      }
+    ]
+  },
+  {
     "id": "sp-a2-padrone-e-mezzadro4",
     "lingua": "sp",
     "livello": "A2",
