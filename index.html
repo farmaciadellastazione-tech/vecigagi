@@ -10668,11 +10668,13 @@ function SchermataLetturaGuidata({
     setSpiegazione("");
   }
   // Salva una parola spiegata dall'AI (assente dal vocabolario) come candidato in
-  // attesa di revisione manuale. Dedup per parola normalizzata + lingua.
+  // attesa di revisione manuale. Dedup per parola normalizzata + lingua + traduzione:
+  // una stessa grafia può avere sensi diversi in frasi diverse (es. "aa" = "ala" in
+  // un punto, "alla" in un altro) — deduplicare solo su parola+lingua ne perdeva uno.
   function aggiungiCandidato(c) {
     setCandidatiLG(prev => {
-      const chiave = normalizza(c.parola) + "|" + c.lingua;
-      if (prev.some(p => normalizza(p.parola) + "|" + p.lingua === chiave)) return prev;
+      const chiave = normalizza(c.parola) + "|" + c.lingua + "|" + normalizza(c.it);
+      if (prev.some(p => normalizza(p.parola) + "|" + p.lingua + "|" + normalizza(p.it) === chiave)) return prev;
       const next = [...prev, c];
       saveJSON(SK_CANDIDATI_LG, next);
       return next;
