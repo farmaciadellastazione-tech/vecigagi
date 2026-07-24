@@ -1156,6 +1156,7 @@
     <span id="admin-branch-badge" style="display:none; font-size:12px; font-weight:700; margin-left:8px; padding:2px 8px; border-radius:6px"></span>
   </div>
   <button class="btn-gh-reset" onclick="adminReset()">Annulla</button>
+  <button class="btn-gh-reset" onclick="adminMostraToken()" title="Mostra/copia il PAT GitHub salvato in questo browser">👁️</button>
   <button class="btn-gh-reset" onclick="adminResetToken()" title="Cancella il PAT GitHub salvato">🔑</button>
   <button class="btn-gh-reset" onclick="adminImportApri()" title="Importa traduzioni da un file (HTML/JS/JSON) e proponi modifiche">📤 Importa</button>
   <button class="btn-gh-reset" onclick="adminImportDaLG()" title="Importa i candidati raccolti in Lettura guidata in QUESTO browser (parole toccate nelle storie, salvate nel localStorage)">📖 Importa da Lettura guidata</button>
@@ -2726,6 +2727,12 @@ function adminResetToken() {
     localStorage.removeItem(GH_TOKEN_KEY);
     alert('Token rimosso. Verrà richiesto al prossimo salvataggio.');
   }
+}
+
+function adminMostraToken() {
+  const token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!token) { alert('Nessun token GitHub salvato in questo browser.'); return; }
+  prompt('Token GitHub salvato (selezionato: Ctrl+C per copiare, poi Annulla):', token);
 }
 
 // ─── IMPORT DA FILE (admin) ───────────────────────────────────────────

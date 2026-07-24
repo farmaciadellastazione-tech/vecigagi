@@ -67,6 +67,7 @@
   <button class="btn" onclick="caricaDaGitHub()">🔄 Ricarica</button>
   <button class="btn" onclick="nuovaStoria()">➕ Nuova storia</button>
   <button class="btn btn-primary" id="btn-save" onclick="salvaSuGitHub()">☁️ Salva su GitHub</button>
+  <button class="btn" onclick="mostraToken()" title="Mostra/copia il token GitHub salvato in questo browser">👁️</button>
   <button class="btn" onclick="reimpostaToken()" title="Cambia token GitHub">🔑</button>
 </header>
 
@@ -151,6 +152,11 @@ const GH_TOKEN_KEY = 'gh_pat_vecigagi'; // stesso token usato da edit.html/diale
 const BLOCK_START_RE = /^\s*const STORIE_DEFAULT = \[/m;
 
 function reimpostaToken() { if (confirm('Cancellare il token GitHub?')) { localStorage.removeItem(GH_TOKEN_KEY); alert('Token rimosso.'); } }
+function mostraToken() {
+  const token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!token) { alert('Nessun token GitHub salvato in questo browser.'); return; }
+  prompt('Token GitHub salvato (selezionato: Ctrl+C per copiare, poi Annulla):', token);
+}
 
 const LINGUE = [
   { code:'en', name:'Inglese' }, { code:'de', name:'Tedesco' },
