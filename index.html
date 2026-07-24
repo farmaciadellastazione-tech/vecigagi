@@ -4883,7 +4883,8 @@ function BtnAudio({
   testo,
   bcp47,
   size = "text-xl",
-  codice = ""
+  codice = "",
+  audioFile = null
 }) {
   const noAudio = codice && LINGUE_SENZA_AUDIO.has(codice);
   // Controlla dinamicamente se la voce è disponibile per questa lingua
@@ -4925,13 +4926,13 @@ function BtnAudio({
   const _pronuncia = UI[getUILang()].pronuncia;
   return /*#__PURE__*/React.createElement(React.Fragment, null,
     /*#__PURE__*/React.createElement("button", {
-      onClick: () => parla(testo, bcp47),
+      onClick: () => parla(testo, bcp47, false, audioFile),
       title: _pronuncia,
       "aria-label": _pronuncia,
       className: `text-sky-500 hover:text-sky-600 transition p-1 ${size}`
     }, "\uD83D\uDD0A"),
     /*#__PURE__*/React.createElement("button", {
-      onClick: () => parla(testo, bcp47, true),
+      onClick: () => parla(testo, bcp47, true, audioFile),
       title: "Ascolta lentamente", "aria-label": "Ascolta lentamente",
       className: `text-sky-500 hover:text-sky-600 transition p-1 ${size}`
     }, "\uD83D\uDC22")
@@ -11198,7 +11199,8 @@ Forma: {"spiegazione": string, "traduzione": string}
     testo: formaTTS(frase.testo),
     bcp47: lng.bcp47,
     codice: lng.codice,
-    size: "text-2xl"
+    size: "text-2xl",
+    audioFile: frase.audio ? storiaSel.lingua + "/" + frase.audio : null
   })), (statoSpiega === "loading" || statoSpiega === "risposta") && React.createElement("div", {
     onClick: e => e.stopPropagation(),
     className: "bg-zinc-900 border border-zinc-700 rounded-xl p-3 mt-3 text-left w-full"
