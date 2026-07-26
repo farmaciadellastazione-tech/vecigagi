@@ -47,7 +47,7 @@ const STORIE_DEFAULT = [
     "tema": "",
     "titolo": {
       "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese",
-      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese [test-bozza] [BOZZA-A]"
+      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese"
     },
     "fonte": {
       "generato": "autentico",
