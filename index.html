@@ -10072,10 +10072,20 @@ function SchermataSceltaMultipla({
       const lA = targetsValidi[Math.floor(Math.random() * targetsValidi.length)];
       const correttaRaw = entry[lA.codice];
       const corretta = formaDisplay(correttaRaw, lA.codice);
-      // Distrattori dalla stessa lingua target
+      // Distrattori dalla stessa lingua target: dedup per testo visualizzato
+      // (non solo contro la corretta, anche tra loro) per evitare due opzioni
+      // identiche quando due voci diverse condividono la stessa forma nel
+      // dialetto (es. omofoni "cera"/"sera" = sp:"séa").
       const pool_lA = poolGlobale.filter(e => e[lA.codice] && String(e[lA.codice]).trim());
-      const altri = pool_lA.filter(e => formaDisplay(e[lA.codice], lA.codice) !== corretta)
-        .sort(() => Math.random() - 0.5).slice(0, st.nScelte - 1);
+      const vistiDisplay = new Set([corretta]);
+      const altri = [];
+      for (const e of [...pool_lA].sort(() => Math.random() - 0.5)) {
+        if (altri.length >= st.nScelte - 1) break;
+        const d = formaDisplay(e[lA.codice], lA.codice);
+        if (vistiDisplay.has(d)) continue;
+        vistiDisplay.add(d);
+        altri.push(e);
+      }
       if (altri.length < st.nScelte - 1) continue;
       const scelte = [
         { raw: correttaRaw, display: corretta },
