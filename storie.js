@@ -441,6 +441,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "E in Troia stö cavallo ö nö ghe piscia.",
         "it": "E in Troia questo cavallo non ci piscia!"
+      },
+      {
+        "testo": "E coscì, senza azzunze ûnn'a parolla",
+        "it": "E così, senza aggiungere una parola"
+      },
+      {
+        "testo": "Ö te piggia l'amîa con a so lansa,",
+        "it": "Prende la mira con la sua lancia,"
+      },
+      {
+        "testo": "E con tûtta a so forza ö te ghe-a molla",
+        "it": "E con tutta la sua forza gliela molla"
+      },
+      {
+        "testo": "Che a se ghe va a ciantâ drita in ta pansa;",
+        "it": "Che le si va a piantare dritta nella pancia;"
+      },
+      {
+        "testo": "Ö cavallo dä botta, ö scroscie, ö scrolla,",
+        "it": "Il cavallo per il colpo, scricchiola, scrolla,"
+      },
+      {
+        "testo": "E ö rimbomba con tanta risonanza,",
+        "it": "E rimbomba con tanta risonanza,"
+      },
+      {
+        "testo": "Che ghe vœiva ûnn-a manega de matti,",
+        "it": "Che ci voleva una manica di matti,"
+      },
+      {
+        "testo": "Pê nö vedde che ö l'ëa pin de sordatti.",
+        "it": "Per non vedere che era pieno di soldati"
       }
     ]
   },
