@@ -537,6 +537,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Cose son sti ruffien, sti farabûtti",
         "it": "Che razza di ruffiani, di farabutti."
+      },
+      {
+        "testo": "Quande l'han visto, mi ghe lascio dî!",
+        "it": "Quando l'hanno visto, le lascio immaginare!"
+      },
+      {
+        "testo": "Ghe vosciûo i savi e i matti pe salvalö!",
+        "it": "Ci son voluti i savi e i matti per salvarlo!"
+      },
+      {
+        "testo": "Lascian tûtti ö cavallo, pe corrî",
+        "it": "Lasciano tutti il cavallo, per correre"
+      },
+      {
+        "testo": "A veddilo dappresso, a circondalo;",
+        "it": "A vederlo da vicino, a circondarlo;"
+      },
+      {
+        "testo": "Vœûan vedde tûtti, tûtti sta a sentî,",
+        "it": "Volevano vedere tutti, tutti stare a sentire,"
+      },
+      {
+        "testo": "Dîghe tûtti ûnn-a cosa e cuggionalo",
+        "it": "Dirgli tutti qualcosa e coglionarlo"
+      },
+      {
+        "testo": "E lé o strenzeiva ö cû dâ scagabûggia",
+        "it": "E lui  lo stringeva il culo per la caga"
+      },
+      {
+        "testo": "Da nö pöeighe ciû infiâ mancö ûn'agûggia.",
+        "it": "Da non poterci più infilare manco un aghetto."
       }
     ]
   },
