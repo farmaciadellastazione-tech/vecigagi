@@ -660,11 +660,75 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Che mi son ûn bellinön a çento döggie",
-        "it": "Che io sono un belinöne di prim'ordine,"
+        "it": "Che io sono un belinöne al quadrato,"
       },
       {
         "testo": "Ma nisciun m'ha mai dito: contacöggie.",
         "it": "Ma nessuno mi ha mai detto: contaballe.\""
+      },
+      {
+        "testo": "Sciâ l'aviâ, za m'immagino, sentîo",
+        "it": "Lei avrà, già m'immagino, sentito"
+      },
+      {
+        "testo": "Parlâ de Palamede, rinomoû",
+        "it": "Parlare di Palamede, rinomato"
+      },
+      {
+        "testo": "Comme ommo valoroso, onesto e ardîo,",
+        "it": "Come uomo valoroso, onesto e ardito,"
+      },
+      {
+        "testo": "Che i greci per invidia han ammazzoû.",
+        "it": "Che i Greci per invidia hanno ammazzato."
+      },
+      {
+        "testo": "Quando lë pe sta guæra ö le partîo,",
+        "it": "Quando lui per questa guerra è partito,"
+      },
+      {
+        "testo": "Pe vôéntæ dö papà, l'ho accompagnoû;",
+        "it": "Per volontà del papà, l'ho accompagnato;"
+      },
+      {
+        "testo": "Vivo lë mi ho sciûscioû sempre in coverta",
+        "it": "Finché era vivo lui, me la passavo sempre al coperto,"
+      },
+      {
+        "testo": "E nisciûn se azzardoû de dâme a berta.",
+        "it": "E nessuno si è azzardato a prendermi in giro"
+      },
+      {
+        "testo": "Ma lë morto, pe invidia e tradimento.",
+        "it": "Ma morto lui, per invidia e tradimento"
+      },
+      {
+        "testo": "De quello brûtto mandilâ d'Ulisse,",
+        "it": "Di quel brutto furfante di Ulisse,"
+      },
+      {
+        "testo": "Mi n'ho sentîo tanto rincrescimento.",
+        "it": "Io ne ho provato un tale dispiacere,"
+      },
+      {
+        "testo": "Che no saveivo ciû cose me disse!",
+        "it": "Che non sapevo più nemmeno io cosa dicessi!"
+      },
+      {
+        "testo": "Ho sbraggioû comme un matto, e mæ zûamento,",
+        "it": "Ho sbraitato come un matto, e lo giuro,"
+      },
+      {
+        "testo": "Se no ghe l'ho picchæ, ghe l'ho promisse,",
+        "it": "Se non gliele ho picchiate, gliele ho promesse,"
+      },
+      {
+        "testo": "L'ho provöcoû, g'ho ditö cose ö l'ea",
+        "it": "L'ho provocato, gli ho detto che cosa era:"
+      },
+      {
+        "testo": "Pendin da forca, avanzo de galea.",
+        "it": "Un pendaglio da forca, un avanzo di galera."
       }
     ]
   },
