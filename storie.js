@@ -217,6 +217,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Dentro da pansa dö cavallo ascösi.",
         "it": "nascosti dentro la pancia del cavallo."
+      },
+      {
+        "testo": "Pe contro a Troia, forse sciâ ö saviâ,",
+        "it": "Di fronte a Troia, forse Lei lo saprà,"
+      },
+      {
+        "testo": "Gh'é un'isöa comme quella de Berzezzi,",
+        "it": "c'è un'isola come quella di Bergeggi,"
+      },
+      {
+        "testo": "Ûnn'a votta, fiorente e popolâ,",
+        "it": "una volta fiorente e popolata,"
+      },
+      {
+        "testo": "Aôa ûn mûggio de sasci, a picco e sgrezzi;",
+        "it": "ora un mucchio di sassi, a picco e rocciosi;"
+      },
+      {
+        "testo": "I greci, fando mostra de filâ,",
+        "it": "i Greci, facendo finta di filare,"
+      },
+      {
+        "testo": "Se ghe son fermæ dietro in sce i ormezzi;",
+        "it": "si son fermati lì dietro, agli ormeggi;"
+      },
+      {
+        "testo": "Noî, cose serve dighe ûnn-a bôxia,",
+        "it": "noi, a che serve dirle una bugia,"
+      },
+      {
+        "testo": "Semmo stæti bedûin, l'emmo sciorbia!",
+        "it": "siamo stati beduini, ce la siamo bevuta!"
       }
     ]
   },
