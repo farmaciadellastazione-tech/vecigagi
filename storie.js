@@ -281,6 +281,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Chi cianze da-o piaxei, chi s'incicchetta!",
         "it": "chi piange dal piacere, chi si sbronza!"
+      },
+      {
+        "testo": "Comme quande se sente ö campanin",
+        "it": "Come quando si sente la campanella"
+      },
+      {
+        "testo": "Che ö l'é ö segno dö termine da schœûa",
+        "it": "che è il segnale della fine della scuola,"
+      },
+      {
+        "testo": "Tûtti quanti i scolai, grendi e piccin,",
+        "it": "tutti quanti gli scolari, grandi e piccini,"
+      },
+      {
+        "testo": "S'asbrian, se spuncian, pe sciortî de fœûa,",
+        "it": "si precipitano, si spingono per uscire fuori,"
+      },
+      {
+        "testo": "Pensando za a-e delizie dö scrollin,",
+        "it": "pensando già alle delizie dello scrollin,"
+      },
+      {
+        "testo": "Dö pampano e da lippa all'Accassœûa,",
+        "it": "del pampano e della lippa all'Acquasola,"
+      },
+      {
+        "testo": "Cosî noi, quæxi imbriæghi, invexendæ",
+        "it": "così noi, quasi ubriachi, in subbuglio,"
+      },
+      {
+        "testo": "S'asbriemmo a futti cû, fœûa da çittæ",
+        "it": "ci precipitammo a rotta di collo, fuori dalla città."
+      },
+      {
+        "testo": "E lì tûtti pe-o campo abbandonoû",
+        "it": "E lì tutti per il campo abbandonato,"
+      },
+      {
+        "testo": "Chi da ûn canto e dall'âltro a frûgattâ;",
+        "it": "Chi da un lato e chi dall'altro a frugare;"
+      },
+      {
+        "testo": "Chi gh'ëa e navi, se dîva, chi accampoû",
+        "it": "Qui c'erano le navi, si diceva, qui accampato"
+      },
+      {
+        "testo": "Gh'ëa Diomede, chi quello mandilâ",
+        "it": "C'era Diomede, qui quel ladro"
+      },
+      {
+        "testo": "D'Ulisse, chi Achille ö se retioû;",
+        "it": "Di Ulisse, qui Achille si era ritirato;"
+      },
+      {
+        "testo": "Chi gh'ëa ö stato maggiö, chi gh'ëa l'armâ,",
+        "it": "Qui c'era lo stato maggiore, qui c'era l'armata,"
+      },
+      {
+        "testo": "Chi gh'ëa a primma caxon dö noströ gûao",
+        "it": "Qui c'era la causa prima dei nostri guai:"
+      },
+      {
+        "testo": "Quello becco fottûo de Menelao",
+        "it": "Quel becco fottuto di Menelao."
       }
     ]
   },
