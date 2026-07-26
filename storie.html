@@ -164,13 +164,14 @@
   .frase .native {
     font-family: 'Crimson Pro', serif;
     font-size: 19px;
+    font-weight: 600;
     line-height: 1.55;
-    color: var(--text);
+    color: var(--story-color, var(--text));
   }
   .frase .it {
     font-family: 'Crimson Pro', serif;
     font-style: italic;
-    color: var(--muted);
+    color: var(--text);
     font-size: 15px;
     line-height: 1.45;
     margin-top: 4px;
@@ -192,6 +193,13 @@
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     color: #94a3b8;
+  }
+  /* Strofe (es. ottave): riga di distacco più marcata all'inizio di ogni
+     strofa, per far percepire la struttura metrica del componimento. */
+  .frase.strofa-inizio {
+    margin-top: 14px;
+    padding-top: 22px;
+    border-top: 1px dashed var(--border);
   }
   .cta {
     display: inline-block;
@@ -417,6 +425,10 @@
     cr: { nome: "Carrarino", bandiera: "🪨" }
   };
   const COLORI_LINGUA = { sp: "var(--sp)", ge: "var(--ge)", cr: "var(--cr)", mn: "var(--mn)", de: "var(--de)", en: "var(--en)" };
+  // Lunghezza della strofa per le poesie composte in metrica regolare (es.
+  // l'Eneide in genovese di Bacigalupo è in ottave): usata solo per marcare
+  // graficamente l'inizio di ogni strofa, nessun effetto sul contenuto.
+  const STROFA_LEN = { "ge-a1-eneide-4": 8 };
 
   const storie = (typeof STORIE_DEFAULT !== "undefined" ? STORIE_DEFAULT : []);
   const listaEl = document.getElementById("lista");
@@ -471,11 +483,15 @@
     listaEl.innerHTML = filtrate.map(s => {
       const lbl = LINGUE_LABEL[s.lingua] || { nome: s.lingua, bandiera: "" };
       const colore = COLORI_LINGUA[s.lingua] || "var(--accent)";
-      const frasiHtml = s.frasi.map(f => `
-        <div class="frase">
+      const strofaLen = STROFA_LEN[s.id] || 0;
+      const frasiHtml = s.frasi.map((f, i) => {
+        const inizioStrofa = strofaLen > 0 && i > 0 && i % strofaLen === 0;
+        return `
+        <div class="frase${inizioStrofa ? " strofa-inizio" : ""}">
           <div class="native">${escapeHtml(testoFrase(f, s.lingua))}</div>
           <div class="it">${escapeHtml(f.it)}</div>
-        </div>`).join("");
+        </div>`;
+      }).join("");
       return `
         <article class="card">
           <div class="card-head">
@@ -488,7 +504,7 @@
             ${s.tema ? `<span class="badge">${escapeHtml(s.tema)}</span>` : ""}
           </div>
           <div class="fonte">${escapeHtml(badgeFonte(s.fonte))}</div>
-          <div class="frasi${s.frasi.length > 12 ? " lunga" : ""}">${frasiHtml}</div>
+          <div class="frasi${s.frasi.length > 12 ? " lunga" : ""}" style="--story-color:${colore}">${frasiHtml}</div>
           <a class="cta" href="index.html#storia/${encodeURIComponent(s.id)}">Continua in modalità interattiva →</a>
         </article>`;
     }).join("");
