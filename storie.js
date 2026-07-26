@@ -249,6 +249,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Semmo stæti bedûin, l'emmo sciorbia!",
         "it": "siamo stati beduini, ce la siamo bevuta!"
+      },
+      {
+        "testo": "Sciâ se pœû immaginâ quant'allegria",
+        "it": "Lei si può immaginare quanta allegria,"
+      },
+      {
+        "testo": "Quanto sciato, che fö, che ramadan!",
+        "it": "quanto chiasso, che frastuono, che ramadan!"
+      },
+      {
+        "testo": "Stemmo allegri figgiœû che a le finîa,",
+        "it": "Stiamo allegri, ragazzi, che è finita,"
+      },
+      {
+        "testo": "Sti brûttöî finalmente se ne van!",
+        "it": "questi incivili finalmente se ne vanno!"
+      },
+      {
+        "testo": "Chi s'abbrassa, chi spaxima, chi cria,",
+        "it": "Chi si abbraccia, chi spasima, chi grida,"
+      },
+      {
+        "testo": "Chi s'ammalocca, chi se tocca a man,",
+        "it": "chi si aggroviglia, chi si stringe la mano,"
+      },
+      {
+        "testo": "E chi sâta, chi balla, chi sgambetta,",
+        "it": "e chi salta, chi balla, chi sgambetta,"
+      },
+      {
+        "testo": "Chi cianze da-o piaxei, chi s'incicchetta!",
+        "it": "chi piange dal piacere, chi si sbronza!"
       }
     ]
   },
