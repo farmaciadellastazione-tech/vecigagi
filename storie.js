@@ -345,6 +345,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Quello becco fottûo de Menelao",
         "it": "Quel becco fottuto di Menelao."
+      },
+      {
+        "testo": "Ma tûtti da-o cavallo s'ëan fermæ,",
+        "it": "Ma tutti dal cavallo si erano fermati,"
+      },
+      {
+        "testo": "E ciascûn tiava a mezo a so opinion,",
+        "it": "E ciascuno tirava a mezzo la sua opinione,"
+      },
+      {
+        "testo": "Chi vueiva tiâlo dentro da çittæ,",
+        "it": "Chi voleva tirarlo dentro alla città,"
+      },
+      {
+        "testo": "Chi dâghe fœûgo sensa remiscion,",
+        "it": "Chi dargli fuoco senza pietà,"
+      },
+      {
+        "testo": "Chi scì, chi nö, s'ëan tanto inveninæ,",
+        "it": "Chi sì, chi no, si erano talmente avvelenati,"
+      },
+      {
+        "testo": "Da dâse dö brütô, dö belinon",
+        "it": "Da darsi del bruto, del belinone,"
+      },
+      {
+        "testo": "E ö cæto ö s'ëa za fæto coscì grosso,",
+        "it": "E il putiferio si era già fatto così grande,"
+      },
+      {
+        "testo": "Che se stavan pe mette e man addosso.",
+        "it": "Che stavano per mettersi le mani addosso"
       }
     ]
   },
