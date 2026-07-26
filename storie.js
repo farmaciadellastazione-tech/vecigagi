@@ -42,7 +42,7 @@
 const STORIE_DEFAULT = [
   {
     "id": "ge-a1-eneide-4",
-    "lingua": "en",
+    "lingua": "ge",
     "livello": "A1",
     "tema": "",
     "titolo": {
