@@ -185,6 +185,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Arti che riescian dacché ö mondo ö dûa!",
         "it": "Arti che riescono da che il mondo dura!"
+      },
+      {
+        "testo": "Sciâ s'immagine ûn pô, che han misso man",
+        "it": "S'immagini un po', che han messo mano"
+      },
+      {
+        "testo": "Con di travi e de tôe ben cömentæ,",
+        "it": "con travi e tavole ben sistemate,"
+      },
+      {
+        "testo": "A ûn cavallo che ö l'ëa scinn-a doman,",
+        "it": "a un cavallo che non finiva mai,"
+      },
+      {
+        "testo": "Äto comme i balûardi da çittæ;",
+        "it": "alto come i baluardi della città;"
+      },
+      {
+        "testo": "Poi finzendo, i ruffien, de fûtte ö can,",
+        "it": "poi, fingendo, i ruffiani, di fottere il cane,"
+      },
+      {
+        "testo": "Han piggioû sporta e færi e son filæ,",
+        "it": "Han preso sporta e ferri e se la filarono,"
+      },
+      {
+        "testo": "Ma lasciando i ciû bûlli e i ciû batôsi",
+        "it": "ma lasciando i più bulli e i più battaglieri"
+      },
+      {
+        "testo": "Dentro da pansa dö cavallo ascösi.",
+        "it": "nascosti dentro la pancia del cavallo."
       }
     ]
   },
