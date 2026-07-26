@@ -473,6 +473,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Pê nö vedde che ö l'ëa pin de sordatti.",
         "it": "Per non vedere che era pieno di soldati"
+      },
+      {
+        "testo": "Tutt'assemme ûnn-a strœûppa de paisen",
+        "it": "Tutt'a un tratto un gruppo di paesani"
+      },
+      {
+        "testo": "Portan davanti a-o re, che ö l'ëa arrivoû,",
+        "it": "Portano davanti al re, che era arrivato,"
+      },
+      {
+        "testo": "Ûn zûenotto co-a faccia da putten,",
+        "it": "Un giovanotto con la faccia da angioletto,"
+      },
+      {
+        "testo": "Streito comme ûn salamme e ammanettoû;",
+        "it": "Stretto come un salame e ammanettato;"
+      },
+      {
+        "testo": "Ö l'ëa ascoso, dixeivan, in tö fen,",
+        "it": "Era nascosto, dicevano, nel fieno,"
+      },
+      {
+        "testo": "E appenn-a che l'han visto, ö se mostroû,",
+        "it": "E appena lo hanno visto, si è fatto avanti,"
+      },
+      {
+        "testo": "E lö da asperti, pe savei chi ö fösse,",
+        "it": "E loro da furbi , per sapere chi fosse,"
+      },
+      {
+        "testo": "Te l'han ligoû senza fâ tante mösse",
+        "it": "Te l'hanno legato senza fare tante storie."
+      },
+      {
+        "testo": "Stö zûenotto, ö l'ëa ûn greco, che d'inteisa",
+        "it": "Questo giovanotto era un Greco, che d'intesa"
+      },
+      {
+        "testo": "Con quella remenâ de mandilæ,",
+        "it": "Con quella masnada di furfanti,"
+      },
+      {
+        "testo": "Morto pe morto, ö s'ëa piggioû l'impreisa",
+        "it": "Morto per morto, si era preso l'incarico"
+      },
+      {
+        "testo": "De fâli cö cavallo, intrâ in çittæ.",
+        "it": "Di farli, con il cavallo, entrare in città."
+      },
+      {
+        "testo": "Aôa attenta, scignöa, che chi ghe a speisa",
+        "it": "Ora attenta, signora, che qui viene il bello:"
+      },
+      {
+        "testo": "Sciâ sente che regîö, che abilitæ!",
+        "it": "Senta che raggiro, che abilità!"
+      },
+      {
+        "testo": "E da stö greco sciâ i conosce tûtti,",
+        "it": "E da questo greco lei li conoscerà tutti,"
+      },
+      {
+        "testo": "Cose son sti ruffien, sti farabûtti",
+        "it": "Che razza di ruffiani, di farabutti."
       }
     ]
   },
