@@ -569,6 +569,102 @@ const STORIE_DEFAULT = [
       {
         "testo": "Da nö pöeighe ciû infiâ mancö ûn'agûggia.",
         "it": "Da non poterci più infilare manco un aghetto."
+      },
+      {
+        "testo": "Poi, ö se misso a criâ: Poviö Schenön!",
+        "it": "Poi, si è messo a gridare: \"Povero Schenone!"
+      },
+      {
+        "testo": "Te ghe l'han proprio missö e rebattûo,",
+        "it": "Te l'hanno proprio messo e ribattuto,"
+      },
+      {
+        "testo": "I troien, me vœan morto, e con raxön,",
+        "it": "I Troiani mi vogliono morto, e con ragione,"
+      },
+      {
+        "testo": "I mæ conçittadin, m'han zà fottûo,",
+        "it": "I miei concittadini mi hanno già fottuto,"
+      },
+      {
+        "testo": "Vöî dæghe ö restö senza compasciön,",
+        "it": "Voi datemi il resto senza compassione,"
+      },
+      {
+        "testo": "Ammazzæme figgiœû, che ve sprezûo,",
+        "it": "Ammazzatemi ragazzi, ve lo scongiuro,"
+      },
+      {
+        "testo": "Me ciû cao de finîla in t'ûnn-a votta,",
+        "it": "Mi è più caro farla finita in una volta sola,"
+      },
+      {
+        "testo": "Che provâ questo spaximo de potta!",
+        "it": "Che provare questo spasimo di potta!\""
+      },
+      {
+        "testo": "Ö l'aveiva ö singûlto, ö crescentin,",
+        "it": "Aveva il singhiozzo, il broncio,"
+      },
+      {
+        "testo": "Ö tegniva ö respïo comme i figgiœû",
+        "it": "Tratteneva il respiro come i bambini"
+      },
+      {
+        "testo": "Tanto che ö Re con tûtti i çittadin,",
+        "it": "Tanto che il Re con tutti i cittadini,"
+      },
+      {
+        "testo": "Ch'ëan za prönti a crövilo de rissœû,",
+        "it": "Che erano già pronti a coprirlo di sassate,"
+      },
+      {
+        "testo": "N'han avûo compasciön; divan: meschin,",
+        "it": "Ne hanno avuto compassione; dicevano: \"povero,"
+      },
+      {
+        "testo": "Andæ là, n'aggiæ püia, fæve dö chœû,",
+        "it": "Andate, non abbiate paura, rincuoratevi,\""
+      },
+      {
+        "testo": "E inscisteivan, pregandolo che ö disse",
+        "it": "E insistevano, pregandolo che dicesse"
+      },
+      {
+        "testo": "Cose ö fâva, chi ö l'ëa, donde ö vegnisse.",
+        "it": "Cosa faceva, chi era, da dove venisse."
+      },
+      {
+        "testo": "E lë che ö voeiva fâne ingoâ de vesce,",
+        "it": "E lui, che voleva farci ingoiare delle frottole (vesce),"
+      },
+      {
+        "testo": "Rivolgendose a-o re, che ö l'ëa presente:",
+        "it": "Rivolgendosi al re, che era presente:"
+      },
+      {
+        "testo": "Sciâ no credde, scignor, che mi ghe tesce",
+        "it": "\"Vossia non creda, signore, che io le tessa"
+      },
+      {
+        "testo": "Di romanzi, ö che immagine, che invente;",
+        "it": "Dei romanzi, o che mi immagini, che inventi;"
+      },
+      {
+        "testo": "Mi son greco, anzi scì, no me rincresce",
+        "it": "Io sono greco, anzi sì, non mi dispiace"
+      },
+      {
+        "testo": "De dîghelo in sce-a faccia avertamente",
+        "it": "Di dirglielo in faccia apertamente"
+      },
+      {
+        "testo": "Che mi son ûn bellinön a çento döggie",
+        "it": "Che io sono un belinöne di prim'ordine,"
+      },
+      {
+        "testo": "Ma nisciun m'ha mai dito: contacöggie.",
+        "it": "Ma nessuno mi ha mai detto: contaballe.\""
       }
     ]
   },
