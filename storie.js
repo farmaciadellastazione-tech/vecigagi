@@ -377,6 +377,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che se stavan pe mette e man addosso.",
         "it": "Che stavano per mettersi le mani addosso"
+      },
+      {
+        "testo": "Tutt'assemme Laoconte, ûn de comando,",
+        "it": "Tutt'a un tratto Laocoonte, uno di comando,"
+      },
+      {
+        "testo": "Che ö l'aveiva ciù musse che dinæ,",
+        "it": "Che aveva più musse che denari,"
+      },
+      {
+        "testo": "Ö s'asbria in sce a ciassa giastemmando",
+        "it": "Si precipita sulla piazza bestemmiando,"
+      },
+      {
+        "testo": "Co-a faccia rössa e i œûggi stralûnæ;",
+        "it": "Con la faccia rossa e gli occhi stralunati;"
+      },
+      {
+        "testo": "E comme a l'é st'affare, ö cria, da quando",
+        "it": "E com'è questo affare\", grida, \"da quando"
+      },
+      {
+        "testo": "Séi vegnûi coscì nesci, abbelinæ?",
+        "it": "Siete diventati così scemi, abbelinati?"
+      },
+      {
+        "testo": "E piggiæ pe beduin quelle pellisse",
+        "it": "E prendete per beduini quelle pellacce"
+      },
+      {
+        "testo": "De greci e quello mandilâ d'Ulisse?",
+        "it": "Dei Greci e quel furfante d'Ulisse?\""
+      },
+      {
+        "testo": "Cose gh'é? cose fæ? ma in mæ davvei",
+        "it": "Cosa c'è? Cosa fate? Ma per davvero"
+      },
+      {
+        "testo": "Me pâ che raxonæ dall'ombrisallo",
+        "it": "Mi pare che ragioniate con l'ombelico!"
+      },
+      {
+        "testo": "Ma comme se pœû dâ che nö veddei",
+        "it": "Ma com'è possibile che non vediate"
+      },
+      {
+        "testo": "Per côse han lascioû chi questo cavallo?",
+        "it": "Perché hanno lasciato qui questo cavallo?"
+      },
+      {
+        "testo": "Ma nö fæ da figgiœû, fæme ö piaxei,",
+        "it": "Ma non fate i bambini, fatemi il piacere,"
+      },
+      {
+        "testo": "Mandæ a fâ fûtte i greci e ö so regallö,",
+        "it": "Mandate a farsi fottere i Greci e il loro regalo,"
+      },
+      {
+        "testo": "Per mi, tant'è l'affare a no l'é liscia",
+        "it": "Per me, tanto è, la faccenda non è liscia,"
+      },
+      {
+        "testo": "E in Troia stö cavallo ö nö ghe piscia.",
+        "it": "E in Troia questo cavallo non ci piscia!"
       }
     ]
   },
