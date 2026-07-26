@@ -72,11 +72,11 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Pe sentilo ciû comodi a parlâ.",
-        "it": "Per sentirlo parlare più comodi."
+        "it": "Per sentirlo più comodi parlare."
       },
       {
         "testo": "Quando l'é stæto ognûn quieto e tranquillo",
-        "it": "Quando ognuno è stato quieto e tranquillo"
+        "it": "Quando ognuno si è messo quieto e tranquillo"
       },
       {
         "testo": "Che se pûeiva sentî ûnn-a mosca sghæuâ,",
@@ -92,7 +92,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Mi nö fasso pe dî, bèlla reginn-a,",
-        "it": "Non faccio per dire, bella regina,"
+        "it": "Io non faccio per dire, bella regina,"
       },
       {
         "testo": "Ma se parlo, mi ö fasso pe vosciâ",
@@ -116,7 +116,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E invece de contâ di avvenimenti",
-        "it": "E invece di raccontare degli avvenimenti"
+        "it": "E invece di raccontare di avvenimenti"
       },
       {
         "testo": "Mi tieivo zû di tacchi e di aççidenti.",
@@ -128,7 +128,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "D'andâse a inghœûgge in mezo a duî lensœû,",
-        "it": "Di andarsi a infilare in mezzo a due lenzuola,"
+        "it": "Di andarsi ad avvolgere in mezzo a due lenzuola,"
       },
       {
         "testo": "Benché sente ö magon, serrâme a gôa",
@@ -136,7 +136,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E me vegne ö sappin comme ai figgiœû,",
-        "it": "E mi venga da piangere come ai bambini,"
+        "it": "E mi venga il broncio come ai bambini,"
       },
       {
         "testo": "Se sciâ vœû che ghe conte, câ scignôa",
@@ -160,7 +160,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "De no pûeinelo mette ciû derë,",
-        "it": "Di non potercelo più mettere di dietro,"
+        "it": "Dal non potercelo più mettere di dietro,"
       },
       {
         "testo": "Doppo avei caccioû via sangue e dinæ",
@@ -188,23 +188,23 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Sciâ s'immagine ûn pô, che han misso man",
-        "it": "S'immagini un po', che han messo mano"
+        "it": "Lei s'immagini un po', che han messo mano"
       },
       {
         "testo": "Con di travi e de tôe ben cömentæ,",
-        "it": "con travi e tavole ben sistemate,"
+        "it": "Con travi e tavole ben sistemate,"
       },
       {
         "testo": "A ûn cavallo che ö l'ëa scinn-a doman,",
-        "it": "a un cavallo che non finiva mai,"
+        "it": "A un cavallo che non finiva mai,"
       },
       {
         "testo": "Äto comme i balûardi da çittæ;",
-        "it": "alto come i baluardi della città;"
+        "it": "Alto come i baluardi della città;"
       },
       {
         "testo": "Poi finzendo, i ruffien, de fûtte ö can,",
-        "it": "poi, fingendo, i ruffiani, di fottere il cane,"
+        "it": "Poi, fingendo, i ruffiani, di svignarsela,"
       },
       {
         "testo": "Han piggioû sporta e færi e son filæ,",
