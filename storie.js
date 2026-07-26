@@ -716,7 +716,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ho sbraggioû comme un matto, e mæ zûamento,",
-        "it": "Ho sbraitato come un matto, e lo giuro,"
+        "it": "Ho sbraitato come un matto, e parola mia"
       },
       {
         "testo": "Se no ghe l'ho picchæ, ghe l'ho promisse,",
