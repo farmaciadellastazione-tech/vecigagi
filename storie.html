@@ -158,21 +158,44 @@
     white-space: nowrap;
   }
   .badge.lingua { color: white; border: none; }
-  .fonte { font-size: 12px; color: var(--muted); margin-bottom: 14px; line-height: 1.4; }
-  .frasi { display: flex; flex-direction: column; gap: 10px; }
-  .frase {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    padding: 8px 0;
-    border-top: 1px solid var(--border);
+  .fonte { font-size: 12px; color: var(--muted); margin-bottom: 18px; line-height: 1.4; }
+  .frasi { display: flex; flex-direction: column; gap: 22px; }
+  .frase { padding: 0; }
+  .frase .native {
+    font-family: 'Crimson Pro', serif;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--text);
   }
-  .frase:first-child { border-top: none; }
-  .frase .native { font-family: 'Crimson Pro', serif; font-size: 16px; }
-  .frase .it { color: var(--muted); font-size: 14px; }
+  .frase .it {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.45;
+    margin-top: 4px;
+  }
+  /* Testi lunghi (poesie estese): numerazione dei versi per orientarsi nella
+     lettura, altrimenti un blocco di decine di righe scoraggia a leggerlo. */
+  .frasi.lunga { counter-reset: verso; }
+  .frasi.lunga .frase {
+    counter-increment: verso;
+    position: relative;
+    padding-left: 34px;
+  }
+  .frasi.lunga .frase::before {
+    content: counter(verso);
+    position: absolute;
+    left: 0;
+    top: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: #94a3b8;
+  }
   .cta {
     display: inline-block;
-    margin-top: 14px;
+    margin-top: 18px;
     background: var(--accent);
     color: white;
     text-decoration: none;
@@ -185,7 +208,7 @@
   .cta:hover { opacity: 0.85; }
   .empty { color: var(--muted); padding: 40px 0; text-align: center; }
   @media (max-width: 560px) {
-    .frase { grid-template-columns: 1fr; gap: 2px; }
+    .frasi.lunga .frase { padding-left: 28px; }
   }
 
   .contrib { margin-top: 12px; }
@@ -465,7 +488,7 @@
             ${s.tema ? `<span class="badge">${escapeHtml(s.tema)}</span>` : ""}
           </div>
           <div class="fonte">${escapeHtml(badgeFonte(s.fonte))}</div>
-          <div class="frasi">${frasiHtml}</div>
+          <div class="frasi${s.frasi.length > 12 ? " lunga" : ""}">${frasiHtml}</div>
           <a class="cta" href="index.html#storia/${encodeURIComponent(s.id)}">Continua in modalità interattiva →</a>
         </article>`;
     }).join("");
