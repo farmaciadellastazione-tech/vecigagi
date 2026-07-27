@@ -532,15 +532,15 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E da stö greco sciâ i conosce tûtti,",
-        "it": "E da questo greco lei li conoscerà tutti,"
+        "it": "E da questo greco lei li conosce tutti,"
       },
       {
         "testo": "Cose son sti ruffien, sti farabûtti",
-        "it": "Che razza di ruffiani, di farabutti."
+        "it": "Cosa sono sti ruffiani, sti farabutti."
       },
       {
         "testo": "Quande l'han visto, mi ghe lascio dî!",
-        "it": "Quando l'hanno visto, le lascio immaginare!"
+        "it": "Quando l'hanno visto, le lascio dire!"
       },
       {
         "testo": "Ghe vosciûo i savi e i matti pe salvalö!",
@@ -564,7 +564,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E lé o strenzeiva ö cû dâ scagabûggia",
-        "it": "E lui  lo stringeva il culo per la caga"
+        "it": "E lui  stringeva il culo per la caga"
       },
       {
         "testo": "Da nö pöeighe ciû infiâ mancö ûn'agûggia.",
@@ -576,7 +576,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Te ghe l'han proprio missö e rebattûo,",
-        "it": "Te l'hanno proprio messo e ribattuto,"
+        "it": "Ti ce l'hanno proprio messo e ribattuto,"
       },
       {
         "testo": "I troien, me vœan morto, e con raxön,",
@@ -588,7 +588,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Vöî dæghe ö restö senza compasciön,",
-        "it": "Voi datemi il resto senza compassione,"
+        "it": "Voi date il resto senza compassione,"
       },
       {
         "testo": "Ammazzæme figgiœû, che ve sprezûo,",
@@ -620,11 +620,11 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "N'han avûo compasciön; divan: meschin,",
-        "it": "Ne hanno avuto compassione; dicevano: \"povero,"
+        "it": "Ne hanno avuto compassione; dicevano: \"meschino,"
       },
       {
         "testo": "Andæ là, n'aggiæ püia, fæve dö chœû,",
-        "it": "Andate, non abbiate paura, rincuoratevi,\""
+        "it": "Forza , non abbiate paura, rincuoratevi,\""
       },
       {
         "testo": "E inscisteivan, pregandolo che ö disse",
@@ -636,7 +636,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E lë che ö voeiva fâne ingoâ de vesce,",
-        "it": "E lui, che voleva farci ingoiare delle frottole (vesce),"
+        "it": "E lui, che voleva farci ingoiare delle frottole,"
       },
       {
         "testo": "Rivolgendose a-o re, che ö l'ëa presente:",
@@ -652,7 +652,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Mi son greco, anzi scì, no me rincresce",
-        "it": "Io sono greco, anzi sì, non mi dispiace"
+        "it": "Io sono greco, anzi sì, non mi rincresce"
       },
       {
         "testo": "De dîghelo in sce-a faccia avertamente",
@@ -660,7 +660,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Che mi son ûn bellinön a çento döggie",
-        "it": "Che io sono un belinöne al quadrato,"
+        "it": "Che io sono un belinöne raddoppiato cento volte ,"
       },
       {
         "testo": "Ma nisciun m'ha mai dito: contacöggie.",
@@ -692,7 +692,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Vivo lë mi ho sciûscioû sempre in coverta",
-        "it": "Finché era vivo lui, me la passavo sempre al coperto,"
+        "it": "Finché era vivo lui, me la passavo sempre alla grande,"
       },
       {
         "testo": "E nisciûn se azzardoû de dâme a berta.",
@@ -704,7 +704,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "De quello brûtto mandilâ d'Ulisse,",
-        "it": "Di quel brutto furfante di Ulisse,"
+        "it": "Di quel brutto borsaiolo di Ulisse,"
       },
       {
         "testo": "Mi n'ho sentîo tanto rincrescimento.",
