@@ -857,6 +857,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "L'oracolo de Delfo cose ö disse;",
         "it": " l'oracolo di Delfi cosa disse;"
+      },
+      {
+        "testo": "E a risposta ve a chì: se pe vegnî",
+        "it": "E la risposta eccola qui: se per venire"
+      },
+      {
+        "testo": "Aveivan piggioû a pelle a ûnn-a zûenotta,",
+        "it": "Avevano fatto la pelle a una giovanotta,"
+      },
+      {
+        "testo": "Aôa poi che l'ëa ö caxo de partî,",
+        "it": "Ora poi che era il caso di partire,"
+      },
+      {
+        "testo": "Besœûgnava fâ come l'atra votta,",
+        "it": "Bisognava fare come l'altra volta,"
+      },
+      {
+        "testo": "Ma co-a diverscitæ... miæ che brûtûi,",
+        "it": "Ma con la differenza... guardate che bruttura,"
+      },
+      {
+        "testo": "Che ghe vueiva ûn belin, non ûnn-a potta,",
+        "it": "Che ci voleva un belino, non una potta,"
+      },
+      {
+        "testo": "Cioè pe parlâ comme se fa in famiggia",
+        "it": "Cioè, per parlare come si fa in famiglia,"
+      },
+      {
+        "testo": "Ghe sæiva vosciûo ûn masccio e nö ûnn-a figgia.",
+        "it": "Ci sarebbe voluto un maschio e non una ragazza."
       }
     ]
   },
