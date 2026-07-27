@@ -729,6 +729,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Pendin da forca, avanzo de galea.",
         "it": "Un pendaglio da forca, un avanzo di galera."
+      },
+      {
+        "testo": "E da quello momento ö s'é sprezûoû",
+        "it": "E da quel momento ha giurato"
+      },
+      {
+        "testo": "Stö vile, stö brutû, de fame a pelle;",
+        "it": "Questo vile, questo bruto, di farmi la pelle;"
+      },
+      {
+        "testo": "Nö ghe diô, cose ö l'agge immanegoû",
+        "it": "Non vi dirò che cosa abbia immaginato"
+      },
+      {
+        "testo": "De regii, perché desse in ciampanelle",
+        "it": "Di raggiri, perché andassi in ciampanelle (impazzire)"
+      },
+      {
+        "testo": "E ö non ha dæto fondo, ö n'ha quietoû,",
+        "it": "E non si è fermato, non si è quietato,"
+      },
+      {
+        "testo": "Scin che Calcante consûltando e stelle...",
+        "it": "Sino a che Calcante consultando le stelle..."
+      },
+      {
+        "testo": "Ma cose staggo chi a sciûgaghe e balle?",
+        "it": "Ma cosa sto qui ad asciugarvi le balle?"
+      },
+      {
+        "testo": "Son chi son, zû unn-a botta, e che a nö falle!",
+        "it": "Sono chi sono, giù una botta, e che non fallisca!"
       }
     ]
   },
