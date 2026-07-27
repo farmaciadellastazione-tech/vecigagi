@@ -793,6 +793,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Son tûtte cuggie, no se pœu sarvâ",
         "it": "Son tutte balle, non ci si può salvare"
+      },
+      {
+        "testo": "Lë, finzendo ûn momento d'inçertezza,",
+        "it": "Lui, fingendo un momento d'incertezza,"
+      },
+      {
+        "testo": "Ö se reiso, e coscì ö l'ha continûoû",
+        "it": "Si arrese, e così ha continuato:"
+      },
+      {
+        "testo": "Stæme dunque a sentî: l'ëa za ûnn-a pezza",
+        "it": "\"Statemi dunque a sentire: era già da un pezzo"
+      },
+      {
+        "testo": "Che fra i greci s'ëa dîto e combinoû",
+        "it": "Che fra i Greci si era detto e combinato"
+      },
+      {
+        "testo": "De çercâ, con l'andasene a sarvezza,",
+        "it": "Di cercare, con l'andarsene, la salvezza,"
+      },
+      {
+        "testo": "Vedendo che ö l'ëa ûn caxo disperoû,",
+        "it": "Vedendo che era un caso disperato,"
+      },
+      {
+        "testo": "Ma e battaglie, a burrasca, a pestilenza",
+        "it": "Ma le battaglie, la burrasca, la pestilenza"
+      },
+      {
+        "testo": "N'han sempre fætö ritardâ a partenza;",
+        "it": "Ci hanno sempre fatto ritardare la partenza;\""
       }
     ]
   },
