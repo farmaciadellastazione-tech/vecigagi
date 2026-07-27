@@ -761,6 +761,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Son chi son, zû unn-a botta, e che a nö falle!",
         "it": "Sono chi sono, giù una botta, e che non fallisca!"
+      },
+      {
+        "testo": "Ma noî, za punti dâ cûrioxitæ",
+        "it": "Ma noi, già punti dalla curiosità"
+      },
+      {
+        "testo": "S'eimo missi a pregalö comme i santi,",
+        "it": "Ci eravamo messi a pregarlo come i santi,"
+      },
+      {
+        "testo": "Perché ö nö ne lasciesse lì â meitæ",
+        "it": "Perché non ci lasciasse lì a metà"
+      },
+      {
+        "testo": "Ö se fesse coraggio e ö tiasse avanti,",
+        "it": "Si facesse coraggio e andasse avanti,"
+      },
+      {
+        "testo": "Saveivimo che i greci ëan mandilæ",
+        "it": "Sapevamo che i Greci erano furfanti"
+      },
+      {
+        "testo": "E n'aveivimo avûo prœûve bastanti,",
+        "it": "E ne avevamo avuto prove bastanti,"
+      },
+      {
+        "testo": "Ma quandö pe derê ö s'ha da piggiâ",
+        "it": "Ma quando nel di dietro si ha da pigliarlo,"
+      },
+      {
+        "testo": "Son tûtte cuggie, no se pœu sarvâ",
+        "it": "Son tutte balle, non ci si può salvare"
       }
     ]
   },
