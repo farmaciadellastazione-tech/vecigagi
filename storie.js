@@ -825,6 +825,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "N'han sempre fætö ritardâ a partenza;",
         "it": "Ci hanno sempre fatto ritardare la partenza;\""
+      },
+      {
+        "testo": "Aôa poi, ch'ëan decisi de filâ,",
+        "it": "Ora poi, che erano decisi a filarsela,"
+      },
+      {
+        "testo": "Prontö ö cavallo e i ordini za dæti",
+        "it": "Pronto il cavallo e gli ordini già dati,"
+      },
+      {
+        "testo": "Se mette torna ö vento de meistrâ",
+        "it": "Si alza di nuovo il vento di maestrale"
+      },
+      {
+        "testo": "E besœûgna stâ lì, cöi baûli fæti;",
+        "it": "E bisogna stare lì, coi bauli fatti;"
+      },
+      {
+        "testo": "Ma sciccome nö gh'ëa da zinzannâ",
+        "it": "Ma siccome non c'era da cincischiare"
+      },
+      {
+        "testo": "Pe poi no se trovâ torna in ti cæti,",
+        "it": "Per non trovarsi poi di nuovo nei guai,"
+      },
+      {
+        "testo": "Euripilo han spedìo, perché ö sentisse",
+        "it": "Hanno spedito Euripilo, perché sentisse"
+      },
+      {
+        "testo": "L'oracolo de Delfo cose ö disse;",
+        "it": " l'oracolo di Delfi cosa disse;"
       }
     ]
   },
