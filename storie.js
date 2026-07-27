@@ -921,6 +921,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "E a vedde ûn tiö de quello pellegramma.",
         "it": "E a vederci un tiro mancino di quel pellegrama."
+      },
+      {
+        "testo": "E de fæto, Calcante, interrogoû",
+        "it": "E di fatto, Calcante, interrogato"
+      },
+      {
+        "testo": "(A l'ëa cosa za inteisa e combinâ)",
+        "it": "(Era una cosa già intesa e combinata)"
+      },
+      {
+        "testo": "Perché ö disse chi ö l'ëa sto disgrazioû",
+        "it": "Affinché dicesse chi era questo disgraziato"
+      },
+      {
+        "testo": "Che se sæiva dovûo sacrificâ,",
+        "it": "Che si sarebbe dovuto sacrificare,"
+      },
+      {
+        "testo": "Ö se reiso all'invito, ö se cegoû",
+        "it": "Si arrese all'invito, si piegò"
+      },
+      {
+        "testo": "Doppo d'esise fæto ûn pô pregâ,",
+        "it": "Dopo essersi fatto un po' pregare,"
+      },
+      {
+        "testo": "E comme me l'aveivo zâ previsto",
+        "it": "E come avevo già previsto"
+      },
+      {
+        "testo": "Chi ö le andæto a çercâ? mi poviou Cristo!",
+        "it": "Chi è andato a cercare? Me, povero Cristo!"
       }
     ]
   },
