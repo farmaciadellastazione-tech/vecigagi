@@ -889,6 +889,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ghe sæiva vosciûo ûn masccio e nö ûnn-a figgia.",
         "it": "Ci sarebbe voluto un maschio e non una ragazza."
+      },
+      {
+        "testo": "Quande se propaloû questo verdetto",
+        "it": "Quando si propagò questo verdetto"
+      },
+      {
+        "testo": "Ognidûn se sentîo strenze o panê",
+        "it": "Ognuno si sentì stringere il paniere,"
+      },
+      {
+        "testo": "No savendose ancon chi sæ l'eletto",
+        "it": "Non sapendosi ancora chi sia l'eletto"
+      },
+      {
+        "testo": "E temendo ognidûn d'esilo lë,",
+        "it": "E temendo ognuno di esserlo lui;"
+      },
+      {
+        "testo": "Ma mi poi, che saveivo da ûn pessetto",
+        "it": "Ma io poi, che sapevo da un pezzetto"
+      },
+      {
+        "testo": "Che çercavan de mettiméo derê,",
+        "it": "Che cercavano di mettermelo di dietro,"
+      },
+      {
+        "testo": "No me ghe vosciûo gûæi a mangiâ a lamma",
+        "it": "Non ci ho messo molto a mangiar la foglia"
+      },
+      {
+        "testo": "E a vedde ûn tiö de quello pellegramma.",
+        "it": "E a vederci un tiro mancino di quel pellegrama."
       }
     ]
   },
