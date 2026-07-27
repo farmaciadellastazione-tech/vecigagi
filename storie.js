@@ -953,6 +953,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Chi ö le andæto a çercâ? mi poviou Cristo!",
         "it": "Chi è andato a cercare? Me, povero Cristo!"
+      },
+      {
+        "testo": "Ghe lascio dî, comme se son resciôæ",
+        "it": "Le lascio immaginare, come si sono risollevati (rianimati)"
+      },
+      {
+        "testo": "Quando a scelta a l’é chéita adosso a mi,",
+        "it": "Quando la scelta è caduta addosso a me,"
+      },
+      {
+        "testo": "Tutti a reo se son parsci recoviæ",
+        "it": "Tutti quanti sono sembrati riprendersi"
+      },
+      {
+        "testo": "De vedde e cose andâ a finî coscì.",
+        "it": "Nel vedere le cose andare a finire così."
+      },
+      {
+        "testo": "M'han sûbito ligoù pe l'anscietê",
+        "it": "Mi hanno subito legato per l'ansia"
+      },
+      {
+        "testo": "Che mi no ghe ne desse ûn cianto lì,",
+        "it": "Che io non li piantassi lì,"
+      },
+      {
+        "testo": "E in quinta e sprescia, han preparoû l'artâ",
+        "it": "E in fretta e furia, hanno preparato l'altare"
+      },
+      {
+        "testo": "E legne, ö fœûgo, i sacri anghæsi, a sâ.",
+        "it": "La legna, il fuoco, i sacri arnesi, il sale."
+      },
+      {
+        "testo": "Me son visto fottûo! primma de mûi",
+        "it": "Mi sono visto fottuto! Prima di morire"
+      },
+      {
+        "testo": "Ho vosciûo, sacranon, veddighe drento,",
+        "it": "Ho voluto, perdinci, guardarci dentro,"
+      },
+      {
+        "testo": "Ho aspëtoû quande tûtti ëan a dormî,",
+        "it": "Ho aspettato che tutti fossero a dormire,"
+      },
+      {
+        "testo": "E me son deslìgou in t'ûn momento,",
+        "it": "E mi sono slegato in un momento,"
+      },
+      {
+        "testo": "E lì dalli, in te quante ö staggo a dî",
+        "it": "E lì dagli, nel tempo che ci metto a dirlo"
+      },
+      {
+        "testo": "Me son trovoû fœûa dell'accampamento,",
+        "it": "Mi sono trovato fuori dall'accampamento,"
+      },
+      {
+        "testo": "E poi mettime a andâ comme ûnn-a leccia;",
+        "it": "E poi mi sono messo a correre come una scheggia;"
+      },
+      {
+        "testo": "Pe sta votta Calcante ö no me beccia.",
+        "it": "Per questa volta Calcante non mi fotte!"
       }
     ]
   },
