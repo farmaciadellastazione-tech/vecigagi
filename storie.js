@@ -68,7 +68,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Tutti han çercôu dove pösâ ö bacillo,",
-        "it": "Tutti han cercato dove posare il bacino (il sedere),"
+        "it": "Tutti han cercato dove posare il bacino,"
       },
       {
         "testo": "Pe sentilo ciû comodi a parlâ.",
@@ -96,7 +96,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ma se parlo, mi ö fasso pe vosciâ",
-        "it": "Ma se parlo, lo faccio per vossia (per voi)"
+        "it": "Ma se parlo, lo faccio per vossia"
       },
       {
         "testo": "Quando penso ai mæ caxi, ä mæ rovinn-a,",
@@ -112,7 +112,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Sciâ scûse l'esprescion, ma chi a ghe stâ,",
-        "it": "Scusi l'espressione, ma qui ci sta,"
+        "it": "Vossia scusi l'espressione, ma qui ci sta,"
       },
       {
         "testo": "E invece de contâ di avvenimenti",
@@ -132,7 +132,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Benché sente ö magon, serrâme a gôa",
-        "it": "Benché senta il magone serrarmi la gola"
+        "it": "Benché senta il magone chiudermi la gola"
       },
       {
         "testo": "E me vegne ö sappin comme ai figgiœû,",
@@ -140,7 +140,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Se sciâ vœû che ghe conte, câ scignôa",
-        "it": "Se lei vuole che glielo racconti, cara signora"
+        "it": "Se vossia vuole che glielo racconti, cara signora"
       },
       {
         "testo": "Mi m'arrendo e faiô comme sciâ vœû,",
@@ -160,7 +160,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "De no pûeinelo mette ciû derë,",
-        "it": "Dal non potercelo più mettere di dietro,"
+        "it": "Per non potercelo più mettere di dietro,"
       },
       {
         "testo": "Doppo avei caccioû via sangue e dinæ",
@@ -172,7 +172,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Comme tûtti i batösi e i mandilæ",
-        "it": "Come tutti i farabutti e i borseggiatori"
+        "it": "Come tutti i farabutti e i borsaioli"
       },
       {
         "testo": "Han misso man ai færi dö mestë,",
@@ -192,7 +192,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Con di travi e de tôe ben cömentæ,",
-        "it": "Con travi e tavole ben sistemate,"
+        "it": "Con delle travi e delle tavole ben assestate,"
       },
       {
         "testo": "A ûn cavallo che ö l'ëa scinn-a doman,",
@@ -208,7 +208,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Han piggioû sporta e færi e son filæ,",
-        "it": "Han preso sporta e ferri e se la filarono,"
+        "it": "Han preso sporta e ferri e se la sono filata,"
       },
       {
         "testo": "Ma lasciando i ciû bûlli e i ciû batôsi",
@@ -216,7 +216,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Dentro da pansa dö cavallo ascösi.",
-        "it": "nascosti dentro la pancia del cavallo."
+        "it": "Dentro la pancia del cavallo nascosti."
       },
       {
         "testo": "Pe contro a Troia, forse sciâ ö saviâ,",
@@ -328,7 +328,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Gh'ëa Diomede, chi quello mandilâ",
-        "it": "C'era Diomede, qui quel ladro"
+        "it": "C'era Diomede, qui quel borsaiolo"
       },
       {
         "testo": "D'Ulisse, chi Achille ö se retioû;",
@@ -408,7 +408,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "De greci e quello mandilâ d'Ulisse?",
-        "it": "Dei Greci e quel furfante d'Ulisse?\""
+        "it": "Dei Greci e quel borsaiolo d'Ulisse?\""
       },
       {
         "testo": "Cose gh'é? cose fæ? ma in mæ davvei",
@@ -460,7 +460,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ö cavallo dä botta, ö scroscie, ö scrolla,",
-        "it": "Il cavallo per il colpo, scricchiola, scrolla,"
+        "it": "Il cavallo per il colpo, scricchiola, trema,"
       },
       {
         "testo": "E ö rimbomba con tanta risonanza,",
@@ -512,7 +512,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Con quella remenâ de mandilæ,",
-        "it": "Con quella masnada di furfanti,"
+        "it": "Con quella masnada di borsaioli,"
       },
       {
         "testo": "Morto pe morto, ö s'ëa piggioû l'impreisa",
