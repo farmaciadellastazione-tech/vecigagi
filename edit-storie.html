@@ -144,6 +144,20 @@
   </div>
 </div>
 
+<!-- Modal conflitto "Incolla tutto": chiede esplicitamente se aggiungere o sostituire -->
+<div class="modal-overlay" id="incolla-conflitto-modal">
+  <div class="modal">
+    <h2>⚠️ La storia ha già delle frasi</h2>
+    <div id="incolla-conflitto-testo" style="font-size:0.88rem; margin-bottom:0.4rem"></div>
+    <div style="font-size:0.82rem; color:var(--muted)">Scegli cosa fare con il testo appena incollato:</div>
+    <div class="modal-actions" style="justify-content:flex-start; flex-direction:column; align-items:stretch; gap:0.6rem">
+      <button class="btn btn-primary" onclick="rispondiConflittoIncolla('aggiungi')">➕ Aggiungi in coda alle frasi esistenti (consigliato)</button>
+      <button class="btn btn-danger" onclick="rispondiConflittoIncolla('sostituisci')">🗑️ Sostituisci tutto: cancella le frasi esistenti</button>
+      <button class="btn" onclick="rispondiConflittoIncolla('annulla')">Annulla</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const GH_OWNER = 'farmaciadellastazione-tech';
 const GH_REPO  = 'vecigagi';
@@ -489,6 +503,8 @@ function apriIncollaTutto(id) {
   render();
 }
 
+let conflittoIncollaPending = null;
+
 function applicaIncollaTutto(id) {
   const s = storie.find(s => s.id === id);
   if (!s) return;
@@ -498,18 +514,32 @@ function applicaIncollaTutto(id) {
   if (r.errore) { alert(r.errore); return; }
   const esistentiPiene = (s.frasi || []).filter(f => (f.testo || '').trim() || (f.it || '').trim());
   if (esistentiPiene.length) {
-    if (confirm(`La storia ha già ${esistentiPiene.length} frasi.\n\nOK = SOSTITUISCI con le ${r.frasi.length} generate\nAnnulla = AGGIUNGILE in coda`)) {
-      s.frasi = r.frasi;
-    } else {
-      s.frasi = [...esistentiPiene, ...r.frasi];
-    }
-  } else {
-    s.frasi = r.frasi;
+    conflittoIncollaPending = { id, esistentiPiene, frasiNuove: r.frasi };
+    document.getElementById('incolla-conflitto-testo').textContent =
+      `La storia ha già ${esistentiPiene.length} frase/i. Sono state generate ${r.frasi.length} nuove frasi dal testo incollato.`;
+    document.getElementById('incolla-conflitto-modal').classList.add('open');
+    return;
   }
+  s.frasi = r.frasi;
   segnaModificata(id);
   incollaIds.delete(id);
   render();
   setHelp(`📋 Generate ${r.frasi.length} frasi per "${escapeHtml(s.titolo?.testo || id)}". Controlla gli accoppiamenti e clicca "☁️ Salva su GitHub".`, 'success');
+}
+
+function rispondiConflittoIncolla(scelta) {
+  document.getElementById('incolla-conflitto-modal').classList.remove('open');
+  const pending = conflittoIncollaPending;
+  conflittoIncollaPending = null;
+  if (!pending || scelta === 'annulla') return;
+  const { id, esistentiPiene, frasiNuove } = pending;
+  const s = storie.find(s => s.id === id);
+  if (!s) return;
+  s.frasi = scelta === 'sostituisci' ? frasiNuove : [...esistentiPiene, ...frasiNuove];
+  segnaModificata(id);
+  incollaIds.delete(id);
+  render();
+  setHelp(`📋 Generate ${frasiNuove.length} frasi per "${escapeHtml(s.titolo?.testo || id)}". Controlla gli accoppiamenti e clicca "☁️ Salva su GitHub".`, 'success');
 }
 
 // ── Rendering ──
