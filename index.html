@@ -9280,6 +9280,16 @@ function ImpostazioniAI({
   const [provider, setProvider] = useState(aiSettings?.provider || "gemini");
   const [apiKey, setApiKey] = useState(aiSettings?.apiKey || "");
   const [testMsg, setTestMsg] = useState("");
+  const [mostraChiave, setMostraChiave] = useState(false);
+  async function copiaChiave() {
+    if (!apiKey) return;
+    try {
+      await navigator.clipboard.writeText(apiKey);
+      setTestMsg("📋 Chiave copiata");
+    } catch (e) {
+      setTestMsg("⚠️ Copia non riuscita");
+    }
+  }
   const PROVIDERS = [{
     id: "gemini",
     label: "Google Gemini (consigliato 🆓)",
@@ -9341,13 +9351,25 @@ function ImpostazioniAI({
     className: "mb-4"
   }, /*#__PURE__*/React.createElement("label", {
     className: "text-xs text-zinc-500 block mb-1"
-  }, "Chiave API"), /*#__PURE__*/React.createElement("input", {
+  }, "Chiave API"), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, /*#__PURE__*/React.createElement("input", {
     value: apiKey,
     onChange: e => setApiKey(e.target.value),
-    type: "password",
+    type: mostraChiave ? "text" : "password",
     placeholder: "sk-...",
-    className: "w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyan-500"
-  }), /*#__PURE__*/React.createElement("p", {
+    className: "flex-1 min-w-0 bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-cyan-500"
+  }), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setMostraChiave(v => !v),
+    title: mostraChiave ? "Nascondi chiave" : "Mostra chiave",
+    className: "px-3 rounded-xl border border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500 transition text-sm"
+  }, mostraChiave ? "🙈" : "👁️"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: copiaChiave,
+    title: "Copia chiave",
+    className: "px-3 rounded-xl border border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500 transition text-sm"
+  }, "📋")), /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-600 mt-1"
   }, "Salvata solo sul tuo dispositivo")), testMsg && /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-400 mb-3"
