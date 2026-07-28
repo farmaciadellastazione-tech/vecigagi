@@ -1153,6 +1153,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ghe lascio dî, se ö ne g'ha dæto sotto.",
         "it": "Le lascio immaginare, se non ci ha dato sotto!"
+      },
+      {
+        "testo": "Aôa, per tûtto zû, ö se misso a criâ:",
+        "it": "Allora, per tutto giù, si è messo a gridare:"
+      },
+      {
+        "testo": "Mi greco nö son ciû pe ûn aççidente,",
+        "it": "\"Io greco non sono più per un accidente,"
+      },
+      {
+        "testo": "Vœûggio vedde un pittin, chi m'obblighiâ",
+        "it": "Voglio vedere un pochino, chi mi obbligherà"
+      },
+      {
+        "testo": "A fâme fâ ö rûffian a questa gente;",
+        "it": "A farmi fare il ruffiano per questa gente;"
+      },
+      {
+        "testo": "Conto tûtto, perdie, vœûggio mostrâ",
+        "it": "Racconto tutto, perdinci, voglio mostrare"
+      },
+      {
+        "testo": "Che almeno mi ve son riconoscente;",
+        "it": "Che almeno io vi sono riconoscente;"
+      },
+      {
+        "testo": "E d'in cangio a-o servixio che ve fasso",
+        "it": "E in cambio del servizio che vi faccio"
+      },
+      {
+        "testo": "Voi atri ascì, nö me brûxiæ ö paggiasso.",
+        "it": "Voi altri però, non mi bruciate il pagliaccio.\" (tradite)"
       }
     ]
   },
