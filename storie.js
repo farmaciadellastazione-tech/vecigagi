@@ -1224,7 +1224,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Che ghe ne vûesse andâ unn-a pe drito,",
-        "it": "Che ne volesse andare una per il verso giusto (dritta),"
+        "it": "Che ne volesse andare una per il dritto,"
       },
       {
         "testo": "E voti e tridui, tûtto tempo perso,",
@@ -1232,11 +1232,11 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E zazuin e novenn-e all'infinito;",
-        "it": "E digiuni (zazuin) e novene all'infinito;"
+        "it": "E digiuni e novene all'infinito;"
       },
       {
         "testo": "A l'aveiva piggiæ tanto a-o reverso",
-        "it": "L'aveva presa talmente male (a rovescio)"
+        "it": "L'aveva presa talmente male "
       },
       {
         "testo": "Che quande l'han vosciûa cangiâ de scîto",
@@ -1248,7 +1248,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E a l'ha fæto trei bötti in sce l'artâ.",
-        "it": "E ha fatto tre salti (bötti) sull'altare."
+        "it": "E ha fatto tre salti sull'altare."
       }
     ]
   },
