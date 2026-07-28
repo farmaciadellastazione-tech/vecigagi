@@ -1217,6 +1217,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö se azzardoû de tiâghe sciû e fâdette.",
         "it": "Si azzardò a tirarle su la gonna."
+      },
+      {
+        "testo": "E d'alöa in poi, nö ghe ciû stæto verso",
+        "it": "E da allora in poi, non c'è stato più verso"
+      },
+      {
+        "testo": "Che ghe ne vûesse andâ unn-a pe drito,",
+        "it": "Che ne volesse andare una per il verso giusto (dritta),"
+      },
+      {
+        "testo": "E voti e tridui, tûtto tempo perso,",
+        "it": "E voti e tridui, tutto tempo perso,"
+      },
+      {
+        "testo": "E zazuin e novenn-e all'infinito;",
+        "it": "E digiuni (zazuin) e novene all'infinito;"
+      },
+      {
+        "testo": "A l'aveiva piggiæ tanto a-o reverso",
+        "it": "L'aveva presa talmente male (a rovescio)"
+      },
+      {
+        "testo": "Che quande l'han vosciûa cangiâ de scîto",
+        "it": "Che quando l'hanno voluta cambiare di posto"
+      },
+      {
+        "testo": "A se missa a giâ i œûggi, a cianse, a sûâ",
+        "it": "Si è messa a girare gli occhi, a piangere, a sudare"
+      },
+      {
+        "testo": "E a l'ha fæto trei bötti in sce l'artâ.",
+        "it": "E ha fatto tre salti (bötti) sull'altare."
       }
     ]
   },
