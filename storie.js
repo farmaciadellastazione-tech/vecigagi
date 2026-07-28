@@ -1377,6 +1377,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "N'è successo ûn anghæso ancon ciû grosso.",
         "it": "Ci è successo un guaio ancora più grosso."
+      },
+      {
+        "testo": "Laoconte che ö l'ëa stæto nominoû",
+        "it": "Laocoonte che era stato nominato"
+      },
+      {
+        "testo": "Cappellan de Nettûno, in sce l'artà",
+        "it": "Cappellano di Nettuno, sull'altare"
+      },
+      {
+        "testo": "Ö l'aveiva za ûn toro preparôu",
+        "it": "Aveva già preparato un toro"
+      },
+      {
+        "testo": "E ö l'ëa za lì pe daghe ûnn-a massûa,",
+        "it": "Ed era già lì per dargli una mazzata,"
+      },
+      {
+        "testo": "Quande dall'Isöa, che g'ho za çittôu,",
+        "it": "Quando dall'Isola, che ho già citato,"
+      },
+      {
+        "testo": "(Se ghe penso me ven ancon da sûâ)",
+        "it": "(Se ci penso mi viene ancora da sudare)"
+      },
+      {
+        "testo": "Se vedde vegnî a nêuo, döi sacramenti",
+        "it": "Si vedono venire a nuoto due \"sacramenti\" "
+      },
+      {
+        "testo": "Che ä sagoma, a-o regìo, paivan serpenti",
+        "it": "Che per la sagoma, per l'andamento, sembravano serpenti."
       }
     ]
   },
