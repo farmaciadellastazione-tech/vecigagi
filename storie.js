@@ -1121,6 +1121,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ûnn-a patria in te Troia, e in noi, di fræ",
         "it": "Una patria in Troia, e in noi, dei fratelli.\""
+      },
+      {
+        "testo": "Ma contine ûn pittin cose vœû dî",
+        "it": "\"Ma raccontaci un pochino cosa vuol dire"
+      },
+      {
+        "testo": "Questo enorme cavallo che han lascioû;",
+        "it": "Questo enorme cavallo che hanno lasciato;"
+      },
+      {
+        "testo": "Han fæto ûn voto primma de partî,",
+        "it": "Hanno fatto un voto prima di partire,"
+      },
+      {
+        "testo": "O l’ë inganno o magía che han preparoû?",
+        "it": "O è un inganno o una magia che hanno preparato?"
+      },
+      {
+        "testo": "A quarcosa, perdie, ö l'ha da servì,",
+        "it": "A qualcosa, perdinci, deve pur servire,"
+      },
+      {
+        "testo": "Che dunque nö l'avieivan fabbricoû!",
+        "it": "Che altrimenti non l'avrebbero mica fabbricato!\""
+      },
+      {
+        "testo": "E lë, che ö l'aspetava a balla a-o botto,",
+        "it": "E lui, che aspettava la palla al balzo,"
+      },
+      {
+        "testo": "Ghe lascio dî, se ö ne g'ha dæto sotto.",
+        "it": "Le lascio immaginare, se non ci ha dato sotto!"
       }
     ]
   },
