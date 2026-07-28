@@ -1281,6 +1281,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö fiato a Troia e che ghe scrito: sûssa",
         "it": "Il fiato a Troia e che c'è scritto: sûssa\""
+      },
+      {
+        "testo": "E l'é pe so vûentæ, che han fabbricoû",
+        "it": "\"Ed è per sua volontà, che hanno fabbricato"
+      },
+      {
+        "testo": "Sto cavallo de legno che le chi,",
+        "it": "Questo cavallo di legno che è qui,"
+      },
+      {
+        "testo": "O l'é ûn voto pe-a santa, e l'han lascioû",
+        "it": "È un voto per la santa, e l'hanno lasciato"
+      },
+      {
+        "testo": "Invece de palladio o che so mi,",
+        "it": "Invece del palladio o che so io,"
+      },
+      {
+        "testo": "E l'han fæto tant'âto e spertegoû",
+        "it": "E l'hanno fatto tanto alto e sperticato"
+      },
+      {
+        "testo": "Perché nö pûesci remesciâ de lî",
+        "it": "Perché non possiate rimuovere da lì"
+      },
+      {
+        "testo": "E nö rende i so calcoli sbagliæ",
+        "it": "E non rendere i loro calcoli sbagliati "
+      },
+      {
+        "testo": "Con portavelo drento da çittæ.",
+        "it": "Portandovelo dentro la città.\""
       }
     ]
   },
