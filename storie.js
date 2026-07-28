@@ -483,7 +483,7 @@ const STORIE_DEFAULT = [
     "tema": "",
     "titolo": {
       "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 1 parte 2",
-      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese (parte 2)"
+      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese"
     },
     "fonte": {
       "generato": "autentico",
@@ -823,7 +823,7 @@ const STORIE_DEFAULT = [
     "tema": "",
     "titolo": {
       "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 1 parte 3",
-      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese (parte 2) (parte 2)"
+      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese"
     },
     "fonte": {
       "generato": "autentico",
