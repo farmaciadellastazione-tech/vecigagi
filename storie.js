@@ -1017,6 +1017,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Pe sta votta Calcante ö no me beccia.",
         "it": "Per questa volta Calcante non mi fotte!"
+      },
+      {
+        "testo": "Pin d'anscietæ, de spaximo, de puia,",
+        "it": "Pieno d'ansia, di spasimo, di paura,"
+      },
+      {
+        "testo": "Senza pûeime sfamâ c'ûn pô de pan,",
+        "it": "Senza potermi sfamare con un po' di pane,"
+      },
+      {
+        "testo": "Scin che n'ho visto ch'ëan andæti via,",
+        "it": "Finché non ho visto che erano andati via,"
+      },
+      {
+        "testo": "Mi son stæto ammûggioû in t'ûn pâtan",
+        "it": "Me ne sono stato appallottolato in un pantano;"
+      },
+      {
+        "testo": "Quande poi... ma a mæ storia a le finia,",
+        "it": "Quando poi... ma la mia storia è finita,"
+      },
+      {
+        "testo": "Mi son chi che me metto in tê so man,",
+        "it": "Io sono qui che mi metto nelle sue mani,"
+      },
+      {
+        "testo": "Sciâ ne fassan de mi, cose se sæ",
+        "it": "Facciate di me qualsiasi cosa sia "
+      },
+      {
+        "testo": "Ma sciâ m'aggian un'ombra da caitæ.",
+        "it": "Ma abbiate di me un'ombra di carità."
+      },
+      {
+        "testo": "Cose serve! ö n'ha tanto inverdûgoû",
+        "it": "A che serve dirlo! Ci ha così tanto intortati"
+      },
+      {
+        "testo": "Che cianzeivimo quæxi comme lê",
+        "it": "Che piangevamo quasi come lui"
+      },
+      {
+        "testo": "Quindi ö re pe so bocca ö l'ha ordinou",
+        "it": "Quindi il re di sua bocca ha ordinato"
+      },
+      {
+        "testo": "Che ö se desmanettasse in sce döi pë",
+        "it": "Che gli si togliessero le manette su due piedi"
+      },
+      {
+        "testo": "E ö ga dîto: va là, ti ë perdonoû;",
+        "it": "E gli ha detto: \"Va' là, sei perdonato;"
+      },
+      {
+        "testo": "D'aôa in poi, ti no sæ ciù prexonné,",
+        "it": "Da ora in poi, non sarai più prigioniero,"
+      },
+      {
+        "testo": "Ti restiæ con noi atri e ti troviæ",
+        "it": "Resterai con noialtri e troverai"
+      },
+      {
+        "testo": "Ûnn-a patria in te Troia, e in noi, di fræ",
+        "it": "Una patria in Troia, e in noi, dei fratelli.\""
       }
     ]
   },
