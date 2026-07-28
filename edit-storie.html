@@ -406,6 +406,57 @@ function eliminaFrase(id, idx) {
   render();
 }
 
+// Divide una storia troppo lunga in due: la frase a "idx" e tutte le successive
+// vengono spostate in una nuova storia (stessa lingua/livello/tema/fonte), che
+// compare subito sotto nell'elenco. Utile per testi lunghi (es. poemi tradotti
+// a episodi) senza dover ricopiare a mano titolo, fonte, ecc.
+function dividiStoriaQui(id, idx) {
+  const s = storie.find(s => s.id === id);
+  if (!s || idx <= 0 || idx >= (s.frasi || []).length) return;
+  const nFrasiNuova = s.frasi.length - idx;
+  if (!confirm(`Dividere "${s.titolo?.testo || id}" qui?\n\nLe frasi dalla ${idx + 1}ª in poi (${nFrasiNuova}) verranno spostate in una nuova storia. Titolo e id andranno poi corretti a mano.`)) return;
+
+  const frasiNuova = s.frasi.splice(idx);
+  const nuovoId = idUnivoco(s.id + '-parte-2');
+  const nuova = {
+    id: nuovoId,
+    lingua: s.lingua,
+    livello: s.livello,
+    tema: s.tema,
+    titolo: {
+      testo: (s.titolo?.testo || '') + ' (parte 2)',
+      it: (s.titolo?.it || '') + ' (parte 2)'
+    },
+    fonte: JSON.parse(JSON.stringify(s.fonte || {})),
+    frasi: frasiNuova
+  };
+  storie.splice(storie.indexOf(s) + 1, 0, nuova);
+  newIds.add(nuovoId);
+  openIds.add(id); openIds.add(nuovoId);
+  segnaModificata(id);
+  salvaBozzaLocale();
+  render();
+}
+
+// Reversibilità di "dividiStoriaQui": riunisce una storia con quella subito
+// successiva nell'elenco, accodandone le frasi e poi eliminandola. Funziona
+// anche per unire due storie qualsiasi rese adiacenti (non solo dopo uno split).
+function unisciConSuccessiva(id) {
+  const idx = storie.findIndex(s => s.id === id);
+  if (idx === -1 || idx === storie.length - 1) return;
+  const s = storie[idx];
+  const successiva = storie[idx + 1];
+  if (!confirm(`Unire "${s.titolo?.testo || s.id}" con la storia successiva "${successiva.titolo?.testo || successiva.id}" (${(successiva.frasi || []).length} frasi)?\n\nLe frasi della successiva verranno accodate a questa, poi la storia successiva verrà eliminata.`)) return;
+
+  s.frasi = (s.frasi || []).concat(successiva.frasi || []);
+  storie.splice(idx + 1, 1);
+  newIds.delete(successiva.id); modifiedIds.delete(successiva.id); openIds.delete(successiva.id);
+  openIds.add(id);
+  segnaModificata(id);
+  salvaBozzaLocale();
+  render();
+}
+
 // ── 📋 Incolla tutto: genera le frasi da testo+traduzione in due incolla ──
 // Requisito: pubblicare una storia lunga senza copia-incolla frase per frase.
 
@@ -533,6 +584,7 @@ function renderCard(s) {
         <input type="text" placeholder="Traduzione italiana" value="${escapeAttr(f.it)}" onchange="aggiornaFrase('${s.id}', ${idx}, 'it', this.value)" />
       </div>
       <button class="icon-btn audio-btn ${f.audio ? 'has-audio' : ''}" title="${f.audio ? 'Audio: ' + escapeAttr(f.audio) : 'Registra audio per questa frase'}" onclick="apriRegistratoreFrase('${s.id}', ${idx})">${f.audio ? '🎵' : '🎙️'}</button>
+      ${idx > 0 ? `<button class="icon-btn" title="Dividi qui: questa frase e le successive diventano una nuova storia" onclick="dividiStoriaQui('${s.id}', ${idx})">✂️</button>` : ''}
       <button class="icon-btn" title="Elimina frase" onclick="eliminaFrase('${s.id}', ${idx})">🗑</button>
     </div>`).join('');
 
@@ -588,6 +640,7 @@ function renderCard(s) {
         </div>` : ''}
       </fieldset>
       <div class="card-actions">
+        ${storie.indexOf(s) < storie.length - 1 ? `<button class="btn" title="Riunisce questa storia con la successiva nell'elenco (annulla una divisione fatta con ✂️)" onclick="unisciConSuccessiva('${s.id}')">🔗 Unisci con successiva</button>` : ''}
         <button class="btn" onclick="rendiPrivata('${s.id}')">🔒 Rendi privata</button>
         <button class="btn btn-danger" onclick="eliminaStoria('${s.id}')">🗑 Elimina storia</button>
       </div>
