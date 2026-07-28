@@ -1313,6 +1313,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Con portavelo drento da çittæ.",
         "it": "Portandovelo dentro la città.\""
+      },
+      {
+        "testo": "E l'é chi dove sta tûtto ö segreto;",
+        "it": "\"Ed è qui che sta tutto il segreto;"
+      },
+      {
+        "testo": "Dæme a mente figgiêu che no v'inganno,",
+        "it": "Datemi retta ragazzi che non vi inganno,"
+      },
+      {
+        "testo": "Se ö rompî, se ö guastæ, ve ö diggo sccetto,",
+        "it": "Se lo rompete, se lo guastate, ve lo dico schietto,"
+      },
+      {
+        "testo": "Vöi, sei belli fottûi fin da quest'anno;",
+        "it": "Voi, siete belli fottuti fin da quest'anno;"
+      },
+      {
+        "testo": "Ma se invece gh'aviei cûra e rispetto,",
+        "it": "Ma se invece ne avrete cura e rispetto,"
+      },
+      {
+        "testo": "Nö solo i greci nö ve fan ciû danno,",
+        "it": "Non solo i Greci non vi faranno più danno,"
+      },
+      {
+        "testo": "Ma dovian fâ a figûa de præe Michë,",
+        "it": "Ma dovranno fare la figura di prete Michele,"
+      },
+      {
+        "testo": "Che ö se ö metteiva in tö stoppin da lë.",
+        "it": "Che se lo metteva nello stoppino da solo.\""
       }
     ]
   },
