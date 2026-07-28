@@ -1377,7 +1377,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "N'è successo ûn anghæso ancon ciû grosso.",
         "it": "Ci è successo un guaio ancora più grosso."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-1",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 1 parte 3 (parte 2)",
+      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese (parte 2)"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Laoconte che ö l'ëa stæto nominoû",
         "it": "Laocoonte che era stato nominato"
