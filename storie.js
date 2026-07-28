@@ -813,7 +813,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Son tûtte cuggie, no se pœu sarvâ",
         "it": "Son tutte balle, non ci si può salvare"
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-1-parte-3",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese (parte 2) (parte 2)",
+      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese (parte 2) (parte 2)"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Lë, finzendo ûn momento d'inçertezza,",
         "it": "Lui, fingendo un momento d'incertezza,"
