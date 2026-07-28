@@ -1345,6 +1345,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che ö se ö metteiva in tö stoppin da lë.",
         "it": "Che se lo metteva nello stoppino da solo.\""
+      },
+      {
+        "testo": "E noi da belinoïn s'emmo credûo",
+        "it": "E noi da belinoni abbiamo creduto"
+      },
+      {
+        "testo": "E sô cûgge e sô scene, e sô sciortîe,",
+        "it": "Alle sue balle, alle sue scene, e alle sue uscite,"
+      },
+      {
+        "testo": "Noi ch'eimo sempre stæti ûn osso dûo",
+        "it": "Noi che eravamo sempre stati un osso duro"
+      },
+      {
+        "testo": "Pe Diomede e pe Achille e che perdîe",
+        "it": "Per Diomede e per Achille e che, perdinci,"
+      },
+      {
+        "testo": "Dexe anni de patî, no n'han fottûo,",
+        "it": "Dieci anni di patimenti non ci hanno fottuto,"
+      },
+      {
+        "testo": "Se semmo rovinæ pe due böxie;",
+        "it": "Ci siamo rovinati per due bugie;"
+      },
+      {
+        "testo": "Ma pe futtine ben, pe dâne adosso,",
+        "it": "Ma per fotterci per bene, per darci adosso,"
+      },
+      {
+        "testo": "N'è successo ûn anghæso ancon ciû grosso.",
+        "it": "Ci è successo un guaio ancora più grosso."
       }
     ]
   },
