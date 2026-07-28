@@ -41,7 +41,7 @@
 
 const STORIE_DEFAULT = [
   {
-    "id": "ge-a1-eneide-4",
+    "id": "ge-a1-eneide-1",
     "lingua": "ge",
     "livello": "A1",
     "tema": "",
@@ -473,7 +473,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Pê nö vedde che ö l'ëa pin de sordatti.",
         "it": "Per non vedere che era pieno di soldati"
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-1-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese (parte 2)",
+      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese (parte 2)"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Tutt'assemme ûnn-a strœûppa de paisen",
         "it": "Tutt'a un tratto un gruppo di paesani"
