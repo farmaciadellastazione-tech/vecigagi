@@ -1185,6 +1185,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Voi atri ascì, nö me brûxiæ ö paggiasso.",
         "it": "Voi altri però, non mi bruciate il pagliaccio.\" (tradite)"
+      },
+      {
+        "testo": "I greci, han sempre avûo da divozion",
+        "it": "I Greci, hanno sempre avuto della devozione"
+      },
+      {
+        "testo": "Pe Santa Ratalegua e l'han portâ,",
+        "it": "Per Santa Ratalegua e l'hanno portata,"
+      },
+      {
+        "testo": "Primma de vegnî in guæra, in procescion;",
+        "it": "Prima di venire in guerra, in processione;"
+      },
+      {
+        "testo": "E chi, gh'aveivan misso sciû ûn artâ.",
+        "it": "E qui, le avevano messo su un altare."
+      },
+      {
+        "testo": "Lë a g'ha sempre mostroû da protezion",
+        "it": "Lei ha sempre mostrato loro protezione"
+      },
+      {
+        "testo": "Scinn-a a-o giorno che quello mandilâ",
+        "it": "Fino al giorno in cui quel furfante"
+      },
+      {
+        "testo": "D'Ulisse, che ö l'aveiva un pô e sampette,",
+        "it": "Di Ulisse, che aveva un po' le zampette lunghe,"
+      },
+      {
+        "testo": "Ö se azzardoû de tiâghe sciû e fâdette.",
+        "it": "Si azzardò a tirarle su la gonna."
       }
     ]
   },
