@@ -1249,6 +1249,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "E a l'ha fæto trei bötti in sce l'artâ.",
         "it": "E ha fatto tre salti sull'altare."
+      },
+      {
+        "testo": "Figgiœu cai, chi no ghe ciù remiscion,",
+        "it": "\"Cari ragazzi, qui non c'è più remissione,"
+      },
+      {
+        "testo": "Alöa Calcante o ne se misso a dî,",
+        "it": "Allora Calcante si è messo a dirci,"
+      },
+      {
+        "testo": "A santa a no vœû intende de raxon,",
+        "it": "La santa non vuole intendere ragione,"
+      },
+      {
+        "testo": "A vœû andasene a casa, a vœû partî;",
+        "it": "Vuole andarsene a casa, vuole partire;"
+      },
+      {
+        "testo": "Quande lë a l'aviâ avûo soddisfazion,",
+        "it": "Quando lei avrà avuto soddisfazione,"
+      },
+      {
+        "testo": "Solo alôa se porriâ torna vegnî;",
+        "it": "Solo allora si potrà torna venire;"
+      },
+      {
+        "testo": "Se dûnque, persûadeive che ghe spûssa",
+        "it": "Sicché, persuadetevi che le puzza"
+      },
+      {
+        "testo": "Ö fiato a Troia e che ghe scrito: sûssa",
+        "it": "Il fiato a Troia e che c'è scritto: sûssa\""
       }
     ]
   },
