@@ -1621,6 +1621,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Sciû coraggio figgiêu, che ö le in sciâ ciassa.",
         "it": "\"Su coraggio ragazzi, che è sulla piazza!\""
+      },
+      {
+        "testo": "A brûttûi, bulicugge, orbi inaiæ,",
+        "it": "\"Ah vili, lunatici, ciechi in confusione,"
+      },
+      {
+        "testo": "Besêugna proprio che ne ö lasciæ dî,",
+        "it": "Bisogna proprio che ce lo lasciate dire,"
+      },
+      {
+        "testo": "Træ votte ö se fermôu pe intrâ in çittæ,",
+        "it": "Tre volte si è fermato per entrare in città,"
+      },
+      {
+        "testo": "E pe trae votte ö se sentîo scroscî!",
+        "it": "E per tre volte si è sentito scricchiolare!"
+      },
+      {
+        "testo": "E paiva che ö dixesse: Cose fæ",
+        "it": "E sembrava che dicesse: 'Cosa fate?"
+      },
+      {
+        "testo": "Ö reciocco dö færo, nö sentî?",
+        "it": "Il rimbombo del ferro, non lo sentite?'"
+      },
+      {
+        "testo": "Ma noî, ninte, ëimo sordi, emmo vosciûo,",
+        "it": "Ma noi, niente, eravamo sordi, abbiamo voluto"
+      },
+      {
+        "testo": "Mettisegheo da noî, ben rebattûo.",
+        "it": "Mettercelo da noi, ben ribattuto.\""
       }
     ]
   },
