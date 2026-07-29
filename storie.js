@@ -1557,6 +1557,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "S'aveivimo cagôu tûtti in te braghe.",
         "it": "Ci eravamo cagati tutti nelle braghe."
+      },
+      {
+        "testo": "Quande se semmo repiggiæ ûn momento",
+        "it": "Quando ci siamo ripresi un momento"
+      },
+      {
+        "testo": "E a quanto l'é successo emmo pensôu,",
+        "it": "E a quanto è successo abbiamo pensato,"
+      },
+      {
+        "testo": "S'é dito in generale, che ö portento",
+        "it": "Si è detto in generale, che il portento "
+      },
+      {
+        "testo": "Se l'aveiva Laoconte meritôu,",
+        "it": "Se lo era Laocoonte meritato,"
+      },
+      {
+        "testo": "Per avei avûo a tolla e l'ardimento",
+        "it": "Per aver avuto la tolla e l'ardimento"
+      },
+      {
+        "testo": "De tiâ a lansa in tö legno consacrôu",
+        "it": "Di tirare la lancia nel legno consacrato"
+      },
+      {
+        "testo": "E che, pe appaxentâ a divinitæ,",
+        "it": "E che, per pacificare la divinità,"
+      },
+      {
+        "testo": "Ö cavallo ö doveiva intrâ in çittæ.",
+        "it": "Il cavallo doveva entrare in città"
       }
     ]
   },
