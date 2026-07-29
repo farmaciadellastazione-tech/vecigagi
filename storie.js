@@ -1493,6 +1493,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Te i strenzan, te i ingöan che pän fregugge.",
         "it": "Te li stringono, te li ingoiano che sembrano briciole."
+      },
+      {
+        "testo": "E a Laoconte che ö i voeiva soccorî",
+        "it": "E a Laocoonte che li voleva soccorrere"
+      },
+      {
+        "testo": "Se ghe asbrîan, se ghe inghêuggian in sce l'atto,",
+        "it": "Gli si avventano contro, gli si aggrovigliano all'istante,"
+      },
+      {
+        "testo": "Se ghe doggian in gîo, te ö fan scroscî,",
+        "it": "Gli si attorcigliano intorno, te lo fanno scricchiolare,"
+      },
+      {
+        "testo": "Lë ö sbraggia, ö l'ûrla, ö cria pëzo che ûn matto,",
+        "it": "Lui sbraita, urla, grida peggio di un matto,"
+      },
+      {
+        "testo": "E ghe scappa e correzze a ciû no dî,",
+        "it": "E gli scappano le scorregge a più non dire,"
+      },
+      {
+        "testo": "In t'ûn momento te ghe dan recatto,",
+        "it": "In un momento lo sistemano,"
+      },
+      {
+        "testo": "E te ö ridûan coscì che ö te diventa",
+        "it": "E te lo riducono così che ti diventa"
+      },
+      {
+        "testo": "Ûn mûggetto de strasse e dâ rûmenta.",
+        "it": "Un mucchietto di stracci e di spazzatura."
       }
     ]
   },
