@@ -1589,6 +1589,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö cavallo ö doveiva intrâ in çittæ.",
         "it": "Il cavallo doveva entrare in città"
+      },
+      {
+        "testo": "E lì sûbito a-o laôu se semmo missi",
+        "it": "E lì subito ci siamo messi al lavoro"
+      },
+      {
+        "testo": "Con päfæri, badî, masse, piccoin,",
+        "it": "Con palanchini, badili, mazze, picconi,"
+      },
+      {
+        "testo": "A daghe drento pe fâ andâ in menissi",
+        "it": "A darci dentro per mandare in frantumi"
+      },
+      {
+        "testo": "A porta, e pe fâ ûn sguaro in ti bastioin.",
+        "it": "La porta, e per fare uno squarcio nei bastioni."
+      },
+      {
+        "testo": "E con corde, con lëve, atri bordissi,",
+        "it": "E con corde, con leve e altri armamentari,"
+      },
+      {
+        "testo": "Adattemmo a-o cavallo î scalandroin,",
+        "it": "Adattammo al cavallo gli scalandroni,"
+      },
+      {
+        "testo": "E lì, tia, forza, arranca, ö mescia, ö passa",
+        "it": "E lì, tira, forza, arranca, si muove, passa:"
+      },
+      {
+        "testo": "Sciû coraggio figgiêu, che ö le in sciâ ciassa.",
+        "it": "\"Su coraggio ragazzi, che è sulla piazza!\""
       }
     ]
   },
