@@ -1653,6 +1653,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Mettisegheo da noî, ben rebattûo.",
         "it": "Mettercelo da noi, ben ribattuto.\""
+      },
+      {
+        "testo": "Alôa Cassandra, che a n'ëa gûæi credûa",
+        "it": "Allora Cassandra, che non era per niente creduta"
+      },
+      {
+        "testo": "Perché paiva che a fosse ascemelâ,",
+        "it": "Perché sembrava che fosse rimbambita,"
+      },
+      {
+        "testo": "A l'arve a bocca e a spiffera ädreitûa",
+        "it": "Apre la bocca e spiffera addirittura"
+      },
+      {
+        "testo": "Tutto quanto doveiva capità;",
+        "it": "Tutto quanto doveva capitare;"
+      },
+      {
+        "testo": "Ma nisciûn ghe dà mente e se ne cûa,",
+        "it": "Ma nessuno le dà retta e se ne cura,"
+      },
+      {
+        "testo": "Gh'è chi invece a cugionn-a e a piggia a fâ,",
+        "it": "C'è chi invece la cogliona e la sfotte,"
+      },
+      {
+        "testo": "Ghe dixan che a l'ha a testa fêua de cascia",
+        "it": "Le dicono che ha la testa fuori posto "
+      },
+      {
+        "testo": "E ghe dan dö ciappetto e da bagascia.",
+        "it": "E le danno della baldracca e della bagascia."
       }
     ]
   },
