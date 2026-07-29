@@ -1429,6 +1429,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che ä sagoma, a-o regìo, paivan serpenti",
         "it": "Che per la sagoma, per l'andamento, sembravano serpenti."
+      },
+      {
+        "testo": "Vegnivan zû cö stêumago addrizzôu,",
+        "it": "Venivano giù con lo stomaco drizzato,"
+      },
+      {
+        "testo": "Co-a bocca spalancâ pinn-a de bava",
+        "it": "Con la bocca spalancata piena di bava,"
+      },
+      {
+        "testo": "Tûtto ö resto dö corpo arriguelôu,",
+        "it": "Tutto il resto del corpo attorcigliato,"
+      },
+      {
+        "testo": "Ö regïava in te l'ægûa e ö se regïava,",
+        "it": "Che rigirava nell'acqua e si rigirava,"
+      },
+      {
+        "testo": "Se servivan da côa comme battûou",
+        "it": "Si servivano della coda come frusta"
+      },
+      {
+        "testo": "Che paiva læte ö mâ tanto ö scciûmmava;",
+        "it": "Che sembrava latte il mare tanto che schiumava;"
+      },
+      {
+        "testo": "E vegnûi zû corrindo in fin ä spiaggia",
+        "it": "E venuti giù di corsa fino alla spiaggia"
+      },
+      {
+        "testo": "Se son missi a scigôà neigri dä raggia.",
+        "it": "Si son messi a sibilare neri dalla rabbia."
+      },
+      {
+        "testo": "Semmo tûtti restæ senza respîo,",
+        "it": "Siamo tutti restati senza respiro,"
+      },
+      {
+        "testo": "Senza gambe e ciû gianchi che un lenzêu,",
+        "it": "Senza gambe e più bianchi di un lenzuolo,"
+      },
+      {
+        "testo": "Nö ghe stæto che ûn ûrlo, ûn sbraggio, un crio,",
+        "it": "Non c'è stato che un urlo, uno sbraitare, un grido,"
+      },
+      {
+        "testo": "«Andævene, son chi, sarva chi pêu»,",
+        "it": "«Andatevene, sono qui, si salvi chi può!»,"
+      },
+      {
+        "testo": "I serpenti in t'ûn botto, in t'ûn asbrîo,",
+        "it": "I serpenti in un botto, in uno slancio,"
+      },
+      {
+        "testo": "S'arrissan a Laoconte e a-i sô figgiêu",
+        "it": "Si avventano su Laocoonte e sui suoi figli"
+      },
+      {
+        "testo": "E primma a questi, senza tante cûgge",
+        "it": "E prima a questi, senza tante balle"
+      },
+      {
+        "testo": "Te i strenzan, te i ingöan che pän fregugge.",
+        "it": "Te li stringono, te li ingoiano che sembrano briciole."
       }
     ]
   },
