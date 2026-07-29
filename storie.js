@@ -1525,6 +1525,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ûn mûggetto de strasse e dâ rûmenta.",
         "it": "Un mucchietto di stracci e di spazzatura."
+      },
+      {
+        "testo": "Poi se desghêuggian, quande l'han finîo,",
+        "it": "Poi si sbrogliano, quando l'hanno finito,"
+      },
+      {
+        "testo": "E scigoando ädreitûa comme ûn vapore,",
+        "it": "E fischiando addirittura come un un vapore,"
+      },
+      {
+        "testo": "Se ne van, senza ascâdi e senza asbrîo,",
+        "it": "Se ne vanno, senza scaldarsi e senza fretta,"
+      },
+      {
+        "testo": "Senza manco ciû giâse in çimma a töre;",
+        "it": "Senza nemmeno più girarsi, in cima alla torre;"
+      },
+      {
+        "testo": "E là, sotto l'artâ, comme in t'un nîo",
+        "it": "E là, sotto l'altare, come in un nido"
+      },
+      {
+        "testo": "S'accomodan, se giân, senza che i scöre",
+        "it": "Si accomodano, si acciambellano, senza che li scacci"
+      },
+      {
+        "testo": "Nisciûn de noî, che ahimé, senza pensaghe,",
+        "it": "Nessuno di noi, che ahimè, senza pensarci,"
+      },
+      {
+        "testo": "S'aveivimo cagôu tûtti in te braghe.",
+        "it": "Ci eravamo cagati tutti nelle braghe."
       }
     ]
   },
