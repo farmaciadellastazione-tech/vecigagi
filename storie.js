@@ -1929,6 +1929,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Troia a l'ha in tö stoppin, sön messe dîte.",
         "it": "Troia ce l'ha nello stoppino, sono messe dette.\""
+      },
+      {
+        "testo": "Sarva almeno i gexû co-i reliquai",
+        "it": "Salva almeno i gesù con i reliquiari,"
+      },
+      {
+        "testo": "Fûtti tûtto in t'ûn baûlo e fanni fîto,",
+        "it": "Fotti tutto in un baule  e fallo in fretta,"
+      },
+      {
+        "testo": "Mettíte in t'ûn vagon, piggia ö tramvai",
+        "it": "Mettiti in un vagone, prendi il tramvai"
+      },
+      {
+        "testo": "E portili a straquâ in te ûn atro scito:",
+        "it": "E portali a scaricare in un altro posto:"
+      },
+      {
+        "testo": "Doppo ûn mondo de lastime e de guai",
+        "it": "Dopo un mondo di lamenti e di guai"
+      },
+      {
+        "testo": "Ti ghe ö torniæ a piggiâ torna pe drîto",
+        "it": "Ti tornerà ad andare per il verso giusto"
+      },
+      {
+        "testo": "E ti fondiæ a çittæ dell'Arpexella,",
+        "it": "E fonderai la città di Arpesella,"
+      },
+      {
+        "testo": "Ciû grande ancon de Troia e ancon ciû bella.",
+        "it": "Ancora più grande di Troia e ancora più bella."
       }
     ]
   },
