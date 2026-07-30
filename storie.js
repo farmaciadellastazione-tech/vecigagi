@@ -2025,6 +2025,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Da quarche compagnia d'ëse assegûoû;",
         "it": "Da qualche compagnia d'essere assicurati;"
+      },
+      {
+        "testo": "Coscì mi stavo a amiâ co-e balle in man",
+        "it": "Così io stavo a guardare con le balle in mano"
+      },
+      {
+        "testo": "A rovinn-a de Troia e mæ rovinn-a;",
+        "it": "La rovina di Troia e la mia rovina;"
+      },
+      {
+        "testo": "Za l'incendio che primma ö l'ëa lontan",
+        "it": "Già l'incendio che prima era lontano"
+      },
+      {
+        "testo": "Ö l'aumenta de forza, ö s'avvixinn-a,",
+        "it": "Aumenta di forza, si avvicina,"
+      },
+      {
+        "testo": "Ö l'attacca zà Tursci, ö piggia man,",
+        "it": "Attacca già Tursi, prende mano,"
+      },
+      {
+        "testo": "Da-e artûe, tûtto zû, scinn-a ä marinn-a",
+        "it": "Dalle alture, tutto giù, fino alla marina"
+      },
+      {
+        "testo": "Che l'ëa tûtto ûnn-a fiamma, ûnn-a förnaxe,",
+        "it": "Che era tutta una fiamma, una fornace,"
+      },
+      {
+        "testo": "L'aia pinn-a de zimme, ö mâ de braxe.",
+        "it": "L'aria piena di faville, il mare di braci."
       }
     ]
   },
