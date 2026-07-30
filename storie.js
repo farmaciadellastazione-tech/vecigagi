@@ -1928,7 +1928,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Troia a l'ha in tö stoppin, sön messe dîte.",
-        "it": "Troia ce l'ha nello stoppino, è già scritto.\""
+        "it": "Troia ce l'ha nello stoppino, sono messe dette.\""
       }
     ]
   },
