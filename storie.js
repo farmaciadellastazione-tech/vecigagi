@@ -1685,6 +1685,90 @@ const STORIE_DEFAULT = [
       {
         "testo": "E ghe dan dö ciappetto e da bagascia.",
         "it": "E le danno della baldracca e della bagascia."
+      },
+      {
+        "testo": "E frattanto zà a nêutte ciancianin",
+        "it": "E frattanto già la notte pian pianino"
+      },
+      {
+        "testo": "A l'aveiva inghêuggeito tæra e mâ",
+        "it": "Aveva avvolto terra e mare"
+      },
+      {
+        "testo": "E a sorpreisa che quelli mascarsoin",
+        "it": "E la sorpresa che quei mascalzoni"
+      },
+      {
+        "testo": "Ne vûeivan d'arescöso preparâ;",
+        "it": "Ci volevano di nascosto preparare;"
+      },
+      {
+        "testo": "A poco a poco, tutti i çittadin",
+        "it": "A poco a poco, tutti i cittadini"
+      },
+      {
+        "testo": "Ëan andæti in sce ö letto ûn pò a quetâ",
+        "it": "Erano andati sul letto un po' a quietare"
+      },
+      {
+        "testo": "E doppo avei provôu tante emozioin",
+        "it": "E dopo aver provato tante emozioni"
+      },
+      {
+        "testo": "Dormivan ädreitûa comme succoin",
+        "it": "Dormivano addirittura come ceppi."
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-2-parte",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 2 parte 1 (parte 2)",
+      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese  (parte 2)"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
+      {
+        "testo": "Alôa dall'isoa donde a fâva ö scemmo",
+        "it": "Allora dall'isola [Tenedo] dove faceva la finta tonta,"
+      },
+      {
+        "testo": "Sciorte a flotta di greci in ordinanza;",
+        "it": "Esce la flotta dei greci in perfetto ordine;"
+      },
+      {
+        "testo": "Pe fâ intende a Schenon, (miæ che ghe semmo)",
+        "it": "Per far capire a Sinone (guarda che ci siamo)"
+      },
+      {
+        "testo": "A brûxia ûn fûrgaô mentre che a s'avanza;",
+        "it": "Brucia un razzo di segnalazione (fûrgaô) mentre avanza;"
+      },
+      {
+        "testo": "A-o segno convegnûo con sto malemmo,",
+        "it": "Al segno convenuto con questo maledetto (malemmo),"
+      },
+      {
+        "testo": "Lë ö s'accosta a-o cavallo e ö gh'arve a pansa",
+        "it": "Lui si avvicina al cavallo e gli apre la pancia"
+      },
+      {
+        "testo": "Ciancianinetto, tûtta quella scciûmma",
+        "it": "Pian pianino, e tutta quella feccia (scciûmma)"
+      },
+      {
+        "testo": "Pe ûnn-a corda, zû in tæra a se calûmma.",
+        "it": "Per mezzo di una corda, giù a terra si cala."
       }
     ]
   },
