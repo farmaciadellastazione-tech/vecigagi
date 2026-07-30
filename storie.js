@@ -1801,6 +1801,134 @@ const STORIE_DEFAULT = [
       {
         "testo": "Pe fâne brûstolì comme oxeletti.",
         "it": "Per farci abbrustolire come uccelletti."
+      },
+      {
+        "testo": "L'ëa l'ôa dö primmo sêunno, e mi ronfava",
+        "it": "Era l'ora del primo sonno, e io ronfavo"
+      },
+      {
+        "testo": "Comme ûn sûcco dappresso ä mæ scignöa,",
+        "it": "Come un ceppo vicino alla mia signora,"
+      },
+      {
+        "testo": "Quando, mentre che meno ghe pensava,",
+        "it": "Quando, mentre meno ci pensavo,"
+      },
+      {
+        "testo": "Veddo Ettore stecchìo comme un'anciöa,",
+        "it": "Vedo Ettore stecchito come un'acciuga,"
+      },
+      {
+        "testo": "Pin de sangue, strassôu che ö me fissava.",
+        "it": "Pieno di sangue, stracciato che mi fissava."
+      },
+      {
+        "testo": "Ö no l'ëa ciû quell'Ettore d'alöa",
+        "it": "Non era più quell'Ettore di allora"
+      },
+      {
+        "testo": "Che ö tornava trionfante e pin de botta,",
+        "it": "Che tornava trionfante e pieno di boria,"
+      },
+      {
+        "testo": "Percose Achille ö gh'ëa restôu de sotta.",
+        "it": "Perché Achille gli era rimasto sotto."
+      },
+      {
+        "testo": "Ö l'aveiva ûnn-a barba speronsîa",
+        "it": "Aveva una barba ispida e arruffata"
+      },
+      {
+        "testo": "Tutta pinn-a de bratta e insanguinâ,",
+        "it": "Tutta piena di fango e insanguinata,"
+      },
+      {
+        "testo": "Ûn muro allampanôu da mette puîa,",
+        "it": "Un viso allampanato da far paura,"
+      },
+      {
+        "testo": "A roba tûtta sguari astrofoggiâ,",
+        "it": "La veste tutta a strappi e sgualcita,"
+      },
+      {
+        "testo": "No gh'ëa posto da faghe ûnn-a ferîa,",
+        "it": "Non c'era posto per fargli una ferita,"
+      },
+      {
+        "testo": "Tanto a pelle ö l'aveiva pertûsà,",
+        "it": "Tanto aveva la pelle bucherellata,"
+      },
+      {
+        "testo": "E me paiva che fosse ö primmo mì",
+        "it": "E mi sembrava di essere il primo io"
+      },
+      {
+        "testo": "A parlaghe, dixendoghe coscì:",
+        "it": "A parlargli, dicendogli così:"
+      },
+      {
+        "testo": "E brao, cameadda, comme a l'é, ti ë chi?",
+        "it": "\"E bravo, camerata, com'è, sei qui?"
+      },
+      {
+        "testo": "Dove diao ti t'é andæto a bûzzarâ?",
+        "it": "Dove diavolo sei andato a rovinarti?"
+      },
+      {
+        "testo": "E cose ti æ fottûo? l'é pe coscì",
+        "it": "E cosa hai combinato? È da per così"
+      },
+      {
+        "testo": "Che nöiatri te stavimo a aspettâ;",
+        "it": "Che noialtri ti stavamo ad aspettare;"
+      },
+      {
+        "testo": "Per cose mai, ti æ quella faccia lì,",
+        "it": "Perché mai, hai quella faccia lì,"
+      },
+      {
+        "testo": "Brûtto de sangue comme ûn maxellâ?",
+        "it": "Sporco di sangue come un macellaio?"
+      },
+      {
+        "testo": "Contime, parla, cose t'é successo?",
+        "it": "Raccontami, parla, cosa ti è successo?"
+      },
+      {
+        "testo": "A-oa ti l'æ piggiæ, tanto, l'é ö stesso.",
+        "it": "Ormai le hai prese, tanto, è lo stesso.\""
+      },
+      {
+        "testo": "E lë, senza risponde a-e mæ parolle,",
+        "it": "E lui, senza rispondere alle mie parole,"
+      },
+      {
+        "testo": "Ö l'ha tiôu sciû ûn sospîo da strenze ö chêu:",
+        "it": "Ha tirato su un sospiro da stringere il cuore:"
+      },
+      {
+        "testo": "Scappa, ö m'ha dito, Enea, primma che a scrolle",
+        "it": "\"Scappa – mi ha detto – Enea, prima che crolli "
+      },
+      {
+        "testo": "E ti resti de dentro a-o rattaiêu,",
+        "it": "E tu resti dentro, in una trappola per topi,"
+      },
+      {
+        "testo": "Nö l'e tempo de fa de braghe molle,",
+        "it": "Non è tempo di fare delle braghe molle,"
+      },
+      {
+        "testo": "Se ne deve sciortî comme se pêu,",
+        "it": "Se ne deve uscire  come si può,"
+      },
+      {
+        "testo": "E mi sön vegnûo apposta pe avvertîte,",
+        "it": "E io sono venuto apposta per avvertirti,"
+      },
+      {
+        "testo": "Troia a l'ha in tö stoppin, sön messe dîte.",
+        "it": "Troia ce l'ha nello stoppino, è già scritto.\""
       }
     ]
   },
