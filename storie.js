@@ -1769,6 +1769,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Pe ûnn-a corda, zû in tæra a se calûmma.",
         "it": "Per mezzo di una corda, giù a terra si cala."
+      },
+      {
+        "testo": "Vegnûi tûtti de fêua senza parlâ",
+        "it": "venuti tutti fuori senza parlare"
+      },
+      {
+        "testo": "(Ëan d'accordo, zà primma de sciortî)",
+        "it": "(Erano d'accordo, già prima di uscire)"
+      },
+      {
+        "testo": "Ognid'ûn sa zà dove ö deve andâ,",
+        "it": "Ognuno sa già dove deve andare,"
+      },
+      {
+        "testo": "Cose ghe tocca e comme ö deve agî,",
+        "it": "Cosa gli tocca e come deve agire,"
+      },
+      {
+        "testo": "Chi a-o palazzo dö re, chi all'arsenâ",
+        "it": "Chi al palazzo del re, chi all'arsenale"
+      },
+      {
+        "testo": "Chi a-e porte pe piggiale e fâle arvî,",
+        "it": "Chi alle porte per prenderle e farle aprire,"
+      },
+      {
+        "testo": "E chi va cö petrolio e coi brichetti",
+        "it": "E chi va col petrolio e con i fiammiferi"
+      },
+      {
+        "testo": "Pe fâne brûstolì comme oxeletti.",
+        "it": "Per farci abbrustolire come uccelletti."
       }
     ]
   },
