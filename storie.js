@@ -1726,8 +1726,8 @@ const STORIE_DEFAULT = [
     "livello": "A1",
     "tema": "",
     "titolo": {
-      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 2 parte 1 (parte 2)",
-      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese  (parte 2)"
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 2 parte 2",
+      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese"
     },
     "fonte": {
       "generato": "autentico",
@@ -1740,23 +1740,23 @@ const STORIE_DEFAULT = [
     "frasi": [
       {
         "testo": "Alôa dall'isoa donde a fâva ö scemmo",
-        "it": "Allora dall'isola [Tenedo] dove faceva la finta tonta,"
+        "it": "Allora dall'isola dove faceva lo scemo"
       },
       {
         "testo": "Sciorte a flotta di greci in ordinanza;",
-        "it": "Esce la flotta dei greci in perfetto ordine;"
+        "it": "Esce la flotta dei greci in ordinanza;"
       },
       {
         "testo": "Pe fâ intende a Schenon, (miæ che ghe semmo)",
-        "it": "Per far capire a Sinone (guarda che ci siamo)"
+        "it": "Per far capire a Schenone (guarda che ci siamo)"
       },
       {
         "testo": "A brûxia ûn fûrgaô mentre che a s'avanza;",
-        "it": "Brucia un razzo di segnalazione (fûrgaô) mentre avanza;"
+        "it": "Brucia un razzo di segnalazione  mentre avanza;"
       },
       {
         "testo": "A-o segno convegnûo con sto malemmo,",
-        "it": "Al segno convenuto con questo maledetto (malemmo),"
+        "it": "Al segno convenuto con questo maledetto,"
       },
       {
         "testo": "Lë ö s'accosta a-o cavallo e ö gh'arve a pansa",
@@ -1764,7 +1764,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ciancianinetto, tûtta quella scciûmma",
-        "it": "Pian pianino, e tutta quella feccia (scciûmma)"
+        "it": "Pian pianino, e tutta quella schiuma"
       },
       {
         "testo": "Pe ûnn-a corda, zû in tæra a se calûmma.",
