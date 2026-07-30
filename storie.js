@@ -1961,6 +1961,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ciû grande ancon de Troia e ancon ciû bella.",
         "it": "Ancora più grande di Troia e ancora più bella."
+      },
+      {
+        "testo": "E ö sparisce: frattanto pe-a çittæ",
+        "it": "E lui sparisce: frattanto per la città"
+      },
+      {
+        "testo": "Se commensa a sentî cianze e sbraggiâ,",
+        "it": "Si comincia a sentire piangere e sbraitare,"
+      },
+      {
+        "testo": "Ûn remescio, ûn tambûscio, ûn nö saviæ",
+        "it": "Un rimescolamento, un trambusto, un non saprei"
+      },
+      {
+        "testo": "Comme quando se sente sbatte ö mâ,",
+        "it": "Come quando si sente sbattere il mare,"
+      },
+      {
+        "testo": "Poi ö piggia ciû forza e intenscitæ,",
+        "it": "Poi prende più forza e intensità,"
+      },
+      {
+        "testo": "Ö cresce, ö monta che ö me fâ adesciâ;",
+        "it": "Cresce, monta tanto che mi fa svegliare;"
+      },
+      {
+        "testo": "Sâto da-o letto e tastonando a-o scûo,",
+        "it": "Salto dal letto e tastonando all'oscuro,"
+      },
+      {
+        "testo": "Camminn-o in sce a terrazza bello nûo.",
+        "it": "Cammino sulla terrazza bello nudo."
       }
     ]
   },
