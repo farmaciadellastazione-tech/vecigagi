@@ -1993,6 +1993,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Camminn-o in sce a terrazza bello nûo.",
         "it": "Cammino sulla terrazza bello nudo."
+      },
+      {
+        "testo": "Comme quando a campann-a a martelletto,",
+        "it": "Come quando la campana a martelletto,"
+      },
+      {
+        "testo": "A n'adescia de nêutte in t'ûn scrollon,",
+        "it": "Ci sveglia di notte in uno scossone,"
+      },
+      {
+        "testo": "Co-i êûggi ancon serræ, se sâta ö letto,",
+        "it": "Con gli occhi ancora chiusi, si salta giù dal letto,"
+      },
+      {
+        "testo": "E se cöre tremândo da-o barcon,",
+        "it": "E si corre tremando al balcone,"
+      },
+      {
+        "testo": "E se vedde a gragnêua che a lascia netto",
+        "it": "E si vede la grandine che lascia netto"
+      },
+      {
+        "testo": "E ûn incendio che ö porta a distrûzion,",
+        "it": "E un incendio che porta la distruzione,"
+      },
+      {
+        "testo": "E sovven solo allöa che s'é scordôu",
+        "it": "E viene in mente solo allora che ci si è scordati"
+      },
+      {
+        "testo": "Da quarche compagnia d'ëse assegûoû;",
+        "it": "Da qualche compagnia d'essere assicurati;"
       }
     ]
   },
