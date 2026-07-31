@@ -2057,6 +2057,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "L'aia pinn-a de zimme, ö mâ de braxe.",
         "it": "L'aria piena di faville, il mare di braci."
+      },
+      {
+        "testo": "Me và sûbito a testa in tö ballon,",
+        "it": "Mi va subito la testa nel pallone,"
+      },
+      {
+        "testo": "Nö sô ciû cose fûtte e cose fâ,",
+        "it": "Non so più cosa diavolo fare e combinare,"
+      },
+      {
+        "testo": "M'infio e braghe, metto ö çenturon,",
+        "it": "Mi infilo le braghe, metto il cinturone,"
+      },
+      {
+        "testo": "Me ven coæ de sciortî pe andame a dâ,",
+        "it": "Mi vien cuore di uscire per andarle a dare,"
+      },
+      {
+        "testo": "Sciorto e lì abbretiö ammûggio ûn pelotton",
+        "it": "Esco e lì alla rinfusa ammucchio un plotone"
+      },
+      {
+        "testo": "De militi acchêuggeiti in tö scappâ,",
+        "it": "Di soldati raccolti mentre scappavano,"
+      },
+      {
+        "testo": "E ghe diggo: battemosene a mössa",
+        "it": "E dico loro: sbattiamocene la mussa,"
+      },
+      {
+        "testo": "Zà che se gh'é: merda o berretta rössa.",
+        "it": "Già che ci siamo: merda o berretta rossa."
       }
     ]
   },
