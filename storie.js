@@ -2089,6 +2089,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Zà che se gh'é: merda o berretta rössa.",
         "it": "Già che ci siamo: merda o berretta rossa."
+      },
+      {
+        "testo": "E lì in marcia: quand'ecco che incontremmo",
+        "it": "E lì in marcia: quand'ecco che incontrammo"
+      },
+      {
+        "testo": "Ö sciö Oberti, che ö l'ëa seatê in Campetto,",
+        "it": "Il signor Oberti, che era sagrestano in Campetto,"
+      },
+      {
+        "testo": "Capitanio da quinta, mëzo scemmo",
+        "it": "Capitano della quinta, mezzo scemo"
+      },
+      {
+        "testo": "Da-o sciato, da-o remescio, da-o spaghetto,",
+        "it": "Dal fiatone, dal trambusto, dalla gran paura,"
+      },
+      {
+        "testo": "Ö scappava vestîo comme ûn malemmo",
+        "it": "Scappava vestito come un disgraziato"
+      },
+      {
+        "testo": "Co-i argenti de casa in t'ûn sacchetto;",
+        "it": "Con l'argenteria di casa in un sacchetto;"
+      },
+      {
+        "testo": "Ö sciö Oberti, ghe crîo, sciâ vegne chì",
+        "it": "\"Signor Oberti\", gli grido, \"venga qui,"
+      },
+      {
+        "testo": "Comm'a l'é, sciâ ghe molla vosciâ ascì ?",
+        "it": "Come l'è, ci molla anche lei?\""
       }
     ]
   },
