@@ -2217,6 +2217,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ma mì vêuggio sarvâ a pansa a-e fighe.",
         "it": "Ma io voglio salvare la pancia per i fichi"
+      },
+      {
+        "testo": "Mì me sâta ûnn-a vêuggia mascarsonn-a",
+        "it": "Mi salta una voglia mascalzona"
+      },
+      {
+        "testo": "De mettime a corrî dove fa cado,",
+        "it": "Di mettermi a correre dove fa caldo,"
+      },
+      {
+        "testo": "Primma amîo chi ho con mì: gh'é ö Câsabonn-a",
+        "it": "Prima guardo chi ho con me: c'è il Casabona"
+      },
+      {
+        "testo": "E gh'é ö Döi södi, cö chirurgo Ansâdo,",
+        "it": "E c'è il \"Due soldi\", col chirurgo Ansaldo,"
+      },
+      {
+        "testo": "Ö sciû Gherscí, Nattin Carabalonn-a,",
+        "it": "Il signor Ghersì, Nattin Carabalona,"
+      },
+      {
+        "testo": "Cesare ö giardinë, cö sunnôu Bado,",
+        "it": "Cesare il giardiniere, col suonatore Bado,"
+      },
+      {
+        "testo": "Capitan Questa, Piransola e Rigo",
+        "it": "Il Capitan Questa, Piransola e Rigo"
+      },
+      {
+        "testo": "Con Ciöngin ö procûoû e Campantigo.",
+        "it": "Con Ciongin il procuratore e Campantigo."
       }
     ]
   },
