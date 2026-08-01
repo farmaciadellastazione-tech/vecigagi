@@ -2153,6 +2153,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Sciâ nö ghe vedde, che l'é tempo perso.",
         "it": "Non lo vede che è tempo perso?\""
+      },
+      {
+        "testo": "Stö brûttö de cavallo ö bêutta zû",
+        "it": "Questo brutto di un cavallo butta giù"
+      },
+      {
+        "testo": "Strêuppe e strêuppe de greci a tutt'andâ",
+        "it": "Torme e torme di greci a tutto andare"
+      },
+      {
+        "testo": "Sciortan da tutti i canti e vegnan sciû",
+        "it": "Escono da tutti gli angoli e vengono su"
+      },
+      {
+        "testo": "Ädreitûa comme funzi. Ei bello fâ",
+        "it": "Addirittura come funghi. Hai un bel da fare"
+      },
+      {
+        "testo": "Ma scì cuggie, ne ven sempre de ciû",
+        "it": "Ma sì, palle, ne vengono sempre di più"
+      },
+      {
+        "testo": "E se mettan lì, sûbito a piccâ;",
+        "it": "E si mettono lì, subito a picchiare;"
+      },
+      {
+        "testo": "E quello brûtto siôto de Schenon",
+        "it": "E quel brutto impiastro di Schenone"
+      },
+      {
+        "testo": "Che ö ne bûzara, ö ne mincionn-a ancon.",
+        "it": "Che ci rovina,e ci minchiona ancora."
       }
     ]
   },
