@@ -2313,6 +2313,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Con piggiâlo in tö cû, senza mezualo!",
         "it": "Col prenderlo nel culo, senza misurarlo!"
+      },
+      {
+        "testo": "Ste parolle, per lö, sön fêugo e fiamme",
+        "it": "Queste parole, per loro, sono fuoco e fiamme"
+      },
+      {
+        "testo": "Che s'ëan cädi, buggï son diventæ;",
+        "it": "Che se erano caldi, bolliti sono diventati;"
+      },
+      {
+        "testo": "Comme ûn branco de lôi, morti da fämme,",
+        "it": "Come un branco di lupi, morti di fame,"
+      },
+      {
+        "testo": "Comme matti furiosi deslighæ,",
+        "it": "Come matti furiosi slegati,"
+      },
+      {
+        "testo": "Senza piano d'attacco e senza esamme,",
+        "it": "Senza piano d'attacco e senza esame,"
+      },
+      {
+        "testo": "Nöi s'asbriemmo ädreitûa dentro a çittæ",
+        "it": "Noi ci scagliamo a dirittura dentro la città"
+      },
+      {
+        "testo": "E zû botte ruffiann-e a ciû nö dî,",
+        "it": "E giù botte da orbi da non poterne più,"
+      },
+      {
+        "testo": "Che me fâvan mâveggia scinn-a a mî",
+        "it": "Che mi facevano meraviglia perfino a me."
       }
     ]
   },
