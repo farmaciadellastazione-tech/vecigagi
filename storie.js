@@ -2185,6 +2185,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che ö ne bûzara, ö ne mincionn-a ancon.",
         "it": "Che ci rovina,e ci minchiona ancora."
+      },
+      {
+        "testo": "Tûtti scappan, nö gh'é che i granatë",
+        "it": "\"Tutti scappano, non ci sono che i granatieri"
+      },
+      {
+        "testo": "Che fan ûn pô de rexistenza a-o scûo",
+        "it": "Che fanno un po' di resistenza al buio,"
+      },
+      {
+        "testo": "Ma piggian i compagni per foestë",
+        "it": "Ma pigliano i compagni per foresti"
+      },
+      {
+        "testo": "E i ammassan pe mettise a-o segûo;",
+        "it": "E li ammazzano per mettersi al sicuro;"
+      },
+      {
+        "testo": "Sciâ se credde, sciö Enea, l'emmo derë",
+        "it": "Mi creda, signor Enea, l'abbiamo nel didietro"
+      },
+      {
+        "testo": "Ben ciantôu, senza spago e rebattûo;",
+        "it": "Ben piantato, senza spago e ribattuto;"
+      },
+      {
+        "testo": "Vosciâ sciâ vedde, nö sô cose dighe,",
+        "it": "Vossignoria vede, non so cosa dirle,"
+      },
+      {
+        "testo": "Ma mì vêuggio sarvâ a pansa a-e fighe.",
+        "it": "Ma io voglio salvare la pancia per i fichi"
       }
     ]
   },
