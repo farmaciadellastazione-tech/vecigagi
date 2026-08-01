@@ -2249,6 +2249,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Con Ciöngin ö procûoû e Campantigo.",
         "it": "Con Ciongin il procuratore e Campantigo."
+      },
+      {
+        "testo": "Tûtti bûlli da reo, tûtti çernûi",
+        "it": "Tutti veri duri, tutti scelti (selezionati)"
+      },
+      {
+        "testo": "Che nö pûeivo ëse mëgio accompagnôu,",
+        "it": "Che non potevo essere meglio accompagnato,"
+      },
+      {
+        "testo": "Ma pe fali ciû cädi e ciû segûi",
+        "it": "Ma per farli più caldi e più sicuri"
+      },
+      {
+        "testo": "Me ghe son misso in mëzo e g'ho parlôu:",
+        "it": "Mi ci sono messo in mezzo e gli ho parlato:"
+      },
+      {
+        "testo": "Zovenotti, v'ho sempre conosciûi",
+        "it": "\"Giovanotti, vi ho sempre conosciuti"
+      },
+      {
+        "testo": "Pe ûn ciû cado che l'âtro e desgaggiôu",
+        "it": "Per uno più caldo dell'altro e disinvolti,"
+      },
+      {
+        "testo": "Sô che sei tanti eroi, se nö savesse,",
+        "it": "So che siete tanti eroi, se non lo sapessi,"
+      },
+      {
+        "testo": "Me n'accorzieivo solo che v'ammiesse!",
+        "it": "Me ne accorgerei solo a guardarvi!\""
       }
     ]
   },
