@@ -2121,6 +2121,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Comm'a l'é, sciâ ghe molla vosciâ ascì ?",
         "it": "Come l'è, ci molla anche lei?\""
+      },
+      {
+        "testo": "Lë ö se ferma, e tremando a ciû nö pûei,",
+        "it": "E lui si ferma, e tremando a più non posso,"
+      },
+      {
+        "testo": "Ö me dixe: A l'é a votta che a nö falla,",
+        "it": "Mi dice: \"È la volta che non fallisce,"
+      },
+      {
+        "testo": "Nö sön miga demöe, fan pe davvei",
+        "it": "Non sono mica scherzi, fanno per davvero"
+      },
+      {
+        "testo": "Sti ruffien n'êuan de cugge e tian con balla,",
+        "it": "Questi ruffiani non raccontano frottole e sparano con proiettili,"
+      },
+      {
+        "testo": "E sciâ vêu che nö scappe? ma me pai",
+        "it": "E lei vuole che non scappi? Ma mi sa"
+      },
+      {
+        "testo": "Ö çervello in ta testa ö ghe traballa,",
+        "it": "Che il cervello in testa le traballi,"
+      },
+      {
+        "testo": "Semmo bell'e fottûi nö gh'é ciû verso,",
+        "it": "Siamo belli e fottuti, non c'è più verso,"
+      },
+      {
+        "testo": "Sciâ nö ghe vedde, che l'é tempo perso.",
+        "it": "Non lo vede che è tempo perso?\""
       }
     ]
   },
