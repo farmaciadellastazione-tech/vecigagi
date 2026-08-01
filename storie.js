@@ -2281,6 +2281,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Me n'accorzieivo solo che v'ammiesse!",
         "it": "Me ne accorgerei solo a guardarvi!\""
+      },
+      {
+        "testo": "Ma, perdîe tûtto zû, nö ghêu de cöggie",
+        "it": "Ma, perdinci tutto giù, non dico balle,"
+      },
+      {
+        "testo": "Chi se tratta de fáse massacrâ",
+        "it": "Qui si tratta di farsi massacrare,"
+      },
+      {
+        "testo": "In tö zielo ghe l'emmo a çento döggie,",
+        "it": "Nel didietro ce l'abbiamo al quadrato,"
+      },
+      {
+        "testo": "Nö se pêu ciû ne vinse ne appattâ,",
+        "it": "Non si può più né vincere né pareggiare,"
+      },
+      {
+        "testo": "Se nö sei unn-a niâ de bullicöggie,",
+        "it": "Se non siete una nidiata di coglioncelli stralunati,"
+      },
+      {
+        "testo": "Solo böin a men.... e a cagâ,",
+        "it": "Solo buoni a mast... e a cagare,"
+      },
+      {
+        "testo": "Perdiesann-a, l'é tempo de provâlo",
+        "it": "Perdiana, è tempo di dimostrarlo"
+      },
+      {
+        "testo": "Con piggiâlo in tö cû, senza mezualo!",
+        "it": "Col prenderlo nel culo, senza misurarlo!"
       }
     ]
   },
