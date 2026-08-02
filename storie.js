@@ -2665,6 +2665,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ne-a santa Compagnia de S. Vincenzo.",
         "it": "né la santa Compagnia di San Vincenzo."
+      },
+      {
+        "testo": "Mi nö fasso pe dî né pe lôdame,",
+        "it": "Io non è per dire né per vantarmi,"
+      },
+      {
+        "testo": "Ma ho tentôu e brêgôu quante ho posciûo",
+        "it": "ma ho tentato e brigato quanto ho potuto,"
+      },
+      {
+        "testo": "Senza daghe de ciatto e risparmiâme",
+        "it": "senza darci di piatto e senza risparmiarmi,"
+      },
+      {
+        "testo": "Pe restâ lì mi ascì, bell'e fottûo.",
+        "it": "fino a restarci anch'io, bell'e fottuto."
+      },
+      {
+        "testo": "Ma ö destin, perché ö voeiva conservame",
+        "it": "Ma il destino, perché voleva conservarmi"
+      },
+      {
+        "testo": "Pe ûn giammin ciû angoscioso e ancön ciû dûo,",
+        "it": "per uno stento più angoscioso e ancora più duro,"
+      },
+      {
+        "testo": "Ö m'ha fæto sciortî san comme ûn pescio",
+        "it": "mi ha fatto uscire sano come un pesce"
+      },
+      {
+        "testo": "Da sta poca zizoeta de remescio.",
+        "it": "da questa bazzecola di parapiglia."
       }
     ]
   },
