@@ -2633,6 +2633,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Se n'han fæto de nöi tanta toninn-a.",
         "it": "se n'hanno fatto di noi tanta tonnina."
+      },
+      {
+        "testo": "E chì cazze Ciongin, co-a pansa averta,",
+        "it": "E qui cade Ciöngin, con la pancia aperta,"
+      },
+      {
+        "testo": "Lamentando ö sô scagno e a sô famiggia,",
+        "it": "rimpiangendo il suo bancone e la sua famiglia;"
+      },
+      {
+        "testo": "Campantigo co-a croxe descoverta,",
+        "it": "Campantigo, con la croce scoperta,"
+      },
+      {
+        "testo": "Ö s'arigûela zù, comme ûnn-a sbiggia,",
+        "it": "stramazza giù come un birillo."
+      },
+      {
+        "testo": "E tì ascì, prinçipà da gente asperta",
+        "it": "E anche tu, principale di gente esperta,"
+      },
+      {
+        "testo": "Ti te andæto a fâ fûtte, ö sciö Caviggia",
+        "it": "te ne sei andato a farti fottere, signor Caviglia,"
+      },
+      {
+        "testo": "Ne l'ha protettô ö prinçipato e ö cenzo",
+        "it": "né l'ha protetto il principato e il censo"
+      },
+      {
+        "testo": "Ne-a santa Compagnia de S. Vincenzo.",
+        "it": "né la santa Compagnia di San Vincenzo."
       }
     ]
   },
