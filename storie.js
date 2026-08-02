@@ -2569,6 +2569,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Tiâ pe forza, insûltâ da stî canaggia.",
         "it": "Trascinata a forza, insultata da queste canaglie."
+      },
+      {
+        "testo": "A sta vista, Ciöngin che ö l'ëa ö sô amante",
+        "it": "A questa vista, Ciöngin, che era il suo amante,"
+      },
+      {
+        "testo": "Ö se caccia in tö mûggio inveninôu",
+        "it": "si getta nel mucchio, avvelenato,"
+      },
+      {
+        "testo": "Pe salvâla o pe mûi co-a sô galante;",
+        "it": "per salvarla o per morire con la sua bella;"
+      },
+      {
+        "testo": "E nöi l'emmo in sce l'atto seguitôu;",
+        "it": "e noi l'abbiamo seguito all'istante."
+      },
+      {
+        "testo": "Chi l'é dove piccôu n'emmo ciû tante,",
+        "it": "Qui è dove ne abbiamo date di più,"
+      },
+      {
+        "testo": "Chi l'é dove de ciû n'emmo piggiôu,",
+        "it": "qui è dove ne abbiamo prese di più,"
+      },
+      {
+        "testo": "Ma se devo fâ ö giusto parallello,",
+        "it": "ma se devo fare il giusto parallelo,"
+      },
+      {
+        "testo": "Quelle ch'emmo piggiôu sön ciû dö bello.",
+        "it": "quelle che abbiamo preso sono più del bello."
       }
     ]
   },
