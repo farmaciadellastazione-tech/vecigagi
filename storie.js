@@ -2505,6 +2505,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Chi ë bulicugge se ne stagghe a casa",
         "it": "chi è senza palle se ne stia a casa."
+      },
+      {
+        "testo": "E ö se mette a divisa de Zorzin",
+        "it": "E si mette la divisa di Zorzin,"
+      },
+      {
+        "testo": "A fêlûa cö ciûmasso, ö çenturon",
+        "it": "la feluca col pennacchio, il cinturone,"
+      },
+      {
+        "testo": "E coscì fa ö sciö Bado, ö sciô Nattin",
+        "it": "e così fa il signor Bado, il signor Nattin,"
+      },
+      {
+        "testo": "E coscì tûtti senza distinzion,",
+        "it": "e così tutti quanti, senza eccezione,"
+      },
+      {
+        "testo": "In manea che nö visti da vixin",
+        "it": "in modo che, non riconoscibili da vicino"
+      },
+      {
+        "testo": "E protetti da-o scûo, da confûxion",
+        "it": "e protetti dal buio, dalla confusione,"
+      },
+      {
+        "testo": "Ne riûscîo per ûn po' de fâla franca,",
+        "it": "ci riuscì per un po' di farla franca,"
+      },
+      {
+        "testo": "Ammazzandone ûn muggio all'arma gianca.",
+        "it": "ammazzandone un mucchio all'arma bianca."
+      },
+      {
+        "testo": "Ma scì, contro ö destin gh'é scrîto: Menn-a",
+        "it": "Ma sì, contro il destino c'è scritto: attàccati,"
+      },
+      {
+        "testo": "E s'ha bello prefutte e remescià",
+        "it": "E puoi ben strafottere e rimescolare,"
+      },
+      {
+        "testo": "Perché quando ö s'ha in fondo a-o fî da schenn-a",
+        "it": "Perché quando uno ce l'ha in fondo alla schiena"
+      },
+      {
+        "testo": "Barba d'ommo nö riesce a destaccâ,",
+        "it": "Barba d'uomo non riesce a staccarlo:"
+      },
+      {
+        "testo": "Tutt'assemme ligâ, c'ûnn-a cadenn-a,",
+        "it": "Tutta insieme legata con una catena,"
+      },
+      {
+        "testo": "Co-i cavelli pë spalle e despuggiâ,",
+        "it": "Coi capelli sulle spalle e spogliata,"
+      },
+      {
+        "testo": "Nöi vedemmo Cassandra in ta marmaggia",
+        "it": "Noi vediamo Cassandra in mezzo alla marmaglia"
+      },
+      {
+        "testo": "Tiâ pe forza, insûltâ da stî canaggia.",
+        "it": "Trascinata a forza, insultata da queste canaglie."
       }
     ]
   },
