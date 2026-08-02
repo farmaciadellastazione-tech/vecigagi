@@ -561,8 +561,38 @@
   .added-word-item .it { font-weight: 600; color: white; }
   .added-word-item .arrow { color: var(--muted); }
   .added-word-item .tr { color: #a5b4fc; }
+  .added-word-item .mic-badge { color: var(--accent); }
   .added-word-item .remove { margin-left: auto; color: var(--muted); cursor: pointer; font-size: 16px; }
   .added-word-item .remove:hover { color: #ef4444; }
+
+  /* Registrazione pronuncia (facoltativa) in "aggiungi parola libera" */
+  .audio-record-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .btn-mic {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .btn-mic:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-mic.recording { background: #ef4444; border-color: #ef4444; color: #fff; }
+  .audio-timer { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .audio-preview { height: 32px; max-width: 200px; }
+  .btn-mic-clear {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 15px;
+    padding: 2px 4px;
+  }
+  .btn-mic-clear:hover { color: #ef4444; }
 
   @media (max-width: 640px) {
     main { padding: 16px; }
@@ -1087,7 +1117,7 @@
     <span class="filter-label">Dialetto:</span>
     <div class="filter-group" id="dialect-chips">
       <div class="chip mn" data-dialect="mn" onclick="setDialect('mn',this)">🏖️ Manarolese</div>
-      <div class="chip sp active" data-dialect="sp" onclick="setDialect('sp',this)">⚓ Spezzino</div>
+      <div class="chip sp" data-dialect="sp" onclick="setDialect('sp',this)">⚓ Spezzino</div>
       <div class="chip cr" data-dialect="cr" onclick="setDialect('cr',this)">🪨 Carrarino</div>
       <div class="chip ge" data-dialect="ge" onclick="setDialect('ge',this)">🏛️ Genovese</div>
       <div class="chip all-dialects admin-only" data-dialect="all" onclick="setDialect('all',this)">🌐 Tutti i dialetti</div>
@@ -1156,12 +1186,12 @@
 
   <!-- Modalità guidata (pubblico): lotto di parole mancanti nei temi di base -->
   <div class="guided-wrap public-only" id="guided-wrap">
-    <p class="guided-intro">Ti proponiamo alcune parole comuni ancora senza traduzione in <strong id="guided-dial-name"></strong>. Scrivi quello che sai, il resto puoi lasciarlo vuoto.</p>
+    <p class="guided-intro" id="guided-intro">Ti proponiamo alcune parole comuni ancora senza traduzione in <strong id="guided-dial-name"></strong>. Scrivi quello che sai, il resto puoi lasciarlo vuoto.</p>
     <div class="guided-list" id="guided-list"></div>
     <div class="guided-more-wrap" id="guided-more-wrap" style="display:none">
       <button type="button" class="btn-guided-more" onclick="loadMoreGuided()">Altre parole (<span id="guided-remaining">0</span> rimaste) →</button>
     </div>
-    <button type="button" class="btn-guided-toggle" onclick="toggleGuidedMode(false)">📋 Vedi tutta la lista</button>
+    <button type="button" class="btn-guided-toggle" id="btn-vedi-tutta-lista" onclick="toggleGuidedMode(false)">📋 Vedi tutta la lista</button>
   </div>
 
   <button type="button" class="btn-guided-toggle public-only" id="btn-back-guided" onclick="toggleGuidedMode(true)" style="display:none">✨ Torna alla modalità guidata</button>
@@ -1193,6 +1223,15 @@
       <div class="add-word-field">
         <label id="add-dialect-label">Traduzione dialettale</label>
         <input type="text" id="add-tr" placeholder="es. anciöa">
+      </div>
+      <div class="add-word-field" id="add-audio-field">
+        <label>Pronuncia (facoltativa)</label>
+        <div class="audio-record-row">
+          <button type="button" class="btn-mic" id="btn-mic" onclick="toggleRecording()">🎙️ Registra</button>
+          <span class="audio-timer" id="audio-timer" style="display:none">0:00</span>
+          <audio class="audio-preview" id="audio-preview" controls style="display:none"></audio>
+          <button type="button" class="btn-mic-clear" id="btn-mic-clear" onclick="clearRecording()" style="display:none" title="Rimuovi registrazione">✕</button>
+        </div>
       </div>
       <button class="btn-add-word" onclick="addCustomWord()">+ Aggiungi</button>
     </div>
@@ -2335,7 +2374,7 @@ const GUIDED_BATCH_SIZE = 20;
 let guidedMode = false; // attivata per il pubblico nell'init in fondo al file
 let guidedBatch = GUIDED_BATCH_SIZE;
 
-let currentDialect = 'sp';
+let currentDialect = null; // nessun dialetto preselezionato: il pubblico sceglie esplicitamente (l'admin lo imposta nell'init)
 let sortCol = 'it';
 let sortDir = 1; // 1=asc, -1=desc
 let customDialectName = '';
@@ -4317,6 +4356,21 @@ function renderTable() {
 function renderGuided() {
   const container = document.getElementById('guided-list');
   const moreWrap = document.getElementById('guided-more-wrap');
+  const toggleBtn = document.getElementById('btn-vedi-tutta-lista');
+  const addWordSection = document.querySelector('.add-word-section');
+  const intro = document.getElementById('guided-intro');
+
+  if (!currentDialect) {
+    intro.style.display = 'none';
+    container.innerHTML = '<p class="guided-empty">👆 Scegli il tuo dialetto qui sopra per iniziare a contribuire.</p>';
+    moreWrap.style.display = 'none';
+    toggleBtn.style.display = 'none';
+    addWordSection.style.display = 'none';
+    return;
+  }
+  intro.style.display = '';
+  toggleBtn.style.display = '';
+  addWordSection.style.display = '';
   document.getElementById('guided-dial-name').textContent = getDialectName();
 
   const isNew = currentDialect === 'new';
@@ -4397,6 +4451,11 @@ function onInput(input) {
 }
 
 function updateProgress() {
+  if (!ADMIN && !currentDialect) {
+    document.getElementById('progress-bar').style.display = 'none';
+    return;
+  }
+  document.getElementById('progress-bar').style.display = '';
   const isNew = currentDialect === 'new';
   const isAll = ADMIN && currentDialect === 'all';
   const col = DIALECT_COL[currentDialect];
@@ -4423,6 +4482,10 @@ function updateProgress() {
 }
 
 function updateStats() {
+  if (!ADMIN && !currentDialect) {
+    document.getElementById('stats-badge').textContent = 'Scegli un dialetto per iniziare';
+    return;
+  }
   const isNew = currentDialect === 'new';
   const isAll = ADMIN && currentDialect === 'all';
   const col = DIALECT_COL[currentDialect];
@@ -4492,12 +4555,16 @@ async function copyAndOpen() {
     } catch(e) { errors++; }
   }
   
-  // Send extra words too
+  // Send extra words too (con audio, se registrato, via POST)
   for (const e of extra) {
     if (!e.it || !e.tr) continue;
     try {
-      const params = new URLSearchParams({ parola: e.it, dialetto: dialect, traduzione: e.tr });
-      await fetch(SCRIPT_URL + '?' + params.toString());
+      if (e.audio) {
+        await inviaContributoConAudio(e.it, dialect, e.tr, e.audio);
+      } else {
+        const params = new URLSearchParams({ parola: e.it, dialetto: dialect, traduzione: e.tr });
+        await fetch(SCRIPT_URL + '?' + params.toString());
+      }
       sent++;
     } catch(e2) { errors++; }
   }
@@ -4512,8 +4579,33 @@ async function copyAndOpen() {
   btn.textContent = '📤 Invia al foglio →';
 }
 
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(String(reader.result).split(',')[1] || '');
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+// Invia una parola con pronuncia registrata: usa POST (l'audio in base64 non
+// entra in una query string GET). Content-Type text/plain evita il preflight
+// CORS con Apps Script; lo script legge comunque il body come JSON.
+async function inviaContributoConAudio(parola, dialetto, traduzione, blob) {
+  const audioBase64 = await blobToBase64(blob);
+  const payload = { parola, dialetto, traduzione, audioBase64, mimeType: blob.type || 'audio/webm' };
+  await fetch(SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  });
+}
+
 // ── Parole extra aggiunte dall'utente ──────────────────────────────────────
-let extraWords = []; // [{it, en, tr}]
+// Schema {it, en, tr, audio}: stessa forma minima dei contributi del lotto
+// guidato (oggi {it: tr} in `contributions`) più un campo audio opzionale —
+// pensato per poter fondere in futuro le due liste in un unico flusso.
+let extraWords = []; // [{it, en, tr, audio: Blob|null}]
 
 function addCustomWord() {
   const it = document.getElementById('add-it').value.trim();
@@ -4531,10 +4623,10 @@ function addCustomWord() {
     alert(`"${it}" è già stata aggiunta.`);
     return;
   }
-  extraWords.push({it, en, tr});
+  extraWords.push({it, en, tr, audio: currentAudioBlob});
   document.getElementById('add-it').value = '';
-  document.getElementById('add-en').value = '';
   document.getElementById('add-tr').value = '';
+  clearRecording();
   renderExtraWords();
   updateSubmit();
 }
@@ -4553,9 +4645,100 @@ function renderExtraWords() {
       ${e.en ? `<span class="arrow">·</span><span style="color:var(--muted);font-size:12px">${e.en}</span>` : ''}
       <span class="arrow">→</span>
       <span class="tr">${e.tr}</span>
+      ${e.audio ? '<span class="mic-badge" title="Con pronuncia registrata">🎙️</span>' : ''}
       <span class="remove" onclick="removeExtra(${i})">×</span>
     </div>
   `).join('');
+}
+
+// ── Registrazione pronuncia (facoltativa), solo per "aggiungi parola libera" ──
+const MAX_RECORD_SECONDS = 10;
+const MIC_SUPPORTED = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+let mediaRecorder = null;
+let mediaStream = null;
+let recordedChunks = [];
+let currentAudioBlob = null;
+let recordTimerId = null;
+let recordSeconds = 0;
+
+function pickAudioMimeType() {
+  const candidates = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg'];
+  return candidates.find(c => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(c)) || '';
+}
+
+async function toggleRecording() {
+  if (mediaRecorder && mediaRecorder.state === 'recording') { stopRecording(); return; }
+  await startRecording();
+}
+
+async function startRecording() {
+  try {
+    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  } catch (e) {
+    alert('Impossibile accedere al microfono: ' + e.message);
+    return;
+  }
+  recordedChunks = [];
+  const mimeType = pickAudioMimeType();
+  mediaRecorder = mimeType ? new MediaRecorder(mediaStream, { mimeType }) : new MediaRecorder(mediaStream);
+  mediaRecorder.ondataavailable = ev => { if (ev.data.size > 0) recordedChunks.push(ev.data); };
+  mediaRecorder.onstop = () => {
+    currentAudioBlob = new Blob(recordedChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
+    mediaStream.getTracks().forEach(t => t.stop());
+    mediaStream = null;
+    showAudioPreview(currentAudioBlob);
+  };
+  mediaRecorder.start();
+  recordSeconds = 0;
+  updateMicUI(true);
+  recordTimerId = setInterval(() => {
+    recordSeconds++;
+    document.getElementById('audio-timer').textContent = '0:' + String(recordSeconds).padStart(2, '0');
+    if (recordSeconds >= MAX_RECORD_SECONDS) stopRecording();
+  }, 1000);
+}
+
+function stopRecording() {
+  if (recordTimerId) { clearInterval(recordTimerId); recordTimerId = null; }
+  if (mediaRecorder && mediaRecorder.state === 'recording') mediaRecorder.stop();
+  updateMicUI(false);
+}
+
+function updateMicUI(recording) {
+  const btn = document.getElementById('btn-mic');
+  btn.classList.toggle('recording', recording);
+  btn.textContent = recording ? '⏹️ Stop' : '🎙️ Registra';
+  if (recording) {
+    document.getElementById('audio-timer').textContent = '0:00';
+    document.getElementById('audio-timer').style.display = '';
+    document.getElementById('audio-preview').style.display = 'none';
+    document.getElementById('btn-mic-clear').style.display = 'none';
+  }
+}
+
+function showAudioPreview(blob) {
+  const audio = document.getElementById('audio-preview');
+  audio.src = URL.createObjectURL(blob);
+  audio.style.display = '';
+  document.getElementById('audio-timer').style.display = 'none';
+  document.getElementById('btn-mic-clear').style.display = '';
+}
+
+function clearRecording() {
+  currentAudioBlob = null;
+  recordedChunks = [];
+  const audio = document.getElementById('audio-preview');
+  audio.pause();
+  audio.removeAttribute('src');
+  audio.style.display = 'none';
+  document.getElementById('btn-mic-clear').style.display = 'none';
+  document.getElementById('audio-timer').style.display = 'none';
+  document.getElementById('btn-mic').textContent = '🎙️ Registra';
+}
+
+if (!MIC_SUPPORTED) {
+  const field = document.getElementById('add-audio-field');
+  if (field) field.style.display = 'none';
 }
 
 // Ordina alfabeticamente per italiano
@@ -4564,6 +4747,10 @@ CANDIDATI.sort((a,b) => a.it.localeCompare(b.it, 'it'));
 // Init
 if (ADMIN) {
   document.body.classList.add('admin');
+  // L'admin lavora sempre a partire dallo spezzino (nessun cambio di comportamento
+  // rispetto a prima); solo il pubblico parte senza dialetto preselezionato.
+  currentDialect = 'sp';
+  document.querySelector('#dialect-chips .chip.sp').classList.add('active');
   // In admin: carica subito il vocabolario reale da GitHub.
   // Nel frattempo la tabella è vuota; appena adminCaricaDaGitHub termina chiama renderTable().
   document.title = (GH_BRANCH_IS_PROD ? '🔒' : '🧪 ' + GH_BRANCH + ' —') + ' ADMIN — Editor dialetti | LinguaeQuiz';
