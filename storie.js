@@ -2345,6 +2345,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che me fâvan mâveggia scinn-a a mî",
         "it": "Che mi facevano meraviglia perfino a me."
+      },
+      {
+        "testo": "Ma in che moddo porriô rende e tradûe",
+        "it": "Ma in che modo potrò rendere e tradurre"
+      },
+      {
+        "testo": "A rovinn-a l'orrö de quella nêutte!",
+        "it": "La rovina, l'orrore di quella notte!"
+      },
+      {
+        "testo": "Pâ che Troia a precipite, a derûe",
+        "it": "Pare che Troia precipiti, che dirupi"
+      },
+      {
+        "testo": "Sotto a forza d'ûn argano che a bêutte,",
+        "it": "Sotto la forza di un uragano che la butti,"
+      },
+      {
+        "testo": "Vëgi, donne brûxæ, figgie fottûe,",
+        "it": "Vecchi, donne bruciate, ragazze fottute,"
+      },
+      {
+        "testo": "Sacchezzi, malazioin de tûtte e chêutte",
+        "it": "Saccheggi, nefandezze di ogni sorta,"
+      },
+      {
+        "testo": "Sangue e morti, ammûggiæ pe tutti i canti",
+        "it": "Sangue e morti, ammucchiati in ogni angolo,"
+      },
+      {
+        "testo": "Giastemme e sacranoin da tiâ zû i santi,",
+        "it": "Bestemmie e sacramenti da tirar giù i santi."
       }
     ]
   },
