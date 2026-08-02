@@ -2377,6 +2377,134 @@ const STORIE_DEFAULT = [
       {
         "testo": "Giastemme e sacranoin da tiâ zû i santi,",
         "it": "Bestemmie e sacramentoni da scomodare i santi."
+      },
+      {
+        "testo": "Ö primmo di nemixi che incontremmo",
+        "it": "Il primo dei nemici che incontrammo"
+      },
+      {
+        "testo": "Ö l'é Zorzin, perla di negozianti,",
+        "it": "È Zorzin, perla dei negozianti,"
+      },
+      {
+        "testo": "E ö ne piggia pe greci... Eh cose femmo,",
+        "it": "E ci prende per greci... \"Eh, cosa facciamo,\""
+      },
+      {
+        "testo": "Ö se mette a sbraggiâ, vegnimmo avanti,",
+        "it": "Si mette a sbraitare, \"andiamo avanti,"
+      },
+      {
+        "testo": "Noi âtri l'é dö bello che se demmo,",
+        "it": "Noialtri è del bello che ci diamo (dentro),  "
+      },
+      {
+        "testo": "E voi ve ne stæ lì a pisciâ pei canti?",
+        "it": "E voi ve ne state lì a pisciare negli angoli?"
+      },
+      {
+        "testo": "Ah brûtûi... ma ö s'afferma spaventôu,",
+        "it": "Ah, disgraziati...\" ma si ferma spaventato,"
+      },
+      {
+        "testo": "Accorzendose alôa che ö s'êa sbagliôu.",
+        "it": "Accorgendosi allora che si era sbagliato."
+      },
+      {
+        "testo": "Comme quande succede quarche votta",
+        "it": "Come quando succede qualche volta"
+      },
+      {
+        "testo": "Che ûnn-a figgia, acchêuggendo da viovetta",
+        "it": "Che una ragazza, raccogliendo delle violette,"
+      },
+      {
+        "testo": "A te posa ûnn-a man sorva ûnn-a sotta",
+        "it": "Ti posa una mano sopra una sciolta"
+      },
+      {
+        "testo": "Che a l'êa ascosa in ti fiori e in te l'erbetta,",
+        "it": "Che era nascosta tra i fiori e tra l'erbetta,"
+      },
+      {
+        "testo": "A fâ ûn schitto, a te piggia ûnn-a giavotta",
+        "it": "Fa uno scatto, ti fa una giravolta,"
+      },
+      {
+        "testo": "Comme se l'æse visto a sciâ Cichetta,",
+        "it": "Come se avesse visto la Morte,"
+      },
+      {
+        "testo": "E a se mette a scappâ senza ciû giâse,",
+        "it": "E si mette a scappare senza più girarsi,"
+      },
+      {
+        "testo": "Tegnindo larga a man pe nö brûttase,",
+        "it": "Tenendo la mano larga per non sporcarsi;"
+      },
+      {
+        "testo": "Coscì Zorzin, quande ö n'ha conosciûo",
+        "it": "Così Zorzin, quando ci ha riconosciuti"
+      },
+      {
+        "testo": "Fæto ûn bottö ö se misso pe scappâ,",
+        "it": "Fatto un balzo si è messo a scappare,"
+      },
+      {
+        "testo": "Ma piggiôu de sorpreisa e mëzo a-o scûo,",
+        "it": "Ma preso di sorpresa e in mezzo all'oscurità,"
+      },
+      {
+        "testo": "Indeciso in sce a stradda da piggiâ,",
+        "it": "Indeciso sulla strada da prendere,"
+      },
+      {
+        "testo": "Ö s'ingamba, ö va zû longo boccûo",
+        "it": "Si inciampa, e va giù lungo disteso a bocconi"
+      },
+      {
+        "testo": "Criando: agiutto, nö me fæ dö mâ!",
+        "it": "Gridando: \"Aiuto, non fatemi del male!\""
+      },
+      {
+        "testo": "Noi se femmo coraggio, e lì in sce l'atto",
+        "it": "Noi ci facciamo coraggio, e lì all'istante"
+      },
+      {
+        "testo": "Visto e nö visto, se ghe dà recatto.",
+        "it": "Visto e non visto, lo facciamo secco."
+      },
+      {
+        "testo": "E superbo Ciöngin de sta bravûa",
+        "it": "E, tronfio di questa prodezza, Ciöngin"
+      },
+      {
+        "testo": "Ö ne dixe: miæ cose me sovven,",
+        "it": "ci dice: guardate cosa mi viene in mente,"
+      },
+      {
+        "testo": "Doviescimo pe fâla ciû segua",
+        "it": "dovremmo, per andare più sul sicuro,"
+      },
+      {
+        "testo": "Piggiâ e armi e ö vestî de sti rûffien;",
+        "it": "prendere le armi e il vestito di questi farabutti;"
+      },
+      {
+        "testo": "Ö sâ forse ûn inganno, ûn'impostûa,",
+        "it": "sarà forse un inganno, un'impostura,"
+      },
+      {
+        "testo": "Ma mì, cai, me ne fûtto bell'e ben,",
+        "it": "ma io, cari, me ne fotto bell'e bene:"
+      },
+      {
+        "testo": "A guæra in sce sta mascima a se basa:",
+        "it": "la guerra si basa su questa massima —"
+      },
+      {
+        "testo": "Chi ë bulicugge se ne stagghe a casa",
+        "it": "chi è senza palle se ne stia a casa."
       }
     ]
   },
