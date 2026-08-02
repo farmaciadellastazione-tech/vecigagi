@@ -2376,7 +2376,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Giastemme e sacranoin da tiâ zû i santi,",
-        "it": "Bestemmie e sacramenti da tirar giù i santi."
+        "it": "Bestemmie e sacramentoni da scomodare i santi."
       }
     ]
   },
