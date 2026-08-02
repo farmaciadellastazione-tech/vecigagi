@@ -2544,7 +2544,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E s'ha bello prefutte e remescià",
-        "it": "E puoi ben strafottere e rimescolare,"
+        "it": "E puoi ben sbatterti e dimenarti,"
       },
       {
         "testo": "Perché quando ö s'ha in fondo a-o fî da schenn-a",
@@ -2601,6 +2601,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Quelle ch'emmo piggiôu sön ciû dö bello.",
         "it": "quelle che abbiamo preso sono più del bello."
+      },
+      {
+        "testo": "Perché i nostri, vedendone a-o vestî,",
+        "it": "Perché i nostri, vedendoci dalle vesti,"
+      },
+      {
+        "testo": "Ne piggiavan pe greci, e lì sciabbræ,",
+        "it": "ci prendevano per greci, e lì sciabolate,"
+      },
+      {
+        "testo": "Sasci, travi, de tûttô adosso a nöî,",
+        "it": "sassi, travi, di tutto addosso a noi,"
+      },
+      {
+        "testo": "Che nö pueivimo dîghe: ve sbagliæ.",
+        "it": "che non potevamo dirgli: vi sbagliate."
+      },
+      {
+        "testo": "I nemixi, riuscindo a descrovî",
+        "it": "I nemici, riuscendo a scoprire"
+      },
+      {
+        "testo": "Ch'ëimo troien da greci mascheræ.",
+        "it": "che eravamo troiani mascherati da greci…"
+      },
+      {
+        "testo": "Mi ghe lascio pensâ, bella reginn-a",
+        "it": "Io ve lo lascio immaginare, bella regina,"
+      },
+      {
+        "testo": "Se n'han fæto de nöi tanta toninn-a.",
+        "it": "se n'hanno fatto di noi tanta tonnina."
       }
     ]
   },
