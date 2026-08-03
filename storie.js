@@ -212,7 +212,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ma lasciando i ciû bûlli e i ciû batôsi",
-        "it": "ma lasciando i più bulli e i più battaglieri"
+        "it": "ma lasciando i più bulli e i più teppisti"
       },
       {
         "testo": "Dentro da pansa dö cavallo ascösi.",
