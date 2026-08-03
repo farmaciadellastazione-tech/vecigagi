@@ -2729,6 +2729,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Andemmo in strambælon, finn-a a-o palasso",
         "it": "Andammo barcollando, fino al palazzo ."
+      },
+      {
+        "testo": "Lì paiva che ghe fosse ö finimondo",
+        "it": "Lì pareva che ci fosse il finimondo,"
+      },
+      {
+        "testo": "Tanto ö l'ëa ö ramandan, e botte, ö fô;",
+        "it": "tanto era il ramadan, le botte, il fracasso;"
+      },
+      {
+        "testo": "I greci, c'ûn asâto furibondo,",
+        "it": "i greci, con un assalto furibondo,"
+      },
+      {
+        "testo": "S'ëan missi a fûtte zû a porta maggiô",
+        "it": "s'erano messi a fottere giù la porta principale;"
+      },
+      {
+        "testo": "I Troien, tiâvan zû d'insimma in fondo,",
+        "it": "i troiani tiravano giù da cima in fondo"
+      },
+      {
+        "testo": "Tûtta a roba de casa adosso a lô,",
+        "it": "tutta la roba di casa addosso a loro:"
+      },
+      {
+        "testo": "Guardarobi, comô, carreghe indôê,",
+        "it": "guardaroba, comò, sedie indorate,"
+      },
+      {
+        "testo": "Sofâ, potronne, casserolle, oinæ.",
+        "it": "sofà, poltrone, casseruole, orinali."
       }
     ]
   },
