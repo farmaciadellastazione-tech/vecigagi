@@ -2729,7 +2729,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Andemmo in strambælon, finn-a a-o palasso",
         "it": "Andammo barcollando, fino al palazzo ."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 2 parte 3",
+      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Lì paiva che ghe fosse ö finimondo",
         "it": "Lì pareva che ci fosse il finimondo,"
