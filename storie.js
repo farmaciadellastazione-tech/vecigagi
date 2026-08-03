@@ -2900,15 +2900,15 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ö se pâ in drîto de mezûâ mascoin",
-        "it": "si crede in diritto di appioppare ceffoni"
+        "it": "Si crede in diritto di appioppare ceffoni"
       },
       {
         "testo": "Solo percöse ö le vestîo da festa",
-        "it": "solo perché è vestito a festa"
+        "it": "Solo perché è vestito a festa"
       },
       {
         "testo": "E ö l'ha ö vinetto che ö gh'ascâda a testa.",
-        "it": "e ha il vinello che gli scalda la testa."
+        "it": "E ha il vinello che gli scalda la testa."
       },
       {
         "testo": "C'ûn picosso in te man, sto bulicugge",
@@ -2916,31 +2916,63 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ö piccava in ta porta a ciû nö posso,",
-        "it": "picchiava sulla porta a più non posso,"
+        "it": "Picchiava sulla porta a più non posso,"
       },
       {
         "testo": "Marmo, fæeri, cantæ, paivan fregugge,",
-        "it": "marmo, ferri, conci parevano briciole,"
+        "it": "Marmo, ferri, conci parevano briciole,"
       },
       {
         "testo": "Cazzeiva tûtto zû, dosso e bordosso,",
-        "it": "veniva giù tutto, alla rinfusa;"
+        "it": "Veniva giù tutto, alla rinfusa;"
       },
       {
         "testo": "Finalmente ö portâ : pâ che ö se doggie",
-        "it": "finalmente il portone: pare che si pieghi"
+        "it": "Finalmente il portone: pare che si pieghi"
       },
       {
         "testo": "Sotto a forza da leva e dö picosso,",
-        "it": "sotto la forza della leva e dell'ascia,"
+        "it": "Sotto la forza della leva e dell'ascia,"
       },
       {
         "testo": "Ö fa vedde ö cortile e i colonnati,",
-        "it": "fa vedere il cortile e i colonnati,"
+        "it": "Fa vedere il cortile e i colonnati,"
       },
       {
         "testo": "E stanze dö Re attuale e di antenati.",
-        "it": "e le stanze del Re attuale e degli antenati."
+        "it": "E le stanze del Re attuale e degli antenati."
+      },
+      {
+        "testo": "Lì gh'ëa ûn mûggio de donne e de figgiœû",
+        "it": "Lì c'era un mucchio di donne e bambini,"
+      },
+      {
+        "testo": "Mezi morti dao sciâto e dao spavento,",
+        "it": "Mezzi morti dal frastuono e dallo spavento,"
+      },
+      {
+        "testo": "Chi in camixa o inghœûggeito in ti lensœû,",
+        "it": "Chi in camicia o avvolto nelle lenzuola,"
+      },
+      {
+        "testo": "Chi n'aveiva ädreitûa de vestimento.",
+        "it": "Chi non aveva addirittura niente addosso."
+      },
+      {
+        "testo": "Ö l'ëa ûn lûo continûoû de strenze ö chœû",
+        "it": "Era un lamento continuo da stringere il cuore,"
+      },
+      {
+        "testo": "Per chi avesse ûn pittin de sentimento,",
+        "it": "Per chi avesse un briciolo di sentimento,"
+      },
+      {
+        "testo": "Ûnn-a mostra de chœûsce e de tettin",
+        "it": "Una mostra di cosce e di tettine"
+      },
+      {
+        "testo": "Da fâ perde ö çervello a ûn capûssin.",
+        "it": "Da far perdere il cervello a un cappuccino."
       }
     ]
   },
