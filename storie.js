@@ -68,7 +68,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Tutti han çercôu dove pösâ ö bacillo,",
-        "it": "Tutti han cercato dove posare il bacino,"
+        "it": "Tutti han cercato dove posare il sedere,"
       },
       {
         "testo": "Pe sentilo ciû comodi a parlâ.",
@@ -116,7 +116,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E invece de contâ di avvenimenti",
-        "it": "E invece di raccontare di avvenimenti"
+        "it": "E invece di raccontare degli avvenimenti"
       },
       {
         "testo": "Mi tieivo zû di tacchi e di aççidenti.",
@@ -156,7 +156,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Sti bonægia de greci inveninæ",
-        "it": "Questa gentaglia di Greci avvelenati"
+        "it": "Questa gentaglia di Greci inveleniti"
       },
       {
         "testo": "De no pûeinelo mette ciû derë,",
@@ -172,7 +172,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Comme tûtti i batösi e i mandilæ",
-        "it": "Come tutti i farabutti e i borsaioli"
+        "it": "Come tutti i teppisti e i borsaioli"
       },
       {
         "testo": "Han misso man ai færi dö mestë,",
@@ -264,7 +264,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Sti brûttöî finalmente se ne van!",
-        "it": "questi incivili finalmente se ne vanno!"
+        "it": "questi vigliacchi finalmente se ne vanno!"
       },
       {
         "testo": "Chi s'abbrassa, chi spaxima, chi cria,",
@@ -320,7 +320,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Chi da ûn canto e dall'âltro a frûgattâ;",
-        "it": "Chi da un lato e chi dall'altro a frugare;"
+        "it": "Chi da un canto e chi dall'altro a frugare;"
       },
       {
         "testo": "Chi gh'ëa e navi, se dîva, chi accampoû",
@@ -364,11 +364,11 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Chi scì, chi nö, s'ëan tanto inveninæ,",
-        "it": "Chi sì, chi no, si erano talmente avvelenati,"
+        "it": "Chi sì, chi no, si erano talmente inveleniti,"
       },
       {
         "testo": "Da dâse dö brütô, dö belinon",
-        "it": "Da darsi del bruto, del belinone,"
+        "it": "Da darsi del vigliacco, del belinone,"
       },
       {
         "testo": "E ö cæto ö s'ëa za fæto coscì grosso,",
@@ -452,7 +452,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E con tûtta a so forza ö te ghe-a molla",
-        "it": "E con tutta la sua forza gliela molla"
+        "it": "E con tutta la sua forza gliela ammolla"
       },
       {
         "testo": "Che a se ghe va a ciantâ drita in ta pansa;",
