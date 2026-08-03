@@ -2813,6 +2813,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Pe portâ ö sô pivetto a-o pappâ grande.",
         "it": "Per portare il suo bimbo dal nonno."
+      },
+      {
+        "testo": "Me gh'infio co-i compagni, e andemmo scinn-a",
+        "it": "Mi ci infilo coi compagni, e andiamo fin"
+      },
+      {
+        "testo": "In sce ö teito de dâto a-i luxernæ:",
+        "it": "sul tetto, di fianco ai lucernai:"
+      },
+      {
+        "testo": "Lì gh'aveivan costrûto ûnn-a latrinn-a",
+        "it": "lì avevano costruito una latrina"
+      },
+      {
+        "testo": "Da döve d'in sce ö setto accomodæ",
+        "it": "da dove, sulla tazza accomotati,"
+      },
+      {
+        "testo": "Se gôdiva da vista da marinn-a",
+        "it": "si godeva la vista della marina,"
+      },
+      {
+        "testo": "Da campagna di monti e da cittæ",
+        "it": "della campagna, dei monti e della città,"
+      },
+      {
+        "testo": "In moddo che re Priamo cagando",
+        "it": "in modo che re Priamo, cagando,"
+      },
+      {
+        "testo": "Ö veddeiva i confin dö sô comando.",
+        "it": "vedeva i confini del suo comando."
       }
     ]
   },
