@@ -2909,6 +2909,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "E ö l'ha ö vinetto che ö gh'ascâda a testa.",
         "it": "e ha il vinello che gli scalda la testa."
+      },
+      {
+        "testo": "C'ûn picosso in te man, sto bulicugge",
+        "it": "Con un'ascia in mano, questo coglione"
+      },
+      {
+        "testo": "Ö piccava in ta porta a ciû nö posso,",
+        "it": "picchiava sulla porta a più non posso,"
+      },
+      {
+        "testo": "Marmo, fæeri, cantæ, paivan fregugge,",
+        "it": "marmo, ferri, conci parevano briciole,"
+      },
+      {
+        "testo": "Cazzeiva tûtto zû, dosso e bordosso,",
+        "it": "veniva giù tutto, alla rinfusa;"
+      },
+      {
+        "testo": "Finalmente ö portâ : pâ che ö se doggie",
+        "it": "finalmente il portone: pare che si pieghi"
+      },
+      {
+        "testo": "Sotto a forza da leva e dö picosso,",
+        "it": "sotto la forza della leva e dell'ascia,"
+      },
+      {
+        "testo": "Ö fa vedde ö cortile e i colonnati,",
+        "it": "fa vedere il cortile e i colonnati,"
+      },
+      {
+        "testo": "E stanze dö Re attuale e di antenati.",
+        "it": "e le stanze del Re attuale e degli antenati."
       }
     ]
   },
