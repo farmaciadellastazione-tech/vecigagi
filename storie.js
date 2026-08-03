@@ -2781,6 +2781,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Sofâ, potronne, casserolle, oinæ.",
         "it": "sofà, poltrone, casseruole, orinali."
+      },
+      {
+        "testo": "Chì me ven torna coæ d'andame a dâ",
+        "it": "Qui mi torna la voglia di andarmi a dare"
+      },
+      {
+        "testo": "In soccorso da Corte e di assediæ;",
+        "it": "In soccorso della reggia e degli assediati;"
+      },
+      {
+        "testo": "Ö busillis ö l'ëa de pûei passâ",
+        "it": "Il busillis era di poter passare,"
+      },
+      {
+        "testo": "Perché e porte e i rastelli eân barrichæ;",
+        "it": "Perché le porte e i cancelli erano barricati;"
+      },
+      {
+        "testo": "Me sovven d'ûnn-a porta riservâ",
+        "it": "Mi viene in mente una porta riservata,"
+      },
+      {
+        "testo": "Fæta in tempi ciû belli e fortunæ",
+        "it": "Fatta in tempi più belli e fortunati,"
+      },
+      {
+        "testo": "Da Andromaca prescelta ciû che a grande",
+        "it": "Da Andromaca prescelta più di quella grande"
+      },
+      {
+        "testo": "Pe portâ ö sô pivetto a-o pappâ grande.",
+        "it": "Per portare il suo bimbo dal nonno."
       }
     ]
   },
