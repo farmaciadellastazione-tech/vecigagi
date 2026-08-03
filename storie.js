@@ -2973,6 +2973,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Da fâ perde ö çervello a ûn capûssin.",
         "it": "Da far perdere il cervello a un cappuccino."
+      },
+      {
+        "testo": "Pirro ö passa a traverso all'avertûa",
+        "it": "Pirro passa attraverso il varco"
+      },
+      {
+        "testo": "E ö se caccia in te donne despûggiæ,",
+        "it": "e si getta tra le donne nude,"
+      },
+      {
+        "testo": "Tanto a porta a va in scandole, a derûa",
+        "it": "tanto che la porta va in schegge, crolla,"
+      },
+      {
+        "testo": "E te gh'intra ûnn'ondâ de mandilæ;",
+        "it": "e ci entra un'ondata di mariuoli;"
+      },
+      {
+        "testo": "Scia se pœû immaginâ, con quell'arsûa",
+        "it": "si può immaginare, con quell'arsura,"
+      },
+      {
+        "testo": "S'ëan ommi da troväse imbarassæ,",
+        "it": "se erano tipi da farsi scrupoli:"
+      },
+      {
+        "testo": "Figgie, vidûe, maiæ, ghe passan tûtte,",
+        "it": "ragazze, vedove, maritate, ci passano tutte,"
+      },
+      {
+        "testo": "Seggian zovene o vëgie, o belle o brûtte.",
+        "it": "siano giovani o vecchie, belle o brutte."
       }
     ]
   },
