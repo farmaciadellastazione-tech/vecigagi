@@ -2697,6 +2697,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Da sta poca zizoeta de remescio.",
         "it": "da questa bazzecola di parapiglia."
+      },
+      {
+        "testo": "De tanti ch'ëimo, solo mì, Nattin,",
+        "it": "Di tanti che eravamo, solo io, Nattin,"
+      },
+      {
+        "testo": "(Za buscetto e inciagôu comme S. Rocco)",
+        "it": "(Già vecchietto e piagato come San Rocco)"
+      },
+      {
+        "testo": "Ö sûnnôu Bado, ö noto Chitarrin",
+        "it": "Il suonatore Bado, e il noto Chitarrin"
+      },
+      {
+        "testo": "Mëzo morto e arissôu comme ûn malocco",
+        "it": "Mezzo morto e arricciato come un groviglio"
+      },
+      {
+        "testo": "A forza de strepelli e de buttoin",
+        "it": "A forza di botte e di spintoni"
+      },
+      {
+        "testo": "Se riûscimmo a sarvâ tûtti in t'un tocco",
+        "it": "Riuscimmo a salvarci tutti insieme,"
+      },
+      {
+        "testo": "E sospinti da-i sbraggi e da-o fracasso",
+        "it": "E sospinti dalle urla e dal fracasso"
+      },
+      {
+        "testo": "Andemmo in strambælon, finn-a a-o palasso",
+        "it": "Andammo barcollando, fino al palazzo ."
       }
     ]
   },
