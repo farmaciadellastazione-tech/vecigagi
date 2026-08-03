@@ -3037,6 +3037,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Le tûtto andæto a fäse benedî.",
         "it": "E' tutto andato a farsi benedire."
+      },
+      {
+        "testo": "Chi l'é tempo che conte in che manëa",
+        "it": "Qui è tempo che racconti in che maniera"
+      },
+      {
+        "testo": "Priamo ö le andæto a fâse bûzarâ,",
+        "it": "Priamo è andato a farsi rovinare,"
+      },
+      {
+        "testo": "Quando proprio ö l'ha visto che nö gh'ëa",
+        "it": "quando proprio vide che non c'era"
+      },
+      {
+        "testo": "Moddo de vinse o pöesise appattà,",
+        "it": "modo di vincere né di pareggiare:"
+      },
+      {
+        "testo": "Ö s'é sûbito fissôu in te l'idea",
+        "it": "si fissò subito nell'idea"
+      },
+      {
+        "testo": "De mettise ö braghë pe andase a dâ,",
+        "it": "di mettersi il brachiere per andarsi a dare,"
+      },
+      {
+        "testo": "Ö se infioû l'uniforme, a sciabbra, a lûmma",
+        "it": "si infilò l'uniforme, la sciabola, la lucerna"
+      },
+      {
+        "testo": "Con çinquanta centimetri de ciûmma.",
+        "it": "con cinquanta centimetri di piuma."
       }
     ]
   },
