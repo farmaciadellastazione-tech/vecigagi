@@ -2845,6 +2845,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö veddeiva i confin dö sô comando.",
         "it": "vedeva i confini del suo comando."
+      },
+      {
+        "testo": "Se mettemmo co-i færi a travaggiâ",
+        "it": "Ci mettemmo a lavorare coi ferri"
+      },
+      {
+        "testo": "Pe puèi futtila zù da quell'artûa",
+        "it": "per poterla buttar giù da quell'altezza;"
+      },
+      {
+        "testo": "A scäsemmo d'in fondo e a sön de fâ",
+        "it": "la scalziamo dalla base e a forza di darci dentro"
+      },
+      {
+        "testo": "Levemmo e ciavi donde a l'ëa tegnûa,",
+        "it": "togliamo i perni dov'era fissata,"
+      },
+      {
+        "testo": "Picca, batti a commensa ûn pô a löcciâ.",
+        "it": "picchia e batti, comincia un po' a vacillare;"
+      },
+      {
+        "testo": "Femmo leva, a precipita, a derûa",
+        "it": "facciamo leva, precipita, rovina"
+      },
+      {
+        "testo": "E a n'accheûgge ûn miggiâ, tûtti in t'ûn masso",
+        "it": "e ne travolge un migliaio, tutti in un blocco"
+      },
+      {
+        "testo": "Sotto ûn monte de merda e cäsinasso",
+        "it": "sotto un monte di merda e calcinacci."
+      },
+      {
+        "testo": "In sce a porta maggiö, tûtto luxente",
+        "it": "Sul portone principale, tutto rilucente,"
+      },
+      {
+        "testo": "Pin de croxi, de sciarpe e de galloin,",
+        "it": "pieno di croci, sciarpe e galloni,"
+      },
+      {
+        "testo": "Pirro ô se dava comme ûn aççidente",
+        "it": "Pirro si dimenava come un accidente,"
+      },
+      {
+        "testo": "Alternando co-e botte, i sacranoin.",
+        "it": "alternando alle botte i bestemmioni."
+      },
+      {
+        "testo": "Comme quando ûn batoso prepotente",
+        "it": "Come quando un teppista prepotente"
+      },
+      {
+        "testo": "Ö se pâ in drîto de mezûâ mascoin",
+        "it": "si crede in diritto di appioppare ceffoni"
+      },
+      {
+        "testo": "Solo percöse ö le vestîo da festa",
+        "it": "solo perché è vestito a festa"
+      },
+      {
+        "testo": "E ö l'ha ö vinetto che ö gh'ascâda a testa.",
+        "it": "e ha il vinello che gli scalda la testa."
       }
     ]
   },
