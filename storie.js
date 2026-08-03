@@ -496,7 +496,7 @@ const STORIE_DEFAULT = [
     "frasi": [
       {
         "testo": "Tutt'assemme ûnn-a strœûppa de paisen",
-        "it": "Tutt'a un tratto un gruppo di paesani"
+        "it": "Tutti assieme un gruppo di paesani"
       },
       {
         "testo": "Portan davanti a-o re, che ö l'ëa arrivoû,",
@@ -520,7 +520,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E lö da asperti, pe savei chi ö fösse,",
-        "it": "E loro da furbi , per sapere chi fosse,"
+        "it": "E loro da navigati, per sapere chi fosse,"
       },
       {
         "testo": "Te l'han ligoû senza fâ tante mösse",
@@ -612,7 +612,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ammazzæme figgiœû, che ve sprezûo,",
-        "it": "Ammazzatemi ragazzi, ve lo scongiuro,"
+        "it": "Ammazzatemi ragazzi, ve lo giuro,"
       },
       {
         "testo": "Me ciû cao de finîla in t'ûnn-a votta,",
@@ -624,7 +624,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ö l'aveiva ö singûlto, ö crescentin,",
-        "it": "Aveva il singhiozzo, il broncio,"
+        "it": "Aveva il singulto, il singhiozzo,"
       },
       {
         "testo": "Ö tegniva ö respïo comme i figgiœû",
@@ -652,7 +652,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Cose ö fâva, chi ö l'ëa, donde ö vegnisse.",
-        "it": "Cosa faceva, chi era, da dove venisse."
+        "it": "Cosa faceva, chi era, da dove veniva."
       },
       {
         "testo": "E lë che ö voeiva fâne ingoâ de vesce,",
@@ -680,7 +680,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Che mi son ûn bellinön a çento döggie",
-        "it": "Che io sono un belinöne raddoppiato cento volte ,"
+        "it": "Che io sono un belinöne cento volte raddoppiato ,"
       },
       {
         "testo": "Ma nisciun m'ha mai dito: contacöggie.",
@@ -708,7 +708,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Pe vôéntæ dö papà, l'ho accompagnoû;",
-        "it": "Per volontà del papà, l'ho accompagnato;"
+        "it": "Per volontà del padre, l'ho accompagnato;"
       },
       {
         "testo": "Vivo lë mi ho sciûscioû sempre in coverta",
@@ -732,7 +732,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Che no saveivo ciû cose me disse!",
-        "it": "Che non sapevo più nemmeno io cosa dicessi!"
+        "it": "Che non sapevo più nemmeno io cosa dire!"
       },
       {
         "testo": "Ho sbraggioû comme un matto, e mæ zûamento,",
@@ -756,7 +756,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Stö vile, stö brutû, de fame a pelle;",
-        "it": "Questo vile, questo bruto, di farmi la pelle;"
+        "it": "Questo vile, questo vigliacco, di farmi la pelle;"
       },
       {
         "testo": "Nö ghe diô, cose ö l'agge immanegoû",
@@ -764,7 +764,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "De regii, perché desse in ciampanelle",
-        "it": "Di raggiri, perché andassi in ciampanelle (impazzire)"
+        "it": "Di raggiri, perché andasse in ciampanelle (impazzire)"
       },
       {
         "testo": "E ö non ha dæto fondo, ö n'ha quietoû,",
