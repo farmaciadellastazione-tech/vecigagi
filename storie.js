@@ -3133,6 +3133,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Se ti perdi e cörezze ad ogni passo?",
         "it": "Se perdi le scoregge a ogni passo?»"
+      },
+      {
+        "testo": "Famme questo piaxei, nö stâ a sciörti,",
+        "it": "Fammi questo piacere, non stare ad uscire,"
+      },
+      {
+        "testo": "Che se dunque te piggian a patatte,",
+        "it": "Ché se dunque ti prendono a pattoni,"
+      },
+      {
+        "testo": "Eh figgio caö, se tì ti æ cûæ de mûî,",
+        "it": "Eh figlio caro, se hai voglia di morire,"
+      },
+      {
+        "testo": "Nö gh'é necessitæ d'andâse a batte,",
+        "it": "Non c'è bisogno di andarsi a battere,"
+      },
+      {
+        "testo": "Stanni chì, che mûiemo tûtti duî",
+        "it": "Stattene qui, che moriamo tutti e due"
+      },
+      {
+        "testo": "Senza fâse piggiâ pe teste matte...",
+        "it": "Senza farci prendere per teste matte…"
+      },
+      {
+        "testo": "E a ö persûade coscì, che a te l'assetta,",
+        "it": "E lo persuade così, che te lo fa sedere,"
+      },
+      {
+        "testo": "Mäestoso sovrano, in sce a banchetta.",
+        "it": "Maestoso sovrano, sulla panchetta."
       }
     ]
   },
