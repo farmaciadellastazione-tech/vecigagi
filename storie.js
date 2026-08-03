@@ -3069,6 +3069,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Con çinquanta centimetri de ciûmma.",
         "it": "con cinquanta centimetri di piuma."
+      },
+      {
+        "testo": "In to mëzo ai reali appartamenti,",
+        "it": "In mezzo agli appartamenti reali"
+      },
+      {
+        "testo": "Gh'ëa a cappella da Corte e da famiggia.",
+        "it": "C'era la cappella di Corte e di famiglia."
+      },
+      {
+        "testo": "Chi, co-e figgie, co-e nœûe, coi pochi argenti",
+        "it": "Qui, con le figlie, con le nuore, coi pochi argenti"
+      },
+      {
+        "testo": "Che a l'aveiva salvoû da-o parapiggia,",
+        "it": "Che aveva salvato dal parapiglia,"
+      },
+      {
+        "testo": "Stava Ecuba annicciâ, battendo i denti,",
+        "it": "Stava Ecuba rannicchiata, battendo i denti,"
+      },
+      {
+        "testo": "Aspëttando ogni pô, de piggià a striggia",
+        "it": "Aspettando da un momento all'altro di prendere la strigliata,"
+      },
+      {
+        "testo": "E con cênti, preghee, comme fa e donne,",
+        "it": "E con lamenti, preghiere, come fanno le donne,"
+      },
+      {
+        "testo": "A tiâva zû da-o çe, santi e madonne.",
+        "it": "Tirava giù dal cielo santi e madonne."
+      },
+      {
+        "testo": "Quande Priamo, armoû comme ûn zûenotto,",
+        "it": "Quando Priamo, armato come un giovanotto,"
+      },
+      {
+        "testo": "Ö l'é comparso in faccia a sô moggië",
+        "it": "Comparve in faccia a sua moglie,"
+      },
+      {
+        "testo": "Sorpreisa, mäveggiâ e l'ha fæto ûn botto",
+        "it": "Sorpresa, meravigliata, fece un salto,"
+      },
+      {
+        "testo": "Nö credendo mai ciû che ö fosse lë;",
+        "it": "Non credendo mai più che fosse lui;"
+      },
+      {
+        "testo": "Ma figgio ca-o, ti n'æ bevûo ciù ûn gotto,",
+        "it": "«Ma figlio caro, ti sei bevuto un gotto di troppo?"
+      },
+      {
+        "testo": "A ghe dixe, ti ö sæ che ti æ ö braghë?",
+        "it": "— Gli dice — lo sai che hai il pannolone?"
+      },
+      {
+        "testo": "E te ven ancon cûæ de fa ö gradasso,",
+        "it": "E ti viene ancora voglia di fare il gradasso,"
+      },
+      {
+        "testo": "Se ti perdi e cörezze ad ogni passo?",
+        "it": "Se perdi le scoregge a ogni passo?»"
       }
     ]
   },
