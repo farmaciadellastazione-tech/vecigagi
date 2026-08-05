@@ -3389,6 +3389,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "De chi parlo, se parlo d'unn-a putten.",
         "it": "Di chi parlo, se parlo di una puttana."
+      },
+      {
+        "testo": "Me sön sentîo ûn scciûppon de raggia",
+        "it": "Mi sono sentito uno scoppio di rabbia"
+      },
+      {
+        "testo": "Pensando che pe lë, Troia a l'ëa in fiamme;",
+        "it": "Pensando che per lei Troia era in fiamme;"
+      },
+      {
+        "testo": "E comme, ho dîto, mî, questa canaggia",
+        "it": "E come — ho detto io — questa canaglia"
+      },
+      {
+        "testo": "A torniâ sann-a e salva a-o sô reamme,",
+        "it": "Tornerà sana e salva al suo reame,"
+      },
+      {
+        "testo": "Mentre nöi ne tocchiâ dormî in sce-a paggia",
+        "it": "Mentre a noi toccherà dormire sulla paglia"
+      },
+      {
+        "testo": "Limoxinando pe nö muî dä famme?",
+        "it": "Elemosinando per non morir di fame?"
+      },
+      {
+        "testo": "Lë a sä torna reginn-a e a fä de mösse",
+        "it": "Lei sarà di nuovo regina e farà delle musse"
+      },
+      {
+        "testo": "Con sô mariö, comme se ninte fösse?",
+        "it": "Con suo marito, come se niente fosse?"
       }
     ]
   },
