@@ -3300,7 +3300,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Arvî a bocca e parlâ dall'anscietæ;",
-        "it": "Aprir bocca e parlare, dall'angoscia;"
+        "it": "Aprir bocca e parlare, dall'ansia;"
       },
       {
         "testo": "Ma tûtt'assemme poi, me sovvegnûo",
@@ -3325,6 +3325,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "A mæ moggë che aveivo lasciâ in letto",
         "it": "Alla mia moglie che avevo lasciato a letto."
+      },
+      {
+        "testo": "Vêuggio andâli a sarvâ, ma primma amîo",
+        "it": "Voglio andarli a salvare, ma prima guardo"
+      },
+      {
+        "testo": "Chi di amixi m'aveiva accompagnôu;",
+        "it": "Chi degli amici mi aveva accompagnato;"
+      },
+      {
+        "testo": "Pesta! no gh'ëa nisciûn, chi l'ëa ferîo,",
+        "it": "Peste! Non c'era nessuno: chi era ferito,"
+      },
+      {
+        "testo": "Chi l'ëa stanco, chi morto e chi stroppiôu",
+        "it": "Chi stanco, chi morto e chi storpiato,"
+      },
+      {
+        "testo": "Tûtti per ûn se, pe ûn mæ m'han dæto ô gïo,",
+        "it": "Tutti, per un sì o per un ma, mi hanno piantato in asso,"
+      },
+      {
+        "testo": "Insomma, e-o bello solo abbandonôu;",
+        "it": "Insomma, ero bello solo, abbandonato;"
+      },
+      {
+        "testo": "Mi pe levâme d'in ti pê a-i cavalli",
+        "it": "Io, per levarmi dai piedi dei cavalli,"
+      },
+      {
+        "testo": "Vortime indietro, piggiâ ö liscio e dalli.",
+        "it": "Mi volto indietro, me la svigno e via."
       }
     ]
   },
