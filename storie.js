@@ -3261,6 +3261,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ma frattanto, ti vannite a fâ fotte.",
         "it": "Ma frattanto, tu va a farti fottere.»"
+      },
+      {
+        "testo": "Ö l'abæra pe ö collo e c'ûn streppon",
+        "it": "Lo afferra per il collo e con uno strattone"
+      },
+      {
+        "testo": "Ö leva da assettoû d'in sce a banchetta,",
+        "it": "Lo tira su di peso dalla panchetta,"
+      },
+      {
+        "testo": "Ö strascinn-a tremante e in strambælon,",
+        "it": "Lo trascina tremante e barcollante,"
+      },
+      {
+        "testo": "C'ûnn-a man ö gh'acciappa a perûcchetta",
+        "it": "Con una mano gli acchiappa la parrucchetta"
+      },
+      {
+        "testo": "E con l'âtra piccândo cö squadrön,",
+        "it": "E con l'altra, picchiando con lo spadone,"
+      },
+      {
+        "testo": "Ö te ö taggia, ö te sgûara, ö te l'affetta;",
+        "it": "Te lo taglia, te lo squarcia, te lo affetta;"
+      },
+      {
+        "testo": "E coscì l'é finîo stö gran sovrano,",
+        "it": "E così è finito questo gran sovrano,"
+      },
+      {
+        "testo": "Proprio comme ûn strasson, comme ûn babano.",
+        "it": "Proprio come uno straccione, come un babbeo."
       }
     ]
   },
