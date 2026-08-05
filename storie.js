@@ -3293,6 +3293,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Proprio comme ûn strasson, comme ûn babano.",
         "it": "Proprio come uno straccione, come un babbeo."
+      },
+      {
+        "testo": "Mi vedendo coscì n'ho ciû posciûo,",
+        "it": "Io, vedendo questo, non ho più potuto"
+      },
+      {
+        "testo": "Arvî a bocca e parlâ dall'anscietæ;",
+        "it": "Aprir bocca e parlare, dall'angoscia;"
+      },
+      {
+        "testo": "Ma tûtt'assemme poi, me sovvegnûo",
+        "it": "Ma tutt'a un tratto poi mi sovvenni"
+      },
+      {
+        "testo": "Da mæ povia famiggia e de mæ poæ:",
+        "it": "Della mia povera famiglia e di mio padre:"
+      },
+      {
+        "testo": "Ö l'ëa ascì, comme ö re, mezo fottûo.",
+        "it": "Era anche lui, come il re, mezzo malandato,"
+      },
+      {
+        "testo": "E ö l'aveiva all'incirca a stessa etæ;",
+        "it": "E aveva all'incirca la stessa età;"
+      },
+      {
+        "testo": "Ho pensôu ä mæ casa, aô mæ gardetto,",
+        "it": "Ho pensato alla mia casa, al mio piccolo,"
+      },
+      {
+        "testo": "A mæ moggë che aveivo lasciâ in letto",
+        "it": "Alla mia moglie che avevo lasciato a letto."
       }
     ]
   },
