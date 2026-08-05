@@ -3197,6 +3197,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Davanti ai sô parenti, ö tîa ö gambin.",
         "it": "Davanti ai suoi parenti, tira le cuoia."
+      },
+      {
+        "testo": "Achille tô pappâ, scibben che ö fosse",
+        "it": "Achille tuo padre, sebbene fosse"
+      },
+      {
+        "testo": "Ûn nemigo e ûn batösö comme tì,",
+        "it": "Un nemico e un teppista come te,"
+      },
+      {
+        "testo": "Quande g'ho domandoû d'Ettore e osse",
+        "it": "Quando gli ho chiesto le ossa di Ettore"
+      },
+      {
+        "testo": "Ö l'ha reise e ö l'ha avûo pietæ de mì;",
+        "it": "Le ha rese e ha avuto pietà di me;"
+      },
+      {
+        "testo": "E ti invece, brûtö, ti fæ de mosse",
+        "it": "E tu invece, vigliacco, fai il gradasso"
+      },
+      {
+        "testo": "E de ciû ti me bûrli? acciappa chì,",
+        "it": "E per di più mi burli? Prendi qui!"
+      },
+      {
+        "testo": "Ö tia fœûa a sciabbra e ö te g'asbria unn-a botta,",
+        "it": "Tira fuori la sciabola e gli molla un colpo,"
+      },
+      {
+        "testo": "Destegando corezze pe desotta.",
+        "it": "Mollando scoregge di sotto."
+      },
+      {
+        "testo": "Ma a sciabbra che a pesava ciû che lë",
+        "it": "Ma la sciabola, che pesava più di lui,"
+      },
+      {
+        "testo": "A tocca solo Pirro e a cazze in tæra;",
+        "it": "Sfiora appena Pirro e cade a terra;"
+      },
+      {
+        "testo": "Stö chì, poi, mâ edûcôu comme ûn muatë,",
+        "it": "Costui, poi, maleducato come un mulattiere,"
+      },
+      {
+        "testo": "Ö commensa a risponde c'ùnn-a gnæra,",
+        "it": "Comincia a rispondere con uno sberleffo,"
+      },
+      {
+        "testo": "E ö ghe dixe: finiscila braghæ,",
+        "it": "E gli dice: «Finiscila, cagabrache,"
+      },
+      {
+        "testo": "Vanni a tiâ de corezze sotto tæra,",
+        "it": "Vai a tirar scoregge sottoterra,"
+      },
+      {
+        "testo": "E digghe a mæ pappà che ö te i agotte.",
+        "it": "E di' a mio papà che se le sorbisca lui."
+      },
+      {
+        "testo": "Ma frattanto, ti vannite a fâ fotte.",
+        "it": "Ma frattanto, tu va a farti fottere.»"
       }
     ]
   },
