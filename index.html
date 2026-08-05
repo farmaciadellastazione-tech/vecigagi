@@ -2237,7 +2237,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", it:"arrostire", sp:"rostìhe/rostie", mn:"rustii", cr:"arustir", ge:"rostie", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"verbi", livello:"B1", it:"arti marziali", en:"martial arts", fr:"arts martiaux", es:"artes marciales", de:"Kampfsport", pt:"artes marciais", ko:"무술", ar:"فنون قتالية", zh:"武术", ja:"武道", ia:"artes martial", nt:["sp","mn"] },
       { tema:"dialetti", it:"artiglio, grinfia.", sp:"arpa, sgrinfia", mn:"zgrinfia", cr:"grinfia, ung'on, ugna", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
-      { tema:"mestieri", livello:"A2", it:"artista", en:"artist", fr:"artiste", es:"artista", de:"Künstler", pt:"artista", ru:"художник", ca:"artista", sp:"artista", mn:"artista", cr:"artista", ge:"artiista/artîsta", ko:"예술가", ar:"فنان", zh:"艺术家", ja:"芸術家", ia:"artista", la:"artifex", grc:"καλλιτέχνης", src:{"mn":"🤖 IA","ge":"🔗 dialetti.html"}, verif:"mn:g,ge:g" },
+      { tema:"mestieri", livello:"A2", it:"artista", en:"artist", fr:"artiste", es:"artista", de:"Künstler", pt:"artista", ru:"художник", ca:"artista", sp:"artista", mn:"artista", cr:"artista", ge:"artiista/artîsta", ko:"예술가", ar:"فنان", zh:"艺术家", ja:"芸術家", ia:"artista", la:"artifex", grc:"καλλιτέχνης", src:{"mn":"🤖 IA","ge":"🔗 dialetti.html"}, verif:"mn:g,ge:g,sp:g" },
       { tema:"patologie", livello:"B1", it:"artrite", en:"arthritis", fr:"arthrite", es:"artritis", de:"Arthritis", pt:"artrite", ko:"관절염", ar:"التهاب المفاصل", zh:"关节炎", ja:"関節炎", ia:"arthritis", nt:["sp","mn"] },
       { tema:"dialetti", it:"ascia", sp:"àssa", mn:"assa/asa", ge:"ascia", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"dialetti", it:"asciugamano", sp:"picagéta", mn:"picagëta", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
@@ -3825,8 +3825,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"virare", mn:"viraa", verif:"mn:g" },
       { tema:"dialetti", it:"virtu.", mn:"virtü", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"natura", livello:"B1", it:"viscido", en:"slippery", fr:"glissant", es:"resbaloso", de:"rutschig", pt:"escorregadio", ca:"relliscós", sp:"lépego", mn:"lepegu", ge:"leppego", la:"lubricus", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"alunecos" },
-      { tema:"dialetti", it:"vista", mn:"vista", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"dialetti", it:"vita", mn:"vita", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"vista", sp:"vista", mn:"vista", cr:"vista", ge:"vista", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"vita", sp:"vita", mn:"vita", cr:"vita", ge:"vitta", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", it:"vitello.", mn:"vìtèlu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"vitellone| scapolone", mn:"zitellùn/zitélùn", verif:"mn:g" },
       { tema:"aggettivi", livello:"B1", it:"vivace", en:"lively", fr:"animé|vivant", es:"animado|vivaz", de:"lebhaft", pt:"animado|vivo", ru:"живой|оживлённый", ca:"viu|animat" },
@@ -3944,7 +3944,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 441;
+const VOC_VERSION = 442;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
