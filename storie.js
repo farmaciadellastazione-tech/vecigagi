@@ -896,7 +896,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "L'oracolo de Delfo cose ö disse;",
-        "it": " l'oracolo di Delfi cosa disse;"
+        "it": " l'oracolo di Delfi cosa dicesse;"
       },
       {
         "testo": "E a risposta ve a chì: se pe vegnî",
@@ -3165,6 +3165,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Mäestoso sovrano, in sce a banchetta.",
         "it": "Maestoso sovrano, sulla panchetta."
+      },
+      {
+        "testo": "Ecco intanto Polite, ö caga in nîö,",
+        "it": "Ecco intanto Polite, l'ultimo della covata,"
+      },
+      {
+        "testo": "Ûn bello zovenetto pin d'arzillö,",
+        "it": "Un bel giovanetto pieno di brio,"
+      },
+      {
+        "testo": "Ö se vedde arrivâ, fûto, scoriö,",
+        "it": "Si vede arrivare, in fuga, braccato,"
+      },
+      {
+        "testo": "Da Pirro, che ö ghe vûeiva fâ ö bacillö.",
+        "it": "Da Pirro, che gli voleva far la festa."
+      },
+      {
+        "testo": "Questo chì che ö l'aveiva za ferîö",
+        "it": "Questo qui, che l'aveva già ferito,"
+      },
+      {
+        "testo": "Co-a fûtta in corpo d'avei fæto pillo,",
+        "it": "Con la rabbia in corpo per aver fatto cilecca,"
+      },
+      {
+        "testo": "Ö continûa a piccâ, scinché ö meschin",
+        "it": "Continua a colpire, finché il meschino,"
+      },
+      {
+        "testo": "Davanti ai sô parenti, ö tîa ö gambin.",
+        "it": "Davanti ai suoi parenti, tira le cuoia."
       }
     ]
   },
