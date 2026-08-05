@@ -3357,6 +3357,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Vortime indietro, piggiâ ö liscio e dalli.",
         "it": "Mi volto indietro, me la svigno e via."
+      },
+      {
+        "testo": "Appenn-a me sön giôu pe scappâ via,",
+        "it": "Appena mi sono girato per scappar via,"
+      },
+      {
+        "testo": "Che me torno a fermâ! perdingolinn-a",
+        "it": "Che mi torno a fermare! Perdiana,"
+      },
+      {
+        "testo": "In sce i schên d'ûn artâ, tûtta abbrensûia",
+        "it": "Sui gradini di un altare, tutta intirizzita,"
+      },
+      {
+        "testo": "Giâna, fûta, co-a pelle de gallinn-a,",
+        "it": "Gialla, sbiancata, con la pelle d'oca,"
+      },
+      {
+        "testo": "Veddo quella putten che co-a luçia",
+        "it": "Vedo quella puttana che con la susanna"
+      },
+      {
+        "testo": "A n'aveiva cacciôu, tûtti in rovinn-a,",
+        "it": "Ci aveva cacciati tutti in rovina,"
+      },
+      {
+        "testo": "Elena, intendo, e sciâ capisce ben,",
+        "it": "Elena, intendo, e Lei capisce bene"
+      },
+      {
+        "testo": "De chi parlo, se parlo d'unn-a putten.",
+        "it": "Di chi parlo, se parlo di una puttana."
       }
     ]
   },
