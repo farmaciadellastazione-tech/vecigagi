@@ -2550,7 +2550,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"colpo", en:"blow", fr:"coup", es:"golpe", de:"Schlag", pt:"golpe", ca:"cop", sp:"córpo", mn:"curpu", cr:"colp", zh:"打击", ja:"一撃", verif:"mn:g" },
       { tema:"casa", livello:"A1", it:"coltello", en:"knife", fr:"couteau", es:"cuchillo", de:"Messer", pt:"faca", ca:"ganivet", sp:"cotèo", mn:"cotèo", cr:"Cultèd", ge:"cotello", ko:"칼", ar:"سكين", zh:"刀", ja:"ナイフ", ia:"cultello", la:"culter", grc:"μάχαιρα", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"dialetti", livello:"A2", it:"colui che evita| scansafatiche", en:"evader", fr:"éviteur", es:"eludidor", de:"Meidender", pt:"evitador", ca:"evitador", mn:"s'ghin da/sghinda/zghìnda", zh:"回避者", ja:"避ける人", verif:"mn:g" },
-      { tema:"verbi", livello:"B2", it:"comandare", pt:"comandar", ru:"командовать", sp:"comandae", ia:"commandar", la:"imperare", grc:"κελεύειν", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
+      { tema:"verbi", livello:"B2", it:"comandare", pt:"comandar", ru:"командовать", sp:"comandae", cr:"comandar", ia:"commandar", la:"imperare", grc:"κελεύειν", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"verbi", it:"combattere", en:"fight", sp:"con bate/conbate", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialetti", it:"come", sp:"come", cr:"com", ge:"comme", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"dialogo", livello:"A1", it:"Come posso aiutarla?", en:"How can I help you?", fr:"Comment puis-je vous aider?", es:"¿En qué puedo ayudarle?", de:"Wie kann ich Ihnen helfen?", pt:"Como posso ajudá-lo?|Como posso ajuda-lo?", ko:"어떻게 도와드릴까요?", ar:"كيف يمكنني مساعدتك؟", zh:"我能帮您什么？", ja:"何かお手伝いできますか？", nt:["mn"] },
@@ -2567,8 +2567,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A1", it:"con", en:"with", fr:"avec", es:"con", de:"mit", pt:"com", ru:"с", ca:"amb", sp:"con", mn:"kuun/cùn", ge:"kuun/con", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g,ge:g" },
       { tema:"istruzioni", livello:"A2", it:"con acqua", en:"with water", fr:"avec de l'eau", es:"con agua", de:"mit Wasser", pt:"com água|com agua", sp:"conàiggo'a/con aigoa", ko:"물과 함께", ar:"مع الماء", zh:"用水服用", ja:"水で", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"casa", livello:"A2", it:"concerto", en:"concert", fr:"concert", es:"concierto", de:"Konzert", pt:"concerto", ko:"콘서트", ar:"حفلة موسيقية", zh:"音乐会", ja:"コンサート", ia:"concerto", la:"concentus", grc:"συναυλία", nt:["mn"] },
-      { tema:"natura", livello:"B1", it:"conchiglia", en:"shell", fr:"coquillage", es:"concha", de:"Muschel", pt:"concha", ru:"ракушка", ca:"closca|petxina", mn:"cunchigia", verif:"mn:g" },
-      { tema:"luoghi", livello:"A2", it:"confine", en:"border", fr:"frontière", es:"frontera", de:"Grenze", pt:"fronteira", sp:"tèrmo", mn:"tèrmu", ko:"국경", ar:"حدود", zh:"边界", ja:"国境", ia:"limite", la:"finis", grc:"σύνορα", verif:"sp:g,mn:g" },
+      { tema:"natura", livello:"B1", it:"conchiglia", en:"shell", fr:"coquillage", es:"concha", de:"Muschel", pt:"concha", ru:"ракушка", ca:"closca|petxina", mn:"cunchigia", cr:"gus', calz'ined", verif:"mn:g" },
+      { tema:"luoghi", livello:"A2", it:"confine", en:"border", fr:"frontière", es:"frontera", de:"Grenze", pt:"fronteira", sp:"tèrmo", mn:"tèrmu", cr:"cunfin", ko:"국경", ar:"حدود", zh:"边界", ja:"国境", ia:"limite", la:"finis", grc:"σύνορα", verif:"sp:g,mn:g" },
       { tema:"dialetti", it:"confusione", sp:"confusiòn/confüsion", mn:"cunfüjiun", cr:"cunfusión ", ge:"cunfüjiun, remesciu/confuxon, remescio", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"stati d'animo", livello:"B1", it:"confuso", de:"verwirrt", sp:"confüso", mn:"cunfüzu", ge:"cunfusu/confuso", verif:"sp:g,mn:g,ge:g" },
       { tema:"insulti", livello:"A2", it:"coniglio", en:"rabbit", fr:"lapin", es:"conejo", de:"Kaninchen", pt:"coelho", ru:"кролик", ca:"conill", sp:"conigio", mn:"cunìgiu", cr:"Cunìgio", ge:"cunìggiu/coniggio", ko:"토끼", ar:"أرنب", zh:"兔子", ja:"ウサギ", src:{"mn":"🤖 nmc"}, verif:"mn:g,sp:g,ge:g" },
@@ -3939,7 +3939,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 448;
+const VOC_VERSION = 449;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
