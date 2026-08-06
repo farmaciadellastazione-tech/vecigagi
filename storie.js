@@ -3517,6 +3517,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ti te læ zà scordæ, pe sta bagascia?",
         "it": "Te li sei già scordati, per questa bagascia?"
+      },
+      {
+        "testo": "E a nö sæ stæta manco bonn-a lë",
+        "it": "E non sarebbe stata capace nemmeno lei,"
+      },
+      {
+        "testo": "Né quello scemelan che ö l'ha rapîa,",
+        "it": "Né quello scimunito che l'ha rapita,"
+      },
+      {
+        "testo": "A fâ tanto, de mettilo in t'ûn pê",
+        "it": "A far tanto, da metterlo in quel posto (un piede)"
+      },
+      {
+        "testo": "A Troia, a Frisia, a Misia e compagnia,",
+        "it": "A Troia, alla Frigia, alla Misia e compagnia,"
+      },
+      {
+        "testo": "Perché ti ö sacci, l'e vœntæ dö çe",
+        "it": "Perché, che tu lo sappia, è volontà del cielo"
+      },
+      {
+        "testo": "Che da ûn pessetto ö v'ha piggôu de mîa,",
+        "it": "Che da un bel pezzetto vi ha presi di mira,"
+      },
+      {
+        "testo": "E per quanto çerchæ de dî e de fâ,",
+        "it": "E per quanto cerchiate di dire e di fare,"
+      },
+      {
+        "testo": "Ö ve vêu dâve adosso e desmatâ.",
+        "it": "Vi vuole dare addosso e disalberarvi."
       }
     ]
   },
