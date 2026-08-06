@@ -2485,9 +2485,9 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"ceppo, ciocco", en:"log", fr:"bûche", mn:"socu/sòcu", cr:"z'oca, c'oc", verif:"mn:g" },
       { tema:"dialetti", it:"cera", sp:"séa", cr:"z'era", ge:"çeia", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"verbi", livello:"A2", it:"cercare", en:"search", fr:"chercher", es:"buscar", de:"suchen", pt:"procurar", ru:"искать", ca:"cercar|buscar", sp:"sercae", mn:"sercae", cr:"z'rcar", ge:"sercaa/serca", ko:"찾다", ar:"يبحث", zh:"寻找", ja:"探す", ia:"cercar", la:"quaerere", grc:"ζητεῖν", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
-      { tema:"salute", livello:"B1", it:"cerotto", en:"plaster", fr:"pansement", es:"tirita", de:"Pflaster", pt:"curativo", sp:"seòto", mn:"seòto", cr:"z'rot", ge:"seotto, seiòtto/seotto, seiotto", ko:"반창고", ar:"لاصق طبي", zh:"创可贴", ja:"絆創膏", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
-      { tema:"aggettivi", livello:"A2", it:"certo", en:"certain", fr:"certain", es:"cierto", de:"sicher", pt:"certo", sp:"sèrto", cr:"cert", ko:"확실한", ar:"مؤكد", zh:"确定", ja:"確かな", ia:"certe", la:"certus", grc:"βέβαιος", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
-      { tema:"corpo", livello:"A2", it:"cervello", en:"brain", fr:"cerveau", es:"cerebro", de:"Gehirn", pt:"cérebro", ca:"cervell", sp:"servelo", mn:"servèlu", cr:"z'rved", ge:"çervello", ia:"cerebro", la:"cerebrum", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"creier" },
+      { tema:"salute", livello:"B1", it:"cerotto", en:"plaster", fr:"pansement", es:"tirita", de:"Pflaster", pt:"curativo", sp:"seòto", mn:"seòto", cr:"z'rot", ge:"seotto, seiòtto/seotto, seiotto", ko:"반창고", ar:"لاصق طبي", zh:"创可贴", ja:"絆創膏", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
+      { tema:"aggettivi", livello:"A2", it:"certo", en:"certain", fr:"certain", es:"cierto", de:"sicher", pt:"certo", sp:"sèrto", cr:"cert", ko:"확실한", ar:"مؤكد", zh:"确定", ja:"確かな", ia:"certe", la:"certus", grc:"βέβαιος", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,cr:g" },
+      { tema:"corpo", livello:"A2", it:"cervello", en:"brain", fr:"cerveau", es:"cerebro", de:"Gehirn", pt:"cérebro", ca:"cervell", sp:"servelo", mn:"servèlu", cr:"z'rved", ge:"çervello", ia:"cerebro", la:"cerebrum", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g", ro:"creier" },
       { tema:"animali", it:"cervo volante", en:"stag beetle", sp:"tanagiòn/tanagion", cr:"stroz'aplin", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialetti", livello:"B1", it:"cespo", en:"head (lettuce)", fr:"pied", es:"mata", de:"Stengel", pt:"pé", sp:"cósto", mn:"cùstu", verif:"mn:g" },
       { tema:"casa", livello:"A2", it:"cesso", en:"toilet", fr:"toilettes", es:"retrete", de:"Toilette", pt:"banheiro", sp:"lego", mn:"legu", verif:"mn:g" },
@@ -3942,7 +3942,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 445;
+const VOC_VERSION = 446;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
