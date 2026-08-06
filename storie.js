@@ -3548,7 +3548,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ö ve vêu dâve adosso e desmatâ.",
-        "it": "Vi vuole dare addosso e disalberarvi."
+        "it": "Vi vuole dare addosso e distruggere."
       }
     ]
   },
