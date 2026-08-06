@@ -3421,6 +3421,102 @@ const STORIE_DEFAULT = [
       {
         "testo": "Con sô mariö, comme se ninte fösse?",
         "it": "Con suo marito, come se niente fosse?"
+      },
+      {
+        "testo": "Nö perdiessann-a che n'andiâ cöscì,",
+        "it": "No, perdiana, che non andrà così!"
+      },
+      {
+        "testo": "Zà che ö caxo ö me a fâ vegnî in ti pë,",
+        "it": "Già che il caso me la mette tra i piedi,"
+      },
+      {
+        "testo": "Me ven coæ de levaghe ö presumî",
+        "it": "Mi viene voglia di levarle la boria"
+      },
+      {
+        "testo": "E daghe quattro patte in sce ö panë,",
+        "it": "E darle quattro pacche sul paniere,"
+      },
+      {
+        "testo": "E scibben che a dî ö veo, ghe perde mî",
+        "it": "E sebbene, a dire il vero, ci perdo io"
+      },
+      {
+        "testo": "A mettime c'ûn siôto comme lë,",
+        "it": "A mettermi con un impiastro come lei,"
+      },
+      {
+        "testo": "N'importa ninte, aviô a soddisfaziön",
+        "it": "Non importa niente, avrò la soddisfazione"
+      },
+      {
+        "testo": "De vendicame ûn pô de stö saccön.",
+        "it": "Di vendicarmi un po' di sto saccone."
+      },
+      {
+        "testo": "Tutt'assemme me sento imbarlûgâ",
+        "it": "Tutt'a un tratto mi sento abbagliare"
+      },
+      {
+        "testo": "E veddo tûtto cæo comme de giorno,",
+        "it": "E vedo tutto chiaro come di giorno,"
+      },
+      {
+        "testo": "E in tö mëzo da lûxe che a me pâ",
+        "it": "E in mezzo alla luce, che mi pare"
+      },
+      {
+        "testo": "Che a ghe fasse ûn'aureola d'intorno,",
+        "it": "Le facesse un'aureola intorno,"
+      },
+      {
+        "testo": "Cose veddo? l'immagine adorâ",
+        "it": "Cosa vedo? L'immagine adorata"
+      },
+      {
+        "testo": "Da mæ povia mammâ che ö sô soggiorno",
+        "it": "Della mia povera mamma, che il suo soggiorno"
+      },
+      {
+        "testo": "A l'aveiva lasciôu d'in mëzo a-i santi",
+        "it": "Aveva lasciato in mezzo ai santi,"
+      },
+      {
+        "testo": "E tûtta bella a m'ëa vegnua davanti.",
+        "it": "E tutta bella mi era venuta davanti."
+      },
+      {
+        "testo": "A me piggia pe man e dolcemente",
+        "it": "Mi prende per mano e dolcemente"
+      },
+      {
+        "testo": "A me parla e a me dixe: ma figgiêu,",
+        "it": "Mi parla e mi dice: ma figliolo,"
+      },
+      {
+        "testo": "Dimme ûn pittin, cose te sâta in mente,",
+        "it": "Dimmi un po', cosa ti salta in mente,"
+      },
+      {
+        "testo": "Perché ti sbotti e ti te a piggi a-o chêu,",
+        "it": "Perché sbotti e te la prendi a cuore"
+      },
+      {
+        "testo": "Pe ûnn-a fucciara tanto inconcludente.",
+        "it": "Per una cianfrusaglia tanto inconcludente,"
+      },
+      {
+        "testo": "Mentre poi ti nö pensi a casa têu?",
+        "it": "Mentre poi non pensi a casa tua?"
+      },
+      {
+        "testo": "E tô poæ, tô moggië, cö tô bardascia",
+        "it": "E tuo padre, tua moglie, col tuo ragazzino"
+      },
+      {
+        "testo": "Ti te læ zà scordæ, pe sta bagascia?",
+        "it": "Te li sei già scordati, per questa bagascia?"
       }
     ]
   },
