@@ -3761,6 +3761,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Muimmo tûtti, perdie! che mi me sciallo.",
         "it": "Moriamo tutti, perdio, ché io ci godo!"
+      },
+      {
+        "testo": "E dixendo coscì, sfroddro ö squaddron,",
+        "it": "E dicendo così, sfodero lo spadone,"
+      },
+      {
+        "testo": "Piggio ûn sciœuppö e me ö metto a caregâ,",
+        "it": "Prendo un fucile e me lo metto a caricare,"
+      },
+      {
+        "testo": "Me forniscio de balle e munizion,",
+        "it": "Mi fornisco di pallottole e munizioni,"
+      },
+      {
+        "testo": "E fasso pe sciortî, pe andame a dâ,",
+        "it": "E faccio per uscire, per andarmi a dare,"
+      },
+      {
+        "testo": "Ma poi quande son lì, pe infiâ ö pörtön,",
+        "it": "Ma poi quando son lì, per infilare il portone,"
+      },
+      {
+        "testo": "Eccote mæ moggië bell'aquegâ",
+        "it": "Eccoti mia moglie tutta prostrata"
+      },
+      {
+        "testo": "Che a m'abbranca a me strenze pe zenuggie",
+        "it": "Che mi abbranca, mi stringe per le ginocchia"
+      },
+      {
+        "testo": "E a me cria: maio caö nö fâ de cuggie.",
+        "it": "E mi grida: marito caro, non fare cazzate!"
       }
     ]
   },
