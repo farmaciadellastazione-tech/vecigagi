@@ -3825,6 +3825,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che ö ne fa perde a voxe e ö sentimento.",
         "it": "Che ci fa perdere la voce e i sensi."
+      },
+      {
+        "testo": "Ecco lì che in sce a testa a-o mæ Giulin,",
+        "it": "Ecco lì che sulla testa del mio Giulino"
+      },
+      {
+        "testo": "Pâ de veddighe ûn fœugo che ö parpelle",
+        "it": "Pare di vederci un fuoco che tremola"
+      },
+      {
+        "testo": "Comme quello dö spiritö de vin,",
+        "it": "Come quello dello spirito di vino,"
+      },
+      {
+        "testo": "Senza toccâlö né brûxiaghe a pelle",
+        "it": "Senza toccarlo né bruciargli la pelle."
+      },
+      {
+        "testo": "Ö portemmo ädreitûa sotto ö brönzin,",
+        "it": "Lo portiamo addirittura sotto il rubinetto,"
+      },
+      {
+        "testo": "Ghe cacciemmo de l'ægua in te çervelle,",
+        "it": "Gli buttiamo dell'acqua in testa,"
+      },
+      {
+        "testo": "Ö crovimmo de strasse, ghe buffemmo,",
+        "it": "Lo copriamo di stracci, gli soffiamo,"
+      },
+      {
+        "testo": "Ma scì balle, ciû femmo, meno femmo.",
+        "it": "Ma macché! Più facciamo, meno facciamo."
       }
     ]
   },
