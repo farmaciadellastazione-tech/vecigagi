@@ -3357,7 +3357,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Vortime indietro, piggiâ ö liscio e dalli.",
         "it": "Mi volto indietro, me la svigno e via."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-3-parte-1",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 2 parte 3 (parte 2)",
+      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese (parte 2)"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Appenn-a me sön giôu pe scappâ via,",
         "it": "Appena mi sono girato per scappar via,"
