@@ -3792,7 +3792,39 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E a me cria: maio caö nö fâ de cuggie.",
-        "it": "E mi grida: marito caro, non fare cazzate!"
+        "it": "E mi grida: marito caro, non fare il coglione!"
+      },
+      {
+        "testo": "E a dixe che se sciorto, a ven le ascì",
+        "it": "E dice che se esco, viene anche lei,"
+      },
+      {
+        "testo": "E a me mostra ö figgiœû che a l'ha in te brasse.",
+        "it": "E mi mostra il bambino che ha in braccio."
+      },
+      {
+        "testo": "A cianze, a l'ûrla, a cria, tanto che mì,",
+        "it": "Piange, urla, grida, tanto che io"
+      },
+      {
+        "testo": "No so ciû cose digghe e cose fasse.",
+        "it": "Non so più cosa dirle e cosa fare."
+      },
+      {
+        "testo": "In to mentre che nöi atri stemmo lì,",
+        "it": "Nel mentre che noialtri stiamo lì,"
+      },
+      {
+        "testo": "Mi pe andamene e lë perché nö passe,",
+        "it": "Io per andarmene e lei perché non passi,"
+      },
+      {
+        "testo": "Me succede ûnn-a specie de portento",
+        "it": "Mi succede una specie di portento"
+      },
+      {
+        "testo": "Che ö ne fa perde a voxe e ö sentimento.",
+        "it": "Che ci fa perdere la voce e i sensi."
       }
     ]
   },
