@@ -3366,7 +3366,7 @@ const STORIE_DEFAULT = [
     "livello": "A1",
     "tema": "",
     "titolo": {
-      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 3 parte 2",
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 3 parte 1",
       "it": "Eneide: ricordi di un reduce troiano in dialetto genovese"
     },
     "fonte": {
@@ -3569,6 +3569,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö ve vêu dâve adosso e desmatâ.",
         "it": "Vi vuole dare addosso e distruggere."
+      },
+      {
+        "testo": "Se poi te pâ che mi conte ünn-a vescia",
+        "it": "Se poi ti pare che io ti racconti una frottola,"
+      },
+      {
+        "testo": "Piggia chì che te presto i mæ speggetti,",
+        "it": "Prendi qui, che ti presto i miei occhialini,"
+      },
+      {
+        "testo": "Cön sti chì, ti veddiæ cose se mescia",
+        "it": "Con questi vedrai cosa si agita"
+      },
+      {
+        "testo": "Lasciû in çë pe cacciave in menissetti,",
+        "it": "Lassù in cielo per ridurvi in minuzzoli,"
+      },
+      {
+        "testo": "Dunque lascia cörrî, vâ a casa in sprescia,",
+        "it": "Dunque lascia perdere, vai a casa in fretta,"
+      },
+      {
+        "testo": "Nö stä chì a perde ö tempo e a fâ frexetti,",
+        "it": "Non startene qui a perder tempo e a gingillarti,"
+      },
+      {
+        "testo": "E dovunque ti andiæ mi te dò aggiutto",
+        "it": "E dovunque tu vada io ti do aiuto"
+      },
+      {
+        "testo": "E mi te vegniô apprêuvo dappertûtto",
+        "it": "E verrò insieme a te dappertutto."
+      },
+      {
+        "testo": "E a sparisce: me metto ö pincenez",
+        "it": "E sparisce: mi metto il pince-nez"
+      },
+      {
+        "testo": "E, perdiesann-a, cose veddo mai!",
+        "it": "E, perdiana, cosa mai vedo!"
+      },
+      {
+        "testo": "Paiva proprio che i santi che l’é in çë",
+        "it": "Pareva proprio che i santi che sono in cielo"
+      },
+      {
+        "testo": "Avessan cangiôu forma in tanti diai,",
+        "it": "Avessero cambiato forma in tanti diavoli,"
+      },
+      {
+        "testo": "Pe futtine ädreitûa, co-e man, cöi pë,",
+        "it": "Per fotterci addirittura, con le mani, coi piedi,"
+      },
+      {
+        "testo": "Brûxia, römpi, sconquassa, arranca e dai;",
+        "it": "Brucia, rompi, sconquassa, strappa e dai;"
+      },
+      {
+        "testo": "Quando ho visto coscì, mi son scappôu",
+        "it": "Quando ho visto così, sono scappato"
+      },
+      {
+        "testo": "Verso casa, avvilìo, mortificôu",
+        "it": "Verso casa, avvilito, mortificato."
       }
     ]
   },
