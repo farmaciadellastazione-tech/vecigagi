@@ -3697,6 +3697,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Lascime dunque muî, queto e tranquillö",
         "it": "Lasciami dunque morire, quieto e tranquillo."
+      },
+      {
+        "testo": "E lì dûo comme ûn mû, fermo, intestoû",
+        "it": "E lì duro come un mulo, fermo, intestardito,"
+      },
+      {
+        "testo": "Ö nö vûeiva cegase a nisciûn patto,",
+        "it": "Non si voleva piegare a nessun patto,"
+      },
+      {
+        "testo": "Mi ö pregavo che m'eo mezo sfiatoû,",
+        "it": "Io lo pregavo tanto che m'ero mezzo sfiatato,"
+      },
+      {
+        "testo": "E lë sempre ciû dûo sempre ciû ciatto;",
+        "it": "E lui sempre più duro, sempre più irremovibile;"
+      },
+      {
+        "testo": "Strillava ö mæ figgiœû che ö s'ëa adescioû,",
+        "it": "Strillava il mio bambino che si era svegliato,"
+      },
+      {
+        "testo": "Cianzeiva mæ moggië, coe serve e ö gatto;",
+        "it": "Piangeva mia moglie, con le serve e il gatto;"
+      },
+      {
+        "testo": "Visto poi che l'ëa tûtto inutilmente,",
+        "it": "Visto poi che era tutto inutile,"
+      },
+      {
+        "testo": "Ho finîo pe tiâ zù qualche aççidente.",
+        "it": "Ho finito per tirar giù qualche accidente."
+      },
+      {
+        "testo": "Ah sci? ti nö vœû intende de raxon,",
+        "it": "Ah sì? Non vuoi sentir ragione?"
+      },
+      {
+        "testo": "Me son misso a sbraggiâ, ti vœû mûi chì?",
+        "it": "Mi son messo a sbraitare, vuoi morire qui?"
+      },
+      {
+        "testo": "E che a seggie coscì, ma sacranon,",
+        "it": "E che sia così, ma sacramento,"
+      },
+      {
+        "testo": "Vœûggio alôa fâ de mösse ûn pô mi ascì!",
+        "it": "Voglio allora fare delle musse un po' anch'io!"
+      },
+      {
+        "testo": "Se dovemmo andâ tûtti in perdizion",
+        "it": "Se dobbiamo andare tutti in perdizione,"
+      },
+      {
+        "testo": "Andemmo pure e commensiô da mì,",
+        "it": "Andiamoci pure, e comincerò da me,"
+      },
+      {
+        "testo": "Zù Recco e Rûa e Canâ de Rapallo,",
+        "it": "Giù Recco, Ruta e Canale di Rapallo,"
+      },
+      {
+        "testo": "Muimmo tûtti, perdie! che mi me sciallo.",
+        "it": "Moriamo tutti, perdio, ché io ci godo!"
       }
     ]
   },
