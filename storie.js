@@ -3633,6 +3633,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Verso casa, avvilìo, mortificôu",
         "it": "Verso casa, avvilito, mortificato."
+      },
+      {
+        "testo": "A malapenn-a introû, natûralmente,",
+        "it": "Appena entrato, naturalmente,"
+      },
+      {
+        "testo": "Son andæto a çercâ de mæ pappâ",
+        "it": "Sono andato a cercare mio padre,"
+      },
+      {
+        "testo": "Che ö l’ëa in letto a dormî tranquillamente",
+        "it": "Che era a letto a dormire tranquillamente"
+      },
+      {
+        "testo": "Senza manco pensâ a sto calabâ;",
+        "it": "Senza manco pensare a sto trambusto;"
+      },
+      {
+        "testo": "Ö ciammo, ö scrollo, un pô, ma inutilmente;",
+        "it": "Lo chiamo, lo scrollo un po', ma inutilmente;"
+      },
+      {
+        "testo": "Lë tranquillo ö se torna a giâ de là,",
+        "it": "Lui, tranquillo, si rigira dall'altra parte,"
+      },
+      {
+        "testo": "Ghe conto a cosa, ö nö se vœû sciatâ,",
+        "it": "Gli racconto la cosa, non si vuole scomporre,"
+      },
+      {
+        "testo": "Vœûggio vestilo, ö nö se vœû mesciâ.",
+        "it": "Voglio vestirlo, non si vuole muovere."
+      },
+      {
+        "testo": "Ma figgio cao, te pâ che in ti mæ panni",
+        "it": "Ma figlio caro, ti pare che alla mia età"
+      },
+      {
+        "testo": "Aggîe ancon vœûggia de sciûgame e cuggie",
+        "it": "Abbia ancora voglia di asciugarmi le palle,"
+      },
+      {
+        "testo": "Mentre me l'ho sciûghæ za pe tant'anni",
+        "it": "Mentre me le sono già consumate per tanti anni"
+      },
+      {
+        "testo": "Che me son arrivæ söttö e zenuggie?",
+        "it": "Che mi sono arrivate sotto le ginocchia?"
+      },
+      {
+        "testo": "Son carego de crûzî e de malanni",
+        "it": "Sono carico di croci e di malanni,"
+      },
+      {
+        "testo": "Che l'é tempo che lasce e che me doggie,",
+        "it": "Che è tempo che lasci e che mi pieghi,"
+      },
+      {
+        "testo": "L'é dö bello che mi l'ho in tö bacillö",
+        "it": "È un bel pezzo che ce l'ho nel lato B,"
+      },
+      {
+        "testo": "Lascime dunque muî, queto e tranquillö",
+        "it": "Lasciami dunque morire, quieto e tranquillo."
       }
     ]
   },
