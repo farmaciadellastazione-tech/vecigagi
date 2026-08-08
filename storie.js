@@ -4177,6 +4177,102 @@ const STORIE_DEFAULT = [
       {
         "testo": "E me metto a giâ indietro ûn'âtra votta.",
         "it": "E mi rimetto a tornare indietro un'altra volta."
+      },
+      {
+        "testo": "Senza savei, che pesci ciû piggiâ,",
+        "it": "Senza sapere più che pesci pigliare,"
+      },
+      {
+        "testo": "A ciammo pe sô nomme in tûtti i canti,",
+        "it": "La chiamo per nome in tutti gli angoli,"
+      },
+      {
+        "testo": "Tûtt'assemme, me a veddo capitâ",
+        "it": "Tutt'a un tratto, me la vedo comparire"
+      },
+      {
+        "testo": "Ben ciû grande dö solito davanti",
+        "it": "Ben più grande del solito, davanti,"
+      },
+      {
+        "testo": "Me se særa ö respîo, me ven da suâ,",
+        "it": "Mi si serra il respiro, mi viene da sudare,"
+      },
+      {
+        "testo": "Ciammo aggiuttö ä madonna e a tûtti i santi,",
+        "it": "Chiamo aiuto alla madonna e a tutti i santi,"
+      },
+      {
+        "testo": "Ma lë ciancianinetto a s'avvixinn-a",
+        "it": "Ma lei, pian pianino, si avvicina"
+      },
+      {
+        "testo": "E a se mette a dî, co-a sô voxinn-a:",
+        "it": "E si mette a dire, con la sua vocina:"
+      },
+      {
+        "testo": "Compagno di mæ giorni fortunæ",
+        "it": "Compagno dei miei giorni fortunati,"
+      },
+      {
+        "testo": "Percose ti te sciâti inutilmente?",
+        "it": "Perché ti affanni inutilmente?"
+      },
+      {
+        "testo": "Pe nö fâme divedde a tô anscietæ",
+        "it": "Per non farmi vedere la tua ansia"
+      },
+      {
+        "testo": "E a noia de viaggiâ fra tanta gente!",
+        "it": "E la noia di viaggiare fra tanta gente!"
+      },
+      {
+        "testo": "Iddio, che ö nö fâ e cose pe meitæ,",
+        "it": "Iddio, che non fa le cose a metà,"
+      },
+      {
+        "testo": "Ö m'ha fæto creppâ d'ûn aççidente:",
+        "it": "Mi ha fatto crepare d'un accidente:"
+      },
+      {
+        "testo": "A-oa a l'é comme a l'é, se devo dî",
+        "it": "Ora è come è, e se devo dire,"
+      },
+      {
+        "testo": "Nö me pâ vëo de n'avei ciû da mûî.",
+        "it": "Non mi par vero di non dover più morire"
+      },
+      {
+        "testo": "Ö sô ben, che pe ûn pô te rincresciâ",
+        "it": "Lo so bene che per un po' ti dispiacerà,"
+      },
+      {
+        "testo": "Pe nö savei döve appussâ ö pennello,",
+        "it": "Per non sapere dove pucciare il pennello,"
+      },
+      {
+        "testo": "Ma ûn pô de diëta a nö te fâ dö mâ,",
+        "it": "Ma un po' di dieta non ti fa male,"
+      },
+      {
+        "testo": "Tanto ciû che ti në manco ciû noëllo",
+        "it": "Tanto più che non sei più novello,"
+      },
+      {
+        "testo": "Ma quando ti sæ lesto de viaggiâ,",
+        "it": "Ma quando sarai pronto a viaggiare,"
+      },
+      {
+        "testo": "N'aggite pûia che ti appendiæ ö cappello",
+        "it": "Non aver paura che appenderai il cappello"
+      },
+      {
+        "testo": "E in t'ûnn-a botta ti troviæ a luçia,",
+        "it": "E in un colpo troverai la susanna,"
+      },
+      {
+        "testo": "A gloria, l'abbondansa e a scignoria.",
+        "it": "La gloria, l'abbondanza e la signoria."
       }
     ]
   },
