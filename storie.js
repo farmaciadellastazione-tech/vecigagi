@@ -4305,6 +4305,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ma sbatto l'aia, senza strenze ûn casso.",
         "it": "Ma sbatto l'aria, senza stringere un cazzo."
+      },
+      {
+        "testo": "Fûto, fûto pensando a-i caxi mæ,",
+        "it": "Pallido, pallido, pensando ai casi miei,"
+      },
+      {
+        "testo": "Sön törnôu dâ capella rovinâ",
+        "it": "Son tornato alla cappella in rovina"
+      },
+      {
+        "testo": "Döve gh'ëa con mæ figgiö e con mæ poæ",
+        "it": "Dove c'era, con mio figlio e con mio padre,"
+      },
+      {
+        "testo": "Ûnn-a folla de gente radûnâ",
+        "it": "Una folla di gente radunata"
+      },
+      {
+        "testo": "Pronta a dividde e nostre avverscitæ",
+        "it": "Pronta a condividere le nostre avversità,"
+      },
+      {
+        "testo": "Seguitandone in tæra comme in mâ:",
+        "it": "Seguendoci per terra come per mare:"
+      },
+      {
+        "testo": "Troia a l'ëa ûn fôu... nö gh'ëa da fâ ûn bellin,",
+        "it": "Troia era un manicomio... non c'era un cazzo da fare,"
+      },
+      {
+        "testo": "Dunque, ho dîto, mettemöse in cammin.",
+        "it": "Dunque, ho detto, mettiamoci in cammino."
       }
     ]
   },
