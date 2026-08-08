@@ -2742,20 +2742,20 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", it:"elegante.", mn:"entapà/éntapà", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", it:"elemento", mn:"élémentu", ge:"elementu/elemento", src:{"mn":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,ge:g" },
       { tema:"mestieri", livello:"B1", it:"elettricista", en:"electrician", fr:"électricien", es:"electricista", de:"Elektriker", pt:"eletricista", ru:"электрик", ca:"electricista", nt:["mn"] },
-      { tema:"dialetti", it:"emozione.", mn:"emusciùn/émusciùn", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"dialogo", livello:"A2", it:"entrambi", en:"both", fr:"les deux|tous les deux", es:"ambos", de:"beide", pt:"ambos", ru:"оба", ca:"tots dos|ambdós", nt:["mn"] },
-      { tema:"verbi", livello:"A1", it:"entrare", en:"enter", fr:"entrer", es:"entrar", de:"eintreten", pt:"entrar", ru:"входить", ca:"entrar", sp:"entrae", mn:"entràa/éntràa", ko:"들어가다", ar:"يدخل", zh:"进入", ja:"入る", ia:"entrar", la:"intrare", grc:"εἰσέρχεσθαι", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"emozione", mn:"emusciùn/émusciùn", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialogo", livello:"A2", it:"entrambi", en:"both", fr:"les deux|tous les deux", es:"ambos", de:"beide", pt:"ambos", ru:"оба", ca:"tots dos|ambdós", cr:"tranb", nt:["mn"] },
+      { tema:"verbi", livello:"A1", it:"entrare", en:"enter", fr:"entrer", es:"entrar", de:"eintreten", pt:"entrar", ru:"входить", ca:"entrar", sp:"entrae", mn:"entràa/éntràa", cr:"'ntrar", ko:"들어가다", ar:"يدخل", zh:"进入", ja:"入る", ia:"entrar", la:"intrare", grc:"εἰσέρχεσθαι", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", it:"entrata, ingresso.", mn:"entrata/éntrata", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"entusiasta", en:"enthusiastic", fr:"enthousiaste", es:"entusiasmado", de:"begeistert", pt:"entusiasmado", ru:"восторженный", ca:"entusiasta", ko:"열정적인", ar:"متحمس", zh:"热情", ja:"熱狂的", ia:"enthusiaste", la:"acer", grc:"ἐνθουσιαστικός", nt:["mn"] },
       { it:"Epifania / Befana", sp:"Pasqueta,pefania", cr:"P'fana", verif:"sp:g" },
-      { tema:"dialetti", it:"errore.", mn:"errùreh/érùré", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"errore", mn:"errùreh/érùré", cr:"eror", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"sintomi", livello:"B1", it:"eruzione cutanea", en:"skin rash", fr:"éruption cutanée", es:"sarpullido", de:"Hautausschlag", pt:"erupção cutânea|erupcao cutanea", ko:"피부 발진", ar:"طفح جلدي", zh:"皮疹", ja:"発疹", nt:["mn"] },
       { tema:"dialogo", livello:"A2", it:"esattamente", en:"exactly", fr:"exactement", es:"exactamente", de:"genau", pt:"exatamente", ru:"именно|точно", ca:"exactament", nt:["mn"] },
-      { tema:"dialetti", it:"esca", mn:"ësca", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"esca", mn:"ësca", cr:"esca", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"escoriarsi", de:"aufschlagen", ca:"esgarrar-se", mn:"sgarbelàsseh/zgàrbélasé", verif:"mn:g" },
       { tema:"dialetti", it:"escoriato, graffiato.", mn:"sgarbelà/zgarbélà", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"dialetti", it:"escoriazione.", mn:"sgarbeladùa/zgàrbéladüa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"verbi", livello:"B1", it:"esercitarsi", en:"practise", fr:"pratiquer|s'exercer", es:"practicar", de:"üben", pt:"praticar", ru:"практиковаться|тренироваться", ca:"practicar", nt:["mn"] },
+      { tema:"dialetti", it:"escoriazione", mn:"sgarbeladùa/zgàrbéladüa", cr:"sgrinfiata", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"verbi", livello:"B1", it:"esercitarsi", en:"practise", fr:"pratiquer|s'exercer", es:"practicar", de:"üben", pt:"praticar", ru:"практиковаться|тренироваться", ca:"practicar", cr:"esercitars", nt:["mn"] },
       { tema:"dialetti", it:"esperienza, pratica, conoscenza.", mn:"esperiénsa/éspériënsa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", it:"esprimere.", mn:"esprìme/ésprimé", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"vestiti", livello:"A1", it:"essere", en:"be", fr:"être", es:"ser|estar", de:"sein", pt:"ser|estar", ru:"быть", ca:"ser|estar", sp:"èsse", mn:"èsse", ko:"이다|있다", ar:"يكون", zh:"是", ia:"esser", la:"esse", grc:"εἶναι", verif:"mn:g", ro:"a fi" },
@@ -3939,7 +3939,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 452;
+const VOC_VERSION = 453;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
