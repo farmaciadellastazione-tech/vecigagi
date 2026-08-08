@@ -4273,6 +4273,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "A gloria, l'abbondansa e a scignoria.",
         "it": "La gloria, l'abbondanza e la signoria."
+      },
+      {
+        "testo": "Atro nö t'ho da dî bello marîo,",
+        "it": "Altro non ho da dirti, caro marito,"
+      },
+      {
+        "testo": "Che ti pensi a-o figgiêu che t'ho lasciôu,",
+        "it": "Che tu pensi al figliolo che t'ho lasciato,"
+      },
+      {
+        "testo": "Tîtelo sciû, pin de timö de Dio,",
+        "it": "Tiralo su, pieno di timor di Dio,"
+      },
+      {
+        "testo": "Bravo comme sô poæ, ben edûcôu.",
+        "it": "Bravo come suo padre, ben educato."
+      },
+      {
+        "testo": "Vœûggime ben, mîa de sta allegro, e addio.",
+        "it": "Voglimi bene, bada di star allegro, e addio."
+      },
+      {
+        "testo": "A sparisce e mì resto abbellinou,",
+        "it": "Sparisce e io resto sbalordito,"
+      },
+      {
+        "testo": "Çerco de dâghe ancön l'ûrtimo abbrasso,",
+        "it": "Cerco di darle ancora l'ultimo abbraccio,"
+      },
+      {
+        "testo": "Ma sbatto l'aia, senza strenze ûn casso.",
+        "it": "Ma sbatto l'aria, senza stringere un cazzo."
       }
     ]
   },
