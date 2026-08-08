@@ -2845,13 +2845,13 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"fresco", en:"fresh", fr:"frais", es:"fresco", de:"frisch", pt:"fresco", ru:"свежий", ca:"fresc", sp:"fresco", mn:"frëscu", cr:"fresc", verif:"mn:g" },
       { tema:"natura", livello:"B1", it:"frescura", sp:"frescüùa/frescüa", cr:"frschezza", verif:"sp:g" },
       { tema:"verbi", livello:"A1", it:"fretta/affrettarsi", en:"hurry", fr:"se dépêcher", es:"prisa|apresurarse", de:"Eile|sich beeilen", pt:"pressa|apressar-se", ru:"торопиться|спешить", ca:"pressa|afanyar-se", sp:"sprèssa,füria", mn:"sprèssa", cr:"fogon, furia", verif:"sp:g,mn:g" },
-      { it:"frutta", mn:"früta", verif:"mn:g", ro:"fructe" },
-      { tema:"dialetti", livello:"A2", it:"fucile| schioppo", en:"rifle", pt:"fuzil", mn:"s'ciò pu/sciopu", verif:"mn:g" },
-      { tema:"natura", livello:"A2", it:"fulmine", en:"lightning", fr:"éclair", es:"relámpago", de:"Blitz", pt:"raio", ca:"llamp", sp:"fiùrmine/fürmine", mn:"saëta", ko:"번개", ar:"برق", zh:"闪电", ja:"稲妻", ia:"fulmine", la:"fulmen", grc:"κεραυνός", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"fulger" },
+      { it:"frutta", mn:"früta", cr:"frut", verif:"mn:g", ro:"fructe" },
+      { tema:"dialetti", livello:"A2", it:"fucile| schioppo", en:"rifle", pt:"fuzil", mn:"s'ciò pu/sciopu", cr:"sc'op", verif:"mn:g" },
+      { tema:"natura", livello:"A2", it:"fulmine", en:"lightning", fr:"éclair", es:"relámpago", de:"Blitz", pt:"raio", ca:"llamp", sp:"fiùrmine/fürmine", mn:"saëta", cr:"fulmine", ko:"번개", ar:"برق", zh:"闪电", ja:"稲妻", ia:"fulmine", la:"fulmen", grc:"κεραυνός", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"fulger" },
       { tema:"verbi", livello:"A2", it:"fumare|fumo", en:"smoke", fr:"fumer|fumée", es:"fumar|humo", de:"rauchen|Rauch", pt:"fumar|fumaça", ru:"курить|дым", ca:"fumar|fum", sp:"fumae", ge:"fümmâ", verif:"sp:g" },
       { tema:"cibo", livello:"A2", it:"fungo", en:"mushroom", fr:"champignon", es:"champiñón|seta", de:"Pilz", pt:"cogumelo", ru:"гриб", ca:"bolet", sp:"fünzo", mn:"foonsu/fünzu", cr:"fongh", verif:"mn:g", ro:"ciupercă" },
       { tema:"famiglia", livello:"A1", it:"fuoco", en:"fire", fr:"feu", es:"fuego", de:"Feuer", pt:"fogo", ru:"огонь", ca:"foc", sp:"fègo", cr:"foch", ko:"불", ar:"نار", zh:"火", ja:"火", ia:"foco", la:"ignis", grc:"πῦρ", verif:"sp:g" },
-      { tema:"dialetti", livello:"A2", it:"fuori", en:"outside", fr:"dehors", es:"fuera", de:"draußen", pt:"fora", sp:"fèa", mn:"fèa", ge:"feua", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
+      { tema:"dialetti", livello:"A2", it:"fuori", en:"outside", fr:"dehors", es:"fuera", de:"draußen", pt:"fora", sp:"fèa", mn:"fèa", cr:"fora", ge:"feua", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"dialetti", it:"fuori, all'infuori.", mn:"enfé'a/énféa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"natura", livello:"A1", it:"gabbiano", en:"seagull", fr:"goéland", es:"gaviota", de:"Möwe", pt:"gaivota", ca:"gavina", sp:"gabiàn|oca de mae|ochin", mn:"aoca, gabiàn", ge:"gabbian", ia:"gaviota", la:"larus", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g", ro:"pescăruș" },
       { tema:"dialetti", livello:"B1", it:"gabola|fregatura|Trucco|sotterfugio|raggiro", en:"trick|scam|con", ru:"уловка|надувательство|подвох", sp:"gabola", mn:"gabula", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
@@ -3939,7 +3939,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 456;
+const VOC_VERSION = 457;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
