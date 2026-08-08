@@ -3985,6 +3985,198 @@ const STORIE_DEFAULT = [
       {
         "testo": "E preghæ i santi, che ve a mandan bonn-a.",
         "it": "E pregate i santi che ve la mandino buona."
+      },
+      {
+        "testo": "Se mettemmo in cammin, ciancianinetto.",
+        "it": "Ci mettemmo in cammino, pian pianino,"
+      },
+      {
+        "testo": "Pë e stradde ciû sarvæghe e abbandonæ,",
+        "it": "Per le strade più fuori mano e deserte,"
+      },
+      {
+        "testo": "Mi che ignoravo cose ö l'ëa ô spaghetto,",
+        "it": "Io che ignoravo cosa fosse la fifa,"
+      },
+      {
+        "testo": "Aôa eo pin de spavento e d'anscietæ;",
+        "it": "Ora ero pieno di spavento e d'angoscia;"
+      },
+      {
+        "testo": "Finalmente arrivemmo a ûn carogetto;",
+        "it": "Finalmente arrivammo a un vicoletto"
+      },
+      {
+        "testo": "Che ö metteiva da-e porte da Çittæ,",
+        "it": "Che portava alle porte della città,"
+      },
+      {
+        "testo": "Quando sento di passi pe derë",
+        "it": "Quando sento dei passi dietro,"
+      },
+      {
+        "testo": "E ö poæ ö sbraggia figgiœû l'emmo a-o panë.",
+        "it": "E il padre sbraita: figliolo, ce li abbiamo al paniere!"
+      },
+      {
+        "testo": "Perdo a bûscioa ädreitûa, cöro, m'infio",
+        "it": "Perdo addirittura la bussola, corro, mi infilo"
+      },
+      {
+        "testo": "Dove n'aveivo mai misso de pë,",
+        "it": "Dove non avevo mai messo piede,"
+      },
+      {
+        "testo": "Me poso ûn pô, torno a piggià l'asbrîo",
+        "it": "Mi fermo un po', torno a prendere lo slancio"
+      },
+      {
+        "testo": "Senza mai dame mente pe derë,",
+        "it": "Senza mai badare a ciò che sta dietro,"
+      },
+      {
+        "testo": "E frattanto che cöro e no me gîo",
+        "it": "E mentre corro e non mi giro"
+      },
+      {
+        "testo": "Ecco li, che mi perdo mæ moggië,",
+        "it": "Ecco lì, che perdo mia moglie,"
+      },
+      {
+        "testo": "Né me n'accorso mai, scinn-a a-o momento,",
+        "it": "Né me n'accorgo mai, fino al momento"
+      },
+      {
+        "testo": "Che arrivo ao scîto dell'appuntamento.",
+        "it": "Che arrivo al luogo dell'appuntamento."
+      },
+      {
+        "testo": "Sciâ se pœû immaginâ, che crï, che centi",
+        "it": "Si può immaginare che grida, che lamenti"
+      },
+      {
+        "testo": "Quande ho visto che lë a n'ëa ciû con noî,",
+        "it": "Quando ho visto che lei non era più con noi,"
+      },
+      {
+        "testo": "Se n'ho tioû zû dì tacchi e di aççidenti,",
+        "it": "Se ne ho tirati giù di moccoli e di accidenti,"
+      },
+      {
+        "testo": "Se n'ho dîto e sbraggioû de tûtti i coî;",
+        "it": "Se ne ho dette e sbraitate di tutti i colori;"
+      },
+      {
+        "testo": "Lascio Giulio e mæ poæ, co-i pochi argenti,",
+        "it": "Lascio Giulio e mio padre, coi pochi argenti,"
+      },
+      {
+        "testo": "In custodia di nostri servitôi,",
+        "it": "In custodia dei nostri servitori,"
+      },
+      {
+        "testo": "E m'asbrio testa e cû, torna inderë",
+        "it": "E mi lancio a rotta di collo, di nuovo indietro,"
+      },
+      {
+        "testo": "Deciso a tûtto, pe trovâla lë,",
+        "it": "Deciso a tutto, per trovarla."
+      },
+      {
+        "testo": "Rifassö ö mæ cammin, torno in çittæ",
+        "it": "Rifaccio il mio cammino, torno in città"
+      },
+      {
+        "testo": "Amiando dapertûtto e inûtilmente,",
+        "it": "Guardando dappertutto e inutilmente,"
+      },
+      {
+        "testo": "Piggio a stradda da dove êimo passæ,",
+        "it": "Prendo la strada da dove eravamo passati,"
+      },
+      {
+        "testo": "A ciammo a perdifiato e a no me sente,",
+        "it": "La chiamo a perdifiato e non mi sente,"
+      },
+      {
+        "testo": "Poi ritorno corrindo a casa mæ",
+        "it": "Poi ritorno correndo a casa mia"
+      },
+      {
+        "testo": "Pe vedde, chi sa mai, se pe aççidente",
+        "it": "Per vedere, chissà mai, se per caso"
+      },
+      {
+        "testo": "A se ghe fosse torna andæta a asconde",
+        "it": "Ci fosse tornata a nascondersi"
+      },
+      {
+        "testo": "Pe aveime perso senza savei donde.",
+        "it": "Per avermi perso senza sapere dove."
+      },
+      {
+        "testo": "Ma scì balle, a mæ casa a l'ëa za pinn'a",
+        "it": "Ma macché! La mia casa era già piena"
+      },
+      {
+        "testo": "De Greci che ne favan ö bordello,",
+        "it": "Di Greci che ci facevano il bordello,"
+      },
+      {
+        "testo": "Sciamme, zimme, tissoin, fûmme, rovinn-a",
+        "it": "Fiamme, faville, tizzoni, fumo, rovina"
+      },
+      {
+        "testo": "L'aveivan za cangiâ in t'un Mongibello;",
+        "it": "L'avevano già cambiata in un Mongibello;"
+      },
+      {
+        "testo": "Torno indietro de corsa e vaddo scinn-a",
+        "it": "Torno indietro di corsa e vado fino"
+      },
+      {
+        "testo": "A-o Palazzo dö Re, poi da-o Castello.",
+        "it": "Al Palazzo del Re, poi al Castello,"
+      },
+      {
+        "testo": "Ai Portici, in te gexe ch'ëan stivæ,",
+        "it": "Ai Portici, nelle chiese che erano stipate"
+      },
+      {
+        "testo": "De mobili, de roba e de dinæ.",
+        "it": "Di mobili, di roba e di denaro."
+      },
+      {
+        "testo": "E metteivan lì tûtto, in sci artæ,",
+        "it": "E mettevano lì tutto, sugli altari,"
+      },
+      {
+        "testo": "In tæra, a futticû, pë sacrestie,",
+        "it": "Per terra, alla rinfusa, per le sacrestie,"
+      },
+      {
+        "testo": "Vasi, gioielli, mobili indoræ,",
+        "it": "Vasi, gioielli, mobili indorati,"
+      },
+      {
+        "testo": "Argenti, prie preziose e drapperie,",
+        "it": "Argenti, pietre preziose e drapperie,"
+      },
+      {
+        "testo": "Ommi, donne, gardetti incâdenæ",
+        "it": "Uomini, donne, ragazzini incatenati"
+      },
+      {
+        "testo": "Che mandavan di lûi da scciappâ e prie,",
+        "it": "Che mandavano lamenti da spaccare le pietre,"
+      },
+      {
+        "testo": "Ma scì cuggie, nö a veddö pe ûnn-a potta",
+        "it": "Ma macché! Non la vedo da nessuna parte"
+      },
+      {
+        "testo": "E me metto a giâ indietro ûn'âtra votta.",
+        "it": "E mi rimetto a tornare indietro un'altra volta."
       }
     ]
   },
