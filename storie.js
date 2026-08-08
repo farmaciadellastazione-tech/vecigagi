@@ -3857,6 +3857,134 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ma scì balle, ciû femmo, meno femmo.",
         "it": "Ma macché! Più facciamo, meno facciamo."
+      },
+      {
+        "testo": "Quande Anchise ö l'ha visto stö portento",
+        "it": "Quando Anchise ha visto questo portento"
+      },
+      {
+        "testo": "(Tra parentesi, Anchise ö l'ëa mæ poæ)",
+        "it": "(Tra parentesi, Anchise era mio padre)"
+      },
+      {
+        "testo": "Ö se misso a sbraggiâ tûtto contento:",
+        "it": "Si è messo a sbraitare tutto contento:"
+      },
+      {
+        "testo": "Scialla scialla figgiœû nö ve sciatæ,",
+        "it": "State allegri, ragazzi, non vi scomponete,"
+      },
+      {
+        "testo": "Ö l'é ûn miaco co-e cugge, in mæ zuamento,",
+        "it": "È un miracolo con le palle, parola mia,"
+      },
+      {
+        "testo": "Ö l'é ûn prodigio da divinitæ;",
+        "it": "È un prodigio della divinità;"
+      },
+      {
+        "testo": "Se l'é veo quanto diggö, Ente Supremö,",
+        "it": "Se è vero quanto dico, Ente Supremo,"
+      },
+      {
+        "testo": "Danne ancon ûnn-a prœûva e ghe veddiemo.",
+        "it": "Dacci ancora una prova e ci vedremo"
+      },
+      {
+        "testo": "Ö nö n'aveiva ancon finîo de dî",
+        "it": "Non aveva ancora finito di dire"
+      },
+      {
+        "testo": "Queste parolle, che se sente ûn tron",
+        "it": "Queste parole, che si sente un tuono"
+      },
+      {
+        "testo": "E ûnn-a stella, che a l'ëa de dâto a noî,",
+        "it": "E una stella, che era accanto a noi,"
+      },
+      {
+        "testo": "Piggiâ ö volo diretta a settentrion,",
+        "it": "Prende il volo diretta a settentrione,"
+      },
+      {
+        "testo": "C'ûnna striscia de lûxe da nö dî",
+        "it": "Con una striscia di luce da non dire"
+      },
+      {
+        "testo": "E ûnn-a spûssa de povie da cannon,",
+        "it": "E una puzza di polvere da cannone,"
+      },
+      {
+        "testo": "Che mæ poæ, dao miracolo convinto,",
+        "it": "Che mio padre, convinto dal miracolo,"
+      },
+      {
+        "testo": "Ö s'é misso a sbraggià: me daggo vinto.",
+        "it": "Si è messo a sbraitare: mi do per vinto."
+      },
+      {
+        "testo": "Nö gh'ëa tempo da perdise in te balle,",
+        "it": "Non c'era tempo da perdere in ciance,"
+      },
+      {
+        "testo": "Se vueivimo ëse pronti a fûtte ö can;",
+        "it": "Se volevamo esser pronti a svignarcela;"
+      },
+      {
+        "testo": "Piggio mæ poæ, me ö carego in sce spalle,",
+        "it": "Prendo mio padre, me lo carico sulle spalle,"
+      },
+      {
+        "testo": "Diggo a-o Giulietto che ö me dagghe man,",
+        "it": "Dico a Giulietto che mi dia la mano,"
+      },
+      {
+        "testo": "E Creûsa inghœûggeitâ in to so scialle,",
+        "it": "E Creusa, avvolta nel suo scialle,"
+      },
+      {
+        "testo": "A ne ven de derë poco lontan,",
+        "it": "Ci viene dietro poco distante,"
+      },
+      {
+        "testo": "Poi diggo ai servitoi ch'ëan lì a aspetâ",
+        "it": "Poi dico ai servitori che erano lì ad aspettare:"
+      },
+      {
+        "testo": "Stæ ben attenti a quello ch'ei da fâ.",
+        "it": "State ben attenti a quello che avete da fare."
+      },
+      {
+        "testo": "Piggiæ ö poco de bon che pûei portâ",
+        "it": "Prendete il poco di buono che potete portare,"
+      },
+      {
+        "testo": "Sciortî e porte a ûn per ûn pe no dâ all'œggio,",
+        "it": "Uscite dalle porte a uno a uno per non dare nell'occhio,"
+      },
+      {
+        "testo": "E pe stradde diverse, andæ a aspetâ",
+        "it": "E per strade diverse, andate ad aspettare"
+      },
+      {
+        "testo": "Che vegnimmo noi ascì in sce quello schœûggio",
+        "it": "Che veniamo anche noi su quella rupe"
+      },
+      {
+        "testo": "Dove gh'é unn-a capella rovinnâ",
+        "it": "Dove c'è una cappella in rovina"
+      },
+      {
+        "testo": "E ûn bell'erböeto che ö me pâ d'ofeûggio,",
+        "it": "E un bell'alberello che mi pare d'alloro,"
+      },
+      {
+        "testo": "Aôa in marcia, che chi nö se cûggionn-a",
+        "it": "Ora in marcia, ché qui non si scherza,"
+      },
+      {
+        "testo": "E preghæ i santi, che ve a mandan bonn-a.",
+        "it": "E pregate i santi che ve la mandino buona."
       }
     ]
   },
