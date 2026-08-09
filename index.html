@@ -2792,7 +2792,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A2", it:"ferro da stiro", en:"iron", fr:"fer à repasser", es:"plancha", de:"Bügeleisen", pt:"ferro de engomar", ru:"утюг", ca:"planxa", sp:"fero", mn:"feru", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"fessura| spaccatura nella roccia", en:"crevice", fr:"fissure", sp:"fissidùa/fissidüa", mn:"sgrëndia/zgrëndia", cr:"fs'ura", verif:"mn:g" },
       { it:"fiasco", sp:"fiasco", cr:"fiasch", verif:"sp:g" },
-      { tema:"salute", livello:"B1", it:"fiatone", en:"breathlessness", fr:"essoufflement", es:"jadeo", de:"Kurzatmigkeit", pt:"falta de ar", sp:"pantàsso", mn:"pantàssu", verif:"mn:g" },
+      { tema:"salute", livello:"B1", it:"fiatone", en:"breathlessness", fr:"essoufflement", es:"jadeo", de:"Kurzatmigkeit", pt:"falta de ar", sp:"pantàsso, fiadon", mn:"pantàssu", cr:"fiadon, pantaf", ge:"patanscio ", verif:"mn:g" },
       { tema:"dialetti", livello:"A1", it:"fico", en:"fig", fr:"figue", es:"higo", de:"Feige", pt:"figo", sp:"figo", mn:"figu", cr:"fich", ia:"fico", verif:"mn:g" },
       { it:"fico secco", sp:"sgrabelon", cr:"fich sech", verif:"sp:g" },
       { tema:"dialetti", livello:"A2", it:"fidanzata", en:"girlfriend", fr:"petite amie", es:"novia", de:"Freundin", pt:"noiva", ca:"xica", sp:"spavicia, galante", mn:"fidansà|galànte", cr:"'namorata, morosa", ge:"galànte", ia:"promissa", src:{"mn":"🤖doni"}, verif:"mn:g", ro:"logodnică" },
@@ -2816,11 +2816,11 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"fodera", en:"lining", fr:"doublure", es:"forro", de:"Futter", pt:"forro", sp:"fréda", mn:"fréda", cr:"froda", verif:"mn:g" },
       { it:"folletto dispettoso", cr:"bafarded, folet", nt:["mn"] },
       { tema:"natura", livello:"B1", it:"fontana", sp:"fontana", mn:"fùntana", cr:"fontana", verif:"mn:g,sp:g,cr:g" },
-      { tema:"oggetti", livello:"A2", it:"forbice", en:"scissors", fr:"ciseaux", es:"tijeras", de:"Schere", pt:"tesoura", sp:"tesoa", mn:"tesùa/tezua", ge:"tezoîe", ia:"ciseaux", la:"forfex", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"foarfecă" },
-      { it:"formaggio", mn:"furmagiu", verif:"mn:g", ro:"brânză" },
-      { tema:"animali", livello:"B1", it:"formica", en:"ant", fr:"fourmi", es:"hormiga", de:"Ameise", pt:"formiga", ru:"муравей", ca:"formiga", sp:"formigoa", mn:"fùrmiguua", verif:"mn:g" },
+      { tema:"oggetti", livello:"A2", it:"forbice", en:"scissors", fr:"ciseaux", es:"tijeras", de:"Schere", pt:"tesoura", sp:"tesoa", mn:"tesùa/tezua", cr:"forb'z'a", ge:"tesoîe", ia:"ciseaux", la:"forfex", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"foarfecă" },
+      { tema:"cibo", livello:"A1", it:"formaggio", en:"cheese", sp:"formagio", mn:"furmagiu", cr:"cas, formai", ge:"formaggio", verif:"mn:g", ro:"brânză" },
+      { tema:"animali", livello:"B1", it:"formica", en:"ant", fr:"fourmi", es:"hormiga", de:"Ameise", pt:"formiga", ru:"муравей", ca:"formiga", sp:"formigoa", mn:"fùrmiguua", cr:"furmicla, furmicai", ge:"formigoa", verif:"mn:g" },
       { it:"fornello", sp:"fornèo|ronfò|tanón", cr:"forned", verif:"sp:g" },
-      { tema:"aggettivi", livello:"A2", it:"forse", en:"maybe", fr:"peut-être", es:"quizás", de:"vielleicht", pt:"talvez", ru:"может быть", ca:"potser|tal vegada", sp:"fòrsi", mn:"fòrsi", ge:"forsi, foscia", ko:"아마도", ar:"ربما", zh:"也许", ja:"たぶん", ia:"forsan", la:"forsitan", grc:"ἴσως", src:{"mn":"🤖 IA","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
+      { tema:"aggettivi", livello:"A2", it:"forse", en:"maybe", fr:"peut-être", es:"quizás", de:"vielleicht", pt:"talvez", ru:"может быть", ca:"potser|tal vegada", sp:"fòrsi", mn:"fòrsi", cr:"fors'i", ge:"forsi, foscia", ko:"아마도", ar:"ربما", zh:"也许", ja:"たぶん", ia:"forsan", la:"forsitan", grc:"ἴσως", src:{"mn":"🤖 IA","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"aggettivi", livello:"A1", it:"forte", en:"strong", fr:"fort", es:"fuerte", de:"stark", pt:"forte", ru:"сильный", ca:"fort", sp:"forte", mn:"forte", cr:"fòrta", ko:"강한", ar:"قوي", zh:"强", ja:"強い", ia:"forte", la:"fortis", grc:"ἰσχυρός", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"dialogo", livello:"A2", it:"fortuna", en:"luck", fr:"chance", es:"suerte", de:"Glück", pt:"sorte", ru:"удача|везение", ca:"sort", sp:"fortüna", mn:"furtüna", cr:"furtuna", verif:"mn:g" },
       { tema:"sentimenti", livello:"A2", it:"fortunato", sp:"fortünàa/fortünà", mn:"afortiünaà/ afurtünà", cr:"afurtunat, ", ge:"affortunòu, fortunòu", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g,sp:g" },
@@ -3930,7 +3930,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 463;
+const VOC_VERSION = 464;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
