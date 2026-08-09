@@ -162,8 +162,8 @@ const STORIE_DEFAULT = [
     "livello": "A1",
     "tema": "",
     "titolo": {
-      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 1 (parte 2)",
-      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese (parte 2)"
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 2",
+      "it": "Il cavallo e la finta partenza"
     },
     "fonte": {
       "generato": "autentico",
