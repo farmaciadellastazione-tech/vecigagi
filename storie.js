@@ -4521,6 +4521,58 @@ const STORIE_DEFAULT = [
     ]
   },
   {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 1",
+      "it": "Didone confessa l'amore ad Anna"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
+      {
+        "testo": "E frattanto a reginn-a a s'ëa innamoâ",
+        "it": "E frattanto la regina s'era innamorata"
+      },
+      {
+        "testo": "Poco a poco d'Enea comme ûnn-a gatta,",
+        "it": "Poco a poco di Enea, come una gatta,"
+      },
+      {
+        "testo": "E pensando a-o sô aspetto, a-o sô parlâ,",
+        "it": "E pensando al suo aspetto, al suo parlare,"
+      },
+      {
+        "testo": "A-e sô gesta, a-o sô spirito, ä sô scciatta,",
+        "it": "Alle sue gesta, al suo spirito, alla sua schiatta,"
+      },
+      {
+        "testo": "A l'aveiva zà a testa invexendâ",
+        "it": "Aveva già la testa in subbuglio"
+      },
+      {
+        "testo": "E a se sentiva zâ buggî a pignatta,",
+        "it": "E si sentiva già ribollire la pignatta,"
+      },
+      {
+        "testo": "Che a sön de bâgi e de cangiâ de fianco,",
+        "it": "Che, a furia di sbadigli e di rigirarsi,"
+      },
+      {
+        "testo": "A passa tûtta a sô nöttûann-a in gianco.",
+        "it": "Passa tutta la sua nottata in bianco."
+      }
+    ]
+  },
+  {
     "id": "sp-a2-padrone-e-mezzadro4",
     "lingua": "sp",
     "livello": "A2",
