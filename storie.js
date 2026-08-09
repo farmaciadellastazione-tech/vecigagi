@@ -2838,8 +2838,8 @@ const STORIE_DEFAULT = [
     "livello": "A1",
     "tema": "",
     "titolo": {
-      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 2 parte 3",
-      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese"
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 11",
+      "it": "L'assalto alla reggia"
     },
     "fonte": {
       "generato": "autentico",
@@ -3137,7 +3137,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Le tûtto andæto a fäse benedî.",
         "it": "E' tutto andato a farsi benedire."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 12",
+      "it": "Priamo: le armi, Ecuba, la morte"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Chi l'é tempo che conte in che manëa",
         "it": "Qui è tempo che racconti in che maniera"
@@ -3393,7 +3413,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Proprio comme ûn strasson, comme ûn babano.",
         "it": "Proprio come uno straccione, come un babbeo."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 13",
+      "it": "Elena e l'apparizione di Venere"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Mi vedendo coscì n'ho ciû posciûo,",
         "it": "Io, vedendo questo, non ho più potuto"
@@ -3457,27 +3497,7 @@ const STORIE_DEFAULT = [
       {
         "testo": "Vortime indietro, piggiâ ö liscio e dalli.",
         "it": "Mi volto indietro, me la svigno e via."
-      }
-    ]
-  },
-  {
-    "id": "ge-a1-eneide-3-parte-1",
-    "lingua": "ge",
-    "livello": "A1",
-    "tema": "",
-    "titolo": {
-      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 3 parte 1",
-      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese"
-    },
-    "fonte": {
-      "generato": "autentico",
-      "modello": "claude-sonnet-5",
-      "note": "",
-      "autore": "Nicolò Bacigalupo (1837–1904)",
-      "riferimento": "liber liber",
-      "licenza": "no"
-    },
-    "frasi": [
+      },
       {
         "testo": "Appenn-a me sön giôu pe scappâ via,",
         "it": "Appena mi sono girato per scappar via,"
@@ -3733,7 +3753,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Verso casa, avvilìo, mortificôu",
         "it": "Verso casa, avvilito, mortificato."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 14",
+      "it": "Anchise e i prodigi"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "A malapenn-a introû, natûralmente,",
         "it": "Appena entrato, naturalmente,"
@@ -4021,7 +4061,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö s'é misso a sbraggià: me daggo vinto.",
         "it": "Si è messo a sbraitare: mi do per vinto."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 15",
+      "it": "La fuga e la perdita di Creusa"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Nö gh'ëa tempo da perdise in te balle,",
         "it": "Non c'era tempo da perdere in ciance,"
@@ -4277,7 +4337,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "E me metto a giâ indietro ûn'âtra votta.",
         "it": "E mi rimetto a tornare indietro un'altra volta."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 16",
+      "it": "L'ombra di Creusa e la partenza"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Senza savei, che pesci ciû piggiâ,",
         "it": "Senza sapere più che pesci pigliare,"
