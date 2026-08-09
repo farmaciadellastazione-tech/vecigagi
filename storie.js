@@ -4560,7 +4560,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E a se sentiva zâ buggî a pignatta,",
-        "it": "E si sentiva già ribollire la pignatta,"
+        "it": "E si sentiva già bollire la pignatta,"
       },
       {
         "testo": "Che a sön de bâgi e de cangiâ de fianco,",
