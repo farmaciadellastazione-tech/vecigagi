@@ -2792,7 +2792,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"corpo", livello:"B1", it:"fegato", en:"liver", fr:"foie", es:"hígado", de:"Leber", pt:"fígado|figado", sp:"figaéto", mn:"fìigaetu    |figaëtu", ko:"간", ar:"كبد", zh:"肝", ja:"肝臓", ia:"hepate", la:"iecur", grc:"ἧπαρ", verif:"mn:g" },
       { tema:"aggettivi", livello:"A1", it:"felice", en:"happy", fr:"heureux", es:"feliz", de:"glücklich", pt:"feliz", ru:"счастливый", ca:"feliç", ko:"행복한", ar:"سعيد", zh:"快乐", ja:"幸せ", ia:"felice", la:"felix", grc:"εὐδαίμων", nt:["mn"] },
       { tema:"dialogo", livello:"B1", it:"felicità", en:"happiness", fr:"bonheur", es:"felicidad", de:"Glück", pt:"felicidade", ru:"счастье", ca:"felicitat", nt:["mn"] },
-      { tema:"dialetti", it:"ferita", mn:"sbe'ru/zbèru", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"dialetti", it:"ferita", mn:"sbe'ru/zbèru", cr:"ferita", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialogo", livello:"A1", it:"fermati qui", en:"stop here", fr:"arrête-toi ici", es:"para aquí", de:"halt hier", pt:"pare aqui", sp:"fermete chi", verif:"sp:g" },
       { tema:"casa", livello:"A2", it:"ferro da stiro", en:"iron", fr:"fer à repasser", es:"plancha", de:"Bügeleisen", pt:"ferro de engomar", ru:"утюг", ca:"planxa", sp:"fero", mn:"feru", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"fessura| spaccatura nella roccia", en:"crevice", fr:"fissure", sp:"fissidùa/fissidüa", mn:"sgrëndia/zgrëndia", verif:"mn:g" },
@@ -2828,9 +2828,9 @@ const VOCABOLARIO_DEFAULT = [
       { it:"fornello", sp:"fornèo|ronfò|tanón", cr:"forned", verif:"sp:g" },
       { tema:"aggettivi", livello:"A2", it:"forse", en:"maybe", fr:"peut-être", es:"quizás", de:"vielleicht", pt:"talvez", ru:"может быть", ca:"potser|tal vegada", sp:"fòrsi", mn:"fòrsi", ge:"forsi, foscia", ko:"아마도", ar:"ربما", zh:"也许", ja:"たぶん", ia:"forsan", la:"forsitan", grc:"ἴσως", src:{"mn":"🤖 IA","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"aggettivi", livello:"A1", it:"forte", en:"strong", fr:"fort", es:"fuerte", de:"stark", pt:"forte", ru:"сильный", ca:"fort", sp:"forte", mn:"forte", cr:"fòrta", ko:"강한", ar:"قوي", zh:"强", ja:"強い", ia:"forte", la:"fortis", grc:"ἰσχυρός", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
-      { tema:"dialogo", livello:"A2", it:"fortuna", en:"luck", fr:"chance", es:"suerte", de:"Glück", pt:"sorte", ru:"удача|везение", ca:"sort", sp:"fortüna", mn:"furtüna", verif:"mn:g" },
-      { tema:"sentimenti", livello:"A2", it:"fortunato", sp:"fortünàa/fortünà", mn:"afortiünaà/ afurtünà", ge:"affortunòu, fortunòu", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g,sp:g" },
-      { tema:"salute", livello:"B1", it:"foruncolo", en:"boil", fr:"furoncle", es:"forúnculo", de:"Furunkel", pt:"furúnculo|furunculo", ca:"floronco|furóncol", sp:"ciavèo", mn:"ciavée", verif:"mn:g" },
+      { tema:"dialogo", livello:"A2", it:"fortuna", en:"luck", fr:"chance", es:"suerte", de:"Glück", pt:"sorte", ru:"удача|везение", ca:"sort", sp:"fortüna", mn:"furtüna", cr:"furtuna", verif:"mn:g" },
+      { tema:"sentimenti", livello:"A2", it:"fortunato", sp:"fortünàa/fortünà", mn:"afortiünaà/ afurtünà", cr:"afurtunat, ", ge:"affortunòu, fortunòu", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g,sp:g" },
+      { tema:"salute", livello:"B1", it:"foruncolo", en:"boil", fr:"furoncle", es:"forúnculo", de:"Furunkel", pt:"furúnculo|furunculo", ca:"floronco|furóncol", sp:"ciavèo", mn:"ciavée", cr:"brogn, brognl", verif:"mn:g" },
       { tema:"natura", livello:"B1", it:"foschia|nebbiolina", en:"mist", sp:"garbin, calìgo", mn:"garbìn, caligu", ge:"fummegheha, caligu/fummeghea, calìgo", verif:"mn:g,sp:g" },
       { tema:"casa", livello:"B1", it:"fotocamera", en:"camera", fr:"appareil photo", es:"cámara", de:"Kamera", pt:"câmera|camera", ru:"камера", ca:"càmera", ko:"카메라", ar:"كاميرا", zh:"相机", ja:"カメラ", ia:"camera", nt:["mn"] },
       { tema:"casa", livello:"A2", it:"fotografia", en:"photo", fr:"photo", es:"foto", de:"Foto", pt:"fotografia", ko:"사진", ar:"صورة", zh:"照片", ja:"写真", ia:"photo", la:"imago", grc:"φωτογραφία", nt:["mn"] },
@@ -3939,7 +3939,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 458;
+const VOC_VERSION = 459;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
