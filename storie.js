@@ -1850,8 +1850,8 @@ const STORIE_DEFAULT = [
     "livello": "A1",
     "tema": "",
     "titolo": {
-      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 2 parte 1 (parte 2) (parte 2)",
-      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese  (parte 2) (parte 2)"
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 8",
+      "it": "L'ombra di Ettore"
     },
     "fonte": {
       "generato": "autentico",
@@ -2053,7 +2053,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Camminn-o in sce a terrazza bello nûo.",
         "it": "Cammino sulla terrazza bello nudo."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-1-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 9 ",
+      "it": "Enea nella mischia; il sacco"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Comme quando a campann-a a martelletto,",
         "it": "Come quando la campana a martelletto,"
@@ -2405,7 +2425,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che me fâvan mâveggia scinn-a a mî",
         "it": "Che mi facevano meraviglia perfino a me."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-1-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 10",
+      "it": "Zorzin, Ciöngin e i travestimenti"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Ma in che moddo porriô rende e tradûe",
         "it": "Ma in che modo potrò rendere e tradurre"
