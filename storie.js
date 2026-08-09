@@ -1638,8 +1638,8 @@ const STORIE_DEFAULT = [
     "livello": "A1",
     "tema": "",
     "titolo": {
-      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 2 parte 1 (parte 2)",
-      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese  (parte 2)"
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 7",
+      "it": "Il cavallo entra; Cassandra inascoltata"
     },
     "fonte": {
       "generato": "autentico",
@@ -1777,27 +1777,7 @@ const STORIE_DEFAULT = [
       {
         "testo": "Dormivan ädreitûa comme succoin",
         "it": "Dormivano addirittura come ceppi."
-      }
-    ]
-  },
-  {
-    "id": "ge-a1-eneide-2-parte-2-parte",
-    "lingua": "ge",
-    "livello": "A1",
-    "tema": "",
-    "titolo": {
-      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 2 parte 2",
-      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese"
-    },
-    "fonte": {
-      "generato": "autentico",
-      "modello": "claude-sonnet-5",
-      "note": "",
-      "autore": "Nicolò Bacigalupo (1837–1904)",
-      "riferimento": "liber liber",
-      "licenza": "no"
-    },
-    "frasi": [
+      },
       {
         "testo": "Alôa dall'isoa donde a fâva ö scemmo",
         "it": "Allora dall'isola dove faceva lo scemo"
@@ -1861,7 +1841,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Pe fâne brûstolì comme oxeletti.",
         "it": "Per farci abbrustolire come uccelletti."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-1-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 2 parte 1 (parte 2) (parte 2)",
+      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese  (parte 2) (parte 2)"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "L'ëa l'ôa dö primmo sêunno, e mi ronfava",
         "it": "Era l'ora del primo sonno, e io ronfavo"
