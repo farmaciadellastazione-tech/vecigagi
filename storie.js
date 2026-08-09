@@ -46,7 +46,7 @@ const STORIE_DEFAULT = [
     "livello": "A1",
     "tema": "",
     "titolo": {
-      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese atto 1 parte 1",
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 1",
       "it": "Eneide: ricordi di un reduce troiano in dialetto genovese"
     },
     "fonte": {
