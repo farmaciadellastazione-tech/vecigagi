@@ -2885,7 +2885,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"ginnastica", en:"gymnastics", fr:"gymnastique", es:"gimnasia", de:"Turnen", pt:"ginástica|ginastica", ko:"체조", ar:"الجمناستيك", zh:"体操", ja:"体操", ia:"gymnastica", la:"gymnasium", grc:"γυμναστική", nt:["sp"] },
       { tema:"dialetti", it:"ginocchio.", mn:"zénuciu", cr:"zinoc'", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"giocare", en:"play", fr:"jouer", es:"jugar", de:"spielen", pt:"jogar", ru:"играть", ca:"jugar", sp:"zügae", mn:"zügaa", cr:"zocar", ko:"놀다", ar:"يلعب", zh:"玩", ja:"遊ぶ", ia:"jocar", la:"ludere", grc:"παίζειν", verif:"sp:g,mn:g" },
-      { tema:"verbi", livello:"A1", it:"giocare|suonare", en:"play", fr:"jouer", es:"jugar|tocar", de:"spielen", pt:"jogar|tocar", ru:"играть", ca:"jugar|tocar", sp:"sügae,trepae,trepesae/zügae,trepae,trepezae", mn:"zügaa", verif:"mn:g" },
+      { tema:"verbi", livello:"A1", it:"giocare|suonare", en:"play", fr:"jouer", es:"jugar|tocar", de:"spielen", pt:"jogar|tocar", ru:"играть", ca:"jugar|tocar", sp:"sügae,trepae,trepesae/zügae,trepae,trepezae", mn:"zügaa", cr:"zocar", ge:"zugâ", verif:"mn:g" },
       { tema:"dialetti", it:"gioco", sp:"żego", mn:"se gu/zégu", ge:"zêugo", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"dialogo", livello:"A1", it:"gioco/partita", en:"game", fr:"jeu|match", es:"juego", de:"Spiel", pt:"jogo", ru:"игра", ca:"joc", sp:"zègo", mn:"zegu/zégu", verif:"mn:g" },
       { tema:"dialogo", livello:"A2", it:"giornale", en:"newspaper", fr:"journal", es:"periódico", de:"Zeitung", pt:"jornal", ru:"газета", ca:"diari", ge:"giurnaale/giornale", ro:"ziar" },
@@ -2919,10 +2919,10 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"B1", it:"golf", en:"golf", fr:"golf", es:"golf", de:"Golf", pt:"golfe", ru:"гольф", ca:"golf", ko:"골프", ar:"الغولف", zh:"高尔夫", ja:"ゴルフ", ia:"golf", nt:["sp","mn"] },
       { tema:"dialetti", it:"gonfiare", mn:"gunfiaa, énfiaa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialetti", it:"gonfio", mn:"gunfiu, énfià", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"sintomi", livello:"A2", it:"gonfiore", en:"swelling", fr:"gonflement", es:"hinchazón", de:"Schwellung", pt:"inchaço|inchaco", sp:"bügnon", ko:"부종", ar:"تورم", zh:"肿胀", ja:"腫れ", verif:"sp:g" },
+      { tema:"sintomi", livello:"A2", it:"gonfiore", en:"swelling", fr:"gonflement", es:"hinchazón", de:"Schwellung", pt:"inchaço|inchaco", sp:"bügnon", cr:"gonfior", ko:"부종", ar:"تورم", zh:"肿胀", ja:"腫れ", verif:"sp:g" },
       { tema:"vestiti", livello:"A2", it:"gonna", en:"skirt", fr:"jupe", es:"falda", de:"Rock", pt:"saia", ru:"юбка", ca:"faldilla", sp:"gonèla", cr:"Gonèla", ko:"치마", ar:"تنورة", zh:"裙子", ja:"スカート", ia:"gonna", verif:"sp:g" },
-      { tema:"verbi", livello:"A2", it:"governare", en:"govern", fr:"gouverner", es:"gobernar", de:"regieren", pt:"governar", sp:"governahe/governae", ko:"통치하다", ar:"يحكم", zh:"统治", ja:"統治する", ia:"governar", la:"regere", grc:"ἄρχειν", verif:"sp:g" },
-      { tema:"luoghi", livello:"B1", it:"governo", en:"government", fr:"gouvernement", es:"gobierno", de:"Regierung", pt:"governo", sp:"governo", ko:"정부", ar:"حكومة", zh:"政府", ja:"政府", ia:"governamento", la:"gubernatio", grc:"κυβέρνησις", verif:"sp:g" },
+      { tema:"verbi", livello:"A2", it:"governare", en:"govern", fr:"gouverner", es:"gobernar", de:"regieren", pt:"governar", sp:"governahe/governae", cr:"gov'rnar", ko:"통치하다", ar:"يحكم", zh:"统治", ja:"統治する", ia:"governar", la:"regere", grc:"ἄρχειν", verif:"sp:g" },
+      { tema:"luoghi", livello:"B1", it:"governo", en:"government", fr:"gouvernement", es:"gobierno", de:"Regierung", pt:"governo", sp:"governo", cr:"govern", ko:"정부", ar:"حكومة", zh:"政府", ja:"政府", ia:"governamento", la:"gubernatio", grc:"κυβέρνησις", verif:"sp:g" },
       { tema:"dialogo", livello:"B1", it:"grado", en:"degree", fr:"degré", es:"grado", de:"Grad", pt:"grau", ru:"степень|градус", ca:"grau", nt:["sp"] },
       { tema:"verbi", livello:"A2", it:"graffiare", sp:"sgranfiniaae/sgranfignae", verif:"sp:g" },
       { tema:"aggettivi", livello:"A1", it:"grande", en:"big", fr:"grand", es:"grande", de:"groß", pt:"grande", ru:"большой", ca:"gran", sp:"grande", mn:"grandu", cr:"granda", ko:"큰", ar:"كبير", zh:"大", ja:"大きい", ia:"grande", la:"magnus", grc:"μέγας", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"mare" },
@@ -3935,7 +3935,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 461;
+const VOC_VERSION = 462;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
