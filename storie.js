@@ -47,7 +47,7 @@ const STORIE_DEFAULT = [
     "tema": "",
     "titolo": {
       "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 1 parte 1",
-      "it": "Eneide: ricordi di un reduce troiano in dialetto genovese"
+      "it": "Cornice: Enea inizia il racconto"
     },
     "fonte": {
       "generato": "autentico",
