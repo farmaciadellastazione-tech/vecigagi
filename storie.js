@@ -4704,7 +4704,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ghe risponde sô sœû, dandoghe sotta,",
-        "it": "Le risponde sua sorella, dandoci sotto,"
+        "it": "Le risponde sua sorella, dandoci dentro,"
       },
       {
         "testo": "Ti gh'æ ûn ommo con tanto de barbixi,",
@@ -4729,6 +4729,218 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ti te pensi de mettila in sarmöia?",
         "it": "Pensi di metterla in salamoia?"
+      },
+      {
+        "testo": "Vœuggio fâ che ghe seggie a costûmanza",
+        "it": "Voglio concedere che ci sia l'usanza"
+      },
+      {
+        "testo": "D'ûsâ ûn çerto riguardo ai nostri morti,",
+        "it": "Di portare un certo riguardo ai nostri morti,"
+      },
+      {
+        "testo": "E questo ti l'æ avûo che te n'avanza",
+        "it": "E questo l'hai fatto fin troppo,"
+      },
+      {
+        "testo": "Senza temme de puëi fâghe di torti,",
+        "it": "Senza temere di potergli far torto,"
+      },
+      {
+        "testo": "Da quando ti æ lascioû senza speranza",
+        "it": "Da quando hai lasciato senza speranza"
+      },
+      {
+        "testo": "Iarba e tûtta a genia di cascamorti,",
+        "it": "Iarba e tutta la genia dei cascamorti,"
+      },
+      {
+        "testo": "Ch'ëan vegnûi chi, co-a scûsa de sposate,",
+        "it": "Che erano venuti qui con la scusa di sposarti,"
+      },
+      {
+        "testo": "Ma che in föndö nö vûeivan che baxate.",
+        "it": "Ma che in fondo non volevano che baciarti."
+      },
+      {
+        "testo": "Alöa demughe là l'ëa troppo presto",
+        "it": "Allora, mettiamo pure, là era troppo presto"
+      },
+      {
+        "testo": "E ti n'aveivi nisciûn atro in mente,",
+        "it": "E non avevi nessun altro in mente,"
+      },
+      {
+        "testo": "Ma aoa invece, nö ghe nisciun pretesto",
+        "it": "Ma ora invece non c'è nessun pretesto"
+      },
+      {
+        "testo": "Pe dûala in sce stö tön continuamente,",
+        "it": "Per durarla su questo tono in continuazione,"
+      },
+      {
+        "testo": "Ti te senti innamoa d'ûn ommo onesto,",
+        "it": "Ti senti innamorata d'un uomo onesto,"
+      },
+      {
+        "testo": "Nobile e forte comme ûn aççidente",
+        "it": "Nobile e forte come un accidente,"
+      },
+      {
+        "testo": "Ti n'æ coæ, lë ö le lì pronto a piggiâte",
+        "it": "Ne hai voglia, lui è lì pronto a prenderti,"
+      },
+      {
+        "testo": "E tì, ti te fæ stiâ, tanto pe dâte.",
+        "it": "E tu, tu ti fai desiderare tanto, per darti ."
+      },
+      {
+        "testo": "E poi comme ti pensi a tiâte avanti,",
+        "it": "E poi come pensi di tirarti avanti,"
+      },
+      {
+        "testo": "Circondâ comme ti ë da de canaggie?",
+        "it": "Circondata come sei da delle canaglie?"
+      },
+      {
+        "testo": "Deserti pe derë, secche davanti,",
+        "it": "Deserti dietro, secche davanti,"
+      },
+      {
+        "testo": "De naziöin semibarbare e selvaggie",
+        "it": "Di nazioni semibarbare e selvagge"
+      },
+      {
+        "testo": "Che te veûan bûzâra da tûtti i canti",
+        "it": "Che ti vogliono fregare da tutti i lati,"
+      },
+      {
+        "testo": "Senza ûn ommo de chœû che ö t'incoraggie?",
+        "it": "Senza un uomo di cuore che ti incoraggi?"
+      },
+      {
+        "testo": "E to fræ che da Tiro ö fa ö gradasso",
+        "it": "E tuo fratello che da Tiro fa il gradasso"
+      },
+      {
+        "testo": "E che ö l'ha zûôu de vüeite mette ao passo?",
+        "it": "E che ha giurato di volerti mettere al passo?"
+      },
+      {
+        "testo": "Se fosse tì, mi ringraziæ ö Segnô",
+        "it": "Se fossi te, ringrazierei il Signore"
+      },
+      {
+        "testo": "D'aveimeo fæto capitâ in ti pê,",
+        "it": "Di avermelo fatto capitare tra i piedi,"
+      },
+      {
+        "testo": "E donne han bello dî, che fan da lô",
+        "it": "E le donne hanno un bel dire che fanno da sole,"
+      },
+      {
+        "testo": "Ma ûn pâ de braghe ö ghe tia sciû ö pevë;",
+        "it": "Ma un paio di brache tira su il pepe;"
+      },
+      {
+        "testo": "Dunque acciappilo ben, fagghe l'amô,",
+        "it": "Dunque acchiappalo bene, fagli l'amore,"
+      },
+      {
+        "testo": "Dagghe dö sevo, e no tiâ o cû inderê",
+        "it": "Lusingalo, e non tirare il culo indietro,"
+      },
+      {
+        "testo": "O pe ö tempo o pe ö mâ, no manca scûsa,",
+        "it": "O per il tempo o per il mare, non manca la scusa,"
+      },
+      {
+        "testo": "Tegnilo streito e stanni sciû co-a mûsa.",
+        "it": "Tienilo stretto e stai su con il morale."
+      },
+      {
+        "testo": "Ve lasciö dî se sti raxionamenti",
+        "it": "Vi lascio dire se questi ragionamenti"
+      },
+      {
+        "testo": "In sce a povea Didon, n'han fæto effetto!",
+        "it": "Sulla povera Didone han fatto effetto!"
+      },
+      {
+        "testo": "Ö l'ëa comme sciûsciâ in ta braxe ardenti,",
+        "it": "Era come soffiare sulla brace ardente,"
+      },
+      {
+        "testo": "In mezo d'un paggiâ mette ûn brichetto,",
+        "it": "Mettere un fiammifero in mezzo a un pagliaio,"
+      },
+      {
+        "testo": "Za che a tegniva a söggezion coi denti",
+        "it": "Giacché teneva la soggezione con i denti"
+      },
+      {
+        "testo": "E a l'ëa in sce pisse de vegnî ûn ciapetto,",
+        "it": "Ed era sul punto di lasciarsi andare,"
+      },
+      {
+        "testo": "Sentindo che sô sœû a ghe dava sotta,",
+        "it": "Sentendo che sua sorella ci dava dentro,"
+      },
+      {
+        "testo": "A l'arve a veia e a lascia scöre a scotta.",
+        "it": "Apre la vela e lascia scorrere la scotta."
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 2",
+      "it": "La passione cresce "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
+      {
+        "testo": "Ma pe quello pittin d'erûbescenza,",
+        "it": "Ma per quel pochino di rossore,"
+      },
+      {
+        "testo": "Quello çerto riguardo a fâla ben",
+        "it": "Quel certo riguardo a farla bene"
+      },
+      {
+        "testo": "Che ûnn-a donna a l'ha ancön quando a commensa",
+        "it": "Che una donna ha ancora quando comincia"
+      },
+      {
+        "testo": "A incamminase per vegnî pötten,",
+        "it": "A incamminarsi per diventare puttana,"
+      },
+      {
+        "testo": "Sön andæto a fâ ûn giö de penitensa",
+        "it": "Sono andato a fare un giro di penitenza"
+      },
+      {
+        "testo": "Ai Santûai ciû famösi e ciû lonten,",
+        "it": "Ai santuari più famosi e lontani,"
+      },
+      {
+        "testo": "Portando voti e fando dî de messe",
+        "it": "Portando voti e facendo dire messe"
+      },
+      {
+        "testo": "Pe amiâ se a smangiaxion a ghe passesse.",
+        "it": "Per vedere se la smania le passasse."
       }
     ]
   },
