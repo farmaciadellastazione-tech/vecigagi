@@ -4580,7 +4580,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "De vedde ö cæo lûxî sotto a tendinn-a,",
-        "it": "Di vedere la luce rilucere sotto la tendina,"
+        "it": "Di vedere l'alba rilucere sotto la tendina,"
       },
       {
         "testo": "Pe sâtä zù, senza ciammâ a camêa,",
@@ -4588,7 +4588,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "D'ingiarmâse ûn contûsso ä biscöchinn-a",
-        "it": "Di infagottarsi un corsetto alla carlona"
+        "it": "buttarsi addosso un corsetto alla carlona"
       },
       {
         "testo": "E in camixia e descäsa comm-a l'ëa,",
@@ -4596,7 +4596,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Andâ de filo a fâ adesciâ sô sœû",
-        "it": "Andare dritta a svegliare sua sorella"
+        "it": "Andare filata a svegliare sua sorella"
       },
       {
         "testo": "Pe dîghe tûtto e scaregâse ö chœû.",
@@ -4604,7 +4604,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Mi nö sô, figgia cä, cose me sente,",
-        "it": "Io non so, cara ragazza, cosa provo,"
+        "it": "Io non so, cara ragazza, cosa mi sento,"
       },
       {
         "testo": "A ghe dixe, assettandose in sce ö letto,",
@@ -4632,7 +4632,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ö l'é un campion da nö trovâ l'uguale.",
-        "it": "È un campione da non trovarne l'uguale."
+        "it": "È un campione da non trovare l'uguale."
       },
       {
         "testo": "Ah davvei, che se mi n'avesse zûou",
@@ -4640,7 +4640,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "De stâ sempre cöscì senza maiame,",
-        "it": "Di stare sempre così senza rimaritarmi,"
+        "it": "Di stare sempre così senza maritarmi,"
       },
       {
         "testo": "In memoia de quello disgraziôu,",
@@ -4652,7 +4652,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E se avesse ö çervello invexendôu",
-        "it": "E se avessi il cervello così sconvolto"
+        "it": "E se avessi il cervello così invaghito"
       },
       {
         "testo": "In manea da pensâ torna a ligame,",
@@ -4672,11 +4672,11 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Spartilosso, a feriölo e vertadeo,",
-        "it": "Che mi spacchi in due e mi intabarri, in verità,"
+        "it": "Che mi spacchi le ossa e mi intabarri, in verità,"
       },
       {
         "testo": "Se sön tanto carogna a daghe a mente",
-        "it": "Se sono tanto carogna da cedergli,"
+        "it": "Se sono tanto carogna da dargli la mente,"
       },
       {
         "testo": "Tanto vile a cangiâ da quello ch'eo,",
@@ -4697,6 +4697,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che ö se posse vantä d'aveime avûa.",
         "it": "A potersi vantare di avermi avuta."
+      },
+      {
+        "testo": "Ma via, famme ö piaxei, cose ti dixi,",
+        "it": "Ma via, fammi il piacere, cosa dici,"
+      },
+      {
+        "testo": "Ghe risponde sô sœû, dandoghe sotta,",
+        "it": "Le risponde sua sorella, dandoci sotto,"
+      },
+      {
+        "testo": "Ti gh'æ ûn ommo con tanto de barbixi,",
+        "it": "Hai un uomo con tanto di barbigli,"
+      },
+      {
+        "testo": "Tì ti ë cada, ti ë bella e ti ë zuenotta",
+        "it": "Tu sei calda, sei bella e sei giovanotta"
+      },
+      {
+        "testo": "E ti devi aspetâ i cavelli grixi",
+        "it": "E devi aspettare i capelli grigi"
+      },
+      {
+        "testo": "Pe godîte e maiate ûn'atra votta?",
+        "it": "Per goderti e maritarti un'altra volta?"
+      },
+      {
+        "testo": "Cose ti ne vœû fâ da tô luçia,",
+        "it": "Cosa ne vuoi fare della tua susanna,"
+      },
+      {
+        "testo": "Ti te pensi de mettila in sarmöia?",
+        "it": "Pensi di metterla in salamoia?"
       }
     ]
   },
