@@ -4569,6 +4569,134 @@ const STORIE_DEFAULT = [
       {
         "testo": "A passa tûtta a sô nöttûann-a in gianco.",
         "it": "Passa tutta la sua nottata in bianco."
+      },
+      {
+        "testo": "In conseguenza, all'indoman mattinn-a",
+        "it": "Di conseguenza, l'indomani mattina,"
+      },
+      {
+        "testo": "Figûæve ûn pô se a nö gh'è parsa vêa",
+        "it": "Figuratevi un po' se non le è parso vero"
+      },
+      {
+        "testo": "De vedde ö cæo lûxî sotto a tendinn-a,",
+        "it": "Di vedere la luce rilucere sotto la tendina,"
+      },
+      {
+        "testo": "Pe sâtä zù, senza ciammâ a camêa,",
+        "it": "Per saltar giù senza chiamare la cameriera,"
+      },
+      {
+        "testo": "D'ingiarmâse ûn contûsso ä biscöchinn-a",
+        "it": "Di infagottarsi un corsetto alla carlona"
+      },
+      {
+        "testo": "E in camixia e descäsa comm-a l'ëa,",
+        "it": "E, in camicia e scalza com'era,"
+      },
+      {
+        "testo": "Andâ de filo a fâ adesciâ sô sœû",
+        "it": "Andare dritta a svegliare sua sorella"
+      },
+      {
+        "testo": "Pe dîghe tûtto e scaregâse ö chœû.",
+        "it": "Per dirle tutto e scaricarsi il cuore."
+      },
+      {
+        "testo": "Mi nö sô, figgia cä, cose me sente,",
+        "it": "Io non so, cara ragazza, cosa provo,"
+      },
+      {
+        "testo": "A ghe dixe, assettandose in sce ö letto,",
+        "it": "Le dice, sedendosi sul letto,"
+      },
+      {
+        "testo": "Ma me rodo, me crûzio, me tormento,",
+        "it": "Ma mi rodo, mi cruccio, mi tormento,"
+      },
+      {
+        "testo": "Sempre apprœuvo a quest'ommo, e ghe rimetto",
+        "it": "Sempre dietro a quest'uomo, e ci rimetto"
+      },
+      {
+        "testo": "Ö fighæto e a salute, in mæ zûamento.",
+        "it": "Il fegato e la salute, te lo giuro."
+      },
+      {
+        "testo": "Che bell'ommo però, mi ghe scometto",
+        "it": "Che bell'uomo però, io ci scommetto"
+      },
+      {
+        "testo": "Che se ö pôescimo vedde a-o natûrale",
+        "it": "Che se lo potessimo vedere al naturale"
+      },
+      {
+        "testo": "Ö l'é un campion da nö trovâ l'uguale.",
+        "it": "È un campione da non trovarne l'uguale."
+      },
+      {
+        "testo": "Ah davvei, che se mi n'avesse zûou",
+        "it": "Ah davvero, che se non avessi giurato"
+      },
+      {
+        "testo": "De stâ sempre cöscì senza maiame,",
+        "it": "Di stare sempre così senza rimaritarmi,"
+      },
+      {
+        "testo": "In memoia de quello disgraziôu,",
+        "it": "In memoria di quel disgraziato"
+      },
+      {
+        "testo": "Che avanti ö tempo ö l'ha dovûo lasciame,",
+        "it": "Che prima del tempo ha dovuto lasciarmi,"
+      },
+      {
+        "testo": "E se avesse ö çervello invexendôu",
+        "it": "E se avessi il cervello così sconvolto"
+      },
+      {
+        "testo": "In manea da pensâ torna a ligame,",
+        "it": "Da pensare di nuovo a legarmi,"
+      },
+      {
+        "testo": "Cose serve cöntate ûnn-a boxia,",
+        "it": "Cosa serve raccontarti una bugia,"
+      },
+      {
+        "testo": "Faivo törna con lë, questa luçia.",
+        "it": "rifarei con lui, questa susanna."
+      },
+      {
+        "testo": "Ma me vegne ciûttosto ûn aççidente",
+        "it": "Ma mi venga piuttosto un accidente"
+      },
+      {
+        "testo": "Spartilosso, a feriölo e vertadeo,",
+        "it": "Che mi spacchi in due e mi intabarri, in verità,"
+      },
+      {
+        "testo": "Se sön tanto carogna a daghe a mente",
+        "it": "Se sono tanto carogna da cedergli,"
+      },
+      {
+        "testo": "Tanto vile a cangiâ da quello ch'eo,",
+        "it": "Tanto vile da cambiare da quella che ero,"
+      },
+      {
+        "testo": "E anche solo pe bûrla o mentalmente,",
+        "it": "E anche solo per burla o mentalmente,"
+      },
+      {
+        "testo": "De fâ e corne ä memoia de Sicheo,",
+        "it": "Di fare le corna alla memoria di Sicheo,"
+      },
+      {
+        "testo": "Che ö l'é ö solo e ö sä scinn-a ä seportûa,",
+        "it": "Che è il solo e sarà fino alla sepoltura"
+      },
+      {
+        "testo": "Che ö se posse vantä d'aveime avûa.",
+        "it": "A potersi vantare di avermi avuta."
       }
     ]
   },
