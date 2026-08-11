@@ -5197,7 +5197,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "E va tûtto a derûo, tûtto a bagascia",
         "it": "E va tutto in rovina, tutto a bagascia."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 3",
+      "it": "Il patto di Giunone e Venere "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Mentre questo zû in tæra succedeiva",
         "it": "Mentre questo giù in terra succedeva"
