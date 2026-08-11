@@ -4973,30 +4973,294 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö ne fæiva vegnî mezô aççidente!",
         "it": "Ci farebbe venire mezzo accidente!"
-      }
-    ]
-  },
-  {
-    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
-    "lingua": "ge",
-    "livello": "A1",
-    "tema": "",
-    "titolo": {
-      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 2 (parte 2)",
-      "it": "La passione cresce  (parte 2)"
-    },
-    "fonte": {
-      "generato": "autentico",
-      "modello": "claude-sonnet-5",
-      "note": "",
-      "autore": "Nicolò Bacigalupo (1837–1904)",
-      "riferimento": "liber liber",
-      "licenza": "no"
-    },
-    "frasi": [
+      },
       {
-        "testo": "",
-        "it": ""
+        "testo": "O che massa d'ipocriti e birbanti",
+        "it": "Oh che massa di ipocriti e birbanti"
+      },
+      {
+        "testo": "Che semmo tûtti a commençâ da vöi,",
+        "it": "Che siamo tutti quanti, a cominciare da voi,"
+      },
+      {
+        "testo": "Cose serve sciûgale ai beati e ai santi",
+        "it": "A cosa serve asciugarle ai beati e ai santi"
+      },
+      {
+        "testo": "Perch'aggian compascion di nostri döi,",
+        "it": "Affinché abbiano compassione dei nostri dolori,"
+      },
+      {
+        "testo": "Se poi se vœmmo manezzâ coi guanti",
+        "it": "Se poi ci vogliamo maneggiare coi guanti "
+      },
+      {
+        "testo": "Se ö mâ se l'emmo fabbricoû da nöi?",
+        "it": "Se il male ce lo siamo fabbricato da noi?"
+      },
+      {
+        "testo": "Cose serve fâ voti e tiâ zû ö çë",
+        "it": "A che serve fare voti e tirar giù il cielo"
+      },
+      {
+        "testo": "Se ne gûsta piggialo pe derë",
+        "it": "Se ci piace prenderlo nel didietro?"
+      },
+      {
+        "testo": "Comme quando ne ven coæ de brûschî",
+        "it": "Come quando ci viene voglia di andare di corpo"
+      },
+      {
+        "testo": "E che semmo pe caxo a passegiâ,",
+        "it": "E siamo per caso a passeggiare,"
+      },
+      {
+        "testo": "Se mettemmo lì sûbito a corrî,",
+        "it": "Ci mettiamo lì subito a correre,"
+      },
+      {
+        "testo": "Pe trovà ûn posto dove poeila fâ,",
+        "it": "Per trovare un posto dove poterla fare,"
+      },
+      {
+        "testo": "Ma in tö ciû bello, a no se poêu tegnî",
+        "it": "Ma sul più bello, non la si può trattenere"
+      },
+      {
+        "testo": "E besœûgna lasciasela scappâ,",
+        "it": "E bisogna lasciarsela scappare,"
+      },
+      {
+        "testo": "Mentre che intanto continûemmo a daghe",
+        "it": "Mentre intanto continuiamo a darci"
+      },
+      {
+        "testo": "Sempre de gambe, co-a cacca in te braghe",
+        "it": "Sempre di gambe, con la cacca nelle braghe."
+      },
+      {
+        "testo": "Coscì, a povia Didon, cö chœu ferïo",
+        "it": "Così, la povera Didone, col cuore ferito"
+      },
+      {
+        "testo": "A nö pûeiva trovâ consolazion.",
+        "it": "Non poteva trovare consolazione."
+      },
+      {
+        "testo": "A corriva in ça e in là, senza respïo",
+        "it": "Correva di qua e di là, senza respiro"
+      },
+      {
+        "testo": "Pe levase stö crûzio e stö magon,",
+        "it": "Per togliersi questo cruccio e questo magone,"
+      },
+      {
+        "testo": "Senza riûscighe e senza daghe ö gïo,",
+        "it": "Senza riuscirci e senza venirne a capo,"
+      },
+      {
+        "testo": "Senza poei dominâ sta smangiaxion",
+        "it": "Senza poter dominare questo prurito"
+      },
+      {
+        "testo": "E ciû a fava de smanie e a se grattava",
+        "it": "E più faceva smanie e si grattava"
+      },
+      {
+        "testo": "E ciû a vœûggia a cresceiva e a tormentava.",
+        "it": "E più la voglia cresceva e la tormentava."
+      },
+      {
+        "testo": "Quindi, co-a scûsa de fa vedde a Enea",
+        "it": "Quindi, con la scusa di far vedere ad Enea"
+      },
+      {
+        "testo": "E bellezze dö scîto e i monûmenti,",
+        "it": "Le bellezze del posto e i monumenti,"
+      },
+      {
+        "testo": "A çercava ûn pretesto, ûnn-a manea",
+        "it": "Cercava un pretesto, una maniera"
+      },
+      {
+        "testo": "De mostraghe e sô penn-e e i sô tormenti;",
+        "it": "Di mostrargli le sue pene e i suoi tormenti;"
+      },
+      {
+        "testo": "E a ghe voeiva parlâ, ma in sce l'idea",
+        "it": "E gli voleva parlare, ma all'idea"
+      },
+      {
+        "testo": "Che ö ghe scìasse, a se ten tütto in ti denti,",
+        "it": "Che lui svicolasse, si tiene tutto tra i denti,"
+      },
+      {
+        "testo": "E a nö sà comme dî, ne comme fâ",
+        "it": "E non sa come dire, né come fare"
+      },
+      {
+        "testo": "Pe faghe intende che a se vœiva dâ",
+        "it": "Per fargli capire che si voleva dare."
+      },
+      {
+        "testo": "E pe avei l'occaxiön de discorrî",
+        "it": "E per avere l'occasione di discorrere"
+      },
+      {
+        "testo": "Quande sön lì in sce ö gotto ä zinzannâ",
+        "it": "Quando sono lì sul bicchiere a gingillarsi"
+      },
+      {
+        "testo": "Pe-a çentexima votta a se fa dî",
+        "it": "Per la centesima volta si fa raccontare"
+      },
+      {
+        "testo": "E traversìe che ö l'ha dovûo passâ,",
+        "it": "Le traversie che lui ha dovuto passare,"
+      },
+      {
+        "testo": "A cadûta de Troia e a sta a sentí",
+        "it": "La caduta di Troia, e sta a sentire"
+      },
+      {
+        "testo": "Tûtte ste cuggie senza parpellâ",
+        "it": "Tutte queste balle senza battere ciglio"
+      },
+      {
+        "testo": "E a nö molla e ö fâ ansciâ comme ûn sciûscetto",
+        "it": "E non molla, e lo fa ansimare come un mantice"
+      },
+      {
+        "testo": "Scin ne-o momento de bûttase in letto.",
+        "it": "Fino al momento di buttarsi a letto."
+      },
+      {
+        "testo": "E poi quando pe forza a l'é obbligâ",
+        "it": "E poi quando per forza è obbligata"
+      },
+      {
+        "testo": "A separase dall'amato oggetto,",
+        "it": "A separarsi dall'amato oggetto,"
+      },
+      {
+        "testo": "A se særa in ta stanza e a stà a sospiâ,",
+        "it": "Si chiude nella stanza e sta a sospirare,"
+      },
+      {
+        "testo": "A fa de smanie senza andâ in sce ö letto,",
+        "it": "Fa delle smanie senza andare a letto,"
+      },
+      {
+        "testo": "E de votte pe pûeise, ûn pô sfogâ",
+        "it": "E a volte per potersi un po' sfogare"
+      },
+      {
+        "testo": "A se fa vegnî in scôsö o so Giulietto,",
+        "it": "Si fa venire in grembo il suo Giulietto,"
+      },
+      {
+        "testo": "E in mancanza de megio a se ö balûssa",
+        "it": "E in mancanza di meglio se lo balocca"
+      },
+      {
+        "testo": "A cavallo a-e zenöggie, a-o baxia, a-o sûssa.",
+        "it": "A cavallo sulle ginocchia, lo bacia, lo succhia."
+      },
+      {
+        "testo": "Mentre a stà lì a zemî pe a sô pascion",
+        "it": "Mentre lei sta lì a gemere per la sua passione"
+      },
+      {
+        "testo": "Che a pâ desfæta e che ghe molle a trippa;",
+        "it": "Che sembra disfatta e che le si ammolli la trippa;"
+      },
+      {
+        "testo": "Lasciæ lì sporta e færi in abbandon",
+        "it": "Lasciati lì sporta e attrezzi in abbandono"
+      },
+      {
+        "testo": "I mazzachen se stan a aççende a pippa,",
+        "it": "I muratori se ne stanno ad accendersi la pipa,"
+      },
+      {
+        "testo": "I sordatti nö pensan che â razion",
+        "it": "I soldati non pensano che alla razione"
+      },
+      {
+        "testo": "E van pe donne o a zûgâ â möra o a lippa,",
+        "it": "E vanno a donne o a giocare alla morra o alla lippa,"
+      },
+      {
+        "testo": "Se ghe molla in sce tûtto e se tralascia",
+        "it": "Si si molla la presa su tutto e si tralascia"
+      },
+      {
+        "testo": "E va tûtto a derûo, tûtto a bagascia",
+        "it": "E va tutto in rovina, tutto a bagascia."
+      },
+      {
+        "testo": "Mentre questo zû in tæra succedeiva",
+        "it": "Mentre questo giù in terra succedeva"
+      },
+      {
+        "testo": "Sciû de dato, gh'ëa a solita Giûnon",
+        "it": "Su in alto, c'era la solita Giunone"
+      },
+      {
+        "testo": "Intrïgante pe vizio, e che a veddeiva,",
+        "it": "Intrigante per vizio, e che vedeva,"
+      },
+      {
+        "testo": "Comme a forza de rodise, Didon",
+        "it": "Come a forza di rodersi, Didone"
+      },
+      {
+        "testo": "A ghe dava zà in cuggie e a nön aveiva",
+        "it": "Era già rincoglionita e non aveva"
+      },
+      {
+        "testo": "Ciû rispetto, ritegno e söggezion,",
+        "it": "Più rispetto, ritegno e soggezione,"
+      },
+      {
+        "testo": "Per cui, vista Ciprigna, a l'ha fermà",
+        "it": "Per cui, vista Ciprigna (Venere), l'ha fermata"
+      },
+      {
+        "testo": "E a gh'a dito in sce a faccia inveninâ:",
+        "it": "E le ha detto in faccia invelenita:"
+      },
+      {
+        "testo": "Amiæ ûn po che coraggio, amiæ che gloria,",
+        "it": "\"Guardate un po' che coraggio, guardate che gloria,"
+      },
+      {
+        "testo": "Mettise in döi, contro ûnn-a povia sciolla,",
+        "it": "Mettersi in due, contro una povera sprovveduta,"
+      },
+      {
+        "testo": "Tra tì e to figgio, poei cantà vittoria",
+        "it": "Tra te e tuo figlio, poter cantar vittoria"
+      },
+      {
+        "testo": "Vedendola che a cede e che a ghe molla;",
+        "it": "Vedendola che cede e che gliela molla;"
+      },
+      {
+        "testo": "Dîme ûn pittin, nö a vûei finî sta storia",
+        "it": "Dimmi un po', non la vuoi finire questa storia"
+      },
+      {
+        "testo": "De rompime delungo a casserolla?",
+        "it": "Di rompermi in continuazione la casseruola?"
+      },
+      {
+        "testo": "Invece de cæzâ, de puntiggiase,",
+        "it": "Invece di bisticciare, di puntigliarsi,"
+      },
+      {
+        "testo": "No sæ megio finila, e accomodase?",
+        "it": "Non sarebbe meglio finirla, e accordarsi ?\""
       }
     ]
   },
