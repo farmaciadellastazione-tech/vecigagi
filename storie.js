@@ -4941,6 +4941,62 @@ const STORIE_DEFAULT = [
       {
         "testo": "Pe amiâ se a smangiaxion a ghe passesse.",
         "it": "Per vedere se la smania le passasse."
+      },
+      {
+        "testo": "Ma a l'é bella da rîe, sta pretenscion",
+        "it": "Ma è bella da ridere, questa pretesa"
+      },
+      {
+        "testo": "De tiâ a mezo l'Altiscimo e de vuei",
+        "it": "Di tirare in ballo l'Altissimo e di volere"
+      },
+      {
+        "testo": "Che ö nö leve d'adosso a smangiaxion",
+        "it": "Che ci levi di dosso la smania"
+      },
+      {
+        "testo": "Mentre invece a ne fa tanto piaxei;",
+        "it": "Mentre invece ci fa tanto piacere;"
+      },
+      {
+        "testo": "De pregalo de mettine in raxon",
+        "it": "Di pregarlo di farci rinsavire"
+      },
+      {
+        "testo": "Quande semmo in tö chœû d'ûn atro paœi",
+        "it": "Quando abbiamo il cuore di tutt'altro parere,"
+      },
+      {
+        "testo": "Che s'ö fosse mincion da dâne a mente",
+        "it": "Ché se fosse minchione da darci retta"
+      },
+      {
+        "testo": "Ö ne fæiva vegnî mezô aççidente!",
+        "it": "Ci farebbe venire mezzo accidente!"
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 2 (parte 2)",
+      "it": "La passione cresce  (parte 2)"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
+      {
+        "testo": "",
+        "it": ""
       }
     ]
   },
