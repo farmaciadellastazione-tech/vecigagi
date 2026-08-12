@@ -5473,6 +5473,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Fûti, giani, bexinsci, alleitughæ.",
         "it": "Sbiancati, gialli, mezzi morti, appassiti come lattughe."
+      },
+      {
+        "testo": "E in tö mezo a stö impotto, a sta derotta,",
+        "it": "E in mezzo a questo pandemonio, a questo fuggifuggi,"
+      },
+      {
+        "testo": "Enea ö resta lì sölö cön Didon",
+        "it": "Enea resta lì solo con Didone,"
+      },
+      {
+        "testo": "Che ö se a porta a assustâse in t'ûnn-a grotta",
+        "it": "Che se la porta a ripararsi in una grotta"
+      },
+      {
+        "testo": "Pe lasciâ desgranâ stö lavasson,",
+        "it": "Per lasciar sgranare quest'acquazzone,"
+      },
+      {
+        "testo": "E perdìe tûtto zû, quand'en lì sotta.",
+        "it": "E perdio, vien giù tutto, quando sono lì sotto."
+      },
+      {
+        "testo": "Benché ö seggie ûn paolotto e ûn bellinon,",
+        "it": "Benché sia un bigotto e un belinone,"
+      },
+      {
+        "testo": "Mi me lascio taggiâ scinn-a i bricocoli",
+        "it": "Io mi lascio tagliare persino le albicocche"
+      },
+      {
+        "testo": "Se ö no s'ascada e ö no ghe dà sciû ai broccoli.",
+        "it": "Se non si scalda e non ci dà su ai broccoli."
+      },
+      {
+        "testo": "E Venere che a l'ëa ciû che latinn-a",
+        "it": "E Venere, che era più che aperta"
+      },
+      {
+        "testo": "In fæto de morale e d'opinion,",
+        "it": "In fatto di morale e d'opinione,"
+      },
+      {
+        "testo": "E che a l'ëse larghea de pantalinn-a",
+        "it": "E per cui l'essere generosa di patatina"
+      },
+      {
+        "testo": "A l'ëa stæta de lungo a sô pascion,",
+        "it": "Era sempre stata la sua passione,"
+      },
+      {
+        "testo": "A l'ha fæto ûn sorriso, ûnn-a bocchinn-a",
+        "it": "Ha fatto un sorriso, una bocchina"
+      },
+      {
+        "testo": "Che a se pueiva piggiâ pe ûn'adexion,",
+        "it": "Che si poteva prendere per un'adesione,"
+      },
+      {
+        "testo": "Sentindo che poi poi, tûtto st'impiccio",
+        "it": "Sentendo che in fin dei conti tutto questo impiccio"
+      },
+      {
+        "testo": "Ö doveiva fini con fa garìccio.",
+        "it": "Doveva finire con una scopata."
       }
     ]
   },
