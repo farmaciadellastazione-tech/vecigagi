@@ -5536,7 +5536,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ö doveiva fini con fa garìccio.",
-        "it": "Doveva finire con una scopata."
+        "it": "Doveva finire con farsi una scopata."
       }
     ]
   },
