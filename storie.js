@@ -5281,6 +5281,198 @@ const STORIE_DEFAULT = [
       {
         "testo": "No sæ megio finila, e accomodase?",
         "it": "Non sarebbe meglio finirla, e accordarsi ?\""
+      },
+      {
+        "testo": "Zà che lö se vœûan ben, perdingolinn-a,",
+        "it": "Giacché loro si vogliono bene, perdiana,"
+      },
+      {
+        "testo": "Femmo paxe e maiemoli ûnn-a votta;",
+        "it": "Facciamo pace e maritiamoli una buona volta;"
+      },
+      {
+        "testo": "Cose ö l’é stö sciûgase a pantalinn-a,",
+        "it": "Cos'è questo scannarci a vicenda,"
+      },
+      {
+        "testo": "A sta l'ûnn-a de dato e l'atra sotta?",
+        "it": "A stare l'una addosso e l'altra sotto?"
+      },
+      {
+        "testo": "Che ö to figgio ö se piggie a mæ reginn-a,",
+        "it": "Che tuo figlio si prenda la mia regina,"
+      },
+      {
+        "testo": "E nöi finiemo de stâ sempre in rotta,",
+        "it": "E noi la finiamo di stare sempre in rotta,"
+      },
+      {
+        "testo": "Ma invece tûtte due sæmo d'accordo",
+        "it": "Ma invece tutte e due d'accordo"
+      },
+      {
+        "testo": "A proteze sta gente e tiâla a bordo.",
+        "it": "A proteggere questa gente e tirarla a bordo."
+      },
+      {
+        "testo": "Ma Venere, se l'atra a l'ëa ruffiann-a",
+        "it": "Ma Venere, se l'altra era ruffiana,"
+      },
+      {
+        "testo": "A ghe pûeiva ancön dâ di pûnti a lë,",
+        "it": "Poteva ancora darle dei punti,"
+      },
+      {
+        "testo": "A l'ha ödûoû da stö fâ da bonnelann-a",
+        "it": "Ha fiutato, da questo suo fare da bonacciona,"
+      },
+      {
+        "testo": "Che a çercava de mettigheo derê,",
+        "it": "Che cercava di metterglielo di dietro,"
+      },
+      {
+        "testo": "Con portà dall'Italia all'Affricann-a",
+        "it": "Col portare dall'Italia alla terra africana"
+      },
+      {
+        "testo": "Tæra, l'imperio destinoû dao çê,",
+        "it": "L'impero destinato dal cielo,"
+      },
+      {
+        "testo": "A fa mostra de ninte e a ghe risponde",
+        "it": "Fa finta di niente e le risponde"
+      },
+      {
+        "testo": "C'ûnn-a çerta premûa che a te a confonde:",
+        "it": "Con una certa premura che la confonde"
+      },
+      {
+        "testo": "E l’é a mì, che ti ö dixi? eh figgia cäa,",
+        "it": "Ed è a me che lo dici? Eh, cara ragazza,"
+      },
+      {
+        "testo": "Besœgnieiva n'avei ciû de criterio",
+        "it": "Bisognerebbe non aver più criterio"
+      },
+      {
+        "testo": "Pe pœi dîte de nö, pe contrariâ",
+        "it": "Per poterti dire di no, per contrariare"
+      },
+      {
+        "testo": "A tì, tanto potente, ûn dexiderio,",
+        "it": "A te, tanto potente, un desiderio,"
+      },
+      {
+        "testo": "Quande questo ö se poesse realizzâ!",
+        "it": "Quando questo si potesse realizzare!"
+      },
+      {
+        "testo": "Ma mi temmo che ö sâ ûn affare serio",
+        "it": "Ma io temo che sarà un affare serio,"
+      },
+      {
+        "testo": "E che tanto ö destin, che to marîo",
+        "it": "E che tanto il destino quanto tuo marito"
+      },
+      {
+        "testo": "No intendan mangiâ de repentîo",
+        "it": "Non intendano pentirsi."
+      },
+      {
+        "testo": "Aôa poi se te riesce a mette in atto",
+        "it": "Ora poi, se ti riesce di mettere in atto"
+      },
+      {
+        "testo": "E to viste e se Giove ö te ghe ten,",
+        "it": "Le tue mire, e se Giove ti sostiene,"
+      },
+      {
+        "testo": "Prefutti i to piaxei, che me ne batto",
+        "it": "Soddisfa i tuoi piaceri, ché me ne batto"
+      },
+      {
+        "testo": "A sanfornia di Tiri e di Troien,",
+        "it": "La sanfornia di Tiro e dei Troiani,"
+      },
+      {
+        "testo": "Ma d'in cangio son pronta a fâ contratto",
+        "it": "Ma in cambio son pronta a fare il contratto"
+      },
+      {
+        "testo": "Perché a cosa a me cimbra e a me cönven,",
+        "it": "Perché la cosa mi garba e mi conviene,"
+      },
+      {
+        "testo": "Se to maio ö gh'allogia e ö beîve â sûcca",
+        "it": "Se tuo marito ci sta e se la beve,"
+      },
+      {
+        "testo": "Per mì, son chi comme ö bambin de Lûcca.",
+        "it": "Per me, son qui come il bambino di Lucca."
+      },
+      {
+        "testo": "E mì, dixe Giûnon, sô zâ a manea",
+        "it": "E io, dice Giunone, so già la maniera"
+      },
+      {
+        "testo": "Dö sciûgaghe ö pevë perché o ghe annoisce,",
+        "it": "Di circuirlo perché ci annuisca,"
+      },
+      {
+        "testo": "Aoa sta ûn pô a sentî se quest'idea",
+        "it": "Ora sta' un po' a sentire se quest'idea"
+      },
+      {
+        "testo": "A te vâ pe ö tô verso e a te finisce:",
+        "it": "Va per il tuo verso e ti convince:"
+      },
+      {
+        "testo": "Ho savûo che a Reginn-a insemme a Enea",
+        "it": "Ho saputo che la Regina insieme a Enea,"
+      },
+      {
+        "testo": "Appenn-a che doman se ricciarisce,",
+        "it": "Appena domani si rischiara,"
+      },
+      {
+        "testo": "Söttö ö pretesto da partîa de caccia,",
+        "it": "Sotto il pretesto della partita di caccia,"
+      },
+      {
+        "testo": "Sciortîan d'in casa pe andâ in ta maccia.",
+        "it": "Usciranno di casa per andare nella macchia."
+      },
+      {
+        "testo": "Mia che bell'occaxion! Quande e sô genti",
+        "it": "Guarda che bella occasione! Quando le loro genti,"
+      },
+      {
+        "testo": "Cöi cavalli, cöi chen, son tûtte in gîo,",
+        "it": "Coi cavalli e coi cani, sono tutte in giro,"
+      },
+      {
+        "testo": "Ghe scadenn-o ädreitûa dai quattrö venti",
+        "it": "Gli scateno addirittura dai quattro venti"
+      },
+      {
+        "testo": "Lampi, tröin, sacrilegi, e te gh'asbrîo",
+        "it": "Lampi, tuoni, sacrilegi, e ti ci scaglio"
+      },
+      {
+        "testo": "Tanta gragnœûa pe ö cû, tanti aççidenti,",
+        "it": "Tanta grandine sul culo, tanti accidenti,"
+      },
+      {
+        "testo": "Che l'inaio, l'inspaximo, î regîo",
+        "it": "Che li stordisco, li faccio spasimare, li raggiro,"
+      },
+      {
+        "testo": "E te i fässo scappâ che pân paghæ,",
+        "it": "E te li faccio scappare che paiono pagati,"
+      },
+      {
+        "testo": "Fûti, giani, bexinsci, alleitughæ.",
+        "it": "Sbiancati, gialli, mezzi morti, appassiti come lattughe."
       }
     ]
   },
