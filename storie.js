@@ -5541,6 +5541,58 @@ const STORIE_DEFAULT = [
     ]
   },
   {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 4",
+      "it": "La caccia "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
+      {
+        "testo": "Fava giorno e fra tanto e fra l'æxia",
+        "it": "Faceva giorno e frattanto, nell'aria fresca,"
+      },
+      {
+        "testo": "Tra ö cæo-scûo dö mattin s'ëa radûnâ",
+        "it": "Tra il chiaroscuro del mattino s'era radunata"
+      },
+      {
+        "testo": "Da ûnn-a parte dall'âtra a compagnia",
+        "it": "Da una parte e dall'altra la compagnia"
+      },
+      {
+        "testo": "De cacciœû che a l'ëa stæta scritturâ,",
+        "it": "Di cacciatori che era stata ingaggiata,"
+      },
+      {
+        "testo": "Pe dâ lûstro e importanza a sta partia",
+        "it": "Per dar lustro e importanza a questa partita"
+      },
+      {
+        "testo": "Da Didon per l'amante architettâ,",
+        "it": " Da Didone per l'amante architettata,"
+      },
+      {
+        "testo": "Pe amiâ ûn pittinin se caxo desse",
+        "it": "Per vedere un pochino se il caso desse"
+      },
+      {
+        "testo": "Che stö babano ö se despuntelesse.",
+        "it": "Che questo babbeo si lasciasse andare."
+      }
+    ]
+  },
+  {
     "id": "sp-a2-padrone-e-mezzadro4",
     "lingua": "sp",
     "livello": "A2",
