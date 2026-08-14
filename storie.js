@@ -5589,6 +5589,390 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che stö babano ö se despuntelesse.",
         "it": "Che questo babbeo si lasciasse andare."
+      },
+      {
+        "testo": "Ghe n'ëa de tûtti i cöi, d'ogni costûmme,",
+        "it": "Ce n'erano di tutti i colori, d'ogni costume,"
+      },
+      {
+        "testo": "Con de giacche in fûstagno e de velûo,",
+        "it": "Con giacche di fustagno e di velluto,"
+      },
+      {
+        "testo": "Ghette e scarpe co-e sœûe da passâ ûn sciûmme",
+        "it": "Ghette e scarpe con le suole da guadare un fiume,"
+      },
+      {
+        "testo": "Ö cappello in sce l'orsa e rebattûo,",
+        "it": "Il cappello di traverso e ribattuto,"
+      },
+      {
+        "testo": "Fæto a strassa, a coppetto, a moccalûmme,",
+        "it": "Fatto a straccio, a coppetto, a cono,"
+      },
+      {
+        "testo": "Con de faccie da bûllo, ö sguardo dûo,",
+        "it": "Con facce da bullo, lo sguardo duro,"
+      },
+      {
+        "testo": "Camixia de flanella e pippa ai denti,",
+        "it": "Camicia di flanella e pipa ai denti,"
+      },
+      {
+        "testo": "Mösse in bocca pe paole e sacramenti.",
+        "it": "In bocca musse, parolacce e bestemmie."
+      },
+      {
+        "testo": "Ëan armæ comme sbiri e co-a ventrea",
+        "it": "Erano armati come sbirri, e con la ventriera"
+      },
+      {
+        "testo": "Insaurâ de ballin, balle e strexia,",
+        "it": "Infarcita di pallini, pallottole e migliarini,"
+      },
+      {
+        "testo": "Scciœûppi d'ögni façon, d'ogni manea,",
+        "it": "Schioppi d'ogni foggia, d'ogni maniera,"
+      },
+      {
+        "testo": "Armi de precision, de fantaxia,",
+        "it": "Armi di precisione, di fantasia,"
+      },
+      {
+        "testo": "Chen cöi fianchi ridûti a rastellea,",
+        "it": "Cani coi fianchi ridotti a rastrelliera,"
+      },
+      {
+        "testo": "Che paivan l'esprescion da carestia",
+        "it": "Che parevano l'espressione della carestia"
+      },
+      {
+        "testo": "E che avievan sentîo l'orma de fregögge",
+        "it": "E che avevano fiutato l'orma delle briciole,"
+      },
+      {
+        "testo": "Insomma chen che ghe fûmava e cögge.",
+        "it": "Insomma cani a cui fumavano le palle."
+      },
+      {
+        "testo": "Selloû tûtto de nœûvo e in punto d'öa",
+        "it": "Sellato tutto a nuovo e puntuale,"
+      },
+      {
+        "testo": "C'ûnn-a gualdrappa recamâ d'örpello,",
+        "it": "Con una gualdrappa ricamata d'orpello,"
+      },
+      {
+        "testo": "Aspëtando l'arrivo da scignöa",
+        "it": "Aspettando l'arrivo della signora"
+      },
+      {
+        "testo": "Gh'ëa ûn cavallo da corsa dö Portello",
+        "it": "C'era un cavallo da corsa del Portello"
+      },
+      {
+        "testo": "Che ö sappettava e ö remenava a cöa",
+        "it": "Che scalpitava e dimenava la coda"
+      },
+      {
+        "testo": "E ö fava schitti comme ö fosse noello,",
+        "it": "E faceva scatti come se fosse giovane,"
+      },
+      {
+        "testo": "E ö sparava michette ogni pittin",
+        "it": "E  sparava michette ogni momento"
+      },
+      {
+        "testo": "Pe fâ vedde che ö l'ëa de sangue fin.",
+        "it": "Per far vedere che era di sangue fino."
+      },
+      {
+        "testo": "Finalmente Didon, tûtta schittetti",
+        "it": "Finalmente Didone, tutta vezzi,"
+      },
+      {
+        "testo": "Doppo d'ësise fæta ûn pô aspetâ,",
+        "it": "Dopo essersi fatta un po' aspettare,"
+      },
+      {
+        "testo": "A ven zù accompagnâ dai sô moretti",
+        "it": "Viene giù accompagnata dai suoi moretti"
+      },
+      {
+        "testo": "(Ûnn-a Corte in sce l'atto improvvisâ)",
+        "it": "(Una Corte improvvisata sul momento),"
+      },
+      {
+        "testo": "Ben vestia, senza aggibbi né frexetti,",
+        "it": "Ben vestita, senza aggeggi né fronzoli,"
+      },
+      {
+        "testo": "Elegante, senz'ëse esagerâ,",
+        "it": "Elegante, senza essere esagerata,"
+      },
+      {
+        "testo": "E c'ûnn-a ruffianata de bön gûsto",
+        "it": "E con una civetteria di buon gusto"
+      },
+      {
+        "testo": "Che senza xanni a ghe cimbrava a-o fûsto",
+        "it": "Che senza smancerie garbava all'uomo."
+      },
+      {
+        "testo": "Roba lunga all'ammazzone, trovata,",
+        "it": "Abito lungo all'amazzone, una trovata,"
+      },
+      {
+        "testo": "Colpo de genio da Rolandi Ricci,",
+        "it": "Colpo di genio da Rolandi Ricci,"
+      },
+      {
+        "testo": "Braghe lunghe co-e staffe, ûnn-a sciûgata",
+        "it": "Pantaloni lunghi con le staffe, uno schianto"
+      },
+      {
+        "testo": "(Per chi ë ûn pô dilettante de garicci)",
+        "it": "(Per chi è un po' appassionato di tresche),"
+      },
+      {
+        "testo": "Ûn bello cilindretto de Demata,",
+        "it": "Un bel cilindretto da Demata,"
+      },
+      {
+        "testo": "Misso de gaibo, pe fâ vedde i ricci",
+        "it": "Messo con garbo, per far vedere i riccioli,"
+      },
+      {
+        "testo": "Pe tûtt'arma ûn fôettin cö pommo d'ôu",
+        "it": "Per tutta arma un frustino col pomo d'oro"
+      },
+      {
+        "testo": "Dö genere avvoxioû che caga ö môu.",
+        "it": "Del genere rinomato, che caga il moro."
+      },
+      {
+        "testo": "Ö Giûlin a cavallo a ûn azenetto",
+        "it": "Iulo a cavallo su un asinello"
+      },
+      {
+        "testo": "(A bell'â megio, ö commensava a staghe",
+        "it": "(Alla bell'e meglio, cominciava a starci,"
+      },
+      {
+        "testo": "Benché in fæto ö perdesse ö mandilletto",
+        "it": "Benché di fatto perdesse il fazzolettino"
+      },
+      {
+        "testo": "E ö se fesse anc'ûn pô a cacca in te braghe)",
+        "it": "E si facesse anche un po' la cacca nelle brache)"
+      },
+      {
+        "testo": "Ö va avanti trottando, c'ûn picchetto",
+        "it": "Va avanti trottando, con un picchetto"
+      },
+      {
+        "testo": "De cavalli troien, farsï de ciaghe,",
+        "it": "Di cavalli troiani, infarciti di piaghe,"
+      },
+      {
+        "testo": "Mentre Enea, mûssezzando e in pöntö d'öa",
+        "it": "Mentre Enea, pavoneggiante e puntuale,"
+      },
+      {
+        "testo": "Ö cavalca, ö fa a rœûa presso a scignöa",
+        "it": "Cavalca, fa la ruota presso la signora."
+      },
+      {
+        "testo": "Comme Rosci ö Nerön, se ve sovven,",
+        "it": "Come Rossi nel Nerone, se ricordate"
+      },
+      {
+        "testo": "(Nö sön stôie, perdìe, poi tanto vegie)",
+        "it": "(Non sono storie, perdio, poi tanto vecchie),"
+      },
+      {
+        "testo": "Cöi œûggi abborsetæ, baffi senen",
+        "it": "Con gli occhi imborsati, i baffi da vecchio,"
+      },
+      {
+        "testo": "E ö capello tioû zû scinn-a in sce œgie,",
+        "it": "E il cappello tirato giù fin sulle orecchie,"
+      },
+      {
+        "testo": "Ö l'andava a cavallo ammiando ben",
+        "it": "Andava a cavallo guardandosi bene attorno"
+      },
+      {
+        "testo": "(Ö ghe paiva ciantoû c'ûn pâ de negie)",
+        "it": "(Sembrava impalato come su due stampelle)"
+      },
+      {
+        "testo": "De nö scomponn-e e nö mostrâ a perrûcca",
+        "it": "Per non scomporsi e non mostrare la parrucca"
+      },
+      {
+        "testo": "Che da gran tempo a croviva a sûcca;",
+        "it": "Che da gran tempo gli copriva la zucca;"
+      },
+      {
+        "testo": "O comme Sanfiorenzo ûn di ciû belli",
+        "it": "O come Sanfiorenzo, uno dei più belli"
+      },
+      {
+        "testo": "Nostri meistri de piano e di ciû gnecchi,",
+        "it": "Nostri maestri di piano e dei più fiacchi"
+      },
+      {
+        "testo": "Ö gïava all'Accascœûa fra i arboscelli,",
+        "it": "Che girava all'Acquasola fra gli alberelli,"
+      },
+      {
+        "testo": "Baffi â chineise e zingomi fistecchi,",
+        "it": "Baffi alla cinese e zigomi sporgenti,"
+      },
+      {
+        "testo": "Inforcando ûn cavallo de Bûsnelli",
+        "it": "Inforcando un cavallo di Busnelli"
+      },
+      {
+        "testo": "Co-e sô gambe sottî, comme döi stecchi,",
+        "it": "Con le sue gambe sottili, come due stecchi,"
+      },
+      {
+        "testo": "E ö fava cazze tûtte e serve e e Mamme",
+        "it": "E faceva cadere tutte le serve e le mamme"
+      },
+      {
+        "testo": "Comme e nöxe camöæ cazzan da-e ramme.",
+        "it": "Come le noci bacate cadono dai rami."
+      },
+      {
+        "testo": "Missi tûtti in cammin, van sciû pë maccie",
+        "it": "Messisi tutti in cammino, vanno su per le macchie,"
+      },
+      {
+        "testo": "Tramezo ai boschi sorva e rocche e zinn-e,",
+        "it": "In mezzo ai boschi, sopra rupi e cime,"
+      },
+      {
+        "testo": "Ciû che de belve seguitando e traccie",
+        "it": "Più che di belve, seguendo le tracce"
+      },
+      {
+        "testo": "Dö stûfoû de crastön co-e patatinn-e",
+        "it": "Dello stufato di castrato con le patatine,"
+      },
+      {
+        "testo": "Che ö l'é ö scopo e a raxon de tûtte e caccie,",
+        "it": "Che è lo scopo e la ragione di tutte le cacce,"
+      },
+      {
+        "testo": "Comme l'é Pasqua pë e leitûghe pinn-e,",
+        "it": "Come Pasqua è per le lattughe ripiene,"
+      },
+      {
+        "testo": "E nö gh'é bön caccioû che ö ghe demorde,",
+        "it": "E non c'è buon cacciatore che ci rinunci,"
+      },
+      {
+        "testo": "Che ö e passe sottobanca e ö se ne scorde.",
+        "it": "Che se la lasci sfuggire e se ne scordi."
+      },
+      {
+        "testo": "Ö Giulin figgio solo, e comme tale",
+        "it": "Iulo, figlio unico, e come tale"
+      },
+      {
+        "testo": "Mæducoû, bollicugge impertinente",
+        "it": "Maleducato, coglioncello impertinente,"
+      },
+      {
+        "testo": "Ö fava ûn sciato che nö gh'ëa l'eguale",
+        "it": "Faceva un chiasso che non aveva l'eguale"
+      },
+      {
+        "testo": "Galoppando in ça e in lâ continuamente,",
+        "it": "Galoppando in qua e in là di continuo,"
+      },
+      {
+        "testo": "Tiando botte co-a bocca a ûn ideale",
+        "it": "Tirando colpi con la bocca a un'ideale"
+      },
+      {
+        "testo": "Bestia feroce e assimentando a gente",
+        "it": "Bestia feroce, e molestando la gente,"
+      },
+      {
+        "testo": "O faxendo scentâ, con ste sô mosse",
+        "it": "O facendo scappare, con queste sue musse,"
+      },
+      {
+        "testo": "A vea caccia, accordòu che ghe ne fosse.",
+        "it": "La vera selvaggina — ammesso che ce ne fosse."
+      },
+      {
+        "testo": "Tûtt'assemme s'annûvia e se fâ scûo",
+        "it": "Tutt'a un tratto si annuvola e si fa scuro"
+      },
+      {
+        "testo": "E se sente tronâ d'in löntananza,",
+        "it": "E si sente tuonare in lontananza,"
+      },
+      {
+        "testo": "Poi de stisse ciû larghe ancön che ûn scûo",
+        "it": "Poi gocce più larghe ancora d'uno scudo"
+      },
+      {
+        "testo": "Fan zà nasce ûn pittin de titûbanza,",
+        "it": "Fanno già nascere un po' di titubanza,"
+      },
+      {
+        "testo": "Quindi, sæte, gragnœa, ægûa a derûo,",
+        "it": "Quindi saette, grandine, acqua a dirotto,"
+      },
+      {
+        "testo": "Te manda a fâ fötte l'ordinanza",
+        "it": "Manda a farsi fottere l'ordinanza"
+      },
+      {
+        "testo": "E scappan tûtti a rêo, che pân paghæ",
+        "it": "E scappano tutti in abbondanza, che paiono pagati,"
+      },
+      {
+        "testo": "Söttö a rocche e cascinn-e, e in ti paggiæ.",
+        "it": "Sotto le rocce e le cascine, e nei pagliai."
+      },
+      {
+        "testo": "In te questö bordello e sta derotta",
+        "it": "In questo bordello e in questa dirotta"
+      },
+      {
+        "testo": "Soli Enea con Didon, restan lì a torse;",
+        "it": "Soli Enea con Didone, restano lì a inzupparsi;"
+      },
+      {
+        "testo": "Senza ûn erbo, ûn paggiâ da andaghe sotta,",
+        "it": "Senza un albero, un pagliaio da andarci sotto,"
+      },
+      {
+        "testo": "Senza pægûi e ädreitûa senza risorse;",
+        "it": "Senza ombrelli e addirittura senza risorse;"
+      },
+      {
+        "testo": "Tûtt'assemme se gîan, te lì ûnn-a grotta,",
+        "it": "Tutt'a un tratto si girano, ed ecco lì una grotta,"
+      },
+      {
+        "testo": "E dö mæximo asbrîo, senza stä in forse",
+        "it": "E col medesimo slancio, senza stare in forse"
+      },
+      {
+        "testo": "Senza pûia d'incontrâ di örsci e di loî",
+        "it": "Senza paura di incontrare degli orsi e dei lupi"
+      },
+      {
+        "testo": "Se ghe fûttan de söttö tutti doî.",
+        "it": "Ci si ficcano sotto tutti e due."
       }
     ]
   },
