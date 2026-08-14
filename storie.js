@@ -5941,7 +5941,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Söttö a rocche e cascinn-e, e in ti paggiæ.",
         "it": "Sotto le rocce e le cascine, e nei pagliai."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 5",
+      "it": "La grotta"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "In te questö bordello e sta derotta",
         "it": "In questo bordello e in questa dirotta"
