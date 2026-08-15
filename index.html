@@ -3309,13 +3309,13 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"vestiti", livello:"A2", it:"portafogli", en:"wallet", fr:"portefeuille", es:"cartera", de:"Brieftasche", pt:"carteira", ru:"кошелёк", ca:"cartera", sp:"portafogio", cr:"portafoil", ge:"portafeuggio ", verif:"sp:g" },
       { tema:"natura", livello:"A1", it:"portalo", en:"bring it", fr:"apporte-le", es:"tráelo", de:"bring es", pt:"traga isso" },
       { it:"portare", sp:"portae", cr:"portar", verif:"sp:g" },
-      { tema:"aggettivi", livello:"B1", it:"possibile", en:"possible", fr:"possible", es:"posible", de:"möglich", pt:"possível|possivel", mn:"pùsibile", ko:"가능한", ar:"ممكن", zh:"可能", ja:"可能な", ia:"possibile", la:"possibilis", grc:"δυνατός", verif:"mn:g" },
-      { tema:"verbi", livello:"A1", it:"potere", en:"can/kan", fr:"pouvoir", es:"poder", de:"können", pt:"poder", ru:"власть", ca:"poder", sp:"podée", mn:"podée", ge:"puei/poei", ko:"할 수 있다", ar:"يستطيع", zh:"能", ja:"できる", ia:"poter", la:"posse", grc:"δύνασθαι", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g", ro:"a putea" },
+      { tema:"aggettivi", livello:"B1", it:"possibile", en:"possible", fr:"possible", es:"posible", de:"möglich", pt:"possível|possivel", sp:"possibile", mn:"pùsibile", cr:"pus'ibil", ge:"poscibile", ko:"가능한", ar:"ممكن", zh:"可能", ja:"可能な", ia:"possibile", la:"possibilis", grc:"δυνατός", verif:"mn:g" },
+      { tema:"verbi", livello:"A1", it:"potere", en:"can/kan", fr:"pouvoir", es:"poder", de:"können", pt:"poder", ru:"власть", ca:"poder", sp:"podée", mn:"podée", cr:"poder", ge:"puei/poei", ko:"할 수 있다", ar:"يستطيع", zh:"能", ja:"できる", ia:"poter", la:"posse", grc:"δύνασθαι", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g", ro:"a putea" },
       { tema:"aggettivi", livello:"A2", it:"povero", en:"poor", cr:"povrr/pov'r", ge:"poovehu/pövio", src:{"ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"ge:g,cr:g" },
-      { tema:"salute", livello:"A1", it:"pranzo", en:"lunch", fr:"déjeuner", es:"almuerzo", de:"Mittagessen", pt:"almoço|almoco", ko:"점심", ar:"غداء", zh:"午餐", ja:"昼食", ia:"repasto de mediodie", la:"prandium", grc:"ἄριστον" },
-      { tema:"natura", livello:"A1", it:"prato", en:"meadow", fr:"pré", sp:"prado", mn:"pradu", verif:"mn:g" },
-      { tema:"aggettivi", livello:"A2", it:"preferito", en:"favourite", fr:"préféré", es:"favorito", de:"Liebling-|bevorzugt", pt:"favorito", ru:"любимый", ca:"preferit" },
-      { tema:"verbi", livello:"B1", it:"pregare", en:"pray", fr:"prier", es:"rezar", de:"beten", pt:"rezar", ko:"기도하다", ar:"يصلي", zh:"祈祷", ja:"祈る", ia:"precar", la:"orare", grc:"προσεύχεσθαι" },
+      { tema:"salute", livello:"A1", it:"pranzo", en:"lunch", fr:"déjeuner", es:"almuerzo", de:"Mittagessen", pt:"almoço|almoco", sp:"pranso", cr:"pranz", ge:"disnâ", ko:"점심", ar:"غداء", zh:"午餐", ja:"昼食", ia:"repasto de mediodie", la:"prandium", grc:"ἄριστον" },
+      { tema:"natura", livello:"A1", it:"prato", en:"meadow", fr:"pré", sp:"prado", mn:"pradu", cr:"prad", ge:"prou", verif:"mn:g" },
+      { tema:"aggettivi", livello:"A2", it:"preferito", en:"favourite", fr:"préféré", es:"favorito", de:"Liebling-|bevorzugt", pt:"favorito", ru:"любимый", ca:"preferit", sp:"prefeì", cr:"preferit", ge:"ciù cao, prefeìo" },
+      { tema:"verbi", livello:"B1", it:"pregare", en:"pray", fr:"prier", es:"rezar", de:"beten", pt:"rezar", sp:"pregae", cr:"prgar", ge:"pregâ", ko:"기도하다", ar:"يصلي", zh:"祈祷", ja:"祈る", ia:"precar", la:"orare", grc:"προσεύχεσθαι" },
       { it:"prego", mn:"pregu", verif:"mn:g", ro:"cu plăcere" },
       { tema:"verbi", livello:"B1", it:"premere", en:"press", fr:"appuyer|presser", es:"presionar", de:"drücken", pt:"pressionar", ru:"нажимать", ca:"prémer", sp:"enprème", verif:"sp:g" },
       { tema:"verbi", livello:"A1", it:"prendere", en:"take", fr:"prendre", es:"tomar", de:"nehmen", pt:"pegar", ru:"брать", ca:"agafar|prendre", sp:" piae, ciapàe", mn:"pigiaa| ciapaa", cr:"piar", ge:" pigiâ| aciapâ", ko:"잡다", ar:"يأخذ", zh:"拿", ja:"取る", ia:"prender", la:"capere", grc:"λαμβάνειν", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g", ro:"a lua" },
@@ -3923,7 +3923,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 478;
+const VOC_VERSION = 479;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
