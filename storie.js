@@ -6429,7 +6429,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö se mette a tiâ zû sta tiritera:",
         "it": "Si mette a tirare giù questa tiritera:"
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 7",
+      "it": "Giove manda Mercurio "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "A-o bellin dove semmo ? e che manea",
         "it": "\"Cribbio, a che punto siamo arrivati? E che maniera"
