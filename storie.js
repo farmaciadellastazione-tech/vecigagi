@@ -5993,6 +5993,166 @@ const STORIE_DEFAULT = [
       {
         "testo": "Se ghe fûttan de söttö tutti doî.",
         "it": "Ci si ficcano sotto tutti e due."
+      },
+      {
+        "testo": "Aoa chi vegniæ ö bon, vegnieiva ö spesso,",
+        "it": "Ora qui verrebbe il bello, verrebbe la sostanza,"
+      },
+      {
+        "testo": "Se ve vuesse contâ cose han fottûo,",
+        "it": "Se vi volessi raccontare cosa hanno fottuto,"
+      },
+      {
+        "testo": "Ma l'é megio passaghe pe refesso",
+        "it": "Ma è meglio passarci di traverso,"
+      },
+      {
+        "testo": "E ciuttosto peccâ ûn pittin de scûo",
+        "it": "E piuttosto peccare un pochino di oscurità"
+      },
+      {
+        "testo": "Che gh'é de côse che ûn bambin de gesso,",
+        "it": "Perché ci sono cose che un bambino di gesso,"
+      },
+      {
+        "testo": "Ö paisan ciû tanardo e ciû tambûo",
+        "it": "Il contadino più tanardo e più tamburo"
+      },
+      {
+        "testo": "Ö ghe trœuva d'istinto ö senso e ö fï",
+        "it": "Ci trova d'istinto il senso e il filo "
+      },
+      {
+        "testo": "Senza mette i puntin proprio in sce l'i.",
+        "it": "Senza mettere i puntini proprio sulle i."
+      },
+      {
+        "testo": "De ste notte segrette e appascionæ",
+        "it": "Di queste notti segrete e appassionate"
+      },
+      {
+        "testo": "Fæte in sprescia, in desaxio in strangogion",
+        "it": "Fatte in fretta, nel disagio, con voracità"
+      },
+      {
+        "testo": "Ma assavûie da atrettanti valûtæ",
+        "it": "Ma assaporate e da altrettanti valutate "
+      },
+      {
+        "testo": "Quanto meno gh'ëa a calma e a riflescion,",
+        "it": "Quanto meno c'erano calma e riflessione,"
+      },
+      {
+        "testo": "Testimoni discreti e smaliziæ",
+        "it": "Testimoni discreti e smaliziati"
+      },
+      {
+        "testo": "Nö sön stæti che l'ægua ö vento e ö tron",
+        "it": "Non sono stati che l'acqua, il vento e il tuono"
+      },
+      {
+        "testo": "Che in tö mentre che lö ghe davan dentro",
+        "it": "Che nel mentre che loro ci davano dentro"
+      },
+      {
+        "testo": "De fœûa ghe fâvan l'accömpagnamento.",
+        "it": "Di fuori facevano loro l'accompagnamento."
+      },
+      {
+        "testo": "Miæ che brûtto destin! de sta luçìa",
+        "it": "Guardate che brutto destino! di questa susanna"
+      },
+      {
+        "testo": "Che da reginn-a a l'ha deciso a sorte,",
+        "it": "Che della regina ha deciso la sorte,"
+      },
+      {
+        "testo": "Se commensa a desghœggie a litanìa",
+        "it": "Si comincia a sbrogliare la litania "
+      },
+      {
+        "testo": "De sô tante disgrazie e da sô morte",
+        "it": "Delle sue tante disgrazie e della sua morte"
+      },
+      {
+        "testo": "Sätôu zû ô primmo schæn con allegrìa",
+        "it": "Saltato giù il primo scalino con allegria"
+      },
+      {
+        "testo": "A scuggia zû a derûa sempre ciû forte",
+        "it": "Scivola giù a precipizio sempre più forte"
+      },
+      {
+        "testo": "Che a ve dà dö cû in ciappa e comme ben",
+        "it": "Che ci dà di culo su una lastra eccome bene"
+      },
+      {
+        "testo": "E a s'immerda ädreitûa comme ûnn-a pûtten.",
+        "it": "E si smerda addirittura come una puttana."
+      },
+      {
+        "testo": "Invece de salvâ qualche apparenza",
+        "it": "Invece di salvare qualche apparenza"
+      },
+      {
+        "testo": "E de demöase nö möstrandö a cea",
+        "it": "E di spassarsela non mostrando la faccia"
+      },
+      {
+        "testo": "A l'aumenta d'audaxia e d'impûdenza",
+        "it": "Aumenta di audacia e di impudenza"
+      },
+      {
+        "testo": "Finn-a a fäse ciammâ moggê d'Enea,",
+        "it": "Fino a farsi chiamare moglie di Enea,"
+      },
+      {
+        "testo": "E a ghe a ciocca ädreitûa senza decenza",
+        "it": "E gliela ciocca addirittura senza decenza"
+      },
+      {
+        "testo": "Nö savendo tegnî moddo e manëa",
+        "it": "Non sapendo tenere modo e maniera "
+      },
+      {
+        "testo": "Mentre che ö cæto, che ö nö vœû de cuggie",
+        "it": "Mentre il pettegolezzo, che non vuole balle"
+      },
+      {
+        "testo": "Ö commensa a adesciase; ö frizze, ö buggie.",
+        "it": "Comincia a svegliarsi; frigge, bolle"
+      },
+      {
+        "testo": "De tûtte e malazioin, tûtti i malanni",
+        "it": "Di tutte le cattive azioni, di tutti i malanni"
+      },
+      {
+        "testo": "Ch'emmo avûo da-o peccôu de nostra moæ,",
+        "it": "Che abbiamo avuto dal peccato di nostra madre,"
+      },
+      {
+        "testo": "Ö ciû che ö n'ha procûou lastime e danni",
+        "it": "Quello che ci ha procurato più lamenti e danni"
+      },
+      {
+        "testo": "E che ö cöre con ciû velocitæ,",
+        "it": "E che corre con più velocità,"
+      },
+      {
+        "testo": "Voî porriesci campâ çento mill'anni",
+        "it": "Voi potreste campare centomila anni"
+      },
+      {
+        "testo": "Acquistâ l'esperienza a tonnellæ,",
+        "it": "Acquistare esperienza a tonnellate,"
+      },
+      {
+        "testo": "Ma doviesci pe forza ammette ö fæto",
+        "it": "Ma dovreste per forza ammettere il fatto"
+      },
+      {
+        "testo": "Che no gh'é mal'azion pezo che ö cæto",
+        "it": "Che non c'è mal'azione peggiore del pettegolezzo"
       }
     ]
   },
