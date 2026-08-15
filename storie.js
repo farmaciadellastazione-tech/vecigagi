@@ -6544,7 +6544,71 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Ö vedde Enea che ö te ghe dâ sciû a-i broccoli.",
-        "it": "Vede Enea che le sta trombando."
+        "it": "Vede Enea che le sta trombando alla grande."
+      },
+      {
+        "testo": "A mössa Peo chi nö se treppa! a-o casso!",
+        "it": "Sta mussa Piero, qui non si scherza! e che cazzo!"
+      },
+      {
+        "testo": "Atro che casto e che pietoso Enea:",
+        "it": "Altro che casto e pietoso Enea:"
+      },
+      {
+        "testo": "Atro che Italia! se nö metto a-o passo,",
+        "it": "Altro che Italia! se non lo metto al passo,"
+      },
+      {
+        "testo": "Le ö ghe a ciocca e ö ghe lascia a rastellëa;",
+        "it": "Lui ci sbatte e ci lascia la rastrelliera;"
+      },
+      {
+        "testo": "Ohe là Mercûrio, vegni chì, paggiasso,",
+        "it": "Ohilà Mercurio, vieni qui, pagliaccio,"
+      },
+      {
+        "testo": "Se se beccia e se fûtte a sta manëa,",
+        "it": "Se si scopa e si fotte in questa maniera,"
+      },
+      {
+        "testo": "Stö bulicugge ö dà di pûnti a mì;",
+        "it": "Questo frocio dà dei punti a me!"
+      },
+      {
+        "testo": "Mercûrio, ho dîto che ti vegni chì.",
+        "it": "Mercurio, ho detto che tu venga qui!\""
+      },
+      {
+        "testo": "Mia fanni presto, piggia ûn pâ de venti,",
+        "it": "Guarda di far presto, prendi un paio di venti,"
+      },
+      {
+        "testo": "Attachiteli a-o cû c'ûnn-a picaggia,",
+        "it": "Attaccateli al culo con un nastro,"
+      },
+      {
+        "testo": "Bullite in tæra senza complimenti",
+        "it": "Buttati a terra senza complimenti"
+      },
+      {
+        "testo": "E vannime a trovâ stö testa gaggia",
+        "it": "E vammi a trovare questa testa vuota"
+      },
+      {
+        "testo": "Che ö se perde in garicci e complimenti",
+        "it": "Che si perde in scopate e complimenti"
+      },
+      {
+        "testo": "Nö pensando a-o destin che ö l'hain sce-a taggia,",
+        "it": "Non pensando al destino che gli pende sul capo,"
+      },
+      {
+        "testo": "Vannighe a dî che n'ho zâ a mössa pinn-a",
+        "it": "Vagli a dire che ne ho già le palle piene"
+      },
+      {
+        "testo": "De veddiôu incarognî in ta pantalinn-a",
+        "it": "Di vederlo incarognito nella fica."
       }
     ]
   },
