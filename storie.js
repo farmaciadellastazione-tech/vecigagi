@@ -4880,7 +4880,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E a l'ëa in sce pisse de vegnî ûn ciapetto,",
-        "it": "Ed era sul punto di lasciarsi andare,"
+        "it": "Ed era sul punto di diventare una troia,"
       },
       {
         "testo": "Sentindo che sô sœû a ghe dava sotta,",
@@ -5504,7 +5504,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Se ö no s'ascada e ö no ghe dà sciû ai broccoli.",
-        "it": "Se non si scalda e non ci dà su ai broccoli."
+        "it": "Se non si scalda e non se la tromba."
       },
       {
         "testo": "E Venere che a l'ëa ciû che latinn-a",
