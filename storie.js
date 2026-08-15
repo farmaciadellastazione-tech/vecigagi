@@ -6237,6 +6237,102 @@ const STORIE_DEFAULT = [
       {
         "testo": "Pe dì e cose a traverso e a ezagerâ.",
         "it": "Per dire le cose travisate e a esagerare."
+      },
+      {
+        "testo": "Nêutte e giorno ö va in gîo sensa fermâse,",
+        "it": "Notte e giorno va in giro senza fermarsi,"
+      },
+      {
+        "testo": "Ö nö dorme, ö nö quëta, ö no se stanca,",
+        "it": "Non dorme, non si quieta, non si stanca,"
+      },
+      {
+        "testo": "In sce ë töri, in sce i teîti ô va a pôsase",
+        "it": "Sulle torri, sui tetti va a posarsi"
+      },
+      {
+        "testo": "E se ö vedde ûn pacciûgo ö te l'abbranca",
+        "it": "E se vede un pacciugo lo abbranca"
+      },
+      {
+        "testo": "E ö ghe sciûscia in manea da spolmonase",
+        "it": "E ci soffia sopra in modo da spolmonarsi"
+      },
+      {
+        "testo": "Che ûn bædin che ö no vaiva ûnn-a palanca",
+        "it": "Che una bazzecola che non valeva una palanca"
+      },
+      {
+        "testo": "Ö diventa unn-a mössa ûnn-a cagnara",
+        "it": "Diventa una mussa, una cagnara"
+      },
+      {
+        "testo": "Che chi a töcca ö s'immerda e ö se bûzara.",
+        "it": "Che chi la tocca si smerda e si rovina."
+      },
+      {
+        "testo": "Puei pensâ che pittâ pè sto marviaggio",
+        "it": "Puoi immaginare che scena per questo malvagio"
+      },
+      {
+        "testo": "Quando ö l'ha indovinôu quant'ëa successo,",
+        "it": "Quando ha indovinato quant'era successo,"
+      },
+      {
+        "testo": "Senza sta a zinzannä ö se misso in viaggio",
+        "it": "Senza star a gingillarsi si è messo in viaggio"
+      },
+      {
+        "testo": "E pe drîto, pe inverso e pe refesso,",
+        "it": "E per dritto, per rovescio e per traverso,"
+      },
+      {
+        "testo": "Azzunzendo in ça e in là qualche retaggio,",
+        "it": "Aggiungendo qua e là qualche ritaglio,"
+      },
+      {
+        "testo": "Rinforzando dö cô se gh'ëa dö spesso,",
+        "it": "Calcando la tinta dove c'era sostanza,"
+      },
+      {
+        "testo": "Ö se misso a cantala in tûtti i toin",
+        "it": "Si è messo a cantarla in tutti i toni"
+      },
+      {
+        "testo": "C'ûnn-a cöa de commenti e spiegazioin",
+        "it": "Con una coda di commenti e spiegazioni."
+      },
+      {
+        "testo": "Ö dixeiva: che ûn Tizio ûn farabûtto,",
+        "it": "Diceva: che un Tizio, un farabutto,"
+      },
+      {
+        "testo": "Ûn Troian senza scarpe, ammiseiôu,",
+        "it": "Un Troiano senza scarpe, ridotto in miseria,"
+      },
+      {
+        "testo": "Che pe ûn adæto ö s'accattava tûtto,",
+        "it": "Che per un nonnulla te lo compravi tutto,"
+      },
+      {
+        "testo": "L'ëa da poco in Cartagine arrivôu,",
+        "it": "Era da poco arrivato in Cartagine,"
+      },
+      {
+        "testo": "E Didon desprexando ö graddo, ö lûtto,",
+        "it": "E Didone, disprezzando il suo grado e il lutto,"
+      },
+      {
+        "testo": "A l'aveiva in sce l'atto appilotôu",
+        "it": "Lo aveva su due piedi accalappiato,"
+      },
+      {
+        "testo": "Ch'ëan zà döi rösci in t'ûnn-a scorza d'êuvo",
+        "it": "Che erano già due tuorli in un guscio d'uovo,"
+      },
+      {
+        "testo": "E che ö batoso ö ghe mangiava apprêuvo;",
+        "it": "E che il balordo se ne approfittava;"
       }
     ]
   },
