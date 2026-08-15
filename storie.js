@@ -6121,7 +6121,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö commensa a adesciase; ö frizze, ö buggie.",
         "it": "Comincia a svegliarsi; frigge, bolle"
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 6",
+      "it": "La Fama e Iarba "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "De tûtte e malazioin, tûtti i malanni",
         "it": "Di tutte le cattive azioni, di tutti i malanni"
@@ -6153,6 +6173,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che no gh'é mal'azion pezo che ö cæto",
         "it": "Che non c'è mal'azione peggiore del pettegolezzo"
+      },
+      {
+        "testo": "Quando ö nasce ö l’é quæxi ciû piccin",
+        "it": "Quando nasce è quasi più piccolo"
+      },
+      {
+        "testo": "Che ûn microbo de Koche e compagnia,",
+        "it": "Di un microbo di Koch e compagnia,"
+      },
+      {
+        "testo": "In sce e primme ö fâ ö morto e ciancianin",
+        "it": "Sulle prime fa il morto e pian pianino"
+      },
+      {
+        "testo": "Ö l'aumenta in volûmme e vigoria,",
+        "it": "Aumenta di volume e vigoria,"
+      },
+      {
+        "testo": "Poi ö s'agita, ö schitta, ö fa cammin",
+        "it": "Poi si agita, scatta, fa il cammino"
+      },
+      {
+        "testo": "E ciû ö cöre, ö s'ingroscia, ö sciûscia, ö cria,",
+        "it": "E più corre, si ingrossa, soffia, grida,"
+      },
+      {
+        "testo": "Ö diventa gigante, ö tocca ö çê",
+        "it": "Diventa gigante, tocca il cielo"
+      },
+      {
+        "testo": "Dappertûtto ö l'agguanta e ö mette pê;",
+        "it": "Dappertutto afferra e mette piede;"
+      },
+      {
+        "testo": "Nö se riesce a sô forma a definî",
+        "it": "Non si riesce la sua forma a definire"
+      },
+      {
+        "testo": "Perché ö l’é ûn pô de tûtto. Ö pä ûn oxello",
+        "it": "Perché è un po' di tutto. Sembra un uccello"
+      },
+      {
+        "testo": "Da-e so äe che ghe servan pe corrî,",
+        "it": "Dalle sue ali che gli servono per correre,"
+      },
+      {
+        "testo": "Mentre in cangio ö l'ha ûn êuggio pe cavello",
+        "it": "Mentre in cambio ha un occhio per capello"
+      },
+      {
+        "testo": "E mille oëgie appuntæ pe sta a sentî",
+        "it": "E mille orecchie appuntate per stare a sentire"
+      },
+      {
+        "testo": "Cose dixan apprêuvo a questo e quello,",
+        "it": "Cosa dicono dietro a questo e a quello,"
+      },
+      {
+        "testo": "Mille bocche lì pronte a riportâ,",
+        "it": "Mille bocche lì pronte a riportare,"
+      },
+      {
+        "testo": "Pe dì e cose a traverso e a ezagerâ.",
+        "it": "Per dire le cose travisate e a esagerare."
       }
     ]
   },
