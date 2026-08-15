@@ -6481,6 +6481,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "E e sæte, i lampi e i troin, sön tûtte cuggie?",
         "it": "E le saette, i lampi e i tuoni, sono tutte balle?\""
+      },
+      {
+        "testo": "Ûn ciappetto vegnûo de chì sâ dove,",
+        "it": "Una puttana venuta da chissà dove,"
+      },
+      {
+        "testo": "C'ûnn-a risma çernûa de pellegramme",
+        "it": "Con una risma scelta di pellegrini,"
+      },
+      {
+        "testo": "Avanzo de casin, celle ed alcove,",
+        "it": "Avanzi di casino, celle ed alcove,"
+      },
+      {
+        "testo": "Che mì, balordo, g'ho levôu za a famme,",
+        "it": "A cui io, balordo, ho già tolto la fame,"
+      },
+      {
+        "testo": "A me deve fâ ö torto, ö sommo Giove,",
+        "it": "A me deve fare il torto, o sommo Giove,"
+      },
+      {
+        "testo": "De dâme ûn pê in tö cû pe stö salamme?",
+        "it": "Di darmi un calcio nel culo per questo salame Enea?"
+      },
+      {
+        "testo": "Devo vedde stö chì che ö me dà a berta",
+        "it": "Devo vedere questo qui che mi sbeffeggia"
+      },
+      {
+        "testo": "E taxei, mentre lë ö buffa in coverta?",
+        "it": "E tacere, mentre lui se la spassa?"
+      },
+      {
+        "testo": "Ö l'ëa ancon lì in zenöggie a fâ lamenti",
+        "it": "Era ancora lì in ginocchio a fare lamenti"
+      },
+      {
+        "testo": "Che zà Giove sorpreiso, ö s'ëa vortôu",
+        "it": "Che già Giove, sorpreso, si era voltato"
+      },
+      {
+        "testo": "A-o recioccö da vöxe e di aççîdenti",
+        "it": "Al rimbombo della voce e degli accidenti"
+      },
+      {
+        "testo": "Che sô figgiô ö gh'aveiva allivellôu",
+        "it": "Che suo figlio gli aveva scagliato"
+      },
+      {
+        "testo": "E piggiando, lì a caxo ûn pâ de lenti",
+        "it": "E prendendo, lì a caso, un paio di lenti "
+      },
+      {
+        "testo": "Ö s'ëa misso a amiâ zû, mëzö seccôu,",
+        "it": "Si era messo a guardare giù, mezzo seccato,"
+      },
+      {
+        "testo": "E puntando Didon, co-i sô binoccoli",
+        "it": "E puntando Didone, con i suoi binocoli"
+      },
+      {
+        "testo": "Ö vedde Enea che ö te ghe dâ sciû a-i broccoli.",
+        "it": "Vede Enea che le sta trombando."
       }
     ]
   },
