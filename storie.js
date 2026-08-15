@@ -6332,7 +6332,135 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E che ö batoso ö ghe mangiava apprêuvo;",
-        "it": "E che il balordo se ne approfittava;"
+        "it": "E che il maranza se ne approfittava;"
+      },
+      {
+        "testo": "Che se fava gariccio a tûtt'andâ",
+        "it": "Che si trombava a tutto andare"
+      },
+      {
+        "testo": "Cö pretesto ch'ëan zà maio e moggiê",
+        "it": "Col pretesto che erano già marito e moglie"
+      },
+      {
+        "testo": "Che ö l'ëa ûn sciallo continûo, ûn beguddâ",
+        "it": "Che era un godimento continuo, un bagordare"
+      },
+      {
+        "testo": "Giorno e nêutte zû a reo, co-e man, co-i pë,",
+        "it": "Giorno e notte giù a casaccio, con le mani, coi piedi,"
+      },
+      {
+        "testo": "Che i dovei d'unn-a testa coronnâ,",
+        "it": "Che i doveri di una testa coronata,"
+      },
+      {
+        "testo": "Se compivan pe-i letti e i canapë,",
+        "it": "Si compivano per i letti e per i canapé,"
+      },
+      {
+        "testo": "Che gh'ëa in corte ûnn-a vea casa dö Leccia",
+        "it": "Che c'era in corte una vera \"casa di tolleranza\""
+      },
+      {
+        "testo": "Dove futte chi vœû, beccia chi beccia.",
+        "it": "Dove fotte chi vuole, e tromba chi tromba."
+      },
+      {
+        "testo": "Queste cose e tante âtre ciû granîe,",
+        "it": "Queste cose e tante altre più pesanti,"
+      },
+      {
+        "testo": "Ö sparzeiva in ça e in lâ questa canaggia",
+        "it": "Spargeva di qua e di là questa canaglia"
+      },
+      {
+        "testo": "Che pe forza re Jarba ö l'ha sentîe",
+        "it": "Che per forza re Iarba le ha sentite"
+      },
+      {
+        "testo": "Nei commenti da corte e da marmaggia;",
+        "it": "Nei commenti della corte e della marmaglia;"
+      },
+      {
+        "testo": "Ve lascio immaginâ che litanîe",
+        "it": "Vi lascio immaginare che litanie"
+      },
+      {
+        "testo": "Ö s'é misso a tiâ zû, neigro dä raggia,",
+        "it": "Si è messo a tirare giù, nero dalla rabbia,"
+      },
+      {
+        "testo": "Tanto ciû pe-o brûxö d'ëse reietto",
+        "it": "Tanto più per il bruciore di essere stato respinto"
+      },
+      {
+        "testo": "Dâ reginn-a Didon, pe stö soggetto.",
+        "it": "Dalla regina Didone, per sto soggetto."
+      },
+      {
+        "testo": "Questo re, che pe-o resto l'ëa ûn bastardo",
+        "it": "Questo re, che per il resto era un bastardo"
+      },
+      {
+        "testo": "De quello lescaiêu de sommo Giove,",
+        "it": "Di quel puttaniere del sommo Giove,"
+      },
+      {
+        "testo": "Ö l'ëa pe stö sô poæ, pin de riguardo",
+        "it": "Era per questo suo padre, pieno di riguardo "
+      },
+      {
+        "testo": "Erzendoghe capelle in reggia e altrove",
+        "it": "Erigendogli cappelle nella reggia e altrove"
+      },
+      {
+        "testo": "E offrighe di bêu, c'ûn dîo de lardo;",
+        "it": "E offrendogli dei buoi, con un dito di lardo;"
+      },
+      {
+        "testo": "Savûa sta cosa ö va in parrocchia, dove",
+        "it": "Saputa questa cosa va in parrocchia, dove"
+      },
+      {
+        "testo": "C'ûnna voxe tra a fûtta e tra a preghiera",
+        "it": "Con una voce tra la rabbia e la preghiera"
+      },
+      {
+        "testo": "Ö se mette a tiâ zû sta tiritera:",
+        "it": "Si mette a tirare giù questa tiritera:"
+      },
+      {
+        "testo": "A-o bellin dove semmo ? e che manea",
+        "it": "\"Cribbio, a che punto siamo arrivati? E che maniera"
+      },
+      {
+        "testo": "A l'é questa, perdîe, de vûei trattâ?",
+        "it": "È questa, perdio, di voler trattare?"
+      },
+      {
+        "testo": "No gh'é ciû né olocausti, né preghëa",
+        "it": "Non ci sono più né olocausti, né preghiere"
+      },
+      {
+        "testo": "Che ve possan costrenze a raxonnâ?",
+        "it": "Che vi possano costringere a ragionare?"
+      },
+      {
+        "testo": "Mi me töccö pe vedde se a l'é vëa,",
+        "it": "Io mi tocco per vedere se è vera,"
+      },
+      {
+        "testo": "Ma mi ho pûia che se zêughe a cûggionâ,",
+        "it": "Ma io ho paura che si giochi a coglionare,"
+      },
+      {
+        "testo": "Stæ in çe solo a grattave ûn pô e zenuggie?",
+        "it": "State in cielo solo a grattarvi un po' le ginocchia?"
+      },
+      {
+        "testo": "E e sæte, i lampi e i troin, sön tûtte cuggie?",
+        "it": "E le saette, i lampi e i tuoni, sono tutte balle?\""
       }
     ]
   },
