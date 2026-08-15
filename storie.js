@@ -6609,6 +6609,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "De veddiôu incarognî in ta pantalinn-a",
         "it": "Di vederlo incarognito nella fica."
+      },
+      {
+        "testo": "Digghe alla fine che nö l'é pe questo",
+        "it": "Digli alla fine che non è per questo"
+      },
+      {
+        "testo": "Che Venere a me l'ha raccomandôu,",
+        "it": "Che Venere me lo ha raccomandato,"
+      },
+      {
+        "testo": "Ne pe fûttime in manea de daghe a-o resto",
+        "it": "Né per fottermi in maniera di dargli  il resto "
+      },
+      {
+        "testo": "Che dûe votte dai greci a l'ha salvôu:",
+        "it": "Che due volte dai Greci lo ha salvato:"
+      },
+      {
+        "testo": "Che ö s'imbarche, che ö vadde, ö fasse presto,",
+        "it": "Che si imbarchi, che vada, faccia presto,"
+      },
+      {
+        "testo": "Che ö nö stagghe ciû a fâ l'abbelinôu,",
+        "it": "Che non stia più a fare l'abbelinato,"
+      },
+      {
+        "testo": "Che ö l'ha ûn regno davanti e se ö nö vêu,",
+        "it": "Che ha un regno davanti e se  non lo vuole,"
+      },
+      {
+        "testo": "Ö nö deve privâne ö sô figgiêu!",
+        "it": "Non deve privarne il suo figliolo!"
       }
     ]
   },
