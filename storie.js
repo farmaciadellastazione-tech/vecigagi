@@ -7129,6 +7129,442 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ti me tratti ädreitûa, comme ûnn-a putten?",
         "it": "Tu mi tratti addirittura come una puttana?"
+      },
+      {
+        "testo": "E mì cose t'ho fæto e perché mai",
+        "it": "E io cosa ti ho fatto e perché mai"
+      },
+      {
+        "testo": "Ti te fûtti de mì e di tô zuamenti?",
+        "it": "Te ne fotti di me e dei tuoi giuramenti?"
+      },
+      {
+        "testo": "Ti væ incontro a de lastime e di guai",
+        "it": "Vai incontro a lamenti e guai"
+      },
+      {
+        "testo": "A fâte spenaggiâ da-i elementi,",
+        "it": "A farti spennare dagli elementi,"
+      },
+      {
+        "testo": "E mi döviô restâ, chì in sce ö tramwai",
+        "it": "E io dovrò restare, qui sul tram"
+      },
+      {
+        "testo": "Söla ermitta, a giasciâ bile e aççidenti?",
+        "it": "Sola eremita, a biascicare bile e accidenti?"
+      },
+      {
+        "testo": "Pe fâ ûn viaggio a taston, ma brûtto boia",
+        "it": "Per fare un viaggio a tastoni, ma brutto boia"
+      },
+      {
+        "testo": "Cosa ti fæsci se existesse Troia?",
+        "it": "Cosa faresti se esistesse Troia?"
+      },
+      {
+        "testo": "Ah pe queste mæ lagrime, pe quello",
+        "it": "Ah per queste mie lacrime, per quell'"
+      },
+      {
+        "testo": "Assazzo de piaxei che ti mæ dæto,",
+        "it": "Assaggio di piaceri che mi hai dato,"
+      },
+      {
+        "testo": "Che ö l'é stæto ûnn-a gossa in t'ûn lavello",
+        "it": "Che è stato  una goccia in un lavello"
+      },
+      {
+        "testo": "E ö m'ha missö ciû coæ che soddisfæto,",
+        "it": "E mi ha fatto venire più voglia che soddisfatto,"
+      },
+      {
+        "testo": "Se de mì ti æ posciûö fâne ö bordello",
+        "it": "Se di me hai potuto farne bordello"
+      },
+      {
+        "testo": "E se qualche piaxei, provâ t'ho fæto,",
+        "it": "E se qualche piacere ti ho fatto provare,"
+      },
+      {
+        "testo": "Nö me fâ quest'azion diletto Enea,",
+        "it": "Non farmi quest'azione, diletto Enea,"
+      },
+      {
+        "testo": "Che a sæ degna da forca e da galea.",
+        "it": "Che sarebbe degna della forca e della galera."
+      },
+      {
+        "testo": "Ti sæ ben, che pe tì me son cacciâ",
+        "it": "Tu lo sai bene, che per te mi sono cacciata"
+      },
+      {
+        "testo": "Dietro e spalle ö rispetto e a pudicizia,",
+        "it": "Dietro le spalle il rispetto e la pudicizia,"
+      },
+      {
+        "testo": "Sön dai mæ pe ûnn-a putten consciderâ,",
+        "it": "Sono considerata dai miei una puttana,"
+      },
+      {
+        "testo": "Son co-i Cappi Africani in nimicizia,",
+        "it": "Sono in inimicizia coi Capi Africani,"
+      },
+      {
+        "testo": "Da ûnn-a parte g'ho ö fræ che ö stà aspetâ",
+        "it": "Da una parte ho mio fratello che sta aspettando"
+      },
+      {
+        "testo": "Pe roviname ûnn-a ocaxion propizia,",
+        "it": "Per rovinarmi un'occasione propizia,"
+      },
+      {
+        "testo": "Jarba dall'âtra, che ö nö vedde l'öa",
+        "it": "Iarba dall'altra, che non vede l'ora"
+      },
+      {
+        "testo": "De ciantamelo sotto ö portacöa.",
+        "it": "Di piantarmelo sotto il portacoda."
+      },
+      {
+        "testo": "E tì æ chœu de partì? che Dio te mande",
+        "it": "E tu hai il coraggio di partire? Che Dio ti mandi"
+      },
+      {
+        "testo": "Ûn anghæso derê fæto a pestello!",
+        "it": "Un oggetto di dietro fatto a pestello!"
+      },
+      {
+        "testo": "Se a-o meno a-o meno doppo tante giande",
+        "it": "Se almeno almeno, dopo tante scopate,"
+      },
+      {
+        "testo": "Ti m'avexi insaûrâ d'ûn rûbatello,",
+        "it": "Mi avessi ingravidata di un monello,"
+      },
+      {
+        "testo": "Che ö me tiesse sciû ö chœu, che poi da grande",
+        "it": "Che mi tenesse su il morale, che poi da grande"
+      },
+      {
+        "testo": "Ö me fosse d'aggiûtto e de pontello;",
+        "it": "Mi fosse di aiuto e di puntello;"
+      },
+      {
+        "testo": "Ma manco questo, döviô mûi chi ermitta",
+        "it": "Ma manco questo, dovrò morire qui eremita"
+      },
+      {
+        "testo": "Missa a-o bando da tûtti e derelitta!",
+        "it": "Messa al bando da tutti e derelitta!"
+      },
+      {
+        "testo": "Comme chi ë naûfragôu se ten co-e brasse",
+        "it": "Come chi è naufragato si tiene con le braccia"
+      },
+      {
+        "testo": "Streito a ûn schêuggio, a ûnn-a tôa pe nö negâ,",
+        "it": "Stretto a uno scoglio, a una tavola per non annegare,"
+      },
+      {
+        "testo": "Cöscì Enea, pe a pûia che a l'obbligasse",
+        "it": "Così Enea, per la paura che lei lo obbligasse"
+      },
+      {
+        "testo": "Co-i sô cênti a dovei capitolâ,",
+        "it": "Coi suoi pianti  a dover capitolare,"
+      },
+      {
+        "testo": "Ö l'e stæto aspëtâ che a se sfogasse,",
+        "it": "È rimasto ad aspettare che si sfogasse,"
+      },
+      {
+        "testo": "Che finisce a gragnœûa pe pûei parlâ,",
+        "it": "Che finisse la gragnola per poter parlare,"
+      },
+      {
+        "testo": "Nö pensando che a Giove e a-o sô comando",
+        "it": "Non pensando che a Giove e al suo comando"
+      },
+      {
+        "testo": "E tegnindose ö sciôu nö parpellando.",
+        "it": "E trattenendo il fiato senza batter ciglio."
+      },
+      {
+        "testo": "All'ûrtimo ö ghe fa: via, te ne prego,",
+        "it": "Alla fine lui le fa: via, te ne prego,"
+      },
+      {
+        "testo": "Nö fâ de scene e nö sciatate tanto,",
+        "it": "Non fare delle scenate e non scaldarti tanto,"
+      },
+      {
+        "testo": "Ti aviæ mille raxöin, mì nö te ö nego,",
+        "it": "Avrai mille ragioni, io non te lo nego,"
+      },
+      {
+        "testo": "Né mì me vêuggio fâ passâ pe ün santo,",
+        "it": "Né io mi voglio far passare per un santo,"
+      },
+      {
+        "testo": "Ma alla fin fine, nö sön manco ûn cëgo",
+        "it": "Ma alla fin fine, non sono mica un chierico"
+      },
+      {
+        "testo": "Né ûn Giuseppe, o ûn Eunuco, e perdiesanto",
+        "it": "Né un Giuseppe, o un eunuco, e perdiesanto"
+      },
+      {
+        "testo": "Se ti mæ vosciûo ben, cose ne posso?",
+        "it": "Se tu mi hai voluto bene , cosa ci posso fare io?"
+      },
+      {
+        "testo": "Dimme ûn pittin, doveivo spûate addosso?",
+        "it": "Dimmi un pochino: dovevo sputarti addosso?"
+      },
+      {
+        "testo": "Mi pe dö resto, non ho mai pensôu",
+        "it": "Io, per il resto, non ho mai pensato"
+      },
+      {
+        "testo": "De vùei tiâ de sasciæ, retiando ö brassö",
+        "it": "Di voler tirare sassate, ritirando il braccio,"
+      },
+      {
+        "testo": "Né t'ho mai dîto che t'aviæ sposôu,",
+        "it": "Né ti ho mai detto che ti avrei sposato,"
+      },
+      {
+        "testo": "Che de queste luçie mi nö ne fasso;",
+        "it": "Perché di queste musse io non ne racconto;"
+      },
+      {
+        "testo": "Cose ho fæto de mâ, t'ho trûffôu,",
+        "it": "Cosa ho fatto di male? Ti ho truffata?"
+      },
+      {
+        "testo": "Eh perdie, gh'é da fâ tanto fracasso?",
+        "it": "Eh perdiana, c'è da fare tanto fracasso?"
+      },
+      {
+        "testo": "Nö l'ho fæto da solo, e se gh'ëa mì,",
+        "it": "Non l'ho fatto da solo, e se c'ero io,"
+      },
+      {
+        "testo": "Vêu dî pe ö meno, che ti gh'ëi tì ascì.",
+        "it": "Vuol dire, per lo meno, che c'eri anche tu!"
+      },
+      {
+        "testo": "Poi se fîse padron de dî e de fâ,",
+        "it": "Poi se fossi padrone di dire e di fare,"
+      },
+      {
+        "testo": "Se a-o mæ destin ghe comandasse mì,",
+        "it": "Se al mio destino comandassi io,"
+      },
+      {
+        "testo": "Ti pêu ëse çerta che nö stæivo a giâ",
+        "it": "Puoi essere certa che non starei a girare"
+      },
+      {
+        "testo": "Pe mâ e pe tæra e a rompï a mössa a tì,",
+        "it": "Per mare e per terra e a rompere la mussa a te,"
+      },
+      {
+        "testo": "Ma tornieivo a mæ Troia a fabbricâ,",
+        "it": "Ma tornerei a fabbricare la mia Troia,"
+      },
+      {
+        "testo": "Comme a l'ëa primma e quande fösse lì,",
+        "it": "Come era prima, e quando fossi lì,"
+      },
+      {
+        "testo": "Scì che sæ l'öa de stâ co-e balle a-o sö",
+        "it": "Sì che sarebbe l'ora di stare con le balle al sole"
+      },
+      {
+        "testo": "A piggiase dö spazio e a fâ l'amö!",
+        "it": "A prendersi dello spazio e a fare l'amore!"
+      },
+      {
+        "testo": "Ma l'Italia a me ciamma e devo andâghe",
+        "it": "Ma l'Italia mi chiama e devo andarci"
+      },
+      {
+        "testo": "Anche cö rischio de rompîme ö collo,",
+        "it": "Anche col rischio di rompermi il collo,"
+      },
+      {
+        "testo": "Giove ö comanda e cose posso fâghe",
+        "it": "Giove lo comanda e cosa posso farci"
+      },
+      {
+        "testo": "Se lasciû in çê nö sön tegnûo pe ûn sciollo?",
+        "it": "Se lassù in cielo non sono ritenuto sciocco?"
+      },
+      {
+        "testo": "Ö sà ö Segnö, se ö m'ha sciûgôu zà e braghe",
+        "it": "Lo sa il Signore se mi ha già rotto le scatole"
+      },
+      {
+        "testo": "Se dappertûtto dove vaggo, Apollo",
+        "it": "Se dappertutto dove vado, Apollo"
+      },
+      {
+        "testo": "In mille moddi ö me l'ha fæto intende,",
+        "it": "In mille modi me lo ha fatto intendere,"
+      },
+      {
+        "testo": "Che bezêugna che vagghe e che me rende.",
+        "it": "Che bisogna che io vada e che mi arrenda."
+      },
+      {
+        "testo": "Cose sön ste battûe che ti me strisci?",
+        "it": "Cosa sono queste battute che mi lanci strisci?"
+      },
+      {
+        "testo": "Cose ö l'é dunque mai questo to sdegno?",
+        "it": "Cos'è dunque mai questo tuo sdegno?"
+      },
+      {
+        "testo": "Non intendo perché ti ghe patisci",
+        "it": "Non capisco perché tu ci patisca"
+      },
+      {
+        "testo": "Se mì in Italia vaddo a fâme ûn regno,",
+        "it": "Se io vado in Italia a farmi un regno,"
+      },
+      {
+        "testo": "Mentre tì ti ë chi in Libia e ti ghe pisci",
+        "it": "Mentre tu sei qui in Libia e ci pisci"
+      },
+      {
+        "testo": "Da padronn-a e da re, perbaccolegno!",
+        "it": "Da padrona e da re, perbaccolegno!"
+      },
+      {
+        "testo": "E vorrieivo savei, per cose mì",
+        "it": "E vorrei sapere, perché io"
+      },
+      {
+        "testo": "Nö posse fâ, cose ti æ fæto tì.",
+        "it": "Non possa fare, quello che hai fatto tu."
+      },
+      {
+        "testo": "Gh'é mæ poæ, che ö me sciûga ogni momento",
+        "it": "C'è mio padre, che mi asciuga ogni momento"
+      },
+      {
+        "testo": "Se særo ûn œûggio pe dormî ûn pittin,",
+        "it": "Se chiudo un occhio per dormire un pochino,"
+      },
+      {
+        "testo": "E ö me dixe che a l'é a fôa dö bestento,",
+        "it": "E mi dice che è la favola del bestento,"
+      },
+      {
+        "testo": "Che sæ l'öa d'andâ drîto a-o mæ destin;",
+        "it": "Che sarebbe l'ora di andare dritto al mio destino;"
+      },
+      {
+        "testo": "Me sovven de mæ figgio, e ö l'e ûn tormento",
+        "it": "Mi ricordo di mio figlio, ed è un tormento"
+      },
+      {
+        "testo": "De pensâ che ö deve ese ûn re latin,",
+        "it": "Pensare che deve essere un re latino,"
+      },
+      {
+        "testo": "E che invece ghe levo ö pan da-i denti",
+        "it": "E che invece gli tolgo il pane dai denti"
+      },
+      {
+        "testo": "A sön de balle e de divertimenti.",
+        "it": "A suon di balle e di divertimenti."
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 10",
+      "it": "Didone sviene; Anna supplica invano "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
+      {
+        "testo": "Nö l'é manco mez'öa che l'é vegnûo",
+        "it": "Non è nemmeno mezz'ora che è venuta"
+      },
+      {
+        "testo": "Ûnn-a staffetta de Giove e ûn sô messaggio",
+        "it": "Una staffetta di Giove e un suo messaggero"
+      },
+      {
+        "testo": "A dîme bellinön, becco fottûo,",
+        "it": "A dirmi belinone, becco fottuto,"
+      },
+      {
+        "testo": "A ordiname che me mette in viaggio,",
+        "it": "A ordinarmi di mettermi in viaggio,"
+      },
+      {
+        "testo": "E l'ho visto e sentîo, questo te ö zûo,",
+        "it": "E l'ho visto e sentito, questo te lo giuro,"
+      },
+      {
+        "testo": "Nön invento, n'azzûnzo e nö retaggio,",
+        "it": "Non invento, non aggiungo e non ritaglio,"
+      },
+      {
+        "testo": "Dunque lascia cörrî, ciû ti me frösci",
+        "it": "Dunque lascia correre, più tu mi stressi"
+      },
+      {
+        "testo": "E ciû mösse ti fæ, ciû ti m'angösci.",
+        "it": "E più musse tu fai, più mi fai soffrire."
+      },
+      {
+        "testo": "A l'aveiva aspëtôu che lë ö finisse",
+        "it": "Aveva aspettato che lui finisse"
+      },
+      {
+        "testo": "Senza dî ûnn-a parolla e senza ansciâ,",
+        "it": "Senza dire una parola e senza ansimare,"
+      },
+      {
+        "testo": "Co-i denti ciôsi e co-e pûpille fisse,",
+        "it": "Coi denti stretti  e con le pupille fisse,"
+      },
+      {
+        "testo": "Contegnindo ö ghignon pe nö scciûppâ,",
+        "it": "Trattenendo la rabbia per non scoppiare,"
+      },
+      {
+        "testo": "Sempre a töccö e nö töccö e lì in sce pisse",
+        "it": "Sempre a tocco e non tocco, sul filo di"
+      },
+      {
+        "testo": "D'andâ tûtta de sörva e straboccâ,",
+        "it": "Per andare tutta sopra e straboccare,"
+      },
+      {
+        "testo": "Ma nö pûendone ciû, neigra dä raggia,",
+        "it": "Ma non potendone più, nera dalla rabbia,"
+      },
+      {
+        "testo": "Testa e cû a l'incappella e a te ghe sbraggia.",
+        "it": "Lo ribalta testa e culo  e gli sbraita contro."
       }
     ]
   },
