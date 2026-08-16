@@ -1684,7 +1684,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "A brûttûi, bulicugge, orbi inaiæ,",
-        "it": "\"Ah vili, lunatici, ciechi in confusione,"
+        "it": "\"Ah vili, frociazzi, ciechi in confusione,"
       },
       {
         "testo": "Besêugna proprio che ne ö lasciæ dî,",
@@ -1712,7 +1712,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Mettisegheo da noî, ben rebattûo.",
-        "it": "Mettercelo da noi, ben ribattuto.\""
+        "it": "Mettercelo dentro da soli, ben ribattuto.\""
       },
       {
         "testo": "Alôa Cassandra, che a n'ëa gûæi credûa",
@@ -3012,7 +3012,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "C'ûn picosso in te man, sto bulicugge",
-        "it": "Con un'ascia in mano, questo coglione"
+        "it": "Con un'ascia in mano, questo frocione"
       },
       {
         "testo": "Ö piccava in ta porta a ciû nö posso,",
@@ -6572,7 +6572,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Stö bulicugge ö dà di pûnti a mì;",
-        "it": "Questo frocio dà dei punti a me!"
+        "it": "Questo frocione dà dei punti a me!"
       },
       {
         "testo": "Mercûrio, ho dîto che ti vegni chì.",
@@ -6641,6 +6641,102 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö nö deve privâne ö sô figgiêu!",
         "it": "Non deve privarne il suo figliolo!"
+      },
+      {
+        "testo": "Ö n'ha ancon terminôu che zâ se mette",
+        "it": "Non ha ancora finito che già si mette"
+      },
+      {
+        "testo": "Mercûrio pe esegûi stâ commiscion,",
+        "it": "Mercurio per eseguire questa commissione,"
+      },
+      {
+        "testo": "Ö s'attacca a-e caviggie ûn pâ d'alette,",
+        "it": "Si attacca alle caviglie un paio di alette,"
+      },
+      {
+        "testo": "Cön de ciûmme de gazza e de piccion,",
+        "it": "Con delle piume di gazza e di piccione,"
+      },
+      {
+        "testo": "Ûnn-a çenta d'ôrpello e de ciambrette",
+        "it": "Una cintura d'orpello e di lustrini"
+      },
+      {
+        "testo": "E ö storico capello de latton,",
+        "it": "E lo storico cappello d'ottone,"
+      },
+      {
+        "testo": "E ö l'agguanta pe bacco, ö Cadûceo,",
+        "it": "E agguanta, perbacco, il Caduceo,"
+      },
+      {
+        "testo": "Quella verga, sei ben, cöscì da rëo.",
+        "it": "Quella verga, sai bene, così utile al male."
+      },
+      {
+        "testo": "A l'é questa che a serve a-i sô manezzi,",
+        "it": "È questa che serve ai suoi maneggi,"
+      },
+      {
+        "testo": "Mal'azioin, ruffianate e tradimenti,",
+        "it": "Male azioni, ruffianate e tradimenti,"
+      },
+      {
+        "testo": "Che a combinn-a e ganciatê e ladrunezzi",
+        "it": "Che combina imbrogli e ladronerie,"
+      },
+      {
+        "testo": "Che a l'accianta in te l'orto a-i diffidenti,",
+        "it": "Che lo mette in tasca perfino i diffidenti,"
+      },
+      {
+        "testo": "Che a dirizze i cöggiöin, che a bûrla e leggi,",
+        "it": "Che dirige i coglioni, che si fa beffe delle leggi,"
+      },
+      {
+        "testo": "Che a fa i zêughi de borsa e i fallimenti,",
+        "it": "Che fa i giochi di borsa e i fallimenti,"
+      },
+      {
+        "testo": "Che a fa perde e moggiæ, che a vende e figgie,",
+        "it": "Che fa perdere le mogli, che vende le figlie,"
+      },
+      {
+        "testo": "Chi ë a rövinn-a de case e de famiggie.",
+        "it": "Che è la rovina di case e famiglie."
+      },
+      {
+        "testo": "In sce primma ö se bulla e ö fa ûnn-a ciomba",
+        "it": "Sulle prime si butta e va in picchiata"
+      },
+      {
+        "testo": "Zû da-o çë gambe streite e a testa avanti,",
+        "it": "Giù dal cielo a gambe strette e a testa avanti,"
+      },
+      {
+        "testo": "E o precipita zû comme ûnn-a bomba",
+        "it": "E precipita giù come una bomba"
+      },
+      {
+        "testo": "In sce ö ciû grosso di nevosi Atlanti,",
+        "it": "Sul più grosso dei nevosi Atlanti,"
+      },
+      {
+        "testo": "Dove ö vento ö ghe sciûscia e ö ghe rimbomba",
+        "it": "Dove il vento ci soffia e ci rimbomba,"
+      },
+      {
+        "testo": "Dove a nebbia cö zeo, regna costanti,",
+        "it": "Dove la nebbia col gelo regnano costanti,"
+      },
+      {
+        "testo": "E in sce stö monte che ö l'ëa ûn sô antenato,",
+        "it": "E su questo monte, che era in realtà un suo antenato,"
+      },
+      {
+        "testo": "Öse ferma ûn pittin, pe piggiâ fiato.",
+        "it": "Si ferma un pochino per riprendere fiato."
       }
     ]
   },
