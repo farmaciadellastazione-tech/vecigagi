@@ -6641,7 +6641,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö nö deve privâne ö sô figgiêu!",
         "it": "Non deve privarne il suo figliolo!"
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 8",
+      "it": "Mercurio scuote Enea "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Ö n'ha ancon terminôu che zâ se mette",
         "it": "Non ha ancora finito che già si mette"
@@ -6828,11 +6848,11 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Cioè che ti ë ûn bulicciö, ûnn-a bellinn-a",
-        "it": "Cioè che sei un finocchio, una belina"
+        "it": "Cioè che sei un buliccio, una belina"
       },
       {
         "testo": "E de tô balle ö n'ha zà a mössa pinn-a.",
-        "it": "E delle tue balle ha già la mussa piena."
+        "it": "E delle tue balle ne ha già la mussa piena."
       }
     ]
   },
