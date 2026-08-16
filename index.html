@@ -2079,6 +2079,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"famiglia", livello:"B1", it:"suocera e nuora, tempesta e gragnola", ge:"Sêuxoa e nêua, tempesta e gragnêua" },
       { tema:"saluti", livello:"A1", it:"signore", sp:"signoo", cr:"signor", ge:"scignoro, sciô " },
       { tema:"saluti", livello:"A1", it:"benvenuto", sp:"benvegnù/benvegnü", mn:"benvegnù/bënvegnü", cr:"benvnut", ge:"benvegnù/benvegnuo", verif:"cr:g" },
       { tema:"verbi", livello:"A1", it:"fatto", cr:"fat" },
@@ -3923,7 +3924,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 480;
+const VOC_VERSION = 481;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
