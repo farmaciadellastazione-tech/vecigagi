@@ -7100,7 +7100,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Siôto, vile, ruffian, testa de casso,",
-        "it": "Impiastro, vile, ruffiano,testa di cazzo"
+        "it": "Sporco, vile, ruffiano,testa di cazzo"
       },
       {
         "testo": "Brûtö che ti ë, ti me ne fæ de queste?",
