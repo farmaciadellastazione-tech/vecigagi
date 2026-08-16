@@ -6737,6 +6737,102 @@ const STORIE_DEFAULT = [
       {
         "testo": "Öse ferma ûn pittin, pe piggiâ fiato.",
         "it": "Si ferma un pochino per riprendere fiato."
+      },
+      {
+        "testo": "Poi ö törna a bollase e costezzando",
+        "it": "Poi torna a tuffarsi e costeggiando,"
+      },
+      {
+        "testo": "Tocco e nö tocco in sce africane sponde.",
+        "it": "Tocco e non tocco sulle sponde africane."
+      },
+      {
+        "testo": "Proprio cömme ûn ôchin ö va sfrixando",
+        "it": "Proprio come un gabbiano va sfiorando,"
+      },
+      {
+        "testo": "E annunziando a burrasca ö pei de onde,",
+        "it": "E annunciando la burrasca, a pelo delle onde,"
+      },
+      {
+        "testo": "Becchezzando in ça e in là, de quand'in quando",
+        "it": "Becchettando di qua e di là, di quando in quando,"
+      },
+      {
+        "testo": "Con di sâti, di sguetti, e de ôte rionde,",
+        "it": "Con dei salti, dei guizzi e delle giravolte,"
+      },
+      {
+        "testo": "A so meta ö l'arriva e çea con çea",
+        "it": "Alla sua meta arriva e, faccia a faccia,"
+      },
+      {
+        "testo": "Pe-a primma cosa se ghe affaccia Enea.",
+        "it": "Per prima cosa gli si para davanti Enea."
+      },
+      {
+        "testo": "Ö l'ëa intento a di piani e di progetti",
+        "it": "Era intento a piani e progetti"
+      },
+      {
+        "testo": "De sontuosi palazzi e monumenti,",
+        "it": "Di sontuosi palazzi e monumenti,"
+      },
+      {
+        "testo": "Tûtto lindo arrissôu, tûtto frexetti,",
+        "it": "Tutto lindo e arricciato, tutto fronzoli,"
+      },
+      {
+        "testo": "Co-i cavelli oleosi e puzzolenti,",
+        "it": "Coi capelli oleosi e puzzolenti,"
+      },
+      {
+        "testo": "C'ûnn-a sciabbra da rîe, pe dâ ai peccetti",
+        "it": "Con una sciabola da ridicola, per darle agli uccellini"
+      },
+      {
+        "testo": "Tûtta gemme, arabeschi ed ornamenti,",
+        "it": "Tutta gemme, arabeschi ed ornamenti,"
+      },
+      {
+        "testo": "E ûn mantello de porpora elegante",
+        "it": "E un mantello di porpora elegante"
+      },
+      {
+        "testo": "Ûn regallo tesciûo da sô galante.",
+        "it": "Un regalo tessuto dalla sua amante."
+      },
+      {
+        "testo": "Appenn-a che ö l'ha visto ö te l'accosta",
+        "it": "Appena lo ha visto gli si accosta"
+      },
+      {
+        "testo": "E ö ghe sbraggia in te l'oëgia: ah bellinön",
+        "it": "E gli sbraita nell'orecchio: ah belinone!"
+      },
+      {
+        "testo": "Vanni là, che ghe vêu da faccia tosta",
+        "it": "Ma vai là, che ci vuole della faccia tosta"
+      },
+      {
+        "testo": "A fâ ö leccabrûnie con stö saccon,",
+        "it": "A fare il lecca-prugna con questo saccone,"
+      },
+      {
+        "testo": "Ö baccan de lasciû ö me manda a posta",
+        "it": "Il capo di lassù mi manda apposta"
+      },
+      {
+        "testo": "A annûnziate de trinca a sô opinion,",
+        "it": "Ad annunciarti direttamente la sua opinione,"
+      },
+      {
+        "testo": "Cioè che ti ë ûn bulicciö, ûnn-a bellinn-a",
+        "it": "Cioè che sei un finocchio, una belina"
+      },
+      {
+        "testo": "E de tô balle ö n'ha zà a mössa pinn-a.",
+        "it": "E delle tue balle ha già la mussa piena."
       }
     ]
   },
