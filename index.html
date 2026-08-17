@@ -2458,10 +2458,10 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A2", it:"cassa", en:"cash register", sp:"cassa", mn:"cassa", cr:"cas'a", ge:"cascia", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
       { tema:"casa", livello:"B1", it:"cassetto", en:"drawer", fr:"tiroir", es:"cajón", de:"Schublade", pt:"gaveta", ca:"calaix", sp:"tiéto,càntoa", mn:"kantua/càntua", cr:"tiret, cas'et", verif:"sp:g,mn:g" },
       { tema:"cibo", livello:"A1", it:"castagna", en:"chestnut", sp:"castagna", mn:"castagna", cr:"castagna", ge:"castagna ", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g,cr:g,ge:g" },
-      { tema:"cibo", livello:"A2", it:"castagnaccio", en:"chestnut cake", sp:"castignasso,castagnina", mn:"castagnassu", cr:"castagnaz", ge:"castagnasso, panella", verif:"sp:g,mn:g" },
+      { tema:"cibo", livello:"A2", it:"castagnaccio", en:"chestnut cake", sp:"castignasso,castagnina", mn:"castagnassu", cr:"castagnaz", ge:"castagnasso, panella", verif:"sp:g,mn:g,ge:g" },
       { it:"castagne secche", sp:"réboe ", cr:"sechine", ge:"réboe ", verif:"sp:g", nt:["mn"] },
       { tema:"dialetti", livello:"A2", it:"castello", en:"castle", sp:"castèo", mn:"castêlu", cr:"casted", ge:"castêllo", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
-      { tema:"dialetti", it:"catena", sp:"cadena", mn:"cadena", cr:"catena", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g,cr:g" },
+      { tema:"dialetti", livello:"A2", it:"catena", en:"chain", sp:"cadena", mn:"cadena", cr:"catena", ge:"cadeña", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g,cr:g" },
       { tema:"aggettivi", livello:"A1", it:"cattivo", en:"bad", fr:"mauvais", es:"malo", de:"schlecht|gemein", pt:"mau", ru:"плохой|злой", ca:"dolent|mal", sp:"cativo", mn:"catìu", cr:"cativ", ge:"catîvo", zh:"坏", ja:"悪い", ia:"mal", la:"malus", grc:"κακός", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g,cr:g", ro:"rău" },
       { tema:"natura", livello:"B1", it:"cava", en:"quarry", sp:"cava", mn:"cava", cr:"cava", ge:"cava", verif:"sp:g,cr:g" },
       { tema:"verbi", it:"cavalcare/andare in", en:"ride", sp:"cavarcae", cr:"cavalcar", ge:"montâ", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g", nt:["mn"] },
@@ -3923,7 +3923,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 487;
+const VOC_VERSION = 488;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
