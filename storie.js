@@ -8173,7 +8173,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ûn pâ de dîe in tö cû pe poi strangöase!",
         "it": "Un paio di dita nel culo per poi strangolarsi!"
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 11",
+      "it": "I riti magici e il rogo "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "E cûn l'agiûtto da superstizion",
         "it": "E con l'aiuto della superstizione"
