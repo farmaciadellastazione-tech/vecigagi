@@ -2243,7 +2243,7 @@ async function aiClassificaERTraducici(italianTerm, langCodes) {
 }
 
 async function callGroq(prompt) {
-  const res = await fetchTimeout('https://api.groq.com/openai/v1/chat/completions', { method:'POST', headers:{'Authorization':'Bearer '+aiConfig.key,'Content-Type':'application/json'}, body:JSON.stringify({ model:'llama-3.3-70b-versatile', messages:[{role:'user',content:prompt}], temperature:0.3, response_format:{type:'json_object'} }) }, 30000);
+  const res = await fetchTimeout('https://api.groq.com/openai/v1/chat/completions', { method:'POST', headers:{'Authorization':'Bearer '+aiConfig.key,'Content-Type':'application/json'}, body:JSON.stringify({ model:'llama-3.1-8b-instant', messages:[{role:'user',content:prompt}], temperature:0.3, response_format:{type:'json_object'} }) }, 30000);
   if (!res.ok) throw new Error('Groq HTTP '+res.status+': '+await res.text());
   return (await res.json()).choices[0].message.content;
 }

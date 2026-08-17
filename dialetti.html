@@ -3459,7 +3459,7 @@ async function adminAICall(prompt) {
       const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
         method:'POST', signal: ctrl.signal,
         headers:{'Authorization':'Bearer '+aiConfig.key,'Content-Type':'application/json'},
-        body:JSON.stringify({ model:'llama-3.3-70b-versatile', messages:[{role:'user',content:prompt}], temperature:0.2, response_format:{type:'json_object'} })
+        body:JSON.stringify({ model:'llama-3.1-8b-instant', messages:[{role:'user',content:prompt}], temperature:0.2, response_format:{type:'json_object'} })
       });
       if (!r.ok) throw new Error('Groq HTTP '+r.status);
       text = (await r.json()).choices[0].message.content;
