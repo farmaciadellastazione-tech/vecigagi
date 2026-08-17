@@ -9906,18 +9906,25 @@ function Vocabolario({
 function InputVocale({
   bcp47,
   lingaNome,
+  atteso,
+  codLingua,
   onVerifica
 }) {
   const [trascritto, setTrascritto] = useState("");
   const [statoMic, setStatoMic] = useState("idle");
   const onResult = useCallback(testi => {
     setStatoMic("elaborazione");
-    const t = testi[0] || "";
     // Pre-converte numeri in parole nella lingua corretta prima di verificare
-    const tConv = bcp47 ? convertiNumeri(t, bcp47) : t;
+    const alternative = (testi.length ? testi : [""]).map(t => bcp47 ? convertiNumeri(t, bcp47) : t);
+    // Il riconoscimento vocale restituisce fino a 5 alternative (maxAlternatives): per
+    // parole rare/poco comuni la trascrizione più probabile è spesso sbagliata mentre
+    // una delle alternative successive è corretta. Usa la prima che risulta valida,
+    // altrimenti ricadi sulla trascrizione principale (per mostrare comunque un errore sensato).
+    const scelta = atteso ? alternative.find(alt => isCorretta(atteso, alt, bcp47, codLingua)) : null;
+    const tConv = scelta || alternative[0] || "";
     setTrascritto(tConv);
     setTimeout(() => onVerifica(tConv), 300);
-  }, [onVerifica, bcp47]);
+  }, [onVerifica, bcp47, atteso, codLingua]);
   const {
     ascolto,
     avviaAscolto
@@ -11295,6 +11302,7 @@ function SchermataQuiz({
   }, [fine]);
   const lDA = carta?.tipo === "coniugazione" ? carta.lDA : lingue.find(l => l.codice === carta?.da);
   const lA = carta?.tipo === "coniugazione" ? carta.lA : lingue.find(l => l.codice === carta?.a);
+  const attesoCorrente = carta ? (carta.tipo === "coniugazione" ? carta.atteso : carta.entry[carta.a]) : null;
   const livello = carta ? getCoppia(stats, carta.key).livello : 0;
   const isRipasso = carta ? isAppresa(stats, carta.key) : false;
   const lv = carta ? LIVELLI[carta.entry.livello || "A1"] : null;
@@ -11743,6 +11751,8 @@ function SchermataQuiz({
   }, /*#__PURE__*/React.createElement(InputVocale, {
     bcp47: lA.bcp47,
     lingaNome: lA.nome,
+    atteso: attesoCorrente,
+    codLingua: lA.codice,
     onVerifica: onVerifica
   }), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-3"
