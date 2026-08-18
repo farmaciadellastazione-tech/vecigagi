@@ -8225,6 +8225,262 @@ const STORIE_DEFAULT = [
       {
         "testo": "O assettandose a tôa, cö pan inværso.",
         "it": "O sedendosi a tavola, col pane rovesciato."
+      },
+      {
+        "testo": "E comme ancön nö ghe bastasse a pûia,",
+        "it": "E come se ancora non le bastasse la paura,"
+      },
+      {
+        "testo": "Pâ che ghe seggie capitôu stö fæto:",
+        "it": "Pare che le sia capitato questo fatto:"
+      },
+      {
+        "testo": "Lë a possedeiva ûnn-a fotografia",
+        "it": "Lei possedeva una fotografia"
+      },
+      {
+        "testo": "Che dö morto sô maio, a l'ëa ö ritræto,",
+        "it": "Che del suo defunto marito, era il ritratto,"
+      },
+      {
+        "testo": "Cappo d'arte de Rösci o de Pavia",
+        "it": "Capolavoro di Rossi o di Pavia,"
+      },
+      {
+        "testo": "E che nö sô quante a gh'avesse dæto,",
+        "it": "E che non so quanto ci avesse dato,"
+      },
+      {
+        "testo": "Ma che ö l'ëa fæto in grande e a-o natûrale",
+        "it": "Ma che era fatto in grande e al naturale"
+      },
+      {
+        "testo": "C'ûnn-a cornixe che nö gh'ëa l'eguale.",
+        "it": "Con una cornice che non aveva eguali."
+      },
+      {
+        "testo": "Gh'ëa zà parsö che a nœûtte ö se mescesse",
+        "it": "Le era già parso che la notte  si muovesse"
+      },
+      {
+        "testo": "E che ö l’amiessec'ûn pa d'œûggi scûi,",
+        "it": "E che la guardasse con un paio di occhi scuri,"
+      },
+      {
+        "testo": "Che ö ciamesse pe nomme e ö ghe dixesse:",
+        "it": "Che la chiamasse per nome e le dicesse:"
+      },
+      {
+        "testo": "«Avardite Didon, che ti nö a dûi!»",
+        "it": "«Stai attenta Didone, che non duri!»"
+      },
+      {
+        "testo": "E ûnn-a sbrazzoa in sce-ö teito a gh'annunziesse",
+        "it": "E una civetta sul tetto le annunciasse"
+      },
+      {
+        "testo": "A sô fin, cöi sô cênti e i sô lûi...",
+        "it": "La sua fine, coi suoi pianti e i suoi ululati ..."
+      },
+      {
+        "testo": "A s'assunava d'ëse sola e spersa,",
+        "it": "Si sognava di essere sola e sperduta,"
+      },
+      {
+        "testo": "E ö casto Enea che ö sprexiava a guersa.",
+        "it": "E il casto Enea che le disprezzava la guercia."
+      },
+      {
+        "testo": "E veddeiva coscì, coscì pensava",
+        "it": "E vedeva così, così pensava"
+      },
+      {
+        "testo": "Quello veggetto, che aviei visto a seia,",
+        "it": "Quel vecchietto, che avrete visto la sera,"
+      },
+      {
+        "testo": "Che ö piccava bacchæ, che ö s'arraggiava",
+        "it": "Che tirava bastonate, che si arrabbiava"
+      },
+      {
+        "testo": "Perché i batösi ghe dixeivan Neia:",
+        "it": "Perché i maranza gli dicevano \"Neia\":"
+      },
+      {
+        "testo": "Che ö no pueiva dormî, che ö nö mangiava",
+        "it": "Che non poteva dormire, che non mangiava,"
+      },
+      {
+        "testo": "Che ö criava sempre da vegnighe a peia,",
+        "it": "Che gridava sempre da farsi venir male,"
+      },
+      {
+        "testo": "Credendo de sentî sempre ûn batöso",
+        "it": "Credendo di sentire sempre un maranza"
+      },
+      {
+        "testo": "Che ö ghe sbraggiasse questo nomme odioso.",
+        "it": "Che gli sbraitasse questo nome odioso."
+      },
+      {
+        "testo": "Coscì, a povia Didon, missa a quaterno",
+        "it": "Così, la povera Didone, messa alle corde"
+      },
+      {
+        "testo": "A commensa a piggiâ e disposizion",
+        "it": "Comincia a prendere le disposizioni"
+      },
+      {
+        "testo": "Pe levâse ädreitûa da quest'inferno",
+        "it": "Per levarsi addirittura da quest'inferno"
+      },
+      {
+        "testo": "Da questa vitta de tribulazion;",
+        "it": "Da questa vita di tribolazioni;"
+      },
+      {
+        "testo": "E sforzandose a rîe, calma all'esterno,",
+        "it": "E sforzandosi di ridere, calma all'esterno,"
+      },
+      {
+        "testo": "Ascondendo i sô affanni e e sô pascioin,",
+        "it": "Nascondendo i suoi affanni e la sua passione,"
+      },
+      {
+        "testo": "Anna, a dixe a so sœû, da chi in avanti",
+        "it": "\"Anna\", dice a sua sorella, \"da qui in avanti"
+      },
+      {
+        "testo": "Vœûggio futtime a reo de tûtti quanti!",
+        "it": "Voglio fottermene altamente di tutti quanti!\""
+      },
+      {
+        "testo": "Mi conoscio ûnn-a Singa, ûnn-a donninn-a",
+        "it": "Io conosco una Zingara, una donnina"
+      },
+      {
+        "testo": "Proprio dö paise de Fontannabonn-a",
+        "it": "Proprio del paese di Fontanabuona"
+      },
+      {
+        "testo": "Che a l’é stæta cantante e ballerinn-a,",
+        "it": "Che è stata cantante e ballerina,"
+      },
+      {
+        "testo": "Scin che a pûeiva pagâ da so personn-a",
+        "it": "Finché poteva pagare di persona,"
+      },
+      {
+        "testo": "Poi fiorista da stradde e chellerinn-a",
+        "it": "Poi fiorista da strada e cameriera"
+      },
+      {
+        "testo": "E da vegia, a s'inzegna e a l'appixonn-a",
+        "it": "E da vecchia, si ingegna e affitta"
+      },
+      {
+        "testo": "De stanze a di remorchi e che a sa l'arte",
+        "it": "Delle stanze a dei rimorchi e che sa l'arte"
+      },
+      {
+        "testo": "D'annunzia l'avvegnî, faxendo e carte.",
+        "it": "Di annunciare l'avvenire, facendo le carte."
+      },
+      {
+        "testo": "Lë a sa fâ di pacciûghi e di manezzi",
+        "it": "Lei sa fare dei pacciughi e dei maneggi"
+      },
+      {
+        "testo": "Con di baggi sciacchê, de cöe de bisce,",
+        "it": "Con dei rospi schiacciati, con code di bisce,"
+      },
+      {
+        "testo": "E co-e paole segrette e co-i strionezzi",
+        "it": "E con le parole segrete e con le stregonerie"
+      },
+      {
+        "testo": "A te i mette a buggî, misce e remisce,",
+        "it": "Te li mette a bollire, mescola e rimescola,"
+      },
+      {
+        "testo": "Che a pœû fâ cose a vœû co-i sô strionezzi,",
+        "it": "Che può fare quello che vuole con le sue stregonerie,"
+      },
+      {
+        "testo": "Fâ che nasce l'amö, che ö scomparisce,",
+        "it": "Fare che nasca l'amore, che scompaia,"
+      },
+      {
+        "testo": "Che se mesce e montagne e vive i morti,",
+        "it": "Che si muovano le montagne e vivano i morti,"
+      },
+      {
+        "testo": "Addrizzà a testa a-e donne e gambe a-i storti.",
+        "it": "Raddrizzare la testa alle donne e le gambe agli storti."
+      },
+      {
+        "testo": "Mi te zûo, figgia caa, che nö vorrieivo",
+        "it": "Io ti giuro, cara ragazza, che non vorrei"
+      },
+      {
+        "testo": "Sottomettime a questi incantamenti,",
+        "it": "Sottomettermi a questi incantesimi,"
+      },
+      {
+        "testo": "Ma nö veddo âtra stradda e nö trovieivo",
+        "it": "Ma non vedo altra strada e non troverei"
+      },
+      {
+        "testo": "Atra cûra adattâ pe i mæ tormenti,",
+        "it": "Altra cura adatta per i miei tormenti,"
+      },
+      {
+        "testo": "Dunque famme ö piaxei, che mi gradieivo",
+        "it": "Dunque fammi il piacere, ché io gradirei"
+      },
+      {
+        "testo": "Fâ ö strionezzo in ti reali appartamenti,",
+        "it": "Fare la stregoneria nei reali appartamenti,"
+      },
+      {
+        "testo": "Çerca un locale spazioso, averto",
+        "it": "Cerca un locale spazioso, aperto,"
+      },
+      {
+        "testo": "Anzi ciû che se pœu, ben a-o scoverto.",
+        "it": "Anzi più che si può, ben allo scoperto."
+      },
+      {
+        "testo": "Ammûggiando de legne in abbondanza,",
+        "it": "Ammucchiando della legna in abbondanza,"
+      },
+      {
+        "testo": "Comme ti fæsci pe componn-e ûn fôu,",
+        "it": "Come faresti per comporre un falò,"
+      },
+      {
+        "testo": "Piggia e armi che ho appeiso in ta mæ stanza",
+        "it": "Prendi le armi che ho appeso nella mia stanza"
+      },
+      {
+        "testo": "E che quello brûtö ö m'ha regalôu,",
+        "it": "E che quel vile mi ha regalato,"
+      },
+      {
+        "testo": "Tûtta a roba che a l'ëa de sô spettanza",
+        "it": "Tutta la roba che era di sua spettanza"
+      },
+      {
+        "testo": "Scinn-a ö letto in to quæ ö m'ha trombôu",
+        "it": "Fino al letto nel quale mi ha trombata"
+      },
+      {
+        "testo": "Perché s’é dito e combinoû co-a singa,",
+        "it": "Perché si è detto e concordato con la zingara,"
+      },
+      {
+        "testo": "Che no reste de lë manco ûnn-a stringa",
+        "it": "Che non resti di lui nemmeno una stringa."
       }
     ]
   },
