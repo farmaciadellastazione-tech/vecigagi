@@ -8481,6 +8481,250 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che no reste de lë manco ûnn-a stringa",
         "it": "Che non resti di lui nemmeno una stringa."
+      },
+      {
+        "testo": "E so sœû, che a n'aviæ mai ciû credûo",
+        "it": "E sua sorella, che non avrebbe mai creduto"
+      },
+      {
+        "testo": "Che a l'avesse de idee coscì barbinn-e,",
+        "it": "Che avesse delle idee così miserabili,"
+      },
+      {
+        "testo": "Senza fâ osservazioin, lì in sce ö tambûo,",
+        "it": "Senza fare osservazioni, lì sulla pedana"
+      },
+      {
+        "testo": "A se mette a ammuggiâ legne e fascinn-e,",
+        "it": "Si mette ad ammucchiare legna e fascine,"
+      },
+      {
+        "testo": "Mentre a povia Didon con dö velûo,",
+        "it": "Mentre la povera Didone con del velluto,"
+      },
+      {
+        "testo": "Con da sgarza, de frange e de tendinn-e,",
+        "it": "Con della garza, delle frange e delle tendine,"
+      },
+      {
+        "testo": "A ghe fâ tûtt'ingïo ciocche e festoin",
+        "it": "Fa tutt'in giro decorazioni e festoni"
+      },
+      {
+        "testo": "Comme s'ûsa in te gexe in te funzioin.",
+        "it": "Come si usa nelle chiese durante le funzioni."
+      },
+      {
+        "testo": "Savendo a sorte che a ghe vueiva fâ,",
+        "it": "Sapendo la sorte che voleva fare loro,"
+      },
+      {
+        "testo": "A fâ mette in sce-a pira e braghe e mûande,",
+        "it": "Fa mettere sulla pira i pantaloni e le mutande,"
+      },
+      {
+        "testo": "Ö ritræto d'Enea, cö scuddo e a spâ,",
+        "it": "Il ritratto di Enea, con lo scudo e la spada,"
+      },
+      {
+        "testo": "E a-e adorna de ramme e de ghirlande",
+        "it": "E le adorna di rami e di ghirlande"
+      },
+      {
+        "testo": "De cipresso, de pigna e de cornâ,",
+        "it": "Di cipresso, di pino e di corniolo,"
+      },
+      {
+        "testo": "Che mostravan e pigne e balle e giande,",
+        "it": "Che mostravano le pigne, le palle e le ghiande,"
+      },
+      {
+        "testo": "Vöendo forse onorâ, con quest'idea,",
+        "it": "Volendo forse onorare, con quest'idea,"
+      },
+      {
+        "testo": "Ûnn-a de doti ciû apprexiæ d'Enea.",
+        "it": "Una delle doti più apprezzate di Enea."
+      },
+      {
+        "testo": "Lì gh'ëa a singä presente e abberûffâ,",
+        "it": "Lì c'era la zingara presente e arruffata,"
+      },
+      {
+        "testo": "Che a fava di atti e che a mostrava i denti,",
+        "it": "Che faceva dei versi e che mostrava i denti,"
+      },
+      {
+        "testo": "Tiando zù di sacranoin da fâ tremâ",
+        "it": "Tirando giù dei bestemmioni da far tremare"
+      },
+      {
+        "testo": "Tûtta a casa, da-o teito aî fondamenti,",
+        "it": "Tutta la casa, dal tetto alle fondamenta,"
+      },
+      {
+        "testo": "E a bruxiava dell'erba attœscegâ,",
+        "it": "E bruciava dell'erba avvelenata,"
+      },
+      {
+        "testo": "Che a ve fâva vegnî mille aççidenti,",
+        "it": "Che vi faceva venire mille accidenti,"
+      },
+      {
+        "testo": "Cön di siôti, di inguenti e de pomæ",
+        "it": "Con degli impiastri, degli unguenti e delle pomate,"
+      },
+      {
+        "testo": "Cuggie d'aze, galösci e beli cûæ.",
+        "it": "Coglioni d'asino, sterco e budella."
+      },
+      {
+        "testo": "E a reginn-a descâsa e quæxi nûa,",
+        "it": "E la regina scalza e quasi nuda,"
+      },
+      {
+        "testo": "Nö pensando che a fin che a vûeiva fâ",
+        "it": "Non pensando che alla fine che voleva fare"
+      },
+      {
+        "testo": "A ghe versa de dâto ûnn-a mescciûa",
+        "it": "Ci versa sopra una mistura"
+      },
+      {
+        "testo": "Fæta de gran, con di mottin de sâ,",
+        "it": "Fatta di grano, con dei pugnetti di sale,"
+      },
+      {
+        "testo": "E pregando, se in çe gh'é chi se cûa",
+        "it": "E pregando, se in cielo c'è chi si cura"
+      },
+      {
+        "testo": "D'ûnn'amante sedûta e abbandonâ,",
+        "it": "Di un'amante sedotta e abbandonata,"
+      },
+      {
+        "testo": "Perché ö l'aggie in memoia e ö tegne conto",
+        "it": "Affinché lo tenga a memoria e tenga conto"
+      },
+      {
+        "testo": "Da fin che a deve fâ pe quest'affronto.",
+        "it": "Della fine che deve fare per questo affronto."
+      },
+      {
+        "testo": "L'ëa passôu mezanœûtte e tæra e mâ,",
+        "it": "Era passata mezzanotte, e terra e mare,"
+      },
+      {
+        "testo": "Ö Creoû, contegnûo cö continente,",
+        "it": "Il Creato, contenuto e contenente,"
+      },
+      {
+        "testo": "Tûtte e bestie e i cristien che pe mangiâ",
+        "it": "Tutte le bestie e i cristiani che per mangiare"
+      },
+      {
+        "testo": "Se devan fötte vicendevolmente,",
+        "it": "Si devono fottere  vicendevolmente,"
+      },
+      {
+        "testo": "Ëan zà andæti in tö cûccio a riposâ,",
+        "it": "Erano già andati a riposare nella cuccia,"
+      },
+      {
+        "testo": "E ghe a cioccavan saporitamente,",
+        "it": "E ci davano dentro saporitamente,"
+      },
+      {
+        "testo": "Mentre invece Didon, neigra da raggia,",
+        "it": "Mentre invece Didone, nera di rabbia,"
+      },
+      {
+        "testo": "A nö posa, a nö quieta, a nö pisaggia.",
+        "it": "Non riposa, non sta quieta, non si appisola."
+      },
+      {
+        "testo": "E co-a nœûtte crescendo in lë ö brûxö",
+        "it": "E con la notte crescendo in lei il bruciore"
+      },
+      {
+        "testo": "D'ëse stæta tradîa coscì vilmente,",
+        "it": "Di essere stata tradita così vilmente,"
+      },
+      {
+        "testo": "A se mette a sbraggiâ: che bell'ônö,",
+        "it": "Si mette a sbraitare: che bell'onore,"
+      },
+      {
+        "testo": "Mîa che figûa che ö me fa fâ co-a gente!",
+        "it": "Guarda che figura che mi fa fare con la gente!"
+      },
+      {
+        "testo": "Chi ghe sâ, chi troviô tanto brûtö",
+        "it": "Chi ci sarà, chi troverò di così sfigato"
+      },
+      {
+        "testo": "De bonn-a bocca de voei dâme a mente,",
+        "it": "Di bocca buona da volermi dare la mente,"
+      },
+      {
+        "testo": "De sposâme avvilîa comme ö me lascia,",
+        "it": "Da sposarmi avvilita come lui mi lascia,"
+      },
+      {
+        "testo": "Che nö me resta che de fâ a bagascia?",
+        "it": "Che non mi resta che fare la bagascia?"
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 12",
+      "it": "Enea salpa "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
+      {
+        "testo": "Chi porriô ciû sposâ di mæ galanti,",
+        "it": "Chi potrò più sposare dei miei pretendenti,"
+      },
+      {
+        "testo": "Forse ûn arabo, ûn neigro, ûn canellon?",
+        "it": "Forse un arabo, un nero, una grossa mazza?"
+      },
+      {
+        "testo": "Ma se ho fæto zà e corne a tûtti quanti,",
+        "it": "Ma se ho già fatto le corna a tutti quanti,"
+      },
+      {
+        "testo": "Me mandian a fâ fûtte e con raxon;",
+        "it": "Mi manderanno a farmi fottere e con ragione;"
+      },
+      {
+        "testo": "Doviô andâ coi troien pe-o mondo erranti",
+        "it": "Dovrò andare coi troiani per il mondo erranti"
+      },
+      {
+        "testo": "Solo a faghe da serva e da striggion?",
+        "it": "Solo per fargli da serva e da sguattera?"
+      },
+      {
+        "testo": "Perché ogni siôto ö me tambûsce ö sezze,",
+        "it": "Perché ogni lurido mi dia pacche nel sedere,"
+      },
+      {
+        "testo": "Me spelinsighe e scciappe e ö me purpuezze?",
+        "it": "Mi pizzichi le chiappe e mi palpeggi?"
       }
     ]
   },
