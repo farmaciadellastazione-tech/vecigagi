@@ -8664,7 +8664,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "De bonn-a bocca de voei dâme a mente,",
-        "it": "Di bocca buona da volermi dare la mente,"
+        "it": "Di bocca buona da voler prendersi cura di me,"
       },
       {
         "testo": "De sposâme avvilîa comme ö me lascia,",
