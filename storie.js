@@ -8700,7 +8700,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Forse ûn arabo, ûn neigro, ûn canellon?",
-        "it": "Forse un arabo, un nero, una grossa mazza?"
+        "it": "Forse un arabo, un nero, un cazzone?"
       },
       {
         "testo": "Ma se ho fæto zà e corne a tûtti quanti,",
@@ -8725,6 +8725,230 @@ const STORIE_DEFAULT = [
       {
         "testo": "Me spelinsighe e scciappe e ö me purpuezze?",
         "it": "Mi pizzichi le chiappe e mi palpeggi?"
+      },
+      {
+        "testo": "Partiô insemme co-i mæ in sce ûn bastimento",
+        "it": "Partirò insieme ai miei su un bastimento"
+      },
+      {
+        "testo": "Quande commensan a piggiâ respìo?",
+        "it": "Quando cominciano a prendere respiro?"
+      },
+      {
+        "testo": "Senza scopo, raxon, senza argomento",
+        "it": "Senza scopo, ragione, senza argomento"
+      },
+      {
+        "testo": "Doviô törna con mi, portali in gîo?",
+        "it": "Dovrò di nuovo portarli in giro con me?"
+      },
+      {
+        "testo": "Nö, ciûttosto se creppe in sce ö momento,",
+        "it": "No, piuttosto si crepi sul momento,"
+      },
+      {
+        "testo": "Ûnn-a lamma che a taggie, ûn colpo e addio",
+        "it": "Una lama che tagli, un colpo e addio"
+      },
+      {
+        "testo": "Chi ë in te peste ghe stagghe e che ö s'inzegne.",
+        "it": "Chi è nelle peste ci stia e si ingegni."
+      },
+      {
+        "testo": "E chi l'ha in tö stöppin che se ghe ö tegne.",
+        "it": "E chi l'ha nello stoppino se lo tenga."
+      },
+      {
+        "testo": "L'ëa con tante raxioin, che a-o sô tormento",
+        "it": "Era con questi argomenti, che al suo tormento"
+      },
+      {
+        "testo": "Dava sfœûgo a reginn-a abbandonâ",
+        "it": "Dava sfogo la regina abbandonata,"
+      },
+      {
+        "testo": "Quand'Enea che ö l'ëa zà in sce ö bastimento,",
+        "it": "Quando Enea, che era già sul bastimento,"
+      },
+      {
+        "testo": "E ö s'ëa misso in sce a poppa a pisaggiâ,",
+        "it": "E si era messo sulla poppa a sonnecchiare,"
+      },
+      {
+        "testo": "Ö se vedde davanti in t'ûn momento",
+        "it": "Si vede davanti in un momento"
+      },
+      {
+        "testo": "Torna quella figûa de mandillâ",
+        "it": "Di nuovo quella figura da tagliaborse"
+      },
+      {
+        "testo": "Che ö l'aveiva zà visto ûn'atra votta,",
+        "it": "Che aveva già visto un'altra volta,"
+      },
+      {
+        "testo": "Mandôu da Giove pe insegnaghe a rotta.",
+        "it": "Mandato da Giove per insegnargli la rotta."
+      },
+      {
+        "testo": "E ö ghe torna a ripete: ah canellon,",
+        "it": "E gli ripete di nuovo: ah cazzone,"
+      },
+      {
+        "testo": "Chi dorme, figgio cao, nö piggia pesci,",
+        "it": "Chi dorme, figlio caro, non piglia pesci,"
+      },
+      {
+        "testo": "E ö dà ûn câsö â fortûnn-a e all'occaxiön!",
+        "it": "E dà un calcio alla fortuna e all'occasione!"
+      },
+      {
+        "testo": "Mentre che ti stæ a torse e ti nö mesci,",
+        "it": "Mentre tu stai lì a rigirarti e non ti muovi,"
+      },
+      {
+        "testo": "Forse aspettando de piggiâ ö lacciön,",
+        "it": "Forse aspettando di prendere la fregatura,"
+      },
+      {
+        "testo": "Ghe a reginn-a, se tì ti nö savesci,",
+        "it": "C'è la regina, se tu non lo sapessi,"
+      },
+      {
+        "testo": "Che a l'aspëta ö momento ö ciû propizio",
+        "it": "Che aspetta il momento più propizio"
+      },
+      {
+        "testo": "Pe puei fate in te l'ortö, ûn çerto ûffizio.",
+        "it": "Per poterti fare nell'orto, un certo servizio."
+      },
+      {
+        "testo": "E ti stæ chi a lappâ perdingolinn-a!",
+        "it": "E tu te ne stai qui a poltrire, perdiana!"
+      },
+      {
+        "testo": "Quande ti æ l'occaxion de piggiâ ö lisciö?",
+        "it": "Quando hai l'occasione di svignartela?"
+      },
+      {
+        "testo": "Se a te trœûva ancon chi doman mattinn-a,",
+        "it": "Se ti trova ancora qui domani mattina,"
+      },
+      {
+        "testo": "Ti ë ûn ommo morto e ti finiæ in tö pisciö;",
+        "it": "Sei un uomo morto e finirai nel pisciatoio;"
+      },
+      {
+        "testo": "Ma se poi ti æ piaxei da tô rovinn-a",
+        "it": "Ma se poi ti piace la tua rovina,"
+      },
+      {
+        "testo": "Mi nö so cose dî, te compatisciö,",
+        "it": "Io non so cosa dire, ti compatirò,"
+      },
+      {
+        "testo": "Anzi d'incangio, me ne batto e cugge",
+        "it": "Anzi, in cambio, me ne sbatto le palle"
+      },
+      {
+        "testo": "E te pisciö in tö cû ciaö bullicugge.",
+        "it": "E ti piscerò in culo, ciao rincoglionito."
+      },
+      {
+        "testo": "Coscì dito, ö deslengua e ö casto Enea",
+        "it": "Così detto, lui si dilegua e il casto Enea"
+      },
+      {
+        "testo": "Ö se mette in setton, pin de spavento,",
+        "it": "Si mette seduto di scatto, pieno di spavento,"
+      },
+      {
+        "testo": "Ö se leva, ö trambuscia, ö fâ in manëa",
+        "it": "Si alza, fa trambusto, fa in modo"
+      },
+      {
+        "testo": "Che s'adesce i mainæ dö bastimentö",
+        "it": "Che si sveglino i marinai del bastimento,"
+      },
+      {
+        "testo": "E ö se mette a sbraggiâ: tiæ sciû a bandea,",
+        "it": "E si mette a sbraitare: tirate su la bandiera,"
+      },
+      {
+        "testo": "Remme in mâ perdiesanto, e veie a-o ventö,",
+        "it": "Remi in mare, per Dio santo, e vele al vento,"
+      },
+      {
+        "testo": "Nö l'é tempo de stâ co-e balle in man",
+        "it": "Non è tempo di stare con le palle in mano"
+      },
+      {
+        "testo": "Chi besœûgna fâ presto e futte ö can.",
+        "it": "Qui bisogna far presto e svignarsela."
+      },
+      {
+        "testo": "E pe fâ come ö dixe, ö dà ûnn-a botta",
+        "it": "E per fare come dice, dà un colpo"
+      },
+      {
+        "testo": "In sce ö cavo, co-a sciabbra e ö te l'arrionda.",
+        "it": "Sul cavo, con la sciabola, e te lo trancia."
+      },
+      {
+        "testo": "Fan ö stesso i compagni e in t'ûnn-a votta",
+        "it": "Fanno lo stesso i compagni e in una volta"
+      },
+      {
+        "testo": "Son tûtti i legni destacchæ dâ sponda,",
+        "it": "Sono tutti i legni staccati dalla sponda,"
+      },
+      {
+        "testo": "Se tia sciû e veie, se ghe molla a scotta,",
+        "it": "Si tirano su le vele, si molla la scotta,"
+      },
+      {
+        "testo": "Pe piggiâ ö ventixœû che ö te i seconda,",
+        "it": "Per prendere il venticello che li asseconda,"
+      },
+      {
+        "testo": "E poi forza de remme, aggiûtta, arranca,",
+        "it": "E poi forza di remi, aiuta, arranca,"
+      },
+      {
+        "testo": "Scciûmma l'ægûa coscì, che a ve pâ gianca.",
+        "it": "Schiuma l'acqua così, che vi pare bianca."
+      },
+      {
+        "testo": "In t'ûn giano che ö dava in sce ö çetron",
+        "it": "In un giallo che dava sull'arancione"
+      },
+      {
+        "testo": "L'ombra opaca da nœûtte a s'ëa cangiâ;",
+        "it": "L'ombra opaca della notte si era cambiata;"
+      },
+      {
+        "testo": "E a reginn-a che a s'ëa missa a-o barcon",
+        "it": "E la regina, che si era messa alla finestra"
+      },
+      {
+        "testo": "Pe godise l'æxia da mattinnâ,",
+        "it": "Per godersi l'arietta della mattinata,"
+      },
+      {
+        "testo": "A s'accorze d'aveilo in tö fogon",
+        "it": "Si accorge di averlo nel fogone"
+      },
+      {
+        "testo": "Senza pueiselo ciû despûntellâ,",
+        "it": "Senza poterselo più staccare,"
+      },
+      {
+        "testo": "In tö vedde i Troien, za fœûa de tîo,",
+        "it": "Nel vedere i Troiani, già fuori tiro,"
+      },
+      {
+        "testo": "Che ghe davan de remme a tûtt'abrîö,",
+        "it": "Che ci davano di remi a tutta birra."
       }
     ]
   },
