@@ -8953,6 +8953,58 @@ const STORIE_DEFAULT = [
     ]
   },
   {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 13",
+      "it": "La maledizione di Didone"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
+      {
+        "testo": "Aoa ve lascio immaginâ ûn pittin",
+        "it": "Ora vi lascio immaginare un pochino"
+      },
+      {
+        "testo": "Comme a resta incarognâ e inscemelîa!",
+        "it": "Come resta incarognita e inebetita!"
+      },
+      {
+        "testo": "Poi a vegne ûnn-a fûria da-o venin,",
+        "it": "Poi diventa una furia dal veleno,"
+      },
+      {
+        "testo": "A se streppa i cavelli e a te s'abrîa",
+        "it": "Si strappa i capelli e inizia a darsi"
+      },
+      {
+        "testo": "De pattasse pe-a faccia e pe-i tettin,",
+        "it": "Delle sberle per la faccia e per le tette,"
+      },
+      {
+        "testo": "A se sguara a camixia, a cianze, a crîa:",
+        "it": "Si squarcia la camicia, piange, grida:"
+      },
+      {
+        "testo": "Brûtô d'ûn Giove, ti me vorti e spalle?",
+        "it": "Vile d'un Giove, mi volti le spalle?"
+      },
+      {
+        "testo": "Se te posso acciappâ, t'arranco e balle.",
+        "it": "Se ti posso acchiappare, ti strappo le palle."
+      }
+    ]
+  },
+  {
     "id": "sp-a2-padrone-e-mezzadro4",
     "lingua": "sp",
     "livello": "A2",
