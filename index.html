@@ -3865,6 +3865,7 @@ const SK_NDOM = "qml_v10_ndom"; // memoria n.domande per modalità
 const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 const SK_CANDIDATI_LG = "qml_v1_candidati_lg"; // parole spiegate dall'AI in Lettura guidata, assenti dal vocabolario — in attesa di revisione
 const SK_STORIE_PRIVATE = "qml_v1_storie_private"; // testi privati (eventualmente protetti da copyright) caricati SOLO in questo browser, mai committati
+const SK_STORIE_LETTE = "qml_v1_storie_lette"; // id delle storie completate in Lettura guidata (raggiunta l'ultima frase), solo in questo browser — per il badge "✓ Letta" nella lista, utile ora che le storie sono tante
 
 // Pubblicazione di una storia privata → STORIE_DEFAULT su GitHub (storie.js): stessa
 // infrastruttura di scrittura di edit-storie.html, stesso token admin (già presente in
@@ -10637,6 +10638,7 @@ function SchermataLetturaGuidata({
   const [candidatiLG, setCandidatiLG] = useState(() => loadJSON(SK_CANDIDATI_LG, []));
   const [candidatiAperti, setCandidatiAperti] = useState(false);
   const [storiePrivate, setStoriePrivate] = useState(() => loadJSON(SK_STORIE_PRIVATE, []));
+  const [storieLette, setStorieLette] = useState(() => loadJSON(SK_STORIE_LETTE, []));
   const [formPrivataAperto, setFormPrivataAperto] = useState(false);
   const [formLingua, setFormLingua] = useState("en");
   const [formLivello, setFormLivello] = useState("A1");
@@ -10672,6 +10674,20 @@ function SchermataLetturaGuidata({
     const s = STORIE_DEFAULT.find(x => x.id === storiaIniziale);
     if (s) setStoriaSel(s);
   }, []);
+  // Segna la storia come letta appena si raggiunge l'ultima frase (basta vederla,
+  // non serve premere "Fine"): usato per il badge "✓ Letta" nella lista storie.
+  useEffect(() => {
+    if (!storiaSel) return;
+    if (idxFrase === storiaSel.frasi.length - 1) segnaStoriaLetta(storiaSel.id);
+  }, [storiaSel, idxFrase]);
+  function segnaStoriaLetta(id) {
+    setStorieLette(prev => {
+      if (prev.includes(id)) return prev;
+      const next = [...prev, id];
+      saveJSON(SK_STORIE_LETTE, next);
+      return next;
+    });
+  }
   function resetSpiega() {
     setParolaSel(null);
     setStatoSpiega("idle");
@@ -11060,17 +11076,23 @@ function SchermataLetturaGuidata({
     }, storieDisponibili.map(s => {
       const lng = lingue.find(l => l.codice === s.lingua);
       const isPrivata = s.fonte?.generato === "privato";
+      const isLetta = storieLette.includes(s.id);
       return React.createElement("div", {
         key: s.id,
         onClick: () => scegliStoria(s),
-        className: "w-full text-left rounded-2xl border-2 border-zinc-800 bg-zinc-900 hover:border-zinc-600 transition p-4 cursor-pointer"
+        className: `w-full text-left rounded-2xl border-2 bg-zinc-900 hover:border-zinc-600 transition p-4 cursor-pointer ${isLetta ? "border-zinc-900 opacity-70" : "border-zinc-800"}`
       }, React.createElement("div", {
         className: "flex items-center justify-between mb-1"
       }, React.createElement("span", {
         className: "font-bold text-white"
-      }, lng?.bandiera, " ", s.titolo.testo), React.createElement("span", {
+      }, lng?.bandiera, " ", s.titolo.testo), React.createElement("div", {
+        className: "flex items-center gap-1.5"
+      }, isLetta && React.createElement("span", {
+        title: "Già letta",
+        className: "text-xs font-bold px-1.5 py-0.5 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-400"
+      }, "✓ Letta"), React.createElement("span", {
         className: "text-xs font-bold px-1.5 py-0.5 rounded-full bg-zinc-800 text-zinc-400"
-      }, s.livello)), React.createElement("p", {
+      }, s.livello))), React.createElement("p", {
         className: "text-sm text-slate-400 mb-2"
       }, s.titolo.it), React.createElement("div", {
         className: "flex items-center justify-between"
