@@ -8953,6 +8953,282 @@ const STORIE_DEFAULT = [
     ]
   },
   {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 13",
+      "it": "La maledizione di Didone"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
+      {
+        "testo": "Aoa ve lascio immaginâ ûn pittin",
+        "it": "Ora vi lascio immaginare un pochino"
+      },
+      {
+        "testo": "Comme a resta incarognâ e inscemelîa!",
+        "it": "Come resta incarognita e inebetita!"
+      },
+      {
+        "testo": "Poi a vegne ûnn-a fûria da-o venin,",
+        "it": "Poi diventa una furia dal veleno,"
+      },
+      {
+        "testo": "A se streppa i cavelli e a te s'abrîa",
+        "it": "Si strappa i capelli e si scaglia a darsi"
+      },
+      {
+        "testo": "De pattasse pe-a faccia e pe-i tettin,",
+        "it": "Delle sberle per la faccia e per le tette,"
+      },
+      {
+        "testo": "A se sguara a camixia, a cianze, a crîa:",
+        "it": "Si squarcia la camicia, piange, grida:"
+      },
+      {
+        "testo": "Brûtô d'ûn Giove, ti me vorti e spalle?",
+        "it": "Vile d'un Giove, mi volti le spalle?"
+      },
+      {
+        "testo": "Se te posso acciappâ, t'arranco e balle.",
+        "it": "Se ti posso acchiappare, ti strappo le palle."
+      },
+      {
+        "testo": "E stö foresto, stö ruffian da gîo,",
+        "it": "E questo forestiero, questo ruffiano da giro,"
+      },
+      {
+        "testo": "Ö pœû dâme ö bughezzo in casa mæ,",
+        "it": "Può molestarmi in casa mia,"
+      },
+      {
+        "testo": "Senza ûn betordo che ö ghe dagghe ö crîo,",
+        "it": "Senza un citrullo che gli dia un urlo,"
+      },
+      {
+        "testo": "Che ö piggie a casci e ö ghe ne leve a cuæ",
+        "it": "Che lo prenda a calci e gli faccia passare la voglia"
+      },
+      {
+        "testo": "A nö sâ mai ciû dita, ah, nö perdîo,",
+        "it": "Non sarà mai più detta, ah, no perdio,"
+      },
+      {
+        "testo": "Acciapêli pë cuggie e nö i mollæ,",
+        "it": "Acchiappateli per le palle e non li mollate,"
+      },
+      {
+        "testo": "Scin che n'aggian cagoû zû cö fighæto,",
+        "it": "Finché non abbiano cacato fuori insieme al fegato,"
+      },
+      {
+        "testo": "E baronate e malazioin ch'an fæto.",
+        "it": "Le mascalzonate e le malefatte che hanno fatto."
+      },
+      {
+        "testo": "Ma ahimemì, cose diggo e cose fasso,",
+        "it": "Ma povera me, cosa dico e cosa faccio,"
+      },
+      {
+        "testo": "Perché m'arraggio, se l'ho zà derë!",
+        "it": "Perché mi arrabbio, se ce l'ho già di dietro!"
+      },
+      {
+        "testo": "Questa a l'é furia che a nö serve a ûn casso,",
+        "it": "Questa è una furia che non serve a un cazzo,"
+      },
+      {
+        "testo": "Le comme vuesse dâ di pugni in çë!",
+        "it": "È come voler dare dei pugni in cielo!"
+      },
+      {
+        "testo": "L'ëa tempo alöa se ö vueivo mette a-o passo,",
+        "it": "Era quello il momento, se volevo metterlo al passo,"
+      },
+      {
+        "testo": "Quando ö l'ëa chì che ö comandava lë,",
+        "it": "Quando era qui che comandava lui,"
+      },
+      {
+        "testo": "Fando l'alûoû pe no pagâ gabella,",
+        "it": "Facendo lo scemo per non pagare il dazio,"
+      },
+      {
+        "testo": "E coa vorpe ficcâ sotto l'axella.",
+        "it": "E con la volpe ficcata sotto l'ascella."
+      },
+      {
+        "testo": "Questo ö l'é l'ommo che ö nön ha de falle,",
+        "it": "Questo è l'uomo che non ha difetti,"
+      },
+      {
+        "testo": "Che ö se porta in tö sacco i sô penati,",
+        "it": "Che si porta nel sacco i suoi penati,"
+      },
+      {
+        "testo": "Che ö se camalla sô pappâ in sce spâlle,",
+        "it": "Che si camalla suo papà sulle spalle,"
+      },
+      {
+        "testo": "Che ö l'ha a miscion de fondâ regni e stati?",
+        "it": "Che ha la missione di fondare regni e stati?"
+      },
+      {
+        "testo": "Perché nö pueivo tiaghe ûn lasso a-e balle,",
+        "it": "Perché non potevo tirargli un laccio alle palle,"
+      },
+      {
+        "testo": "Tialo a remorco, faghe fâ döi sâti,",
+        "it": "Tirarlo a rimorchio, fargli fare due salti,"
+      },
+      {
+        "testo": "Daghe in pasto sô figgio, asbrialo in mâ",
+        "it": "Dargli in pasto suo figlio, gettarlo in mare"
+      },
+      {
+        "testo": "Lë con tûtta a sô stirpe astrassonnâ?",
+        "it": "Lui con tutta la sua stirpe di straccioni?"
+      },
+      {
+        "testo": "Sô che fando coscì, me saivo missa",
+        "it": "So che facendo così, mi sarei messa"
+      },
+      {
+        "testo": "A-o brûtto rischio de sätâ ö barcon,",
+        "it": "Al brutto rischio di saltare il balcone,"
+      },
+      {
+        "testo": "Ma dovendoghe mi lasciâ a pellissa,",
+        "it": "Ma dovendoci io lasciare la pelle,"
+      },
+      {
+        "testo": "Me sæ almeno piggiâ a soddisfazion",
+        "it": "Mi sarei almeno presa la soddisfazione"
+      },
+      {
+        "testo": "De pueî fâne de lö tanta sasissa,",
+        "it": "Di poter fare di loro tanta salsiccia,"
+      },
+      {
+        "testo": "De mandâ lë e sô figgio in perdizion,",
+        "it": "Di mandare lui e suo figlio in perdizione,"
+      },
+      {
+        "testo": "De mettili con mì, tûtti a quaterno",
+        "it": "Di metterli con me, tutti  rovinati"
+      },
+      {
+        "testo": "De portâli con mì, tûtti all'inferno.",
+        "it": "Di portarli con me, tutti all'inferno."
+      },
+      {
+        "testo": "Tì bagardo d'ûn Sö che perdiesann-a!",
+        "it": "Tu bastardo d'un Sole, che perdio!"
+      },
+      {
+        "testo": "Ti sæ i cæti de tûtti i fradellin,",
+        "it": "Tu sai i pettegolezzi di tutti i fratellini,"
+      },
+      {
+        "testo": "Ti Giûnon che ti æ stæta a me ruffiann-a,",
+        "it": "Tu Giunone che sei stata la mia ruffiana,"
+      },
+      {
+        "testo": "Pe ciantamelo megio in tö stoppin,",
+        "it": "Per piantarmelo meglio nello stoppino,"
+      },
+      {
+        "testo": "E ti Santa Luçia che ti ë a casann-a",
+        "it": "E tu Santa Lucia che sei la matrona"
+      },
+      {
+        "testo": "Di caröggi, de celle e di casin,",
+        "it": "Dei carruggi, delle celle e dei casini,"
+      },
+      {
+        "testo": "Dî se ho mai meritoû stö trattamento;",
+        "it": "Dite se ho mai meritato questo trattamento;"
+      },
+      {
+        "testo": "E stæ almeno a sentî ö mæ testamento:",
+        "it": "E state almeno a sentire il mio testamento:"
+      },
+      {
+        "testo": "Se a l’é dîta e che seggie ö sô destin,",
+        "it": "Se la cosa è già detta e questo sia il suo destino,"
+      },
+      {
+        "testo": "De toccâ ûn porto e d'acquistâ da tæra,",
+        "it": "Di toccare un porto e di acquistare della terra,"
+      },
+      {
+        "testo": "Che ö se trœûve de fronte a di assascin,",
+        "it": "Che si trovi di fronte a degli assassini,"
+      },
+      {
+        "testo": "E che pe vive ö seggie sempre in guæra!",
+        "it": "E che per vivere sia sempre in guerra!"
+      },
+      {
+        "testo": "Che çercando soccorso ai sô vexin,",
+        "it": "Che cercando soccorso ai suoi vicini,"
+      },
+      {
+        "testo": "Ö se sente risponde c'ûnn-a gnæra,",
+        "it": "Si senta rispondere con una pernacchia,"
+      },
+      {
+        "testo": "E che prîmma che ö mœûe d'ûn aççidente",
+        "it": "E che prima che muoia di un accidente,"
+      },
+      {
+        "testo": "Ö se vedde creppâ tûtta a sô gente",
+        "it": "Si veda crepare tutta la sua gente."
+      },
+      {
+        "testo": "Tiri, i vostri rampolli e discendenti",
+        "it": "Tiri , i vostri rampolli e discendenti"
+      },
+      {
+        "testo": "Di figgiœû di figgiœû, zû all'infinito,",
+        "it": "Di figli in figli, giù all'infinito,"
+      },
+      {
+        "testo": "Cö figgiœû di figgiœû de sti aççidenti",
+        "it": "Con i figli dei figli di questi accidenti,"
+      },
+      {
+        "testo": "Seggiæ sempre in question, sempre in attrito",
+        "it": "Siate sempre in questione, sempre in attrito"
+      },
+      {
+        "testo": "Seggiæ in guæra de lungo e sempre ai denti",
+        "it": "Siate in guerra di continuo e sempre ai denti,"
+      },
+      {
+        "testo": "Pe mâ, pe tæra e in qualunque scîto,",
+        "it": "Per mare, per terra e in qualunque posto,"
+      },
+      {
+        "testo": "Sempre botte ruffiann-e a ogni occaxion,",
+        "it": "Sempre colpi proibiti a ogni occasione,"
+      },
+      {
+        "testo": "Senza paxe né tregua o transazion",
+        "it": "Senza pace né tregua o transazione."
+      }
+    ]
+  },
+  {
     "id": "sp-a2-padrone-e-mezzadro4",
     "lingua": "sp",
     "livello": "A2",
