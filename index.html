@@ -8288,6 +8288,27 @@ function Home({
     document.documentElement.classList.toggle("light", temaChiaro);
     try { localStorage.setItem("lq_tema", temaChiaro ? "light" : "dark"); } catch (e) {}
   }, [temaChiaro]);
+  const [installPrompt, setInstallPrompt] = useState(null);
+  useEffect(() => {
+    const onBip = e => { e.preventDefault(); setInstallPrompt(e); };
+    const onInstalled = () => setInstallPrompt(null);
+    window.addEventListener("beforeinstallprompt", onBip);
+    window.addEventListener("appinstalled", onInstalled);
+    return () => {
+      window.removeEventListener("beforeinstallprompt", onBip);
+      window.removeEventListener("appinstalled", onInstalled);
+    };
+  }, []);
+  const doInstallApp = async () => {
+    if (!installPrompt) return;
+    try { window.gtag?.("event", "pwa_install_prompt_click"); } catch (e) {}
+    installPrompt.prompt();
+    try {
+      const scelta = await installPrompt.userChoice;
+      window.gtag?.("event", "pwa_install_" + scelta.outcome);
+    } catch (e) {}
+    setInstallPrompt(null);
+  };
   const lingueAttive = lingue.filter(l => l.attiva);
   const nLingueAttive = lingueAttive.length;
   // Recupera record per ogni modalità (quiz e non-stop)
@@ -8498,7 +8519,10 @@ function Home({
   }, /*#__PURE__*/React.createElement(BarraProgresso, {
     valore: apprese,
     max: vocImparabile.length
-  }))), /*#__PURE__*/React.createElement("button", {
+  }))), installPrompt && /*#__PURE__*/React.createElement("button", {
+    onClick: doInstallApp,
+    className: "w-full mb-3 bg-sky-800 hover:bg-sky-700 text-sky-50 font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 text-sm"
+  }, "📲 Installa l'app"), /*#__PURE__*/React.createElement("button", {
     onClick: doShareApp,
     className: "w-full mb-3 bg-emerald-800 hover:bg-emerald-700 text-emerald-50 font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 text-sm"
   }, "📤 Invita un amico"), (() => {
