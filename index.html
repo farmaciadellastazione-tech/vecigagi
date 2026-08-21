@@ -3865,6 +3865,7 @@ const SK_AI = "qml_v10_ai"; // impostazioni IA {provider, apiKey}
 const SK_CANDIDATI_LG = "qml_v1_candidati_lg"; // parole spiegate dall'AI in Lettura guidata, assenti dal vocabolario — in attesa di revisione
 const SK_STORIE_PRIVATE = "qml_v1_storie_private"; // testi privati (eventualmente protetti da copyright) caricati SOLO in questo browser, mai committati
 const SK_STORIE_LETTE = "qml_v1_storie_lette"; // id delle storie completate in Lettura guidata (raggiunta l'ultima frase), solo in questo browser — per il badge "✓ Letta" nella lista, utile ora che le storie sono tante
+const SK_LAST_EXPORT = "qml_v1_last_export"; // timestamp ultimo export progressi, per il promemoria di backup in Home
 
 // Pubblicazione di una storia privata → STORIE_DEFAULT su GitHub (storie.js): stessa
 // infrastruttura di scrittura di edit-storie.html, stesso token admin (già presente in
@@ -8278,6 +8279,7 @@ function Home({
   const [mostraLingue, setMostraLingue] = useState(false);
   const [mostraBilingue, setMostraBilingue] = useState(false);
   const [mostraFiltri, setMostraFiltri] = useState(false);
+  const [nascondiPromemoriaBackup, setNascondiPromemoriaBackup] = useState(false);
   const [mostraTour, setMostraTour] = useState(() => !localStorage.getItem("qml_tour_seen"));
   const [temaChiaro, setTemaChiaro] = useState(() => {
     try { return localStorage.getItem("lq_tema") !== "dark"; } catch (e) { return true; }
@@ -8417,6 +8419,7 @@ function Home({
     pasteltext: "text-amber-300"
   }];
   const doShareApp = () => {
+    try { window.gtag?.('event', 'share_app_click'); } catch (e) {}
     const shareText = "🌍 Sto imparando dialetti liguri e lingue su LinguaeQuiz, provalo anche tu! linguaequiz.com";
     if (navigator.share) {
       navigator.share({
@@ -8495,6 +8498,30 @@ function Home({
     onClick: doShareApp,
     className: "w-full mb-3 bg-emerald-800 hover:bg-emerald-700 text-emerald-50 font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 text-sm"
   }, "📤 Invita un amico"), (() => {
+    if (nascondiPromemoriaBackup || apprese < 10) return null;
+    let ultimoExport = null;
+    try { ultimoExport = Number(localStorage.getItem(SK_LAST_EXPORT)) || null; } catch (e) {}
+    const giorniDaExport = ultimoExport ? Math.floor((Date.now() - ultimoExport) / 86400000) : null;
+    if (giorniDaExport !== null && giorniDaExport <= 7) return null;
+    return /*#__PURE__*/React.createElement("div", {
+      className: "bg-sky-950 border-2 border-sky-800 rounded-xl p-3 text-sky-300 flex items-center gap-2 text-left mt-3"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-2xl"
+    }, "💾"), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "font-bold text-sm"
+    }, "Hai imparato ", apprese, " parole"), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs opacity-70"
+    }, "Salva i progressi per non perderli")), /*#__PURE__*/React.createElement("button", {
+      onClick: () => { onEsporta(); setNascondiPromemoriaBackup(true); },
+      className: "text-xs font-bold bg-sky-900 hover:bg-sky-800 px-2.5 py-1.5 rounded-lg transition"
+    }, "Salva"), /*#__PURE__*/React.createElement("button", {
+      onClick: () => setNascondiPromemoriaBackup(true),
+      title: "Chiudi",
+      className: "text-sky-500 hover:text-sky-300 text-lg leading-none px-1"
+    }, "×"));
+  })(), (() => {
     const str = streak || {
       count: 0,
       lastDay: 0
@@ -12547,6 +12574,7 @@ function App() {
   }
   function handleEsporta() {
     esportaProgressi(stats, vocabolario, lingue);
+    try { localStorage.setItem(SK_LAST_EXPORT, String(Date.now())); } catch (e) {}
   }
   function handleImporta(file) {
     importaProgressi(file, data => {
