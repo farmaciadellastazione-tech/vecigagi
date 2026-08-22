@@ -9729,6 +9729,58 @@ const STORIE_DEFAULT = [
     ]
   },
   {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 3 parte 1",
+      "it": "L'arrivo a Cuma"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
+      {
+        "testo": "E sciugandose i êuggi, ä direzion",
+        "it": "E asciugandosi gli occhi, la direzione"
+      },
+      {
+        "testo": "Ö l'ha missa de Cuma, i bastimenti,",
+        "it": "L'ha messa verso Cuma, i bastimenti,"
+      },
+      {
+        "testo": "Destrezzando co-a veia e cö timon",
+        "it": "Destreggiandosi con la vela e col timone"
+      },
+      {
+        "testo": "Fando forza de remme e sacramenti,",
+        "it": "Facendo forza di remi e sacramenti,"
+      },
+      {
+        "testo": "Che in t'ûn lampo, pe ûsâ quest'esprescion,",
+        "it": "Che in un lampo, per usare quest'espressione,"
+      },
+      {
+        "testo": "Se ghe trêuvan addosso e immantinenti,",
+        "it": "Ci si trovano addosso, e immediatamente"
+      },
+      {
+        "testo": "Ognidûn bêutta l'ancôa e se destriga",
+        "it": "Ognuno butta l'ancora e si sbriga"
+      },
+      {
+        "testo": "A ormezzäse dappresso e in sce ûnn-a riga.",
+        "it": "A ormeggiarsi vicini e allineati."
+      }
+    ]
+  },
+  {
     "id": "sp-a2-padrone-e-mezzadro4",
     "lingua": "sp",
     "livello": "A2",
