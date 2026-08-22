@@ -9353,7 +9353,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "E a se a punta con gaibo in ti tettin,",
         "it": "E se la punta con garbo nelle tette."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 2 parte 14",
+      "it": "La morte di Didone "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Dando ûn ûltimo sguardo a-o noto lettö,",
         "it": "Dando un ultimo sguardo al noto letto,"
