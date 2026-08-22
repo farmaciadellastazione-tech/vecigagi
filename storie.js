@@ -9225,6 +9225,166 @@ const STORIE_DEFAULT = [
       {
         "testo": "Senza paxe né tregua o transazion",
         "it": "Senza pace né tregua o transazione."
+      },
+      {
+        "testo": "Ma da queste quattr'osse invendichæ",
+        "it": "Ma da queste quattro ossa invendicate"
+      },
+      {
+        "testo": "Sciorte ûn guerriero che ghe fûmme e cugge,",
+        "it": "Esca un guerriero a cui fumino le palle,"
+      },
+      {
+        "testo": "Che ö s'appatte per mì, de iniquitæ",
+        "it": "Che pareggi i conti per me, delle iniquità"
+      },
+      {
+        "testo": "Che m'ha fæto sûbî stö bullicugge,",
+        "it": "Che mi ha fatto subire questo rincoglionito,"
+      },
+      {
+        "testo": "Che ö gh'é ciocche ädreitûa senza caitæ,",
+        "it": "Che gliele ciocchi addirittura senza carità,"
+      },
+      {
+        "testo": "Che nö reste de lö manco e fregugge",
+        "it": "Che non resti di loro manco le briciole"
+      },
+      {
+        "testo": "Ö ghe fasse rompî ö collo in scavenn-a",
+        "it": "Che gli faccia rompere il collo in schegge"
+      },
+      {
+        "testo": "Con ciantaghelo sotto ö fî da schenn-a.",
+        "it": "Piantandoglielo sotto la colonna vertebrale."
+      },
+      {
+        "testo": "E pe finila con sta vitta gramma",
+        "it": "E per farla finita con questa vita grama"
+      },
+      {
+        "testo": "E con tûtte e sô bæghe a-o stesso asbrîo,",
+        "it": "E con tutte le sue beghe in uno stesso impeto,"
+      },
+      {
+        "testo": "Tiando zû tacchi e se destriga e a ciamma",
+        "it": "Tirando giù moccoli, si sbriga e chiama"
+      },
+      {
+        "testo": "Ûnn-a veggetta che a l'aveiva in gîo,",
+        "it": "Una vecchietta che aveva in giro,"
+      },
+      {
+        "testo": "Çerta Rosinn-a che a l'ëa stæta a mamma",
+        "it": "Una certa Rosina che era stata la balia"
+      },
+      {
+        "testo": "De quello beccelan de sô marîo,",
+        "it": "Di quel pirla di suo marito,"
+      },
+      {
+        "testo": "E a ghe comanda: sta a sentî Rosinn-a",
+        "it": "E le comanda: sta' a sentire Rosina,"
+      },
+      {
+        "testo": "Vanni sûbito a dî a mæ sœu Nettinn-a,",
+        "it": "Vai subito a dire a mia sorella Nettina,"
+      },
+      {
+        "testo": "Che a se destrighe e che a me porte chì,",
+        "it": "Che si sbrighi e che mi porti qui,"
+      },
+      {
+        "testo": "L'ægua câda, i profummi e tûtto ö resto",
+        "it": "L'acqua calda, i profumi e tutto il resto"
+      },
+      {
+        "testo": "Che g'ho zà comandôu, per cose mì",
+        "it": "Che le ho già ordinato, perché io"
+      },
+      {
+        "testo": "Vœûggio finîla d'angosciame e presto,",
+        "it": "Voglio finirla di angosciarmi, e presto,"
+      },
+      {
+        "testo": "Brûxiândo insemme a quella pira lì,",
+        "it": "Bruciando insieme a quella pira lì,"
+      },
+      {
+        "testo": "Tûtte e memoie de quell'ommo infesto!",
+        "it": "Tutte le memorie di quell'uomo infausto!"
+      },
+      {
+        "testo": "A-oa, cöri «ghe sghæuo», dixe a veggetta,",
+        "it": "Ora corri! \"volo\", dice la vecchietta,"
+      },
+      {
+        "testo": "E a và a fâ a comiscion, ranga e ranghetta.",
+        "it": "E va a fare la commissione, zoppicando"
+      },
+      {
+        "testo": "Inflescibile e dûa quindi Didon",
+        "it": "Inflessibile e dura quindi Didone"
+      },
+      {
+        "testo": "Pe finîla ûnn-a votta e de pettâ",
+        "it": "Per farla finita una volta e di petto,"
+      },
+      {
+        "testo": "Benché giâna dâ pûia comme ûn limön,",
+        "it": "Benché gialla dalla paura come un limone,"
+      },
+      {
+        "testo": "Co-e pûpille bexinscie, inveninâ,",
+        "it": "Con le pupille dilatate, invelenite,"
+      },
+      {
+        "testo": "A se fâ forza e con risolûziön",
+        "it": "Si fa forza e con risoluzione"
+      },
+      {
+        "testo": "A te mönta in sce ö rogo, a sfoddra a spâ,",
+        "it": "Monta sul rogo, sfodera la spada,"
+      },
+      {
+        "testo": "A l'é dæta da Enea c'ûn atro fin",
+        "it": "Che le era stata data da Enea con un altro fine"
+      },
+      {
+        "testo": "E a se a punta con gaibo in ti tettin,",
+        "it": "E se la punta con garbo nelle tette."
+      },
+      {
+        "testo": "Dando ûn ûltimo sguardo a-o noto lettö,",
+        "it": "Dando un ultimo sguardo al noto letto,"
+      },
+      {
+        "testo": "Triste ricordo da demöa passâ,",
+        "it": "Triste ricordo del divertimento passato,"
+      },
+      {
+        "testo": "A se mette a ragnâ comme ûn pivettö",
+        "it": "Si mette a frignare come un bimbino"
+      },
+      {
+        "testo": "Pensando a-e cose che ö gh'a vistö fâ,",
+        "it": "Pensando alle cose che gli ha visto fare,"
+      },
+      {
+        "testo": "E a ghe dixe cianzendo: oh ti diletto",
+        "it": "E gli dice piangendo: oh tu diletto"
+      },
+      {
+        "testo": "Testimoniö e occaxion dö mæ peccâ,",
+        "it": "Testimone e occasione del mio peccare,"
+      },
+      {
+        "testo": "Continûo campo d'amorosa lotta,",
+        "it": "Continuo campo di amorosa lotta,"
+      },
+      {
+        "testo": "Aoa accœûggime morta ûn'âtra votta.",
+        "it": "Ora accoglimi morta un'altra volta."
       }
     ]
   },
