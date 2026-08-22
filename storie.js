@@ -9405,6 +9405,326 @@ const STORIE_DEFAULT = [
       {
         "testo": "Aoa accœûggime morta ûn'âtra votta.",
         "it": "Ora accoglimi morta un'altra volta."
+      },
+      {
+        "testo": "Ecco a messa a le dîta, e son çenâ,",
+        "it": "Ecco, la messa è detta, e ho cenato,"
+      },
+      {
+        "testo": "Daggo ûn buffö a candeia e addio vexin!",
+        "it": "Un soffio alla candela e addio vicini!"
+      },
+      {
+        "testo": "Nö ghe verso de poeila arremediâ,",
+        "it": "Non c'è verso di poterla rimediare,"
+      },
+      {
+        "testo": "E son mi che me ö cianto in tö stöpin,",
+        "it": "E sono io che me lo pianto nello stoppino,"
+      },
+      {
+        "testo": "Aoa quando sô morta e assotterrâ,",
+        "it": "Ora, quando sarò morta e sotterrata,"
+      },
+      {
+        "testo": "Cose resta de mi e dö mæ destin?",
+        "it": "Cosa resta di me e del mio destino?"
+      },
+      {
+        "testo": "Ho da ö ninte fondôu questa çittæ",
+        "it": "Ho dal niente fondato questa città"
+      },
+      {
+        "testo": "Vendicôu mæ marîo, fottûo mæ fræ.",
+        "it": "Vendicato mio marito, fottuto mio fratello."
+      },
+      {
+        "testo": "Ah sæ morta davei feliçemente",
+        "it": "Ah, sarei morta davvero felicemente"
+      },
+      {
+        "testo": "Se n'avesse intoppôu questi canaggia",
+        "it": "Se non avessi incontrato queste canaglie"
+      },
+      {
+        "testo": "O morti primma lö d'ûn aççidente,",
+        "it": "O morti prima loro di un accidente,"
+      },
+      {
+        "testo": "Che de vegnîme chi a straquâ in sce a spiaggia!",
+        "it": "Che  di venirmi qui a spiaggiarsi sulla spiaggia!"
+      },
+      {
+        "testo": "Chi a se bœûtta in sce ö letto e lungamente",
+        "it": "Qui si butta sul letto e lungamente"
+      },
+      {
+        "testo": "A da in smanie, a fa bötti a se spenaggia",
+        "it": "Dà in smanie, fa botti si spenna"
+      },
+      {
+        "testo": "A se caccia co-a testa in ti lensêu",
+        "it": "Si caccia con la testa tra le lenzuola"
+      },
+      {
+        "testo": "Tiando sciû di sospï da strenze ö chœeû!",
+        "it": "Tirando su dei sospiri da stringere il cuore!"
+      },
+      {
+        "testo": "Poi a dixe: a le crûa dovvei creppâ",
+        "it": "Poi dice: è duro dover crepare"
+      },
+      {
+        "testo": "E doveila dâ vinta a stö strasson,",
+        "it": "E doverla dar vinta a questo straccione,"
+      },
+      {
+        "testo": "Ma se intanto, mi l'ho in tö bëlo cûâ,",
+        "it": "Ma se intanto io ce l'ho nel bel culo,"
+      },
+      {
+        "testo": "Cose serve avei tortö o avei raxön?",
+        "it": "A cosa serve avere torto o avere ragione?"
+      },
+      {
+        "testo": "Muimmo comme se sæ, stö mandilâ",
+        "it": "Muoiamo comunque sia, questo furfante"
+      },
+      {
+        "testo": "Se ö n'ha visto ö mæ fœûgo a mæ pascion,",
+        "it": "Se non ha visto il mio fuoco e la mia passione,"
+      },
+      {
+        "testo": "Che ö a vedde aoa da lunxe e che ö se porte",
+        "it": "Che la veda ora da lontano e che si porti"
+      },
+      {
+        "testo": "Ö rimorso con lë de questa morte",
+        "it": "Il rimorso con sé di questa morte."
+      },
+      {
+        "testo": "Dîto e fæto; a stâ in bansa ûn pittinin,",
+        "it": "Detto e fatto; sta in bilico un pochino,"
+      },
+      {
+        "testo": "Poi c'ûn colpo deciso a schissa a spâ",
+        "it": "Poi con un colpo deciso schiaccia la spada"
+      },
+      {
+        "testo": "Che a ghe fâ ûn bellö sguaro in ti tettin",
+        "it": "Che le fa un bello squarcio nelle tette"
+      },
+      {
+        "testo": "E a ghe sciorte da schenn-a, insaguinâ;",
+        "it": "E le esce dalla schiena, insanguinata;"
+      },
+      {
+        "testo": "A sta scena, e camëe ch'ëan lì vixin",
+        "it": "A questa scena, le cameriere che erano lì vicino"
+      },
+      {
+        "testo": "Se son misse a tiâ fischi, a cianze, a ûrlâ",
+        "it": "Si sono messe a tirare fischi, a piangere, a urlare"
+      },
+      {
+        "testo": "A fâ tanto bordello e tanto sciâtö",
+        "it": "A fare tanto bordello e tanto schiamazzo"
+      },
+      {
+        "testo": "Comme fosse a çittæ piggiâ d'assâtö.",
+        "it": "Come fosse la città presa d'assalto."
+      },
+      {
+        "testo": "A sti sbraggi, a sti crï, sô sêu Nettinn-a,",
+        "it": "A questi sbraiti, a queste urla, sua sorella Nettina,"
+      },
+      {
+        "testo": "A precipita lì che pâ che a sgœùe;",
+        "it": "Precipita lì che pare che voli;"
+      },
+      {
+        "testo": "A se streppa i cavelli, a s'arrampinn-a",
+        "it": "Si strappa i capelli, si arrampica"
+      },
+      {
+        "testo": "In sce a catasta de Didon che a mœûe,",
+        "it": "Sulla catasta di Didone che muore,"
+      },
+      {
+        "testo": "A l'abbrassa, a sbraggia: a mî meschinn-a",
+        "it": "L'abbraccia, sbraita: ah, me meschina"
+      },
+      {
+        "testo": "E son mi che t'ho dæto a sciönza a-e rœûe",
+        "it": "E sono io che ti ho dato la sugna alle ruote"
+      },
+      {
+        "testo": "E son mi che ho fornîo pessa ed unguentö",
+        "it": "E sono io che ho fornito pece e unguento"
+      },
+      {
+        "testo": "Pe pûei fâ tante mösse in t'ûn momentö?",
+        "it": "Per poter fare tante musse in un momento?"
+      },
+      {
+        "testo": "Ti te a fæ, ti te a mangi, e mi chi son",
+        "it": "Te la fai e te la mangi, e io chi sono"
+      },
+      {
+        "testo": "De lasciâme in t'ûn canto a renegâ?",
+        "it": "Da lasciarmi in un angolo a rinnegare?"
+      },
+      {
+        "testo": "E perché ti mæ fæto ûn rescosön",
+        "it": "E perché mi hai tirato un pacco"
+      },
+      {
+        "testo": "Senza vûei che te vegne a accompagnâ?",
+        "it": "Senza volere che ti venissi ad accompagnare?"
+      },
+      {
+        "testo": "Mentre invece t'ho misso in condiziön",
+        "it": "Mentre invece ti ho messo in condizione"
+      },
+      {
+        "testo": "De fâ e cose ä sordinn-a e de lasciâ",
+        "it": "Di fare le cose in sordina e di lasciare"
+      },
+      {
+        "testo": "Mi to sêu, cö senato e i çittadin",
+        "it": "Me tua sorella, con il senato e i cittadini"
+      },
+      {
+        "testo": "A fâ tûtti a figûa da burattin?",
+        "it": "A fare tutti la figura dei burattini?"
+      },
+      {
+        "testo": "Fando cöscì ti mæ arrangiôu da-e feste,",
+        "it": "Facendo così mi hai conciato per le feste,"
+      },
+      {
+        "testo": "Pûemmo tiâ ö banco pe serrâ bûttega,",
+        "it": "Possiamo tirare il banco per serrare bottega,"
+      },
+      {
+        "testo": "Morto tì, morti tûtti, ite missa este,",
+        "it": "Morta tu, morti tutti, ite missa est,"
+      },
+      {
+        "testo": "A-oa a cuggia a l'é fæta e a nö se mega;",
+        "it": "Ora la cazzata è fatta e non c'è rimedio;"
+      },
+      {
+        "testo": "Che posse almeno dâ riposo a queste",
+        "it": "Che possa almeno dare riposo a queste"
+      },
+      {
+        "testo": "Tó vestigia mortali, e se me nega",
+        "it": "Tue vestigia mortali, e se mi nega"
+      },
+      {
+        "testo": "Ö destin che ti posci ancon campâ,",
+        "it": "Il destino che tu possa ancora campare,"
+      },
+      {
+        "testo": "Che pe-o meno, te posse assotterrâ!",
+        "it": "Che per lo meno, ti possa sotterrare!"
+      },
+      {
+        "testo": "E co-e lagrime a-i œûggi e ciancianin,",
+        "it": "E con le lacrime agli occhi e pian pianino,"
+      },
+      {
+        "testo": "Despuntandoghe ö bûsto a ghe retïa",
+        "it": "Slacciandole il corsetto le scosta"
+      },
+      {
+        "testo": "A camixia bagnâ d'in sce i tettin,",
+        "it": "La camicia bagnata da sopra le tette,"
+      },
+      {
+        "testo": "E a ghe lava a ghe sciûga a sô feria;",
+        "it": "E le lava, le asciuga la sua ferita;"
+      },
+      {
+        "testo": "Lë a parpella a tîa ûn bagiö a fâ ö sappin,",
+        "it": "Lei batte le palpebre, tira uno sbadiglio, quasi piange,"
+      },
+      {
+        "testo": "Comme in çerca de lûxe e a se regîa",
+        "it": "Come in cerca di luce, e si rigira"
+      },
+      {
+        "testo": "Pe tre votte in sce ö gommiö e a terza... pon,",
+        "it": "Per tre volte sul gomito e alla terza... pum!"
+      },
+      {
+        "testo": "A dà ûn creppo e a vâ zù comme ûn strasson.",
+        "it": "Tira le cuoia e va giù come uno straccio."
+      },
+      {
+        "testo": "E commossa Giûnon da-o sô patì,",
+        "it": "E commossa Giunone dal suo patire,"
+      },
+      {
+        "testo": "Iride a manda che a ghe dagghe a-o resto,",
+        "it": "Manda Iride affinché le dia il resto"
+      },
+      {
+        "testo": "Che a ghe scciode ö pûvien pe fâ sciortî",
+        "it": "Ché le schiodi il polverino per far uscire"
+      },
+      {
+        "testo": "Quell'avanzo de sciôu che gh'ëa molesto,",
+        "it": "Quell'avanzo di fiato che le era molesto,"
+      },
+      {
+        "testo": "Dandose ö caxo, che a nö pueiva muî",
+        "it": "Dandose il caso, che non potesse morire"
+      },
+      {
+        "testo": "Essendose ammazzâ pe fâ ciû presto,",
+        "it": "Essendosi ammazzata per fare più presto,"
+      },
+      {
+        "testo": "Ed avendo ö sô tempo antiçipôu",
+        "it": "Ed avendo anticipato il suo tempo"
+      },
+      {
+        "testo": "A l'aveiva ö pertûso ancön tappôu.",
+        "it": "Aveva il pertugio ancora tappato."
+      },
+      {
+        "testo": "E a ragazza tecciosa in t'ûn asbrîo",
+        "it": "E la ragazza godereccia in uno slancio"
+      },
+      {
+        "testo": "A precipita zû che a pâ ûn oxello",
+        "it": "Precipita giù che pare un uccello"
+      },
+      {
+        "testo": "Tûtto sprazzi de luxe e colorîo....",
+        "it": "Tutta sprazzi di luce e colorata..."
+      },
+      {
+        "testo": "E fermandose ûn pô pe fâ trapello",
+        "it": "E fermandosi un po' per fare da trespolo"
+      },
+      {
+        "testo": "In sce a testa ä morente, a và d'asbrîo",
+        "it": "Sulla testa della morente, va di slancio"
+      },
+      {
+        "testo": "Çercandoghe in te scciappe ö pertûxello",
+        "it": "Cercandole tra le chiappe il pertugetto"
+      },
+      {
+        "testo": "E a ghe l'arve in manea che ö fâ sciûscetto",
+        "it": "E glielo apre in modo che fa un soffietto"
+      },
+      {
+        "testo": "E ö descarega l'anîma in t'ûn petto.",
+        "it": "E le scarica l'anima in un peto."
       }
     ]
   },
