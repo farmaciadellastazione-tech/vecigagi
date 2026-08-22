@@ -2746,8 +2746,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"B1", it:"essere ignorante", en:"be illiterate", fr:"être ignorant", es:"ser ignorante", de:"ungebildet sein", pt:"ser ignorante", sp:"èssenda ré de scritùüa/esse 'ndaré de scritüa", verif:"sp:g" },
       { tema:"grammatica", livello:"A2", it:"essi amano", ge:"liatri amman", la:"amant", grc:"φιλοῦσι", nt:["mn"] },
       { tema:"grammatica", livello:"A1", it:"essi sono", en:"they are", fr:"ils sont", es:"ellos son", de:"sie sind", pt:"são|estão", sp:" i en", ge:"liatri en, liatri son" },
-      { tema:"grammatica", livello:"A1", it:"lei è", en:"she is", fr:"elle est", es:"ella es/está", sp:"la è" },
-      { tema:"grammatica", livello:"A1", it:"lei ha", en:"she has", fr:"elle a", es:"ella tiene", sp:"la gh'ha" },
+      { tema:"grammatica", livello:"A1", it:"lei è", en:"she is", fr:"elle est", es:"ella es/está", sp:"le l'è" },
+      { tema:"grammatica", livello:"A1", it:"lei ha", en:"she has", fr:"elle a", es:"ella tiene", sp:"le la g'ha" },
       { tema:"natura", livello:"A1", it:"estate", en:"summer", fr:"été", es:"verano", de:"Sommer", pt:"verão|verao", ru:"лето", ca:"estiu", sp:"estade", mn:"estada", cr:"stata", ko:"여름", ar:"صيف", zh:"夏天", ja:"夏", ia:"estate", la:"aestas", grc:"θέρος", verif:"mn:g" },
       { tema:"dialogo", livello:"B1", it:"estraneo/sconosciuto", en:"stranger", fr:"étranger|inconnu", es:"extraño|desconocido", de:"Fremder", pt:"estranho|desconhecido", ru:"незнакомец", ca:"desconegut", sp:"scognossù", mn:"fuestru", cr:"scunus'ut", verif:"sp:g,mn:g" },
       { tema:"dialetti", livello:"A2", it:"evaporare", sp:"svanpoì'e/svanpoie", mn:"zvàpuraa", cr:"svaporar", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
@@ -5455,7 +5455,7 @@ const CONIUGAZIONI = {
           en: "love",
           de: "liebe",
           ia: "ama",
-          sp: "amo"
+          sp: "a amo"
         }, {
           p: "2ª sing. (tu/you/tu...)",
           it: "ami",
@@ -5467,7 +5467,7 @@ const CONIUGAZIONI = {
           en: "love",
           de: "liebst",
           ia: "ama",
-          sp: "ami"
+          sp: "te ami"
         }, {
           p: "3ª sing. (lui/il/él...)",
           it: "ama",
@@ -5479,7 +5479,7 @@ const CONIUGAZIONI = {
           en: "loves",
           de: "liebt",
           ia: "ama",
-          sp: "ama"
+          sp: "i ama"
         }, {
           p: "1ª plur. (noi/we/nous...)",
           it: "amiamo",
@@ -5491,7 +5491,7 @@ const CONIUGAZIONI = {
           en: "love",
           de: "lieben",
           ia: "ama",
-          sp: "amémo"
+          sp: "a amémo"
         }, {
           p: "2ª plur. (voi/vous/vos.)",
           it: "amate",
@@ -5503,7 +5503,7 @@ const CONIUGAZIONI = {
           en: "love",
           de: "liebt",
           ia: "ama",
-          sp: "amè"
+          sp: "a amè"
         }, {
           p: "3ª plur. (loro/ils/they)",
           it: "amano",
@@ -5515,7 +5515,7 @@ const CONIUGAZIONI = {
           en: "love",
           de: "lieben",
           ia: "ama",
-          sp: "amo"
+          sp: "i amo"
         }]
       },
       imperfetto: {
@@ -5941,7 +5941,7 @@ const CONIUGAZIONI = {
           en: "was",
           de: "war",
           ia: "esseva",
-          sp: "ero"
+          sp: "a éo"
         }, {
           p: "2ª sing.",
           it: "eri",
@@ -5953,7 +5953,7 @@ const CONIUGAZIONI = {
           en: "were",
           de: "warst",
           ia: "esseva",
-          sp: "eri"
+          sp: "t'éi"
         }, {
           p: "3ª sing.",
           it: "era",
@@ -5965,7 +5965,7 @@ const CONIUGAZIONI = {
           en: "was",
           de: "war",
           ia: "esseva",
-          sp: "era"
+          sp: "i éa"
         }, {
           p: "1ª plur.",
           it: "eravamo",
@@ -5977,7 +5977,7 @@ const CONIUGAZIONI = {
           en: "were",
           de: "waren",
           ia: "esseva",
-          sp: "éssimo"
+          sp: "a évimo"
         }, {
           p: "2ª plur.",
           it: "eravate",
@@ -5989,7 +5989,7 @@ const CONIUGAZIONI = {
           en: "were",
           de: "wart",
           ia: "esseva",
-          sp: "éri"
+          sp: "a évi"
         }, {
           p: "3ª plur.",
           it: "erano",
@@ -6001,7 +6001,7 @@ const CONIUGAZIONI = {
           en: "were",
           de: "waren",
           ia: "esseva",
-          sp: "ero"
+          sp: "i éo"
         }]
       },
       futuro: {
@@ -6016,7 +6016,8 @@ const CONIUGAZIONI = {
           grc: "ἔσομαι",
           en: "will be",
           de: "werde sein",
-          ia: "essera"
+          ia: "essera",
+          sp: "a saiò"
         }, {
           p: "2ª sing.",
           it: "sarai",
@@ -6027,7 +6028,8 @@ const CONIUGAZIONI = {
           grc: "ἔσει",
           en: "will be",
           de: "wirst sein",
-          ia: "essera"
+          ia: "essera",
+          sp: "te saiè"
         }, {
           p: "3ª sing.",
           it: "sarà",
@@ -6038,7 +6040,8 @@ const CONIUGAZIONI = {
           grc: "ἔσται",
           en: "will be",
           de: "wird sein",
-          ia: "essera"
+          ia: "essera",
+          sp: "i saà"
         }, {
           p: "1ª plur.",
           it: "saremo",
@@ -6049,7 +6052,8 @@ const CONIUGAZIONI = {
           grc: "ἐσόμεθα",
           en: "will be",
           de: "werden sein",
-          ia: "essera"
+          ia: "essera",
+          sp: "a saiémo"
         }, {
           p: "2ª plur.",
           it: "sarete",
@@ -6060,7 +6064,8 @@ const CONIUGAZIONI = {
           grc: "ἔσεσθε",
           en: "will be",
           de: "werdet sein",
-          ia: "essera"
+          ia: "essera",
+          sp: "a saié"
         }, {
           p: "3ª plur.",
           it: "saranno",
@@ -6071,7 +6076,8 @@ const CONIUGAZIONI = {
           grc: "ἔσονται",
           en: "will be",
           de: "werden sein",
-          ia: "essera"
+          ia: "essera",
+          sp: "i saàn"
         }]
       },
       passato: {
@@ -6156,7 +6162,8 @@ const CONIUGAZIONI = {
           grc: "ὦ",
           en: "be",
           de: "sei",
-          ia: "sia"
+          ia: "sia",
+          sp: "a sìo"
         }, {
           p: "2ª sing.",
           it: "sia",
@@ -6167,7 +6174,8 @@ const CONIUGAZIONI = {
           grc: "ᾖς",
           en: "be",
           de: "seiest",
-          ia: "sia"
+          ia: "sia",
+          sp: "te sìi"
         }, {
           p: "3ª sing.",
           it: "sia",
@@ -6178,7 +6186,8 @@ const CONIUGAZIONI = {
           grc: "ᾖ",
           en: "be",
           de: "sei",
-          ia: "sia"
+          ia: "sia",
+          sp: "i sìa"
         }, {
           p: "1ª plur.",
           it: "siamo",
@@ -6189,7 +6198,8 @@ const CONIUGAZIONI = {
           grc: "ὦμεν",
           en: "be",
           de: "seien",
-          ia: "sia"
+          ia: "sia",
+          sp: "a siìmo"
         }, {
           p: "2ª plur.",
           it: "siate",
@@ -6200,7 +6210,8 @@ const CONIUGAZIONI = {
           grc: "ἦτε",
           en: "be",
           de: "seiet",
-          ia: "sia"
+          ia: "sia",
+          sp: "a sìi"
         }, {
           p: "3ª plur.",
           it: "siano",
@@ -6211,7 +6222,8 @@ const CONIUGAZIONI = {
           grc: "ὦσι",
           en: "be",
           de: "seien",
-          ia: "sia"
+          ia: "sia",
+          sp: "i sìo"
         }]
       },
       imperativo: {
@@ -6269,7 +6281,7 @@ const CONIUGAZIONI = {
           en: "have",
           de: "habe",
           ia: "ha",
-          sp: "a gh'ho"
+          sp: "a g'ho"
         }, {
           p: "2ª sing.",
           it: "hai",
@@ -6293,7 +6305,7 @@ const CONIUGAZIONI = {
           en: "has",
           de: "hat",
           ia: "ha",
-          sp: "i gh'ha"
+          sp: "i g'ha"
         }, {
           p: "1ª plur.",
           it: "abbiamo",
@@ -6305,7 +6317,7 @@ const CONIUGAZIONI = {
           en: "have",
           de: "haben",
           ia: "ha",
-          sp: "a gh'avémo"
+          sp: "a g'avémo"
         }, {
           p: "2ª plur.",
           it: "avete",
@@ -6317,7 +6329,7 @@ const CONIUGAZIONI = {
           en: "have",
           de: "habt",
           ia: "ha",
-          sp: "a gh'avé"
+          sp: "a g'avé"
         }, {
           p: "3ª plur.",
           it: "hanno",
@@ -6329,7 +6341,7 @@ const CONIUGAZIONI = {
           en: "have",
           de: "haben",
           ia: "ha",
-          sp: "i gh'han"
+          sp: "i g'han"
         }]
       },
       imperfetto: {
@@ -6345,7 +6357,7 @@ const CONIUGAZIONI = {
           en: "had",
           de: "hatte",
           ia: "habeva",
-          sp: "aévo"
+          sp: "a g'avevo"
         }, {
           p: "2ª sing.",
           it: "avevi",
@@ -6357,7 +6369,7 @@ const CONIUGAZIONI = {
           en: "had",
           de: "hattest",
           ia: "habeva",
-          sp: "aévi"
+          sp: "te g'avevi"
         }, {
           p: "3ª sing.",
           it: "aveva",
@@ -6369,7 +6381,7 @@ const CONIUGAZIONI = {
           en: "had",
           de: "hatte",
           ia: "habeva",
-          sp: "aéva"
+          sp: "i g'aveva"
         }, {
           p: "1ª plur.",
           it: "avevamo",
@@ -6381,7 +6393,7 @@ const CONIUGAZIONI = {
           en: "had",
           de: "hatten",
           ia: "habeva",
-          sp: "aévimo"
+          sp: "a g'avévimo"
         }, {
           p: "2ª plur.",
           it: "avevate",
@@ -6393,7 +6405,7 @@ const CONIUGAZIONI = {
           en: "had",
           de: "hattet",
           ia: "habeva",
-          sp: "aévi"
+          sp: "a g'avevi"
         }, {
           p: "3ª plur.",
           it: "avevano",
@@ -6405,7 +6417,7 @@ const CONIUGAZIONI = {
           en: "had",
           de: "hatten",
           ia: "habeva",
-          sp: "aévo"
+          sp: "i g'avevo"
         }]
       },
       futuro: {
@@ -6421,7 +6433,7 @@ const CONIUGAZIONI = {
           en: "will have",
           de: "werde haben",
           ia: "habera",
-          sp: "gh'aveò"
+          sp: "a g'aveò"
         }, {
           p: "2ª sing.",
           it: "avrai",
@@ -6433,7 +6445,7 @@ const CONIUGAZIONI = {
           en: "will have",
           de: "wirst haben",
           ia: "habera",
-          sp: "gh'aveè"
+          sp: "te g'aveè"
         }, {
           p: "3ª sing.",
           it: "avrà",
@@ -6445,7 +6457,7 @@ const CONIUGAZIONI = {
           en: "will have",
           de: "wird haben",
           ia: "habera",
-          sp: "gh'aveà"
+          sp: "i g'aveà"
         }, {
           p: "1ª plur.",
           it: "avremo",
@@ -6457,7 +6469,7 @@ const CONIUGAZIONI = {
           en: "will have",
           de: "werden haben",
           ia: "habera",
-          sp: "gh'aveémo"
+          sp: "a g'aveémo"
         }, {
           p: "2ª plur.",
           it: "avrete",
@@ -6469,7 +6481,7 @@ const CONIUGAZIONI = {
           en: "will have",
           de: "werdet haben",
           ia: "habera",
-          sp: "gh'aveé"
+          sp: "a g'aveé"
         }, {
           p: "3ª plur.",
           it: "avranno",
@@ -6481,7 +6493,7 @@ const CONIUGAZIONI = {
           en: "will have",
           de: "werden haben",
           ia: "habera",
-          sp: "gh'aveàn"
+          sp: "i g'aveàn"
         }]
       },
       passato: {
@@ -6566,7 +6578,8 @@ const CONIUGAZIONI = {
           grc: "ἔχω",
           en: "have",
           de: "habe",
-          ia: "habia"
+          ia: "habia",
+          sp: "a g'agio"
         }, {
           p: "2ª sing.",
           it: "abbia",
@@ -6577,7 +6590,8 @@ const CONIUGAZIONI = {
           grc: "ἔχῃς",
           en: "have",
           de: "habest",
-          ia: "habia"
+          ia: "habia",
+          sp: "te g'agi"
         }, {
           p: "3ª sing.",
           it: "abbia",
@@ -6588,7 +6602,8 @@ const CONIUGAZIONI = {
           grc: "ἔχῃ",
           en: "have",
           de: "habe",
-          ia: "habia"
+          ia: "habia",
+          sp: "i g'agia"
         }, {
           p: "1ª plur.",
           it: "abbiamo",
@@ -6599,7 +6614,8 @@ const CONIUGAZIONI = {
           grc: "ἔχωμεν",
           en: "have",
           de: "haben",
-          ia: "habia"
+          ia: "habia",
+          sp: "a g'àgimo"
         }, {
           p: "2ª plur.",
           it: "abbiate",
@@ -6610,7 +6626,8 @@ const CONIUGAZIONI = {
           grc: "ἔχητε",
           en: "have",
           de: "habet",
-          ia: "habia"
+          ia: "habia",
+          sp: "a g'agi"
         }, {
           p: "3ª plur.",
           it: "abbiano",
@@ -6621,7 +6638,8 @@ const CONIUGAZIONI = {
           grc: "ἔχωσι",
           en: "have",
           de: "haben",
-          ia: "habia"
+          ia: "habia",
+          sp: "i g'agio"
         }]
       },
       imperativo: {
@@ -6680,7 +6698,7 @@ Object.assign(CONIUGAZIONI, {
           en: "go",
           de: "gehe",
           ia: "vade",
-          sp: "vago"
+          sp: "a vago"
         }, {
           p: "2ª sing.",
           it: "vai",
@@ -6690,7 +6708,7 @@ Object.assign(CONIUGAZIONI, {
           en: "go",
           de: "gehst",
           ia: "vade",
-          sp: "vai"
+          sp: "te vè"
         }, {
           p: "3ª sing.",
           it: "va",
@@ -6700,7 +6718,7 @@ Object.assign(CONIUGAZIONI, {
           en: "goes",
           de: "geht",
           ia: "vade",
-          sp: "va"
+          sp: "i va"
         }, {
           p: "1ª plur.",
           it: "andiamo",
@@ -6710,7 +6728,7 @@ Object.assign(CONIUGAZIONI, {
           en: "go",
           de: "gehen",
           ia: "vade",
-          sp: "andémo"
+          sp: "a andémo"
         }, {
           p: "2ª plur.",
           it: "andate",
@@ -6720,7 +6738,7 @@ Object.assign(CONIUGAZIONI, {
           en: "go",
           de: "geht",
           ia: "vade",
-          sp: "andè"
+          sp: "a andè"
         }, {
           p: "3ª plur.",
           it: "vanno",
@@ -6730,7 +6748,7 @@ Object.assign(CONIUGAZIONI, {
           en: "go",
           de: "gehen",
           ia: "vade",
-          sp: "van"
+          sp: "i van"
         }]
       },
       imperfetto: {
@@ -7464,7 +7482,7 @@ Object.assign(CONIUGAZIONI, {
           en: "speak",
           de: "spreche",
           ia: "parla",
-          sp: "pàrlo"
+          sp: "a pàrlo"
         }, {
           p: "2ª sing.",
           it: "parli",
@@ -7474,7 +7492,7 @@ Object.assign(CONIUGAZIONI, {
           en: "speak",
           de: "sprichst",
           ia: "parla",
-          sp: "pàrli"
+          sp: "te pàrli"
         }, {
           p: "3ª sing.",
           it: "parla",
@@ -7484,7 +7502,7 @@ Object.assign(CONIUGAZIONI, {
           en: "speaks",
           de: "spricht",
           ia: "parla",
-          sp: "pàrla"
+          sp: "i pàrla"
         }, {
           p: "1ª plur.",
           it: "parliamo",
@@ -7494,7 +7512,7 @@ Object.assign(CONIUGAZIONI, {
           en: "speak",
           de: "sprechen",
           ia: "parla",
-          sp: "parlémo"
+          sp: "a parlémo"
         }, {
           p: "2ª plur.",
           it: "parlate",
@@ -7504,7 +7522,7 @@ Object.assign(CONIUGAZIONI, {
           en: "speak",
           de: "sprecht",
           ia: "parla",
-          sp: "parlè"
+          sp: "a parlè"
         }, {
           p: "3ª plur.",
           it: "parlano",
@@ -7514,7 +7532,7 @@ Object.assign(CONIUGAZIONI, {
           en: "speak",
           de: "sprechen",
           ia: "parla",
-          sp: "pàrlan"
+          sp: "i pàrlo"
         }]
       },
       imperfetto: {
