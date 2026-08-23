@@ -10481,6 +10481,166 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ma che d'ësighe intræ, ve ne pentiei.",
         "it": "Ma di esserci entrati, ve ne pentirete."
+      },
+      {
+        "testo": "E chi guære, malanni e sacramenti",
+        "it": "E qui guerre, malanni e imprecazioni"
+      },
+      {
+        "testo": "Pe ficcaveo derë comme in t'ûn guanto,",
+        "it": "Per ficcarvelo dietro come in un guanto,"
+      },
+      {
+        "testo": "Vegniâ rosso ö Liron da-e so sorgenti",
+        "it": "Verrà rosso il Lerone  dalle sue sorgenti"
+      },
+      {
+        "testo": "Comme ö vostro Simoenta e ö vostro Xanto,",
+        "it": "Come il vostro Simoenta e il vostro Xanto,"
+      },
+      {
+        "testo": "Aviéi torna da fâ con di aççidenti",
+        "it": "Avrete di nuovo a che fare con degli accidenti"
+      },
+      {
+        "testo": "Ciû angosciosi di greci e ben de tanto,",
+        "it": "Più angosciosi dei greci e ben de tanto,"
+      },
+      {
+        "testo": "C'un'âtro Achille che ö sä comme Enea",
+        "it": "Con un altro Achille che sarà come Enea"
+      },
+      {
+        "testo": "Ûn bastardo aviziôu de qualche Dea.",
+        "it": "Un bastardo viziato di qualche Dea."
+      },
+      {
+        "testo": "Ma ti, sta sciû co-a mûsa e che ö to chêu",
+        "it": "Ma tu, sta' su col la testa e che il tuo cuore"
+      },
+      {
+        "testo": "Ö nö se sciâte e ö nö se trœuve pûia,",
+        "it": "Non si agiti e non si trovi paura,"
+      },
+      {
+        "testo": "Son tûtte balle da fâ rîe i figgiœû,",
+        "it": "Son tutte balle da far ridere i bambini,"
+      },
+      {
+        "testo": "E ö remescio ö finiâ in t'ûnn-a luçia,",
+        "it": "E il travaglio finirà in una susina,"
+      },
+      {
+        "testo": "Ma besœugna laöâ comme se peû,",
+        "it": "Ma bisogna lavorare come si può,"
+      },
+      {
+        "testo": "Pe ficcaghëo de poppa, in galleria;",
+        "it": "Per ficcarglielo di poppa, in galleria;"
+      },
+      {
+        "testo": "Spuncia adaxo e con gaibo e ti troviæ",
+        "it": "Spingi adagio e con garbo e troverai"
+      },
+      {
+        "testo": "Ö to ben, dove ti, ti nö creddiæ.",
+        "it": "Il tuo bene, dove tu, tu non crederesti."
+      },
+      {
+        "testo": "Queste pâole a stramesci e â biscochinn-a",
+        "it": "Queste parole a vanvera e senza capo né coda"
+      },
+      {
+        "testo": "A sonnambola Libia a declamava",
+        "it": "La sonnambula Libia declamava"
+      },
+      {
+        "testo": "Comme se a fosse sotterrâ in cantinn-a",
+        "it": "Come se fosse sotterrata in cantina,"
+      },
+      {
+        "testo": "Tanto a voxe a l'ëa roca e a rintronava,",
+        "it": "Tanto la voce era roca e rintronava,"
+      },
+      {
+        "testo": "E secondo che ö vin, dö quæ a l'ëa pinn-a,",
+        "it": "E a seconda di come il vino, del quale era piena,"
+      },
+      {
+        "testo": "Ö ghe dava i fumasci e ö l'ascadava,",
+        "it": "Le dava i fumi e la riscaldava,"
+      },
+      {
+        "testo": "A veddeiva ciû torbido o ciû ciæo",
+        "it": "Vedeva più torbido o più chiaro"
+      },
+      {
+        "testo": "Dindo mösse e veitæ, zû a riso ræo.",
+        "it": "Dicendo musse e verità, giù a riso raro."
+      },
+      {
+        "testo": "Missa a-o passo ûnn-a votta e attaxentâ,",
+        "it": "Messa al passo una volta  e calmata,"
+      },
+      {
+        "testo": "L'é vegnûo torna a parlantinn-a a Enea,",
+        "it": "È tornata di nuovo la parlantina ad Enea,"
+      },
+      {
+        "testo": "Che coscì ö se gh'é misso a raxonâ:",
+        "it": "Che così si è messo a ragionare con lei:"
+      },
+      {
+        "testo": "Mi a-e carognate g'ho za fæto a cea",
+        "it": "Io alle carognate ci ho già fatto l'abitudine"
+      },
+      {
+        "testo": "E son zà preparôu pe sopportâ",
+        "it": "E sono già preparato a sopportare,"
+      },
+      {
+        "testo": "Se nö basta a prexon, scinn-a a galea,",
+        "it": "Se non basta la prigione, persino i lavori forzati,"
+      },
+      {
+        "testo": "E disgrazie annunziæ me pan fregöggie,",
+        "it": "Le disgrazie annunciate mi sembrano bazzecole,"
+      },
+      {
+        "testo": "L'ho zà previste e me ne batto e cöggie.",
+        "it": "Le ho già previste e me ne batto i coglioni."
+      },
+      {
+        "testo": "Solo, mi te domando in cortexia",
+        "it": "Solo, io ti domando per cortesia"
+      },
+      {
+        "testo": "De puei vedde me poæ, che ö l'é all'inferno,",
+        "it": "Di poter vedere mio padre, che è all'inferno,"
+      },
+      {
+        "testo": "Poiché sento che chì, se a n'é boxia,",
+        "it": "Poiché sento che qui, se non è una bugia,"
+      },
+      {
+        "testo": "Gh'é ûnn-a porta, che a dâ drita all'averno,",
+        "it": "C'è una porta, che dà dritta all'Averno,"
+      },
+      {
+        "testo": "Dunque famme da guidda e compagnia,",
+        "it": "Dunque fammi da guida e compagnia,"
+      },
+      {
+        "testo": "Mostrime a porta e famme intrâ all'interno",
+        "it": "Mostrami la porta e fammi entrare all'interno"
+      },
+      {
+        "testo": "De questo regno, con a facoltæ",
+        "it": "Di questo regno, con la facoltà"
+      },
+      {
+        "testo": "De puei rivedde ed abbrassâ me poæ",
+        "it": "Di poter rivedere e abbracciare mio padre."
       }
     ]
   },
