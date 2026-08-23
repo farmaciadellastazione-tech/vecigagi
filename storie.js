@@ -10097,7 +10097,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Çentuplicôu de vibrazioîn dö speco.",
         "it": "Centuplicato delle vibrazioni dell'antro."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 3 parte 2",
+      "it": "La sibilla e la profezia"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Comme Enea ö l'é in sce a porta, ecco in azion",
         "it": "Come Enea è sulla porta, ecco in azione"
