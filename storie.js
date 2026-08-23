@@ -10597,7 +10597,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Dindo mösse e veitæ, zû a riso ræo.",
         "it": "Dicendo musse e verità, giù a riso raro."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 3 parte 3",
+      "it": "Il ramo d'oro e la morte di Miseno"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "Missa a-o passo ûnn-a votta e attaxentâ,",
         "it": "Messa al passo una volta  e calmata,"
