@@ -9777,6 +9777,134 @@ const STORIE_DEFAULT = [
       {
         "testo": "A ormezzäse dappresso e in sce ûnn-a riga.",
         "it": "A ormeggiarsi vicini e allineati."
+      },
+      {
+        "testo": "E lì zù a rûbatton, lasciæli andâ,",
+        "it": "E lì giù a ruzzoloni , lasciateli andare,"
+      },
+      {
+        "testo": "I zuenotti, animæ dall'allegria,",
+        "it": "I giovanotti, animati dall'allegria,"
+      },
+      {
+        "testo": "Tûtti in tæra, chi ö pitto a preparà,",
+        "it": "Tutti a terra, chi a preparare il pasto,"
+      },
+      {
+        "testo": "Chi pe l'ægua da beive o a fâ razzia",
+        "it": "Chi per l'acqua da bere o a far razzia"
+      },
+      {
+        "testo": "De gallinn-e e verdûa pe fâ ö disnâ,",
+        "it": "Di galline e verdura per fare il pranzo,"
+      },
+      {
+        "testo": "Chi a racchêuggie büscaggie, e chi s'abria",
+        "it": "Chi a raccogliere legna, e chi si precipita"
+      },
+      {
+        "testo": "C'ûnn-a famme da löi, co-a borsa pinn-a,",
+        "it": "Con una fame da lupi, con la borsa piena,"
+      },
+      {
+        "testo": "A çercâse ûn pittin de pantalinn-a.",
+        "it": "A cercarsi un po' di susina."
+      },
+      {
+        "testo": "Enea frattanto ö dava sciû ä montâ",
+        "it": "Enea intanto saliva su per la salita"
+      },
+      {
+        "testo": "Dö Santuaio ad Apollo intitolôu,",
+        "it": "Del Santuario intitolato ad Apollo,"
+      },
+      {
+        "testo": "Döve a böcca profonda e spattarâ,",
+        "it": "Dove la bocca profonda e spalancata,"
+      },
+      {
+        "testo": "Gh'ëa dall'antro a Scibilla consacrôu,",
+        "it": "C'era dell'antro consacrato alla Sibilla,"
+      },
+      {
+        "testo": "A sonnambola Libia, che spiegâ",
+        "it": "La sonnambula Libia, che spiegare"
+      },
+      {
+        "testo": "A pueiva l'avvegnî comme ö passôu",
+        "it": "Poteva l'avvenire come il passato,"
+      },
+      {
+        "testo": "Fâ mesciâ i tavolin; fâ vedde i morti",
+        "it": "Far muovere i tavolini; far vedere i morti,"
+      },
+      {
+        "testo": "Giâ a testa a-i bûlli e addrizzâ e gambe a-i storti.",
+        "it": "Far girare la testa ai bulli e raddrizzare le gambe agli storpi."
+      },
+      {
+        "testo": "Ö l'aveiva zà ö bosco oltrepassôu,",
+        "it": "Aveva già oltrepassato il bosco,"
+      },
+      {
+        "testo": "Quando, comme pe incanto, ö monumento",
+        "it": "Quando, come per incanto, il monumento"
+      },
+      {
+        "testo": "Ö se vedde davanti impellissôu",
+        "it": "Si vede davanti rivestito"
+      },
+      {
+        "testo": "Tûtto de marmi, ricco d'ôu, d'argento;",
+        "it": "Tutto di marmi, ricco d'oro, d'argento;"
+      },
+      {
+        "testo": "Gh'é ûnn-a dîta: che quando l'é scappôu",
+        "it": "C'è una diceria: che quando è scappato"
+      },
+      {
+        "testo": "Da Creta quello pô de sacramento",
+        "it": "Da Creta quel po' di sacramento"
+      },
+      {
+        "testo": "De Dedalo, co-e âe fæte a cagollo,",
+        "it": "Di Dedalo, con le ali fatte a chiocciola,"
+      },
+      {
+        "testo": "Mentre sô figgio ö se rompiva ö collo,",
+        "it": "Mentre suo figlio si rompeva il collo,"
+      },
+      {
+        "testo": "Doppo d'esise fêua dö naturale",
+        "it": "Dopo essersi fuori dal naturale"
+      },
+      {
+        "testo": "Spinto scinn-a a toccâ co-a testa ö polo,",
+        "it": "Spinto fino a toccare con la testa il polo,"
+      },
+      {
+        "testo": "Avvistôu questo monte e ö littorale,",
+        "it": "Avvistato questo monte e il litorale,"
+      },
+      {
+        "testo": "Ö g'ha diretto immantinente ö volo,",
+        "it": "Ci ha diretto immediatamente il volo,"
+      },
+      {
+        "testo": "E levandose e âe, pe consacrâle",
+        "it": "E togliendosi le ali, per consacrarle"
+      },
+      {
+        "testo": "Ad Apollo, ö l'ha appeise a-o sô scurolo,",
+        "it": "Ad Apollo, le ha appese al suo altarino,"
+      },
+      {
+        "testo": "Comme s'ûsa in te gexe e capellette,",
+        "it": "Come si usa nelle chiese e nelle cappellette,"
+      },
+      {
+        "testo": "Che sön pinn-e de scrosôe e de scciûppette.",
+        "it": "Che sono piene di stampelle e di schioppetti."
       }
     ]
   },
