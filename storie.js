@@ -9905,6 +9905,582 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che sön pinn-e de scrosôe e de scciûppette.",
         "it": "Che sono piene di stampelle e di schioppetti."
+      },
+      {
+        "testo": "Gh'ëa in sce ûnn'arva da porta, istoriâ",
+        "it": "C'era su un'anta della porta, istoriata"
+      },
+      {
+        "testo": "A dolente Odissea dö Bodissön,",
+        "it": "La dolente Odissea del Bodissone,"
+      },
+      {
+        "testo": "A sô morte infeliçe occaxionâ,",
+        "it": "La sua morte infelice causata"
+      },
+      {
+        "testo": "Da-i cicchetti piggiæ pe colazion,",
+        "it": "Dai cicchetti presi per colazione,"
+      },
+      {
+        "testo": "Tûtti i discorsci che ö soleiva fâ",
+        "it": "Tutti i discorsi che era solito fare"
+      },
+      {
+        "testo": "Pe i quæ ö l'é andæto a terminâ in prexon,",
+        "it": "Per i quali è andato a finire in prigione,"
+      },
+      {
+        "testo": "Triste compenso, a chi ha trascorso a vitta",
+        "it": "Triste compenso, a chi ha trascorso la vita"
+      },
+      {
+        "testo": "Tra ö dî mâ dö governo e l'æguavitta!",
+        "it": "Tra lo sparlare del governo e l'acquavite!"
+      },
+      {
+        "testo": "In sce l'âtra gh'ëa Creta e tûtt'in gîo",
+        "it": "Sull'altra c'era Creta e tutt'intorno"
+      },
+      {
+        "testo": "Propriamente ritræta a-o natûrale,",
+        "it": "Esattamente ritratta al naturale,"
+      },
+      {
+        "testo": "Gh'ëa Pasife cö toro inferöciö",
+        "it": "C'era Pasifae col toro inferocito"
+      },
+      {
+        "testo": "Che ö ghe cianta (sei dove...) ö cannociale,",
+        "it": "Che le pianta (sai dove...) il cannocchiale,"
+      },
+      {
+        "testo": "E ö biforme figgiêu che l'ëa sciortîo,",
+        "it": "E il biforme figlio che era uscito,"
+      },
+      {
+        "testo": "Da questa loro congiunzion bestiale,",
+        "it": "Da questa loro congiunzione bestiale,"
+      },
+      {
+        "testo": "Che e donne scappan quande stan lî a ammiâla,",
+        "it": "Che le donne scappano quando stanno lì a guardarla,"
+      },
+      {
+        "testo": "Perché dunque ghe ven coæ de provâla.",
+        "it": "Perché altrimenti viene loro voglia di provarla."
+      },
+      {
+        "testo": "Se veddeiva ö famoso Laberinto,",
+        "it": "Si vedeva il famoso Labirinto,"
+      },
+      {
+        "testo": "Co-e sô stradde a câgollo e ö fî attesôu",
+        "it": "Con le sue strade attorcigliate e il filo teso"
+      },
+      {
+        "testo": "Per ö mëzo dö quæ, ö l'aveiva vinto",
+        "it": "Per mezzo del quale l'aveva vinto"
+      },
+      {
+        "testo": "E a reginn-a, ö regîo comunicôu,",
+        "it": "E la regina, comunicatogli lo stratagemma,"
+      },
+      {
+        "testo": "E lì, tì ascì, te se veddiæ dipinto",
+        "it": "E lì, anche tu ti si vedrebbe dipinto,"
+      },
+      {
+        "testo": "Icaro cäo, se tì nö t'ëi negôu!",
+        "it": "Caro Icaro, se non ti fossi annegato!"
+      },
+      {
+        "testo": "Ma döe votte tô poæ ö se gh'ëa za misso,",
+        "it": "Ma due volte tuo padre ci si era già messo,"
+      },
+      {
+        "testo": "Ma da-e cöggie che ö fâva, ö l'ha desmisso!",
+        "it": "Ma per le cazzate che combinava, ha rinunciato!"
+      },
+      {
+        "testo": "Mentre Enea co-i compagni, ö stava a ammiâ",
+        "it": "Mentre Enea con i compagni stava a guardare"
+      },
+      {
+        "testo": "Tûtte queste mâveggie, eccote Acate",
+        "it": "Tutte queste meraviglie, eccoti Acate"
+      },
+      {
+        "testo": "Che ö l'ëa andæto ûn pô avanti a spiönezzâ,",
+        "it": "Che era andato un po' avanti a spiare,"
+      },
+      {
+        "testo": "Che ö te ven co-a Giarön, fra e ciû illibate",
+        "it": "Che ti arriva con la Giarona, tra le più illibate"
+      },
+      {
+        "testo": "De ragazze ch'ëan lî, canna provâ.",
+        "it": "Delle ragazze che erano lì, usato garantito."
+      },
+      {
+        "testo": "Nö l'é tempo d'ammiâ queste scemate,",
+        "it": "Non è tempo di guardare queste scemate,"
+      },
+      {
+        "testo": "Ma de pagàme anticipatamente",
+        "it": "Ma di pagarmi anticipatamente"
+      },
+      {
+        "testo": "Che se dunque, n'intræ pe ûn aççidente!",
+        "it": "Perché altrimenti, non entrate per un accidente!"
+      },
+      {
+        "testo": "Enea, naturalmente, ö se rimette",
+        "it": "Enea, naturalmente, si rimette a lei"
+      },
+      {
+        "testo": "Comme ûn ommö che ö sa a sô obbligazion,",
+        "it": "Come un uomo che conosce i suoi obblighi,"
+      },
+      {
+        "testo": "E ö ghe lascia scûggiâ döe svanzeghette,",
+        "it": "E le lascia scivolare due svanzichette,"
+      },
+      {
+        "testo": "Senza fâ rimostranze o osservazion.",
+        "it": "Senza fare rimostranze o osservazioni."
+      },
+      {
+        "testo": "Lê a se-e peisa ûn pô in man; poi a se-e mette",
+        "it": "Lei se le pesa un po' in mano; poi se le mette"
+      },
+      {
+        "testo": "In ta stacca dixendo a-i Teucri: allon,",
+        "it": "In tasca dicendo ai Teucri: andiamo,"
+      },
+      {
+        "testo": "Vegnîme apprêuvo che ve fasso intrâ:",
+        "it": "Venitemi dietro che vi faccio entrare:"
+      },
+      {
+        "testo": "Animo, presto, cöse stæ a locciâ?",
+        "it": "Animo, presto, cosa state a tentennare?"
+      },
+      {
+        "testo": "In t'ûn canto appartôu da rocca Eubea,",
+        "it": "In un angolo appartato della rocca Euboica,"
+      },
+      {
+        "testo": "Gh'é ûn immenso pertûso in galleria,",
+        "it": "C'è un immenso pertugio in galleria,"
+      },
+      {
+        "testo": "Che all'esempio da grotta de Bossea,",
+        "it": "Che sull'esempio della grotta di Bossea,"
+      },
+      {
+        "testo": "A s'ingravia in tö monte e a te-o regîa;",
+        "it": "Si addentra  nel monte e te lo gira;"
+      },
+      {
+        "testo": "E pe poèivene dâ solo ûn'idea,",
+        "it": "E per potervene dare solo un'idea,"
+      },
+      {
+        "testo": "Gh'é çento stradde ricavæ in ta pria",
+        "it": "Ci sono cento strade ricavate nella pietra"
+      },
+      {
+        "testo": "E çento porte che se mandan l'eco",
+        "it": "E cento porte che si mandano l'eco"
+      },
+      {
+        "testo": "Çentuplicôu de vibrazioîn dö speco.",
+        "it": "Centuplicato delle vibrazioni dell'antro."
+      },
+      {
+        "testo": "Comme Enea ö l'é in sce a porta, ecco in azion",
+        "it": "Come Enea è sulla porta, ecco in azione"
+      },
+      {
+        "testo": "A sonnambola Libia, ö l'é ö momento,",
+        "it": "La sonnambula Libia, è il momento,"
+      },
+      {
+        "testo": "A ghe sbraggia, de fâ l'operâzion,",
+        "it": "Le sbraita, di fare l'operazione,"
+      },
+      {
+        "testo": "Dunque mettite sötta e dagghe drento,",
+        "it": "Dunque mettiti sotto e dacci dentro,"
+      },
+      {
+        "testo": "E dixendo coscì a và in convulscion,",
+        "it": "E dicendo così va in convulsione,"
+      },
+      {
+        "testo": "A gïa i êuggi, a se streppa ö vestimento,",
+        "it": "Gira gli occhi, si strappa il vestito,"
+      },
+      {
+        "testo": "A se tîa sciù a camixa, a se spenaggia,",
+        "it": "Si tira su la camicia, si strappa i capelli,"
+      },
+      {
+        "testo": "E a se batte ö panê, neigra dä raggia!",
+        "it": "E si batte il paniere, nera dalla rabbia!"
+      },
+      {
+        "testo": "In tö veddila, a paiva ûn aççidente",
+        "it": "A vederla, sembrava un accidente"
+      },
+      {
+        "testo": "E co-a voxe inrochîa da-o cicchettâ,",
+        "it": "E con la voce arrochita dal bere,"
+      },
+      {
+        "testo": "E vegnindo ciû cada e ciû impaziente,",
+        "it": "E diventando più accaldata e più impaziente,"
+      },
+      {
+        "testo": "Coscì a sbraggia ad Enea che ö a stava a ammiâ:",
+        "it": "Così sbraita ad Enea che stava a guardarla:"
+      },
+      {
+        "testo": "Animo via, cose ti stæ a dâ a mente?",
+        "it": "Animo via, di cosa ti preoccupi?"
+      },
+      {
+        "testo": "Parla ûnn-a votta, se ti vêu parlâ,",
+        "it": "Parla una volta per tutte, se vuoi parlare,"
+      },
+      {
+        "testo": "Se ti tii ö cû inderê, mia, nö gh'é santi,",
+        "it": "Se tiri il culo indietro, guarda, non ci sono santi,"
+      },
+      {
+        "testo": "A cappella a nö cresce e a nö va avanti!",
+        "it": "La cappella non cresce e non va avanti!"
+      },
+      {
+        "testo": "Da ste paole e sta vistâ ìmprescionæ",
+        "it": "Da queste parole e da questa vista impressionati"
+      },
+      {
+        "testo": "I troien s'en sentïo strenze o panê,",
+        "it": "I Troiani si sono sentiti stringere il paniere,"
+      },
+      {
+        "testo": "Ed o mæximo Enea, pe dî a veitæ,",
+        "it": "E lo stesso Enea, a dire la verità,"
+      },
+      {
+        "testo": "Se n'ëa pe-i âtri, o sæ tornoû inderê",
+        "it": "Se non era per gli altri, sarebbe tornato indietro,"
+      },
+      {
+        "testo": "Ma pe n'ëse piggiôu pe ûn bollibæ",
+        "it": "Ma per non essere preso per uno smidollato"
+      },
+      {
+        "testo": "E fâ a figûa comme ûn ciccolatê",
+        "it": "E fare la figura del cioccolataio,"
+      },
+      {
+        "testo": "Co e möen zunte ö s'è misso in zenoggion",
+        "it": "Con le mani giunte si è messo in ginocchio"
+      },
+      {
+        "testo": "A desghêugge da lê, quest'orazion:",
+        "it": "A recitare da sé, quest'orazione:"
+      },
+      {
+        "testo": "Oh santo Apollo cäo, che in ciû de mille",
+        "it": "Oh santo Apollo caro, che in più di mille"
+      },
+      {
+        "testo": "Circostanse e occaxioin, ti m'æ protetto;",
+        "it": "Circostanze e occasioni, mi hai protetto;"
+      },
+      {
+        "testo": "Ti che a-o centro dö tendine d'Achille",
+        "it": "Tu che al centro del tendine di Achille"
+      },
+      {
+        "testo": "Ti æ a scciùppetta de Paride diretto,",
+        "it": "Hai diretto lo schioppetto di Paride,"
+      },
+      {
+        "testo": "Mì da tì timonôu, tegnûo pe-e brille,",
+        "it": "Io da te timonato, tenuto per le briglie,"
+      },
+      {
+        "testo": "Ho zà giôu tæra e mâ pe tô rispetto,",
+        "it": "Ho già girato terra e mare per tuo rispetto,"
+      },
+      {
+        "testo": "Ho rischiôu de negâ, de möî dä famme,",
+        "it": "Ho rischiato di annegare, di morire di fame,"
+      },
+      {
+        "testo": "In ti schêuggi farsii de pelle gramme.",
+        "it": "Tra gli scogli farciti di pelli grame."
+      },
+      {
+        "testo": "Aoa zà che sön chì che sön riuscîo,",
+        "it": "Ora già che sono qui, che sono riuscito,"
+      },
+      {
+        "testo": "Pe ûnn-a tô grazia e doppö tanti guai,",
+        "it": "Per una tua grazia e dopo tanti guai,"
+      },
+      {
+        "testo": "A travedde ûn pittin de ben de Dio",
+        "it": "A intravvedere un pochino di ben di Dio"
+      },
+      {
+        "testo": "Che spero sempre e nö l'acciappo mai,",
+        "it": "Che spero sempre e non l'acchiappo mai,"
+      },
+      {
+        "testo": "E che sön in Italia e che ho finîo",
+        "it": "E che sono in Italia e che ho finito"
+      },
+      {
+        "testo": "De sciûgâme ö pevê con stö via vai,",
+        "it": "Di logorarmi con questo viavai,"
+      },
+      {
+        "testo": "Fa che segge finïa sta lunga stoia",
+        "it": "Fa' che sia finita questa lunga storia"
+      },
+      {
+        "testo": "De mettilo derê delongo a Troia.",
+        "it": "Di metterlo continuamente di dietro a Troia."
+      },
+      {
+        "testo": "Sæ zâ tempo d'ûn pô de discrezion",
+        "it": "Sarebbe già tempo di un po' di discrezione"
+      },
+      {
+        "testo": "Con ste sciûgate e ste rottûe de cuggie,",
+        "it": "Con queste asciugate e queste rotture di coglioni,"
+      },
+      {
+        "testo": "Santi e sante dö çê dæme raxon,",
+        "it": "Santi e sante del cielo datemi ragione,"
+      },
+      {
+        "testo": "Ve ne prego, perdie, scinn-a in zenöggie,",
+        "it": "Ve ne prego, perdiana, finanche in ginocchio,"
+      },
+      {
+        "testo": "Dimostræme ûn pittin de compasciön,",
+        "it": "Dimostratemi un pochino di compassione,"
+      },
+      {
+        "testo": "Nö dæ a mente a de balle e a de fregöggie,",
+        "it": "Non badate a delle balle e a delle briciole,"
+      },
+      {
+        "testo": "C'ûn perdon generale e ûn'amnistia",
+        "it": "Con un perdono generale e un'amnistia"
+      },
+      {
+        "testo": "Dæ a stopetta in sce tûtto e coscì scia!",
+        "it": "Date un colpo di spugna  su tutto e così sia!"
+      },
+      {
+        "testo": "Vergine pûra (pe manëa de dî)",
+        "it": "Vergine pura (per modo di dire)"
+      },
+      {
+        "testo": "Ti che ti æ a vista lunga e esercitâ,",
+        "it": "Tu che hai la vista lunga ed esercitata,"
+      },
+      {
+        "testo": "Pe pœì vedde in ta pansa all'avvegnî,",
+        "it": "Per poter vedere nella pancia all'avvenire,"
+      },
+      {
+        "testo": "Dimme ûn pittin, cöse me resta a fâ,",
+        "it": "Dimmi un pochino, cosa mi resta da fare,"
+      },
+      {
+        "testo": "Mostrime ö regno, riservôu per noî,",
+        "it": "Mostrami il regno, riservato per noi,"
+      },
+      {
+        "testo": "(Se a n'é ûnn-a balla che n'han fæto ingoâ)",
+        "it": "(Se non è una balla che ci hanno fatto ingoiare)"
+      },
+      {
+        "testo": "Dove posse dormî sotto e redöggie,",
+        "it": "Dove possa dormire sotto le lenzuola,"
+      },
+      {
+        "testo": "Mette sciû casa e nö sciügâne e cöggie!",
+        "it": "Mettere su casa e non farmi asciugare le palle!"
+      },
+      {
+        "testo": "E mì alöa fasso voto e sacramento",
+        "it": "E io allora faccio voto e sacramento"
+      },
+      {
+        "testo": "Che ad Apollo e a sô nomme edifichiô",
+        "it": "Che ad Apollo e al suo nome edificherò"
+      },
+      {
+        "testo": "In sce a ciassa ciû grande ûn monumento,",
+        "it": "Sulla piazza più grande un monumento,"
+      },
+      {
+        "testo": "E cön feste solenni ö celebriô!",
+        "it": "E con feste solenni lo celebrerò!"
+      },
+      {
+        "testo": "E tì ascì ti aviæ ûn bello appartamento",
+        "it": "E anche tu avrai un bell'appartamento"
+      },
+      {
+        "testo": "Tûtto spegi e söfâ, döve mettiô",
+        "it": "Tutto specchi e sofà, dove metterò"
+      },
+      {
+        "testo": "E ciû belle ragazze a fâ a putten",
+        "it": "Le più belle ragazze a fare le puttane"
+      },
+      {
+        "testo": "Di ministri ädreitûa, comme ruffien!",
+        "it": "Dei ministri addirittura, come ruffiani!"
+      },
+      {
+        "testo": "Solo mi te domando in cortexia,",
+        "it": "Solo io ti domando per cortesia,"
+      },
+      {
+        "testo": "Se ti æ proprio vuentæ de dâme a mente,",
+        "it": "Se hai proprio voglia di considerarmi,"
+      },
+      {
+        "testo": "Che ti parli in manea d'ëse capïa,",
+        "it": "Che tu parli in modo da essere capita,"
+      },
+      {
+        "testo": "Ne-ö zeneise ciû basso e ciû corrente;",
+        "it": "Nel genovese più basso e più corrente;"
+      },
+      {
+        "testo": "De nö scrive in papë che scappan via,",
+        "it": "Di non scrivere su fogli di carta che scappano via,"
+      },
+      {
+        "testo": "Perché mi nö capiscio ûn accidente;",
+        "it": "Perché io non capisco un accidente;"
+      },
+      {
+        "testo": "Coscì dîto, ö stà lì comme ö sciö Tocca",
+        "it": "Così detto, se ne sta lì come il signor Tocca"
+      },
+      {
+        "testo": "Aspettando che l'âtra a l'arve a böcca.",
+        "it": "Aspettando che l'altra apra la bocca."
+      },
+      {
+        "testo": "Lë pe dâ da pûa in ti œûggi e pe mostrâ",
+        "it": "Lei, per gettare polvere negli occhi e per mostrare"
+      },
+      {
+        "testo": "Che a l'ëa sotto l'azion dö magnetismo,",
+        "it": "Che era sotto l'azione del magnetismo,"
+      },
+      {
+        "testo": "Comme a fösse ûnn-a donna indemoniâ",
+        "it": "Come se fosse una donna indemoniata"
+      },
+      {
+        "testo": "Sottomessa da-i prævi all'esorcismo,",
+        "it": "Sottomessa dai preti all'esorcismo,"
+      },
+      {
+        "testo": "Comme ûn'aze innamuôu, che ö vêu treppâ,",
+        "it": "Come un asino innamorato che vuole trescare ,"
+      },
+      {
+        "testo": "A se mette da cappo in parossismo,",
+        "it": "Si mette di nuovo in parossismo,"
+      },
+      {
+        "testo": "A tiâ câsci, a fâ bûtti, a s'arreversa",
+        "it": "A tirar calci, a fare salti, e si rovescia"
+      },
+      {
+        "testo": "Lunga e larga pe-a tæra, a möstra a gûersa.",
+        "it": "Lunga e larga per terra, e mostra la guercia."
+      },
+      {
+        "testo": "Comme ûn âze frenôu da sô cavezza,",
+        "it": "Come un asino frenato dalla sua cavezza,"
+      },
+      {
+        "testo": "E a-o regime da stanga e dö baston,",
+        "it": "E al regime della stanga e del bastone,"
+      },
+      {
+        "testo": "Ven che ö perde i sô grilli e a sô fierezza",
+        "it": "Succede che perde i suoi grilli e la sua fierezza"
+      },
+      {
+        "testo": "E ö finisce pe mettise in raxon,",
+        "it": "E finisce per mettersi in ragione,"
+      },
+      {
+        "testo": "Cöscì lë da patanscia e da stanchezza,",
+        "it": "Così lei per il fiatone e per la stanchezza,"
+      },
+      {
+        "testo": "A diventa ciû paxe e in condizion",
+        "it": "Diventa più pacata e in condizione"
+      },
+      {
+        "testo": "De vêuâ da-o göscio, co-a sô facciatosta",
+        "it": "Di vuotare dal gozzo, con la sua facciatosta"
+      },
+      {
+        "testo": "Ste parolle astronæ, pe sô risposta:",
+        "it": "Queste parole stonate, per sua risposta:"
+      },
+      {
+        "testo": "E buriann-e dö mâ son za finîe,",
+        "it": "Le burrasche del mare sono già finite,"
+      },
+      {
+        "testo": "Ghe pueî mette de sotta ö so tranquillo.",
+        "it": "Vi potete mettere sotto al sole tranquillo."
+      },
+      {
+        "testo": "Aoa gh'é a tæra e no gh'é guei da rîe,",
+        "it": "Ora c'è la terra e non c'è tanto da ridere,"
+      },
+      {
+        "testo": "Stæ ben allocci e corazzæ ö bacillo...",
+        "it": "State ben all'erta e corazzatevi il sedere..."
+      },
+      {
+        "testo": "Chi e sciûgate de cû, en ciû granîe,",
+        "it": "Qui le asciugate di culo, sono più dure,"
+      },
+      {
+        "testo": "E ve fan giamminâ pe nö fâ pillo",
+        "it": "E vi fanno penare per non fallire"
+      },
+      {
+        "testo": "A Coghœûo, mi ve zûo che ghe arriviei",
+        "it": "A Cogoleto, io vi giuro che ci arriverete"
+      },
+      {
+        "testo": "Ma che d'ësighe intræ, ve ne pentiei.",
+        "it": "Ma di esserci entrati, ve ne pentirete."
       }
     ]
   },
