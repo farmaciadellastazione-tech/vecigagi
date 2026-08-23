@@ -4,6 +4,7 @@ import {
   soloVisibile, formaDisplay, formaTTS,
   normalizza, normalizzaDialetto, espandiContrazioni, normalizzaEn,
   convertiNumeriDialetto, wordKey, frasaFineSP,
+  formaBaseDialetto, variantiBaseDialetto,
 } from '../vocab.js';
 
 describe('DIALETTI_TTS_ITA / DIALETTI_NUMERI', () => {
@@ -163,6 +164,11 @@ describe('normalizza — risposta utente per match', () => {
   it('spazi multipli collassati', () => {
     expect(normalizza('  ciao    mondo  ')).toBe('ciao mondo');
   });
+
+  it('"æ" (grafia genovese) mappata su "e", non eliminata (legatura non scomponibile da NFD)', () => {
+    expect(normalizza("ti t'æ")).toBe('ti te');
+    expect(normalizza('viatri ammæ')).toBe('viatri amme');
+  });
 });
 
 describe('normalizzaDialetto — strip prefissi fonetici', () => {
@@ -181,6 +187,53 @@ describe('normalizzaDialetto — strip prefissi fonetici', () => {
   it('prefisso applicato solo in posizione iniziale', () => {
     // "leggh" contiene "gh" ma non in inizio -> non strippato
     expect(normalizzaDialetto('leggh')).toBe('leggh');
+  });
+});
+
+describe('formaBaseDialetto — sola radice verbale per coniugazioni sp/ge', () => {
+  it('sp: toglie il clitico staccato (a/te/i)', () => {
+    expect(formaBaseDialetto('a amo')).toBe('amo');
+    expect(formaBaseDialetto('i ama')).toBe('ama');
+  });
+
+  it("sp: toglie clitico + infisso avere g'/gh'", () => {
+    expect(formaBaseDialetto("i g'agia")).toBe('agia');
+    expect(formaBaseDialetto("a g'ho")).toBe('o');
+    expect(formaBaseDialetto("te gh'è")).toBe('e');
+  });
+
+  it('ge: toglie il soggetto pieno (mi/ti/lé/niatri/viatri/liatri)', () => {
+    expect(formaBaseDialetto('niatri emmo')).toBe('emmo');
+    expect(formaBaseDialetto('liatri an')).toBe('an');
+    expect(formaBaseDialetto('mi ò')).toBe('o');
+  });
+
+  it('ge: toglie soggetto + clitico eliso (ti t\'æ, lê o l\'agge)', () => {
+    expect(formaBaseDialetto("ti t'æ")).toBe('e');
+    expect(formaBaseDialetto("lê o l'agge")).toBe('agge');
+  });
+
+  it('ge: congiuntivo, toglie anche "che" iniziale', () => {
+    expect(formaBaseDialetto('che mi agge')).toBe('agge');
+    expect(formaBaseDialetto("che lê o l'agge")).toBe('agge');
+  });
+
+  it('forme senza clitico (amare imperfetto/futuro sp) restano invariate', () => {
+    expect(formaBaseDialetto('amavo')).toBe('amavo');
+  });
+});
+
+describe('variantiBaseDialetto — candidati extra per isCorretta', () => {
+  it('genera una variante per ogni alternativa con prefisso da togliere', () => {
+    expect(variantiBaseDialetto("i g'agia")).toEqual(['agia']);
+  });
+
+  it('coppia pronuncia/grafia: una variante per parte (deduplicata se uguale)', () => {
+    expect(variantiBaseDialetto("lé u l'agge/lê o l'agge")).toEqual(['agge']);
+  });
+
+  it('nessun prefisso da togliere → nessuna variante extra', () => {
+    expect(variantiBaseDialetto('amavo')).toEqual([]);
   });
 });
 

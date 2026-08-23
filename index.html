@@ -5423,7 +5423,9 @@ const SOGGETTI = {
     "3ª sing.": "lü",
     "1ª plur.": "noi",
     "2ª plur.": "voi",
-    "3ª plur.": "loe"
+    // "loo" (non "loe"): scritto "loho" per trucco TTS, altrimenti la voce
+    // italiana legge "loo" come "lu" (collassa il doppio suono o-o).
+    "3ª plur.": "loho"
   }
 };
 // Lingue dove il soggetto è grammaticalmente necessario (o molto utile per audio)
@@ -12607,7 +12609,14 @@ function App() {
     const atteso = carta.tipo === "coniugazione" ? carta.atteso : carta.entry[carta.a];
     // Passa il bcp47 della lingua risposta per convertire numeri→parole
     const lA = carta.tipo === "coniugazione" ? carta.lA : lingue.find(l => l.codice === carta.a);
-    const ok = isCorretta(atteso, risposta, lA?.bcp47, lA?.codice);
+    // Coniugazioni sp/ge: accetta anche la sola radice verbale, senza
+    // soggetto/clitico obbligatorio (es. "agia" oltre a "i g'agia").
+    let attesoConfronto = atteso;
+    if (carta.tipo === "coniugazione" && atteso && DIALETTI_TTS_ITA.includes(lA?.codice)) {
+      const basi = variantiBaseDialetto(atteso);
+      if (basi.length) attesoConfronto = atteso + "|" + basi.join("|");
+    }
+    const ok = isCorretta(attesoConfronto, risposta, lA?.bcp47, lA?.codice);
     const ns = aggiornaStatsCoppia(stats, carta.key, ok);
     setStats(ns);
     setInput(risposta);

@@ -86,13 +86,44 @@ function formaTTS(s) {
 // ── Normalizzazione (per match risposte utente) ──────────────────────────
 
 function normalizza(str) {
-  return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[-_]/g, " ").replace(/[^a-z\s]/g, "").replace(/\s+/g, " ").trim();
+  // "\u00e6" (grafia genovese, es. "amm\u00e6") \u00e8 una legatura Unicode non scomponibile
+  // da NFD: senza questa riga il filtro successivo la elimina silenziosamente
+  // invece di convertirla (es. "amm\u00e6" -> "amm" invece di "amme").
+  return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\u00e6/g, "e").replace(/[-_]/g, " ").replace(/[^a-z\s]/g, "").replace(/\s+/g, " ").trim();
 }
 
 // Normalizza per dialetti: rimuove prefissi fonetici comuni (gh', sc', etc.)
 function normalizzaDialetto(str) {
   const n = normalizza(str);
   return n.replace(/^(gh|sc|sgn|gn)/, "");
+}
+
+// Coniugazioni sp/ge: le forme sono scritte con pronome soggetto e/o
+// particella clitica obbligatoria davanti al verbo (es. sp "i g'agia",
+// ge "lê o l'agge", ge "che mi agge"). Questa funzione toglie soggetto,
+// clitico e (per sp) l'infisso "g'"/"gh'" di avere, isolando la sola
+// radice verbale — così la risposta "agia" viene accettata oltre a
+// "i g'agia". Usata solo come candidato IN PIÙ per isCorretta, mai per
+// il testo mostrato/letto (quello resta la forma completa in atteso).
+function formaBaseDialetto(str) {
+  let t = str.trim();
+  t = t.replace(/^che\s+/i, ""); // congiuntivo ge ("che mi agge")
+  t = t.replace(/^(mi|ti|lé|lê|niatri|viatri|liatri)\s+/i, ""); // soggetto pieno (ge)
+  t = t.replace(/^(a|te|ti|i|o|u)['’]\s*/i, ""); // clitico + apostrofo isolato
+  t = t.replace(/^(a|te|ti|i|o|u)\s+/i, ""); // clitico staccato (sp)
+  t = t.replace(/^[tl]['’]/i, ""); // clitico eliso fuso alla radice (t'æ, l'agge)
+  t = t.replace(/^g['’]?h?['’]?/i, ""); // infisso avere spezzino (g'/gh')
+  return normalizza(t);
+}
+
+// Genera, per una stringa atteso (eventualmente con alternative separate da
+// "/ , ; |"), le varianti "solo radice verbale" da aggiungere come candidati
+// extra al confronto — una per ogni alternativa che ha davvero un prefisso
+// da togliere (altrimenti sarebbe un duplicato inutile).
+function variantiBaseDialetto(atteso) {
+  const parti = soloVisibile(atteso).split(/[/,;|]/).map(s => s.trim()).filter(Boolean);
+  const basi = parti.map(formaBaseDialetto).filter((b, idx) => b && b !== normalizza(parti[idx]));
+  return [...new Set(basi)];
 }
 
 // Espande contrazioni inglesi comuni
@@ -142,6 +173,7 @@ const _exports = {
   soloVisibile, formaDisplay, formaTTS,
   normalizza, normalizzaDialetto, espandiContrazioni, normalizzaEn,
   convertiNumeriDialetto, wordKey, frasaFineSP,
+  formaBaseDialetto, variantiBaseDialetto,
 };
 Object.assign(globalThis, _exports);
 if (typeof module !== 'undefined' && module.exports) module.exports = _exports;
