@@ -5423,18 +5423,24 @@ const SOGGETTI = {
     "3ª sing.": "lü",
     "1ª plur.": "noi",
     "2ª plur.": "voi",
-    // "loo" (non "loe"): scritto "loho" per trucco TTS, altrimenti la voce
-    // italiana legge "loo" come "lu" (collassa il doppio suono o-o).
-    "3ª plur.": "loho"
+    "3ª plur.": "loo"
   }
 };
 // Lingue dove il soggetto è grammaticalmente necessario (o molto utile per audio)
 const LINGUE_CON_SOGGETTO = new Set(["fr", "en", "de", "pt", "ia"]);
+// Pronunce TTS di un soggetto (SOGGETTI) che differiscono dalla grafia corretta.
+// SOLO per l'audio: la grafia in SOGGETTI resta quella giusta (usata anche per
+// riconoscere/staccare il soggetto dalle risposte digitate, vedi rimuoviSoggetto).
+// sp "loo": la voce italiana legge il doppio "o" come "lu", va scritto "loho".
+const PRONUNCIA_TTS_SOGGETTO = {
+  sp: { loo: "loho" }
+};
 // Restituisce il testo da leggere ad alta voce per una forma coniugata
 function testoAudio(forma, persona, codLingua) {
   const p = persona ? persona.replace(/ \(.*\)/, "").trim() : ""; // rimuove "(io/I/je...)"
   const sogg = SOGGETTI[codLingua]?.[p];
   if (!sogg) return forma;
+  const soggAudio = PRONUNCIA_TTS_SOGGETTO[codLingua]?.[sogg] || sogg;
   // Imperativo: non aggiungere soggetto se la forma è già autosufficiente
   // es. "let's go", "go!", forme che iniziano con "let's"
   if (/^let'?s\b/i.test(forma)) return forma;
@@ -5442,7 +5448,7 @@ function testoAudio(forma, persona, codLingua) {
   if (codLingua === "fr" && sogg === "je" && /^[aeéèêëiouàâîïœùûh]/i.test(forma)) {
     return "j'" + forma;
   }
-  return sogg + " " + forma;
+  return soggAudio + " " + forma;
 }
 const CONIUGAZIONI = {
   amare: {
