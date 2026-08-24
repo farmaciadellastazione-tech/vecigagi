@@ -10681,6 +10681,390 @@ const STORIE_DEFAULT = [
       {
         "testo": "De puei rivedde ed abbrassâ me poæ",
         "it": "Di poter rivedere e abbracciare mio padre."
+      },
+      {
+        "testo": "Questo poveo vegetto, aççidentôu,",
+        "it": "Questo povero vecchietto, acciaccato,"
+      },
+      {
+        "testo": "Mi l'ho fæto passâ tramezo a-e balle,",
+        "it": "Io l'ho fatto passare in mezzo alle cannonate,"
+      },
+      {
+        "testo": "Tra l'incendio e i nemixi e l'ho portôu,",
+        "it": "Tra l'incendio e i nemici e l'ho portato,"
+      },
+      {
+        "testo": "Pe salvâlo da morte in sce e mæ spalle",
+        "it": "Per salvarlo da morte sulle mie spalle;"
+      },
+      {
+        "testo": "Meschinetto, ö m'ha sempre accompagnôu",
+        "it": "Meschinetto, mi ha sempre accompagnato"
+      },
+      {
+        "testo": "E pe tæra e mâ, pe monte e valle,",
+        "it": "E per terra e mare, per monti e valli,"
+      },
+      {
+        "testo": "Quantunque ö fösse rovinöu da spinn-a",
+        "it": "Quantunque fosse malandato con la schiena"
+      },
+      {
+        "testo": "E che ö patisse ritenzion d'orinn-a.",
+        "it": "E soffrisse di ritenzione urinaria."
+      },
+      {
+        "testo": "E lë mæximo in sêunno, ö m'ha prescrîto",
+        "it": "E lui stesso in sogno, mi ha prescritto"
+      },
+      {
+        "testo": "Che vegnisse da ti, che te pregasse",
+        "it": "Che venissi da te, che ti pregassi"
+      },
+      {
+        "testo": "De portäme da lë comme t'ho dîto",
+        "it": "Di portarmi da lui come ti ho detto"
+      },
+      {
+        "testo": "Perché ö vedde, che ö baxe e che l'abbrasse;",
+        "it": "Perché lo veda, lo baci e lo abbracci;"
+      },
+      {
+        "testo": "Ti che ti æ ä direzion de questo scîto,",
+        "it": "Tu che hai la direzione di questo sito,"
+      },
+      {
+        "testo": "No me stâ a dî de nö, lascia che passe,",
+        "it": "Non starmi a dire di no, lascia che passi,"
+      },
+      {
+        "testo": "Contentine lë e mi, mescite brava,",
+        "it": "Accontenta lui e me, muoviti brava,"
+      },
+      {
+        "testo": "E piggia döi colombi c'ûnn-a fava!",
+        "it": "E prendi due piccioni con una fava!"
+      },
+      {
+        "testo": "Che pe dö resto, nö le miga veo",
+        "it": "Che per il resto, non è mica vero"
+      },
+      {
+        "testo": "Che questa grazia a segge tanto rara!",
+        "it": "Che questa grazia sia tanto rara!"
+      },
+      {
+        "testo": "A piggiâ so moggiæ, gh'é andæto Orfeo,",
+        "it": "A prendere sua moglie, c'è andato Orfeo,"
+      },
+      {
+        "testo": "Perché ö saveiva strimpellâ a chitara,",
+        "it": "Perché sapeva strimpellare la chitarra,"
+      },
+      {
+        "testo": "Pe ciû votte Polluce, e ghe Teseo",
+        "it": "Per più volte Polluce, e c'è Teseo"
+      },
+      {
+        "testo": "E gh'é Alcide che ö l'ha ammazzoû a bazara",
+        "it": "E c'è Alcide che ha ammazzato la bazara,"
+      },
+      {
+        "testo": "E perdiesante, dunque mi chi son?",
+        "it": "E perdiesante, dunque io chi sono?"
+      },
+      {
+        "testo": "Ûn batösö qualunque, ûn pelandron?",
+        "it": "Un maranza qualunque, un pelandrone?"
+      },
+      {
+        "testo": "E pregando coscì con sentimento",
+        "it": "E pregando così con sentimento"
+      },
+      {
+        "testo": "Ö piccava da testa in sce l'artâ",
+        "it": "Picchiava di testa sull'altare;"
+      },
+      {
+        "testo": "A sonnambola alôa: per intrâ dentro",
+        "it": "La sonnambula allora: per entrare dentro"
+      },
+      {
+        "testo": "N'aggite puia che nö gh'é guæi da sûâ,",
+        "it": "Non abbiate paura che non c'è molto da sudare,"
+      },
+      {
+        "testo": "Perché a porta a l'é averta ogni momento",
+        "it": "Perché la porta è aperta in ogni momento"
+      },
+      {
+        "testo": "E basta solo che se vœûggie intrâ,",
+        "it": "E basta solo che si voglia entrare,"
+      },
+      {
+        "testo": "E in quanto a questo, nö gh'é guæi da dî,",
+        "it": "E in quanto a questo, non c'è molto da dire,"
+      },
+      {
+        "testo": "Ma ö diffiçile ö le de pœî sciortî;",
+        "it": "Ma il difficile è poter uscire;"
+      },
+      {
+        "testo": "E nö l'é che a qualunque bullicugge",
+        "it": "E non è che a qualunque rincoglionito"
+      },
+      {
+        "testo": "Segge permisso de tornâ inderê,",
+        "it": "Sia permesso di tornare indietro,"
+      },
+      {
+        "testo": "Ma ghe vêu ûn ommo che ghe fûmme e cugge,",
+        "it": "Ma ci vuole un uomo a cui fumino i coglioni,"
+      },
+      {
+        "testo": "Misso, comme se dixe in sce ö candê,",
+        "it": "Messo, come si dice, sul candeliere,"
+      },
+      {
+        "testo": "Ûn de quelli ruffien, che se a ghe bugge",
+        "it": "Uno di quei ruffiani che se gli bolle"
+      },
+      {
+        "testo": "Ö posse scinn-a allivelalo in çe,",
+        "it": "Possa persino portarlo a livello del cielo,"
+      },
+      {
+        "testo": "De quelli insomma che in te l'œûggio guerso",
+        "it": "Di quelli insomma che nell'occhio guercio"
+      },
+      {
+        "testo": "Pêuan piggialo pe drito e pe reverso.",
+        "it": "Possano prenderlo per dritto e per rovescio."
+      },
+      {
+        "testo": "Ghe in tö mezo, ûnn-a selva aççidentâ,",
+        "it": "C'è in mezzo una selva accidentata,"
+      },
+      {
+        "testo": "Tûtta pinn-a d'ortighe e de spinoin;",
+        "it": "Tutta piena d'ortiche e di spinoni;"
+      },
+      {
+        "testo": "Ûn'ægua tûtta neîgra impatanâ,",
+        "it": "Un'acqua tutta nera impantanata,"
+      },
+      {
+        "testo": "A-o circonda in te tûtte e direzioin;",
+        "it": "Lo circonda in tutte le direzioni;"
+      },
+      {
+        "testo": "Ma se ti ti æ ö piaxei de vœî piggiâ",
+        "it": "Ma se tu hai il piacere di voler prendere"
+      },
+      {
+        "testo": "A demôa dell'inferno in döi boccoin,",
+        "it": "Il divertimento dell'inferno in due bocconi,"
+      },
+      {
+        "testo": "Stamme dunque a sentî, che vœuggio dâte,",
+        "it": "Stammi dunque a sentire, che voglio darti,"
+      },
+      {
+        "testo": "Primma moddo e manea de regolâte.",
+        "it": "Prima modo e maniera di regolarti."
+      },
+      {
+        "testo": "Proprio in mezo in ta selva alluveghìa,",
+        "it": "Proprio in mezzo alla selva oscura,"
+      },
+      {
+        "testo": "Dove ö monte ö se cieiga e ö forma ûn riâ,",
+        "it": "Dove il monte si piega e forma un rio,"
+      },
+      {
+        "testo": "Gh'é ûnn-a cianta, dall'ombra intixichìa,",
+        "it": "C'è una pianta, dall'ombra striminzita,"
+      },
+      {
+        "testo": "C'ûnn-a rametta che a l'ha a fêuggia indoâ,",
+        "it": "Con un rametto che ha la foglia indorata,"
+      },
+      {
+        "testo": "Ûnn-a ramma che a l'é comme a luçia",
+        "it": "Un ramo che è come la susina"
+      },
+      {
+        "testo": "Che ciû a l'aumenta quanto ciû a l'é usâ,",
+        "it": "Che più aumenta quanto più è usata,"
+      },
+      {
+        "testo": "Chi nö se a porta doppo aveila rotta,",
+        "it": "Chi non se la porta dopo averla rotta,"
+      },
+      {
+        "testo": "All'inferno, ö nö gh'intra pe ûnn-a potta.",
+        "it": "All'inferno, non ci entra per una potta."
+      },
+      {
+        "testo": "De Proserpina a l'é questo ûn comando",
+        "it": "Di Proserpina questo è un comando"
+      },
+      {
+        "testo": "Perchè a fa de ramette collezion;",
+        "it": "Perché lei fa collezione di rametti;"
+      },
+      {
+        "testo": "Dunque vanni in to bosco e camminando",
+        "it": "Dunque vai nel bosco e, camminando"
+      },
+      {
+        "testo": "Con l'êuggio all'aia pe n'andâ a taston,",
+        "it": "Con l'occhio all'insù per non andare a tastoni,"
+      },
+      {
+        "testo": "Çerca e trêuva quest'erbo, e alôa, piggiando",
+        "it": "Cerca e trova quest'albero, e allora, prendendo"
+      },
+      {
+        "testo": "A so ramma co-e moen, dagghe un streppon",
+        "it": "Il suo ramo con le mani, dagli uno strattone,"
+      },
+      {
+        "testo": "Che se ö Fato, ö permette, a se streppià,",
+        "it": "Ché se il Fato lo permette, si strapperà,"
+      },
+      {
+        "testo": "Dunque, pe ö resto, ti te ö pêu locciâ.",
+        "it": "Altrimenti, per il resto, te lo puoi gingillare."
+      },
+      {
+        "testo": "Ma gh'é un'âtra question, mentre ti stæ",
+        "it": "Ma c'è un'altra questione: mentre tu stai"
+      },
+      {
+        "testo": "Co-e to ciarle, a sciûgâme a pantalin-a,",
+        "it": "Con le tue chiacchiere ad asciugarmi la susina,"
+      },
+      {
+        "testo": "Gh’é lazzû ö corpo d'ûn di to mainæ",
+        "it": "C'è laggiù il corpo di uno dei tuoi marinai"
+      },
+      {
+        "testo": "Largo e lungo desteiso in sce-a marinn-a,",
+        "it": "Lungo e disteso sulla marina,"
+      },
+      {
+        "testo": "Nûo proprio comme l'ha appartuîo so moæ",
+        "it": "Nudo proprio come lo ha partorito sua madre"
+      },
+      {
+        "testo": "E che spussa de morto e de sentinn-a,",
+        "it": "E che puzza di morto e di sentina,"
+      },
+      {
+        "testo": "Primma vanni a çercalo e danni a mente",
+        "it": "Prima vai a cercarlo e bada a lui"
+      },
+      {
+        "testo": "Che ö segge seppelliö decentemente.",
+        "it": "Che sia seppellito decentemente."
+      },
+      {
+        "testo": "Fagghe dì ûn pô de ben: döe messe basse,",
+        "it": "Fagli dire un po' di bene: due messe basse,"
+      },
+      {
+        "testo": "Ûnn-a cantâ, co-a so benedizion,",
+        "it": "Una cantata, con la sua benedizione,"
+      },
+      {
+        "testo": "E l'esequie pe zunta; e perché passe",
+        "it": "E le esequie per giunta; e perché passi"
+      },
+      {
+        "testo": "Questa fragranza de putrefazion,",
+        "it": "Questa fragranza di putrefazione,"
+      },
+      {
+        "testo": "Con di cösti de brûgo e con de poasse,",
+        "it": "Con degli steli d'erica e con delle frasche,"
+      },
+      {
+        "testo": "Dagghe ûnn-a botta de disinfezion.",
+        "it": "Dagli una botta di disinfezione."
+      },
+      {
+        "testo": "Aoa galoppa che a stâ ben de sâ...",
+        "it": "Ora galoppa, e va bene così…"
+      },
+      {
+        "testo": "E a finisce coscì de stralabiâ.",
+        "it": "E così finisce di farneticare."
+      },
+      {
+        "testo": "Enea ö resta lî fûto, meditando",
+        "it": "Enea resta lì pallido, meditando"
+      },
+      {
+        "testo": "In sce cose ö l'ha visto e ö l'ha sentîo,",
+        "it": "Sulle cose che ha visto e che ha sentito,"
+      },
+      {
+        "testo": "E ö va a passi e passetti, accompagnando",
+        "it": "E va a passi e passetti, accompagnando"
+      },
+      {
+        "testo": "Acate che ö l'é ascì tutto abbrensuîo,",
+        "it": "Acate che è anche lui tutto intirizzito,"
+      },
+      {
+        "testo": "E chi fosse, tra loro almanaccando,",
+        "it": "E chi fosse, tra loro almanaccando,"
+      },
+      {
+        "testo": "Ö mainâ che deve ese seppellîo;",
+        "it": "Il marinaio che doveva essere seppellito;"
+      },
+      {
+        "testo": "Ven che arrivan ao mâ, quando in sce l'ænn-a",
+        "it": "Succede che arrivano al mare, quando sulla sabbia"
+      },
+      {
+        "testo": "Veddan morto e bexinscio ö procûoû Fænna!",
+        "it": "Vedono morto e flaccido il procuratore Farina!"
+      },
+      {
+        "testo": "Fænna, figgio dö mego, e banditô",
+        "it": "Fænna, figlio del medico, e banditore"
+      },
+      {
+        "testo": "Supremo da vuentæ de chi comanda",
+        "it": "Supremo della volontà di chi comanda,"
+      },
+      {
+        "testo": "Che co-a so voxe ö fava tanto fô,",
+        "it": "Che con la sua voce faceva tanto chiasso"
+      },
+      {
+        "testo": "Da pueì, se ö vueiva, attaxentâ l'Irlanda,",
+        "it": "Da poter, se voleva, zittire l'Irlanda,"
+      },
+      {
+        "testo": "Che façilmente; con cangiâ de cô",
+        "it": "Che facilmente, cambiando colore,"
+      },
+      {
+        "testo": "E co-e mûtte, co-i pægui e co-a locanda",
+        "it": "Con agganci, coperture e regalie,"
+      },
+      {
+        "testo": "Gh’é riuscîo d'ëse eletto e d'intrâ dentro",
+        "it": "Gli è riuscito d'essere eletto e d'entrare"
+      },
+      {
+        "testo": "Depûtoû liberale in Parlamento.",
+        "it": "Deputato liberale in Parlamento."
       }
     ]
   },
