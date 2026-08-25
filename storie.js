@@ -11085,6 +11085,262 @@ const STORIE_DEFAULT = [
       {
         "testo": "Depûtoû liberale in Parlamento.",
         "it": "Deputato liberale in Parlamento."
+      },
+      {
+        "testo": "A-o cadavere intorno, radunæ,",
+        "it": "Intorno al cadavere, radunati,"
+      },
+      {
+        "testo": "Piggian tutti a tegnûa da compunscion,",
+        "it": "Prendono tutti l'atteggiamento della compunzione,"
+      },
+      {
+        "testo": "Mentre Enea, con de frasi esageræ,",
+        "it": "Mentre Enea, con frasi esagerate,"
+      },
+      {
+        "testo": "Ö ghe tesce ûnn-a funebre orazion,",
+        "it": "Gli tesse un'orazione funebre,"
+      },
+      {
+        "testo": "Tramezzando e böxie con de veitæ",
+        "it": "Mescolando le bugie con delle verità"
+      },
+      {
+        "testo": "E faxendo ûn eroe, d'un bellinön",
+        "it": "E facendo un eroe di un belinone,"
+      },
+      {
+        "testo": "E seguendo poi l'ordine speciale",
+        "it": "E seguendo poi l'ordine speciale"
+      },
+      {
+        "testo": "Da Sibilla, g'han fæto ö funerale.",
+        "it": "Della Sibilla, gli hanno fatto il funerale."
+      },
+      {
+        "testo": "E c'ûn mûggio de cause e documenti,",
+        "it": "E con un mucchio di cause e documenti,"
+      },
+      {
+        "testo": "De comparse, de suppliche e proteste",
+        "it": "Di comparse, di suppliche e proteste"
+      },
+      {
+        "testo": "E de parcelle presentæ a-i clienti",
+        "it": "E di parcelle presentate ai clienti"
+      },
+      {
+        "testo": "(Ch'ëan, se capisce, accomodæ da-e feste),",
+        "it": "(Che erano, si capisce, conciati per le feste),"
+      },
+      {
+        "testo": "De ricorsci a-i ministri e a-i prescidenti,",
+        "it": "Di ricorsi ai ministri e ai presidenti,"
+      },
+      {
+        "testo": "In sce tûtte e causali e tutte e seste",
+        "it": "Su tutte le causali e tutti i moduli,"
+      },
+      {
+        "testo": "Han fæto a pira, pe poi daghe fêugo",
+        "it": "Hanno fatto la pira, per poi darle fuoco"
+      },
+      {
+        "testo": "E mandàlo a fâ fûtte a tempo e lêugo.",
+        "it": "E mandarlo a farsi fottere a tempo e luogo."
+      },
+      {
+        "testo": "Ed Enea ciù che tûtti ö giamminava",
+        "it": "Ed Enea più di tutti sgobbava"
+      },
+      {
+        "testo": "Tûtti questi papæsci a camallâ,",
+        "it": "A camallare tutti questi incartamenti,"
+      },
+      {
+        "testo": "Mentre intanto da lë ö se a raxonâva,",
+        "it": "Mentre intanto tra sé se la ragionava,"
+      },
+      {
+        "testo": "Dando a-o bosco vixin sempre un'êuggiâ:",
+        "it": "Dando al bosco vicino sempre un'occhiata:"
+      },
+      {
+        "testo": "«Se sta rametta a fosse tanto brava",
+        "it": "«Se questo rametto fosse tanto bravo"
+      },
+      {
+        "testo": "«Da trovâse da lë, senza çercâ,",
+        "it": "Da trovarsi da solo, senza cercarlo,"
+      },
+      {
+        "testo": "«Comme a Scibilla a n'ha annunziôu de Fænna",
+        "it": "Come la Sibilla ci ha annunciato di Faina"
+      },
+      {
+        "testo": "«E poi l'emmo trovoû morto in sce l'ænn-a!»",
+        "it": "E poi lo abbiamo trovato morto sulla sabbia!»"
+      },
+      {
+        "testo": "E te lì, che ö n'aveiva ancon finîo,",
+        "it": "Ed eccotelo lì, che non aveva ancora finito,"
+      },
+      {
+        "testo": "Quando ö te vedde dôi colombi sghêuâ",
+        "it": "Quando ti vede due colombe volare,"
+      },
+      {
+        "testo": "I quæ, doppo avei fæto ûn mezo gîo,",
+        "it": "Le quali, dopo aver fatto un mezzo giro,"
+      },
+      {
+        "testo": "In sce l'erbo vixin van a pösâ...",
+        "it": "Sull'albero vicino vanno a posarsi..."
+      },
+      {
+        "testo": "Lë ruffian, che ö l'aveiva za capîo,",
+        "it": "Lui ruffiano, che aveva già capito"
+      },
+      {
+        "testo": "De chi ëan sti combi, e cose ëan lî pe fâ,",
+        "it": "Di chi erano questi colombi, e cosa erano lì per fare,"
+      },
+      {
+        "testo": "Tûtto contento ö se ghe mette a dî:",
+        "it": "Tutto contento si mette a dir loro:"
+      },
+      {
+        "testo": "«Comme guidda, oxellin servîme voî",
+        "it": "«Come guida, uccellini, servitemi voi!»"
+      },
+      {
+        "testo": "Se gh'é mezo e manea, se gh'é ûn strazetto",
+        "it": "Se c'è mezzo e maniera, se c'è un sentierino"
+      },
+      {
+        "testo": "De pillotuase in questa selva ombrosa,",
+        "it": "Per orientarci in questa selva ombrosa,"
+      },
+      {
+        "testo": "Piggiæ o volo e posæve in sce l'erböetto",
+        "it": "Prendete il volo e posatevi sull'alberello"
+      },
+      {
+        "testo": "Che o l'ha questa rammæa coscì preziosa",
+        "it": "Che ha questo ramo così prezioso;"
+      },
+      {
+        "testo": "E a ti bella moæ câ, mi me rimetto",
+        "it": "E a te, bella madre cara, io mi rimetto"
+      },
+      {
+        "testo": "E in te questa occaxion, coscì angosciosa,",
+        "it": "E in questa occasione così angosciosa,"
+      },
+      {
+        "testo": "Pei to lummi, e conseggi e pe aggiûttâme",
+        "it": "Per i tuoi lumi e consigli e per aiutarmi"
+      },
+      {
+        "testo": "A sciortî fêua de chi senza immerdâme».",
+        "it": "A uscire fuori di qui senza immerdarmi»."
+      },
+      {
+        "testo": "Coscì dîto, o sta a ammiâ: lö pittussando",
+        "it": "Così detto, sta a guardare: loro beccando"
+      },
+      {
+        "testo": "In ça e là de fregoggie e di vermetti,",
+        "it": "In qua e in là briciole e vermetti,"
+      },
+      {
+        "testo": "Con di voli a mez'asta, o pedonando,",
+        "it": "Con voli a mezz'asta, o pedonando,"
+      },
+      {
+        "testo": "Ö faxendo fra lö mösse e frexetti,",
+        "it": "O facendo tra loro dispettucci e moine,"
+      },
+      {
+        "testo": "Ma però sempre in vista, avvixinando",
+        "it": "Ma però sempre in vista, avvicinandosi,"
+      },
+      {
+        "testo": "Se van drïte all'inferno, a son de sguetti,",
+        "it": "Se ne vanno dritte all'inferno, a suon di guizzi,"
+      },
+      {
+        "testo": "E de lî pe nö moî d'ûn aççidente",
+        "it": "E da lì, per non morire d'un accidente"
+      },
+      {
+        "testo": "Pe a gran spûssa, tian sciû direttamente.",
+        "it": "Per la gran puzza, tirano su direttamente."
+      },
+      {
+        "testo": "E lasciû parpellando ûn pittinin",
+        "it": "E lassù sbattendo le ali un pochino,"
+      },
+      {
+        "testo": "Preçipitan c'ûn volo accelerôu,",
+        "it": "Precipitano con un volo accelerato,"
+      },
+      {
+        "testo": "E se van a posâ in sce l'erböetin",
+        "it": "E si vanno a posare sull'alberello"
+      },
+      {
+        "testo": "Che ö l'aveiva, fra i âtri, ûn rammo indôu;",
+        "it": "Che aveva, tra gli altri, un ramo indorato;"
+      },
+      {
+        "testo": "Ed eccote che in mezo a-o verde pin,",
+        "it": "Ed eccoti che in mezzo al verde pieno,"
+      },
+      {
+        "testo": "E fra e ömbre dö bosco e dö fossôu",
+        "it": "E tra le ombre del bosco e del fossato,"
+      },
+      {
+        "testo": "L'ôu da rametta ö manda mille raggi",
+        "it": "L'oro del rametto manda mille raggi"
+      },
+      {
+        "testo": "Che a-o riflesso dö sô, fan bisce e baggi.",
+        "it": "Che al riflesso del sole fanno bisce e rospi."
+      },
+      {
+        "testo": "Comme quando d'inverno, in te campagne",
+        "it": "Come quando d'inverno, nelle campagne"
+      },
+      {
+        "testo": "Qualchedûn va in ti boschi a passeggiâ,",
+        "it": "Qualcuno va nei boschi a passeggiare,"
+      },
+      {
+        "testo": "E ö vedde a lelöa arriguelâ a-e castagne",
+        "it": "E vede l'edera avvinghiata ai castagni"
+      },
+      {
+        "testo": "Za brûxæ dâ gaverna e da o meistrâ...",
+        "it": "Già bruciati dalla galaverna e dal maestrale..."
+      },
+      {
+        "testo": "Coscì pâ che a rametta a l'accompagne",
+        "it": "Così pare che il rametto accompagni"
+      },
+      {
+        "testo": "Ö tronco d'erxo dove a l'ëa attaccâ,",
+        "it": "Il tronco di leccio dove era attaccato,"
+      },
+      {
+        "testo": "E coscì scrosce e fa trapello e fêuggie",
+        "it": "E così scroscia le foglie e attira"
+      },
+      {
+        "testo": "A l'æxia de mattin, che a te l'inghêuggie.",
+        "it": "La brezza del mattino, che te l'avvolge."
       }
     ]
   },
