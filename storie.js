@@ -11341,6 +11341,262 @@ const STORIE_DEFAULT = [
       {
         "testo": "A l'æxia de mattin, che a te l'inghêuggie.",
         "it": "La brezza del mattino, che te l'avvolge."
+      },
+      {
+        "testo": "Comme Enea ö l’ha scoverta, ö te l’agguanta,",
+        "it": "Come Enea l'ha scoperta, te l’agguanta,"
+      },
+      {
+        "testo": "Cö cû streito e serrôu dall'emozion",
+        "it": "Col culo stretto e serrato dall'emozione,"
+      },
+      {
+        "testo": "E benché a fösse colligâ co-a pianta,",
+        "it": "E benché fosse legata con la pianta,"
+      },
+      {
+        "testo": "Ö s'appunta cö-i pë, ö ghe dà un streppon",
+        "it": "Si punta con i piedi, gli dà uno strattone"
+      },
+      {
+        "testo": "Che a se cieiga pe forza, e se desccianta,",
+        "it": "Che lei si piega per forza, e si distacca,"
+      },
+      {
+        "testo": "E a ghe resta in te man comme ûn baston,",
+        "it": "E gli resta nelle mani come un bastone,"
+      },
+      {
+        "testo": "E tûtto allegro fando scialla scialla,",
+        "it": "E tutto allegro facendo festa grande,"
+      },
+      {
+        "testo": "Dâ sonnambola Libia ö se-a camalla.",
+        "it": "Dalla sonnambula Libia se la camalla."
+      },
+      {
+        "testo": "Nö s'ëa smisso frattanto a celebrâ",
+        "it": "Non si era smesso frattanto di celebrare"
+      },
+      {
+        "testo": "Dö miserimo Fænna ö funerale,",
+        "it": "Del miserabile Faina il funerale,"
+      },
+      {
+        "testo": "Trenta torcie pe ö corpo e pe l'artâ",
+        "it": "Trenta torce per il corpo e per l'altare,"
+      },
+      {
+        "testo": "Ûn catafalco che nö gh'ëa l'eguale,",
+        "it": "Un catafalco che non c'era l'eguale,"
+      },
+      {
+        "testo": "E de sorva ûn gran pægûa a celebrâ",
+        "it": "E di sopra un gra paracqua a celebrare"
+      },
+      {
+        "testo": "A precipua so forza elettorale,",
+        "it": "La precipua sua forza elettorale,"
+      },
+      {
+        "testo": "Mentre ö corpo ö se lava e ö s'arrûxenta",
+        "it": "Mentre il corpo si lava e si risciacqua,"
+      },
+      {
+        "testo": "Perché ö l'ëa pin de rûzze e de rûmenta.",
+        "it": "Perché era pieno di croste e di rûmenta."
+      },
+      {
+        "testo": "A salma accomodâ lunga, sûpinn-a,",
+        "it": "La salma accomodata lunga, supina,"
+      },
+      {
+        "testo": "In ta cascia che a l'ha doppio spessö",
+        "it": "Nella cassa che ha doppio spessore,"
+      },
+      {
+        "testo": "Vestîa tûtta de neigro, e cö-a marscinn-a",
+        "it": "Vestita tutta di nero, e con la marsina"
+      },
+      {
+        "testo": "E a croxe a-o collo, de Commendatö,",
+        "it": "E la croce al collo di Commendatore,"
+      },
+      {
+        "testo": "Gh'é chi a piggia in scë spalle e s'incamminn-a",
+        "it": "C'è chi la prende sulle spalle e s'incammina"
+      },
+      {
+        "testo": "A fâghe tributâ l'estremo onö;",
+        "it": "A fargli tributare l'estremo onore;"
+      },
+      {
+        "testo": "Segûe i âtri cö-e torcie e a croxe avanti",
+        "it": "Seguono gli altri con le torce e la croce avanti,"
+      },
+      {
+        "testo": "Tûtti intonando e litanîe di santi.",
+        "it": "Tutti intonando le litanie dei santi."
+      },
+      {
+        "testo": "Arrivæ dä catasta e lì posâ,",
+        "it": "Arrivati alla catasta e lì posata,"
+      },
+      {
+        "testo": "Tegnindo a faccia rivoltâ inderê,",
+        "it": "Tenendo la faccia rivoltata indietro,"
+      },
+      {
+        "testo": "C'ûn fascetto de paggia attortiggiâ,",
+        "it": "Con un fascetto di paglia attorcigliata,"
+      },
+      {
+        "testo": "Se dà fêugo a stö muggio de papê,",
+        "it": "Si dà fuoco a questo mucchio di carte,"
+      },
+      {
+        "testo": "E cacciandoghe addosso a consûmâ",
+        "it": "E buttandogli addosso a consumare"
+      },
+      {
+        "testo": "Tûtti i færi e l'insegne dö mestê,",
+        "it": "Tutti i ferri e le insegne del mestiere:"
+      },
+      {
+        "testo": "Ö cilindro, cö-a toga, e lasegnette,",
+        "it": "Il cilindro, con la toga, e le lasegnette,"
+      },
+      {
+        "testo": "Proclami de Mazzin, santi, cönette.",
+        "it": "Proclami di Mazzini, santi, coroncine."
+      },
+      {
+        "testo": "Quando tûtto l'é stæto consûmôu,",
+        "it": "Quando tutto è stato consumato,"
+      },
+      {
+        "testo": "Ö Gardella ö l'é andæto a ravattâ",
+        "it": "Il Gardella è andato a rovistare"
+      },
+      {
+        "testo": "Tûtto ö poco de bon che gh'ëa restôu,",
+        "it": "Tutto il poco di buono che  c'era rimasto,"
+      },
+      {
+        "testo": "E che ö n'aveiva ancon posciûo brûxâ.",
+        "it": "E che non aveva ancora potuto bruciare."
+      },
+      {
+        "testo": "Doppo aveìlo acchêuggeito e arrûxentôu,",
+        "it": "Dopo averlo raccolto e risciacquato,"
+      },
+      {
+        "testo": "Ö mette dentro a ûn'arbanella indoâ",
+        "it": "Lo mette dentro a un'albanella indorata,"
+      },
+      {
+        "testo": "E lavandose e man, quando ö finisce",
+        "it": "E lavandosi le mani, quando finisce,"
+      },
+      {
+        "testo": "Ö ne spröinn-a i compagni e ö-i benedisce.",
+        "it": "Ne spruzza i compagni e li benedice."
+      },
+      {
+        "testo": "Ed oltre a questo, Enea, pe documento",
+        "it": "Ed oltre a questo, Enea, per documento"
+      },
+      {
+        "testo": "De virtû dell'estinto, o l'ha ordinôu",
+        "it": "Delle virtù dell'estinto, ha ordinato"
+      },
+      {
+        "testo": "Che fosse collocâ in sce-ö casamento",
+        "it": "Che fosse collocata sul palazzo"
+      },
+      {
+        "testo": "Dove tanti e tanti anni ö l'ha abitôu,",
+        "it": "Dove tanti e tanti anni ha abitato,"
+      },
+      {
+        "testo": "Ûnn-a lapide in bronzo a insegnamento",
+        "it": "Una lapide in bronzo a insegnamento"
+      },
+      {
+        "testo": "Che l'aveiva l'ambiente immortalôu.",
+        "it": "Che aveva l'ambiente immortalato."
+      },
+      {
+        "testo": "Da quell'epoca, in poi, nö ve diô comme,",
+        "it": "Da quell'epoca in poi, non vi dirò come,"
+      },
+      {
+        "testo": "Ma quella ciassa a l'ha cangioû de nomme.",
+        "it": "Ma quella piazza ha cambiato di nome."
+      },
+      {
+        "testo": "Terminôu tûtto questo, ö cöre a fâ",
+        "it": "Terminato tutto questo, corre a fare"
+      },
+      {
+        "testo": "Quanto a vergine Libia a gh'a prescrîto;",
+        "it": "Quanto la vergine Libia gli ha prescritto;"
+      },
+      {
+        "testo": "Gh'ëa ûnn-a grotta co-a bocca spalancâ",
+        "it": "C'era una grotta con la bocca spalancata,"
+      },
+      {
+        "testo": "Tûtta grezza de blocchi de granito,",
+        "it": "Tutta grezza di blocchi di granito,"
+      },
+      {
+        "testo": "Ûnn-a pozza con l'ægûa impätanâ",
+        "it": "Una pozza con l'acqua impantanata,"
+      },
+      {
+        "testo": "E ûnn-a foresta a circundava ö scîto;",
+        "it": "E una foresta circondava il sito;"
+      },
+      {
+        "testo": "Che ö mandava ûn fëtô lontan ûn miggio,",
+        "it": "Che mandava un fetore lontano un miglio,"
+      },
+      {
+        "testo": "De rûmenta, de gnisca, e de coniggio.",
+        "it": "Di rumenta, di merda e di fogna."
+      },
+      {
+        "testo": "Primma, a-e vacche che Enea ô g'ha regalôu",
+        "it": "Prima, alle vacche che Enea le ha regalato"
+      },
+      {
+        "testo": "(No se fa ninte senza dâ in ta gôa)",
+        "it": "(Non si fa niente senza dare nella gola,"
+      },
+      {
+        "testo": "A Scibilla in sce a testa a g'ha versôu",
+        "it": "La Sibilla sulla testa gli ha versato"
+      },
+      {
+        "testo": "Ûn mëzo bottigion de vin de tôa,",
+        "it": "Un mezzo bottiglione di vino da tavola,"
+      },
+      {
+        "testo": "Poi ö ciûffo in sce a testa a g'ha taggiôu,",
+        "it": "Poi il ciuffo sulla testa gli ha tagliato,"
+      },
+      {
+        "testo": "Tiandoghe sciû bastantemente a côa",
+        "it": "Tirandogli su a sufficienza la coda"
+      },
+      {
+        "testo": "Pe pueì mettighe sotto ûn spigo d'aggio.",
+        "it": "Per poterle mettere sotto uno spicchio d'aglio,"
+      },
+      {
+        "testo": "E levâghe da-o cû l’ödô de staggio.",
+        "it": "E levarle dal culo l'odore di stalla."
       }
     ]
   },
