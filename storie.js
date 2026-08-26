@@ -11601,6 +11601,58 @@ const STORIE_DEFAULT = [
     ]
   },
   {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 3 parte 5",
+      "it": "La discesa; le anime all'Acheronte "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
+      {
+        "testo": "Tûtto questo con gesti e invocazioin",
+        "it": "Tutto questo con gesti e invocazioni"
+      },
+      {
+        "testo": "A-i spiriti d'averno, o chi se fosse",
+        "it": "Agli spiriti dell'averno, o chiunque fosse,"
+      },
+      {
+        "testo": "E pe dâ da pûa in ti œûggi ai bellinöin",
+        "it": "E per gettare polvere negli occhi ai belinoni"
+      },
+      {
+        "testo": "Che se beivan ancon da queste mösse",
+        "it": "Che ancora si bevevano di queste musse."
+      },
+      {
+        "testo": "Atri ö svenn-a frattanto in ti concöin",
+        "it": "Altri intanto svena nei conconi,"
+      },
+      {
+        "testo": "Atri ö sangue ö recchœûggie e ô spolpa e osse",
+        "it": "Altri il sangue raccoglie e spolpa le ossa,"
+      },
+      {
+        "testo": "Pe puei fâ di berodi e ö stufadin,",
+        "it": "Per poter fare dei sanguinacci e lo stufatino,"
+      },
+      {
+        "testo": "Chœûtto a-o punto, co-a sioûla e ö rosmanin.",
+        "it": "Cotto a puntino, con la cipolla e il rosmarino."
+      }
+    ]
+  },
+  {
     "id": "sp-a2-padrone-e-mezzadro4",
     "lingua": "sp",
     "livello": "A2",
