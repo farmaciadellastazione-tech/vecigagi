@@ -11649,6 +11649,166 @@ const STORIE_DEFAULT = [
       {
         "testo": "Chœûtto a-o punto, co-a sioûla e ö rosmanin.",
         "it": "Cotto a puntino, con la cipolla e il rosmarino."
+      },
+      {
+        "testo": "A nœûtte, moæ d'ogni cattiva aziön",
+        "it": "Alla Notte, madre d'ogni cattiva azione,"
+      },
+      {
+        "testo": "Lë ö sacrifica in voto ûn neigro agnello,",
+        "it": "Lui sacrifica in voto un agnello nero,"
+      },
+      {
+        "testo": "D'unn-a vacca derûâ, senz'ûn polmön",
+        "it": "D'una vacca malconcia, senz'un polmone,"
+      },
+      {
+        "testo": "De quelle sborse che no fan vitello!",
+        "it": "Di quelle bolse che non fanno più vitelli!"
+      },
+      {
+        "testo": "O Proserpina, a ti, ö fâ l'oblazion,",
+        "it": "O Proserpina, a te, compie l'oblazione,"
+      },
+      {
+        "testo": "Servindose da spâ, comme cotello;",
+        "it": "Servendosi della spada come coltello;"
+      },
+      {
+        "testo": "Poi ö mette ö fighæto e ö rognonetto",
+        "it": "Poi mette il fegato  e il rognoncino"
+      },
+      {
+        "testo": "A confëse con l'êuio e ûn pô d'agetto.",
+        "it": "A soffriggere con l'olio e un po' d'aglietto."
+      },
+      {
+        "testo": "Te ö lì, che all'apparî dell'indovinn-a",
+        "it": "Eccolo lì, che all'apparire dell'indovina"
+      },
+      {
+        "testo": "Scrosce i boschi e se sente e fûrie urlâ...",
+        "it": "Scrosciano i boschi e si sentono le Furie urlare..."
+      },
+      {
+        "testo": "Ma lê, niente paura, s'incaminn-a,",
+        "it": "Ma lei, niente paura, s'incammina,"
+      },
+      {
+        "testo": "«E, brûtti siöti, a se ghe mette a criâ.",
+        "it": "«Ehi, brutti zozzoni, si mette a gridare,"
+      },
+      {
+        "testo": "«Nö vegnî chi a sciûgâme a pantalinn-a,",
+        "it": "«Non venite qui ad asciugarmi la susina,"
+      },
+      {
+        "testo": "«N'ho bezêugno de cuggie, andæ a cagâ,",
+        "it": "«Non ho bisogno di balle, andate a cagare,"
+      },
+      {
+        "testo": "«E tì Enea, tîa fœûa a sciabbra e andemo avanti,",
+        "it": "«E tu Enea, tira fuori la sciabola e andiamo avanti,"
+      },
+      {
+        "testo": "«Che nö l'é tempo de trattâ co-i guanti».",
+        "it": "«Che non è tempo di trattare coi guanti»."
+      },
+      {
+        "testo": "Ti sovrano de anime dannæ",
+        "it": "Tu sovrano delle anime dannate,"
+      },
+      {
+        "testo": "O Demonio, Scarpetta, o Belzebû",
+        "it": "O Demonio, Scarpetta, o Belzebù,"
+      },
+      {
+        "testo": "O Lucifero, o Diao, comme se sæ",
+        "it": "O Lucifero, o Diavolo, qualunque sia"
+      },
+      {
+        "testo": "Ö nomme vëo, che te se dâ lazzû.",
+        "it": "Il nome vero che ti si dà laggiù."
+      },
+      {
+        "testo": "Voî, scîti misteriosi e destinæ",
+        "it": "Voi, posti misteriosi e destinati"
+      },
+      {
+        "testo": "A acchœûggie i birbi e a no mollâli ciû,",
+        "it": "Ad accogliere i birbanti e a non mollarli più,"
+      },
+      {
+        "testo": "Scûsæ tanto se mì, chì ve descrêuvo",
+        "it": "Scusate tanto se io qui vi descrivo"
+      },
+      {
+        "testo": "E se ve tescio quattro balle apprêuvo.",
+        "it": "E se vi ricamo dietro quattro balle"
+      },
+      {
+        "testo": "Lö andavan a taston, co-e man avanti",
+        "it": "Loro andavano a tastoni, con le mani avanti"
+      },
+      {
+        "testo": "Pe no dä schincamuri e puntapë",
+        "it": "Per non dare testate e inciampare,"
+      },
+      {
+        "testo": "E veddendo fantasmi in tûtti i canti,",
+        "it": "E vedendo fantasmi in tutti i canti,"
+      },
+      {
+        "testo": "C'ûnn-a gran vœûggia de tornâ inderë;",
+        "it": "Con una gran voglia di tornare indietro;"
+      },
+      {
+        "testo": "Comme chi ha puia di morti o di briganti",
+        "it": "Come chi ha paura dei morti o dei briganti"
+      },
+      {
+        "testo": "E se trêuva de notte in t'un sentë",
+        "it": "E si trova di notte in un sentiero,"
+      },
+      {
+        "testo": "Ad ogni ombra che ö vedde, ö l'allibisce,",
+        "it": "Ad ogni ombra che vede, allibisce,"
+      },
+      {
+        "testo": "Ö n'esagera e forme e ö l'ingrandisce.",
+        "it": "Ne esagera le forme e le ingrandisce."
+      },
+      {
+        "testo": "Missi in riga in tö portego e accocciæ",
+        "it": "Messi in riga nel portico e accucciati,"
+      },
+      {
+        "testo": "Comme i orbi e i manchetti in ta campagna,",
+        "it": "Come i ciechi e i monchetti nella campagna"
+      },
+      {
+        "testo": "Stan da-e porte de gexe a fâ pietæ,",
+        "it": "Stanno dalle porte delle chiese a far pietà,"
+      },
+      {
+        "testo": "Con mostrâ, mugugnando, a so magagna.",
+        "it": "Mostrando, mugugnando, la loro magagna."
+      },
+      {
+        "testo": "Gh'ëa e sciugate de cuggie e l'Anscietæ,",
+        "it": "C'erano le Asciugate di balle e l'Ansietà,"
+      },
+      {
+        "testo": "Ö Travaggio e ö Giammin che ö l'accompagna,",
+        "it": "Il Travaglio e il Tormento che lo accompagna,"
+      },
+      {
+        "testo": "A Disgrazia, a Boletta, a Malattia,",
+        "it": "La Disgrazia, la Bolletta, la Malattia,"
+      },
+      {
+        "testo": "A Vecciaia carogna e inscemelïa.",
+        "it": "La Vecchiaia carogna e instupidita."
       }
     ]
   },
