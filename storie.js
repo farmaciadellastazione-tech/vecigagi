@@ -11809,6 +11809,358 @@ const STORIE_DEFAULT = [
       {
         "testo": "A Vecciaia carogna e inscemelïa.",
         "it": "La Vecchiaia carogna e instupidita."
+      },
+      {
+        "testo": "Tûtti muri de mussa e da galea",
+        "it": "Tutte facce da culo e da galera,"
+      },
+      {
+        "testo": "Da dâghe tûtto senza manco ansciâ,",
+        "it": "Da dargli tutto senza manco fiatare,"
+      },
+      {
+        "testo": "A Discordia cætosa e pettelea,",
+        "it": "La Discordia attaccabrighe e pettegola,"
+      },
+      {
+        "testo": "I Creditöi che se vœûan fâ pagâ",
+        "it": "I Creditori che si vogliono far pagare,"
+      },
+      {
+        "testo": "Pavian co-a Borsa che se favan cëa",
+        "it": "Paverano con la Borsa che se la spassavano,"
+      },
+      {
+        "testo": "Con l'Agente de Tasce e con l'Uspiâ,",
+        "it": "Con l'Agente delle Tasse e con l'Ospedale,"
+      },
+      {
+        "testo": "Avalli in scê cambiali in sofferenza",
+        "it": "Avalli sulle cambiali in sofferenza"
+      },
+      {
+        "testo": "E Comitati de beneficenza.",
+        "it": "E Comitati di beneficenza."
+      },
+      {
+        "testo": "In to mëzo, gh'ëa un ormo avvegiornîo,",
+        "it": "In mezzo c'era un olmo decrepito,"
+      },
+      {
+        "testo": "Tûtto neigro de caize e de carbon,",
+        "it": "Tutto nero di fuliggine e di carbone,"
+      },
+      {
+        "testo": "Dove dixan, che i sêunni han fato ö nîo",
+        "it": "Dove dicono che i sogni abbiano fatto il nido"
+      },
+      {
+        "testo": "E che e fêuggie aggian tûtte a so vixion.",
+        "it": "E che le foglie abbiano tutte la loro visione."
+      },
+      {
+        "testo": "Ed inoltre, disposti all'erbö in gîo",
+        "it": "Ed inoltre, disposti intorno all'albero,"
+      },
+      {
+        "testo": "Gh'ëa de çerte figûe, da dâ raxon",
+        "it": "C'erano certe figure da dare ragione"
+      },
+      {
+        "testo": "A-i cädi da dottrinn-a darviniana,",
+        "it": "Ai tifosi della dottrina darwiniana,"
+      },
+      {
+        "testo": "Che a fâ nasce da-e bestie a specie umana.",
+        "it": "Che fa nascere dalle bestie la specie umana."
+      },
+      {
+        "testo": "Gh'ëa ö Cecco, cö sciö Zerbi e ö Butteghin.",
+        "it": "C'era il Cecco, col signor Zerbi e il Botteghino,"
+      },
+      {
+        "testo": "Ö Finelli cö storto da Nunziâ,",
+        "it": "Il Finelli con lo storto dell'Annunziata,"
+      },
+      {
+        "testo": "Ö Drïa cö Bodisson e ö Gaitanin",
+        "it": "L'Andrea con Bodisson e il Gaetanino"
+      },
+      {
+        "testo": "De scciûpette; e gh'ëa Costa ô relêuiâ,",
+        "it": "Delle schioppette; e c'era Costa l'orologiaio,"
+      },
+      {
+        "testo": "Reta cö Cricca e ö Rœûa, Præ Lumasin",
+        "it": "Reta con Cricca e la Ruota, Prete Lumachino,"
+      },
+      {
+        "testo": "Ö Bôa, ö Toson Batæ, ö Masca brûxiâ,",
+        "it": "Il Boa, il Toson Batté, Maschera Bruciata,"
+      },
+      {
+        "testo": "Ed âtri, che l'é mëgio che no nomine",
+        "it": "Ed altri, che è meglio che non nomini"
+      },
+      {
+        "testo": "Pe nö dî sempre: Libera nos domine.",
+        "it": "Per non dire sempre: Libera nos, Domine."
+      },
+      {
+        "testo": "In tö veddili, Enea benché ö l'avesse",
+        "it": "Nel vederli, Enea, benché avesse"
+      },
+      {
+        "testo": "Visto mûri de zûbbo in abbondanza,",
+        "it": "Visto teste di cazzo  in abbondanza,"
+      },
+      {
+        "testo": "Ö dà man a-o squadron, comme se ö vûesse,",
+        "it": "Mette mano alla spada, come se volesse,"
+      },
+      {
+        "testo": "Senza moæ, senza sêu, daghio in ta pansa,",
+        "it": "Senza pietà, darglielo nella pancia,"
+      },
+      {
+        "testo": "Ma a sonnambola a-o ten, perché ö no desse",
+        "it": "Ma la sonnambula lo trattiene, affinché non desse"
+      },
+      {
+        "testo": "De botte a de ombre che nö han sostansa,",
+        "it": "Delle botte a delle ombre che non hanno sostanza,"
+      },
+      {
+        "testo": "E con vueì fâ de scene inutilmente",
+        "it": "E con il voler fare scene inutilmente"
+      },
+      {
+        "testo": "Ö nö se fesse cuggionâ dâ gente...",
+        "it": "Non si facesse coglionare dalla gente..."
+      },
+      {
+        "testo": "Lì piggian ö cammin, pe puei passâ",
+        "it": "Lì prendono il cammino, per poter passare"
+      },
+      {
+        "testo": "Quello che ciamman d'Acheronte ö sciûmme,",
+        "it": "Quello che chiamano il fiume d'Acheronte,"
+      },
+      {
+        "testo": "Che in sostanza, a l'é gnisca deslengûâ",
+        "it": "Che in sostanza è merda sciolta,"
+      },
+      {
+        "testo": "Che a fâ maoxi de pâtan e sudiciûmme,",
+        "it": "Che fa cavalloni di pantano e sudiciume,"
+      },
+      {
+        "testo": "Che a fâ ampolle de marsa e ö va a straqûâ",
+        "it": "Che fa bolle di pus e va a scaricare"
+      },
+      {
+        "testo": "Questo impasto de stronsci e de marsûmme",
+        "it": "Questo impasto di stronzi e di marciume"
+      },
+      {
+        "testo": "In tö lago Cocito. A barcaiêu",
+        "it": "Nel lago Cocito. Da barcaiolo"
+      },
+      {
+        "testo": "Gh'é ö Mostasci, che ö fava ö decretœu.",
+        "it": "C'è Mustacci, che faceva il lustrascarpe."
+      },
+      {
+        "testo": "Ö Mostasci, alias dîto ö Marsenâ",
+        "it": "Il Mustacci, alias detto il Merciaio,"
+      },
+      {
+        "testo": "Che ö l'aveiva da-o teatro ö so banchetto.",
+        "it": "Che aveva davanti al teatro il suo banchetto."
+      },
+      {
+        "testo": "Cö-e parpelle fodræ de carne sâ,",
+        "it": "Con le palpebre foderate di carne salata,"
+      },
+      {
+        "testo": "Barba grixia che a pâ de fî ferretto,",
+        "it": "Barba grigia che pare di fil di ferro,"
+      },
+      {
+        "testo": "Cavellêa co-i fretûeli, impighœûggiâ",
+        "it": "Capigliatura con le croste, impidocchiata,"
+      },
+      {
+        "testo": "E che a sbugge de sotto a-o so caschetto,",
+        "it": "E che sbuca fuori da sotto al suo berretto,"
+      },
+      {
+        "testo": "Braghe pinn-e de fiarsoe e c'ûn giamacco",
+        "it": "Braghe piene di sfilacci e con un gabbano"
+      },
+      {
+        "testo": "Profûmôu de bestin, grappa e tabacco.",
+        "it": "Profumato di letame, grappa e tabacco."
+      },
+      {
+        "testo": "C'ûn bacco de spassûia, che ö l'ha adattôu",
+        "it": "Con un bastone da scopa, che ha adattato"
+      },
+      {
+        "testo": "Comme specie de remmo ä so barchetta,",
+        "it": "Come specie di remo alla sua barchetta,"
+      },
+      {
+        "testo": "C'ûn strassön comme veia inlardonôu",
+        "it": "Con uno straccione come vela, unto"
+      },
+      {
+        "testo": "De rûmenta, de caize, e de caghetta,",
+        "it": "D'immondizia, di fuliggine e di caghetta,"
+      },
+      {
+        "testo": "Ö manezza ö so gosso affûmegôu",
+        "it": "Manovra il suo gozzo affumicato"
+      },
+      {
+        "testo": "E a-o de lâ tûtti i mortî ö te traghetta",
+        "it": "E all'aldilà tutti i morti te li traghetta:"
+      },
+      {
+        "testo": "Siôto, brûtto, carogna, invegiornîo,",
+        "it": "Lurido, brutto, carogna, bacucco,"
+      },
+      {
+        "testo": "Ma però sempre imbriægo e regaggîo",
+        "it": "Ma però sempre ubriaco e ringalluzzito."
+      },
+      {
+        "testo": "D'intorno a questa spiaggia, gh'é ûn remoîn.",
+        "it": "Intorno a questa spiaggia c'è un mulinello"
+      },
+      {
+        "testo": "De cadaveri estinti in ogni etæ,",
+        "it": "Di cadaveri defunti d'ogni età,"
+      },
+      {
+        "testo": "De tûtti i sessi, tûtte e condizioin,",
+        "it": "Di tutti i sessi, tutte le condizioni,"
+      },
+      {
+        "testo": "De figgiœû morti primma ancon di poæ;",
+        "it": "Di figlioli morti prima ancora dei padri;"
+      },
+      {
+        "testo": "A Zena nö gh'é tanti bellinoin",
+        "it": "A Genova non ci sono tanti bellinoni"
+      },
+      {
+        "testo": "E ô Stato ö nön ha tanti impieghæ",
+        "it": "E lo Stato non ha tanti impiegati"
+      },
+      {
+        "testo": "Quanti ëan questi cadaveri ambulanti",
+        "it": "Quanti erano questi cadaveri ambulanti"
+      },
+      {
+        "testo": "Convegnûi lì coscì da tûtti i canti.",
+        "it": "Convenuti lì così da tutti i canti."
+      },
+      {
+        "testo": "E co-e brasse desteise e supplicando,",
+        "it": "E con le braccia distese e supplicando,"
+      },
+      {
+        "testo": "Vueivan tûtti ö passaggio all'âtra riva,",
+        "it": "Volevano tutti il passaggio all'altra riva,"
+      },
+      {
+        "testo": "Ma ö Mostasci, çernendo e rifiûtando",
+        "it": "Ma il Mustacci, scegliendo e rifiutando"
+      },
+      {
+        "testo": "Chi ghe paiva in ta grande comitiva,",
+        "it": "Chi gli pareva nella grande comitiva,"
+      },
+      {
+        "testo": "Ö piccava remæ de quando in quando,",
+        "it": "Picchiava remate di quando in quando,"
+      },
+      {
+        "testo": "Cäsci e pugni in ta folla ö distribuiva,",
+        "it": "Calci e pugni nella folla distribuiva,"
+      },
+      {
+        "testo": "Pe fâse roso in questo særa særa,",
+        "it": "Per farsi la rabbia in questo parapiglia,"
+      },
+      {
+        "testo": "Lasciandone di belli a torse in tæra.",
+        "it": "Lasciandone parecchi a contorcersi in terra."
+      },
+      {
+        "testo": "Visto tanto remescio, ö casto Enea",
+        "it": "Visto tanto scompiglio, il casto Enea"
+      },
+      {
+        "testo": "Ö domanda ä Scibilla mâveggiôu:",
+        "it": "Domanda alla Sibilla meravigliato:"
+      },
+      {
+        "testo": "Donde a ven tanta gente a sta manea,",
+        "it": "«Da dove viene tanta gente in questa maniera,"
+      },
+      {
+        "testo": "Forse l'é che l'Albergo ö l'e scciûppôu?",
+        "it": "Forse è che l'Albergo è scoppiato?"
+      },
+      {
+        "testo": "Perché a çerti sto vegio ö ghe fâ cëa",
+        "it": "Perché a certi questo vecchio fa buon viso"
+      },
+      {
+        "testo": "E a çerti âtri ö passaggio ö l'ha refûôu?",
+        "it": "E a certi altri il passaggio ha rifiutato?"
+      },
+      {
+        "testo": "Mi nö riescio a capighe ûn aççidente...",
+        "it": "Io non riesco a capirci un accidente...»"
+      },
+      {
+        "testo": "E a Scibilla a ghe fâ: Dannime a mente.",
+        "it": "E la Sibilla gli fa: «Prestami attenzione»."
+      },
+      {
+        "testo": "Enea figgio de Dea, che da-o momento",
+        "it": "Enea, figlio di Dea, che dal momento"
+      },
+      {
+        "testo": "Che ti ë chì, ti no devi ëse ûn cuggion,",
+        "it": "Che sei qui non devi essere un coglione,"
+      },
+      {
+        "testo": "Quello lì ö l'é ö Cocito e ûn pô ciû in drento,",
+        "it": "Quello lì è il Cocito e un po' più dentro"
+      },
+      {
+        "testo": "Gh'emmo ö Stige, pe ö quæ gh'é a proibizion",
+        "it": "Abbiamo lo Stige, per il quale c'è la proibizione"
+      },
+      {
+        "testo": "Scinn-a a-i santi dö çe de fâ zûamento",
+        "it": "Perfino ai santi del cielo di fare giuramento"
+      },
+      {
+        "testo": "E nö fâlo seguî da esecûzion,",
+        "it": "E non farlo seguire da esecuzione,"
+      },
+      {
+        "testo": "Quello brûtto batöso ö l'é ö mainâ",
+        "it": "Quel brutto balordo è il marinaio"
+      },
+      {
+        "testo": "Dell'inferno, e ö se ciamma Marsenâ.",
+        "it": "Dell'inferno, e si chiama Marsenâ."
       }
     ]
   },
