@@ -2270,14 +2270,13 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", it:"avaro", sp:"avahónh, pissaporséme /avaón, pissaporséme", mn:"tirchiu", cr:"avar", ge:"avaaru, avaahu/avaro, avao ", verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"verbi", livello:"A1", it:"avere", en:"have", fr:"avoir", es:"tener", de:"haben", pt:"ter", ru:"иметь", ca:"tenir|haver", sp:"ave e/avée", mn:"ave e/avëë", cr:"avér", ge:"avei", ko:"가지다", ar:"يملك", zh:"有", ja:"持つ", ia:"haver", la:"habere", verif:"mn:g,sp:g,ge:g,cr:g", ro:"a avea" },
       { tema:"dialetti", livello:"B1", it:"avere garbo", en:"have grace", fr:"avoir du savoir-faire", es:"tener gracia", de:"Charme haben", pt:"ter graça", sp:"avée manéa", ja:"品がいい", verif:"sp:g", nt:["mn"] },
-      { tema:"dialetti", livello:"A2", it:"avversario", sp:"aversaio", mn:"aversaiu/àvérsaiu", cr:"avrs'ari", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g,cr:g" },
-      { tema:"dialetti", livello:"A2", it:"avvertire", sp:"avertìe/avertie", mn:"avertii/àvértii", cr:"avrtir", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g,cr:g" },
+      { tema:"dialetti", livello:"A2", it:"avversario", sp:"aversaio", mn:"aversaiu/àvérsaiu", cr:"avrs'ari", ge:"avversäio", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g,cr:g" },
+      { tema:"dialetti", livello:"A2", it:"avvertire", sp:"avertìe/avertie", mn:"avertii/àvértii", cr:"avrtir", ge:"avvertî", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g,cr:g" },
       { tema:"dialetti", it:"avvio", sp:"àndio", cr:"avi", ge:"inàndiu/inandio", verif:"ge:g,sp:g,cr:g", nt:["mn"] },
-      { tema:"dialetti", livello:"A2", it:"avvisare", sp:"avisae", mn:"avisàà/avizaa", cr:"avisar", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g,cr:g" },
-      { tema:"dialetti", livello:"A2", it:"avvisare, avvertire", sp:"avisae", mn:"avisà a/àvizaa", cr:"avisar", verif:"mn:g,cr:g" },
-      { tema:"dialetti", livello:"A2", it:"avvistare", en:"spot", fr:"apercevoir", sp:"avistae", mn:"vistaaa/vistaa", cr:"notar", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g,cr:g" },
+      { tema:"dialetti", livello:"A2", it:"avvisare", sp:"avisae", mn:"avisàà/avizaa", cr:"avisar", ge:"avvisâ", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g,cr:g" },
+      { tema:"dialetti", livello:"A2", it:"avvistare", en:"spot", fr:"apercevoir", sp:"avistae", mn:"vistaaa/vistaa", cr:"notar", ge:"avvistâ", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g,cr:g" },
       { tema:"verbi", it:"avvitare", sp:"envidà'e/envidae", mn:"anvidàa", cr:"'nvitar", ge:"inviaa/inviâ", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,cr:g" },
-      { tema:"mestieri", livello:"A1", it:"avvocato", en:"lawyer", fr:"avocat", es:"abogado", de:"Anwalt", pt:"advogado", ru:"адвокат", ca:"advocat", sp:"avocato", mn:"aucatu", cr:"avocat", ko:"변호사", ar:"محامٍ", zh:"律师", ja:"弁護士", ia:"advocato", la:"advocatus", grc:"δικηγόρος", verif:"sp:g,mn:g,cr:g" },
+      { tema:"mestieri", livello:"A1", it:"avvocato", en:"lawyer", fr:"avocat", es:"abogado", de:"Anwalt", pt:"advogado", ru:"адвокат", ca:"advocat", sp:"avocato", mn:"aucatu", cr:"avocat", ge:"avvocato", ko:"변호사", ar:"محامٍ", zh:"律师", ja:"弁護士", ia:"advocato", la:"advocatus", grc:"δικηγόρος", verif:"sp:g,mn:g,cr:g" },
       { tema:"dialetti", it:"avvolgere, arrotolare.", sp:"revogiahe/revogiae", mn:"vùgiàa", ge:"figgeu, ", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"verbi", it:"azzimarsi", sp:"sperlecasse", cr:"azimars, p'rlis'ars", ge:"perleccaasse/perleccâse", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g,cr:g", nt:["mn"] },
       { tema:"dialetti", it:"babbeo", sp:"benè", mn:"babanassu", cr:"babioc, bag'ian", ge:"besugo", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g,cr:g" },
@@ -3907,7 +3906,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 500;
+const VOC_VERSION = 501;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
