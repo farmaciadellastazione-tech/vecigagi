@@ -12629,7 +12629,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che de chì, nö passæ pe nisciûn patto.",
         "it": "Che di qui non passate a nessun patto!»."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 3 parte 7",
+      "it": "Caronte e Cerbero "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
       {
         "testo": "E ti chi t'ë, ti oxellon, che tûtto armôu",
         "it": "E tu chi sei, tu allocco, che tutto armato,"
