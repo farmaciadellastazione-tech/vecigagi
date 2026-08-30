@@ -13425,6 +13425,230 @@ const STORIE_DEFAULT = [
       {
         "testo": "Se ö se ferma all'inferno o ö se n'andiâ!",
         "it": "Se si ferma all'inferno o se ne andrà!"
+      },
+      {
+        "testo": "Quando i greci l'han visto comparî",
+        "it": "Quando i greci l'hanno visto comparire"
+      },
+      {
+        "testo": "(Ghe n'ëa ûn mûggio tra militi e gradûæ)",
+        "it": "(Ce n'era un mucchio tra soldati semplici e graduati)"
+      },
+      {
+        "testo": "E e so armi in te l'ombra stralûxî,",
+        "it": "E le sue armi nell'ombra rifulgere,"
+      },
+      {
+        "testo": "Gh'é vegnûo a scagabûggia e son scentæ,",
+        "it": "Gli è venuta la cacarella e sono spariti,"
+      },
+      {
+        "testo": "Parte andando de corsa a ciû nö di,",
+        "it": "Parte andando di corsa a più non posso,"
+      },
+      {
+        "testo": "Comme a-e navi, ûnn-a votta ëan zâ scappæ,",
+        "it": "Come alle navi una volta erano già scappati,"
+      },
+      {
+        "testo": "Parte, criando côa voxe indebolîa,",
+        "it": "Parte gridando con la voce indebolita,"
+      },
+      {
+        "testo": "Strangoâ in tö goscio e soffocâ dâ pûia.",
+        "it": "Strozzata in gola  e soffocata dalla paura."
+      },
+      {
+        "testo": "E chi Lazzao Rebisso, illustre e grande",
+        "it": "E qui Lazzaro Rebisso (Lazzao Rebisso), illustre e grande,"
+      },
+      {
+        "testo": "Atro avanzo de Troia, ö l'ha incontrôu,",
+        "it": "Altro avanzo di Troia, ha incontrato,"
+      },
+      {
+        "testo": "Che ö pendeiva ädreitûa da tûtte e bande",
+        "it": "Che pendeva addirittura da tutte le parti"
+      },
+      {
+        "testo": "Benché o fösse da Bianca accompagnôu,",
+        "it": "Benché fosse accompagnato da Bianca,"
+      },
+      {
+        "testo": "E co-e öegie, cö naso e scinn-a e giande,",
+        "it": "E con le orecchie, col naso e perfino i marroni,"
+      },
+      {
+        "testo": "Tûtto mocco ädreitûa tûtto taggiôu,",
+        "it": "Tutto mogio addirittura, tutto tagliato,"
+      },
+      {
+        "testo": "Ma che ö se vûeiva riparâ co-e brasse",
+        "it": "Ma che si voleva riparare con le braccia"
+      },
+      {
+        "testo": "Perché visto coscì, ö nö se burlasse.",
+        "it": "Perché, visto così, non lo si burlasse."
+      },
+      {
+        "testo": "Finalmente ö conosce e ö s'avvixinn-a",
+        "it": "Finalmente lo riconosce e gli si avvicina"
+      },
+      {
+        "testo": "E ö ghe parla ädreitûa con confidenza:",
+        "it": "E gli parla addirittura con confidenza:"
+      },
+      {
+        "testo": "Nö me sbaglio? sciâ ö l’é? perdingolinn-a,",
+        "it": "«Non mi sbaglio? È proprio lei ? Perbacco!"
+      },
+      {
+        "testo": "E chi l'é, che ö l'ha avûo tanta insolenza",
+        "it": "E chi è che ha avuto tanta insolenza"
+      },
+      {
+        "testo": "De vûei fâ de vosciâ tanta tonninn-a",
+        "it": "Di voler fare di vostra signoria  tanto macello,"
+      },
+      {
+        "testo": "Ö guerriero de Teucro e so semenza?",
+        "it": "Il guerriero di Teucro e della sua stirpe?"
+      },
+      {
+        "testo": "Chi ö l'é quello brutö, continua Enea,",
+        "it": "Chi è quel vigliacco lurido — continua Enea —,"
+      },
+      {
+        "testo": "Che ö l'ha fæto in menissi a sta manea?",
+        "it": "Che l'ha fatta a brandelli in questo modo?»."
+      },
+      {
+        "testo": "In quella nêutte che a n'ha rovinôu,",
+        "it": "In quella notte che ci ha rovinati,"
+      },
+      {
+        "testo": "Da quello almeno che ho posciûo sentî,",
+        "it": "Da quello almeno che ho potuto sentire,"
+      },
+      {
+        "testo": "Sciâ s'é in mezo a-i nemixi imbellinou",
+        "it": "Lei si è ficcato in mezzo ai nemici"
+      },
+      {
+        "testo": "E faxendö prodigi a ciû nö dî,",
+        "it": "E facendo prodigi a più non posso,"
+      },
+      {
+        "testo": "Äddreitûa de miggiæ sciâ n'ha ammazzôu",
+        "it": "Addirittura a migliaia ne ha ammazzati"
+      },
+      {
+        "testo": "Con tanta gloria da nö puei ciû muî!",
+        "it": "Con tanta gloria da non poter più morire!"
+      },
+      {
+        "testo": "Terminando con cazzighe de sotta",
+        "it": "Finendo col caderci di sotto,"
+      },
+      {
+        "testo": "Stanco scì, ma nö vinto pe ûnn-a potta!",
+        "it": "Stanco sì, ma non vinto per niente!"
+      },
+      {
+        "testo": "Mi perché sciâ n'andasse a l'ätro mondo",
+        "it": "Io, perché lei non se ne andasse all'altro mondo"
+      },
+      {
+        "testo": "E senz'œiûo ne sâ, coscì de sbiascio,",
+        "it": "Senza olio né sale, così di sghimbescio"
+      },
+      {
+        "testo": "Ho ordinôu de fâ ûn fosso âto, profondo,",
+        "it": "Ho ordinato di scavare una fossa alta e profonda,"
+      },
+      {
+        "testo": "E pe a so salma, figurando ûn sascio,",
+        "it": "E al posto della sua salma,  un sasso,"
+      },
+      {
+        "testo": "Mi ghe l'ho fæta ariguelâ zû in fondo,",
+        "it": "Gliel'ho fatta rotolare giù in fondo,"
+      },
+      {
+        "testo": "C'ûn'orazion che a l'ëa pe ö meno ûn pascio,",
+        "it": "Con un'orazione lunga almeno un passo,"
+      },
+      {
+        "testo": "Ca-ö sciö Lazzæn, cose ghe pueivo fâ,",
+        "it": "Caro signor Lazzarino, cosa ci potevo fare,"
+      },
+      {
+        "testo": "Se mi ö so corpo n'ho posciûo trovâ?",
+        "it": "Se io il suo corpo non l'ho potuto trovare?"
+      },
+      {
+        "testo": "E Rebisso ö ghe fâ: diletto Enea",
+        "it": "E Rebisso gli fa: «Diletto Enea,"
+      },
+      {
+        "testo": "Ti æ fæto ciû che ti nö pueivi fâ,",
+        "it": "Tu hai fatto più di quel che potevi fare!"
+      },
+      {
+        "testo": "Chi n'ha dæto a sciaccadda a sta manea,",
+        "it": "Chi mi ha dato la batosta in questa maniera,"
+      },
+      {
+        "testo": "Chi m'ha fæto all'inferno ariguelâ,",
+        "it": "Chi mi ha fatto rotolare all'inferno,"
+      },
+      {
+        "testo": "A lé quella rufiann-a, o cose a l'êa,",
+        "it": "È quella ruffiana, o qualunque cosa fosse,"
+      },
+      {
+        "testo": "De scismatica greca, accannaggiâ,",
+        "it": "Di scismatica greca, canaglia,"
+      },
+      {
+        "testo": "Che de lë a t'ha lasciôu coscì bon nomme,",
+        "it": "Che di sé ti ha lasciato una così bel nome,"
+      },
+      {
+        "testo": "Che tûtto ö mondo aôa ö a conosce e comme.",
+        "it": "Che tutto il mondo adesso la conosce, ed eccome!»."
+      },
+      {
+        "testo": "Se ti te ne sovvegni, e perdiesann-a",
+        "it": "Se te ne ricordi, e perbacco,"
+      },
+      {
+        "testo": "Ti te devi, pe forza, sovvegnî,",
+        "it": "Te ne devi, per forza, ricordare,"
+      },
+      {
+        "testo": "A-o pa-o de tûtti noî, quella nottûann-a",
+        "it": "Al pari di tutti noi, quella nottata"
+      },
+      {
+        "testo": "Primma allëgra e poi trista a ciû nö di,",
+        "it": "Prima allegra e poi triste a più non dire,"
+      },
+      {
+        "testo": "Ch'emmo averto a-o cavallo e dä so tann-a",
+        "it": "Che abbiamo aperto al cavallo e dalla sua tana"
+      },
+      {
+        "testo": "Ö n'ha vûoû zû in Çittæ, tanti brûtûi",
+        "it": "Ci ha vuotato giù in Città tanti vigliacchi,"
+      },
+      {
+        "testo": "Ûnn-a marmaggia che a l'ëa tanto spessa",
+        "it": "Una marmaglia che era talmente fitta"
+      },
+      {
+        "testo": "Che n'é intrôu scinn-a drento in ta fortessa.",
+        "it": "Che n'è entrata persino dentro la fortezza!"
       }
     ]
   },
