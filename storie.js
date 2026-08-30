@@ -13649,6 +13649,102 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che n'é intrôu scinn-a drento in ta fortessa.",
         "it": "Che n'è entrata persino dentro la fortezza!"
+      },
+      {
+        "testo": "Lë finzendo de fâ ûnn-a procescion",
+        "it": "Lei, fingendo di fare una processione,"
+      },
+      {
+        "testo": "Da-e beghinn-e de Troia accompagnâ",
+        "it": "Accompagnata dalle beghine di Troia,"
+      },
+      {
+        "testo": "Dell'incendio e da nostra distrûzion",
+        "it": "Dell'incendio e della nostra distruzione"
+      },
+      {
+        "testo": "C'ûnn-a torcia in te man a da ö segnâ,",
+        "it": "Con una torcia in mano dà il segnale;"
+      },
+      {
+        "testo": "Mi ch'eo stanco da-e veggie e dä pascion",
+        "it": "Io, che ero stanco per le veglie e per le pene,"
+      },
+      {
+        "testo": "Me n'ëa andæto in sciô letto ûn pö a quetâ,",
+        "it": "Me n'ero andato a letto un po' a quietare,"
+      },
+      {
+        "testo": "E dormivo coscì, che a dì a veitæ",
+        "it": "E dormivo così  che, a dire la verità,"
+      },
+      {
+        "testo": "N'aviæ manco sentîo de canonnæ.",
+        "it": "Non avrei sentito neanche le cannonate!"
+      },
+      {
+        "testo": "Aloa a bonn-a moggê, ciancianinetto,",
+        "it": "Allora la brava moglie, pian pianino,"
+      },
+      {
+        "testo": "E arme tûtte de casa a fâ scentâ,",
+        "it": "Fa sparire tutte le armi di casa,"
+      },
+      {
+        "testo": "Scinn-a a sciabbra che aveivo appeisa a ö letto,",
+        "it": "Persino la sciabola che avevo appesa al letto,"
+      },
+      {
+        "testo": "E a fâ intrâ Menelao co a so masnâ,",
+        "it": "E fa entrare Menelao con la sua masnada,"
+      },
+      {
+        "testo": "Co-a speranza de fâghe ûn regaletto",
+        "it": "Con la speranza di fargli un regaletto"
+      },
+      {
+        "testo": "Che ö bastasse e so colpe a perdonâ",
+        "it": "Che bastasse a perdonare le sue colpe;"
+      },
+      {
+        "testo": "Nö diô comme a l’é andæta e cose a fisse",
+        "it": "Non dirò com'è andata e cosa facesse,"
+      },
+      {
+        "testo": "Basta savêi, che i conseggiava Ulisse.",
+        "it": "Basta sapere che li consigliava Ulisse!"
+      },
+      {
+        "testo": "Aoa, voî Segnö ca-o che stæ a sentî",
+        "it": "Adesso, voi, caro Signore che state a sentire,"
+      },
+      {
+        "testo": "Dîme pûre se ho torto ö se ho raxon,",
+        "it": "Ditemi pure se ho torto o se ho ragione,"
+      },
+      {
+        "testo": "Ma dæ ö riso co-a natta a sti brûtûi",
+        "it": "Ma date la loro degna lezione a questi vigliacchi,"
+      },
+      {
+        "testo": "Se giûdichæ che a l’é ûnn-a malazion,",
+        "it": "Se giudicate che è un'azione infame;"
+      },
+      {
+        "testo": "E ti, che vivo ti æ posciûo vegnî",
+        "it": "E tu, che vivo sei potuto venire"
+      },
+      {
+        "testo": "Dove ö sö ö nö fa mai d'apparizion,",
+        "it": "Dove il sole non fa mai apparizione,"
+      },
+      {
+        "testo": "L’é pe caxo, fortunn-a o pe precetto",
+        "it": "È per caso, per sorte o per comando"
+      },
+      {
+        "testo": "Che pe questo cammin ti t’ë diretto?",
+        "it": "Che per questo cammino ti sei diretto?"
       }
     ]
   },
