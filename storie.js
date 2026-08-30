@@ -12937,6 +12937,454 @@ const STORIE_DEFAULT = [
       {
         "testo": "Senza avei tempo a diventâ bellinn-e.",
         "it": "Senza aver il tempo di diventar delle beline"
+      },
+      {
+        "testo": "Passan poi, döve sön i disgraziæ",
+        "it": "Passano poi dove sono i disgraziati"
+      },
+      {
+        "testo": "Piggiæ pe sbaglio comme delinquenti,",
+        "it": "Presi per sbaglio come delinquenti,"
+      },
+      {
+        "testo": "Missi sotto giûdizio e condannæ",
+        "it": "Messi sotto giudizio e condannati"
+      },
+      {
+        "testo": "Da giurati capaçi e intelligenti,",
+        "it": "Da giurati capaci e intelligenti,"
+      },
+      {
+        "testo": "Sön çernui, missi a parte e collochæ",
+        "it": "Sono scelti, messi da parte e collocati"
+      },
+      {
+        "testo": "Ciaschedûn in ti sô compartimenti,",
+        "it": "Ciascheduno nei suoi scompartimenti,"
+      },
+      {
+        "testo": "Da-o Tascæa, c'ûn barbon da paddre eterno,",
+        "it": "Dal Tassera, con un barbone da Padreterno,"
+      },
+      {
+        "testo": "Missö lì apposta a sorveggiâ ö governo.",
+        "it": "Messo lì apposta a sorvegliare l'andamento."
+      },
+      {
+        "testo": "Ven poi quelli che avendo a mussa pinn-a",
+        "it": "Vengono poi quelli che, avendone la mussa piena"
+      },
+      {
+        "testo": "D'avei sempre davanti ûn creditô,",
+        "it": "Di avere sempre davanti un creditore,"
+      },
+      {
+        "testo": "Han çercôu de sciortî d'in ta câsinn-a",
+        "it": "Hanno cercato di uscire dai casini"
+      },
+      {
+        "testo": "E se l'han misso in to stoppin da lö;",
+        "it": "E se lo sono messo nello stoppino da loro;"
+      },
+      {
+        "testo": "Ghe sæ caö de patî torna a bazinn-a,",
+        "it": "Gli piacerebbe assai  patire di nuovo la fame,"
+      },
+      {
+        "testo": "Vive d'angoscia, ma rivedde ö sö,",
+        "it": "Vivere d'angoscia, pur di rivedere il sole,"
+      },
+      {
+        "testo": "Ma, ghe dixe ö Destin che ö nö rinvegne",
+        "it": "Ma gli dice il Destino, che non ritorna:"
+      },
+      {
+        "testo": "\"Chi gh'é l'ha, figgi cai, che se ghe ö tegne\"",
+        "it": "«Chi ce l'ha, cari figlioli, se lo tenga!»."
+      },
+      {
+        "testo": "Fêua de man e de lì, poco distante,",
+        "it": "Fuori mano e da lì poco distante,"
+      },
+      {
+        "testo": "Gh'é ûnn-a ciann-a, dö cianze nominâ,",
+        "it": "C'è una piana, chiamata del piangere,"
+      },
+      {
+        "testo": "Circondâ da colinn-e e da de piante",
+        "it": "Circondata da colline e da piante"
+      },
+      {
+        "testo": "De mortin e de lelôa intersecâ.",
+        "it": "Di mirto e di alloro intrecciate,"
+      },
+      {
+        "testo": "Lì gh'ëa ûn mûggio de donne esorbitante",
+        "it": "Lì c'era un mucchio esorbitante di donne"
+      },
+      {
+        "testo": "Che vivendo, se son fæte baxiâ,",
+        "it": "Che, da vive, si son fatte baciare,"
+      },
+      {
+        "testo": "E quantunque zà morte, han sempre coæ",
+        "it": "E benché già morte, hanno sempre voglia"
+      },
+      {
+        "testo": "De dâ a tûtti da mussa a tonnellæ.",
+        "it": "Di dare a tutti della mussa a tonnellate."
+      },
+      {
+        "testo": "Gh'é a celebre Ciavænn-a, a Santaninn-a",
+        "it": "C'è la celebre Chiavarese, la Santanina"
+      },
+      {
+        "testo": "E a non meno famosa Cicognin,",
+        "it": "E la non meno famosa Cicognina,"
+      },
+      {
+        "testo": "Gh'ëa l'Elvira, a Toscana, a Celestinn-a",
+        "it": "C'era l'Elvira, la Toscana, la Celestina"
+      },
+      {
+        "testo": "Circondâ da-e scignöe dö sô casin,",
+        "it": "Circondata dalle signorine del suo bordello,"
+      },
+      {
+        "testo": "E gh'ëa quella battösa de Maxinn-a",
+        "it": "E c'era quella monella della Tomasina,"
+      },
+      {
+        "testo": "Rinomâ pe-i sö fianchi e i sö tettin,",
+        "it": "Rinomata per i suoi fianchi e le sue tette,"
+      },
+      {
+        "testo": "E a Tacchetti, che andando all'alta schêua",
+        "it": "E la Tacchetti, che andando all'alta scuola,"
+      },
+      {
+        "testo": "A l'ha fæto descazze a parpaggiêua.",
+        "it": "Ha fatto scucire la grana."
+      },
+      {
+        "testo": "A Minica co-a Neno e l'Angiolinn-a",
+        "it": "La Domenica con la Neno e l'Angiolina,"
+      },
+      {
+        "testo": "Emerite ruffiann-e e tûtte træ,",
+        "it": "Emerite ruffiane tutte e tre,"
+      },
+      {
+        "testo": "A sciä Tasso, a Mustasci, a Savoninn-a",
+        "it": "La signora Tasso, la Mustacchi, la Savonese"
+      },
+      {
+        "testo": "Che a l'ha guâgnô de mutte a cappellæ,",
+        "it": "Che ha guadagnato soldi a cappellate,"
+      },
+      {
+        "testo": "A Vergine Camilla e a Semolinn-a,",
+        "it": "La Vergine Camilla e la Semolina,"
+      },
+      {
+        "testo": "A Bei Colpi, a Træ peie, accompagnæ",
+        "it": "La Bei Colpi, la Tre Pere, accompagnate"
+      },
+      {
+        "testo": "Da ûn mûggio de scignoe pëzo che queste",
+        "it": "Da un mucchio di signore peggio di queste,"
+      },
+      {
+        "testo": "Ma ne-o gran mondo rispettæ pe oneste.",
+        "it": "Ma nel gran mondo rispettate come oneste."
+      },
+      {
+        "testo": "Tra queste disgraziæ gh'é ascì Didon",
+        "it": "Tra queste disgraziate c'è anche Didone"
+      },
+      {
+        "testo": "Che a l'aveiva in to pëto ûnn-a ferîa,",
+        "it": "Che aveva nel petto una ferita,"
+      },
+      {
+        "testo": "Fæta de fresco e che a stissava ancon",
+        "it": "Fatta di fresco e che stillava ancora,"
+      },
+      {
+        "testo": "E che a giâva pe ö bosco allûveghîa.",
+        "it": "E che girava per il bosco stralunata."
+      },
+      {
+        "testo": "Vista lì in t'ûnn-a mëza confuxion",
+        "it": "Vista lì in una mezza confusione"
+      },
+      {
+        "testo": "Mentre a sciorte all'averto e a se retîa,",
+        "it": "Mentre esce all'aperto e si ritira,"
+      },
+      {
+        "testo": "Enea ö sente ûn remescio, ûn battichêu,",
+        "it": "Enea sente un rimescolamento, un batticuore,"
+      },
+      {
+        "testo": "E ghe ven ö sappin, comme a-i figgiéu.",
+        "it": "E gli viene il labbro tremulo, come ai bambini."
+      },
+      {
+        "testo": "Dunque, povia Didon, l'é proprio vea",
+        "it": "«Dunque, povera Didone, è proprio vera"
+      },
+      {
+        "testo": "A notiza, annunziâ da-o Supplemento,",
+        "it": "La notizia, annunciata dal Supplemento,"
+      },
+      {
+        "testo": "Öghe fâ, che ti æ avûo a feliçe idea",
+        "it": "— le fa  —, che hai avuto la felice idea"
+      },
+      {
+        "testo": "De dâ man a-o cotello e dâghe drento?",
+        "it": "Di metter mano al coltello e darci dentro?"
+      },
+      {
+        "testo": "E che son stæto mi, mi proprio Enea,",
+        "it": "E che sono stato io, io proprio Enea,"
+      },
+      {
+        "testo": "A caxon de stö to proponimento?",
+        "it": "La cagione di questo tuo proponimento?"
+      },
+      {
+        "testo": "Ma te zûo, che me vegne ûn aççidente,",
+        "it": "Ma ti giuro, che mi venga un accidente,"
+      },
+      {
+        "testo": "Che ho dovûo fûtte ö can forzatamente.",
+        "it": "Che ho dovuto scappare forzatamente!»."
+      },
+      {
+        "testo": "Ö l'é stæto ö destin che ö l'ha ordinôu,",
+        "it": "È stato il destino che l'ha ordinato,"
+      },
+      {
+        "testo": "Vuentæ de Giove, che nö gh'ëa da dî,",
+        "it": "Volontà di Giove, che non c'era da dire,"
+      },
+      {
+        "testo": "A forza stessa che a m'ha strascinôu",
+        "it": "La forza stessa che mi ha trascinato,"
+      },
+      {
+        "testo": "Pe ö quæ, all'inferno son posciûo vegnî;",
+        "it": "Per la quale all'inferno sono potuto venire;"
+      },
+      {
+        "testo": "Che pe dö resto n'aviæ mai pensôu",
+        "it": "Ché per il resto non avrei mai pensato"
+      },
+      {
+        "testo": "Che a mæ partenza a te faxesse mûi!",
+        "it": "Che la mia partenza ti facesse morire!"
+      },
+      {
+        "testo": "Ma percose ti scappi? aspëta ûn pô,",
+        "it": "Ma perché scappi? Aspetta un po',"
+      },
+      {
+        "testo": "Chi sa quando, e se mai, mi te veddiô!",
+        "it": "Chi sa quando, e se mai, io ti vedrò!"
+      },
+      {
+        "testo": "E co-e lagrime a-i œûggi ö bazanâ",
+        "it": "E con le lacrime agli occhi il baggiano"
+      },
+      {
+        "testo": "Ö vûeiva fâse perdonâ i so torti,",
+        "it": "Voleva farsi perdonare i suoi torti,"
+      },
+      {
+        "testo": "Ma Didon, a ghe dâ ûnn-a mëza œûggiâ",
+        "it": "Ma Didone gli dà una mezza occhiata"
+      },
+      {
+        "testo": "Coscì de sbiascio c'ûn pâ d'œûggi storti",
+        "it": "Così di sbieco con un paio d'occhi storti,"
+      },
+      {
+        "testo": "E a te ö lascia lì a cianze e a supplicâ,",
+        "it": "E te lo lascia lì a piangere e a supplicare,"
+      },
+      {
+        "testo": "Cö stesso effetto che toccâlo a-i morti,",
+        "it": "Con lo stesso effetto che toccarlo ai morti,"
+      },
+      {
+        "testo": "Poi a piggia ö portante e a va d'asbrîo",
+        "it": "Poi prende il passo svelto e va di filato"
+      },
+      {
+        "testo": "A fâse cogiönnâ da so marîo.",
+        "it": "A farsi pigliare per il culo da suo marito."
+      },
+      {
+        "testo": "Enea ö resta lì sciollo e allimonôu",
+        "it": "Enea rimane lì sbigottito e allibito,"
+      },
+      {
+        "testo": "C'ûnn-a bella magnâ de mosche in man",
+        "it": "Con un bel pugno di mosche in mano,"
+      },
+      {
+        "testo": "Ammiandola de lungo, mâveggiôu",
+        "it": "Guardandola a lungo, meravigliato"
+      },
+      {
+        "testo": "D'avei fæto a figûa dö scemelan,",
+        "it": "D'aver fatto la figura dello scemo,"
+      },
+      {
+        "testo": "E poi, quando ö l'ha visto e ö s’é assegûôu",
+        "it": "E poi, quando ha visto e si è accertato"
+      },
+      {
+        "testo": "Che a só förma a s'ëa persa in tö lontan",
+        "it": "Che la sua figura si era persa in lontananza,"
+      },
+      {
+        "testo": "Ch'ëan messe dîte e ö se ne pueiva andâ,",
+        "it": "Che erano messe dette e se ne poteva andare,"
+      },
+      {
+        "testo": "Co i sospii ö l'ha ancon accompagnâ!",
+        "it": "Coi sospiri l'ha ancora accompagnata!"
+      },
+      {
+        "testo": "Continuando a sô stradda, ecco in ti pë",
+        "it": "Continuando la sua strada, ecco tra i piedi"
+      },
+      {
+        "testo": "Tutt'assemme ghe capita ûn drapello",
+        "it": "Tutt'a un tratto gli capita un drappello"
+      },
+      {
+        "testo": "Che ö l'ëa tûtto formôu de guerrezzë",
+        "it": "Che era tutto formato da guerrieri"
+      },
+      {
+        "testo": "Di ciû belli e çernui. - Gh'ë ö Colonello",
+        "it": "Tra i più belli e scelti. C'era il Colonnello"
+      },
+      {
+        "testo": "Santiâ dö 16 cö maggiô Fraschë,",
+        "it": "Santhià  del 16° col maggiore Frascheri,"
+      },
+      {
+        "testo": "Usualmente ciammôu pe pacciarello,",
+        "it": "Abitualmente chiamato piede impacciato,"
+      },
+      {
+        "testo": "Gh'ëa Gian Carlo Genti, Scigoi, ö Sccianchin",
+        "it": "C'era Gian Carlo Gentili, Scigoi, lo Sciancato,"
+      },
+      {
+        "testo": "Con Oliva ö maggiô, Fasce e Bottin.",
+        "it": "Con Oliva il maggiore, Fasce e Bottino."
+      },
+      {
+        "testo": "Lë ö cianze a vedde questi eroi gloriösi",
+        "it": "Lui  piange a vedere questi eroi gloriosi"
+      },
+      {
+        "testo": "Ch'ëan oggetto de pianti universali,",
+        "it": "Che erano oggetto di pianti universali,"
+      },
+      {
+        "testo": "Comme Vigo, che ö l'ëa fra i ciû famosi,",
+        "it": "Come Vigo, che era tra i più famosi,"
+      },
+      {
+        "testo": "Anzi ö modello di territoriali,",
+        "it": "Anzi il modello dei territoriali,"
+      },
+      {
+        "testo": "E ö celebre Masson, che i so riposi",
+        "it": "E il celebre Massone, che i suoi momenti di riposo"
+      },
+      {
+        "testo": "Ö dava â protezion pe i animali",
+        "it": "Donava alla protezione per gli animali,"
+      },
+      {
+        "testo": "E Sbertoli l'abate e imitatö",
+        "it": "E Sbertoli l'abate e imitatore"
+      },
+      {
+        "testo": "Dö beatiscimo Labre in tö brûtö",
+        "it": "Del beatissimo Labre nel lordume."
+      },
+      {
+        "testo": "E Merello, che ö l'ëa lustro ed onö",
+        "it": "E Merello, che era lustro e onore"
+      },
+      {
+        "testo": "Dell'Uffizio d'Igiene Comunale",
+        "it": "Dell'Ufficio d'Igiene Comunale,"
+      },
+      {
+        "testo": "E Caviggia ö procuôu zâ relatö",
+        "it": "E Caviglia il procuratore, già relatore"
+      },
+      {
+        "testo": "Di Conseggi da Guardia Nazionale",
+        "it": "Dei Consigli della Guardia Nazionale,"
+      },
+      {
+        "testo": "E Cevasco ö Marmâ e commendatö,",
+        "it": "E Cevasco il marmista e commendatore,"
+      },
+      {
+        "testo": "Ö sciö Oberti e Bruzzon, lë ascì uffiziale",
+        "it": "Il signor Oberti e Bruzzone, anche lui ufficiale"
+      },
+      {
+        "testo": "Di ciû fei da milizia çittadinn-a,",
+        "it": "Tra i più fieri della milizia cittadina,"
+      },
+      {
+        "testo": "Grendi, Curotti e ö professö Forsinn-a.",
+        "it": "Grendi, Curotti e il professor Forchetta."
+      },
+      {
+        "testo": "Questi chi, visto Enea, g'han fæto in gîo",
+        "it": "Questi qui, visto Enea, gli hanno fatto in giro,"
+      },
+      {
+        "testo": "E da drita e scinistra, ûnn-a coronn-a,",
+        "it": "Sia da destra che da sinistra, una corona,"
+      },
+      {
+        "testo": "E chi ö vœû vedde, chi toccâ cö dîo",
+        "it": "E chi lo vuol vedere, chi toccare col dito"
+      },
+      {
+        "testo": "Pe assegûase s’ö parla e se ö raxonn-a,",
+        "it": "Per sincerarsi se parla e se ragiona,"
+      },
+      {
+        "testo": "Domandandoghe da dove ö le partîo,",
+        "it": "Domandandogli da dove è partito,"
+      },
+      {
+        "testo": "E se ö l'é vegnûo lì, proprio in personn-a,",
+        "it": "E se è venuto lì proprio in persona,"
+      },
+      {
+        "testo": "Cose ö l'ha visto, cose ö ven a fâ,",
+        "it": "Cosa ha visto, cosa viene a fare,"
+      },
+      {
+        "testo": "Se ö se ferma all'inferno o ö se n'andiâ!",
+        "it": "Se si ferma all'inferno o se ne andrà!"
       }
     ]
   },
