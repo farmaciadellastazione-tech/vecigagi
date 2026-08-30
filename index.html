@@ -10369,7 +10369,7 @@ function SchermataSceltaMultipla({
     const f = frasaFineSP(perc);
     if (!f) return;
     setFraseFine(f);
-    const t = setTimeout(() => parla(f.tts, "it-IT"), 1500);
+    const t = setTimeout(() => parla(f.tts, "it-IT", false, f.audio ? "sp/" + f.audio : null), 1500);
     return () => clearTimeout(t);
   }, [isFineSchermata]);
 
@@ -10573,11 +10573,11 @@ function SchermataSceltaMultipla({
     }, "🐢")), /*#__PURE__*/React.createElement("div", {
       className: "text-red-400 text-xs mt-1"
     }, "hai scelto: ", e.scelta))))), fraseFine && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
-      onClick: () => parla(fraseFine.tts, "it-IT"),
+      onClick: () => parla(fraseFine.tts, "it-IT", false, fraseFine.audio ? "sp/" + fraseFine.audio : null),
       className: "italic text-amber-400 text-base mb-3 inline-flex items-center gap-2 hover:text-amber-300 transition",
       title: "Riascolta"
     }, "⚓ “", fraseFine.vis, "” 🔊"), /*#__PURE__*/React.createElement("button", {
-      onClick: () => parla(fraseFine.tts, "it-IT", true),
+      onClick: () => parla(fraseFine.tts, "it-IT", true, fraseFine.audio ? "sp/" + fraseFine.audio : null),
       className: "italic text-amber-400 text-base mb-3 ml-2 hover:text-amber-300 transition",
       title: "Riascolta lentamente", "aria-label": "Riascolta lentamente"
     }, "🐢")), /*#__PURE__*/React.createElement("p", {
@@ -11551,7 +11551,7 @@ function SchermataQuiz({
     if (!f) return;
     setFraseFine(f);
     // Delay per non sovrapporsi all'audio dell'ultima parola/feedback.
-    const tm = setTimeout(() => parla(f.tts, "it-IT"), 1500);
+    const tm = setTimeout(() => parla(f.tts, "it-IT", false, f.audio ? "sp/" + f.audio : null), 1500);
     return () => clearTimeout(tm);
   }, [fine]);
   const lDA = carta?.tipo === "coniugazione" ? carta.lDA : lingue.find(l => l.codice === carta?.da);
@@ -11632,11 +11632,11 @@ function SchermataQuiz({
     }, isNS ? nuovoRecord ? t.nuovorecord2 : t.gameover : t.ottimolav), /*#__PURE__*/React.createElement("p", {
       className: "text-slate-500 text-sm mb-4"
     }, iconaModalita, " ", t.sessione), fraseFine && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
-      onClick: () => parla(fraseFine.tts, "it-IT"),
+      onClick: () => parla(fraseFine.tts, "it-IT", false, fraseFine.audio ? "sp/" + fraseFine.audio : null),
       className: "italic text-amber-400 text-base mb-4 inline-flex items-center gap-2 hover:text-amber-300 transition",
       title: "Riascolta"
     }, "⚓ “", fraseFine.vis, "” 🔊"), /*#__PURE__*/React.createElement("button", {
-      onClick: () => parla(fraseFine.tts, "it-IT", true),
+      onClick: () => parla(fraseFine.tts, "it-IT", true, fraseFine.audio ? "sp/" + fraseFine.audio : null),
       className: "italic text-amber-400 text-base mb-4 ml-2 hover:text-amber-300 transition",
       title: "Riascolta lentamente", "aria-label": "Riascolta lentamente"
     }, "🐢")), (() => {

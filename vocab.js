@@ -35,6 +35,10 @@ const NUMERI_DIALETTO = {
 //   - alta: min:80     (vittoria)
 //   - media: min:50, max:79
 //   - bassa: max:49    (bonario, mai offensivo)
+// Campo opzionale `audio`: nome file sotto audio/sp/ (es. "belina-deh.mp3") con
+// una registrazione vera al posto della TTS italiana "ingannata". Se assente,
+// resta il fallback TTS su `tts` (comportamento invariato). Vedi audioVoce()
+// in index.html per la stessa convenzione sulle voci del vocabolario.
 const FRASI_FINE_SP = [
   { tts: "beelìiina dé... e chiteiiii ?", vis: "belina deh, e chi t'ei?", min: 80 },
   { tts: "mahcòstéféee??", vis: "ma costefé??", max: 49 },

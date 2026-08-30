@@ -467,7 +467,7 @@
 <div class="modal-overlay" id="frasi-sp-modal">
   <div class="modal" style="max-width: 780px;">
     <h2>⚓ Frasi scherzose in spezzino</h2>
-    <p style="color:var(--muted); font-size:0.85rem">Mostrate a fine sessione (Allenamento/Quiz). <strong>tts</strong>: testo letto dalla TTS italiana (adatta foneticamente, es. allunga vocali). <strong>vis</strong>: grafia tradizionale mostrata all'utente. <strong>Fascia</strong>: <code>alta</code> ≥80%, <code>media</code> 50-79%, <code>bassa</code> &lt;50%.</p>
+    <p style="color:var(--muted); font-size:0.85rem">Mostrate a fine sessione (Allenamento/Quiz). <strong>tts</strong>: testo letto dalla TTS italiana (adatta foneticamente, es. allunga vocali). <strong>vis</strong>: grafia tradizionale mostrata all'utente. <strong>Fascia</strong>: <code>alta</code> ≥80%, <code>media</code> 50-79%, <code>bassa</code> &lt;50%. <strong>🎙️/🎵</strong>: registra un audio vero al posto della TTS finto-spezzina (come per il vocabolario).</p>
     <div id="frasi-sp-list" style="max-height: 55vh; overflow-y: auto; margin-top: 0.8rem;"></div>
     <button class="btn btn-secondary" onclick="aggiungiFraseSP()" style="margin-top:0.6rem">➕ Aggiungi frase</button>
     <div class="modal-actions">
@@ -2466,7 +2466,7 @@ function renderFrasiSP() {
   list.innerHTML = frasiSPDraft.map((f, i) => {
     const fascia = fasciaDaMinMax(f);
     const customOpt = fascia === 'custom' ? `<option value="custom" selected>custom (min=${f.min ?? '–'}, max=${f.max ?? '–'})</option>` : '';
-    return `<div style="display:grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) 130px auto auto; gap:0.4rem; align-items:center; margin-bottom:0.45rem;">
+    return `<div style="display:grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr) 130px auto auto auto; gap:0.4rem; align-items:center; margin-bottom:0.45rem;">
       <input class="fsp-tts" type="text" value="${escapeAttr(f.tts)}" placeholder="TTS (foneticamente)" oninput="aggiornaFraseSP(${i}, 'tts', this.value)">
       <input class="fsp-vis" type="text" value="${escapeAttr(f.vis)}" placeholder="Grafia tradizionale" oninput="aggiornaFraseSP(${i}, 'vis', this.value)">
       <select onchange="aggiornaFraseSP(${i}, 'fascia', this.value)">
@@ -2477,6 +2477,7 @@ function renderFrasiSP() {
       </select>
       <button class="btn btn-secondary" onclick="testaFraseSP(${i})" title="Ascolta TTS" style="padding:0.35rem 0.55rem;">🔊</button>
       <button class="btn btn-secondary" onclick="testaFraseSP(${i}, ${RATE_LENTO})" title="Ascolta lento" style="padding:0.35rem 0.55rem;">🐢</button>
+      <button class="btn btn-secondary" onclick="apriRegistratoreFrase(${i})" title="${f.audio ? 'Audio: ' + escapeAttr(f.audio) + ' — gestisci' : 'Registra audio vero per questa frase'}" style="padding:0.35rem 0.55rem; ${f.audio ? 'color:#16a34a;' : ''}">${f.audio ? '🎵' : '🎙️'}</button>
       <button class="btn btn-secondary" onclick="eliminaFraseSP(${i})" title="Elimina" style="padding:0.35rem 0.55rem;">❌</button>
     </div>`;
   }).join('');
@@ -2756,6 +2757,7 @@ function serializzaFraseSP(f) {
   const parts = [`tts: ${JSON.stringify(f.tts || '')}`, `vis: ${JSON.stringify(f.vis || '')}`];
   if (f.min !== undefined) parts.push(`min: ${f.min}`);
   if (f.max !== undefined) parts.push(`max: ${f.max}`);
+  if (f.audio) parts.push(`audio: ${JSON.stringify(f.audio)}`);
   return '{ ' + parts.join(', ') + ' }';
 }
 
@@ -2899,13 +2901,16 @@ function mostraToken() {
 }
 
 // ==========================================================================
-// REGISTRAZIONE AUDIO IN-BROWSER (voce dialettale)
+// REGISTRAZIONE AUDIO IN-BROWSER (voce dialettale / frase spezzina)
 // ==========================================================================
 // Alternativa al workflow manuale (telefono → Drive → ffmpeg → commit): registra,
 // taglia il silenzio iniziale/finale e carica direttamente su GitHub. Nessuna
 // riduzione del rumore di fondo (nessun equivalente di loudnorm/silenceremove di
 // ffmpeg) — solo trim + normalizzazione di picco opzionale.
-let regCtx = null; // { code }
+// regCtx ha due forme, distinte da `kind`:
+//   - voce del vocabolario:  { kind: 'voce',  voce: v, code }       → v.audio[code]
+//   - frase FRASI_FINE_SP:   { kind: 'frase', frase: f, index: i }  → f.audio (sempre "sp")
+let regCtx = null;
 let mediaRecorder = null, micStream = null, recordedChunks = [], recordedBlob = null;
 
 function sceltaMimeType() {
@@ -2938,7 +2943,7 @@ function apriRegistratore(code, btn) {
     return;
   }
   resetPannelloRegistratore();
-  regCtx = { voce: v, code };
+  regCtx = { kind: 'voce', voce: v, code };
   const info = LINGUE.find(l => l.code === code);
   document.getElementById('reg-titolo').textContent = `🎙️ Audio — ${info ? info.name : code}: "${v.it || ''}"`;
   const attuale = v.audio && v.audio[code];
@@ -2949,8 +2954,37 @@ function apriRegistratore(code, btn) {
   document.getElementById('reg-modal').classList.add('open');
 }
 
+// Analoga a apriRegistratore, ma per una frase di FRASI_FINE_SP (bozza in
+// frasiSPDraft): sempre dialetto "sp", nessuna colonna lingua da scegliere.
+function apriRegistratoreFrase(i) {
+  const f = frasiSPDraft[i];
+  if (!f) return;
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert('Microfono non disponibile in questo contesto.\n\nServe HTTPS o "localhost" (file:// non è supportato dai browser per getUserMedia). Per testare in locale prima del push, avvia un server statico (es. "npx serve ." o "python -m http.server") e apri http://localhost:.../edit.html.');
+    return;
+  }
+  resetPannelloRegistratore();
+  regCtx = { kind: 'frase', frase: f, index: i };
+  document.getElementById('reg-titolo').textContent = `🎙️ Audio — frase spezzina: "${f.vis || f.tts || ''}"`;
+  const attuale = f.audio;
+  document.getElementById('reg-attuale').innerHTML = attuale
+    ? `Audio attuale: <code>${escapeAttr(attuale)}</code> <button class="btn btn-secondary" onclick="rimuoviAudioAttuale()">🗑️ Rimuovi riferimento</button>`
+    : '<em>Nessun audio registrato per questa frase.</em>';
+  document.getElementById('reg-nomefile').value = sluggifyAudio(f.vis || f.tts || '');
+  document.getElementById('reg-modal').classList.add('open');
+}
+
 function rimuoviAudioAttuale() {
   if (!regCtx) return;
+  if (regCtx.kind === 'frase') {
+    const f = regCtx.frase;
+    if (!f.audio) return;
+    if (!confirm('Rimuovere solo il riferimento nella frase? Il file resta su GitHub (rimozione fisica manuale, fuori scope).')) return;
+    delete f.audio;
+    chiudiRegistratore();
+    renderFrasiSP();
+    return;
+  }
   const v = regCtx.voce, code = regCtx.code;
   if (!v.audio || !v.audio[code]) return;
   if (!confirm('Rimuovere solo il riferimento nel vocabolario? Il file resta su GitHub (rimozione fisica manuale, fuori scope).')) return;
@@ -3157,7 +3191,7 @@ async function salvaAudioRegistrato() {
   if (!nomeBase) { alert('Inserisci un nome file.'); return; }
   const ext = estensioneDaMime(recordedBlob.type);
   const nomeFile = nomeBase.replace(new RegExp('\\.' + ext + '$'), '') + '.' + ext;
-  const code = regCtx.code, v = regCtx.voce;
+  const code = regCtx.kind === 'frase' ? 'sp' : regCtx.code;
   const path = `audio/${code}/${nomeFile}`;
   const btn = document.getElementById('reg-btn-salva'), orig = btn.textContent;
   btn.disabled = true; btn.textContent = '⏳ Verifico...';
@@ -3166,11 +3200,19 @@ async function salvaAudioRegistrato() {
     if (sha && !confirm(`Esiste già "${path}" su GitHub. Sovrascrivere?`)) { btn.disabled = false; btn.textContent = orig; return; }
     btn.textContent = '⏳ Carico...';
     await caricaFileBinarioSuGitHub(path, recordedBlob, `Audio ${path} da edit.html`, token, sha);
-    v.audio = Object.assign({}, v.audio, { [code]: nomeFile });
-    if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v));
-    chiudiRegistratore();
-    render();
-    setHelp(`✅ Audio caricato su GitHub (${path}). Il testo NON è ancora salvato: usa "💾 Salva su GitHub" per registrare anche il riferimento.`, 'success');
+    if (regCtx.kind === 'frase') {
+      regCtx.frase.audio = nomeFile;
+      chiudiRegistratore();
+      renderFrasiSP();
+      setHelp(`✅ Audio caricato su GitHub (${path}). Il riferimento NON è ancora salvato: clicca "OK" nella finestra frasi e poi "☁️ Salva su GitHub".`, 'success');
+    } else {
+      const v = regCtx.voce;
+      v.audio = Object.assign({}, v.audio, { [code]: nomeFile });
+      if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v));
+      chiudiRegistratore();
+      render();
+      setHelp(`✅ Audio caricato su GitHub (${path}). Il testo NON è ancora salvato: usa "💾 Salva su GitHub" per registrare anche il riferimento.`, 'success');
+    }
   } catch (e) {
     alert('Errore upload audio:\n\n' + e.message);
   } finally { btn.disabled = false; btn.textContent = orig; }
