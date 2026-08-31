@@ -340,6 +340,17 @@ function idUnivoco(base) {
   return id;
 }
 
+// Id per lo split di "dividiStoriaQui": parte SEMPRE dallo slug pulito (senza
+// eventuali suffissi "-parte-N" già presenti), altrimenti risplittare una
+// parte già splittata accoda "-parte-2" all'infinito (es.
+// "...-parte-2-parte-2-parte-2-..."). Trova il primo numero di parte libero.
+function idProssimaParte(id) {
+  const base = id.replace(/(-parte-\d+)+$/, '');
+  let n = 2;
+  while (storie.some(s => s.id === `${base}-parte-${n}`)) n++;
+  return `${base}-parte-${n}`;
+}
+
 function nuovaStoria() {
   const lingua = 'en';
   const id = idUnivoco(lingua + '-a1-nuova-storia');
@@ -431,7 +442,7 @@ function dividiStoriaQui(id, idx) {
   if (!confirm(`Dividere "${s.titolo?.testo || id}" qui?\n\nLe frasi dalla ${idx + 1}ª in poi (${nFrasiNuova}) verranno spostate in una nuova storia. Titolo e id andranno poi corretti a mano.`)) return;
 
   const frasiNuova = s.frasi.splice(idx);
-  const nuovoId = idUnivoco(s.id + '-parte-2');
+  const nuovoId = idProssimaParte(s.id);
   const nuova = {
     id: nuovoId,
     lingua: s.lingua,

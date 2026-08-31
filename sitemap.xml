@@ -43,4 +43,75 @@
     <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/"/>
   </url>
 
+  <!-- Eneide in genovese di Nicolò Bacigalupo — pagine statiche generate da
+       tools/build_storie_pages.mjs, non editarle a mano -->
+  <url>
+    <loc>https://linguaequiz.com/storia-eneide.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/storia-eneide.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/storia-eneide.html"/>
+  </url>
+  <url>
+    <loc>https://linguaequiz.com/storia-eneide-libro-1.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/storia-eneide-libro-1.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/storia-eneide-libro-1.html"/>
+  </url>
+  <url>
+    <loc>https://linguaequiz.com/storia-eneide-libro-2.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/storia-eneide-libro-2.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/storia-eneide-libro-2.html"/>
+  </url>
+  <url>
+    <!-- libro 3 ancora in traduzione: changefreq weekly finché non è completo -->
+    <loc>https://linguaequiz.com/storia-eneide-libro-3.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/storia-eneide-libro-3.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/storia-eneide-libro-3.html"/>
+  </url>
+
+  <!-- Poesie di Ubaldo Mazzini in spezzino — pagine statiche generate da
+       tools/build_storie_pages.mjs, non editarle a mano -->
+  <url>
+    <loc>https://linguaequiz.com/storia-mazzini-patron-e-mezadro.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/storia-mazzini-patron-e-mezadro.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/storia-mazzini-patron-e-mezadro.html"/>
+  </url>
+  <url>
+    <loc>https://linguaequiz.com/storia-mazzini-a-cavalaia-rusticana.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/storia-mazzini-a-cavalaia-rusticana.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/storia-mazzini-a-cavalaia-rusticana.html"/>
+  </url>
+  <url>
+    <loc>https://linguaequiz.com/storia-mazzini-aloa-e-aoa.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/storia-mazzini-aloa-e-aoa.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/storia-mazzini-aloa-e-aoa.html"/>
+  </url>
+  <url>
+    <loc>https://linguaequiz.com/storia-mazzini-nfra-tute-e-sita-de-l-universo.html</loc>
+    <lastmod>2026-08-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/storia-mazzini-nfra-tute-e-sita-de-l-universo.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/storia-mazzini-nfra-tute-e-sita-de-l-universo.html"/>
+  </url>
+
 </urlset>

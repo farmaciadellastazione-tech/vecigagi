@@ -19,6 +19,20 @@ npm run build:css
 
 e committa `tailwind.css` aggiornato. Se dimentichi, la classe nuova resta senza stile (degradazione visibile, non un crash). `edit.html` riscrive solo `VOCABOLARIO_DEFAULT` (non le classi), quindi le sue modifiche **non** richiedono il rebuild. La config delle classi/colori è in `tailwind.config.js`; le sorgenti scansionate sono `content: ['./index.html']`. Solo letterali: **niente classi costruite dinamicamente** (es. `` `bg-${x}-500` ``), altrimenti la CLI le elimina.
 
+## Pagine statiche per la SEO delle storie lunghe
+
+`storie.html` mostra tutte le storie di Lettura Guidata su un'unica URL, con testo iniettato a runtime da `storie.js`: per le opere lunghe (l'Eneide in genovese di Nicolò Bacigalupo, le poesie di Ubaldo Mazzini in spezzino) questo penalizzava l'indicizzazione Google (un solo title/meta per tutto, testo assente dall'HTML iniziale).
+
+`tools/build_storie_pages.mjs` genera pagine HTML statiche dedicate (`storia-eneide.html` + una per libro, `storia-mazzini-*.html`), con testo scritto staticamente e title/meta/canonical/schema.org propri per ciascuna opera.
+
+**Obbligo**: dopo ogni modifica a `storie.js` che tocca l'Eneide o le poesie di Mazzini (nuove parti, correzioni), rilancia:
+
+```
+npm run build:storie
+```
+
+e committa i file generati. Sono **derivati**: non editarli a mano. Aggiungi manualmente eventuali nuove opere lunghe allo script (raggruppamento, sitemap.xml) quando servono pagine dedicate.
+
 ## Vocabolario
 
 Il vocabolario è l'array `VOCABOLARIO_DEFAULT` definito dentro `index.html` (cerca `const VOCABOLARIO_DEFAULT = [`). Ogni voce è un oggetto con `tema`, `livello` e i codici lingua come chiavi (`it`, `en`, `fr`, `sp`, `mn`, `ge`, `cr`, ecc.).
