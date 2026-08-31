@@ -13925,6 +13925,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Provocante, angosciosa a sciâ Pasciann-a.",
         "it": "Provocante, molesta la signora Pasciana."
+      },
+      {
+        "testo": "E chi ö sente ûn alôu de sbraggi e cênti,",
+        "it": "E qui sente un coro di strilli e gemiti,"
+      },
+      {
+        "testo": "Ûn fracasso de færi e de cadenn-e,",
+        "it": "Un fracasso di ferri e di catene,"
+      },
+      {
+        "testo": "Ûn mescûggio de voxi e de lamenti,",
+        "it": "Un miscuglio di voci e di lamenti,"
+      },
+      {
+        "testo": "De giastemme, de löi de tutte e menn-e,",
+        "it": "Di bestemmie, di pianti d'ogni sorta,"
+      },
+      {
+        "testo": "Scì, che Enea spaventôu: che delinquenti",
+        "it": "Sicché Enea, spaventato: «Che delinquenti"
+      },
+      {
+        "testo": "Son sti chì, sottomissi a queste penn-e?",
+        "it": "Son costoro, sottomessi a queste pene?"
+      },
+      {
+        "testo": "Côse sön queste vöxi e stö fracasso?",
+        "it": "Cosa son queste voci e questo fracasso?»,"
+      },
+      {
+        "testo": "Ö ghe domanda, rattagnindo ö passo.",
+        "it": "Le domanda, rallentando il passo ."
       }
     ]
   },
