@@ -13745,6 +13745,186 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che pe questo cammin ti t’ë diretto?",
         "it": "Che per questo cammino ti sei diretto?"
+      },
+      {
+        "testo": "E dandose fra lö botta e risposta",
+        "it": "E dandosi tra loro botta e risposta"
+      },
+      {
+        "testo": "Zà da ûn po' mëzo giorno ö l'ëa passôu,",
+        "it": "Già da un po' mezzogiorno era passato,"
+      },
+      {
+        "testo": "Ma a Scibilla, seccâ de questa sosta",
+        "it": "Ma la Sibilla, seccata di questa sosta"
+      },
+      {
+        "testo": "Che ö l'ëa tempo, pe lê, mal'impiegôu,",
+        "it": "Che era tempo, per lei, mal impiegato,"
+      },
+      {
+        "testo": "Pe troncâ sti discorsci a se g'accosta",
+        "it": "Per troncare questi discorsi gli si accosta"
+      },
+      {
+        "testo": "E a ghe dixe: perdie, se n'êi dö sciôu!",
+        "it": "E gli dice: «Perdio, se ne avete di fiato!"
+      },
+      {
+        "testo": "Animo via, nö te grattâ e zenuggie",
+        "it": "Coraggio, via, non ti grattare le ginocchia,"
+      },
+      {
+        "testo": "L'é quæxi nêutte e se perdemmo in cuggie.",
+        "it": "È quasi notte e ci perdiamo in coglionate!»."
+      },
+      {
+        "testo": "Semmo a-o punto arrivæ dove ö straddon",
+        "it": "Siamo arrivati al punto dove lo stradone"
+      },
+      {
+        "testo": "Fra due stradde diverse ö l'é diviso,",
+        "it": "Tra due strade diverse si è diviso:"
+      },
+      {
+        "testo": "Quella ä drîta passando da Pluton",
+        "it": "Quella a destra, passando per Plutone,"
+      },
+      {
+        "testo": "A ne porta diretti, a-o Campo Eliso,",
+        "it": "Ci porta diretti ai Campi Elisi,"
+      },
+      {
+        "testo": "Ma a sinistra se cangia direzion",
+        "it": "Ma a sinistra si cambia direzione"
+      },
+      {
+        "testo": "Ed invece de mette in Pâradiso",
+        "it": "Ed invece di condurre in Paradiso,"
+      },
+      {
+        "testo": "Con sta stradda, se và, drîti all'inferno",
+        "it": "Con questa strada si va dritti all'inferno,"
+      },
+      {
+        "testo": "Dove gh'é i birbi, condannæ in eterno!",
+        "it": "Dove ci sono i birbi, condannati in eterno!"
+      },
+      {
+        "testo": "Lazzao Rebisso ö ghe risponde alöa",
+        "it": "Lazzaro Rebisso le risponde allora:"
+      },
+      {
+        "testo": "Nö gh'é besœûgno de sciatâse tanto...",
+        "it": "«Non c'è bisogno di agitarsi tanto..."
+      },
+      {
+        "testo": "Sciâ nö piggie ö brûxôu, bella scignöa,",
+        "it": "Non si infiammi, bella signora,"
+      },
+      {
+        "testo": "Che mi torno de trinca in tô me canto,",
+        "it": "Ché io torno in un istante nel mio cantuccio,"
+      },
+      {
+        "testo": "E finiscio coscì tûtta a demöa;",
+        "it": "E metto fine così a tutto lo spasso;"
+      },
+      {
+        "testo": "E tì, nostra speranza e nostro vanto",
+        "it": "E tu, nostra speranza e nostro vanto,"
+      },
+      {
+        "testo": "Continuilo a piggiâ sempre de poppa",
+        "it": "Continua a prenderlo sempre di poppa,"
+      },
+      {
+        "testo": "Perché a diccia e a fortunn-a a n'e mai troppa!",
+        "it": "Perché la buona sorte e la fortuna non sono mai troppe!»."
+      },
+      {
+        "testo": "E ö scomparisce senz'arvî ciû böcca,",
+        "it": "E scompare senza aprire più bocca,"
+      },
+      {
+        "testo": "Mentre Enea, che a sinistra ö piggia ö giö,",
+        "it": "Mentre Enea, che svolta a sinistra,"
+      },
+      {
+        "testo": "Ö vedde unn-a çittæ sotto ûnn-a rocca",
+        "it": "Vede una città sotto una rocca,"
+      },
+      {
+        "testo": "Ampia, spaziosa, con tre mûage in gîo",
+        "it": "Ampia, spaziosa, con tre ordini di mura intorno,"
+      },
+      {
+        "testo": "E ûn sciûmme neigro che ö-a lambisce e ö-a tocca",
+        "it": "E un fiume nero che la lambisce e la tocca,"
+      },
+      {
+        "testo": "Ö Flegetonte che ö va zù d'asbrîo",
+        "it": "Il Flegetonte, che va giù in picchiata,"
+      },
+      {
+        "testo": "Trasportando all'inferno e sasci e sciamme",
+        "it": "Trasportando all'inferno sassi e fiamme"
+      },
+      {
+        "testo": "E tûtte e mal'azioin de pelle gramme.",
+        "it": "E tutte le malefatte di esseri grami."
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-3-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 3 parte 10",
+      "it": "Il Tartaro e i dannati "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "no"
+    },
+    "frasi": [
+      {
+        "testo": "In sce primme ö distingue ûn gran porton",
+        "it": "Sulle prime distingue un gran portone"
+      },
+      {
+        "testo": "Co-i pilastri e colonne e co-i battenti",
+        "it": "Coi pilastri e le colonne e coi battenti"
+      },
+      {
+        "testo": "D'ûn diamante ciû dûo che ö sciô Arminjon",
+        "it": "D'un diamante più duro del signor Armingaud"
+      },
+      {
+        "testo": "Quande ö s'incûggia qualche balla in mente,",
+        "it": "Quando si rincoglionisce con qualche fissa,"
+      },
+      {
+        "testo": "Tûtto in færo de lì sciorte ûn torrion",
+        "it": "Tutto in ferro da lì spunta un torrione"
+      },
+      {
+        "testo": "Che ö s'eleva a un'altezza sorprendente",
+        "it": "Che si eleva a un'altezza sorprendente,"
+      },
+      {
+        "testo": "E ghe stâ nêutte e dì, comme guardiann-a",
+        "it": "E vi sta notte e dì come guardiana,"
+      },
+      {
+        "testo": "Provocante, angosciosa a sciâ Pasciann-a.",
+        "it": "Provocante, molesta la signora Pasciana."
       }
     ]
   },
