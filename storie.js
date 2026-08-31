@@ -12955,7 +12955,7 @@ const STORIE_DEFAULT = [
       "note": "",
       "autore": "Nicolò Bacigalupo (1837–1904)",
       "riferimento": "liber liber",
-      "licenza": "no"
+      "licenza": "pubblico-dominio (autore deceduto nel 1904, oltre 70 anni)"
     },
     "frasi": [
       {
@@ -13295,7 +13295,7 @@ const STORIE_DEFAULT = [
       "note": "",
       "autore": "Nicolò Bacigalupo (1837–1904)",
       "riferimento": "liber liber",
-      "licenza": "no"
+      "licenza": "pubblico-dominio (autore deceduto nel 1904, oltre 70 anni)"
     },
     "frasi": [
       {
@@ -13891,7 +13891,7 @@ const STORIE_DEFAULT = [
       "note": "",
       "autore": "Nicolò Bacigalupo (1837–1904)",
       "riferimento": "liber liber",
-      "licenza": "no"
+      "licenza": "pubblico-dominio (autore deceduto nel 1904, oltre 70 anni)"
     },
     "frasi": [
       {
