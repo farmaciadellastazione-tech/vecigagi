@@ -4030,7 +4030,7 @@ function campiModificati(vecchia, nuova) {
 // vedi ANALISI.md R3). Nessun backend: stesso meccanismo mailto già usato per
 // "Proponi una storia". Non propone nulla per le parole CUSTOM dell'utente (non
 // presenti nel default): sono già "sue", non ha senso che se le proponga da solo.
-function proponiCorrezioneParola(vecchia, nuova) {
+async function proponiCorrezioneParola(vecchia, nuova) {
   const isDefaultWord = VOCABOLARIO_DEFAULT.some(e => wordKey(e) === wordKey(vecchia));
   if (!isDefaultWord) return;
   const diff = campiModificati(vecchia, nuova);
@@ -4039,34 +4039,51 @@ function proponiCorrezioneParola(vecchia, nuova) {
   const corpo = Object.entries(diff).map(([campo, { da, a }]) => `${campo}: "${da}" → "${a}"`).join("\n");
   const subject = `LinguaeQuiz – Correzione segnalata: ${parolaIt}`;
   const testo = `Parola: ${parolaIt}\n\nCampi modificati:\n${corpo}\n\nVoce completa aggiornata:\n${JSON.stringify(nuova, null, 2)}`;
-  window.location.href = `mailto:${STORIE_CONTRIB_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(testo)}`;
-  // Fallback per chi non ha un client di posta collegato al browser: il
-  // mailto: sopra fallisce in silenzio (nessun errore intercettabile), quindi
-  // copiamo comunque il testo della segnalazione negli appunti — stesso
-  // pattern clipboard+alert già usato altrove (es. condividiScore, riga
-  // ~8630) — così l'utente può comunque incollarlo in un'email a mano.
   const testoCompleto = `A: ${STORIE_CONTRIB_EMAIL}\nOggetto: ${subject}\n\n${testo}`;
-  navigator.clipboard?.writeText(testoCompleto).then(() => alert(`📋 Segnalazione copiata negli appunti.\nSe non si è aperto il tuo programma di posta, incollala in un'email a ${STORIE_CONTRIB_EMAIL}.`)).catch(() => alert(testoCompleto));
+  const copiato = await copiaFallbackEmail(testoCompleto);
+  window.location.href = `mailto:${STORIE_CONTRIB_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(testo)}`;
+  alert(copiato ? `📋 Segnalazione copiata negli appunti.\nSe non si è aperto il tuo programma di posta, incollala in un'email a ${STORIE_CONTRIB_EMAIL}.` : testoCompleto);
+}
+// Fallback per chi non ha un client di posta collegato al browser: copia il
+// testo dell'email negli appunti — stesso pattern clipboard+alert già usato
+// altrove (es. condividiScore, riga ~8630) — così l'utente può comunque
+// incollarlo in un'email a mano se il mailto: sotto fallisce in silenzio.
+// IMPORTANTE: va chiamata e attesa PRIMA di assegnare window.location.href a
+// un mailto:, mai dopo — verificato dal vivo che l'handoff a un protocollo
+// esterno (mailto/tel/...) fa restare la Promise di clipboard.writeText
+// sospesa per sempre (mai risolta né rifiutata) se parte prima della
+// clipboard. Ritorna true/false, mai un errore: nessun chiamante deve
+// preoccuparsi del fallimento della clipboard, solo scegliere il testo
+// dell'alert di conferma.
+async function copiaFallbackEmail(testoCompleto) {
+  try {
+    if (!navigator.clipboard) return false;
+    await navigator.clipboard.writeText(testoCompleto);
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 // Segnalazione rapida "pronuncia mancante o sbagliata" per un singolo campo
 // lingua di una voce — chiamata da "🎤 Proponi pronuncia" nel quiz (solo per
 // i dialetti con TTS adattata, DIALETTI_TTS_ITA) quando l'utente non vuole
 // registrare nulla, solo avvisare. Variante leggera di
 // proponiCorrezioneParola: nessun campo da confrontare, solo un avviso.
-function segnalaPronunciaMancante(entry, lingua) {
+async function segnalaPronunciaMancante(entry, lingua) {
   const parolaIt = wordKey(entry) || "(parola)";
   const testoLingua = (entry?.[lingua] ?? "").toString();
   const subject = `LinguaeQuiz – Pronuncia da rivedere: ${parolaIt} (${lingua})`;
   const testo = `Parola: ${parolaIt}\nLingua: ${lingua}\nTesto attuale: ${testoLingua}\n\nSegnalo che la pronuncia (audio) di questa voce manca o non è corretta.`;
-  window.location.href = `mailto:${STORIE_CONTRIB_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(testo)}`;
   const testoCompleto = `A: ${STORIE_CONTRIB_EMAIL}\nOggetto: ${subject}\n\n${testo}`;
-  navigator.clipboard?.writeText(testoCompleto).then(() => alert(`📋 Segnalazione copiata negli appunti.\nSe non si è aperto il tuo programma di posta, incollala in un'email a ${STORIE_CONTRIB_EMAIL}.`)).catch(() => alert(testoCompleto));
+  const copiato = await copiaFallbackEmail(testoCompleto);
+  window.location.href = `mailto:${STORIE_CONTRIB_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(testo)}`;
+  alert(copiato ? `📋 Segnalazione copiata negli appunti.\nSe non si è aperto il tuo programma di posta, incollala in un'email a ${STORIE_CONTRIB_EMAIL}.` : testoCompleto);
 }
 // Scarica sul device la registrazione fatta dall'utente (SegnalaPronuncia) e
 // apre un'email precompilata con le istruzioni per allegarla a mano. Nessun
 // backend nel progetto (GitHub Pages statico): l'invio dell'allegato resta
 // un passaggio manuale dell'utente, non automatizzabile con un mailto:.
-function inviaRegistrazionePronuncia(blob, entry, lingua) {
+async function inviaRegistrazionePronuncia(blob, entry, lingua) {
   const parolaIt = wordKey(entry) || "(parola)";
   const estensione = blob.type.includes("ogg") ? "ogg" : blob.type.includes("mp4") ? "m4a" : "webm";
   const nomeFile = `${parolaIt}_${lingua}`.replace(/[^\w-]+/g, "_") + "." + estensione;
@@ -4081,9 +4098,10 @@ function inviaRegistrazionePronuncia(blob, entry, lingua) {
   const testoLingua = (entry?.[lingua] ?? "").toString();
   const subject = `LinguaeQuiz – Proposta pronuncia: ${parolaIt} (${lingua})`;
   const testo = `Parola: ${parolaIt}\nLingua: ${lingua}\nTesto attuale: ${testoLingua}\n\nHo registrato una proposta di pronuncia: il file "${nomeFile}" è stato scaricato sul dispositivo. Allegalo a questa email prima di inviarla.`;
-  window.location.href = `mailto:${STORIE_CONTRIB_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(testo)}`;
   const testoCompleto = `A: ${STORIE_CONTRIB_EMAIL}\nOggetto: ${subject}\n\n${testo}`;
-  navigator.clipboard?.writeText(testoCompleto).then(() => alert(`📥 File "${nomeFile}" scaricato e testo copiato negli appunti.\nAllega il file scaricato all'email che si è aperta (o scrivine una nuova a ${STORIE_CONTRIB_EMAIL}), poi invia.`)).catch(() => alert(testoCompleto));
+  const copiato = await copiaFallbackEmail(testoCompleto);
+  window.location.href = `mailto:${STORIE_CONTRIB_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(testo)}`;
+  alert(copiato ? `📥 File "${nomeFile}" scaricato e testo copiato negli appunti.\nAllega il file scaricato all'email che si è aperta (o scrivine una nuova a ${STORIE_CONTRIB_EMAIL}), poi invia.` : `📥 File "${nomeFile}" scaricato sul dispositivo.\n\n${testoCompleto}`);
 }
 function caricaVocabolario() {
   try {
