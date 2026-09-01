@@ -479,6 +479,8 @@ const UI = {
     segnalabtn: "⚠️ Segnala errore",
     segnalatitolo: "🚩 Segnala errore",
     segnalainfo: "La correzione verrà proposta via email a",
+    pronunciabtn: "🎤 Proponi pronuncia",
+    pronunciatitolo: "🎤 Proponi una pronuncia",
     usachromemsg: "Usa Chrome per il riconoscimento vocale.",
     audiomsg: "Audio non disponibile",
     tuttebtn: "Tutte",
@@ -654,6 +656,8 @@ const UI = {
     segnalabtn: "⚠️ Report error",
     segnalatitolo: "🚩 Report error",
     segnalainfo: "The correction will be proposed by email to",
+    pronunciabtn: "🎤 Suggest pronunciation",
+    pronunciatitolo: "🎤 Suggest a pronunciation",
     usachromemsg: "Use Chrome for voice recognition.",
     audiomsg: "Audio not available",
     tuttebtn: "All",
@@ -776,6 +780,8 @@ const UI = {
     segnalabtn: "⚠️ Signaler une erreur",
     segnalatitolo: "🚩 Signaler une erreur",
     segnalainfo: "La correction sera proposée par email à",
+    pronunciabtn: "🎤 Proposer une prononciation",
+    pronunciatitolo: "🎤 Proposer une prononciation",
     usachromemsg: "Utilisez Chrome pour la reconnaissance vocale.",
     audiomsg: "Audio non disponible",
     tuttebtn: "Tous",
@@ -920,6 +926,8 @@ const UI = {
     segnalabtn: "⚠️ Reportar error",
     segnalatitolo: "🚩 Reportar error",
     segnalainfo: "La corrección se propondrá por email a",
+    pronunciabtn: "🎤 Proponer pronunciación",
+    pronunciatitolo: "🎤 Proponer una pronunciación",
     usachromemsg: "Usa Chrome para el reconocimiento de voz.",
     audiomsg: "Audio no disponible",
     tuttebtn: "Todas",
@@ -1049,6 +1057,8 @@ const UI = {
     segnalabtn: "⚠️ Fehler melden",
     segnalatitolo: "🚩 Fehler melden",
     segnalainfo: "Die Korrektur wird per E-Mail vorgeschlagen an",
+    pronunciabtn: "🎤 Aussprache vorschlagen",
+    pronunciatitolo: "🎤 Aussprache vorschlagen",
     usachromemsg: "Verwende Chrome für die Spracherkennung.",
     audiomsg: "Audio nicht verfügbar",
     tuttebtn: "Alle",
@@ -1181,6 +1191,8 @@ const UI = {
     segnalabtn: "⚠️ Reportar erro",
     segnalatitolo: "🚩 Reportar erro",
     segnalainfo: "A correção será proposta por email para",
+    pronunciabtn: "🎤 Propor pronúncia",
+    pronunciatitolo: "🎤 Propor uma pronúncia",
     usachromemsg: "Usa o Chrome para reconhecimento de voz.",
     audiomsg: "Áudio não disponível",
     tuttebtn: "Todas",
@@ -1276,6 +1288,8 @@ const UI = {
     segnalabtn: "⚠️ Сообщить об ошибке",
     segnalatitolo: "🚩 Сообщить об ошибке",
     segnalainfo: "Исправление будет предложено по email на",
+    pronunciabtn: "🎤 Предложить произношение",
+    pronunciatitolo: "🎤 Предложить произношение",
     usachromemsg: "Используй Chrome для распознавания голоса.",
     sceltamultipla: "Множественный выбор",
     desc_sceltamultipla: "🎯 5-12 вариантов, адаптивный уровень",
@@ -1405,6 +1419,8 @@ const UI = {
     segnalabtn: "⚠️ 报告错误",
     segnalatitolo: "🚩 报告错误",
     segnalainfo: "更正将通过电子邮件发送至",
+    pronunciabtn: "🎤 建议发音",
+    pronunciatitolo: "🎤 建议一个发音",
     usachromemsg: "请使用Chrome进行语音识别。",
     coppiedaripassare: "对需要复习",
     oradel: "该复习了！",
@@ -1539,6 +1555,8 @@ const UI = {
     segnalabtn: "⚠️ 오류 신고",
     segnalatitolo: "🚩 오류 신고",
     segnalainfo: "수정 사항은 이메일로 제안됩니다:",
+    pronunciabtn: "🎤 발음 제안",
+    pronunciatitolo: "🎤 발음 제안하기",
     usachromemsg: "음성 인식을 위해 Chrome을 사용하세요。",
     almenodue: "최소 2개 언어를 활성화하세요。",
     compilaalmeno: "최소 2개 언어를 입력하세요。",
@@ -1672,6 +1690,8 @@ const UI = {
     segnalabtn: "⚠️ Reportar error",
     segnalatitolo: "🚩 Reportar error",
     segnalainfo: "La correcció es proposarà per correu electrònic a",
+    pronunciabtn: "🎤 Proposar pronunciació",
+    pronunciatitolo: "🎤 Proposar una pronunciació",
     usachromemsg: "Usa Chrome per al reconeixement de veu.",
     sceltamultipla: "Selecció múltiple",
     desc_sceltamultipla: "🎯 5-12 opcions, nivell adaptatiu",
@@ -4027,6 +4047,43 @@ function proponiCorrezioneParola(vecchia, nuova) {
   // ~8630) — così l'utente può comunque incollarlo in un'email a mano.
   const testoCompleto = `A: ${STORIE_CONTRIB_EMAIL}\nOggetto: ${subject}\n\n${testo}`;
   navigator.clipboard?.writeText(testoCompleto).then(() => alert(`📋 Segnalazione copiata negli appunti.\nSe non si è aperto il tuo programma di posta, incollala in un'email a ${STORIE_CONTRIB_EMAIL}.`)).catch(() => alert(testoCompleto));
+}
+// Segnalazione rapida "pronuncia mancante o sbagliata" per un singolo campo
+// lingua di una voce — chiamata da "🎤 Proponi pronuncia" nel quiz (solo per
+// i dialetti con TTS adattata, DIALETTI_TTS_ITA) quando l'utente non vuole
+// registrare nulla, solo avvisare. Variante leggera di
+// proponiCorrezioneParola: nessun campo da confrontare, solo un avviso.
+function segnalaPronunciaMancante(entry, lingua) {
+  const parolaIt = wordKey(entry) || "(parola)";
+  const testoLingua = (entry?.[lingua] ?? "").toString();
+  const subject = `LinguaeQuiz – Pronuncia da rivedere: ${parolaIt} (${lingua})`;
+  const testo = `Parola: ${parolaIt}\nLingua: ${lingua}\nTesto attuale: ${testoLingua}\n\nSegnalo che la pronuncia (audio) di questa voce manca o non è corretta.`;
+  window.location.href = `mailto:${STORIE_CONTRIB_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(testo)}`;
+  const testoCompleto = `A: ${STORIE_CONTRIB_EMAIL}\nOggetto: ${subject}\n\n${testo}`;
+  navigator.clipboard?.writeText(testoCompleto).then(() => alert(`📋 Segnalazione copiata negli appunti.\nSe non si è aperto il tuo programma di posta, incollala in un'email a ${STORIE_CONTRIB_EMAIL}.`)).catch(() => alert(testoCompleto));
+}
+// Scarica sul device la registrazione fatta dall'utente (SegnalaPronuncia) e
+// apre un'email precompilata con le istruzioni per allegarla a mano. Nessun
+// backend nel progetto (GitHub Pages statico): l'invio dell'allegato resta
+// un passaggio manuale dell'utente, non automatizzabile con un mailto:.
+function inviaRegistrazionePronuncia(blob, entry, lingua) {
+  const parolaIt = wordKey(entry) || "(parola)";
+  const estensione = blob.type.includes("ogg") ? "ogg" : blob.type.includes("mp4") ? "m4a" : "webm";
+  const nomeFile = `${parolaIt}_${lingua}`.replace(/[^\w-]+/g, "_") + "." + estensione;
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = nomeFile;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+  const testoLingua = (entry?.[lingua] ?? "").toString();
+  const subject = `LinguaeQuiz – Proposta pronuncia: ${parolaIt} (${lingua})`;
+  const testo = `Parola: ${parolaIt}\nLingua: ${lingua}\nTesto attuale: ${testoLingua}\n\nHo registrato una proposta di pronuncia: il file "${nomeFile}" è stato scaricato sul dispositivo. Allegalo a questa email prima di inviarla.`;
+  window.location.href = `mailto:${STORIE_CONTRIB_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(testo)}`;
+  const testoCompleto = `A: ${STORIE_CONTRIB_EMAIL}\nOggetto: ${subject}\n\n${testo}`;
+  navigator.clipboard?.writeText(testoCompleto).then(() => alert(`📥 File "${nomeFile}" scaricato e testo copiato negli appunti.\nAllega il file scaricato all'email che si è aperta (o scrivine una nuova a ${STORIE_CONTRIB_EMAIL}), poi invia.`)).catch(() => alert(testoCompleto));
 }
 function caricaVocabolario() {
   try {
@@ -9192,6 +9249,120 @@ function ModificaParola({
   }, t.salvabtn))));
 }
 
+// ── Proponi pronuncia ────────────────────────────────────────────────────
+// Modale aperto da "🎤 Proponi pronuncia" nel quiz, solo per i dialetti con
+// TTS adattata (DIALETTI_TTS_ITA: mn/sp/ge/cr — dove la voce sintetica è
+// un'approssimazione). Due strade, entrambe senza backend (decisione di
+// prodotto — niente registrazioni/allegati automatici, l'invio resta
+// manuale via mailto, stesso meccanismo di proponiCorrezioneParola):
+//  1) segnalazione rapida via email, senza registrare nulla;
+//  2) registrazione in-browser (MediaRecorder) + download + email con
+//     istruzioni per allegare il file scaricato.
+// Se il browser non supporta MediaRecorder (es. alcuni Safari/iOS), la
+// sezione di registrazione resta nascosta e rimane solo l'opzione 1.
+function SegnalaPronuncia({
+  entry,
+  lingua,
+  lingue,
+  onChiudi
+}) {
+  const t = useUI();
+  const lObj = lingue.find(l => l.codice === lingua);
+  const parola = entry?.[lingua] || "";
+  const supportato = typeof MediaRecorder !== "undefined" && !!navigator.mediaDevices?.getUserMedia;
+  const [registrando, setRegistrando] = useState(false);
+  const [blob, setBlob] = useState(null);
+  const [blobUrl, setBlobUrl] = useState(null);
+  const [erroreMic, setErroreMic] = useState("");
+  const mediaRecorderRef = useRef(null);
+  const chunksRef = useRef([]);
+  const streamRef = useRef(null);
+  useEffect(() => () => {
+    streamRef.current?.getTracks().forEach(tr => tr.stop());
+    if (blobUrl) URL.revokeObjectURL(blobUrl);
+  }, []);
+  async function avviaRegistrazione() {
+    setErroreMic("");
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: true
+      });
+      streamRef.current = stream;
+      chunksRef.current = [];
+      const mr = new MediaRecorder(stream);
+      mr.ondataavailable = e => {
+        if (e.data.size > 0) chunksRef.current.push(e.data);
+      };
+      mr.onstop = () => {
+        const b = new Blob(chunksRef.current, {
+          type: mr.mimeType || "audio/webm"
+        });
+        setBlob(b);
+        setBlobUrl(URL.createObjectURL(b));
+        stream.getTracks().forEach(tr => tr.stop());
+      };
+      mediaRecorderRef.current = mr;
+      mr.start();
+      setRegistrando(true);
+    } catch (e) {
+      setErroreMic("Microfono non disponibile o permesso negato.");
+    }
+  }
+  function fermaRegistrazione() {
+    mediaRecorderRef.current?.stop();
+    setRegistrando(false);
+  }
+  function rifai() {
+    if (blobUrl) URL.revokeObjectURL(blobUrl);
+    setBlob(null);
+    setBlobUrl(null);
+  }
+  function inviaSenzaRegistrare() {
+    segnalaPronunciaMancante(entry, lingua);
+    onChiudi();
+  }
+  function inviaProposta() {
+    inviaRegistrazionePronuncia(blob, entry, lingua);
+    onChiudi();
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card p-6 max-w-md w-full max-h-screen overflow-y-auto"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "text-lg font-bold text-slate-100 mb-1"
+  }, t.pronunciatitolo), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-slate-400 mb-4"
+  }, lObj?.bandiera, " ", lObj?.nome, ": ", /*#__PURE__*/React.createElement("span", {
+    className: "font-semibold text-slate-200"
+  }, formaDisplay(parola, lingua))), /*#__PURE__*/React.createElement("button", {
+    onClick: inviaSenzaRegistrare,
+    className: "w-full border-2 border-zinc-700 text-slate-300 hover:bg-zinc-900 font-semibold py-3 rounded-xl mb-4"
+  }, "📧 Segnala senza registrare"), supportato && /*#__PURE__*/React.createElement("div", {
+    className: "border-t border-zinc-800 pt-4"
+  }, !blob ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+    onClick: registrando ? fermaRegistrazione : avviaRegistrazione,
+    className: `w-full font-semibold py-3 rounded-xl mb-2 ${registrando ? "bg-red-600 hover:bg-red-700 text-white" : "bg-sky-500 hover:bg-sky-600 text-white"}`
+  }, registrando ? "⏹ Stop" : "🔴 Registra una pronuncia"), erroreMic && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-red-400 mb-2"
+  }, erroreMic)) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("audio", {
+    controls: true,
+    src: blobUrl,
+    className: "w-full mb-2"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: rifai,
+    className: "flex-1 border-2 border-zinc-700 text-slate-400 font-semibold py-2.5 rounded-xl text-sm"
+  }, "🔄 Rifai"), /*#__PURE__*/React.createElement("button", {
+    onClick: inviaProposta,
+    className: "flex-1 bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2.5 rounded-xl text-sm"
+  }, "📤 Invia proposta")))), /*#__PURE__*/React.createElement("button", {
+    onClick: onChiudi,
+    className: "w-full text-slate-500 hover:text-slate-300 text-sm mt-4"
+  }, t.annullabtn)));
+}
+
 // ── Form aggiunta ─────────────────────────────────────────────────────────
 function FormAggiunta({
   vocabolario,
@@ -11553,6 +11724,7 @@ function SchermataQuiz({
   onSalta,
   onNonLoSo,
   onSegnalaErrore,
+  onProponiPronuncia,
   onHome,
   nuoveApprese,
   fine,
@@ -11583,6 +11755,11 @@ function SchermataQuiz({
   const isRipasso = carta ? isAppresa(stats, carta.key) : false;
   const lv = carta ? LIVELLI[carta.entry.livello || "A1"] : null;
   const tm = carta ? TEMI[carta.entry.tema || ""] : null;
+  // Dialetto con TTS adattata (mn/sp/ge/cr) coinvolto in questa carta, se
+  // presente — usato per mostrare "🎤 Proponi pronuncia" solo dove la voce
+  // sintetica è un'approssimazione. Escluse le coniugazioni: la voce lì
+  // viene da CONIUGAZIONI/testoAudio, non da un campo diretto di carta.entry.
+  const dialettoCarta = carta && carta.tipo !== "coniugazione" ? [carta.da, carta.a].find(c => DIALETTI_TTS_ITA.includes(c) && carta.entry[c]) : null;
   useEffect(() => {
     // Pronuncia automatica in TUTTE le modalità
     if (carta && stato === "domanda" && lDA) {
@@ -12125,7 +12302,10 @@ function SchermataQuiz({
   }, "\u21B5")), /*#__PURE__*/React.createElement("button", {
     onClick: onSegnalaErrore,
     className: "w-full text-xs text-slate-600 hover:text-amber-500 transition py-1"
-  }, t.segnalabtn)), stato === "sbagliato" && /*#__PURE__*/React.createElement("div", {
+  }, t.segnalabtn), dialettoCarta && /*#__PURE__*/React.createElement("button", {
+    onClick: () => onProponiPronuncia(dialettoCarta),
+    className: "w-full text-xs text-slate-600 hover:text-sky-500 transition py-1"
+  }, t.pronunciabtn)), stato === "sbagliato" && /*#__PURE__*/React.createElement("div", {
     className: "p-5 bg-red-950 border-2 border-red-800 rounded-2xl text-center"
   }, /*#__PURE__*/React.createElement("div", {
     className: "text-5xl mb-3"
@@ -12220,7 +12400,10 @@ function SchermataQuiz({
   }, "\u21B5")), /*#__PURE__*/React.createElement("button", {
     onClick: onSegnalaErrore,
     className: "w-full text-xs text-slate-600 hover:text-amber-500 transition py-1"
-  }, t.segnalabtn), /*#__PURE__*/React.createElement(SpiegaAI, {
+  }, t.segnalabtn), dialettoCarta && /*#__PURE__*/React.createElement("button", {
+    onClick: () => onProponiPronuncia(dialettoCarta),
+    className: "w-full text-xs text-slate-600 hover:text-sky-500 transition py-1"
+  }, t.pronunciabtn), /*#__PURE__*/React.createElement(SpiegaAI, {
     carta: carta,
     aiSettings: aiSettings,
     lingue: lingue
@@ -12430,6 +12613,7 @@ function App() {
   const [carteErrate, setCarteErrate] = useState([]); // carte sbagliate nella sessione
   const [cardErrori, setCardErrori] = useState({}); // n. errori per chiave carta
   const [segnalando, setSegnalando] = useState(false);
+  const [pronunciaAperta, setPronunciaAperta] = useState(null); // codice lingua dialettale, o null
   const [configurando, setConfigurando] = useState(false);
   const [modalitaInAttesa, setModalitaInAttesa] = useState(null);
   const [linguaDaUsata, setLinguaDaUsata] = useState(null);
@@ -12959,6 +13143,11 @@ function App() {
       setSegnalando(false);
     },
     onAnnulla: () => setSegnalando(false)
+  }), pronunciaAperta && cartaCorrente && /*#__PURE__*/React.createElement(SegnalaPronuncia, {
+    entry: cartaCorrente.entry,
+    lingua: pronunciaAperta,
+    lingue: lingue,
+    onChiudi: () => setPronunciaAperta(null)
   }), /*#__PURE__*/React.createElement(SchermataQuiz, {
     carta: cartaCorrente,
     indice: indice,
@@ -12981,6 +13170,7 @@ function App() {
     onSalta: salta,
     onNonLoSo: nonLoSo,
     onSegnalaErrore: () => setSegnalando(true),
+    onProponiPronuncia: lingua => setPronunciaAperta(lingua),
     onHome: () => setSchermata("home"),
     nuoveApprese: nuoveApprese,
     fine: fine,
