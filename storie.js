@@ -13957,6 +13957,166 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö ghe domanda, rattagnindo ö passo.",
         "it": "Le domanda, rallentando il passo ."
+      },
+      {
+        "testo": "Cäo scignor, a Scibilla a ghe risponde,",
+        "it": "«Caro signore — la Sibilla gli risponde —,"
+      },
+      {
+        "testo": "N'é permisso a nisciûn, segge grammö o bön",
+        "it": "Non è permesso a nessuno, sia cattivo o buono,"
+      },
+      {
+        "testo": "De poei vedde o savei cose s'asconde,",
+        "it": "Di poter vedere o sapere cosa si nasconde,"
+      },
+      {
+        "testo": "Cöse boggie a-o de là de stö portön",
+        "it": "Cosa bolle al di là di questo portone;"
+      },
+      {
+        "testo": "Ma però mi conoscio e comme e donde",
+        "it": "Però io conosco come e da dove"
+      },
+      {
+        "testo": "Ven stö po' de remescio e confûxion...",
+        "it": "Viene questo po' di trambusto e confusione..."
+      },
+      {
+        "testo": "Perché Ecate a m'ha dîto cose gh'ëa",
+        "it": "Perché Ecate mi ha detto cosa c'era"
+      },
+      {
+        "testo": "Mettendome in tö bosco a fâ a portëa.",
+        "it": "Mettendomi nel bosco a fare la portinaia»."
+      },
+      {
+        "testo": "Chi ghe stâ Radamanto in tribunale",
+        "it": "Qui siede Radamanto in tribunale,"
+      },
+      {
+        "testo": "Che ö l'esamina, ö peisa, ö çerne e prûxe,",
+        "it": "Che esamina, pesa,  fa le pulci,"
+      },
+      {
+        "testo": "E mettendo a pröa adosso a ogni mortale",
+        "it": "E mettendo la prua addosso a ogni mortale"
+      },
+      {
+        "testo": "Ö ghe regola ö conto, ö taggia, ö cûxe;",
+        "it": "Gli regola il conto, lo taglia e cuce;"
+      },
+      {
+        "testo": "Né gh'é cuggia, demoa, peccôu veniale,",
+        "it": "Né c'è cazzata, trastullo, peccato veniale,"
+      },
+      {
+        "testo": "Che ö nö descrôuve, che ö nö mette in lûxe,",
+        "it": "Che non scopra, che non metta in luce;"
+      },
+      {
+        "testo": "Letta a sentenza e pronûnziâ a condann-a",
+        "it": "Letta la sentenza e pronunziata la condanna,"
+      },
+      {
+        "testo": "Gh'é lì pronta a eseguîla a sciâ Pasciann-a.",
+        "it": "C'è lì pronta a eseguirla la signora Pasciana."
+      },
+      {
+        "testo": "Che tegnindo in ta man prönta a scörriâ,",
+        "it": "Che tenendo in mano pronta la frusta,"
+      },
+      {
+        "testo": "In te l'âtra de bisce ûn rûmescello,",
+        "it": "Nell'altra un groviglio di bisce,"
+      },
+      {
+        "testo": "A l'incroxia, a l'intressa, a ö fâ regiâ",
+        "it": "Le incrocia, le intreccia, le fa rigirare,"
+      },
+      {
+        "testo": "Fando a tûtte doe brasse ö molinello,",
+        "it": "Facendo roteare entrambe le braccia a mulinello,"
+      },
+      {
+        "testo": "E sbraggiando e piccando a tûtt'andâ",
+        "it": "E sbraitando e picchiando a tutto andare,"
+      },
+      {
+        "testo": "A l'invita, a l'asciamma, a fâ ö bordello",
+        "it": "Invita e aizza a far bordello"
+      },
+      {
+        "testo": "E a dâghe man, pe amministrâ i tormenti,",
+        "it": "E a darle man, per amministrare i tormenti,"
+      },
+      {
+        "testo": "Diai, malanni, contaggi e sacramenti.",
+        "it": "Diavoli, malanni, contagi e sacramenti."
+      },
+      {
+        "testo": "S'arve intanto ö porton che ö scroscie, ö crïa,",
+        "it": "Si apre intanto il portone che cigola, urla,"
+      },
+      {
+        "testo": "Ti che ti veddi, cose l'e zà quella",
+        "it": "Tu che ci vedi, cos'è mai quella"
+      },
+      {
+        "testo": "Brûtta faccia de zobbo allûveghïa",
+        "it": "Brutta faccia da allocco stralunata,"
+      },
+      {
+        "testo": "Che a gh'é missa de fêûa pe sentinella,",
+        "it": "Che è messa di fuori per sentinella!"
+      },
+      {
+        "testo": "Rifletti dunque, cose sâ a partïa",
+        "it": "Rifletti dunque, cosa sarà la partita,"
+      },
+      {
+        "testo": "Se a l'ha ûnn-a mostra che a l'é tanto bella.",
+        "it": "Se ha un campione che è così bella!"
+      },
+      {
+        "testo": "Mostri, bazare, co-e dentee ciû affiæ",
+        "it": "Mostri, befane, con le dentature più affilate"
+      },
+      {
+        "testo": "Di procûêui, di avvocati e di impieghæ",
+        "it": "Dei procuratori, degli avvocati e degli impiegati!"
+      },
+      {
+        "testo": "Poi gh'é ö Tartaro... ûn bêuggio, ûnn-a voragine",
+        "it": "Poi c'è il Tartaro... un buco, una voragine"
+      },
+      {
+        "testo": "Äta döe votte comme da-a tæra a-o çe,",
+        "it": "Alta due volte quanto dalla terra al cielo,"
+      },
+      {
+        "testo": "E lì in fondo accoeghæ comme propagine",
+        "it": "E lì in fondo coricati come tralci di vite,"
+      },
+      {
+        "testo": "Missi a-o spiedo a rostî comme garbë,",
+        "it": "Messi allo spiedo ad arrostire come pescetti,"
+      },
+      {
+        "testo": "Gh'é i Titani, che han spinto a balordaggine",
+        "it": "Ci sono i Titani, che han spinto la balordaggine"
+      },
+      {
+        "testo": "Da voei mettilo a Giove in tö pevê,",
+        "it": "Al punto da volerlo mettere a Giove in quel posto,"
+      },
+      {
+        "testo": "I döi figgi d'Alöo, döi bullicögge",
+        "it": "I due figli di Aloeo, due rincoglioniti,"
+      },
+      {
+        "testo": "Che voeivan mette tûtto ö çe in fregögge.",
+        "it": "Che volevano ridurre tutto il cielo in briciole."
       }
     ]
   },
