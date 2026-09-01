@@ -3834,8 +3834,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", it:"zucca", cr:"zuca", ge:"succa", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g" },
       { tema:"cibo", livello:"A1", it:"zucchero", sp:"süùcheo/sücheo", mn:"suùkeeu/sücheu", ge:"süccao", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"zucchina", en:"courgette", fr:"courgette", es:"calabacín", de:"Zucchini", pt:"abobrinha", sp:"süchèo", mn:"süchéé", verif:"sp:g,mn:g" },
-      { tema:"cibo", livello:"A2", it:"zucchine", en:"courgette", fr:"courgette", es:"calabacín", de:"Zucchini", pt:"abobrinha", sp:"süchèi", mn:"süchèi", ko:"애호박", ar:"كوسا", zh:"西葫芦", ja:"ズッキーニ", ia:"cucurbita", verif:"sp:g" },
-      { tema:"cibo", it:"zucchino", sp:"süchèo", cr:"zuched", src:{"sp":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"sp:g,cr:g" },
+      { tema:"cibo", livello:"A2", it:"zucchine| zucchini", en:"courgette", fr:"courgette", es:"calabacín", de:"Zucchini", pt:"abobrinha", sp:"süchèi", mn:"süchèi", ge:"succhin ", ko:"애호박", ar:"كوسا", zh:"西葫芦", ja:"ズッキーニ", ia:"cucurbita", verif:"sp:g", ro:"dovlecel" },
+      { tema:"cibo", livello:"A1", it:"zucchino", en:"courgette", sp:"süchèo", mn:"suchìn/suchin", cr:"zuched", ge:"succhin ", src:{"sp":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"sp:g,cr:g", ro:"dovlecel" },
     ];
 
 // ── Storage ───────────────────────────────────────────────────────────────
@@ -3897,7 +3897,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 507;
+const VOC_VERSION = 508;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
