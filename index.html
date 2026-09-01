@@ -2079,10 +2079,13 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"saluti", livello:"A1", it:"buon pomeriggio", en:"good afternoon", ro:"bună după-amiază, bună ziua" },
+      { tema:"saluti", livello:"A1", it:"buona giornata", en:"have a good day", ro:"o zi buna" },
+      { tema:"verbi", livello:"A1", it:"su", en:"on", sp:"sü", cr:"su", ge:"in sce, sciù", ro:"pe" },
       { tema:"cibo", livello:"A1", it:"tè", en:"tea", sp:"tè", mn:"té", cr:"tè", ge:"té", ro:"ceai", verif:"sp:g,ge:g,cr:g,mn:g" },
       { tema:"famiglia", livello:"B1", it:"suocera e nuora, tempesta e gragnola", ge:"Sêuxoa e nêua, tempesta e gragnêua", verif:"ge:g" },
       { tema:"saluti", livello:"A1", it:"signore", sp:"signoo", cr:"signor", ge:"scignoro, sciô " },
-      { tema:"saluti", livello:"A1", it:"benvenuto", sp:"benvegnù/benvegnü", mn:"benvegnù/bënvegnü", cr:"benvnut", ge:"benvegnù/benvegnuo", verif:"cr:g" },
+      { tema:"saluti", livello:"A1", it:"benvenuto", en:"welcome", sp:"benvegnù/benvegnü", mn:"benvegnù/bënvegnü", cr:"benvnut", ge:"benvegnù/benvegnuo", verif:"cr:g", ro:"bine ai venit, bun venit" },
       { tema:"verbi", livello:"A1", it:"fatto", cr:"fat" },
       { tema:"domande", livello:"A1", it:"perché", cr:"p'rché" },
       { tema:"lavoro", livello:"A2", it:"mestiere", cr:"mstier/m'stiér" },
@@ -2232,7 +2235,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A2", it:"arrendersi", en:"give up", fr:"abandonner", es:"rendirse", de:"aufgeben", pt:"desistir", sp:"aréndesse/arendese", mn:"aréndé se/arëndése", cr:"arendrs", ge:"arrendise", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g,cr:g" },
       { tema:"verbi", it:"arrivare", sp:"ariva'e/arivae", mn:"arivaa", cr:"arivar", ge:"arivaa/arrivâ", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"dialogo", livello:"A2", it:"arrivare in ritardo", en:"run late", fr:"être en retard", es:"llegar tarde", de:"zu spät sein", pt:"atrasar", sp:"arivaen retardio/arivae en retardio", ge:"arrivâ  tardi", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g", nt:["mn"] },
-      { tema:"saluti", livello:"A1", it:"arrivederci", en:"goodbye", fr:"au revoir", es:"hasta luego", de:"auf Wiedersehen", pt:"até logo", ca:"adéu", sp:"a revédese", mn:"a revedesse/a revëdése", ge:"a revéiise/ a revéise", la:"vale", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g", ro:"la revedere" },
+      { tema:"saluti", livello:"A1", it:"arrivederci", en:"goodbye, bye bye, bye", fr:"au revoir", es:"hasta luego", de:"auf Wiedersehen", pt:"até logo", ca:"adéu", sp:"a revédese, bona", mn:"a revedesse, bona/a revëdése, bona", cr:"bona", ge:"a revéiise/ a revéise, bona", la:"vale", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g", ro:"la revedere, pa-pa, pa" },
       { tema:"verbi", it:"arronzare", sp:"ronsaaae/ronzae", mn:"arunsaa/arunzaa", ge:"ronså", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"verbi", it:"arrostire", sp:"rostìhe/rostie", mn:"rustii", cr:"arustir", ge:"rōstî", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g,sp:g,ge:g" },
       { tema:"dialetti", it:"artiglio, grinfia.", sp:"arpa, sgrinfia", mn:"zgrinfia", cr:"grinfia, ung'on, ugna", ge:"ciöta", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
@@ -2362,8 +2365,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"animali", it:"bue", en:"ox", sp:"bè", mn:"bè", cr:"bo", ge:"bên", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
       { tema:"dialogo", livello:"B1", it:"bugiardo", en:"liar", fr:"menteur", es:"mentiroso", de:"Lügner", pt:"mentiroso", ru:"лжец", ca:"mentider", sp:"bosàrdo", mn:"busardu/buzardu", cr:"busard", ge:"böxardo", verif:"mn:g,cr:g" },
       { tema:"dialetti", it:"buio", sp:"scüo", cr:"bui, scur", ge:"scüo", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g", nt:["mn"] },
-      { tema:"cibo", livello:"A1", it:"buon appetito!", en:"enjoy your meal", fr:"bon appétit", es:"buen provecho", de:"guten Appetit", pt:"bom apetite", ca:"bon profit", ge:"bón apetìtto", la:"bonum appetitum", src:{"mn":"🤖 IA"}, verif:"mn:r", nt:["mn","sp"], ro:"poftă bună!" },
-      { tema:"saluti", livello:"A1", it:"buonanotte", en:"goodnight", fr:"bonne nuit", es:"buenas noches", de:"gute Nacht", pt:"boa noite", ca:"bona nit", sp:"bonanota", mn:"bunanota", cr:"bonanota", ge:"bónn-a néutte", la:"noctem", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"noapte bună" },
+      { tema:"cibo", livello:"A1", it:"buon appetito!", en:"enjoy your meal", fr:"bon appétit", es:"buen provecho", de:"guten Appetit", pt:"bom apetite", ca:"bon profit", ge:"bon appetitto", la:"bonum appetitum", src:{"mn":"🤖 IA"}, verif:"mn:r", nt:["mn","sp"], ro:"poftă bună!" },
+      { tema:"saluti", livello:"A1", it:"buonanotte", en:"goodnight", fr:"bonne nuit", es:"buenas noches", de:"gute Nacht", pt:"boa noite", ca:"bona nit", sp:"bonanote", mn:"bunanota", cr:"bonanota", ge:"boñaneutte ", la:"noctem", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g", ro:"noapte bună" },
       { tema:"saluti", livello:"A1", it:"buonasera", en:"good evening", fr:"bonsoir", es:"buenas noches", de:"guten Abend", pt:"boa noite", ca:"bona nit", sp:"bonaséa", mn:"bona se'a/bonasëa", cr:"bonasera", ge:"bónn-a séia", la:"bona sera", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"bună seara" },
       { tema:"saluti", livello:"A1", it:"buongiorno", en:"good morning", fr:"bonjour", es:"buenos días", de:"guten Morgen", pt:"bom dia", ca:"bon dia", sp:"bongiorno", mn:"bungiurnu", cr:"bondi", ge:"bongiorno", la:"bonum mane", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g", ro:"bună dimineața" },
       { tema:"aggettivi", it:"buono", en:"good", sp:"bon", mn:"buun/bùn", cr:"bon", ge:"bôn", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
@@ -2897,7 +2900,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"grasso", en:"fat", fr:"gros|gras", es:"gordo|graso", de:"fett|dick", pt:"gordo", ru:"толстый|жирный", ca:"gras", sp:"grasso", cr:"gras'", ge:"grasso", verif:"sp:g" },
       { tema:"casa", livello:"B1", it:"grattugia", en:"grater", fr:"râpe", es:"rallador", de:"Reibe", pt:"ralador", sp:"gràtoa", mn:"gràtua", cr:"gratacas", ge:"grattæña", ia:"grattugia", verif:"mn:g" },
       { tema:"aggettivi", livello:"B1", it:"grave/serio", en:"serious", fr:"grave|sérieux", es:"grave|serio", de:"ernst|schwer", pt:"grave|sério", ru:"серьёзный", ca:"greu|seriós", sp:"seio", cr:"seri", ge:"serio", verif:"sp:g" },
-      { tema:"aggettivi", livello:"A1", it:"grazie", en:"thank you", fr:"merci", es:"gracias", de:"danke", pt:"obrigado", ru:"спасибо", ca:"gràcies", sp:"grassie", mn:"grasce", cr:"grazie", ge:"graçie", ko:"감사합니다", ar:"شكراً", zh:"谢谢", ja:"ありがとう", ia:"gratias", la:"gratias", grc:"εὐχαριστῶ", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"mulțumesc" },
+      { tema:"aggettivi", livello:"A1", it:"grazie", en:"thanks, thank you", fr:"merci", es:"gracias", de:"danke", pt:"obrigado", ru:"спасибо", ca:"gràcies", sp:"grassie", mn:"grasce", cr:"grazie", ge:"graçie", ko:"감사합니다", ar:"شكراً", zh:"谢谢", ja:"ありがとう", ia:"gratias", la:"gratias", grc:"εὐχαριστῶ", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"mulțumesc, mersi" },
       { tema:"vestiti", livello:"A1", it:"grembiule", en:"apron", fr:"tablier", es:"delantal", de:"Schürze", pt:"avental", ru:"фартук", ca:"davantal", sp:"scosà", mn:"scusà/scuzà", cr:"Grembiàle", ge:"scösà/scösä", ko:"앞치마", ar:"مريلة", zh:"围裙", ja:"エプロン", ia:"gremial", src:{"mn":"🤖 IA","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"corpo", livello:"B1", it:"grembo", en:"lap", fr:"giron", es:"regazo", de:"Schoß", pt:"colo", ru:"колени (лоно)", ca:"falda|giron", sp:"scòdzo/scoso", cr:"scos, gremb", ge:"scöso", ia:"gremio", verif:"sp:g" },
       { tema:"dialetti", livello:"A2", it:"grezzo| non intonacato", mn:"sgrüzu/zgrüzu", cr:"grez", verif:"mn:g" },
@@ -2963,7 +2966,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"B1", it:"lana", en:"wool", fr:"laine", es:"lana", de:"Wolle", pt:"lã", ru:"шерсть", ca:"llana", sp:"lana", cr:"lana", ge:"laña", verif:"sp:g,cr:g" },
       { tema:"cibo", livello:"A1", it:"latte", en:"milk", sp:"láte", mn:"late", cr:"lat", ge:"laete", verif:"mn:g,sp:g,ge:g", ro:"lapte" },
       { tema:"verbi", livello:"A1", it:"lavare", en:"wash", fr:"laver", es:"lavar", de:"waschen", pt:"lavar", ru:"мыть", ca:"rentar", sp:"lavahe/lavae", cr:"lavar", ge:"lavâ ", verif:"sp:g" },
-      { tema:"verbi", it:"lavorare", en:"work", sp:"travagiaae, lavoaae/travagiae, lavoaelavoae", mn:"travagia'a/travagiàa", cr:"lavorar", ge:"travaggiâ, louâ", verif:"sp:g,mn:g", ro:"a lucra" },
+      { tema:"verbi", it:"lavorare", en:"work", sp:"travagiaae, lavoaae/travagiae, lavoae", mn:"travagia'a/travagiàa", cr:"lavorar", ge:"travaggiâ, louâ", verif:"sp:g,mn:g", ro:"a lucra" },
       { tema:"verbi", livello:"A2", it:"lavorare|lavoro", en:"work", fr:"travailler", es:"trabajar", de:"arbeiten", pt:"trabalhar", ru:"работать", ca:"treballar", sp:"travagiaae/travagiae| lavoae,travagiae", mn:"travagiaa/travagiaa", cr:"lavorar", ko:"일하다", ar:"يعمل", zh:"工作", ja:"働く", ia:"laborar", verif:"sp:g,mn:g" },
       { tema:"mestieri", livello:"A2", it:"lavoro", en:"work", fr:"travail", es:"trabajo", de:"Arbeit", pt:"trabalho", sp:"travagio, lavòo", mn:"travagiu", cr:"lavor", ge:"travaggio ", ko:"일", ar:"عمل", zh:"工作", ja:"仕事", ia:"labor", la:"labor", grc:"ἐργασία", verif:"sp:g,mn:g" },
       { tema:"aggettivi", livello:"B1", it:"legge", en:"law", fr:"loi", es:"ley", de:"Gesetz", pt:"lei", sp:"lège", cr:"leza", ge:"lezze", ko:"법", ar:"قانون", zh:"法律", ja:"法", ia:"lege", la:"lex", grc:"νόμος", verif:"sp:g" },
@@ -3044,7 +3047,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mesi", livello:"A1", it:"mese", en:"month", fr:"mois", es:"mes", de:"Monat", pt:"mês|mes", ru:"месяц", ca:"mes", sp:"mese", cr:"mes", ge:"meise", ko:"달", ar:"شهر", zh:"月", ja:"月", ia:"mense", la:"mensis", grc:"μήν", verif:"sp:g" },
       { tema:"luoghi", livello:"A2", it:"messaggio", en:"message", fr:"message", es:"mensaje", de:"Nachricht", pt:"mensagem", ru:"сообщение", ca:"missatge", sp:"mesagio", cr:"msag'", ge:"mesagiu/messaggio", ko:"메시지", ar:"رسالة", zh:"消息", ja:"メッセージ", ia:"message", la:"nuntius", grc:"μήνυμα", ro:"mesaj" },
       { tema:"luoghi", livello:"A2", it:"metropolitana", en:"subway", fr:"métro", es:"metro", de:"U-Bahn", pt:"metrô|metro", ru:"метро", ca:"metro", sp:"metropolitana", mn:"metropolitana", ge:"metropolitaña", ko:"지하철", ar:"مترو", zh:"地铁", ja:"地下鉄", ia:"metro" },
-      { tema:"dialogo", livello:"A2", it:"mezzanotte", en:"midnight", fr:"minuit", es:"medianoche", de:"Mitternacht", pt:"meia-noite", ru:"полночь", ca:"mitjanit", sp:"mesanote", verif:"sp:g", nt:["cr"] },
+      { tema:"dialogo", livello:"A2", it:"mezzanotte", en:"midnight", fr:"minuit", es:"medianoche", de:"Mitternacht", pt:"meia-noite", ru:"полночь", ca:"mitjanit", sp:"mesanote", mn:"mezanota", cr:"mezanota", ge:"mëzaneutte", verif:"sp:g", ro:"miezul nopții" },
       { tema:"dialogo", livello:"A2", it:"mezzo", en:"middle", fr:"milieu|centre", es:"centro|medio", de:"Mitte", pt:"meio|centro", ru:"середина|центр", ca:"mig|centre", sp:"meso/mèzo", mn:"mesu/mézu", cr:"mez", ge:"mesu/mezo", verif:"mn:g" },
       { it:"mi chiamo...", mn:"me ciamu", verif:"mn:g", ro:"mă numesc..." },
       { tema:"espressioni", livello:"B1", it:"mi fai morire", en:"you're killing me", fr:"tu me tues", es:"me estás matando", de:"du bringst mich um", pt:"me estás matando", ru:"ты меня убиваешь", ca:"em mates", sp:"te me feè moì'e/te me fe moìe", ia:"tu me occide", la:"me necas", verif:"sp:g", ro:"mă omori" },
@@ -3114,7 +3117,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"luoghi", livello:"A2", it:"nord", en:"north", fr:"nord", es:"norte", de:"Nord", pt:"norte", ru:"север", ca:"nord", sp:"nòrde", cr:"nòrd ", ge:"nòrd ", verif:"cr:g" },
       { tema:"aggettivi", livello:"B1", it:"nostalgia", en:"longing", fr:"nostalgie", es:"nostalgia", de:"Sehnsucht", pt:"saudade", sp:"nostargia", cr:"nostalgia", ge:"nostargia", ko:"그리움", ar:"حنين", zh:"思乡", ja:"郷愁", ia:"nostalgia", verif:"cr:g" },
       { tema:"dialetti", livello:"A2", it:"notizia", en:"news", fr:"nouvelle", es:"noticia", de:"Nachricht", pt:"notícia|noticia", sp:"nèva, notissia", mn:"néva", cr:"nutiz'ia", ge:"notiçia, neuva", verif:"mn:g" },
-      { it:"notte", sp:"note", cr:"nota", verif:"sp:g" },
+      { tema:"tempo", livello:"A1", it:"notte", en:"night", sp:"note", mn:"nota", cr:"nota", ge:"neutte", verif:"sp:g", ro:"noapte" },
       { tema:"numeri", livello:"A1", it:"novanta", ru:"девяносто", sp:"novanta", mn:"nùanta/nùanta", cr:"novanta", ge:"novànta", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"numeri", livello:"A1", it:"nove", en:"nine", ru:"девять", sp:"néve", mn:"néve", cr:"novi", ge:"neuve", verif:"mn:g", ro:"nouă" },
       { tema:"mesi", livello:"A1", it:"novembre", en:"November", fr:"novembre", es:"noviembre", de:"November", pt:"novembro", ru:"ноябрь", ca:"novembre", sp:"novenbre", mn:"nüenbre", cr:"novenbra", ge:"novembre", ko:"11월", ar:"نوفمبر", zh:"十一月", ja:"11月", ia:"novembre", la:"November", grc:"Νοέμβριος", verif:"mn:g" },
@@ -3285,7 +3288,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A1", it:"prato", en:"meadow", fr:"pré", sp:"prado", mn:"pradu", cr:"prad", ge:"prou", verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"preferito", en:"favourite", fr:"préféré", es:"favorito", de:"Liebling-|bevorzugt", pt:"favorito", ru:"любимый", ca:"preferit", sp:"prefeì", cr:"preferit", ge:"ciù cao, prefeìo" },
       { tema:"verbi", livello:"B1", it:"pregare", en:"pray", fr:"prier", es:"rezar", de:"beten", pt:"rezar", sp:"pregae", cr:"prgar", ge:"pregâ", ko:"기도하다", ar:"يصلي", zh:"祈祷", ja:"祈る", ia:"precar", la:"orare", grc:"προσεύχεσθαι" },
-      { tema:"saluti", livello:"A1", it:"prego", en:"please", sp:"figuate, prego, de gnente", mn:"pregu", cr:"figurt, d' gnent, preg", ge:"de ninte", verif:"mn:g", ro:"cu plăcere" },
+      { tema:"saluti", livello:"A1", it:"prego", en:"you're welcome", sp:"figuate, prego, de gnente", mn:"pregu", cr:"figurt, d' gnent, preg", ge:"de ninte", verif:"mn:g", ro:"cu plăcere" },
       { tema:"verbi", livello:"B1", it:"premere", en:"press", fr:"appuyer|presser", es:"presionar", de:"drücken", pt:"pressionar", ru:"нажимать", ca:"prémer", sp:"schissae, saquarae", cr:"schiz'ar, calcar", ge:"sciaccâ ,schissâ", verif:"sp:g" },
       { tema:"verbi", livello:"A1", it:"prendere", en:"take", fr:"prendre", es:"tomar", de:"nehmen", pt:"pegar", ru:"брать", ca:"agafar|prendre", sp:" piae, ciapàe", mn:"pigiaa| ciapaa", cr:"piar", ge:" pigiâ| aciapâ", ko:"잡다", ar:"يأخذ", zh:"拿", ja:"取る", ia:"prender", la:"capere", grc:"λαμβάνειν", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g", ro:"a lua" },
       { tema:"verbi", livello:"B1", it:"prendere in prestito", en:"borrow", fr:"emprunter", es:"pedir prestado", de:"ausleihen", pt:"pedir emprestado", ru:"брать взаймы", ca:"manllevar" },
@@ -3469,7 +3472,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"luoghi", livello:"A1", it:"scuola", en:"school", fr:"école", es:"escuela", de:"Schule", pt:"escola", ru:"школа", ca:"escola", sp:"schèa", mn:"skea/schéa", ge:"schêua", ko:"학교", ar:"مدرسة", zh:"学校", ja:"学校", ia:"schola", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"școală" },
       { tema:"casa", livello:"B1", it:"scure", en:"axe", fr:"hache", es:"hacha", de:"Axt", pt:"machado", sp:"picosso", mn:"picossu", cr:"s'gura", verif:"mn:g" },
       { tema:"natura", livello:"A1", it:"scuro", sp:"skiuuo/scüo", mn:"skiuuu/scüu", verif:"sp:g,mn:g" },
-      { tema:"dialogo", livello:"A1", it:"scusa", en:"sorry", fr:"pardon", es:"perdón", de:"Entschuldigung", pt:"desculpa", ru:"извини", ca:"perdona", sp:"scüsa", mn:"skusa/scüza", ge:"scüsa", ko:"미안해요", ar:"آسف", zh:"对不起", ja:"ごめんなさい", ia:"pardono", la:"ignosce", grc:"συγγνώμη", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"scuză-mă" },
+      { tema:"dialogo", livello:"A1", it:"scusa", en:"sorry", fr:"pardon", es:"perdón", de:"Entschuldigung", pt:"desculpa", ru:"извини", ca:"perdona", sp:"scüsa", mn:"skusa/scüza", cr:"scusa", ge:"scüsa", ko:"미안해요", ar:"آسف", zh:"对不起", ja:"ごめんなさい", ia:"pardono", la:"ignosce", grc:"συγγνώμη", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"scuză-mă, scuze" },
       { tema:"dialogo", livello:"A1", it:"scusare", en:"excuse", fr:"excuser", es:"disculpar", de:"entschuldigen", pt:"desculpar", ru:"извинять", ca:"excusar", sp:"skiùsaahe/scüsae", mn:"skiùsaàh/scüsaa", verif:"sp:g,mn:g" },
       { tema:"dialogo", livello:"B1", it:"se", en:"whether", fr:"si", es:"si", de:"ob", pt:"se", ru:"ли", ca:"si", sp:"se", verif:"sp:g" },
       { tema:"denaro", livello:"A2", it:"se non ce sono non si spendono", en:"no money no spend", fr:"pas d'argent pas de dépense", es:"sin dinero no se gasta", de:"kein Geld keine Ausgabe", pt:"sem dinheiro não se gasta", ca:"sense diners no es gasta", sp:"Se ne ghenè ne se'n spenda/Se ne ghe n'è ne se'n spenda", mn:"Se nughenè nussen spenda/Se nu ghe n'è nu se'n spenda", la:"sine pecunia non expeditur", verif:"sp:g,mn:g", ro:"fără bani nu se cheltuie" },
@@ -3490,7 +3493,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"sentire", en:"feel", fr:"sentir", es:"sentir", de:"fühlen", pt:"sentir", ru:"чувствовать|слышать", ca:"sentir", sp:"sentì e/sentìe", mn:"sentìi", cr:"s'ntir", ge:"sentî", ko:"느끼다", ar:"يشعر", zh:"感觉", ja:"感じる", ia:"sentir", la:"sentire", grc:"αἰσθάνεσθαι", verif:"mn:g,sp:g", ro:"a auzi" },
       { tema:"dialogo", livello:"A2", it:"sentirsi bene", en:"feel good", fr:"se sentir bien", es:"sentirse bien", de:"sich gut fühlen", pt:"sentir-se bem", sp:"sentisse ben", verif:"sp:g" },
       { tema:"dialogo", livello:"A2", it:"senza", en:"without", fr:"sans", es:"sin", de:"ohne", pt:"sem", ru:"без", ca:"sense", sp:"sensa", mn:"sensa", cr:"senz'a", verif:"mn:g,sp:g,cr:g" },
-      { tema:"dialetti", livello:"A1", it:"sera", en:"evening", fr:"soir", es:"tarde", de:"Abend", pt:"noite", ru:"вечер", ca:"vespre|tarda", sp:"séa", mn:"sëa", cr:"sera", verif:"sp:g,mn:g,cr:g" },
+      { tema:"dialetti", livello:"A1", it:"sera", en:"evening", fr:"soir", es:"tarde", de:"Abend", pt:"noite", ru:"вечер", ca:"vespre|tarda", sp:"séa", mn:"sëa", cr:"sera", ge:"seia/seia", verif:"sp:g,mn:g,cr:g,ge:g", ro:"seară" },
       { it:"serpe / serpente", sp:"bissa", mn:"serpënte", cr:"serp", verif:"mn:g" },
       { tema:"animali", livello:"A2", it:"serpente", en:"snake", fr:"serpent", es:"serpiente", de:"Schlange", pt:"cobra|serpente", ru:"змея", ca:"serp", nt:["sp"] },
       { it:"serpente / biscia", sp:"bissa", mn:"bissa", cr:"biss", verif:"mn:g" },
@@ -3512,7 +3515,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"sgualdrina", mn:"sgualdriìna/zgùaldrina", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"sgusciare", en:"to drip", fr:"s'écouler", mn:"sgüssaaa/zgüssaa", verif:"mn:g" },
       { tema:"cosmetica", livello:"A2", it:"shampoo", en:"shampoo", fr:"shampooing", es:"champú", de:"Shampoo", pt:"shampoo", ko:"샴푸", ar:"شامبو", zh:"洗发水", ja:"シャンプー", nt:["sp"] },
-      { tema:"saluti", livello:"A1", it:"sì", en:"yes", fr:"oui", es:"sí", de:"ja", pt:"sim", ca:"sí", sp:"si", mn:"si", cr:"si", ge:"si", la:"ita", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g", ro:"da" },
+      { tema:"saluti", livello:"A1", it:"sì", en:"yes", fr:"oui", es:"sí", de:"ja", pt:"sim", ca:"sí", sp:"si", mn:"si", cr:"si", ge:"si", la:"ita", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g,sp:g,ge:g", ro:"da" },
       { tema:"natura", livello:"A2", it:"siccità", en:"drought", fr:"sécheresse", es:"sequía", de:"Dürre", pt:"seca", ru:"засуха", ca:"sequera|secada", ko:"가뭄", ar:"جفاف", zh:"干旱", ja:"干ばつ", ia:"siccitate", la:"siccitas", grc:"αὐχμός", nt:["sp"] },
       { tema:"emotivi", livello:"A1", it:"sicuro", en:"sure", sp:"següo", mn:"següü", verif:"mn:g" },
       { tema:"natura", livello:"A2", it:"significare", en:"mean that", fr:"vouloir dire", es:"significar", de:"bedeuten", pt:"significar", nt:["sp"] },
@@ -3894,7 +3897,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 506;
+const VOC_VERSION = 507;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
