@@ -477,6 +477,8 @@ const UI = {
     annullabtn: "Annulla",
     modificaparolabtn: "✏️ Modifica parola",
     segnalabtn: "⚠️ Segnala errore",
+    segnalatitolo: "🚩 Segnala errore",
+    segnalainfo: "La correzione verrà proposta via email a",
     usachromemsg: "Usa Chrome per il riconoscimento vocale.",
     audiomsg: "Audio non disponibile",
     tuttebtn: "Tutte",
@@ -650,6 +652,8 @@ const UI = {
     lingueattivebtn: "Active languages",
     modificaparolabtn: "✏️ Edit word",
     segnalabtn: "⚠️ Report error",
+    segnalatitolo: "🚩 Report error",
+    segnalainfo: "The correction will be proposed by email to",
     usachromemsg: "Use Chrome for voice recognition.",
     audiomsg: "Audio not available",
     tuttebtn: "All",
@@ -770,6 +774,8 @@ const UI = {
     lingueattivebtn: "Langues actives",
     modificaparolabtn: "✏️ Modifier le mot",
     segnalabtn: "⚠️ Signaler une erreur",
+    segnalatitolo: "🚩 Signaler une erreur",
+    segnalainfo: "La correction sera proposée par email à",
     usachromemsg: "Utilisez Chrome pour la reconnaissance vocale.",
     audiomsg: "Audio non disponible",
     tuttebtn: "Tous",
@@ -912,6 +918,8 @@ const UI = {
     lingueattivebtn: "Idiomas activos",
     modificaparolabtn: "✏️ Editar palabra",
     segnalabtn: "⚠️ Reportar error",
+    segnalatitolo: "🚩 Reportar error",
+    segnalainfo: "La corrección se propondrá por email a",
     usachromemsg: "Usa Chrome para el reconocimiento de voz.",
     audiomsg: "Audio no disponible",
     tuttebtn: "Todas",
@@ -1039,6 +1047,8 @@ const UI = {
     lingueattivebtn: "Aktive Sprachen",
     modificaparolabtn: "✏️ Wort bearbeiten",
     segnalabtn: "⚠️ Fehler melden",
+    segnalatitolo: "🚩 Fehler melden",
+    segnalainfo: "Die Korrektur wird per E-Mail vorgeschlagen an",
     usachromemsg: "Verwende Chrome für die Spracherkennung.",
     audiomsg: "Audio nicht verfügbar",
     tuttebtn: "Alle",
@@ -1169,6 +1179,8 @@ const UI = {
     lingueattivebtn: "Idiomas ativos",
     modificaparolabtn: "✏️ Editar palavra",
     segnalabtn: "⚠️ Reportar erro",
+    segnalatitolo: "🚩 Reportar erro",
+    segnalainfo: "A correção será proposta por email para",
     usachromemsg: "Usa o Chrome para reconhecimento de voz.",
     audiomsg: "Áudio não disponível",
     tuttebtn: "Todas",
@@ -1262,6 +1274,8 @@ const UI = {
     persona: "Лицо",
     riascolta: "🔊 Слушать снова",
     segnalabtn: "⚠️ Сообщить об ошибке",
+    segnalatitolo: "🚩 Сообщить об ошибке",
+    segnalainfo: "Исправление будет предложено по email на",
     usachromemsg: "Используй Chrome для распознавания голоса.",
     sceltamultipla: "Множественный выбор",
     desc_sceltamultipla: "🎯 5-12 вариантов, адаптивный уровень",
@@ -1389,6 +1403,8 @@ const UI = {
     persona: "人称",
     riascolta: "🔊 再听一遍",
     segnalabtn: "⚠️ 报告错误",
+    segnalatitolo: "🚩 报告错误",
+    segnalainfo: "更正将通过电子邮件发送至",
     usachromemsg: "请使用Chrome进行语音识别。",
     coppiedaripassare: "对需要复习",
     oradel: "该复习了！",
@@ -1521,6 +1537,8 @@ const UI = {
     persona: "인칭",
     riascolta: "🔊 다시 듣기",
     segnalabtn: "⚠️ 오류 신고",
+    segnalatitolo: "🚩 오류 신고",
+    segnalainfo: "수정 사항은 이메일로 제안됩니다:",
     usachromemsg: "음성 인식을 위해 Chrome을 사용하세요。",
     almenodue: "최소 2개 언어를 활성화하세요。",
     compilaalmeno: "최소 2개 언어를 입력하세요。",
@@ -1652,6 +1670,8 @@ const UI = {
     persona: "Persona",
     riascolta: "🔊 Tornar a escoltar",
     segnalabtn: "⚠️ Reportar error",
+    segnalatitolo: "🚩 Reportar error",
+    segnalainfo: "La correcció es proposarà per correu electrònic a",
     usachromemsg: "Usa Chrome per al reconeixement de veu.",
     sceltamultipla: "Selecció múltiple",
     desc_sceltamultipla: "🎯 5-12 opcions, nivell adaptatiu",
@@ -9088,19 +9108,32 @@ function ModificaParola({
   entry,
   lingue,
   onSalva,
-  onAnnulla
+  onAnnulla,
+  modo = "modifica"
 }) {
   const t = useUI();
   const [form, setForm] = useState({
     ...entry
   });
+  // In modalit\u00E0 "segnala" (\uD83D\uDEA9 Segnala errore in esercizio) il salvataggio
+  // propone anche una correzione via email (proponiCorrezioneParola) \u2014 a
+  // differenza della modifica \u270F\uFE0F dal Vocabolario, che resta solo locale.
+  // Disabilita Salva finch\u00E9 non \u00E8 stato cambiato nulla: altrimenti la
+  // segnalazione non ha alcun effetto (nessun campo diverso = nessuna email),
+  // ma sparirebbe in silenzio senza che l'utente se ne accorga.
+  const nessunaModifica = modo === "segnala" && Object.keys(campiModificati(entry, form)).length === 0;
   return /*#__PURE__*/React.createElement("div", {
     className: "fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4"
   }, /*#__PURE__*/React.createElement("div", {
     className: "card p-6 max-w-md w-full max-h-screen overflow-y-auto"
   }, /*#__PURE__*/React.createElement("h3", {
-    className: "text-lg font-bold text-slate-100 mb-4"
-  }, "\u270F\uFE0F Modifica parola"), /*#__PURE__*/React.createElement("div", {
+    className: modo === "segnala" ? "text-lg font-bold text-slate-100 mb-1" : "text-lg font-bold text-slate-100 mb-4"
+  }, modo === "segnala" ? t.segnalatitolo : "\u270F\uFE0F Modifica parola"), modo === "segnala" && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-500 mb-4"
+  }, t.segnalainfo, " ", /*#__PURE__*/React.createElement("a", {
+    href: `mailto:${STORIE_CONTRIB_EMAIL}`,
+    className: "underline hover:text-slate-300"
+  }, STORIE_CONTRIB_EMAIL)), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-2 mb-4 flex-wrap"
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
     className: "text-xs text-slate-500 block mb-1"
@@ -9146,8 +9179,9 @@ function ModificaParola({
     onClick: onAnnulla,
     className: "flex-1 border-2 border-zinc-700 text-slate-400 font-semibold py-3 rounded-xl"
   }, t.annullabtn), /*#__PURE__*/React.createElement("button", {
+    disabled: nessunaModifica,
     onClick: () => onSalva(form),
-    className: "flex-1 bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 rounded-xl"
+    className: `flex-1 font-semibold py-3 rounded-xl ${nessunaModifica ? "bg-zinc-700 text-slate-500 cursor-not-allowed" : "bg-sky-500 hover:bg-sky-600 text-white"}`
   }, t.salvabtn))));
 }
 
@@ -12908,6 +12942,7 @@ function App() {
   return /*#__PURE__*/React.createElement(React.Fragment, null, segnalando && cartaCorrente && /*#__PURE__*/React.createElement(ModificaParola, {
     entry: cartaCorrente.entry,
     lingue: lingue,
+    modo: "segnala",
     onSalva: form => {
       const idx = vocabolario.findIndex(e => wordKey(e) === wordKey(cartaCorrente.entry));
       if (idx >= 0) {
