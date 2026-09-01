@@ -4020,6 +4020,13 @@ function proponiCorrezioneParola(vecchia, nuova) {
   const subject = `LinguaeQuiz – Correzione segnalata: ${parolaIt}`;
   const testo = `Parola: ${parolaIt}\n\nCampi modificati:\n${corpo}\n\nVoce completa aggiornata:\n${JSON.stringify(nuova, null, 2)}`;
   window.location.href = `mailto:${STORIE_CONTRIB_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(testo)}`;
+  // Fallback per chi non ha un client di posta collegato al browser: il
+  // mailto: sopra fallisce in silenzio (nessun errore intercettabile), quindi
+  // copiamo comunque il testo della segnalazione negli appunti — stesso
+  // pattern clipboard+alert già usato altrove (es. condividiScore, riga
+  // ~8630) — così l'utente può comunque incollarlo in un'email a mano.
+  const testoCompleto = `A: ${STORIE_CONTRIB_EMAIL}\nOggetto: ${subject}\n\n${testo}`;
+  navigator.clipboard?.writeText(testoCompleto).then(() => alert(`📋 Segnalazione copiata negli appunti.\nSe non si è aperto il tuo programma di posta, incollala in un'email a ${STORIE_CONTRIB_EMAIL}.`)).catch(() => alert(testoCompleto));
 }
 function caricaVocabolario() {
   try {
