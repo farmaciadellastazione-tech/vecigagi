@@ -2119,6 +2119,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"dialetti", livello:"A1", it:"rumeno", ge:"romen", ro:"român" },
+      { tema:"dialetti", livello:"A1", it:"inglese", sp:"engrese", cr:"ingles", ge:"ingleise", ro:"engleză" },
       { tema:"saluti", livello:"A1", it:"buon pomeriggio", en:"good afternoon", ro:"bună după-amiază, bună ziua" },
       { tema:"saluti", livello:"A1", it:"buona giornata", en:"have a good day", sp:"bona giornà", ro:"o zi buna" },
       { tema:"verbi", livello:"A1", it:"su", en:"on", sp:"sü", cr:"su", ge:"in sce, sciù", ro:"pe" },
@@ -3020,7 +3022,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"luoghi", livello:"A1", it:"libertà", en:"freedom", fr:"liberté", es:"libertad", de:"Freiheit", pt:"liberdade", ru:"свобода", ca:"llibertat", sp:"libertà", mn:"libertà", cr:"libertà", ge:"libertæ", ko:"자유", ar:"حرية", zh:"自由", ja:"自由", ia:"libertate", la:"libertas", grc:"ἐλευθερία" },
       { tema:"luoghi", livello:"A1", it:"libro", en:"book", fr:"livre", es:"libro", de:"Buch", pt:"livro", ru:"книга", ca:"llibre", sp:"libro", mn:"lìbehu/libéu", cr:"libr", ge:"libru/libbro", ko:"책", ar:"كتاب", zh:"书", ja:"本", ia:"libro", la:"liber", grc:"βιβλίον", verif:"mn:g,sp:g,ge:g", ro:"carte" },
       { tema:"cibo", livello:"A1", it:"limone", en:"lemon", fr:"citron", es:"limón", de:"Zitrone", pt:"limão|limao", ru:"лимон", ca:"llimona", sp:"limon", mn:"limùn", cr:"limon, cedr", ge:"limon", ko:"레몬", ar:"ليمون", zh:"柠檬", ja:"レモン", ia:"limon", la:"citrus", grc:"λεμόνι", verif:"mn:g", ro:"lămâie" },
-      { tema:"luoghi", livello:"A2", it:"lingua", en:"language", fr:"langue", es:"idioma", de:"Sprache", pt:"língua|lingua", ru:"язык", ca:"llengua", sp:"léngoa", mn:"lëngua", cr:"lengua", ko:"언어", ar:"لغة", zh:"语言", ja:"言語", ia:"lingua", la:"lingua", grc:"γλῶσσα", verif:"mn:g" },
+      { tema:"luoghi", livello:"A2", it:"lingua", en:"language", fr:"langue", es:"idioma", de:"Sprache", pt:"língua|lingua", ru:"язык", ca:"llengua", sp:"léngoa", mn:"lëngua", cr:"lengua", ge:"lengua ", ko:"언어", ar:"لغة", zh:"语言", ja:"言語", ia:"lingua", la:"lingua", grc:"γλῶσσα", verif:"mn:g", ro:"limba" },
       { tema:"animali", livello:"B1", it:"lucciola", en:"firefly", fr:"luciole", es:"luciérnaga", de:"Glühwürmchen", pt:"vaga-lume", sp:"nìssoa,lùsséga , scorlùssoa/nissoa, lüsséga, scorlüssoa", cr:"luzche", verif:"sp:g" },
       { tema:"animali", livello:"A1", it:"luce", en:"light", sp:"lüse", mn:"lüse", cr:"luce", ge:"lujxe/luxe", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"animali", it:"lucertola", en:"lizard", sp:"lessoah/léssoa", cr:"zorteda", ge:"grigoa", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g" },
@@ -3935,7 +3937,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 512;
+const VOC_VERSION = 513;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
