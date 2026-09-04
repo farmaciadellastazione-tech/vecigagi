@@ -14117,6 +14117,134 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che voeivan mette tûtto ö çe in fregögge.",
         "it": "Che volevano ridurre tutto il cielo in briciole."
+      },
+      {
+        "testo": "E gh'é ascì ö rinomou conte Catena",
+        "it": "E c'è anche il rinomato conte Catena,"
+      },
+      {
+        "testo": "Che da Giove tonante ö voeiva fâ",
+        "it": "Che voleva fare da Giove tonante"
+      },
+      {
+        "testo": "E in sce i landô, comme ûn eroe da scena,",
+        "it": "E sopra i calessi, come un eroe di scena,"
+      },
+      {
+        "testo": "Copiando e sæte con ciöccâ a scörriâ,",
+        "it": "Imitando le saette con lo schioccare la frusta,"
+      },
+      {
+        "testo": "Ö corrîva pe Banchi e tûtto Zena",
+        "it": "Correva per piazza Banchi e per tutta Genova"
+      },
+      {
+        "testo": "Fando pöffi zù a rëo, pe nö i pagâ,",
+        "it": "Facendo puffi a raffica, per non pagarli,"
+      },
+      {
+        "testo": "E con donne, cavalli e appartamenti",
+        "it": "E con donne, cavalli e appartamenti"
+      },
+      {
+        "testo": "Ö se paiva ûn scignor di ciû potenti.",
+        "it": "Si credeva un signore tra i più potenti."
+      },
+      {
+        "testo": "E ö nö pensava questo poveo sciollo",
+        "it": "E non pensava, questo povero scemo,"
+      },
+      {
+        "testo": "Che avei ciû balle che non ha ö sciö Gæa,",
+        "it": "Che avere più balle di quante ne abbia il signor Ghiara"
+      },
+      {
+        "testo": "Ö nö serve, ö no va, quande ö s'ha mollo",
+        "it": "Non serve, non va, quando ce l'hai mollo"
+      },
+      {
+        "testo": "In materia de conti e de monæa;",
+        "it": "In fatto di conti e di moneta;"
+      },
+      {
+        "testo": "Che arriva ö giorno che se rompe ö collo",
+        "it": "Che arriva il giorno in cui ci si rompe il collo"
+      },
+      {
+        "testo": "E se ven da tiâ sciû co-a cassaræa",
+        "it": "E si finisce da tirar su con la cazzuola,"
+      },
+      {
+        "testo": "E se va, pe ûnn-a cûra climaterica",
+        "it": "E si scappa, con la scusa di una cura climatica,"
+      },
+      {
+        "testo": "A fötte i creditöi, scinn-a in America.",
+        "it": "Per fottere i creditori, persino in America!"
+      },
+      {
+        "testo": "Gh'é ninte meno che ö maggiö Zunin",
+        "it": "C'è nientemeno che il maggiore Zunino,"
+      },
+      {
+        "testo": "L'ommo ciû lungo che se trêuve anchêu,",
+        "it": "L'uomo più lungo che si trovi al giorno d'oggi,"
+      },
+      {
+        "testo": "Che desteiso, ö mezûa tanto cammin",
+        "it": "Che steso per terra misura tanto cammino"
+      },
+      {
+        "testo": "Che nö cava in t'ûn meise ûn pâ de bêu.",
+        "it": "Che non compie in un mese un paio di buoi;"
+      },
+      {
+        "testo": "Questo, ö l'ha poveo diao pe so destin",
+        "it": "Costui, povero diavolo, ha per suo destino"
+      },
+      {
+        "testo": "Ûn avvoltoio che ö ghe rode ö chêu,",
+        "it": "Un avvoltoio che gli rode il cuore (ö chêu),"
+      },
+      {
+        "testo": "Che ciû ö pitta ciû ö cresce e senza muî.",
+        "it": "Che più becca più ricresce, e senza morire"
+      },
+      {
+        "testo": "Ö l'é in eterno, condannôu a languî.",
+        "it": "È condannato in eterno a languire."
+      },
+      {
+        "testo": "Tralascio d'indicâ, pe brevitæ",
+        "it": "Tralascio d'indicare, per brevità,"
+      },
+      {
+        "testo": "Piritoo, co-i Lapiti ed Issiön",
+        "it": "Piritoo, coi Lapiti e Issione"
+      },
+      {
+        "testo": "E ûn mûggio de tanti âtri, condannæ",
+        "it": "E un mucchio di tanti altri, condannati"
+      },
+      {
+        "testo": "A dovei stâ in continua tremaxion,",
+        "it": "A dover stare in continua tremarella,"
+      },
+      {
+        "testo": "Perché sön da ûn gran sascio minacciæ",
+        "it": "Perché sono minacciati da un gran macigno"
+      },
+      {
+        "testo": "Che pâ che ö cazze ma ö nö cazze ancon",
+        "it": "Che par che cada ma non cade ancora,"
+      },
+      {
+        "testo": "Che ö ghe pende in sciâ testa e se ö se stacca",
+        "it": "Che gli pende sulla testa e, se si stacca,"
+      },
+      {
+        "testo": "Ö finisce pe fâne ûn sciacca sciacca.",
+        "it": "Finisce per farne una poltiglia."
       }
     ]
   },
