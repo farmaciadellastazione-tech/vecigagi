@@ -14245,6 +14245,314 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö finisce pe fâne ûn sciacca sciacca.",
         "it": "Finisce per farne una poltiglia."
+      },
+      {
+        "testo": "Poi gh'é ûnn-a tôa cön ogni ben de Dio",
+        "it": "Poi c'è una tavola con ogni ben di Dio,"
+      },
+      {
+        "testo": "Comme a fösse pe ûn Re, zà preparâ,",
+        "it": "Come se fosse per un Re, già preparata;"
+      },
+      {
+        "testo": "Ma gh'é lì a Famme che a ghe ronza in gîo",
+        "it": "Ma c'è lì la Fame che le ronza intorno"
+      },
+      {
+        "testo": "E che a sta attenta a chi ne vêu mangiâ,",
+        "it": "E che sta attenta a chi ne vuole mangiare,"
+      },
+      {
+        "testo": "Pe spunciâlo inderrê, pe daghe ö crîo,",
+        "it": "Per spingerlo indietro, per dargli un grido,"
+      },
+      {
+        "testo": "Pe obbligâlo a stâ lì, solo che a ammiâ,",
+        "it": "Per obbligarlo a star lì solo a guardare,"
+      },
+      {
+        "testo": "Eccitandoghe a famme e nö ghe dando",
+        "it": "Eccitandogli la fame e non dandogli"
+      },
+      {
+        "testo": "Mezo, de poeila soddisfâ mangiando.",
+        "it": "Modo di poterla soddisfare mangiando."
+      },
+      {
+        "testo": "Quelli brûtöi che han mätrattôu i sô fræ,",
+        "it": "Quei laidi che hanno maltrattato i propri fratelli,"
+      },
+      {
+        "testo": "Chi l'ha misso in tö streppo a-i sô clienti,",
+        "it": "Chi l'ha messo nel sedere ai suoi clienti,"
+      },
+      {
+        "testo": "E pellegramme che han battûo só poæ,",
+        "it": "Le carogne che hanno picchiato il proprio padre,"
+      },
+      {
+        "testo": "E vittime pe lö e pe-i sô parenti,",
+        "it": "Le vittime per loro e per i loro parenti,"
+      },
+      {
+        "testo": "(E de questi ghe n'é ûnn-a quantîtæ),",
+        "it": "(E di questi ce n'è una quantità!),"
+      },
+      {
+        "testo": "I morti in adulterio, i violenti,",
+        "it": "I morti in adulterio, i violenti,"
+      },
+      {
+        "testo": "E faccie fäse, i rei de tradimento",
+        "it": "Le facce false, i rei di tradimento"
+      },
+      {
+        "testo": "Han chì e sô penn-e e ö sô compartimento.",
+        "it": "Hanno qui le loro pene e il loro compartimento."
+      },
+      {
+        "testo": "L'é inûtile che digghe e che descrîve",
+        "it": "È inutile che dica e che descriva"
+      },
+      {
+        "testo": "Cön che penn-a ö castigo ognûn se dêue,",
+        "it": "Con quale pena ognuno sconti il castigo:"
+      },
+      {
+        "testo": "Chi arrûbatta di sasci in sciû pe-e rive,",
+        "it": "Chi trascina a fatica dei sassi su per le ripe,"
+      },
+      {
+        "testo": "Chi s'arrigoëla conficcôu in te rêue,",
+        "it": "Chi si aggomitola conficcato dentro le ruote,"
+      },
+      {
+        "testo": "Chi in âtri moddi l'é costreito a vive",
+        "it": "Chi in altri modi è costretto a vivere"
+      },
+      {
+        "testo": "Con tormenti da moî senza che ö mêue,",
+        "it": "Con tormenti da morire senza che muoia,"
+      },
+      {
+        "testo": "Comme o poveo Teseo, che o l'é obbligôu",
+        "it": "Come il povero Teseo, che è obbligato"
+      },
+      {
+        "testo": "In eterno in sce ûn schêuggio a stâ inciôdôu.",
+        "it": "In eterno sopra uno scoglio a star inchiodato."
+      },
+      {
+        "testo": "E gh'é Flegia meschin, che ö va d'asbrîo",
+        "it": "E c'è Flegias meschino, che va a rotta di collo"
+      },
+      {
+        "testo": "In te ombre, sbraggiando: ammiæme mi...",
+        "it": "Nelle ombre, sbraitando: «Guardatemi a me..."
+      },
+      {
+        "testo": "Perché ho vissûo senza timö de Dio,",
+        "it": "Poiché ho vissuto senza timor di Dio,"
+      },
+      {
+        "testo": "E ho violôu ö giûsto, mi me trêuvo chì,",
+        "it": "E ho violato il giusto, io mi trovo qui!»;"
+      },
+      {
+        "testo": "E chi ha fæto di stupri e chi ha tradîo",
+        "it": "E chi ha fatto degli stupri e chi ha tradito"
+      },
+      {
+        "testo": "A so patria, tra questi ö ghe lë ascì,",
+        "it": "La sua patria, tra costoro c'è pure lui,"
+      },
+      {
+        "testo": "Chi ha commisso di incesti in ta famiggia,",
+        "it": "Chi ha commesso degli incesti nella famiglia,"
+      },
+      {
+        "testo": "Con so sœû, per exempio, e con so figgia.",
+        "it": "Con sua sorella, per esempio, e con sua figlia."
+      },
+      {
+        "testo": "Chi abûsando da propria poxision",
+        "it": "Chi abusando della propria posizione"
+      },
+      {
+        "testo": "Co-a giûstizia, co-e lezzi ha negoziôu,",
+        "it": "Con la giustizia, con le leggi ha negoziato,"
+      },
+      {
+        "testo": "Chi ha fæto ö laddro senza andâ in prexon,",
+        "it": "Chi ha fatto il ladro senza andare in prigione,"
+      },
+      {
+        "testo": "Chi in to zêugo, in ti conti ha marmellôu,",
+        "it": "Chi nel gioco, nei conti ha imbrogliato,"
+      },
+      {
+        "testo": "Chi ë scappôu senza fâ a liquidazion,",
+        "it": "Chi è scappato senza fare la liquidazione,"
+      },
+      {
+        "testo": "Tegnindose i dinæ che ö l'ha guagnôu,",
+        "it": "Tenendosi i denari che ha incassato,"
+      },
+      {
+        "testo": "I brûtûi d'ogni risma e d'ogni menn-a;",
+        "it": "I laidi d'ogni risma e d'ogni sorta;"
+      },
+      {
+        "testo": "Son tûtti chì, c'ûnn-a diversa penn-a.",
+        "it": "Son tutti qui, con una diversa pena."
+      },
+      {
+        "testo": "Çento bocche ciû larghe che ûn cannon",
+        "it": "Cento bocche più larghe d'un cannone"
+      },
+      {
+        "testo": "Dö condûto dell'ægûa Nicolay",
+        "it": "Della condotta dell'acqua Nicolay,"
+      },
+      {
+        "testo": "E Rebuffo, ö Forsinn-a, ö Bottigion,",
+        "it": "E Rebuffo, il Forchetta, il Bottiglione,"
+      },
+      {
+        "testo": "Che ciarlan sempre e nö s'afferman mai,",
+        "it": "Che chiacchierano sempre e non si fermano mai,"
+      },
+      {
+        "testo": "Sæ tûtto poco e nö bastieiva ancon",
+        "it": "Sarebbe tutto poco e non basterebbe ancora"
+      },
+      {
+        "testo": "Pe esprime i castighi, i vizii, i guai",
+        "it": "Per esprimere i castighi, i vizi, i guai,"
+      },
+      {
+        "testo": "Pe dâ idea di malanni e di tormenti",
+        "it": "Per dare un'idea dei malanni e dei tormenti"
+      },
+      {
+        "testo": "Assegnæ pe ciascûn di delinquenti.",
+        "it": "Assegnati per ciascuno dei delinquenti."
+      },
+      {
+        "testo": "Doppo avei terminôu de ciarbattâ,",
+        "it": "Dopo aver finito di ciarlare,"
+      },
+      {
+        "testo": "A Scibilla a ghe fâ: basta coscì,",
+        "it": "La Sibilla gli fa: «Basta così,"
+      },
+      {
+        "testo": "Le zà tempo a quest'öa de continuâ",
+        "it": "È già ora a questo punto di continuare"
+      },
+      {
+        "testo": "A marcia avanti e nö fermäse chì.",
+        "it": "La marcia in avanti e non ferma qui"
+      },
+      {
+        "testo": "Animo dunque continuemmo a andâ,",
+        "it": "Animo dunque, continuiamo ad andare:"
+      },
+      {
+        "testo": "E mûagie di Ciclopi eccote lì;",
+        "it": "Le muraglie dei Ciclopi eccotele lì;"
+      },
+      {
+        "testo": "Sotto quello porton se passa ö fallo,",
+        "it": "Sotto quel portone si passa il varco,"
+      },
+      {
+        "testo": "Vanni dunque a attaccaghe ö tô regallo.",
+        "it": "Va' dunque ad attaccarvi il tuo regalo»."
+      },
+      {
+        "testo": "E coscì, tûtti döi, con passo avviôu",
+        "it": "E così, tutti e due, con passo avviato,"
+      },
+      {
+        "testo": "Ö poco spazio che restava ancon",
+        "it": "Il poco spazio che restava ancora"
+      },
+      {
+        "testo": "Pe ûn sentë tûtto ombroso han traversôu",
+        "it": "Per un sentiero tutto ombroso hanno attraversato,"
+      },
+      {
+        "testo": "E in t'ûn lampo se trœûvan da-o porton.",
+        "it": "E in un lampo si trovano dal portone."
+      },
+      {
+        "testo": "Enea ö l'occupa ö passo e arruxentôu",
+        "it": "Enea occupa il varco e, sciacquandosi"
+      },
+      {
+        "testo": "D'ægua fresca, coscì, per abblûzion,",
+        "it": "Con acqua fresca, così, per abluzione,"
+      },
+      {
+        "testo": "A reginn-a d'inferno a ramma d'ôu",
+        "it": "Alla regina dell'inferno il ramo d'oro"
+      },
+      {
+        "testo": "Ö consacra e ö ghe a lascia appeisa a ûn ciôu.",
+        "it": "Consacra e glielo lascia appeso a un chiodo."
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-2",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 3 parte 11",
+      "it": "I Campi Elisi "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "pubblico-dominio (autore deceduto nel 1904, oltre 70 anni)"
+    },
+    "frasi": [
+      {
+        "testo": "Fæto questo, se trœûvan finalmente",
+        "it": "Fatto questo, si trovano finalmente"
+      },
+      {
+        "testo": "In ti scîti feliçi e illuminæ",
+        "it": "Nei luoghi felici e illuminati"
+      },
+      {
+        "testo": "Da-o sorriso dö çê continuamente",
+        "it": "Dal sorriso del cielo continuamente,"
+      },
+      {
+        "testo": "Dove in mëzo da vëa feliçitæ",
+        "it": "Dove in mezzo alla vera felicità,"
+      },
+      {
+        "testo": "In continue delizie e dolcemente",
+        "it": "In continue delizie e dolcemente"
+      },
+      {
+        "testo": "Da i ciû pûri piaxei solletichæ,",
+        "it": "Dai più puri piaceri solleticate,"
+      },
+      {
+        "testo": "I beati se grattan e zenuggie",
+        "it": "Le anime beate si grattano le ginocchia"
+      },
+      {
+        "testo": "Senza penscieri né rottûe de cöggie.",
+        "it": "Senza pensieri né rotture di coglioni."
       }
     ]
   },
