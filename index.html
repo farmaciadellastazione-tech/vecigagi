@@ -2119,6 +2119,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"verbi", livello:"A1", it:"lei", sp:"le", cr:"lè, lelì, lelà", ge:"lê", ro:"ea" },
+      { tema:"verbi", livello:"A1", it:"lui| egli", en:"he", sp:"lü", cr:"lù, lulì, lulà", ge:"lê", ro:"el", verif:"cr:g,ge:g,sp:g" },
       { tema:"dialetti", livello:"A1", it:"rumeno", ge:"romen", ro:"român" },
       { tema:"dialetti", livello:"A1", it:"inglese", sp:"engrese", cr:"ingles", ge:"ingleise", ro:"engleză" },
       { tema:"saluti", livello:"A1", it:"buon pomeriggio", en:"good afternoon", ro:"bună după-amiază, bună ziua" },
@@ -2137,7 +2139,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"possesso", livello:"A1", it:"il cane è mio", sp:"ercani è ermeo/ er can i è er meo" },
       { tema:"famiglia", livello:"A1", it:"il mio cane", sp:"er'me kan/er me can" },
       { tema:"acquisto", livello:"A2", it:"a buon mercato", en:"cheap", es:"barato", pt:"barato", sp:"a bon páto", cr:"a bon mrcat", ge:"a buun mercouu/ a bon mercòu", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,ge:g", nt:["mn"] },
-      { tema:"dialogo", livello:"A1", it:"a presto", en:"see you", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", cr:"a prest", verif:"mn:g,sp:g" },
+      { tema:"dialogo", livello:"A1", it:"a presto", en:"see you soon", fr:"à bientôt", es:"hasta luego", de:"bis bald", pt:"até logo|ate logo", sp:"a presto", mn:"a prestu", cr:"a prest", ge:"a prèstu/a prèstu", verif:"mn:g,sp:g", ro:"pe curând" },
       { tema:"dialetti", it:"Scorrazzare", sp:"scoratae", mn:"zùnzu (a)", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"istruzioni", livello:"A2", it:"a stomaco vuoto", en:"on an empty stomach", fr:"à jeun", es:"en ayunas", de:"auf nüchternen Magen", pt:"em jejum", sp:"a stè'mégo vèito/a stèmego vèito", mn:"a stémagu véitu", cr:"a stom'c vot", ge:"a stômago vêutto", ko:"공복에", ar:"على معدة فارغة", zh:"空腹服用", ja:"空腹時", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
       { tema:"dialetti", livello:"A2", it:"abbassare", en:"lower", sp:"sbassae,abassà'e,/sbassae,abassae,", mn:"bassaa,sbassaa/basaa,zbasaa", cr:"abas'ar", ge:"bassâ", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g,cr:g" },
@@ -3936,7 +3938,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 515;
+const VOC_VERSION = 516;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
