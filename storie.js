@@ -14553,6 +14553,134 @@ const STORIE_DEFAULT = [
       {
         "testo": "Senza penscieri né rottûe de cöggie.",
         "it": "Senza pensieri né rotture di coglioni."
+      },
+      {
+        "testo": "Chi gh'é l'aia ciû limpida e ciû finn-a,",
+        "it": "Qui c'è l'aria più limpida e più fina,"
+      },
+      {
+        "testo": "E ö l'é ûn scîto ridente e illuminôu",
+        "it": "Ed è un luogo ridente e illuminato"
+      },
+      {
+        "testo": "Da ûnn-a luxe costante e porporinn-a",
+        "it": "Da una luce costante e porporina,"
+      },
+      {
+        "testo": "Cö sô sö, co-a sô lûnn-a e ö çê stellou",
+        "it": "Col suo sole, con la sua luna e il cielo stellato;"
+      },
+      {
+        "testo": "I beati stan lì co-a pansa pinn-a,",
+        "it": "I beati stan lì con la pancia piena,"
+      },
+      {
+        "testo": "Chi desteiso in sce l'erba e chi assettôu,",
+        "it": "Chi disteso sull'erba e chi seduto,"
+      },
+      {
+        "testo": "Chi discorrindo, chi fumando a pippa,",
+        "it": "Chi discorrendo, chi fumando la pipa,"
+      },
+      {
+        "testo": "Chi zûgando a-o becchello, a mûra, a lippa.",
+        "it": "Chi giocando al becchello, a morra, a lippa."
+      },
+      {
+        "testo": "Gh'é chi balla e chi canta e gh'an con lö",
+        "it": "C'è chi balla e chi canta, e hanno con loro"
+      },
+      {
+        "testo": "Di sunnœûi de chitära e de violin,",
+        "it": "Dei suonatori di chitarra e di violino,"
+      },
+      {
+        "testo": "E pe fâghe da guidda e direttö",
+        "it": "E per fargli da guida e direttore"
+      },
+      {
+        "testo": "Gh'an ö celebre meistro Corbellîn",
+        "it": "Hanno il celebre maestro Corbellino,"
+      },
+      {
+        "testo": "Che c'unn-a giacca che a traluxe a-o sö",
+        "it": "Che con una giacca che riluce al sole,"
+      },
+      {
+        "testo": "Ö spellinsiga e cörde all'amandoin",
+        "it": "Strimpella le corde al mandolino"
+      },
+      {
+        "testo": "E ö ghe canta e canzoin ciû commoventi",
+        "it": "E canta loro le canzoni più commoventi"
+      },
+      {
+        "testo": "Da povia vegia che a n'ha ciû de denti.",
+        "it": "Della povera vecchia che non ha più denti."
+      },
+      {
+        "testo": "Chì de Teucro ghe stâ a generazion",
+        "it": "Qui sta la discendenza di Teucro,"
+      },
+      {
+        "testo": "In bellezza famosa e vigôria,",
+        "it": "Famosa in bellezza e vigoria,"
+      },
+      {
+        "testo": "Tûtti eroi ch'ëan vivendo: ö Bodisson,",
+        "it": "Tutti eroi che erano quand'erano in vita : il Bodissone,"
+      },
+      {
+        "testo": "Gaitanin de scciûppette, ö Cecco, ö Drîa,",
+        "it": "Gaetanino delle schioppette, Cecco, Andrea,"
+      },
+      {
+        "testo": "Tûtta gente de pöso e condizion,",
+        "it": "Tutta gente di polso e altolocata,"
+      },
+      {
+        "testo": "Conoscenze de Paxo e S. Andrîa,",
+        "it": "Conoscenze del Palazzo Ducale e di Sant'Andrea,"
+      },
+      {
+        "testo": "Che regnando pe-a Chêulloa e pe Portoia",
+        "it": "Che dominando per la Chêulloa e per Portoria"
+      },
+      {
+        "testo": "Han misso i primmi fondamenti a Troia",
+        "it": "Hanno messo i primi fondamenti a Troia!"
+      },
+      {
+        "testo": "Mentre lö stan lì in paxe a fâ croxette",
+        "it": "Mentre loro se ne stanno lì in pace a fare crocette,"
+      },
+      {
+        "testo": "Veddan e cöse ciû apprexiæ ne-a vitta,",
+        "it": "Vedono le cose più apprezzate nella vita:"
+      },
+      {
+        "testo": "Chi de strasse, dî færi, de scciûpette,",
+        "it": "Chi degli stracci, dei vecchi ferri, degli schioppetti,"
+      },
+      {
+        "testo": "Chi de mëze de grappa e d'æguavitta,",
+        "it": "Chi mezze caraffe di grappa e d'acquavite,"
+      },
+      {
+        "testo": "Chi de risme de laudi e canzonette",
+        "it": "Chi risme di laudi e canzonette"
+      },
+      {
+        "testo": "A Madonna dö Carmo e a S. Zitta,",
+        "it": "Alla Madonna del Carmine e a Santa Zita;"
+      },
+      {
+        "testo": "Perché i gusti che i vivi han coltivæ",
+        "it": "Perché i gusti che i vivi hanno coltivato"
+      },
+      {
+        "testo": "Nö se i scordan mai ciû manco creppæ",
+        "it": "Non se li scordano mai più, manco da crepati."
       }
     ]
   },
