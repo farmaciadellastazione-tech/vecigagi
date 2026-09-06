@@ -14681,6 +14681,70 @@ const STORIE_DEFAULT = [
       {
         "testo": "Nö se i scordan mai ciû manco creppæ",
         "it": "Non se li scordano mai più, manco da crepati."
+      },
+      {
+        "testo": "Ghe n'é di âtri a man drîta e a man mancinn-a",
+        "it": "Ce ne sono altri a destra e a sinistra"
+      },
+      {
+        "testo": "In sce l'erba desteisi a celebrâ",
+        "it": "Sull'erba distesi a celebrare"
+      },
+      {
+        "testo": "Di tascelli de torta pasqualinn-a",
+        "it": "Dei tasselli di torta pasqualina,"
+      },
+      {
+        "testo": "Vêuando zû bottiggioin de vin nostrâ;",
+        "it": "Vuotando giù bottiglioni di vino nostrale;"
+      },
+      {
+        "testo": "Stan a-o fresco, a redosso a ûnn-a colinn-a",
+        "it": "Se ne stanno al fresco, a ridosso d'una collina"
+      },
+      {
+        "testo": "Da di ofœûggi e mortin tûtta ombrezzâ,",
+        "it": "Da allori e mirto tutta ombreggiata,"
+      },
+      {
+        "testo": "Donde ha origine ö Po, che cö-i sô flûtti",
+        "it": "Donde ha origine il Po, che con i suoi flutti,"
+      },
+      {
+        "testo": "Quando a ghe monta, ö rompe e cöggie a tûtti",
+        "it": "Quando gli monta, rompe le balle a tutti."
+      },
+      {
+        "testo": "Questi son quelli eroi che combattendo",
+        "it": "Questi sono quegli eroi che combattendo"
+      },
+      {
+        "testo": "Pe a patria ö sô sangue han prodigôu,",
+        "it": "Per la patria il proprio sangue hanno prodigato,"
+      },
+      {
+        "testo": "I ministri da Gexa, i quæ vivendo",
+        "it": "I ministri della Chiesa, i quali vivendo"
+      },
+      {
+        "testo": "Né in pensciero né in fæto han fornicôu",
+        "it": "Né in pensiero né di  fatto hanno fornicato,"
+      },
+      {
+        "testo": "I poeti che a voxe o che scrivendo",
+        "it": "I poeti che a voce o scrivendo"
+      },
+      {
+        "testo": "Cose degne de fama han perpetrôu,",
+        "it": "Cose degne di fama hanno perpetrato,"
+      },
+      {
+        "testo": "Chi ha scoverto dö nœûvo in fæto d'arte,",
+        "it": "Chi ha scoperto qualcosa di nuovo in fatto d'arte,"
+      },
+      {
+        "testo": "Chi fra i ommi ha avûo nomme e fæto carte.",
+        "it": "Chi tra gli uomini ha avuto nome e ha fatto la grana."
       }
     ]
   },
