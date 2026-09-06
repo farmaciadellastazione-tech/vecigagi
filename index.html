@@ -2119,6 +2119,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"lavoro", livello:"B1", it:"maniera", sp:"manéa", cr:"manera", ge:"manëa" },
+      { tema:"natura", livello:"A1", it:"terra", en:"earth", sp:"tèra", mn:"tera", cr:"tera", ge:"tæra" },
       { tema:"verbi", livello:"A1", it:"che cosa", en:"what", ge:"cöse" },
       { tema:"verbi", livello:"A1", it:"lei", sp:"le", cr:"lè, lelì, lelà", ge:"lê", ro:"ea" },
       { tema:"verbi", livello:"A1", it:"lui| egli", en:"he", sp:"lü", cr:"lù, lulì, lulà", ge:"lê", ro:"el", verif:"cr:g,ge:g,sp:g" },
@@ -2504,7 +2506,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", it:"cavalcare/andare in", en:"ride", sp:"cavarcae", cr:"cavalcar", ge:"montâ", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g", nt:["mn"] },
       { tema:"verbi", livello:"A2", it:"cavalcare|andare in", en:"ride", fr:"monter|faire du", es:"montar|andar en", de:"reiten|fahren", pt:"andar de|cavalgar", ru:"ехать|скакать", ca:"muntar|anar en", sp:"cavarcae", cr:"montar, cavalcar", ge:"montâ", la:"equitare", grc:"ἱππεύειν", nt:["mn"], verif:"cr:g" },
       { tema:"animali", livello:"A2", it:"cavalletta", en:"grasshopper", fr:"sauterelle", es:"saltamontes", de:"Heuschrecke", pt:"gafanhoto", sp:"catainéta", mn:"catainéta", cr:"grid, cavadeta, grida", ge:"cattainetta", ia:"locusta", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
-      { tema:"animali", livello:"A1", it:"cavallo", en:"horse", fr:"cheval", es:"caballo", de:"Pferd", pt:"cavalo", ru:"лошадь", ca:"cavall", sp:"cavalo", mn:"cavalu", cr:"cavad", ge:"cavallo", ko:"말", ar:"حصان", zh:"马", ja:"馬", ia:"cavallo", verif:"mn:g,sp:g,cr:g" },
+      { tema:"animali", livello:"A1", it:"cavallo", en:"horse", fr:"cheval", es:"caballo", de:"Pferd", pt:"cavalo", ru:"лошадь", ca:"cavall", sp:"cavalo", mn:"cavalu", cr:"cavad", ge:"cavalu/cavallo", ko:"말", ar:"حصان", zh:"马", ja:"馬", ia:"cavallo", verif:"mn:g,sp:g,cr:g,ge:g" },
       { tema:"animali", it:"cavalluccio marino", en:"seahorse", sp:"cavaleto de mae", mn:"cavalu de ma", ge:"cavallo mæn", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
       { tema:"casa", livello:"B1", it:"cavatappi", en:"corkscrew", fr:"tire-bouchon", es:"sacacorchos", de:"Korkenzieher", pt:"saca-rolhas", sp:"tiabüssòn", mn:"tiabüssun/tiabüsun", cr:"tirabus'on, cavatapi", ge:"tirabuscion ", verif:"sp:g,mn:g" },
       { it:"cavatore", sp:"cavatò'e/cavatoe", cr:"cavator", verif:"sp:g", nt:["mn"] },
@@ -2824,7 +2826,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"fiera", en:"fair", fr:"foire", es:"feria", de:"Messe", pt:"feira", sp:"féa", mn:"fiéa", cr:"fiera", ge:"feaa/fea", src:{"mn":"🤖 IA","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"giorni", livello:"A1", it:"figlia", en:"daughter", fr:"fille", es:"hija", de:"Tochter", pt:"filha", ru:"дочь", ca:"filla", sp:"figia", mn:"figia", cr:"fiola", ge:"figgeua", ko:"딸", ar:"ابنة", zh:"女儿", ja:"娘", ia:"filia", la:"filia", grc:"θυγάτηρ", verif:"mn:g", ro:"fiică" },
       { tema:"famiglia", livello:"A2", it:"figlio", en:"son", fr:"fils", es:"hijo", de:"Sohn", pt:"filho", ru:"сын", ca:"fill", sp:"figio", mn:"figiu", cr:"fiol", ge:"figgio", ko:"아들", ar:"ابن", zh:"儿子", ja:"息子", ia:"filio", la:"filius", grc:"υἱός", verif:"mn:g,sp:g", ro:"fiu" },
-      { it:"figliolo", cr:"fiol", nt:["mn"] },
       { tema:"dialogo", livello:"A2", it:"figura/quadro", en:"picture", fr:"image|tableau", es:"imagen|cuadro", de:"Bild", pt:"imagem|quadro", ru:"картина|изображение", ca:"imatge|quadre", sp:"feghiua/fegüa", mn:"fegùua/fegua", cr:"figura", verif:"mn:g,cr:g" },
       { tema:"aggettivi", livello:"B2", it:"filosofia", en:"philosophy", fr:"philosophie", es:"filosofía", de:"Philosophie", pt:"filosofia", cr:"filosofia", ko:"철학", ar:"فلسفة", zh:"哲学", ja:"哲学", ia:"philosophia", la:"philosophia", grc:"φιλοσοφία", nt:["mn"], verif:"cr:g" },
       { tema:"mestieri", livello:"A2", it:"filosofo", en:"philosopher", fr:"philosophe", es:"filósofo", de:"Philosoph", pt:"filósofo|filosofo", cr:"filosof", ko:"철학자", ar:"فيلسوف", zh:"哲学家", ja:"哲学者", ia:"philosopho", la:"philosophus", grc:"φιλόσοφος", nt:["mn"] },
@@ -3671,7 +3672,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"animali", livello:"A1", it:"telefono", en:"phone", fr:"téléphone", es:"teléfono", de:"Telefon", pt:"telefone", ru:"телефон", ca:"telèfon", ko:"전화", ar:"هاتف", zh:"电话", ja:"電話", ia:"telephono", la:"telephonium", grc:"τηλέφωνο" },
       { tema:"natura", livello:"A1", it:"temperatura", en:"temperature", fr:"température", es:"temperatura", de:"Temperatur", pt:"temperatura", ru:"температура", ca:"temperatura", ko:"온도", ar:"درجة الحرارة", zh:"温度", ja:"気温", ia:"temperatura", la:"temperatura", grc:"θερμοκρασία" },
       { tema:"luoghi", livello:"A2", it:"tempio", en:"temple", fr:"temple", es:"templo", de:"Tempel", pt:"templo", ko:"신전", ar:"معبد", zh:"寺庙", ja:"神殿", ia:"templo", la:"templum", grc:"ναός" },
-      { tema:"natura", livello:"A1", it:"tempo", en:"weather", fr:"temps", es:"tiempo", de:"Wetter", pt:"tempo", ru:"погода", ca:"temps", mn:"tempu", cr:"tenp", verif:"mn:g" },
+      { tema:"natura", livello:"A1", it:"tempo", en:"weather", fr:"temps", es:"tiempo", de:"Wetter", pt:"tempo", ru:"погода", ca:"temps", sp:"tenpo", mn:"tempu", cr:"tenp", ge:"tempu/tempo", verif:"mn:g" },
       { tema:"natura", livello:"A2", it:"temporale", en:"storm", fr:"orage|tempête", es:"tormenta", de:"Sturm", pt:"tempestade", ru:"буря|гроза", ca:"tempesta" },
       { tema:"verbi", livello:"A2", it:"tennis", en:"tennis", fr:"tennis", es:"tenis", de:"Tennis", pt:"tênis|tenis", ru:"теннис", ca:"tenis", ko:"테니스", ar:"تنس", zh:"网球", ja:"テニス", ia:"tennis" },
       { tema:"cosmetica", livello:"B1", it:"termometro", en:"thermometer", fr:"thermomètre", es:"termómetro", de:"Thermometer", pt:"termômetro|termometro", ko:"체온계", ar:"ميزان الحرارة", zh:"体温计", ja:"体温計" },
@@ -3939,7 +3940,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 517;
+const VOC_VERSION = 518;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
