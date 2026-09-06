@@ -2119,6 +2119,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"verbi", livello:"A1", it:"che cosa", en:"what", ge:"cöse" },
       { tema:"verbi", livello:"A1", it:"lei", sp:"le", cr:"lè, lelì, lelà", ge:"lê", ro:"ea" },
       { tema:"verbi", livello:"A1", it:"lui| egli", en:"he", sp:"lü", cr:"lù, lulì, lulà", ge:"lê", ro:"el", verif:"cr:g,ge:g,sp:g" },
       { tema:"dialetti", livello:"A1", it:"rumeno", ge:"romen", ro:"român" },
@@ -2632,7 +2633,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialetti", livello:"A2", it:"cortese", en:"polite", sp:"cortese", mn:"curteze", cr:"zentil", ge:"cortêze", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"aggettivi", livello:"A1", it:"corto", en:"short", fr:"court", es:"corto", de:"kurz", pt:"curto", ru:"короткий", ca:"curt", sp:"cürto", mn:"cürtu", cr:"curt", ge:"curto", ko:"짧은", ar:"قصير", zh:"短", ja:"短い", ia:"curte", la:"brevis", grc:"βραχύς", verif:"mn:g" },
       { tema:"animali", it:"corvo", sp:"cròo", cr:"crò, corv, grac'", ge:"crovo", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
-      { tema:"dialetti", it:"cosa", sp:"cose", cr:"cos", ge:"câza, còza", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
+      { tema:"dialetti", it:"cosa", sp:"cose", cr:"cos", ge:"cösa", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"saluti", livello:"A1", it:"cosa c'è oggi?", en:"what's up", fr:"qu'est-ce qu'il y a", es:"¿qué hay", de:"was gibt's", pt:"o que há", ca:"què hi ha", sp:"cös'i gh'è anché", mn:"kuse ghe anchè/cuse gh'é anchè", ge:"cöse gh'é ancheu", ia:"què hay", la:"quid est", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"ce este" },
       { tema:"saluti", livello:"A1", it:"cosa fai|cosa stai facendo", en:"what do you do|what are you doing", fr:"qu'est-ce que tu fais", es:"¿qué haces", de:"was machst du", pt:"o que você faz", ca:"què fas", sp:"costefé", ge:"cösa ti fæ", la:"quid agis", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g", ro:"ce faci" },
       { tema:"saluti", livello:"A1", it:"cosa vuoi", en:"what do you want", fr:"qu'est-ce que vous voulez", es:"¿qué quieres", de:"was willst du", pt:"o que você quer", ru:"что ты хочешь", ca:"què vols", sp:"coss'te vé| costevé", mn:"cus te ve", ge:"cöse ti veu", ko:"뭐가 필요해?", ar:"ماذا تريد", zh:"你想要什么", ja:"何が欲しい", ia:"què vules", la:"quid vis", grc:"τί θέλεις", src:{"mn":"🤖doni"}, verif:"mn:g", ro:"ce vrei" },
@@ -3575,8 +3576,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"sognare|sogno", en:"dream", fr:"rêve|rêver", es:"sueño|soñar", de:"Traum|träumen", pt:"sonho|sonhar", ru:"сон|мечта|мечтать", ca:"somni|somiar", sp:"somiaae|somio/somiae|somio", mn:"sunia'a/sùgnaa|sugnu", cr:"sognar", ge:"assunasse/assunnâse", verif:"sp:g,mn:g,ge:g", ro:"a visa" },
       { tema:"aggettivi", livello:"B1", it:"sogno", en:"dream", fr:"rêve", es:"sueño", de:"Traum", pt:"sonho", ru:"мечта|сон", ca:"somni", sp:"somio", mn:"sugnu", ge:"seunno", ko:"꿈", ar:"حلم", zh:"梦", ja:"夢", ia:"somnio", la:"somnium", grc:"ὄνειρος", verif:"mn:g,sp:g,ge:g", ro:"vis" },
       { tema:"mestieri", livello:"A2", it:"soldato", en:"soldier", fr:"soldat", es:"soldado", de:"Soldat", pt:"soldado", ru:"солдат", ca:"soldat", sp:"sordà|sordato", mn:"surdatu", ge:"sordatto", ko:"군인", ar:"جندي", zh:"士兵", ja:"兵士", ia:"soldato", la:"miles", grc:"στρατιώτης", src:{"mn":"🤖 IA"}, verif:"mn:g" },
-      { tema:"natura", livello:"A1", it:"sole", en:"sun", fr:"soleil", es:"sol", de:"Sonne", pt:"sol", ru:"солнце", ca:"sol", sp:"só", mn:"suhu/suu", cr:"sol", ko:"태양", ar:"شمس", zh:"太阳", ja:"太陽", ia:"sol", la:"sol", grc:"ἥλιος", verif:"sp:g,mn:g" },
-      { tema:"natura", livello:"A2", it:"soleggiato", en:"sunny", fr:"ensoleillé", es:"soleado", de:"sonnig", pt:"ensolarado", ru:"солнечный", ca:"assolellat", sp:"sói'già/soigià", mn:"suidu", verif:"sp:g,mn:g" },
+      { tema:"natura", livello:"A1", it:"sole", en:"sun", fr:"soleil", es:"sol", de:"Sonne", pt:"sol", ru:"солнце", ca:"sol", sp:"só", mn:"suhu/suu", cr:"sol", ge:"sô", ko:"태양", ar:"شمس", zh:"太阳", ja:"太陽", ia:"sol", la:"sol", grc:"ἥλιος", verif:"sp:g,mn:g" },
+      { tema:"natura", livello:"A2", it:"soleggiato", en:"sunny", fr:"ensoleillé", es:"soleado", de:"sonnig", pt:"ensolarado", ru:"солнечный", ca:"assolellat", sp:"sói'già/soigià", mn:"suidu", ge:"assoiggiou", verif:"sp:g,mn:g" },
       { tema:"aggettivi", livello:"B1", it:"solitario", en:"lonely", fr:"solitaire|seul", es:"solitario", de:"einsam", pt:"solitário", ru:"одинокий", ca:"solitari", sp:"solitaio", verif:"sp:g" },
       { tema:"aggettivi", livello:"A2", it:"solito", en:"usual", fr:"habituel", es:"habitual", de:"üblich", pt:"habitual", ru:"обычный", ca:"habitual", sp:"solito", verif:"sp:g" },
       { tema:"aggettivi", livello:"A2", it:"solo", en:"alone", fr:"seul", es:"solo", de:"allein", pt:"sozinho", ru:"один|одинокий", ca:"sol", sp:"solo", mn:"sulu", cr:"sol", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
@@ -3938,7 +3939,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 516;
+const VOC_VERSION = 517;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
