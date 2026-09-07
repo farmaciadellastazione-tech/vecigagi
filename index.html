@@ -2119,6 +2119,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"corpo", livello:"A1", it:"mente", sp:"mente", cr:"menta", ge:"mente" },
       { tema:"natura", livello:"B1", it:"inferno", en:"hell", sp:"inferno, enferno", mn:"infernu", cr:"'nfern", ge:"infernu/inferno", verif:"ge:g,cr:g,sp:g,mn:g" },
       { tema:"tempo", livello:"A1", it:"momento", en:"moment", sp:"momento", mn:"mumëntu", cr:"moment", ge:"muˈmentu/momento", verif:"sp:g,ge:g,cr:g,mn:g" },
       { tema:"lavoro", livello:"B1", it:"maniera", en:"manner", sp:"manéa", mn:"maniéa", cr:"manera", ge:"manëa" },
@@ -3944,7 +3945,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 521;
+const VOC_VERSION = 522;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
