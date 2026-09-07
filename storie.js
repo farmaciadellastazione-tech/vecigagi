@@ -15513,6 +15513,102 @@ const STORIE_DEFAULT = [
       {
         "testo": "E ö destin che dev'ëse ö tô retaggio.",
         "it": "E il destino che dev'essere il tuo retaggio»."
+      },
+      {
+        "testo": "Aoa ammicchite là quello boenetto",
+        "it": "Ora guarda là quel giovanotto"
+      },
+      {
+        "testo": "Che in sce ûn bacco, cö brassö ö sta appoggiôu!",
+        "it": "Che sopra un'asta, col braccio se ne sta appoggiato!"
+      },
+      {
+        "testo": "Ebben, quello ö l'é ö primmo, anzi ö cadetto",
+        "it": "Ebbene, quello è il primo, anzi il cadetto"
+      },
+      {
+        "testo": "Che in tö Lazio da tì ö sä generôu,",
+        "it": "Che nel Lazio da te sarà generato,"
+      },
+      {
+        "testo": "E che mollo de gambe e zà bûscetto,",
+        "it": "E che mollo di gambe e già vecchiotto,"
+      },
+      {
+        "testo": "Ti aviæ insemme a Lavinia ìmmanegôu,",
+        "it": "Avrai insieme a Lavinia immanicato,"
+      },
+      {
+        "testo": "In tö mette a profitto a sön de sö,",
+        "it": "Nel mettere a profitto a furia di sudore,"
+      },
+      {
+        "testo": "Quella, dîta cöscì, botta dö Lö.",
+        "it": "Quella, così detta, botta del lupo."
+      },
+      {
+        "testo": "Lê fêua di boschi pilottôu da moæ,",
+        "it": "Lui fuori dai boschi tirato su dalla madre,"
+      },
+      {
+        "testo": "Misso a-i asili ed allevôu con cûa,",
+        "it": "Messo agli asili ed allevato con cura,"
+      },
+      {
+        "testo": "Ö sä ö re d'Alba e in conseguenza o poæ",
+        "it": "Sarà il re d'Alba e in conseguenza il padre"
+      },
+      {
+        "testo": "D'ûnn-a scciatta de re de sö fattûa;",
+        "it": "D'una stirpe di re della sua stessa fattura;"
+      },
+      {
+        "testo": "Scilidoi comme lë sän nominæ",
+        "it": "Silvii come lui saran nominati"
+      },
+      {
+        "testo": "I rampolli da tô progenitûa,",
+        "it": "I rampolli della tua progenitura,"
+      },
+      {
+        "testo": "Che sciortii da-o tô sangue, avian comando",
+        "it": "Che usciti dal tuo sangue avranno comando"
+      },
+      {
+        "testo": "In sce popoli e re pe chi sa quando.",
+        "it": "Sopra popoli e re per chissà quanto."
+      },
+      {
+        "testo": "Quello ö l'e Bülla che ghe ven derê,",
+        "it": "Quello è Proca che gli viene dietro,"
+      },
+      {
+        "testo": "Da prosapia de Troia, insigne onö,",
+        "it": "Della prosapia di Troia, insigne onore,"
+      },
+      {
+        "testo": "E quell'âtro ö l'é ö Zöbbö e dietro a lê",
+        "it": "E quell'altro è Capi e dietro a lui"
+      },
+      {
+        "testo": "Ecco l'ombra e ö profî de Numitö,",
+        "it": "Ecco l'ombra e il profilo di Numitore,"
+      },
+      {
+        "testo": "E gh'é ven Silvio Enea proprio a-o panê,",
+        "it": "E gli viene Silvio Enea proprio al paniere,"
+      },
+      {
+        "testo": "Che ö rinnêuva ö tô nomme e ö fâ dö fö",
+        "it": "Che rinnova il tuo nome e lo fa risplendere,"
+      },
+      {
+        "testo": "E non meno de tì, ö sä forte e bön,",
+        "it": "E non meno di te sarà forte e buono,"
+      },
+      {
+        "testo": "Se ghe riesce a ëse re da sô naziön.",
+        "it": "Se gli riesce di essere re della sua nazione."
       }
     ]
   },
