@@ -15609,6 +15609,134 @@ const STORIE_DEFAULT = [
       {
         "testo": "Se ghe riesce a ëse re da sô naziön.",
         "it": "Se gli riesce di essere re della sua nazione."
+      },
+      {
+        "testo": "Aoa amïte ûn pittin che sacramenti",
+        "it": "Ora guarda un pochino che sacramenti"
+      },
+      {
+        "testo": "Sön i rampolli che te devan nasce!",
+        "it": "Sono i rampolli che ti devono nascere!"
+      },
+      {
+        "testo": "Solo a veddili pân tanti aççidenti",
+        "it": "Solo a vederli sembrano tanti accidenti"
+      },
+      {
+        "testo": "Cön sti pêti, sti colli, e ste ganasce,",
+        "it": "Con questi petti, questi colli e queste ganasce,"
+      },
+      {
+        "testo": "E pêuan dî a sô raxon zà fêua di denti",
+        "it": "E possono dire la loro ragione già fuori dai denti"
+      },
+      {
+        "testo": "Benché seggian ancön tante bardasce,",
+        "it": "Benché siano ancora tanti marmocchi,"
+      },
+      {
+        "testo": "Aoa famme ö piaxei d'ammiâ ûn pittin",
+        "it": "Ora fammi il piacere di guardare un pochino"
+      },
+      {
+        "testo": "Quelli âtri pertegoin c'han da vixin.",
+        "it": "Quegli altri perticoni  che hanno lì vicino."
+      },
+      {
+        "testo": "Ti veddi quelli lâ, c'han ûnn-a frasca",
+        "it": "Li vedi quelli là, che hanno una frasca"
+      },
+      {
+        "testo": "D'erxo in sce a testa che a ghe fâ coronn-a?",
+        "it": "Di leccio sulla testa che gli fa  corona?"
+      },
+      {
+        "testo": "Regnan parte in Cicagna e Borzonasca",
+        "it": "Regnano parte a Cicagna e Borzonasca"
+      },
+      {
+        "testo": "E in tûtta a valle de Fontannabonn-a,",
+        "it": "E in tutta la val Fontanabuona,"
+      },
+      {
+        "testo": "Parte, gente de mâ, gente riveasca.",
+        "it": "Parte, gente di mare, gente riveasca,"
+      },
+      {
+        "testo": "Commensando dä Spezza e andâ a Savonn-a,",
+        "it": "Cominciando da Spezia per andare a Savona,"
+      },
+      {
+        "testo": "Fondiâ Vötri, Varazze e Arbissœûa,",
+        "it": "Fonderà Voltri, Varazze e Albisola,"
+      },
+      {
+        "testo": "Ciavai, Sestri, Monegia e Bonassœûa,",
+        "it": "Chiavari, Sestri, Moneglia e Bonassola,"
+      },
+      {
+        "testo": "Ecco là, accompagnôu da-o sô messiao,",
+        "it": "Ecco là, accompagnato da suo nonno,"
+      },
+      {
+        "testo": "Ven Romolo che Romma ö fabbrichiâ,",
+        "it": "Viene Romolo che Roma fonderà,"
+      },
+      {
+        "testo": "Omonimo consorte de Cönâ,",
+        "it": "Omonimo consorte di Cona,"
+      },
+      {
+        "testo": "Ö nasciâ dä Pacciûga e da-o sô cäo",
+        "it": "Nascerà dalla Pacciûga e dal suo caro;"
+      },
+      {
+        "testo": "Ö l'ha ûn elmo in sce a testa, ornôu da ûn pao",
+        "it": "Ha un elmo sopra la testa, ornato da un paio"
+      },
+      {
+        "testo": "De ciûmme dríte de manea che pâ",
+        "it": "Di piume dritte di maniera che pare"
+      },
+      {
+        "testo": "(No sô per cose) ö Paddre Eterno in Çê",
+        "it": "(Non so perché) il Padre Eterno in Cielo"
+      },
+      {
+        "testo": "Ö vêugge mette zà vixin a lë.",
+        "it": "Lo voglia mettere già vicino a sé."
+      },
+      {
+        "testo": "Questo ö sä quell'eroe tûtto d'un pesso,",
+        "it": "Questo sarà quell'eroe tutto d'un pezzo,"
+      },
+      {
+        "testo": "Che â fortûnn-a de Romma ö dä l'avvio,",
+        "it": "Che alla fortuna di Roma darà l'avvio,"
+      },
+      {
+        "testo": "Romma a quæ sette monti a-o tempo stesso",
+        "it": "Roma la quale sette monti allo stesso tempo"
+      },
+      {
+        "testo": "A rinserriâ co-i sô baluardi in gîo,",
+        "it": "Rinchiuderà con i suoi baluardi attorno,"
+      },
+      {
+        "testo": "E che ö mondo, pe drîto o pe refesso",
+        "it": "E che il mondo, per dritto o per rovescio,"
+      },
+      {
+        "testo": "A tegniâ scciavo e in te sô man riûnio,",
+        "it": "Terrà schiavo e nelle sue mani riunito,"
+      },
+      {
+        "testo": "Moæ feliçe d'eroi cöscì famösi,",
+        "it": "Madre felice d'eroi così famosi,"
+      },
+      {
+        "testo": "Che i maligni ciammian tanti batösi.",
+        "it": "Che i maligni chiameranno tanti teppisti."
       }
     ]
   },
