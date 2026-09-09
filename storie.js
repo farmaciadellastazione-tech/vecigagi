@@ -15737,6 +15737,166 @@ const STORIE_DEFAULT = [
       {
         "testo": "Che i maligni ciammian tanti batösi.",
         "it": "Che i maligni chiameranno tanti teppisti."
+      },
+      {
+        "testo": "E cöscî dove a l'é, doppo a sô morte,",
+        "it": "E così dov'è, dopo la sua morte,"
+      },
+      {
+        "testo": "A moæ primma d'innumeri Parodi",
+        "it": "La prima madre di innumerevoli Parodi"
+      },
+      {
+        "testo": "Orgogliosa a l'andiâ da propria sorte,",
+        "it": "Orgogliosa andrà della propria sorte,"
+      },
+      {
+        "testo": "Che a l'ha fæta mammà de tanti prodi,",
+        "it": "Che l'ha fatta mamma di tanti prodi,"
+      },
+      {
+        "testo": "Figgi d'ûn paise laborioso e forte,",
+        "it": "Figli d'un paese laborioso e forte,"
+      },
+      {
+        "testo": "Che quæxi tûtti han guadagnôu di sodi",
+        "it": "Che quasi tutti han guadagnato dei soldi"
+      },
+      {
+        "testo": "E s'han fæto ûnn-a certa rinomanza",
+        "it": "E si sono fatti una certa rinomanza"
+      },
+      {
+        "testo": "In ta scienza, in te l'arte, in ta finanza.",
+        "it": "Nella scienza, nell'arte, nella finanza."
+      },
+      {
+        "testo": "Aoa alloccio figgiêu, fanni attenzion",
+        "it": "Ora all'occhio figliolo, fa' attenzione"
+      },
+      {
+        "testo": "A to gente che in Romma a l'é nasciûa,",
+        "it": "Alla tua gente che a Roma è nata,"
+      },
+      {
+        "testo": "Ecco Cesare ed ecco ûn battaglion",
+        "it": "Ecco Cesare ed ecco un battaglione"
+      },
+      {
+        "testo": "Tûtta stirpe de Giûlio e sò natûa,",
+        "it": "Tutta stirpe di Giulio e sua natura,"
+      },
+      {
+        "testo": "Ecco Cesare Augusto, ecco ö campion",
+        "it": "Ecco Cesare Augusto, ecco il campione"
+      },
+      {
+        "testo": "Che ö sä ö colmo da to progenitûa,",
+        "it": "Che sarà il colmo della tua progenitura,"
+      },
+      {
+        "testo": "Tante votte annunziôu dä profescîa,",
+        "it": "Tante volte annunziato dalla profezia,"
+      },
+      {
+        "testo": "Tanto tempo aspetôu, comme Mescîa.",
+        "it": "Tanto tempo aspettato, come Messia."
+      },
+      {
+        "testo": "Pe lë ö secolo d'ôu torniâ a rinasce",
+        "it": "Per lui il secolo d'oro tornerà a rinascere"
+      },
+      {
+        "testo": "E andiâ e cose dö mondo in sce culisse,",
+        "it": "E andranno le cose del mondo sui binari,"
+      },
+      {
+        "testo": "Comme quande nö gh'ëa sbiri né tasce,",
+        "it": "Come quando non c'erano sbirri né tasse,"
+      },
+      {
+        "testo": "E che i chen se ligavan co-e säsisse,",
+        "it": "E che i cani si legavano con le salsicce,"
+      },
+      {
+        "testo": "Da-o tramonto dö sö fin döve ö nasce,",
+        "it": "Dal tramonto del sole fino a dove nasce,"
+      },
+      {
+        "testo": "Ö nö tiâ ûnn-a sasciâ che ö nö l'arisse",
+        "it": "Non tirerà una sassata che non colga nel segno,"
+      },
+      {
+        "testo": "E da Pentema a-o ponte de Conchette",
+        "it": "E da Pentema al ponte di Conchette"
+      },
+      {
+        "testo": "Ö sô impero a sô ciôta ö saviâ mette",
+        "it": "Il suo impero, la sua impronta saprà mettere."
+      },
+      {
+        "testo": "Me pâ zà de sentî da sô vegnûa",
+        "it": "Mi pare già di sentire che alla sua venuta,"
+      },
+      {
+        "testo": "Solo all'annunzio che ne fâ i profeti,",
+        "it": "Solo all'annunzio che ne fanno i profeti,"
+      },
+      {
+        "testo": "Tûtto Traxo, Bergeggi e Recco e Rûa,",
+        "it": "Tutto Traso, Bergeggi e Recco e Ruta,"
+      },
+      {
+        "testo": "Da-o spaghetto vegnî calmi e mansueti",
+        "it": "Dalla paura diventare calmi e mansueti,"
+      },
+      {
+        "testo": "E ö Besagno, che ö rompe e che ö derûa",
+        "it": "E il Bisagno, che rompe gli argini e che distrugge"
+      },
+      {
+        "testo": "In te l'impeto sô, case e vigneti,",
+        "it": "Nel suo impeto case e vigneti,"
+      },
+      {
+        "testo": "A notizia, sentî serrase ö zielo,",
+        "it": "Alla notizia, sentirsi stringere il culo,"
+      },
+      {
+        "testo": "Sciûgase tûtto e diventâ ûn piscioëlo.",
+        "it": "Asciugarsi tutto e diventare una pisciatina."
+      },
+      {
+        "testo": "Tanto mai non ha fæto e giamminôu",
+        "it": "Tanto mai non ha fatto e penato"
+      },
+      {
+        "testo": "Quello batösö de Guerrin Meschin,",
+        "it": "Quel teppista del Guerrin Meschino,"
+      },
+      {
+        "testo": "Quando a-i erboi dö sö ö s'e incamminôu",
+        "it": "Quando verso gli alberi del sole si è incamminato"
+      },
+      {
+        "testo": "Debellando di möstri e di assascin,",
+        "it": "Debellando mostri e assassini,"
+      },
+      {
+        "testo": "Re Carlo in Fransa quando ö l'ha ciantôu",
+        "it": "Né Re Carlo in Francia quando l'ha piantato"
+      },
+      {
+        "testo": "In tö streppo di turchi e saracin,",
+        "it": "Nel culo ai turchi e saraceni,"
+      },
+      {
+        "testo": "Né ö famoso Barudda in ta genûina",
+        "it": "Né il famoso Barudda nella sua genuina"
+      },
+      {
+        "testo": "Sô epopea, sceneggiâ da-o Cincinina.",
+        "it": "Epopea, sceneggiata dal Cincinina."
       }
     ]
   },
