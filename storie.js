@@ -15897,6 +15897,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Sô epopea, sceneggiâ da-o Cincinina.",
         "it": "Epopea, sceneggiata dal Cincinina."
+      },
+      {
+        "testo": "Ma chi ö l'é quello vegio aççidentôu,",
+        "it": "Ma chi è mai quel vecchio malconcio,"
+      },
+      {
+        "testo": "Vestîo da præve e coronoû d'olivo?",
+        "it": "Vestito da prete e coronato d'olivo?"
+      },
+      {
+        "testo": "Dä sô barba me pâ, se n'ho sbagliôu",
+        "it": "Dalla sua barba mi pare, se non ho sbagliato,"
+      },
+      {
+        "testo": "E da quello che ö l'ha de primitivo,",
+        "it": "E da quello che ha di primitivo,"
+      },
+      {
+        "testo": "Quello re, che sciortìo da Livellôu,",
+        "it": "Quel re, che uscito da Livellato,"
+      },
+      {
+        "testo": "E dà a Romma ö Statuto e ö relativo",
+        "it": "Darà a Roma lo Statuto e il relativo"
+      },
+      {
+        "testo": "Corredo de riforme e mancomale",
+        "it": "Corredo di riforme, e manco male"
+      },
+      {
+        "testo": "Libera stampa e Guardia Nazionale.",
+        "it": "Libera stampa e Guardia Nazionale."
       }
     ]
   },
