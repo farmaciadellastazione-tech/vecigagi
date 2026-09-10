@@ -15929,6 +15929,198 @@ const STORIE_DEFAULT = [
       {
         "testo": "Libera stampa e Guardia Nazionale.",
         "it": "Libera stampa e Guardia Nazionale."
+      },
+      {
+        "testo": "E là gh'é Tûllio ö guerrezzë valente,",
+        "it": "E là c'è Tullio il valoroso guerriero,"
+      },
+      {
+        "testo": "Che pâ che a-o mondo tûtto ö taggie e ö sguâre...",
+        "it": "Che pare che al mondo tagli e squarti..."
+      },
+      {
+        "testo": "Ö quæ ö rompiâ torna e patatte a gente",
+        "it": "Il quale romperà torna i maroni alla gente"
+      },
+      {
+        "testo": "Con vuei fâ d'ogni stronzo un militare,",
+        "it": "Volendo fare d'ogni stronzo un militare,"
+      },
+      {
+        "testo": "Anco ö l'é quello che ö ghe ven d'arente,",
+        "it": "Anco è quello che gli viene appresso,"
+      },
+      {
+        "testo": "Che pe insciase de fûmme popolare,",
+        "it": "Che per gonfiarsi di fumo popolare,"
+      },
+      {
+        "testo": "Ö fâ de balle e ö se scroviâ ö panê",
+        "it": "Racconterà balle e si scoprirà il paniere,"
+      },
+      {
+        "testo": "Comme capita in Fransa a Boulanger.",
+        "it": "Come capita in Francia a Boulanger."
+      },
+      {
+        "testo": "La gh'é ûn bell'ambo, se ti ö vœû squaddrâ,",
+        "it": "Là c'è un bell'ambo, se lo vuoi squadrare,"
+      },
+      {
+        "testo": "I döi Tarquini e ö sô castigamatti,",
+        "it": "I due Tarquini e il loro castigamatti,"
+      },
+      {
+        "testo": "Quello ruffian che ö l'ha mandæ a spigôa",
+        "it": "Quel ruffiano che li ha mandati a spigolare,"
+      },
+      {
+        "testo": "Per cose vueivan marmelâ in ti patti,",
+        "it": "Perché volevano imbrogliare nei patti,"
+      },
+      {
+        "testo": "Brûto, cui fasci e cöa picossa affiâ,",
+        "it": "Bruto, con i fasci e con la scure affilata,"
+      },
+      {
+        "testo": "Ch'an fæto a pelle a quelli povei matti",
+        "it": "Che hanno fatto la pelle a quei poveri matti,"
+      },
+      {
+        "testo": "Quelle teste brûxæ de sô figgiœû!",
+        "it": "Quelle teste calde dei suoi figlioli!"
+      },
+      {
+        "testo": "Virtûoso çittadin, poæ senza chœù!",
+        "it": "Virtuoso cittadino, padre senza cuore!"
+      },
+      {
+        "testo": "Nö so dî se ciù sciollo o disgraziôu",
+        "it": "Non so dire se più sciocco o disgraziato"
+      },
+      {
+        "testo": "(Parle a storia de lë comme se sæ)",
+        "it": "(Ne parli la storia di lui come sia),"
+      },
+      {
+        "testo": "Che vegnûo sciù pe caxo e imbarlûgôu",
+        "it": "Che venuto su per caso e accecato"
+      },
+      {
+        "testo": "Da momentanea popolaritæ,",
+        "it": "Da momentanea popolarità,"
+      },
+      {
+        "testo": "A-e sô luxinghe ö l'ha sacrificôu",
+        "it": "Alle sue lusinghe ha sacrificato"
+      },
+      {
+        "testo": "Ö proprio sangue e l'affezion de poæ,",
+        "it": "Il proprio sangue e l'affetto di padre,"
+      },
+      {
+        "testo": "E ö se fæto feroce e disumano",
+        "it": "E si è fatto feroce e disumano"
+      },
+      {
+        "testo": "Pe-i applausi dö popolo sovrano.",
+        "it": "Per gli applausi del popolo sovrano."
+      },
+      {
+        "testo": "Ecco i Deci, ecco i Drûsi e ciû lontan",
+        "it": "Ecco i Deci, ecco i Drusi e più lontano"
+      },
+      {
+        "testo": "Ö Severo Torquato e ö bön Camillo,",
+        "it": "Il Severo Torquato e il buon Camillo,"
+      },
+      {
+        "testo": "Te là ö primmo che ö l'ha zà l'ascia in man,",
+        "it": "Ecco là il primo che ha già l'ascia in mano,"
+      },
+      {
+        "testo": "L'âtro, che a-i Galli ö vêu zà fâ ö bacillo;",
+        "it": "L'altro, che ai Galli vuole già fare il culo;"
+      },
+      {
+        "testo": "Ecco là, quelli döi che se ne van",
+        "it": "Eccolilà, quei due che se ne vanno"
+      },
+      {
+        "testo": "A brassetto e c'ûn fâ coscì tranquillo,",
+        "it": "A braccetto e con un fare così tranquillo,"
+      },
+      {
+        "testo": "Mentre chì, pan döi cû in te ûn pâ de braghe",
+        "it": "Mentre qui, sembrano due culi in un paio di braghe,"
+      },
+      {
+        "testo": "Amixi in tæra nö porrian mai stâghe.",
+        "it": "Amici in terra non potranno mai essere."
+      },
+      {
+        "testo": "Mentre ö sêuxio ö vegniâ zû da ponente",
+        "it": "Mentre il suocero verrà giù da ponente"
+      },
+      {
+        "testo": "Seminando de morti ö sô cammin,",
+        "it": "Seminando di morti il suo cammino,"
+      },
+      {
+        "testo": "Ghe andiâ incontro sô zeneo dall'oriente",
+        "it": "Gli andrà incontro suo genero dall'oriente"
+      },
+      {
+        "testo": "E a sön de botte ö ghe leviâ ö morbin;",
+        "it": "E a suon di botte gli toglierà il prurito;"
+      },
+      {
+        "testo": "Ah, figgiêu cose fæ! miæ ûn pô che gente",
+        "it": "Ah, ragazzi cosa fate! guardate un po' che gente"
+      },
+      {
+        "testo": "Che tra lö se ö vêuan mette in tö stoppin!",
+        "it": "Che tra loro se lo vogliono mettere nello stoppino!"
+      },
+      {
+        "testo": "E che n'han de rispetto e de caitæ",
+        "it": "E che non hanno rispetto né carità"
+      },
+      {
+        "testo": "Pe mette a perde e assascinâ sô moæ.",
+        "it": "Per mandare in rovina e assassinare la loro madre."
+      },
+      {
+        "testo": "E sovvegnite ben, tì che ti nasci",
+        "it": "E ricordati bene, tu che nasci"
+      },
+      {
+        "testo": "Da-o mæ lignaggio, derivöu da-o çë,",
+        "it": "Dal dal mio lignaggio, derivato dal cielo,"
+      },
+      {
+        "testo": "De n'avei ste böllate e sti fûmasci",
+        "it": "Di non avere questi bollori e queste fumate,"
+      },
+      {
+        "testo": "Comme fan i camalli e i carossë,",
+        "it": "Come fanno i camalli e i vetturini,"
+      },
+      {
+        "testo": "Anzi diggo de ciû, se ti trovasci",
+        "it": "Anzi dico di più, se tu trovassi"
+      },
+      {
+        "testo": "Quarchedûn che te ö vêuggie infiâ derë",
+        "it": "Qualcheduno che te lo voglia infilare di dietro,"
+      },
+      {
+        "testo": "Ti nö devi reagî, né ratellâ,",
+        "it": "Tu non devi reagire, né litigare,"
+      },
+      {
+        "testo": "Anzi tiäte zù e braghe e lasciâ fâ.",
+        "it": "Anzi tirarti giù le braghe e lasciar fare."
       }
     ]
   },
