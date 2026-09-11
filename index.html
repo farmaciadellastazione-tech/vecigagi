@@ -3000,7 +3000,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"io vado", en:"I go", fr:"je vais", sp:"me a vago", mn:" a vagu", ge:"mi vaggo, mi vaddo", verif:"mn:g" },
       { tema:"patologie", livello:"B2", it:"ipotiroidismo", en:"hypothyroidism", fr:"hypothyroïdie", es:"hipotiroidismo", de:"Hypothyreose", pt:"hipotireoidismo", ko:"갑상선 기능저하증", ar:"قصور الغدة الدرقية", zh:"甲状腺功能减退", ja:"甲状腺機能低下症", nt:["sp"] },
       { tema:"natura", livello:"A2", it:"isola", en:"island", fr:"île", es:"isla", de:"Insel", pt:"ilha", ru:"остров", ca:"illa", sp:"isoa", cr:"isola", ko:"섬", ar:"جزيرة", zh:"岛屿", ja:"島", ia:"insula", la:"insula", grc:"νῆσος", verif:"sp:g,cr:g" },
-      { tema:"dialogo", livello:"B1", it:"ladro", en:"thief", fr:"voleur", es:"ladrón", de:"Dieb", pt:"ladrão", ru:"вор", ca:"lladre", sp:"ladrónh/làdrón", mn:"làdrun", cr:"ladr", ge:"laddro", ia:"fur", la:"fur", grc:"κλέπτης", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
+      { tema:"dialogo", livello:"B1", it:"ladro", en:"thief", fr:"voleur", es:"ladrón", de:"Dieb", pt:"ladrão", ru:"вор", ca:"lladre", sp:"ladrónh/làdrón", mn:"ladruun/làdrun", cr:"ladr", ge:"laddro", ia:"fur", la:"fur", grc:"κλέπτης", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"dialetti", livello:"A2", it:"lama", en:"mud", fr:"boue", es:"lodo", de:"Schlamm", pt:"lama", sp:"lama", mn:"lama", cr:"lama", ge:"lamma", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,cr:g" },
       { tema:"casa", livello:"A2", it:"lampada", en:"lamp", fr:"lampe", es:"lámpara", de:"Lampe", pt:"lâmpada|lampada", ru:"лампа", ca:"làmpada", sp:"lanpa", cr:"lum", ko:"램프", ar:"مصباح", zh:"灯", ja:"ランプ", ia:"lampa", la:"lucerna", grc:"λύχνος", verif:"sp:g" },
       { tema:"dialogo", livello:"B1", it:"lana", en:"wool", fr:"laine", es:"lana", de:"Wolle", pt:"lã", ru:"шерсть", ca:"llana", sp:"lana", cr:"lana", ge:"laña", verif:"sp:g,cr:g" },
@@ -3490,9 +3490,9 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"sciogliere", en:"dissolve", fr:"dissoudre", es:"disolver", de:"auflösen", pt:"dissolver", ru:"растворять", ca:"dissoldre", sp:"sioòlie/siòlie", mn:"sfa a/sfaa", cr:"soir", ge:"deslenguâ", ko:"녹이다", ar:"إذابة", zh:"溶解", ja:"解く", ia:"disfacer", la:"solvere", grc:"λύω", verif:"mn:g", ro:"a dizolva" },
       { tema:"dialogo", livello:"B1", it:"sciopero/colpire", en:"strike", fr:"grève|frapper", es:"huelga|golpear", de:"Streik|schlagen", pt:"greve|bater", ru:"забастовка|ударить", ca:"vaga|colpejar", sp:"siopero", verif:"sp:g" },
       { tema:"cibo", livello:"A2", it:"sciroppo", en:"syrup", fr:"sirop", es:"jarabe", de:"Sirup", pt:"xarope", ru:"сироп", ca:"xarop", sp:"siropo", mn:"siopu", ge:"sciöpo", ko:"시럽", ar:"شراب", zh:"糖浆", ja:"シロップ", ia:"siropo", la:"syrupus", grc:"σίρος", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"sirop" },
-      { tema:"dialetti", livello:"A2", it:"scivolare", sp:"sghigiae, svaàe", mn:"sghigia a/zghigiaa", ia:"glissar", verif:"mn:g", src:{"mn":"🔗 dialetti.html"} },
+      { tema:"dialetti", livello:"A2", it:"scivolare", sp:"sghii giaahe, svaàaee/sghigiae, svaàe", mn:"sghigia a/zghigiaa", ia:"glissar", verif:"mn:g", src:{"mn":"🔗 dialetti.html"} },
       { tema:"dialetti", livello:"A2", it:"scivolate", sp:"sghigiadele,svaoni", verif:"sp:g" },
-      { tema:"dialetti", livello:"A2", it:"scivolone", mn:"s'ghi giada/sghigiada/zghigiada", verif:"mn:g" },
+      { tema:"dialetti", livello:"A2", it:"scivolone", sp:"s'ghi giada/sghigiada/zghigiada", mn:"s'ghi giada/sghigiada/zghigiada", verif:"mn:g" },
       { tema:"casa", livello:"A2", it:"scodella", en:"bowl", fr:"bol", es:"cuenco", de:"Schüssel", pt:"tigela", sp:"dzata/zàta", ia:"scutella", verif:"sp:g" },
       { tema:"dialetti", livello:"A2", it:"scoglio", mn:"scògiu", verif:"mn:g" },
       { tema:"dialetti", livello:"A2", it:"scoiattolo", sp:"gioarda,scossapigne", mn:"zuàru", verif:"mn:g" },
@@ -3934,7 +3934,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 530;
+const VOC_VERSION = 531;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
