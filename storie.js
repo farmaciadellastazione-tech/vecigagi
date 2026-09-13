@@ -16121,6 +16121,38 @@ const STORIE_DEFAULT = [
       {
         "testo": "Anzi tiäte zù e braghe e lasciâ fâ.",
         "it": "Anzi tirarti giù le braghe e lasciar fare."
+      },
+      {
+        "testo": "Ecco là de Corinto ö vincitö,",
+        "it": "Ecco là il vincitore di Corinto,"
+      },
+      {
+        "testo": "Che di greci ö bacillo ö câfatiâ,",
+        "it": "Che dei greci il culo calafaterà,"
+      },
+      {
+        "testo": "Mentre che primma ö câfatavan lö;",
+        "it": "Mentre che prima lo calafatavano loro;"
+      },
+      {
+        "testo": "E pe questo ö trionfo ö meritiâ.",
+        "it": "E per questo meriterà il trionfo."
+      },
+      {
+        "testo": "Ecco d'Argo e Micene ö trionfatö,",
+        "it": "Ecco il trionfatore di Argo e Micene,"
+      },
+      {
+        "testo": "Che d'Achille a semenza ö roviniâ,",
+        "it": "Che la discendenza d'Achille rovinerà,"
+      },
+      {
+        "testo": "E saiemo coscì, patti e paghæ",
+        "it": "E saremo così, pari e ripagati,"
+      },
+      {
+        "testo": "De angosciate patìe da-i nostri poæ!",
+        "it": "Delle angosce patite dai nostri padri!"
       }
     ]
   },
