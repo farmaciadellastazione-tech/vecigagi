@@ -16153,6 +16153,198 @@ const STORIE_DEFAULT = [
       {
         "testo": "De angosciate patìe da-i nostri poæ!",
         "it": "Delle angosce patite dai nostri padri!"
+      },
+      {
+        "testo": "E dove lasciö mai, Cosso e Caton",
+        "it": "E dove lascio mai, Cosso e Catone"
+      },
+      {
+        "testo": "E i döi Gracchi, ödaziosi e mai fa ben?",
+        "it": "E i due Gracchi, audaci e fa-danni?"
+      },
+      {
+        "testo": "Ne me posso scordâ di döi Scipion,",
+        "it": "Né mi posso scordare dei due Scipioni,"
+      },
+      {
+        "testo": "Da Cartagine dîti i döi Affrichen,",
+        "it": "Da Cartagine detti i due Africani,"
+      },
+      {
+        "testo": "Perchè l'ûn, ö a mandiâ zû in distruzion",
+        "it": "Perché l'uno, la manderà giù in distruzione"
+      },
+      {
+        "testo": "E quell'âtro ö ghe dâ, ma comme ben.",
+        "it": "E quell'altro gliene darà, ma bene eccome."
+      },
+      {
+        "testo": "E Fabrizio ö fametta? e sto ruffian",
+        "it": "E Fabrizio il fametta? e questo ruffiano"
+      },
+      {
+        "testo": "A-o comando vegnûo da fâ ö paisan?",
+        "it": "Al comando venuto dal fare il contadino?"
+      },
+      {
+        "testo": "Dove son i trei Fabi? Ecco ö Michë,",
+        "it": "Dove sono i tre Fabi?  Ecco il Michele,"
+      },
+      {
+        "testo": "Ö mascimo in lunghezza e pensamento",
+        "it": "Il massimo in lunghezza e pensamento,"
+      },
+      {
+        "testo": "Che ö faiâ ûn passo avanti e döi inderë",
+        "it": "Che farà un passo avanti e due indietro,"
+      },
+      {
+        "testo": "Sempre in bansa, tra o fæto e ö pentimento",
+        "it": "Sempre incerto, tra l'azione e il pentimento,"
+      },
+      {
+        "testo": "De manea che, senz'ëse ûn guerrezzë,",
+        "it": "Di maniera che, senz'essere un guerriero,"
+      },
+      {
+        "testo": "Ö nemigo, ö finiâ d'esaurimento,",
+        "it": "Il nemico, lo sfinirà d'esaurimento,"
+      },
+      {
+        "testo": "E con vœi calcolâ tûtte e freguggie",
+        "it": "E col voler calcolare tutte le briciole,"
+      },
+      {
+        "testo": "Ö sâ dîto in ta Storia: alleitacuggie.",
+        "it": "Sarà chiamato nella Storia: stritola-palle."
+      },
+      {
+        "testo": "Agge i atri ö primato, in ta coltûa",
+        "it": "Abbiano gli altri il primato, nella cultura"
+      },
+      {
+        "testo": "De arti, coscì dîte, liberali,",
+        "it": "Delle arti, così dette, liberali,"
+      },
+      {
+        "testo": "In to dâ vitta ai marmi, in ta pittûa,",
+        "it": "Nel dar vita ai marmi, nella pittura,"
+      },
+      {
+        "testo": "In to fâ da caladda ai Tribûnali,",
+        "it": "Nel fare sceneggiate nei Tribunali,"
+      },
+      {
+        "testo": "O studiando i pianeti e a so fattûa",
+        "it": "O studiando i pianeti e la loro fattura"
+      },
+      {
+        "testo": "Cö appuntaghe pe contro i cannocciali,",
+        "it": "Puntando loro contro i cannocchiali,"
+      },
+      {
+        "testo": "Che diventan scienzati e professöi",
+        "it": "Che diventino scienziati e professori,"
+      },
+      {
+        "testo": "Che riûscian forse megio ancon che vöi.",
+        "it": "Che riescano forse meglio ancora di voi."
+      },
+      {
+        "testo": "Questo ö l'é tûtto fûmme e senza rosto",
+        "it": "Tutto questo è tutto fumo e niente arrosto"
+      },
+      {
+        "testo": "Tûtte cugge de bë che contan zero,",
+        "it": "Tutte balle di bue che contano zero,"
+      },
+      {
+        "testo": "Voi Romani piggiæve ö primmo posto",
+        "it": "Voi Romani prendetevi il primo posto"
+      },
+      {
+        "testo": "Con ridûe tûtto ö mondo a-o vostro impero,",
+        "it": "Riducendo tutto il mondo al vostro impero,"
+      },
+      {
+        "testo": "Giusti in paxe e de dato ad ogni costo,",
+        "it": "Giusti in pace e superiori a ogni costo,"
+      },
+      {
+        "testo": "Quande ghe l'occaxion de fâ ö guerriero",
+        "it": "Quando c'è l'occasione di fare il guerriero"
+      },
+      {
+        "testo": "Perdonâ a-i fradellin, piccâle a-i grandi",
+        "it": "Perdonare ai poveri, menarle ai potenti"
+      },
+      {
+        "testo": "E tegnî i rompicugge a-i so comandi.",
+        "it": "E tenere i rompicoglioni ai propri comandi."
+      },
+      {
+        "testo": "E cöscì, ö santo vegio ö desghêuggeiva",
+        "it": "E così, il santo vecchio spiegava"
+      },
+      {
+        "testo": "Mentre lö mâveggiæ da-o sô parlâ",
+        "it": "Mentre loro meravigliati dal suo parlare"
+      },
+      {
+        "testo": "Stavan tûtti a sentî cose ö dixeiva,",
+        "it": "Stavano tutti a sentire cosa diceva,"
+      },
+      {
+        "testo": "Co-a böcca averta e senza manco ansciâ!",
+        "it": "Con la bocca aperta e senza manco respirare!"
+      },
+      {
+        "testo": "Ecco, quando nisciûn ciû se ö creddeiva",
+        "it": "Ecco, quando nessuno più se lo credeva,"
+      },
+      {
+        "testo": "Ö se mette da cappo e stralabiâ,",
+        "it": "Si rimette da capo a vaneggiare,"
+      },
+      {
+        "testo": "E mostrando a figûa dö colonnello",
+        "it": "E mostrando la figura del colonnello"
+      },
+      {
+        "testo": "Arbôa, ö ghe sbraggia: tì ti sæ Marçello!",
+        "it": "Albera, gli urla: tu sarai Marcello!"
+      },
+      {
+        "testo": "Amiæ ûn pô comme ö ven farsîo de cugge",
+        "it": "Guardate un po' come viene infarcito di palle,"
+      },
+      {
+        "testo": "Comme ö l'é lungo e drûo, co-a faccia bönn-a,",
+        "it": "Com'è lungo e duro, con la faccia buona,"
+      },
+      {
+        "testo": "I nemixi, pe lë ghe pan fregugge,",
+        "it": "I nemici, per lui sembrano briciole,"
+      },
+      {
+        "testo": "Quando ö porta in caserma ö sô Savonn-a,",
+        "it": "Quando lo porta in caserma la sua brigata Savona,"
+      },
+      {
+        "testo": "Ma se in cangio ö veddiâ che l'ægûa a bugge",
+        "it": "Ma se invece vedrà che l'acqua bolle,"
+      },
+      {
+        "testo": "Che ö tedesco ö tîa drito e ö nö cuggionn-a,",
+        "it": "Che il tedesco tira dritto e non lo freghi,"
+      },
+      {
+        "testo": "Ö mostriâ ö sô coraggio e ö diâ: figgiêû,",
+        "it": "Mostrerà il suo coraggio e dirà: ragazzi,"
+      },
+      {
+        "testo": "Tian cön balla i rûffien, salva chi pêu!",
+        "it": "Sparano con pallottole vere i bastardi, si salvi chi può!"
       }
     ]
   },
