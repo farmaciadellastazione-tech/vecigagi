@@ -10461,7 +10461,8 @@ function SchermataSceltaMultipla({
   stats,
   setStats,
   onStreak,
-  onHome
+  onHome,
+  onFaiFrase
 }) {
   // Stato globale unico per la modalità: {nScelte, nDom, corrette}
   const SK_SM = "qml_v11_sm_global"; // chiave nuova: stato globale (non più per coppia)
@@ -10787,7 +10788,10 @@ function SchermataSceltaMultipla({
       title: "Ascolta lentamente", "aria-label": "Ascolta lentamente"
     }, "🐢")), /*#__PURE__*/React.createElement("div", {
       className: "text-red-400 text-xs mt-1"
-    }, "hai scelto: ", e.scelta))))), fraseFine && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+    }, "hai scelto: ", e.scelta), onFaiFrase && e.carta.lingua && e.carta.lingua.codice !== "it" && /*#__PURE__*/React.createElement("button", {
+      onClick: () => onFaiFrase(e.carta.entry, e.carta.lingua),
+      className: "text-cyan-500 hover:text-cyan-400 text-xs mt-2"
+    }, "✍️ Fai una frase con questa parola"))))), fraseFine && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
       onClick: () => parla(fraseFine.tts, "it-IT", false, fraseFine.audio ? "sp/" + fraseFine.audio : null),
       className: "italic text-amber-400 text-base mb-3 inline-flex items-center gap-2 hover:text-amber-300 transition",
       title: "Riascolta"
@@ -10813,7 +10817,8 @@ function SchermataFraseLibera({
   lingue,
   filtri,
   aiSettings,
-  onHome
+  onHome,
+  cartaIniziale
 }) {
   const [carta, setCarta] = useState(null);
   const [frase, setFrase] = useState("");
@@ -10840,8 +10845,19 @@ function SchermataFraseLibera({
   }
   // Mount-only: lingue/vocabolario cambiano solo dalla Home (componente smontato).
   // Carte successive vengono richieste da bottoni dell'utente, non da effetti.
+  // Se si arriva da un link "Fai una frase con..." su una parola sbagliata,
+  // la prima carta è quella parola; "Salta"/"Nuova" tornano alla scelta casuale.
   useEffect(() => {
-    nuovaCarta();
+    if (cartaIniziale) {
+      setCarta(cartaIniziale);
+      setFrase("");
+      setStato("domanda");
+      setFeedback(null);
+      setShowTrad(false);
+      setTraduzione("");
+    } else {
+      nuovaCarta();
+    }
   }, []);
   async function verificaFrase() {
     if (!frase.trim() || !carta) return;
@@ -11752,7 +11768,8 @@ function SchermataQuiz({
   fine,
   onAvviaAncora,
   streak,
-  carteErrate
+  carteErrate,
+  onFaiFrase
 }) {
   const t = useUI();
   const inputRef = useRef(null);
@@ -11988,7 +12005,10 @@ function SchermataQuiz({
         className: "text-slate-300 text-lg italic"
       }, tradUI)), e.input && e.input !== "—" && /*#__PURE__*/React.createElement("p", {
         className: "text-zinc-300 text-lg mt-2"
-      }, "You wrote: ", e.input)));
+      }, "You wrote: ", e.input), onFaiFrase && e.carta.tipo !== "coniugazione" && lA && lA.codice !== "it" && /*#__PURE__*/React.createElement("button", {
+        onClick: () => onFaiFrase(e.carta.entry, lA),
+        className: "text-cyan-500 hover:text-cyan-400 text-sm mt-2"
+      }, "✍️ Fai una frase con questa parola")));
     }))), (() => {
       const tot = punteggio.giusti + punteggio.sbagliati;
       const perc = tot > 0 ? Math.round(punteggio.giusti / tot * 100) : 0;
@@ -12617,6 +12637,7 @@ function App() {
   const [glossarioLang, setGlossarioLang] = useState(null); // dialetto preselezionato dal deep-link #glossario/<codice>
   const [caricandoStorie, setCaricandoStorie] = useState(false); // true mentre storie.js viene iniettato lazy
   const [storiaIniziale, setStoriaIniziale] = useState(null); // id storia preselezionata dal deep-link #storia/<id>
+  const [fraseIniziale, setFraseIniziale] = useState(null); // {entry, lingua} preselezionati da "Fai una frase con" sui risultati
   const [aiSettings, setAiSettings] = useState(() => loadJSON(SK_AI, null) || {
     provider: "gemini",
     apiKey: ""
@@ -12805,6 +12826,7 @@ function App() {
       if (paroleViste === 0 && apprese === 0) return;
     }
     if (mod === "fraseLibera") {
+      setFraseIniziale(null); // apertura da Home: nessuna parola preselezionata
       setSchermata("fraseLibera");
       return;
     }
@@ -12827,6 +12849,10 @@ function App() {
     setModalita(mod);
     setModalitaInAttesa(mod);
     setConfigurando(true);
+  }
+  function apriFraseLiberaCon(entry, lingua) {
+    setFraseIniziale({ entry, lingua });
+    setSchermata("fraseLibera");
   }
   function aggiungiParola(e) {
     setVocabolario(v => [...v, e]);
@@ -13051,13 +13077,15 @@ function App() {
     stats: stats,
     setStats: setStats,
     onStreak: aggiornaStreak,
-    onHome: () => setSchermata("home")
+    onHome: () => setSchermata("home"),
+    onFaiFrase: apriFraseLiberaCon
   });
   if (schermata === "fraseLibera") return /*#__PURE__*/React.createElement(SchermataFraseLibera, {
     vocabolario: vocabolario,
     lingue: lingue,
     filtri: filtri,
     aiSettings: aiSettings,
+    cartaIniziale: fraseIniziale,
     onHome: () => setSchermata("home")
   });
   if (schermata === "letturaGuidata") return /*#__PURE__*/React.createElement(SchermataLetturaGuidata, {
@@ -13197,6 +13225,7 @@ function App() {
     nuoveApprese: nuoveApprese,
     fine: fine,
     streak: streak,
+    onFaiFrase: apriFraseLiberaCon,
     carteErrate: carteErrate,
     onAvviaAncora: () => {
       let nPross = nDomandeUsate;
