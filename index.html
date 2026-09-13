@@ -10818,7 +10818,8 @@ function SchermataFraseLibera({
   filtri,
   aiSettings,
   onHome,
-  cartaIniziale
+  cartaIniziale,
+  onTornaRisultati
 }) {
   const [carta, setCarta] = useState(null);
   const [frase, setFrase] = useState("");
@@ -10941,9 +10942,9 @@ Reply in ${userLangName}.`;
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-between mb-4"
   }, /*#__PURE__*/React.createElement("button", {
-    onClick: onHome,
+    onClick: onTornaRisultati || onHome,
     className: "text-zinc-500 hover:text-white transition text-sm"
-  }, "\u2190 Home"), /*#__PURE__*/React.createElement("span", {
+  }, onTornaRisultati ? "\u2190 Risultati" : "\u2190 Home"), /*#__PURE__*/React.createElement("span", {
     className: "text-zinc-600 text-xs"
   }, "\uD83E\uDD16 Frase libera"), /*#__PURE__*/React.createElement("button", {
     onClick: nuovaCarta,
@@ -12638,6 +12639,7 @@ function App() {
   const [caricandoStorie, setCaricandoStorie] = useState(false); // true mentre storie.js viene iniettato lazy
   const [storiaIniziale, setStoriaIniziale] = useState(null); // id storia preselezionata dal deep-link #storia/<id>
   const [fraseIniziale, setFraseIniziale] = useState(null); // {entry, lingua} preselezionati da "Fai una frase con" sui risultati
+  const [fraseTornaA, setFraseTornaA] = useState(null); // schermata a cui tornare da Frase Libera ("quiz" se aperta da lì, altrimenti null)
   const [aiSettings, setAiSettings] = useState(() => loadJSON(SK_AI, null) || {
     provider: "gemini",
     apiKey: ""
@@ -12827,6 +12829,7 @@ function App() {
     }
     if (mod === "fraseLibera") {
       setFraseIniziale(null); // apertura da Home: nessuna parola preselezionata
+      setFraseTornaA(null);
       setSchermata("fraseLibera");
       return;
     }
@@ -12851,6 +12854,11 @@ function App() {
     setConfigurando(true);
   }
   function apriFraseLiberaCon(entry, lingua) {
+    // "Torna ai risultati" ha senso solo per SchermataQuiz (quiz/allenamento/ascolto/voce/
+    // dettato/nonstop): il suo stato (carteErrate, punteggio, fine) vive qui in App e
+    // sopravvive al cambio schermata. Scelta Multipla tiene i risultati in uno stato
+    // interno al componente che si perderebbe smontandolo, quindi lì non si torna indietro.
+    setFraseTornaA(schermata === "quiz" ? "quiz" : null);
     setFraseIniziale({ entry, lingua });
     setSchermata("fraseLibera");
   }
@@ -13086,6 +13094,7 @@ function App() {
     filtri: filtri,
     aiSettings: aiSettings,
     cartaIniziale: fraseIniziale,
+    onTornaRisultati: fraseTornaA ? () => setSchermata(fraseTornaA) : null,
     onHome: () => setSchermata("home")
   });
   if (schermata === "letturaGuidata") return /*#__PURE__*/React.createElement(SchermataLetturaGuidata, {
