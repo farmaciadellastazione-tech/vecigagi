@@ -10938,7 +10938,8 @@ function SchermataFraseLibera({
   aiSettings,
   onHome,
   cartaIniziale,
-  onTornaRisultati
+  onTornaRisultati,
+  onDiscutine
 }) {
   const [carta, setCarta] = useState(null);
   const [frase, setFrase] = useState("");
@@ -11129,7 +11130,13 @@ Reply in ${userLangName}.`;
   }, (linguaUI?.bandiera || "\uD83C\uDF10") + " Traduci"), /*#__PURE__*/React.createElement("button", {
     onClick: nuovaCarta,
     className: "flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2.5 rounded-xl text-sm transition btn-shadow"
-  }, "Nuova \u2192"))));
+  }, "Nuova \u2192")), onDiscutine && !DIALETTI_TTS_ITA.includes(carta.lingua.codice) && /*#__PURE__*/React.createElement("button", {
+    onClick: () => onDiscutine(carta.lingua, {
+      parola: soloVisibile(carta.entry[carta.lingua.codice]),
+      frase: (feedback.correction || frase).trim()
+    }),
+    className: "w-full mt-1 bg-zinc-900 border border-zinc-700 text-slate-200 font-bold py-2.5 rounded-xl text-sm hover:border-pink-500 hover:text-pink-400 transition"
+  }, "\ud83c\udf99\ufe0f Discutine a voce")));
 }
 // Modalità "Conversazione": dialogo a turni, a voce, con l'IA nella lingua che si sta
 // studiando. A differenza di Frase Libera (una frase isolata, corretta subito e bloccante)
@@ -11160,29 +11167,35 @@ function estraiRispostaConversazione(clean) {
 function SchermataConversazione({
   lingue,
   aiSettings,
-  onHome
+  onHome,
+  iniziale
 }) {
   const lingueCandidate = lingue.filter(l => l.attiva && l.codice !== "it" && !DIALETTI_TTS_ITA.includes(l.codice));
-  const [lingua, setLingua] = useState(lingueCandidate.length === 1 ? lingueCandidate[0] : null);
+  // Se si arriva da Frase Libera con "Discutine a voce", si parte subito nella stessa
+  // lingua (se ancora attiva e non dialettale) con un argomento di apertura mirato,
+  // invece che con un topic casuale o la schermata di scelta lingua.
+  const linguaSeed = iniziale && lingueCandidate.some(l => l.codice === iniziale.lingua?.codice) ? iniziale.lingua : null;
+  const linguaAuto = linguaSeed || (lingueCandidate.length === 1 ? lingueCandidate[0] : null);
+  const [lingua, setLingua] = useState(linguaAuto);
   const [turni, setTurni] = useState([]);
   const [bozza, setBozza] = useState("");
-  const [stato, setStato] = useState(lingueCandidate.length === 1 ? "generando" : "scegliLingua");
-  async function iniziaConversazione(l) {
+  const [stato, setStato] = useState(linguaAuto ? "generando" : "scegliLingua");
+  async function iniziaConversazione(l, argomento) {
     setLingua(l);
     setStato("generando");
     setTurni([]);
     const langName = l.nome;
-    const system = `Sei un amico madrelingua che chiacchiera con uno studente di ${langName} di livello base-intermedio. Apri tu la conversazione con UNA sola battuta breve e naturale (una o due frasi) su un argomento quotidiano semplice (saluti, tempo libero, cibo, giornata). Rispondi SOLO con la battuta in ${langName}, senza virgolette e senza premesse.`;
-    const raw = await callAI(system, "Apri tu la conversazione.", aiSettings);
+    const system = argomento ? `Sei un amico madrelingua che chiacchiera con uno studente di ${langName} di livello base-intermedio. Lo studente ha appena scritto questa frase in un esercizio: "${argomento.frase}" (parola chiave: "${argomento.parola}"). Reagisci in modo naturale a quello che ha scritto e fai una domanda di follow-up per continuare a parlarne. UNA sola battuta breve (una o due frasi), in ${langName}, senza virgolette e senza premesse.` : `Sei un amico madrelingua che chiacchiera con uno studente di ${langName} di livello base-intermedio. Apri tu la conversazione con UNA sola battuta breve e naturale (una o due frasi) su un argomento quotidiano semplice (saluti, tempo libero, cibo, giornata). Rispondi SOLO con la battuta in ${langName}, senza virgolette e senza premesse.`;
+    const raw = await callAI(system, argomento ? "Reagisci e continua la conversazione." : "Apri tu la conversazione.", aiSettings);
     const testo = raw.trim();
     setTurni([{ ruolo: "ia", testo }]);
     parla(testo, l.bcp47);
     setStato("pronto");
   }
-  // Mount-only: se c'è una sola lingua candidata la conversazione parte subito, senza
-  // passare dalla schermata di scelta lingua.
+  // Mount-only: parte subito se c'è una lingua "seed" da Frase Libera o se è l'unica
+  // lingua candidata attiva; altrimenti passa dalla schermata di scelta lingua.
   useEffect(() => {
-    if (lingueCandidate.length === 1) iniziaConversazione(lingueCandidate[0]);
+    if (linguaAuto) iniziaConversazione(linguaAuto, linguaSeed ? iniziale.argomento : null);
   }, []);
   const onMicResult = useCallback(testi => {
     const t = (testi && testi[0]) || "";
@@ -12979,6 +12992,7 @@ function App() {
   const [caricandoStorie, setCaricandoStorie] = useState(false); // true mentre storie.js viene iniettato lazy
   const [storiaIniziale, setStoriaIniziale] = useState(null); // id storia preselezionata dal deep-link #storia/<id>
   const [fraseIniziale, setFraseIniziale] = useState(null); // {entry, lingua} preselezionati da "Fai una frase con" sui risultati
+  const [conversazioneIniziale, setConversazioneIniziale] = useState(null); // {lingua, argomento:{parola,frase}} da "Discutine a voce" su Frase Libera
   const [fraseTornaA, setFraseTornaA] = useState(null); // schermata a cui tornare da Frase Libera ("quiz" se aperta da lì, altrimenti null)
   const [aiSettings, setAiSettings] = useState(() => loadJSON(SK_AI, null) || {
     provider: "gemini",
@@ -13193,6 +13207,7 @@ function App() {
       return;
     }
     if (mod === "conversazione") {
+      setConversazioneIniziale(null); // apertura da Home: nessun argomento preselezionato
       setSchermata("conversazione");
       return;
     }
@@ -13224,6 +13239,10 @@ function App() {
     setFraseTornaA(schermata === "quiz" ? "quiz" : null);
     setFraseIniziale({ entry, lingua });
     setSchermata("fraseLibera");
+  }
+  function apriConversazioneCon(lingua, argomento) {
+    setConversazioneIniziale({ lingua, argomento });
+    setSchermata("conversazione");
   }
   function aggiungiParola(e) {
     setVocabolario(v => [...v, e]);
@@ -13460,12 +13479,14 @@ function App() {
     aiSettings: aiSettings,
     cartaIniziale: fraseIniziale,
     onTornaRisultati: fraseTornaA ? () => setSchermata(fraseTornaA) : null,
-    onHome: () => setSchermata("home")
+    onHome: () => setSchermata("home"),
+    onDiscutine: apriConversazioneCon
   });
   if (schermata === "conversazione") return /*#__PURE__*/React.createElement(SchermataConversazione, {
     lingue: lingue,
     aiSettings: aiSettings,
-    onHome: () => setSchermata("home")
+    onHome: () => setSchermata("home"),
+    iniziale: conversazioneIniziale
   });
   if (schermata === "letturaGuidata") return /*#__PURE__*/React.createElement(SchermataLetturaGuidata, {
     lingue: lingue,
