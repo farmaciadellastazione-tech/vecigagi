@@ -4260,9 +4260,12 @@ function parolaAppresa(entry, stats, lingue) {
   ld.forEach(da => ld.forEach(a => {
     if (da !== a) coppie.push(coppiaKey(entry, da, a));
   }));
-  if (coppie.length === 0) return false;
-  const apprese = coppie.filter(k => isAppresa(stats, k)).length;
-  return apprese / coppie.length >= 0.75;
+  // Considera solo le coppie direzionali effettivamente praticate almeno una volta:
+  // una direzione mai esercitata non deve impedire di dichiarare "appresa" una parola.
+  const praticate = coppie.filter(k => getCoppia(stats, k).risposte > 0);
+  if (praticate.length === 0) return false;
+  const apprese = praticate.filter(k => isAppresa(stats, k)).length;
+  return apprese / praticate.length >= 0.75;
 }
 function contaScadute(vocabolario, stats, lingue, filtri) {
   let n = 0;
