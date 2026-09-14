@@ -16345,6 +16345,358 @@ const STORIE_DEFAULT = [
       {
         "testo": "Tian cön balla i rûffien, salva chi pêu!",
         "it": "Sparano con pallottole vere i bastardi, si salvi chi può!"
+      },
+      {
+        "testo": "E chì Enea ö dà de l'êuggio in t'ûn pivetto",
+        "it": "E qui Enea dà un'occhiata a un pivello"
+      },
+      {
+        "testo": "Che ö l'ëa molto ciû bello e ben vestîo,",
+        "it": "Che era molto più bello e ben vestito,"
+      },
+      {
+        "testo": "Ma che ö paiva ciûttosto ûn tixichetto,",
+        "it": "Ma che pareva piuttosto un tisichetto,"
+      },
+      {
+        "testo": "Tanto l'ëa, testa bassa e alluveghîo,",
+        "it": "Tanto era a testa bassa e smarrito,"
+      },
+      {
+        "testo": "E chi ö l'é, dixe Enea, questo gardetto",
+        "it": "E chi è, dice Enea, questo ragazzetto,"
+      },
+      {
+        "testo": "Dö mæ sangue ö l'é forse ö caga in nîo?",
+        "it": "Del mio sangue è forse l'ultimo nato?"
+      },
+      {
+        "testo": "E che sciato che fan! Diô forse ûn sgrêuxio,",
+        "it": "E che chiasso che fanno! Dirò forse uno sproposito,"
+      },
+      {
+        "testo": "Ma a mì me pâ che ö l'agge zà in tö brêuxio.",
+        "it": "Ma a me pare che l'abbia già in quel posto."
+      },
+      {
+        "testo": "E lagrimando ghe risponde ö pôæ",
+        "it": "E lacrimando gli risponde il padre"
+      },
+      {
+        "testo": "Cose te sâta de frûgâ in tö brûtto,",
+        "it": "Cosa ti salta in mente di frugare nel brutto,"
+      },
+      {
+        "testo": "E pe cose te ven sta cûixitæ",
+        "it": "E per quale motivo ti viene questa curiosità"
+      },
+      {
+        "testo": "De voei conosce questo nostro lûtto,",
+        "it": "Di voler conoscere questo nostro lutto,"
+      },
+      {
+        "testo": "Triste regallo dell'avverscitæ?",
+        "it": "Triste regalo dell'avversità?"
+      },
+      {
+        "testo": "Lë ö nö sâ ancon nasciûo proprio dö tûtto,",
+        "it": "Lui non sarà ancora nato proprio del tutto,"
+      },
+      {
+        "testo": "Che ö n'ha zà marmelôu de sotto banca",
+        "it": "Che ce lo ruberà sottobanco"
+      },
+      {
+        "testo": "Proprio comme ö nö væse ûnn-a palanca.",
+        "it": "Proprio come se non valesse una palanca."
+      },
+      {
+        "testo": "Forse troppo ödaziosa e prepotente",
+        "it": "Forse troppo audace e prepotente"
+      },
+      {
+        "testo": "Paiâ a stirpe romana a-i santi in çë,",
+        "it": "Parve la stirpe romana ai santi in cielo,"
+      },
+      {
+        "testo": "Che ne dân stö pittin de sciaccadente,",
+        "it": "Che ci danno questo po' di colpaccio,"
+      },
+      {
+        "testo": "Con mandâlo a fà fûtte in sce döi pë,",
+        "it": "Mandandolo a farsi fottere su due piedi,"
+      },
+      {
+        "testo": "Oh che cênti, che lûtti, oh che imponente",
+        "it": "Oh che pianti, che lutti, oh che imponente"
+      },
+      {
+        "testo": "Fûnebre pompa che ghe fân derë!",
+        "it": "Pompa funebre che gli fanno dietro!"
+      },
+      {
+        "testo": "Che monumento ghe innalziâ Pavian",
+        "it": "Che monumento gli innalzerà Paverano"
+      },
+      {
+        "testo": "Dovûo a-o scöpello dö scûltö Fabian!",
+        "it": "Dovuto allo scalpello dello scultore Fabiani!"
+      },
+      {
+        "testo": "Chi cöggie figgio cao, nö ghe ne vœû,",
+        "it": "Qui balle, figlio caro, non servono,"
+      },
+      {
+        "testo": "Ma a stirpe d'Ilio a nö portiâ in ta pansa",
+        "it": "Ma la stirpe d'Ilio non porterà in pancia"
+      },
+      {
+        "testo": "Ûn rampollo ciû bravo e ciû de chœû,",
+        "it": "Un rampollo più bravo e più di cuore,"
+      },
+      {
+        "testo": "Né d'affetto ciû degno e de speranza.",
+        "it": "Né più degno d'affetto e di speranza."
+      },
+      {
+        "testo": "Né aviâ Romma ûn campion tra i sô figgiœû",
+        "it": "Né avrà Roma un campione tra i suoi figlioli"
+      },
+      {
+        "testo": "Che ö ghe dagghe ciû lûstro e rinomanza,",
+        "it": "Che le dia più lustro e rinomanza;"
+      },
+      {
+        "testo": "De sti mostri d'inzegno e de virtû",
+        "it": "Di questi mostri d'ingegno e di virtù,"
+      },
+      {
+        "testo": "Taggite e cöggie, nö ne nasce ciû.",
+        "it": "Tagliati le palle, non ne nascono più!"
+      },
+      {
+        "testo": "Chi ghe sâ che rexiste a sô destrezza",
+        "it": "Chi ci sarà che resista alla sua destrezza"
+      },
+      {
+        "testo": "In qualunque virile esperimento?",
+        "it": "In qualunque prova di forza?"
+      },
+      {
+        "testo": "Seggie a pë che a cavallo? a sô prodezza",
+        "it": "Sia a piedi che a cavallo? la sua prodezza"
+      },
+      {
+        "testo": "In te ûnn-a giostra, in t'ûn combattimento?",
+        "it": "In una giostra, in un combattimento?"
+      },
+      {
+        "testo": "Coscì a Morte figgiœû, ne a sô fierezza",
+        "it": "Così la Morte, o figliolo, nella sua fierezza"
+      },
+      {
+        "testo": "A n'avesse posciûo mettite drento,",
+        "it": "Non avesse potuto arrestarti,"
+      },
+      {
+        "testo": "Comme ti sæsci diventoû, segûo",
+        "it": "Come saresti diventato, sicuramente,"
+      },
+      {
+        "testo": "De Marçello ciû grande e ancon ciû drûo!",
+        "it": "Di Marcello più grande e ancora più tosto!"
+      },
+      {
+        "testo": "Dæme chì di galletti a profûxion,",
+        "it": "Datemi qui dei galletti a profusione,"
+      },
+      {
+        "testo": "Perché i posse cacciâ zû a tonnellæ,",
+        "it": "Perché io li possa cacciare giù a tonnellate,"
+      },
+      {
+        "testo": "Se nö posso cangiâ a sô condizion",
+        "it": "Se non posso cambiare la sua condizione"
+      },
+      {
+        "testo": "Né andâ incontro ai destin zà combinæ,",
+        "it": "Né andare contro ai destini già combinati,"
+      },
+      {
+        "testo": "Che me posse piggiâ a soddisfazion",
+        "it": "Che mi possa prendere la soddisfazione"
+      },
+      {
+        "testo": "De mostraghe ö mæ affetto e a mæ pietæ,",
+        "it": "Di mostrargli il mio affetto e la mia pietà,"
+      },
+      {
+        "testo": "E con questa demôa, dâ ûn pô de sevo",
+        "it": "E con questo spasso, dare un po' di lustro"
+      },
+      {
+        "testo": "A grande ombra, onorâ, de stö mæ nevo.",
+        "it": "Alla grande ombra, onorata, di questo mio nipote."
+      },
+      {
+        "testo": "Doppo avei dîto questo, ö porta a spasso",
+        "it": "Dopo aver detto questo, lo porta a spasso"
+      },
+      {
+        "testo": "E pei Campi Celesti ö te ö fâ giâ,",
+        "it": "E per i Campi Elisi e lo fa girare,"
+      },
+      {
+        "testo": "E ö ghe mostra e ö ghe spiega ad ogni passo,",
+        "it": "E gli mostra e gli spiega a ogni passo,"
+      },
+      {
+        "testo": "Tûtti i scîti, i recanti e chi nasciâ,",
+        "it": "Tutti i luoghi, i recessi e chi nascerà,"
+      },
+      {
+        "testo": "E coscì ö l'invesciga e ö fâ ö gradasso,",
+        "it": "E così lo imbambola e fa il gradasso,"
+      },
+      {
+        "testo": "In sce glorie e l'onö che ghe vegniâ,",
+        "it": "Con le glorie e l'onore che gli verranno,"
+      },
+      {
+        "testo": "Tante cöggie ö ghe sciûscia in te çervelle",
+        "it": "Tante balle gli soffia nel cervello"
+      },
+      {
+        "testo": "Che lë ö nö pûeiva zà ciû stâ in ta pelle.",
+        "it": "Che lui non poteva già più stare nella pelle."
+      },
+      {
+        "testo": "E ö ghe parla de gûære e de sö prœûve,",
+        "it": "E gli parla di guerre e delle sue prove,"
+      },
+      {
+        "testo": "Comme ö regno d'Italia ö fâ cammin,",
+        "it": "Come il regno d'Italia fa cammino,"
+      },
+      {
+        "testo": "Dö quarantœûtto e dö çinquantanœûve,",
+        "it": "Del Quarantotto  e del Cinquantanove,"
+      },
+      {
+        "testo": "De Cavoûr, de Gaibado e de Mazzin,",
+        "it": "Di Cavour, di Garibaldi e di Mazzini,"
+      },
+      {
+        "testo": "Comme invece de dâ, se doviâ schcœûve,",
+        "it": "Come invece di dare, si dovrà riscuotere,"
+      },
+      {
+        "testo": "E malgraddo de questo andâ a destin,",
+        "it": "E malgrado questo andare a destino,"
+      },
+      {
+        "testo": "E finî pe virtû de Re Vittorio",
+        "it": "E finire per virtù di Re Vittorio"
+      },
+      {
+        "testo": "A fâse coggionâ in Montecitorio.",
+        "it": "A farsi coglionare a Montecitorio."
+      },
+      {
+        "testo": "Tûtto ö ghe conta, tûtto ö ghe predixe",
+        "it": "Tutto gli racconta, tutto gli predice"
+      },
+      {
+        "testo": "E ö ghe insegna a manëa de fâ da morto,",
+        "it": "E gli insegna la maniera di fare da morto,"
+      },
+      {
+        "testo": "E savei profittâ de tûtte e bixe",
+        "it": "E saper approfittare di tutte le brezze"
+      },
+      {
+        "testo": "Pe fâ a sô stradda e pe dâ fondo in porto;",
+        "it": "Per fare la sua strada e dar fondo in porto;"
+      },
+      {
+        "testo": "Ed insomma, ö ghe dà, comme se dixe",
+        "it": "E insomma, gli dà, come si dice,"
+      },
+      {
+        "testo": "Mëzo e manea de nö piggiâ in te l'orto;",
+        "it": "Mezzo e maniera di non prenderlo nell'orto;"
+      },
+      {
+        "testo": "E n'avendoghe poi ciû ninte a dî,",
+        "it": "E non avendogli poi più niente da dire,"
+      },
+      {
+        "testo": "Ö mette in condizion de pûei scior",
+        "it": "Lo mette in condizione di poter uscire."
+      },
+      {
+        "testo": "I sœûnni, dall'inferno, han döe sciortie,",
+        "it": "I sogni, dall'inferno, hanno due uscite,"
+      },
+      {
+        "testo": "Ûnn-a fæta in avorio e l'atra in corno,",
+        "it": "Una fatta in avorio e l'altra in corno,"
+      },
+      {
+        "testo": "Dall'avorio, ven fœûa tûtte e böxie",
+        "it": "Dall'avorio, vengono fuori tutte le bugie"
+      },
+      {
+        "testo": "E dall'atra e veitæ vegnan a-o giorno;",
+        "it": "E dall'altra le verità vengono alla luce;"
+      },
+      {
+        "testo": "Doppo i baxi, i saluti e cortexie",
+        "it": "Dopo i baci, i saluti e le cortesie"
+      },
+      {
+        "testo": "E l'augûrio d'ûn proscimo ritorno,",
+        "it": "E l'augurio di un prossimo ritorno,"
+      },
+      {
+        "testo": "Anchïse ö i fa sciortî dâ primma porta,",
+        "it": "Anchise li fa uscire dalla prima porta,"
+      },
+      {
+        "testo": "Nö sô perché, ma questo poco importa.",
+        "it": "Non so perché, ma questo poco importa."
+      },
+      {
+        "testo": "Ringraziando a Scibilla, Enea ö tabacca",
+        "it": "Ringraziando la Sibilla, Enea si affretta"
+      },
+      {
+        "testo": "Döve i compagni han dæto fondo a flotta;",
+        "it": "Dove i compagni hanno dato fondo alla flotta;"
+      },
+      {
+        "testo": "Doppo avei tioû sciû i cavi, ö se destacca,",
+        "it": "Dopo aver tirato su i cavi, si salpa,"
+      },
+      {
+        "testo": "Ö dà forza de remme ö molla a scotta,",
+        "it": "Dà forza di remi, molla la scotta,"
+      },
+      {
+        "testo": "E ö ven sciû pe costea, fin che ö s'attracca",
+        "it": "E risale lungo la costa, finché si attracca"
+      },
+      {
+        "testo": "Dentro d'ûn porto che ö l'incontra in rotta,",
+        "it": "Dentro un porto che incontra lungo la rotta,"
+      },
+      {
+        "testo": "E dö sô viaggio ö stabilisce a meta,",
+        "it": "E del suo viaggio stabilisce la meta,"
+      },
+      {
+        "testo": "Dove ciû tardi han fabbricoû Gaeta.",
+        "it": "Dove più tardi hanno fondato Gaeta."
       }
     ]
   },
