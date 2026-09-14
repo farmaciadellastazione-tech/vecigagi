@@ -2692,7 +2692,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cosmetica", livello:"A2", it:"crema", en:"cream", fr:"crème", es:"crema", de:"Creme", pt:"creme", sp:"crema ", mn:"crema", cr:"crema", ge:"cremma ", ko:"크림", ar:"كريم", zh:"面霜", ja:"クリーム", ia:"crema" },
       { tema:"cosmetica", livello:"B1", it:"crema solare", en:"sunscreen", fr:"crème solaire", es:"protector solar", de:"Sonnencreme", pt:"protetor solar", ge:"cremma pe-o sô", ko:"선크림", ar:"واقي شمسي", zh:"防晒霜", ja:"日焼け止め" },
       { tema:"dialogo", livello:"A2", it:"crescere", en:"grow up", fr:"grandir", es:"crecer", de:"aufwachsen", pt:"crescer", ru:"расти", ca:"créixer", sp:"crésse", mn:"crésse/crësse", cr:"cres'r", ge:"cresce", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
-      { tema:"dialetti", it:"croce", sp:"crose", cr:"croz'a", ge:"croxe", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
+      { tema:"dialetti", it:"croce", sp:"crose", cr:"croz'a", ge:"cruje/croxe", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g", audio:{"ge":"audio.webm"} },
       { tema:"viaggi", livello:"B1", it:"crociera", en:"cruise", fr:"croisière", es:"crucero", de:"Kreuzfahrt", pt:"cruzeiro", ru:"круиз", ca:"creuer", nt:["mn","ge"] },
       { tema:"natura", livello:"A1", it:"crosta", sp:"gró'ste/gróste", mn:"grusta", cr:"grosta", ge:"crosta", src:{"mn":"🤖nmc"}, verif:"mn:g,sp:g" },
       { tema:"luoghi", livello:"A1", it:"cucchiaio", en:"spoon", fr:"cuillère", es:"cuchara", de:"Löffel", pt:"colher", sp:"kuciaho/cüciao", mn:"cüciaa", cr:"cuciàrr/cuciàr", ge:"kuggiaha/cuggiâ", ko:"숟가락", ar:"ملعقة", zh:"勺子", ja:"スプーン", ia:"coclear", la:"cochlear", grc:"κοχλιάριον", verif:"mn:g,cr:g,sp:g,ge:g" },
@@ -3973,7 +3973,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 538;
+const VOC_VERSION = 539;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
