@@ -15149,7 +15149,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "E stö riâ cose ö l'é? comme ö se ciamma?",
         "it": "E questo rio che cos'è? Come si chiama?»."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-5",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 3 parte 13",
+      "it": "La dottrina delle anime"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "pubblico-dominio (autore deceduto nel 1904, oltre 70 anni)"
+    },
+    "frasi": [
       {
         "testo": "E anime sön queste, ö ghe risponde,",
         "it": "«Le anime sono queste», gli risponde,"
