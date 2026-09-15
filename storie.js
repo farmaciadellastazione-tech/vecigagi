@@ -15521,7 +15521,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö i pueiva vedde tûtti quanti in faccia.",
         "it": "Li potesse vedere tutti quanti in faccia."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-6",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 3 parte 14",
+      "it": "La sfilata degli eroi romani "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "pubblico-dominio (autore deceduto nel 1904, oltre 70 anni)"
+    },
+    "frasi": [
       {
         "testo": "A-oa vœûggio mostrâte, ö torna a dî,",
         "it": "«Ora voglio mostrarti», torna a dire,"
