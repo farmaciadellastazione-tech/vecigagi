@@ -14873,7 +14873,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Tûtto ö cian, pin de lûxe e de verdûa.",
         "it": "Tutto il piano, pieno di luce e verdeggiante."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-4",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 3 parte 12",
+      "it": "Il ricongiungimento con Anchise"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "pubblico-dominio (autore deceduto nel 1904, oltre 70 anni)"
+    },
+    "frasi": [
       {
         "testo": "Stava Anchise pe caxo in t'ün vallon",
         "it": "Stava Anchise per caso in un vallone"
