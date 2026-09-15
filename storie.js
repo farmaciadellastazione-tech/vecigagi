@@ -16713,7 +16713,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Ö mette in condizion de pûei scior",
         "it": "Lo mette in condizione di poter uscire."
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-8",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 3 parte 16",
+      "it": "Le porte del Sonno; il ritorno"
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "pubblico-dominio (autore deceduto nel 1904, oltre 70 anni)"
+    },
+    "frasi": [
       {
         "testo": "I sœûnni, dall'inferno, han döe sciortie,",
         "it": "I sogni, dall'inferno, hanno due uscite,"
