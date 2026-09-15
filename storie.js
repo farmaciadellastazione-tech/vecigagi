@@ -16373,7 +16373,27 @@ const STORIE_DEFAULT = [
       {
         "testo": "Arbôa, ö ghe sbraggia: tì ti sæ Marçello!",
         "it": "Albera, gli urla: tu sarai Marcello!"
-      },
+      }
+    ]
+  },
+  {
+    "id": "ge-a1-eneide-2-parte-7",
+    "lingua": "ge",
+    "livello": "A1",
+    "tema": "",
+    "titolo": {
+      "testo": "Eneide: ricordi di un reduce troiano in dialetto genovese libro 3 parte 15",
+      "it": "Marcello e il compianto "
+    },
+    "fonte": {
+      "generato": "autentico",
+      "modello": "claude-sonnet-5",
+      "note": "",
+      "autore": "Nicolò Bacigalupo (1837–1904)",
+      "riferimento": "liber liber",
+      "licenza": "pubblico-dominio (autore deceduto nel 1904, oltre 70 anni)"
+    },
+    "frasi": [
       {
         "testo": "Amiæ ûn pô comme ö ven farsîo de cugge",
         "it": "Guardate un po' come viene infarcito di palle,"
