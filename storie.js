@@ -3336,7 +3336,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "E ti invece, brûtö, ti fæ de mosse",
-        "it": "E tu invece, vigliacco, fai il gradasso"
+        "it": "E tu invece, vigliacco, fai delle storie"
       },
       {
         "testo": "E de ciû ti me bûrli? acciappa chì,",
@@ -3348,7 +3348,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Destegando corezze pe desotta.",
-        "it": "Mollando scoregge di sotto."
+        "it": "Mollando scoregge da sotto."
       },
       {
         "testo": "Ma a sciabbra che a pesava ciû che lë",
