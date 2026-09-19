@@ -1684,7 +1684,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "A brûttûi, bulicugge, orbi inaiæ,",
-        "it": "\"Ah vili, frociazzi, ciechi in confusione,"
+        "it": "\"Ah vili, rincoglioniti, ciechi in confusione,"
       },
       {
         "testo": "Besêugna proprio che ne ö lasciæ dî,",
@@ -1892,7 +1892,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Percose Achille ö gh'ëa restôu de sotta.",
-        "it": "Perché Achille gli era rimasto sotto."
+        "it": "Per cosa Achille c'era rimasto di merda."
       },
       {
         "testo": "Ö l'aveiva ûnn-a barba speronsîa",
