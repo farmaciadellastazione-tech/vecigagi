@@ -1868,7 +1868,7 @@ const STORIE_DEFAULT = [
       },
       {
         "testo": "Comme ûn sûcco dappresso ä mæ scignöa,",
-        "it": "Come un ceppo vicino alla mia signora,"
+        "it": "Come un ghiro vicino alla mia signora,"
       },
       {
         "testo": "Quando, mentre che meno ghe pensava,",
