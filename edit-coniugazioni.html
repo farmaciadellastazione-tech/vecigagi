@@ -75,6 +75,8 @@
   <div class="row">
     <button onclick="aggiungiPersona()">➕ Riga persona</button>
     <button onclick="aggiungiLingua()">➕ Colonna lingua</button>
+    <button id="btn-ai" onclick="completaConIA()">🤖 Completa con IA (lingue non dialettali)</button>
+    <button onclick="apriConfigAI()">⚙️ Config IA</button>
   </div>
   <p class="hint">Ogni verbo/tempo può avere un numero libero di righe (persone) e colonne (lingue) — non c'è uno schema fisso. Es. l'imperativo di solito ha solo 3 righe (2ª sing., 1ª plur., 2ª plur.).</p>
 </div>
@@ -99,6 +101,27 @@
     <div class="modal-actions">
       <button onclick="chiudiPersonaModal()">Annulla</button>
       <button class="primary" onclick="confermaPersonaModal()">Aggiungi</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="ai-modal" hidden>
+  <div class="modal-card">
+    <h3>⚙️ Configurazione IA</h3>
+    <label>Provider</label>
+    <select id="ai-provider">
+      <option value="">disabilitato</option>
+      <option value="groq">Groq Llama (gratuito)</option>
+      <option value="gemini">Google Gemini</option>
+      <option value="anthropic">Anthropic Claude</option>
+      <option value="openai">OpenAI</option>
+    </select>
+    <label>Chiave API</label>
+    <input type="text" id="ai-key" placeholder="Incolla qui la chiave...">
+    <p class="hint">Stessa configurazione di edit.html — se l'hai già impostata lì, è già pronta qui.</p>
+    <div class="modal-actions">
+      <button onclick="chiudiConfigAI()">Annulla</button>
+      <button class="primary" onclick="salvaConfigAI()">Salva</button>
     </div>
   </div>
 </div>
@@ -135,6 +158,119 @@ let originalSourceFile = null;
 let coniugazioni = null;
 let verboCorrente = null;
 let tempoCorrente = null;
+
+// ── IA (stessa configurazione/chiave di edit.html, localStorage condiviso) ──
+const AI_KEY_LS = 'lq_ai_config';
+let aiConfig = null;
+try { const raw = localStorage.getItem(AI_KEY_LS); if (raw) aiConfig = JSON.parse(raw); } catch (e) { aiConfig = null; }
+
+// Solo lingue "vere" (mai dialetti sp/mn/ge/cr): per quelle l'IA non ha
+// conoscenza affidabile, restano sempre manuali (vedi voci IA inventate sul
+// manarolese — stesso motivo per cui qui non vengono nemmeno proposte).
+const LINGUE_IA_CONIUGAZIONI = ['it', 'en', 'fr', 'es', 'pt', 'de', 'la', 'grc', 'ia'];
+
+function apriConfigAI() {
+  document.getElementById('ai-modal').hidden = false;
+  document.getElementById('ai-provider').value = (aiConfig && aiConfig.provider) || '';
+  document.getElementById('ai-key').value = (aiConfig && aiConfig.key) || '';
+}
+function chiudiConfigAI() { document.getElementById('ai-modal').hidden = true; }
+function salvaConfigAI() {
+  const provider = document.getElementById('ai-provider').value, key = document.getElementById('ai-key').value.trim();
+  if (!provider) { aiConfig = null; localStorage.removeItem(AI_KEY_LS); }
+  else { if (!key) { alert('Inserisci una chiave API o seleziona "disabilitato"'); return; } aiConfig = { provider, key }; localStorage.setItem(AI_KEY_LS, JSON.stringify(aiConfig)); }
+  chiudiConfigAI();
+}
+async function callGroq(prompt) {
+  // Niente response_format:json_object qui: con schemi più lunghi (6-9 righe
+  // x 9 lingue) la validazione JSON lato server di Groq a volte fallisce
+  // (errore "json_validate_failed", failed_generation vuoto) anche con un
+  // prompt corretto. Ci basiamo sul parsing tollerante di parseJSONAI().
+  const res = await fetchTimeout('https://api.groq.com/openai/v1/chat/completions', { method: 'POST', headers: { 'Authorization': 'Bearer ' + aiConfig.key, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'openai/gpt-oss-20b', messages: [{ role: 'user', content: prompt }], temperature: 0.3 }) }, 30000);
+  if (!res.ok) throw new Error('Groq HTTP ' + res.status + ': ' + await res.text());
+  return (await res.json()).choices[0].message.content;
+}
+async function callGemini(prompt) {
+  const res = await fetchTimeout('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' + encodeURIComponent(aiConfig.key), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.3, responseMimeType: 'application/json' } }) }, 30000);
+  if (!res.ok) throw new Error('Gemini HTTP ' + res.status + ': ' + await res.text());
+  return (await res.json()).candidates[0].content.parts[0].text;
+}
+async function callAnthropic(prompt) {
+  const res = await fetchTimeout('https://api.anthropic.com/v1/messages', { method: 'POST', headers: { 'x-api-key': aiConfig.key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true', 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 1500, messages: [{ role: 'user', content: prompt }] }) }, 30000);
+  if (!res.ok) throw new Error('Anthropic HTTP ' + res.status + ': ' + await res.text());
+  return (await res.json()).content[0].text;
+}
+async function callOpenAI(prompt) {
+  const res = await fetchTimeout('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: { 'Authorization': 'Bearer ' + aiConfig.key, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'gpt-4o-mini', messages: [{ role: 'user', content: prompt }], temperature: 0.3, response_format: { type: 'json_object' } }) }, 30000);
+  if (!res.ok) throw new Error('OpenAI HTTP ' + res.status + ': ' + await res.text());
+  return (await res.json()).choices[0].message.content;
+}
+async function chiamaAI(prompt) {
+  if (!aiConfig || !aiConfig.provider || !aiConfig.key) throw new Error('AI non configurata.');
+  if (aiConfig.provider === 'groq') return callGroq(prompt);
+  if (aiConfig.provider === 'gemini') return callGemini(prompt);
+  if (aiConfig.provider === 'anthropic') return callAnthropic(prompt);
+  if (aiConfig.provider === 'openai') return callOpenAI(prompt);
+  throw new Error('Provider sconosciuto: ' + aiConfig.provider);
+}
+function parseJSONAI(text) {
+  const cleaned = text.replace(/```json|```/g, '').trim();
+  const m = cleaned.match(/\{[\s\S]*\}/);
+  try { return JSON.parse(m ? m[0] : cleaned); }
+  catch (e) { throw new Error('Risposta IA non in JSON valido: ' + text.slice(0, 200)); }
+}
+
+async function completaConIA() {
+  if (!aiConfig || !aiConfig.provider || !aiConfig.key) { if (confirm('IA non configurata. Configurarla ora?')) apriConfigAI(); return; }
+  if (!verboCorrente || !tempoCorrente) { alert('Seleziona prima un verbo e un tempo.'); return; }
+  const verbo = coniugazioni[verboCorrente], tempo = verbo.tempi[tempoCorrente];
+  const forme = tempo.forme;
+  if (!forme.length) { alert('Questo tempo non ha righe persona. Aggiungine prima con "➕ Riga persona".'); return; }
+  // Manca almeno una cella non-dialettale? Se è già tutto compilato non c'è nulla da fare.
+  const daCompilare = forme.some(f => LINGUE_IA_CONIUGAZIONI.some(c => !(f[c] || '').trim()));
+  if (!daCompilare) { alert('Tutte le lingue non dialettali sono già compilate per questo tempo.'); return; }
+  const btn = document.getElementById('btn-ai'), orig = btn.textContent;
+  btn.disabled = true; btn.textContent = '⏳ IA in corso...';
+  try {
+    const persone = forme.map(f => f.p);
+    const langList = LINGUE_IA_CONIUGAZIONI.map(c => `${c} (${nomeLingua(c)})`).join(', ');
+    const prompt = `Sei un linguista esperto di coniugazioni verbali. Coniuga il verbo italiano "${verbo.nome}" al tempo/modo "${tempo.nome}" per queste persone, nell'ordine dato: ${JSON.stringify(persone)}.
+Fornisci la forma coniugata in ciascuna di queste lingue: ${langList}.
+Se una lingua non distingue una persona (es. l'inglese "you" per 2ª sing./plur.), usa comunque la forma naturale più corretta in quella lingua per quella persona.
+Rispondi ESCLUSIVAMENTE con un oggetto JSON valido, senza testo prima o dopo, senza markdown, senza commenti, un oggetto per ogni persona nello STESSO ORDINE fornito, in questo formato esatto:
+{"forme": [{"it": "...", "en": "...", ...}, ...]}`;
+    // Un retry automatico: la modalità JSON di alcuni provider (Groq in
+    // particolare) può fallire in modo transitorio su schemi lunghi come
+    // questo anche con un prompt corretto — ritentare una volta risolve la
+    // maggior parte dei casi senza dover disturbare l'utente.
+    let parsed, ultimoErrore;
+    for (let tentativo = 0; tentativo < 2; tentativo++) {
+      try {
+        const testo = await chiamaAI(prompt);
+        parsed = parseJSONAI(testo);
+        break;
+      } catch (e) { ultimoErrore = e; }
+    }
+    if (!parsed) throw ultimoErrore || new Error('Nessuna risposta valida dalla IA.');
+    if (!Array.isArray(parsed.forme) || parsed.forme.length !== forme.length) {
+      throw new Error('La IA ha risposto con un numero di forme diverso da quello atteso (' + forme.length + ').');
+    }
+    let riempite = 0;
+    forme.forEach((f, i) => {
+      const sugg = parsed.forme[i] || {};
+      LINGUE_IA_CONIUGAZIONI.forEach(c => {
+        if (!(f[c] || '').trim() && sugg[c] && String(sugg[c]).trim()) { f[c] = String(sugg[c]).trim(); riempite++; }
+      });
+    });
+    renderTabella();
+    setHelp(riempite ? `🤖 IA: compilate ${riempite} celle per "${verbo.nome}" — ${tempo.nome}. Ricontrolla prima di salvare.` : 'ℹ️ IA: nessuna cella nuova (erano già tutte compilate).', riempite ? 'success' : 'info');
+  } catch (err) {
+    console.error(err);
+    setHelp('❌ IA: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = orig;
+  }
+}
 
 function setHelp(msg, cls) {
   const el = document.getElementById('help');
