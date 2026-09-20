@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>LinguaeQuiz — Editor coniugazioni</title>
+<style>
+  :root {
+    --primary: #1e40af;
+    --primary-light: #3b82f6;
+    --accent: #dc2626;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --border: #e2e8f0;
+    --muted: #64748b;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:1.2rem; background:var(--bg); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color:#0f172a; }
+  h1 { font-size:1.25rem; margin:0 0 1rem; }
+  .card { background:var(--card-bg); border:1px solid var(--border); border-radius:0.75rem; padding:1rem; margin-bottom:1rem; }
+  .row { display:flex; gap:0.6rem; flex-wrap:wrap; align-items:center; margin-bottom:0.6rem; }
+  label { font-size:0.8rem; color:var(--muted); font-weight:600; display:block; margin-bottom:0.2rem; }
+  select, input[type=text] { padding:0.4rem 0.5rem; border:1px solid var(--border); border-radius:0.4rem; font-size:0.9rem; }
+  button { cursor:pointer; border:1px solid var(--border); background:#fff; border-radius:0.4rem; padding:0.4rem 0.7rem; font-size:0.85rem; }
+  button.primary { background:var(--primary); color:#fff; border-color:var(--primary); font-weight:600; }
+  button.danger { color:var(--accent); border-color:#fecaca; }
+  button:hover { filter:brightness(0.96); }
+  button:disabled { opacity:0.5; cursor:not-allowed; }
+  table { border-collapse:collapse; width:100%; font-size:0.85rem; }
+  th, td { border:1px solid var(--border); padding:0.35rem 0.4rem; text-align:left; vertical-align:middle; }
+  th { background:#f1f5f9; font-weight:600; white-space:nowrap; }
+  td.persona-cell { white-space:nowrap; font-weight:600; color:var(--muted); }
+  td.persona-cell input { width:9rem; font-weight:600; color:#0f172a; }
+  td input[type=text] { width:100%; min-width:6rem; border:1px solid transparent; background:transparent; }
+  td input[type=text]:hover, td input[type=text]:focus { border-color:var(--border); background:#fff; outline:none; }
+  .col-actions { white-space:nowrap; }
+  .col-actions button { padding:0.15rem 0.4rem; font-size:0.75rem; }
+  #help { padding:0.6rem 0.8rem; border-radius:0.5rem; font-size:0.85rem; margin-bottom:1rem; }
+  #help.info { background:#eff6ff; color:#1e3a8a; }
+  #help.success { background:#f0fdf4; color:#166534; }
+  #help.error { background:#fef2f2; color:#991b1b; }
+  .table-wrap { overflow-x:auto; }
+  .hint { font-size:0.78rem; color:var(--muted); margin-top:0.3rem; }
+</style>
+</head>
+<body>
+
+<h1>📐 Editor coniugazioni — <code>CONIUGAZIONI</code> in index.html</h1>
+<div id="help" class="info">⏳ Carico da GitHub...</div>
+
+<div class="card">
+  <div class="row">
+    <div>
+      <label>Verbo</label>
+      <select id="verbo-select" onchange="selezionaVerbo(this.value)"></select>
+    </div>
+    <button onclick="aggiungiVerbo()">➕ Nuovo verbo</button>
+    <button class="danger" onclick="rimuoviVerbo()">🗑 Elimina verbo</button>
+  </div>
+  <div class="row">
+    <div>
+      <label>Tempo / modo</label>
+      <select id="tempo-select" onchange="selezionaTempo(this.value)"></select>
+    </div>
+    <button onclick="aggiungiTempo()">➕ Nuovo tempo</button>
+    <button class="danger" onclick="rimuoviTempo()">🗑 Elimina tempo</button>
+  </div>
+  <div class="row">
+    <button onclick="aggiungiPersona()">➕ Riga persona</button>
+    <button onclick="aggiungiLingua()">➕ Colonna lingua</button>
+  </div>
+  <p class="hint">Ogni verbo/tempo può avere un numero libero di righe (persone) e colonne (lingue) — non c'è uno schema fisso. Es. l'imperativo di solito ha solo 3 righe (2ª sing., 1ª plur., 2ª plur.).</p>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table id="tabella"></table>
+  </div>
+</div>
+
+<div class="row">
+  <button class="primary" id="btn-salva" onclick="salvaSuGitHub()">☁️ Salva su GitHub</button>
+  <button onclick="caricaDaGitHub()">🔄 Ricarica da GitHub</button>
+  <button onclick="impostaToken()">🔑 Token GitHub</button>
+</div>
+
+<script>
+const GH_OWNER = 'farmaciadellastazione-tech';
+const GH_REPO = 'vecigagi';
+const GH_BRANCH = 'main';
+const GH_PATH = 'index.html';
+const GH_TOKEN_KEY = 'gh_pat_vecigagi'; // stessa chiave di edit.html: token condiviso
+
+// Lingue note (codice -> nome/bcp47) per il picker "aggiungi colonna" e il TTS di anteprima.
+const LINGUE = [
+  { code:'it',  name:'Italiano',    bcp47:'it-IT' },
+  { code:'mn',  name:'Manarolese',  bcp47:'it-IT' },
+  { code:'sp',  name:'Spezzino',    bcp47:'it-IT' },
+  { code:'ge',  name:'Genovese',    bcp47:'it-IT' },
+  { code:'cr',  name:'Carrarino',   bcp47:'it-IT' },
+  { code:'en',  name:'Inglese',     bcp47:'en-GB' },
+  { code:'fr',  name:'Francese',    bcp47:'fr-FR' },
+  { code:'es',  name:'Spagnolo',    bcp47:'es-ES' },
+  { code:'de',  name:'Tedesco',     bcp47:'de-DE' },
+  { code:'pt',  name:'Portoghese',  bcp47:'pt-PT' },
+  { code:'ia',  name:'Interlingua', bcp47:'it-IT' },
+  { code:'la',  name:'Latino',      bcp47:'it-IT' },
+  { code:'grc', name:'Greco antico',bcp47:'el-GR' },
+  { code:'ru',  name:'Russo',       bcp47:'ru-RU' },
+  { code:'ca',  name:'Catalano',    bcp47:'ca-ES' },
+];
+function nomeLingua(code) { return (LINGUE.find(l => l.code === code) || {}).name || code; }
+function bcp47Lingua(code) { return (LINGUE.find(l => l.code === code) || {}).bcp47 || 'it-IT'; }
+
+let originalSourceFile = null;
+let coniugazioni = null;
+let verboCorrente = null;
+let tempoCorrente = null;
+
+function setHelp(msg, cls) {
+  const el = document.getElementById('help');
+  el.className = cls || 'info';
+  el.innerHTML = msg;
+}
+
+function fetchTimeout(url, opts, ms) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), ms || 20000);
+  return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(() => clearTimeout(t));
+}
+
+// ── Estrazione/ricostruzione blocco "const CONIUGAZIONI = { ... };" ─────────
+// Bracket-aware sulle graffe (non le quadre: qui il blocco è un OGGETTO, non
+// un array), stesso principio di trovaBloccoArray/estraiVocabolario in edit.html.
+function trovaBloccoOggetto(src, marker) {
+  const re = new RegExp('^\\s*const\\s+' + marker + '\\s*=\\s*\\{', 'm');
+  const m = re.exec(src);
+  if (!m) return null;
+  const start = m.index + m[0].length - 1; // posizione della '{' di apertura
+  let depth = 0, i = start, inStr = false, esc = false, q = null;
+  for (; i < src.length; i++) {
+    const c = src[i];
+    if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === q) inStr = false; continue; }
+    if (c === '"' || c === "'" || c === '`') { inStr = true; q = c; continue; }
+    if (c === '{') depth++;
+    else if (c === '}') { depth--; if (depth === 0) { i++; break; } }
+  }
+  if (depth !== 0) return null;
+  return { start, end: i }; // [start,end) include le graffe esterne
+}
+
+function estraiConiugazioni(src) {
+  const r = trovaBloccoOggetto(src, 'CONIUGAZIONI');
+  if (!r) throw new Error('Marcatore "const CONIUGAZIONI = {" non trovato');
+  const obj = (new Function('return (' + src.slice(r.start, r.end) + ')'))();
+  if (!obj || typeof obj !== 'object') throw new Error('CONIUGAZIONI non è un oggetto valido');
+  return obj;
+}
+
+// Genera una chiave JS valida (camelCase, senza accenti/spazi) da un nome libero.
+function slugKey(nome) {
+  let s = (nome || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+  s = s.replace(/[^a-z0-9]+(.)?/g, (_, c) => c ? c.toUpperCase() : '');
+  if (!s) s = 'nuovo';
+  if (/^[0-9]/.test(s)) s = '_' + s;
+  return s;
+}
+function chiaveLibera(base, esistenti) {
+  let k = base, n = 2;
+  while (esistenti.includes(k)) { k = base + n; n++; }
+  return k;
+}
+
+const PERSONE_STANDARD = ['1ª sing.', '2ª sing.', '3ª sing.', '1ª plur.', '2ª plur.', '3ª plur.'];
+
+// ── Caricamento ───────────────────────────────────────────────────────────
+async function caricaDaGitHub() {
+  setHelp('⏳ Carico CONIUGAZIONI da GitHub...', 'info');
+  try {
+    const url = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_PATH}?t=${Date.now()}`;
+    const res = await fetchTimeout(url, {}, 25000);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    originalSourceFile = await res.text();
+    coniugazioni = estraiConiugazioni(originalSourceFile);
+    const verbi = Object.keys(coniugazioni);
+    verboCorrente = verbi[0] || null;
+    tempoCorrente = verboCorrente ? Object.keys(coniugazioni[verboCorrente].tempi)[0] : null;
+    popolaVerbi();
+    popolaTempi();
+    renderTabella();
+    setHelp(`✅ Caricati <strong>${verbi.length}</strong> verbi. Modifica le celle e clicca <strong>☁️ Salva su GitHub</strong> quando hai finito.`, 'success');
+  } catch (err) {
+    console.error(err);
+    setHelp('❌ Errore caricamento da GitHub: ' + err.message, 'error');
+  }
+}
+
+// ── Selettori verbo/tempo ────────────────────────────────────────────────
+function popolaVerbi() {
+  const sel = document.getElementById('verbo-select');
+  sel.innerHTML = '';
+  Object.entries(coniugazioni).forEach(([k, v]) => {
+    const o = document.createElement('option'); o.value = k; o.textContent = v.nome || k;
+    if (k === verboCorrente) o.selected = true;
+    sel.appendChild(o);
+  });
+}
+function selezionaVerbo(key) {
+  verboCorrente = key;
+  const tempi = Object.keys(coniugazioni[key].tempi);
+  tempoCorrente = tempi[0] || null;
+  popolaTempi();
+  renderTabella();
+}
+function popolaTempi() {
+  const sel = document.getElementById('tempo-select');
+  sel.innerHTML = '';
+  if (!verboCorrente) return;
+  Object.entries(coniugazioni[verboCorrente].tempi).forEach(([k, t]) => {
+    const o = document.createElement('option'); o.value = k; o.textContent = t.nome || k;
+    if (k === tempoCorrente) o.selected = true;
+    sel.appendChild(o);
+  });
+}
+function selezionaTempo(key) {
+  tempoCorrente = key;
+  renderTabella();
+}
+
+// ── Tabella ──────────────────────────────────────────────────────────────
+function linguePresenti() {
+  if (!verboCorrente || !tempoCorrente) return [];
+  const forme = coniugazioni[verboCorrente].tempi[tempoCorrente].forme;
+  const set = new Set();
+  forme.forEach(f => Object.keys(f).forEach(k => { if (k !== 'p') set.add(k); }));
+  // Ordine: quelle note nell'ordine di LINGUE, poi eventuali altre in coda.
+  const note = LINGUE.map(l => l.code).filter(c => set.has(c));
+  const altre = [...set].filter(c => !note.includes(c));
+  return [...note, ...altre];
+}
+
+function renderTabella() {
+  const tab = document.getElementById('tabella');
+  tab.innerHTML = '';
+  if (!verboCorrente || !tempoCorrente) { tab.innerHTML = '<tr><td>Nessun verbo/tempo selezionato.</td></tr>'; return; }
+  const forme = coniugazioni[verboCorrente].tempi[tempoCorrente].forme;
+  const lingue = linguePresenti();
+
+  const thead = document.createElement('tr');
+  thead.innerHTML = '<th>Persona</th>' + lingue.map(c => `<th>${c} <span style="font-weight:400;color:var(--muted)">(${nomeLingua(c)})</span></th>`).join('') + '<th class="col-actions">Riga</th>';
+  tab.appendChild(thead);
+
+  forme.forEach((f, i) => {
+    const tr = document.createElement('tr');
+    const tdP = document.createElement('td'); tdP.className = 'persona-cell';
+    const inpP = document.createElement('input'); inpP.type = 'text'; inpP.value = f.p || '';
+    inpP.oninput = () => { f.p = inpP.value; };
+    tdP.appendChild(inpP);
+    tr.appendChild(tdP);
+
+    lingue.forEach(code => {
+      const td = document.createElement('td');
+      const inp = document.createElement('input'); inp.type = 'text'; inp.value = f[code] || '';
+      inp.placeholder = '—';
+      inp.oninput = () => { if (inp.value.trim()) f[code] = inp.value; else delete f[code]; };
+      td.appendChild(inp);
+      if (['sp','ge','mn','cr','it'].includes(code)) {
+        const btn = document.createElement('button');
+        btn.textContent = '🔊'; btn.title = 'Ascolta (TTS, anteprima)';
+        btn.style.marginLeft = '0.2rem'; btn.style.padding = '0.1rem 0.3rem';
+        btn.onclick = (e) => { e.preventDefault(); ascoltaAnteprima(inp.value, code); };
+        td.appendChild(btn);
+      }
+      tr.appendChild(td);
+    });
+
+    const tdAz = document.createElement('td'); tdAz.className = 'col-actions';
+    const btnDel = document.createElement('button'); btnDel.textContent = '🗑'; btnDel.title = 'Elimina riga';
+    btnDel.onclick = () => { if (confirm('Eliminare la riga "' + (f.p || '') + '"?')) { forme.splice(i, 1); renderTabella(); } };
+    tdAz.appendChild(btnDel);
+    tr.appendChild(tdAz);
+
+    tab.appendChild(tr);
+  });
+}
+
+function ascoltaAnteprima(testo, code) {
+  if (!testo || !window.speechSynthesis) return;
+  const parte = testo.split('/')[0].trim(); // convenzione pronuncia/grafia dei dialetti
+  if (!parte) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(parte);
+  u.lang = bcp47Lingua(code);
+  window.speechSynthesis.speak(u);
+}
+
+// ── Aggiunte/rimozioni ───────────────────────────────────────────────────
+function aggiungiVerbo() {
+  const nome = prompt('Nome del nuovo verbo (es. "fare"):');
+  if (!nome || !nome.trim()) return;
+  const key = chiaveLibera(slugKey(nome), Object.keys(coniugazioni));
+  coniugazioni[key] = { nome: nome.trim(), tempi: {} };
+  verboCorrente = key;
+  tempoCorrente = null;
+  popolaVerbi();
+  popolaTempi();
+  renderTabella();
+  aggiungiTempo(); // un verbo nuovo ha senso solo con almeno un tempo
+}
+function rimuoviVerbo() {
+  if (!verboCorrente) return;
+  if (!confirm('Eliminare il verbo "' + (coniugazioni[verboCorrente].nome || verboCorrente) + '" e tutti i suoi tempi?')) return;
+  delete coniugazioni[verboCorrente];
+  const verbi = Object.keys(coniugazioni);
+  verboCorrente = verbi[0] || null;
+  tempoCorrente = verboCorrente ? Object.keys(coniugazioni[verboCorrente].tempi)[0] || null : null;
+  popolaVerbi();
+  popolaTempi();
+  renderTabella();
+}
+function aggiungiTempo() {
+  if (!verboCorrente) { alert('Seleziona o crea prima un verbo.'); return; }
+  const nome = prompt('Nome del nuovo tempo/modo (es. "condizionale presente", "passato remoto"):');
+  if (!nome || !nome.trim()) return;
+  const tempi = coniugazioni[verboCorrente].tempi;
+  const key = chiaveLibera(slugKey(nome), Object.keys(tempi));
+  tempi[key] = {
+    nome: nome.trim(),
+    forme: PERSONE_STANDARD.map(p => ({ p }))
+  };
+  tempoCorrente = key;
+  popolaTempi();
+  renderTabella();
+}
+function rimuoviTempo() {
+  if (!verboCorrente || !tempoCorrente) return;
+  const tempi = coniugazioni[verboCorrente].tempi;
+  if (!confirm('Eliminare il tempo "' + (tempi[tempoCorrente].nome || tempoCorrente) + '"?')) return;
+  delete tempi[tempoCorrente];
+  const restanti = Object.keys(tempi);
+  tempoCorrente = restanti[0] || null;
+  popolaTempi();
+  renderTabella();
+}
+function aggiungiPersona() {
+  if (!verboCorrente || !tempoCorrente) { alert('Seleziona prima un verbo e un tempo.'); return; }
+  const forme = coniugazioni[verboCorrente].tempi[tempoCorrente].forme;
+  const label = prompt('Etichetta della riga (es. "3ª sing.", "2ª sing. (tu/you/tu...)"):', '');
+  if (label === null) return;
+  forme.push({ p: label });
+  renderTabella();
+}
+function aggiungiLingua() {
+  if (!verboCorrente || !tempoCorrente) { alert('Seleziona prima un verbo e un tempo.'); return; }
+  const presenti = linguePresenti();
+  const disponibili = LINGUE.filter(l => !presenti.includes(l.code));
+  const elenco = disponibili.map(l => `${l.code} = ${l.name}`).join('\n') || '(nessuna lingua nota rimasta: puoi comunque digitare un codice libero)';
+  const code = prompt('Codice lingua da aggiungere a questo tempo (es. "sp", "ge", "en"):\n\n' + elenco);
+  if (!code || !code.trim()) return;
+  const c = code.trim().toLowerCase();
+  if (presenti.includes(c)) { alert('La colonna "' + c + '" è già presente.'); return; }
+  // Aggiunge la colonna (vuota) a tutte le righe esistenti: comparirà al prossimo render.
+  const forme = coniugazioni[verboCorrente].tempi[tempoCorrente].forme;
+  forme.forEach(f => { if (!(c in f)) f[c] = ''; });
+  renderTabella();
+  // Ripulisce le celle rimaste vuote/finte prima del salvataggio (evita colonne fantasma
+  // se l'utente aggiunge la lingua ma non compila nulla): gestito in serializzaForma.
+}
+
+// ── Serializzazione ──────────────────────────────────────────────────────
+function jsStr(s) { return JSON.stringify(String(s)); }
+
+function serializzaForma(f) {
+  const parts = ['p: ' + jsStr(f.p || '')];
+  Object.keys(f).forEach(k => {
+    if (k === 'p') return;
+    const v = f[k];
+    if (v !== undefined && v !== null && String(v).trim() !== '') parts.push(k + ': ' + jsStr(v));
+  });
+  return '{ ' + parts.join(', ') + ' }';
+}
+function serializzaTempo(t) {
+  const forme = t.forme.map(f => '        ' + serializzaForma(f)).join(',\n');
+  return `{\n      nome: ${jsStr(t.nome || '')},\n      forme: [\n${forme}\n      ]\n    }`;
+}
+function serializzaVerbo(v) {
+  const tempi = Object.entries(v.tempi).map(([k, t]) => `    ${k}: ${serializzaTempo(t)}`).join(',\n');
+  return `{\n    nome: ${jsStr(v.nome || '')},\n    tempi: {\n${tempi}\n    }\n  }`;
+}
+function serializzaConiugazioni(obj) {
+  const verbi = Object.entries(obj).map(([k, v]) => `  ${k}: ${serializzaVerbo(v)}`).join(',\n');
+  return `{\n${verbi}\n}`;
+}
+
+function ricostruisciSorgente(src) {
+  const r = trovaBloccoOggetto(src, 'CONIUGAZIONI');
+  if (!r) throw new Error('Marcatore "const CONIUGAZIONI = {" non trovato nella sorgente corrente');
+  return src.slice(0, r.start) + serializzaConiugazioni(coniugazioni) + src.slice(r.end);
+}
+
+function decodificaContenutoGh(json) {
+  if (!json || typeof json.content !== 'string' || !json.content) return null;
+  try {
+    const bin = atob(json.content.replace(/\s/g, ''));
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder('utf-8').decode(bytes);
+  } catch (e) { return null; }
+}
+
+function impostaToken() {
+  const attuale = localStorage.getItem(GH_TOKEN_KEY);
+  const token = prompt('Personal Access Token GitHub (Contents: Read/Write su "vecigagi"):', attuale || '');
+  if (token === null) return;
+  if (!token.trim()) { localStorage.removeItem(GH_TOKEN_KEY); return; }
+  localStorage.setItem(GH_TOKEN_KEY, token.trim());
+}
+
+async function salvaSuGitHub() {
+  if (!originalSourceFile || !coniugazioni) { alert('Carica prima i dati da GitHub.'); return; }
+  let token = localStorage.getItem(GH_TOKEN_KEY);
+  if (!token) {
+    token = prompt('Incolla il tuo Personal Access Token GitHub (Contents: Read/Write su "vecigagi"):');
+    if (!token) return;
+    token = token.trim();
+    localStorage.setItem(GH_TOKEN_KEY, token);
+  }
+  const nVerbi = Object.keys(coniugazioni).length;
+  if (!confirm(`Scrivere le coniugazioni (${nVerbi} verbi) su GitHub?\n\n"${GH_PATH}" (ramo ${GH_BRANCH}) verrà aggiornato.`)) return;
+  const btn = document.getElementById('btn-salva'), orig = btn.textContent;
+  btn.disabled = true; btn.textContent = '⏳ Salvataggio...';
+  try {
+    const apiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`;
+    const headers = { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+    const getRes = await fetchTimeout(apiBase + '?ref=' + GH_BRANCH, { headers }, 20000);
+    if (!getRes.ok) { if (getRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('GET fallito (' + getRes.status + ')'); }
+    const ghJson = await getRes.json();
+    const sha = ghJson.sha;
+    // Guardia anti-clobber: se index.html è cambiato su GitHub dopo il caricamento
+    // (es. un salvataggio da edit.html nel frattempo), non sovrascrivere alla cieca.
+    const remoto = decodificaContenutoGh(ghJson);
+    if (remoto !== null && remoto !== originalSourceFile) {
+      throw new Error(
+        `"${GH_PATH}" su GitHub è cambiato dopo il tuo caricamento (probabilmente un salvataggio ` +
+        `da edit.html o da un'altra scheda).\n\nSalvataggio ANNULLATO per non perdere quelle modifiche.\n\n` +
+        `Clicca "🔄 Ricarica da GitHub" e ripeti le tue modifiche alle coniugazioni.`
+      );
+    }
+    const nuovoSrc = ricostruisciSorgente(originalSourceFile);
+    const bytes = new TextEncoder().encode(nuovoSrc); let bin = ''; for (let j = 0; j < bytes.length; j++) bin += String.fromCharCode(bytes[j]);
+    const msgCommit = `Coniugazioni aggiornate da edit-coniugazioni.html (${nVerbi} verbi)`;
+    const putRes = await fetchTimeout(apiBase, { method: 'PUT', headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }), body: JSON.stringify({ message: msgCommit, content: btoa(bin), branch: GH_BRANCH, sha }) }, 60000);
+    if (!putRes.ok) { if (putRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('PUT fallito (' + putRes.status + ')'); }
+    originalSourceFile = nuovoSrc;
+    setHelp('✅ Salvato su GitHub (' + nVerbi + ' verbi).', 'success');
+  } catch (err) {
+    console.error(err);
+    setHelp('❌ ' + err.message, 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = orig;
+  }
+}
+
+caricaDaGitHub();
+</script>
+</body>
+</html>
