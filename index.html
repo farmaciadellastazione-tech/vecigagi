@@ -10688,8 +10688,8 @@ function SchermataSceltaMultipla({
       }
       if (altri.length < st.nScelte - 1) continue;
       const scelte = [
-        { raw: correttaRaw, display: corretta },
-        ...altri.map(e => ({ raw: e[lA.codice], display: formaDisplay(e[lA.codice], lA.codice) }))
+        { raw: correttaRaw, display: corretta, entry },
+        ...altri.map(e => ({ raw: e[lA.codice], display: formaDisplay(e[lA.codice], lA.codice), entry: e }))
       ].sort(() => Math.random() - 0.5);
       nuoveCarte.push({ entry, linguaPrompt: lP, lingua: lA, corretta, scelte });
     }
@@ -10873,13 +10873,13 @@ function SchermataSceltaMultipla({
       className: "flex-1 text-left"
     }, s.display), /*#__PURE__*/React.createElement("span", {
       role: "button",
-      onClick: (ev) => { ev.stopPropagation(); parla(formaTTS(s.raw), carta.lingua?.bcp47); },
+      onClick: (ev) => { ev.stopPropagation(); parla(formaTTS(s.raw), carta.lingua?.bcp47, false, audioVoce(s.entry, carta.lingua?.codice)); },
       className: "text-zinc-500 hover:text-amber-400 text-base px-2 -my-2 py-2",
       title: "Ascolta questa scelta",
       "aria-label": "Ascolta questa scelta"
     }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("span", {
       role: "button",
-      onClick: (ev) => { ev.stopPropagation(); parla(formaTTS(s.raw), carta.lingua?.bcp47, true); },
+      onClick: (ev) => { ev.stopPropagation(); parla(formaTTS(s.raw), carta.lingua?.bcp47, true, audioVoce(s.entry, carta.lingua?.codice)); },
       className: "text-zinc-500 hover:text-amber-400 text-base px-1 -my-2 py-2",
       title: "Ascolta lentamente", "aria-label": "Ascolta lentamente"
     }, "\uD83D\uDC22"));
@@ -10920,11 +10920,11 @@ function SchermataSceltaMultipla({
     }, e.carta.lingua?.bandiera), /*#__PURE__*/React.createElement("span", {
       className: "text-green-400 font-bold"
     }, e.carta.corretta), /*#__PURE__*/React.createElement("button", {
-      onClick: () => parla(formaTTS(e.carta.entry[e.carta.lingua.codice]), e.carta.lingua?.bcp47),
+      onClick: () => parla(formaTTS(e.carta.entry[e.carta.lingua.codice]), e.carta.lingua?.bcp47, false, audioVoce(e.carta.entry, e.carta.lingua.codice)),
       className: "text-zinc-500 hover:text-amber-400 text-sm px-1",
       title: "Ascolta", "aria-label": "Ascolta"
     }, "🔊"), /*#__PURE__*/React.createElement("button", {
-      onClick: () => parla(formaTTS(e.carta.entry[e.carta.lingua.codice]), e.carta.lingua?.bcp47, true),
+      onClick: () => parla(formaTTS(e.carta.entry[e.carta.lingua.codice]), e.carta.lingua?.bcp47, true, audioVoce(e.carta.entry, e.carta.lingua.codice)),
       className: "text-zinc-500 hover:text-amber-400 text-sm px-1",
       title: "Ascolta lentamente", "aria-label": "Ascolta lentamente"
     }, "🐢")), /*#__PURE__*/React.createElement("div", {
@@ -12348,10 +12348,10 @@ function SchermataQuiz({
       }, lDA.bandiera), /*#__PURE__*/React.createElement("span", {
         className: "text-slate-200 font-bold text-2xl truncate"
       }, parola), /*#__PURE__*/React.createElement("button", {
-        onClick: () => parla(formaTTS(rawValDA), lDA.bcp47),
+        onClick: () => parla(formaTTS(rawValDA), lDA.bcp47, false, e.carta.tipo === "coniugazione" ? null : audioVoce(e.carta.entry, codiceDA)),
         className: "text-sky-600 hover:text-sky-400 text-base flex-shrink-0"
       }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("button", {
-        onClick: () => parla(formaTTS(rawValDA), lDA.bcp47, true),
+        onClick: () => parla(formaTTS(rawValDA), lDA.bcp47, true, e.carta.tipo === "coniugazione" ? null : audioVoce(e.carta.entry, codiceDA)),
         className: "text-sky-600 hover:text-sky-400 text-base flex-shrink-0",
         title: "Ascolta lentamente", "aria-label": "Ascolta lentamente"
       }, "\uD83D\uDC22")), /*#__PURE__*/React.createElement("div", {
@@ -12361,10 +12361,10 @@ function SchermataQuiz({
       }, lA?.bandiera), /*#__PURE__*/React.createElement("span", {
         className: "text-green-400 font-bold text-2xl"
       }, formaDisplay(e.atteso, lA?.codice)), lA && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
-        onClick: () => parla(e.carta.tipo === "coniugazione" ? testoAudio(e.atteso, e.carta.persona, lA.codice) : e.atteso, lA.bcp47),
+        onClick: () => parla(e.carta.tipo === "coniugazione" ? testoAudio(e.atteso, e.carta.persona, lA.codice) : e.atteso, lA.bcp47, false, e.carta.tipo === "coniugazione" ? null : audioVoce(e.carta.entry, lA.codice)),
         className: "text-sky-600 hover:text-sky-400 text-base flex-shrink-0"
       }, "\uD83D\uDD0A"), /*#__PURE__*/React.createElement("button", {
-        onClick: () => parla(e.carta.tipo === "coniugazione" ? testoAudio(e.atteso, e.carta.persona, lA.codice) : e.atteso, lA.bcp47, true),
+        onClick: () => parla(e.carta.tipo === "coniugazione" ? testoAudio(e.atteso, e.carta.persona, lA.codice) : e.atteso, lA.bcp47, true, e.carta.tipo === "coniugazione" ? null : audioVoce(e.carta.entry, lA.codice)),
         className: "text-sky-600 hover:text-sky-400 text-base flex-shrink-0",
         title: "Ascolta lentamente", "aria-label": "Ascolta lentamente"
       }, "\uD83D\uDC22"))), mostraTradB && /*#__PURE__*/React.createElement("div", {
@@ -12574,7 +12574,8 @@ function SchermataQuiz({
     testo: formaTTS(carta.entry[carta.da]),
     bcp47: lDA.bcp47,
     size: "text-2xl",
-    codice: carta.da
+    codice: carta.da,
+    audioFile: audioVoce(carta.entry, carta.da)
   })), /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-center gap-2 text-slate-600"
   }, /*#__PURE__*/React.createElement("span", {
@@ -12655,7 +12656,8 @@ function SchermataQuiz({
     }, formaDisplay(carta.entry[carta.da], carta.da)), /*#__PURE__*/React.createElement(BtnAudio, {
       testo: formaTTS(carta.entry[carta.da]),
       bcp47: lDA_pre.bcp47,
-      codice: carta.da
+      codice: carta.da,
+      audioFile: audioVoce(carta.entry, carta.da)
     }));
   })(), /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-center gap-2 bg-black px-4 py-2 rounded-full border border-green-800 mb-2"
@@ -12666,7 +12668,8 @@ function SchermataQuiz({
   }, carta.tipo === "coniugazione" ? carta.atteso : formaDisplay(carta.entry[carta.a], carta.a))), lA && /*#__PURE__*/React.createElement(BtnAudio, {
     testo: carta.tipo === "coniugazione" ? testoAudio(carta.atteso, carta.persona, carta.a) : formaTTS(carta.entry[carta.a]),
     bcp47: lA.bcp47,
-    codice: carta.a
+    codice: carta.a,
+    audioFile: carta.tipo === "coniugazione" ? null : audioVoce(carta.entry, carta.a)
   })), carta.tipo !== "dettato" && (() => {
     const uiLang = getUILang();
     if (uiLang === carta.a || uiLang === carta.da) return null;
@@ -12745,7 +12748,8 @@ function SchermataQuiz({
     }, formaDisplay(carta.entry[carta.da], carta.da)), /*#__PURE__*/React.createElement(BtnAudio, {
       testo: formaTTS(carta.entry[carta.da]),
       bcp47: lDA_pre.bcp47,
-      codice: carta.da
+      codice: carta.da,
+      audioFile: audioVoce(carta.entry, carta.da)
     }));
   })(), /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-center gap-2 bg-black px-4 py-2 rounded-full border border-red-800 mb-2"
@@ -12756,7 +12760,8 @@ function SchermataQuiz({
   }, carta.tipo === "coniugazione" ? carta.atteso : formaDisplay(carta.entry[carta.a], carta.a))), lA && /*#__PURE__*/React.createElement(BtnAudio, {
     testo: carta.tipo === "coniugazione" ? testoAudio(carta.atteso, carta.persona, carta.a) : formaTTS(carta.entry[carta.a]),
     bcp47: lA.bcp47,
-    codice: carta.a
+    codice: carta.a,
+    audioFile: carta.tipo === "coniugazione" ? null : audioVoce(carta.entry, carta.a)
   })), carta.tipo !== "dettato" && (() => {
     const uiLang = getUILang();
     if (uiLang === carta.a || uiLang === carta.da) return null;
