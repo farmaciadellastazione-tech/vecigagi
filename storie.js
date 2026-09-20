@@ -17047,12 +17047,12 @@ const STORIE_DEFAULT = [
       {
         "testo": "Cian cianin",
         "it": "Pian pianino",
-        "audio": "cian-cianin-01.webm"
+        "audio": "cian-cianin-01.mp3"
       },
       {
         "testo": "andemo fino aa Ciapa",
         "it": "andiamo fino alla Chiappa",
-        "audio": "cian-cianin-02.webm"
+        "audio": "cian-cianin-02.mp3"
       }
     ]
   },
