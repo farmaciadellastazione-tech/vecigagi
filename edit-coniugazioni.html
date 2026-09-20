@@ -182,7 +182,11 @@ function salvaConfigAI() {
   chiudiConfigAI();
 }
 async function callGroq(prompt) {
-  const res = await fetchTimeout('https://api.groq.com/openai/v1/chat/completions', { method: 'POST', headers: { 'Authorization': 'Bearer ' + aiConfig.key, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'openai/gpt-oss-20b', messages: [{ role: 'user', content: prompt }], temperature: 0.3, response_format: { type: 'json_object' } }) }, 30000);
+  // Niente response_format:json_object qui: con schemi più lunghi (6-9 righe
+  // x 9 lingue) la validazione JSON lato server di Groq a volte fallisce
+  // (errore "json_validate_failed", failed_generation vuoto) anche con un
+  // prompt corretto. Ci basiamo sul parsing tollerante di parseJSONAI().
+  const res = await fetchTimeout('https://api.groq.com/openai/v1/chat/completions', { method: 'POST', headers: { 'Authorization': 'Bearer ' + aiConfig.key, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'openai/gpt-oss-20b', messages: [{ role: 'user', content: prompt }], temperature: 0.3 }) }, 30000);
   if (!res.ok) throw new Error('Groq HTTP ' + res.status + ': ' + await res.text());
   return (await res.json()).choices[0].message.content;
 }
@@ -233,10 +237,21 @@ async function completaConIA() {
     const prompt = `Sei un linguista esperto di coniugazioni verbali. Coniuga il verbo italiano "${verbo.nome}" al tempo/modo "${tempo.nome}" per queste persone, nell'ordine dato: ${JSON.stringify(persone)}.
 Fornisci la forma coniugata in ciascuna di queste lingue: ${langList}.
 Se una lingua non distingue una persona (es. l'inglese "you" per 2ª sing./plur.), usa comunque la forma naturale più corretta in quella lingua per quella persona.
-Rispondi SOLO con JSON valido in questo formato esatto, un oggetto per ogni persona nello STESSO ORDINE fornito:
+Rispondi ESCLUSIVAMENTE con un oggetto JSON valido, senza testo prima o dopo, senza markdown, senza commenti, un oggetto per ogni persona nello STESSO ORDINE fornito, in questo formato esatto:
 {"forme": [{"it": "...", "en": "...", ...}, ...]}`;
-    const testo = await chiamaAI(prompt);
-    const parsed = parseJSONAI(testo);
+    // Un retry automatico: la modalità JSON di alcuni provider (Groq in
+    // particolare) può fallire in modo transitorio su schemi lunghi come
+    // questo anche con un prompt corretto — ritentare una volta risolve la
+    // maggior parte dei casi senza dover disturbare l'utente.
+    let parsed, ultimoErrore;
+    for (let tentativo = 0; tentativo < 2; tentativo++) {
+      try {
+        const testo = await chiamaAI(prompt);
+        parsed = parseJSONAI(testo);
+        break;
+      } catch (e) { ultimoErrore = e; }
+    }
+    if (!parsed) throw ultimoErrore || new Error('Nessuna risposta valida dalla IA.');
     if (!Array.isArray(parsed.forme) || parsed.forme.length !== forme.length) {
       throw new Error('La IA ha risposto con un numero di forme diverso da quello atteso (' + forme.length + ').');
     }
