@@ -9,7 +9,8 @@
     "validate:voc": "node tools/validate_vocabolario.mjs index.html",
     "build:css": "tailwindcss -i tailwind.input.css -o tailwind.css --minify",
     "watch:css": "tailwindcss -i tailwind.input.css -o tailwind.css --watch",
-    "build:storie": "node tools/build_storie_pages.mjs"
+    "build:storie": "node tools/build_storie_pages.mjs",
+    "audio:mp3": "node tools/convert_audio_to_mp3.mjs"
   },
   "devDependencies": {
     "playwright": "^1.61.1",
