@@ -42,6 +42,12 @@
   #help.error { background:#fef2f2; color:#991b1b; }
   .table-wrap { overflow-x:auto; }
   .hint { font-size:0.78rem; color:var(--muted); margin-top:0.3rem; }
+  .modal-overlay { position:fixed; inset:0; background:rgba(15,23,42,0.4); display:flex; align-items:center; justify-content:center; z-index:50; }
+  .modal-overlay[hidden] { display:none; }
+  .modal-card { background:#fff; border-radius:0.75rem; padding:1.2rem; width:min(22rem, 90vw); box-shadow:0 10px 30px rgba(0,0,0,0.2); }
+  .modal-card h3 { margin:0 0 0.8rem; font-size:1rem; }
+  .modal-card select, .modal-card input { width:100%; margin-bottom:0.6rem; }
+  .modal-actions { display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.4rem; }
 </style>
 </head>
 <body>
@@ -83,6 +89,18 @@
   <button class="primary" id="btn-salva" onclick="salvaSuGitHub()">☁️ Salva su GitHub</button>
   <button onclick="caricaDaGitHub()">🔄 Ricarica da GitHub</button>
   <button onclick="impostaToken()">🔑 Token GitHub</button>
+</div>
+
+<div class="modal-overlay" id="persona-modal" hidden>
+  <div class="modal-card">
+    <h3>➕ Aggiungi riga persona</h3>
+    <select id="persona-preset-select" onchange="onCambioPresetPersona()"></select>
+    <input type="text" id="persona-testo-libero" placeholder="Scrivi l'etichetta..." hidden>
+    <div class="modal-actions">
+      <button onclick="chiudiPersonaModal()">Annulla</button>
+      <button class="primary" onclick="confermaPersonaModal()">Aggiungi</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -343,11 +361,36 @@ function rimuoviTempo() {
   popolaTempi();
   renderTabella();
 }
+// Preset più comuni per una riga persona: le 6 standard (utili per ricreare
+// una riga cancellata) più le forme non finite che compaiono in qualche tempo
+// (participio, gerundio, infinito).
+const PERSONE_PRESET = [...PERSONE_STANDARD, 'infinito', 'gerundio', 'participio passato', 'participio presente'];
+
 function aggiungiPersona() {
   if (!verboCorrente || !tempoCorrente) { alert('Seleziona prima un verbo e un tempo.'); return; }
+  const sel = document.getElementById('persona-preset-select');
+  sel.innerHTML = '';
+  PERSONE_PRESET.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = p; sel.appendChild(o); });
+  const oAltro = document.createElement('option'); oAltro.value = '__altro__'; oAltro.textContent = 'Altro (scrivi tu)...';
+  sel.appendChild(oAltro);
+  document.getElementById('persona-testo-libero').hidden = true;
+  document.getElementById('persona-testo-libero').value = '';
+  document.getElementById('persona-modal').hidden = false;
+}
+function onCambioPresetPersona() {
+  const sel = document.getElementById('persona-preset-select');
+  document.getElementById('persona-testo-libero').hidden = sel.value !== '__altro__';
+}
+function chiudiPersonaModal() {
+  document.getElementById('persona-modal').hidden = true;
+}
+function confermaPersonaModal() {
+  const sel = document.getElementById('persona-preset-select');
+  const libero = document.getElementById('persona-testo-libero');
+  const label = sel.value === '__altro__' ? libero.value.trim() : sel.value;
+  chiudiPersonaModal();
+  if (!label) return;
   const forme = coniugazioni[verboCorrente].tempi[tempoCorrente].forme;
-  const label = prompt('Etichetta della riga (es. "3ª sing.", "2ª sing. (tu/you/tu...)"):', '');
-  if (label === null) return;
   forme.push({ p: label });
   renderTabella();
 }
