@@ -507,6 +507,10 @@
   </div>
 </div>
 
+<!-- Encoder mp3 per la registrazione audio in-browser (vedi sezione REGISTRAZIONE
+     AUDIO più sotto): serve a produrre file riproducibili anche da Safari/iOS,
+     che non supporta i contenitori webm/ogg prodotti nativamente da MediaRecorder. -->
+<script src="lib/lame.min.js"></script>
 <script>
 // ==========================================================================
 // CONFIGURAZIONE GITHUB
@@ -3113,39 +3117,60 @@ async function tagliaSilenzio(blob, mimeType, normalizza) {
   return riregistraSegmento(audioBuffer, start, end, mimeType, normalizza);
 }
 
-// MediaRecorder non offre un modo diretto di ri-codificare un AudioBuffer: lo si
-// "riproduce" attraverso un MediaStreamAudioDestinationNode e lo si ricattura con
-// un secondo MediaRecorder — nessuna libreria esterna, ma richiede un tempo ~pari
-// alla durata del segmento tagliato.
+// Codifica un AudioBuffer in mp3 (mono — voce, non serve stereo) con lamejs:
+// riproducibile ovunque, incluso Safari/iOS che non supporta i contenitori
+// webm/ogg prodotti nativamente da MediaRecorder (causa della "voce del
+// computer al posto della mia" nel quiz — vedi commit sulla conversione
+// audio esistente). Sincrona sui dati già decodificati: niente più bisogno
+// di "riprodurre e ricatturare" con un secondo MediaRecorder in tempo reale.
+function audioBufferToMp3(audioBuffer, bitrateKbps) {
+  bitrateKbps = bitrateKbps || 128;
+  const sampleRate = audioBuffer.sampleRate;
+  const nCh = audioBuffer.numberOfChannels;
+  const samples = new Float32Array(audioBuffer.length);
+  for (let c = 0; c < nCh; c++) {
+    const ch = audioBuffer.getChannelData(c);
+    for (let i = 0; i < ch.length; i++) samples[i] += ch[i] / nCh;
+  }
+  const pcm = new Int16Array(samples.length);
+  for (let i = 0; i < samples.length; i++) {
+    const s = Math.max(-1, Math.min(1, samples[i]));
+    pcm[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+  }
+  const encoder = new lamejs.Mp3Encoder(1, sampleRate, bitrateKbps);
+  const blockSize = 1152;
+  const chunks = [];
+  for (let i = 0; i < pcm.length; i += blockSize) {
+    const buf = encoder.encodeBuffer(pcm.subarray(i, i + blockSize));
+    if (buf.length > 0) chunks.push(buf);
+  }
+  const end = encoder.flush();
+  if (end.length > 0) chunks.push(end);
+  return new Blob(chunks, { type: 'audio/mp3' });
+}
+
+// Ritaglia il segmento [startSample, endSample) da audioBuffer (con normalizzazione
+// di picco opzionale) e lo codifica in mp3. mimeType non serve più (l'output è
+// sempre mp3): resta come parametro per non toccare i chiamanti in tagliaSilenzio.
 function riregistraSegmento(audioBuffer, startSample, endSample, mimeType, normalizza) {
-  return new Promise((resolve, reject) => {
-    const AC = window.AudioContext || window.webkitAudioContext;
-    const ctx = new AC({ sampleRate: audioBuffer.sampleRate });
-    const nSamples = endSample - startSample;
-    const tagliato = ctx.createBuffer(audioBuffer.numberOfChannels, nSamples, audioBuffer.sampleRate);
-    for (let c = 0; c < audioBuffer.numberOfChannels; c++) {
-      const src = audioBuffer.getChannelData(c).subarray(startSample, endSample);
-      if (normalizza) {
-        let picco = 0; for (let i = 0; i < src.length; i++) picco = Math.max(picco, Math.abs(src[i]));
-        const guadagno = picco > 0 ? Math.min(4, 0.9 / picco) : 1;
-        const out = new Float32Array(src.length);
-        for (let i = 0; i < src.length; i++) out[i] = src[i] * guadagno;
-        tagliato.copyToChannel(out, c);
-      } else {
-        tagliato.copyToChannel(src, c);
-      }
+  const AC = window.AudioContext || window.webkitAudioContext;
+  const ctx = new AC({ sampleRate: audioBuffer.sampleRate });
+  const nSamples = endSample - startSample;
+  const tagliato = ctx.createBuffer(audioBuffer.numberOfChannels, nSamples, audioBuffer.sampleRate);
+  for (let c = 0; c < audioBuffer.numberOfChannels; c++) {
+    const src = audioBuffer.getChannelData(c).subarray(startSample, endSample);
+    if (normalizza) {
+      let picco = 0; for (let i = 0; i < src.length; i++) picco = Math.max(picco, Math.abs(src[i]));
+      const guadagno = picco > 0 ? Math.min(4, 0.9 / picco) : 1;
+      const out = new Float32Array(src.length);
+      for (let i = 0; i < src.length; i++) out[i] = src[i] * guadagno;
+      tagliato.copyToChannel(out, c);
+    } else {
+      tagliato.copyToChannel(src, c);
     }
-    const dest = ctx.createMediaStreamDestination();
-    const nodo = ctx.createBufferSource(); nodo.buffer = tagliato; nodo.connect(dest);
-    const rec = new MediaRecorder(dest.stream, mimeType && MediaRecorder.isTypeSupported(mimeType) ? { mimeType } : undefined);
-    const chunks = [];
-    rec.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
-    rec.onstop = () => { ctx.close(); resolve(new Blob(chunks, { type: rec.mimeType || mimeType })); };
-    rec.onerror = e => { ctx.close(); reject(e.error || e); };
-    rec.start();
-    nodo.start();
-    nodo.onended = () => setTimeout(() => rec.stop(), 50);
-  });
+  }
+  ctx.close();
+  return Promise.resolve(audioBufferToMp3(tagliato));
 }
 
 // Stesso schema byte→binary-string→base64 già usato da salvaSuGitHub() per il
