@@ -1184,7 +1184,7 @@
   </div>
   <div class="ad-hidden-note" id="ad-hidden-note"></div>
 
-  <!-- Modalità guidata (pubblico): lotto di parole mancanti nei temi di base -->
+  <!-- Modalità guidata (pubblico): lotto di parole mancanti (tutti i temi pubblici) -->
   <div class="guided-wrap public-only" id="guided-wrap">
     <p class="guided-intro" id="guided-intro">Ti proponiamo alcune parole comuni ancora senza traduzione in <strong id="guided-dial-name"></strong>. Scrivi quello che sai, il resto puoi lasciarlo vuoto.</p>
     <div class="guided-list" id="guided-list"></div>
@@ -2347,16 +2347,17 @@ const TEMI_LABEL = {
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyoy_a8FPvqgnLCIe7KZdJh3m4BaLaGc9xpWjGTCSpU8-WE5b2wXzNgZqpBCKouAUxdbA/exec";
 
-// Temi "di base", proposti al pubblico (modalità guidata e lista completa).
-// I temi tecnici/di nicchia (patologie, farmaci, linguistica, ecc.) restano
-// visibili solo in admin (dialetti.html?admin=1 / edit.html). "linguistica"
-// raccoglie i termini metalinguistici (participio, pronome relativo...).
-// saluti, tempo e grammatica
-// sono di base (buongiorno, oggi, dove, noi...): dopo la correzione dei temi
-// le parole comuni sono finite lì e sparivano dalla modalità guidata.
-const TEMI_CORE = ['dialogo','numeri','famiglia','cibo','casa','corpo','aggettivi','verbi','giorni','mesi','saluti','tempo','grammatica'];
+// Nessuna parola va esclusa dalla raccolta: al pubblico (modalità guidata e
+// lista completa) sono proposti TUTTI i temi, anche quelli futuri. Restano
+// visibili solo in admin (dialetti.html?admin=1 / edit.html) due temi che
+// escludiamo di proposito:
+//  - gergo: parole volgari/offensive, da rivedere prima di proporle;
+//  - linguistica: termini metalinguistici (participio, pronome relativo...).
+// (Prima c'era una lista di temi "core", ma usare il tema come criterio di
+// "parola base" nascondeva parole comuni: vedi il lavoro sul criterio "base".)
+const TEMI_SOLO_ADMIN = ['gergo','linguistica'];
 function pubblicoVisibile(e) {
-  return ADMIN || TEMI_CORE.includes(e.tema);
+  return ADMIN || !TEMI_SOLO_ADMIN.includes(e.tema);
 }
 
 const GUIDED_BATCH_SIZE = 20;
@@ -4339,8 +4340,8 @@ function renderTable() {
 }
 
 // ── Modalità guidata (pubblico) ─────────────────────────────────────────
-// Propone un lotto di parole mancanti, prese solo dai temi di base
-// (TEMI_CORE), per il dialetto scelto. Riusa contributions/onInput/submit
+// Propone un lotto di parole mancanti, prese da tutti i temi pubblici
+// (vedi pubblicoVisibile), per il dialetto scelto. Riusa contributions/onInput/submit
 // così come la tabella completa.
 function renderGuided() {
   const container = document.getElementById('guided-list');
