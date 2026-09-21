@@ -1595,7 +1595,7 @@ const CANDIDATI = [
       { tema:"corpo", it:"gola", ge:"goa" },
       { tema:"corpo", it:"gomito", en:"elbow", sp:"gomedo, gómedo", cr:"Gòm't" },
       { tema:"astratti", it:"governo", en:"government", ge:"goêrno" },
-      { tema:"grammatica", it:"grammatica", ge:"gramm-âtica" },
+      { tema:"linguistica", it:"grammatica", ge:"gramm-âtica" },
       { tema:"animali", it:"granchio", en:"crab", sp:"faélo, grìtoa, faólo, gritoa", ge:"faolo" },
       { tema:"aggettivi", it:"grande", en:"big", ge:"grânde" },
       { tema:"natura", it:"grandine", en:"hail", sp:"granzèa, granżèa" },
@@ -1642,7 +1642,7 @@ const CANDIDATI = [
       { tema:"verbi", it:"intrugliare", sp:"paciügae, potigiae, bosignae", ge:"pacciuga" },
       { tema:"aggettivi", it:"invernale", ge:"d'inverno" },
       { tema:"natura", it:"inverno", en:"winter", ge:"inverno" },
-      { tema:"grammatica", it:"io ero (imperfetto)" },
+      { tema:"linguistica", it:"io ero (imperfetto)" },
       { tema:"sintomi", it:"ipotensione", en:"low blood pressure" },
       { tema:"natura", it:"isola", en:"island", ge:"î-oua" },
       { tema:"luoghi", it:"Italia", en:"Italy" },
@@ -1831,7 +1831,7 @@ const CANDIDATI = [
       { tema:"mestieri", it:"parroco", sp:"parco", ge:"parco" },
       { tema:"mestieri", it:"parrucchiere", sp:"perüchéo", ge:"perücché" },
       { tema:"astratti", it:"parte", ge:"pârte" },
-      { tema:"grammatica", it:"participio presente attivo" },
+      { tema:"linguistica", it:"participio presente attivo" },
       { tema:"verbi", it:"partire", sp:"partie", ge:"parti" },
       { tema:"sport", it:"partita", sp:"partia", ge:"partia" },
       { tema:"sport", it:"partita/incontro", en:"match", sp:"partìa" },
@@ -1916,7 +1916,7 @@ const CANDIDATI = [
       { tema:"persone", it:"principessa", ge:"prinçipessa" },
       { tema:"astratti", it:"problema", ge:"problem-a" },
       { tema:"cosmetica", it:"profumo", en:"perfume", sp:"prefümo, aigoa d’odoe, àigoa d'odoe (colonia)", ge:"profummo" },
-      { tema:"grammatica", it:"pronome relativo (che / il quale)" },
+      { tema:"linguistica", it:"pronome relativo (che / il quale)" },
       { tema:"aggettivi", it:"pronto", sp:"alèsto, lèsto, pronto", ge:"lesto" },
       { tema:"verbi", it:"prudere", sp:"róde, �>mangiae", ge:"röde" },
       { tema:"verbi", it:"prudere/consumare", mn:"zmàngiaa", src:{"mn":"📕 Dizionario manarolese"}, verif:"mn:y", note:{"mn":"cat:v.i. | p:z_185"} },
@@ -2340,7 +2340,7 @@ const TEMI_LABEL = {
   viaggi:"✈️ Viaggi", mesi:"📅 Mesi", giorni:"📅 Giorni",
   persone:"🧑 Persone", tecnologia:"💻 Tecnologia",
   astratti:"💭 Astratti", scuola:"📚 Scuola", arte:"🎨 Arte", oggetti:"🧰 Oggetti",
-  grammatica:"📖 Grammatica", saluti:"👋 Saluti", emotivi:"💗 Emotivi", tempo:"⏳ Tempo",
+  grammatica:"📖 Grammatica", linguistica:"🔤 Linguistica (admin)", saluti:"👋 Saluti", emotivi:"💗 Emotivi", tempo:"⏳ Tempo",
   lavoro:"💼 Lavoro", insulti:"🤬 Insulti", cosmetica:"🧴 Cosmetica",
   gergo:"🚫 Da rivedere",
 };
@@ -2348,8 +2348,10 @@ const TEMI_LABEL = {
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyoy_a8FPvqgnLCIe7KZdJh3m4BaLaGc9xpWjGTCSpU8-WE5b2wXzNgZqpBCKouAUxdbA/exec";
 
 // Temi "di base", proposti al pubblico (modalità guidata e lista completa).
-// I temi tecnici/di nicchia (patologie, farmaci, ecc.) restano visibili solo
-// in admin (dialetti.html?admin=1 / edit.html). saluti, tempo e grammatica
+// I temi tecnici/di nicchia (patologie, farmaci, linguistica, ecc.) restano
+// visibili solo in admin (dialetti.html?admin=1 / edit.html). "linguistica"
+// raccoglie i termini metalinguistici (participio, pronome relativo...).
+// saluti, tempo e grammatica
 // sono di base (buongiorno, oggi, dove, noi...): dopo la correzione dei temi
 // le parole comuni sono finite lì e sparivano dalla modalità guidata.
 const TEMI_CORE = ['dialogo','numeri','famiglia','cibo','casa','corpo','aggettivi','verbi','giorni','mesi','saluti','tempo','grammatica'];
