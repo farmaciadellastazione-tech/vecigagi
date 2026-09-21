@@ -1127,12 +1127,21 @@ function estraiFrasiSP(src) {
   }
 }
 
+// Unica fonte per i temi già presenti nel vocabolario caricato: la usano il
+// filtro, il suggerimento all'IA e i controlli sui temi delle nuove voci.
+function temiEsistenti() {
+  return [...new Set(vocabolario.map(v => v.tema).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'it'));
+}
+
+// Il tema proposto dall'IA vale solo se esiste già: un tema inventato o
+// scritto male verrebbe salvato e poi bloccato dal validatore (e nel quiz non
+// avrebbe badge né filtro). Se non esiste si lascia la voce senza tema.
+function temaIADaUsare(t) { return t && temiEsistenti().includes(t) ? t : ''; }
+
 function popolaTemiSelect() {
-  const temi = new Set();
-  vocabolario.forEach(v => { if (v.tema) temi.add(v.tema); });
   const sel = document.getElementById('tema-select');
   sel.innerHTML = '<option value="">tutti</option>';
-  Array.from(temi).sort((a, b) => a.localeCompare(b, 'it')).forEach(t => {
+  temiEsistenti().forEach(t => {
     const o = document.createElement('option'); o.value = t; o.textContent = t; sel.appendChild(o);
   });
 }
@@ -1611,8 +1620,7 @@ function render() {
 function ensureDatalists() {
   let dl = document.getElementById('temi-list');
   if (!dl) { dl = document.createElement('datalist'); dl.id = 'temi-list'; document.body.appendChild(dl); }
-  const temi = new Set(); vocabolario.forEach(v => { if (v.tema) temi.add(v.tema); });
-  dl.innerHTML = Array.from(temi).sort().map(t => `<option value="${escapeAttr(t)}">`).join('');
+  dl.innerHTML = temiEsistenti().map(t => `<option value="${escapeAttr(t)}">`).join('');
   let dl2 = document.getElementById('livelli-list');
   if (!dl2) { dl2 = document.createElement('datalist'); dl2.id = 'livelli-list'; dl2.innerHTML = '<option value="A1"><option value="A2"><option value="B1"><option value="B2">'; document.body.appendChild(dl2); }
 }
@@ -1683,14 +1691,23 @@ async function aggiungiVoce() {
       setHelp('✨ AI sta classificando la voce...', 'info');
       try {
         const sugg = await aiClassificaERTraducici(itTrim, isDialetto ? ['en'] : [currentLangs[0]]);
-        if (sugg.tema) voce.tema = sugg.tema;
+        voce.tema = temaIADaUsare(sugg.tema);
         if (sugg.livello) voce.livello = sugg.livello;
         if (!isDialetto && sugg.translations && sugg.translations[currentLangs[0]]) voce[currentLangs[0]] = sugg.translations[currentLangs[0]];
         setHelp(`✨ AI: tema="${voce.tema}", livello="${voce.livello}"${!isDialetto ? `, ${currentLangs[0]}="${voce[currentLangs[0]]||'(vuoto)'}"` : ''}`, 'success');
       } catch (e) { setHelp('⚠️ AI non disponibile: ' + e.message, 'error'); }
     }
   }
-  if (!voce.tema) voce.tema = prompt('Tema (es. "casa", "verbi", "dialetti"):') || 'dialetti';
+  if (!voce.tema) {
+    // Nessun tema di default (la categoria "dialetti" è stata eliminata, daedc94)
+    // e nessuna voce senza tema: senza tema non compare nei filtri del quiz.
+    const scelto = (prompt('Tema (' + temiEsistenti().join(', ') + '):') || '').trim();
+    if (!scelto) { alert('Voce non aggiunta: serve un tema.'); return; }
+    // "Casa" e "casa" sono lo stesso tema: si riusa quello già presente
+    voce.tema = temiEsistenti().find(t => t.toLowerCase() === scelto.toLowerCase()) || scelto;
+    if (!temiEsistenti().includes(voce.tema) &&
+        !confirm(`Il tema "${voce.tema}" non esiste ancora nel vocabolario. Vuoi crearlo?\n\nSe sì, ricorda di aggiungerlo anche a TEMI in index.html, altrimenti il quiz non lo mostra.`)) return;
+  }
   if (!voce.livello) voce.livello = prompt('Livello (A1/A2/B1/B2):') || 'A2';
   vocabolario.unshift(voce);
   newKeys.add(rowKey(voce));
@@ -2222,10 +2239,13 @@ function buildAIPrompt(italianTerm, langCodes, contextSamples) {
   let context = '';
   if (contextSamples && contextSamples.length) context = '\n\nEsempi dal vocabolario:\n' + contextSamples.slice(0, 6).map(s => JSON.stringify(s)).join('\n');
   const exampleTranslations = langCodes.map(c => `"${c}":"..."`).join(', ');
+  // Temi realmente presenti nel vocabolario (nessun elenco fisso da tenere allineato).
+  const temiNoti = temiEsistenti();
+  const elencoTemi = temiNoti.length ? temiNoti.map(t => `"${t}"`).join(', ') : '"casa", "cibo", "verbi", "famiglia", "lavoro", "natura", "corpo", "tempo", "viaggi", "saluti", "numeri"';
   return `Sei un assistente per un quiz di vocabolario multilingue italiano. Per il termine italiano "${italianTerm}", fornisci:
 1. Una traduzione concisa (1-3 parole) in: ${langList}
 2. Livello CEFR: A1/A2/B1/B2
-3. Tema (es: "casa", "cibo", "verbi", "famiglia", "lavoro", "natura", "corpo", "tempo", "viaggi", "saluti", "dialetti", "numeri")${dialettoContext}
+3. Tema: scegli UNO tra quelli esistenti (${elencoTemi}), in base al significato della parola${dialettoContext}
 Rispondi SOLO con JSON valido:
 {"tema":"...", "livello":"A1|A2|B1|B2", "translations":{${exampleTranslations}}}${context}`;
 }
@@ -2280,7 +2300,8 @@ async function aiCompletaRiga(btn) {
     const langs = langsToTranslate.length ? langsToTranslate : [currentLangs[0]];
     const sugg = await aiClassificaERTraducici(visiblePart(v.it), langs);
     let changed = false;
-    if (sugg.tema && !v.tema) { v.tema = sugg.tema; changed = true; }
+    const temaIA = temaIADaUsare(sugg.tema);
+    if (temaIA && !v.tema) { v.tema = temaIA; changed = true; }
     if (sugg.livello && !v.livello && /^[AB][12]$/.test(sugg.livello)) { v.livello = sugg.livello; changed = true; }
     if (sugg.translations) Object.keys(sugg.translations).forEach(c => { if (!(v[c] || '').trim() && sugg.translations[c]) { v[c] = sugg.translations[c]; changed = true; } });
     if (changed) { if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v)); popolaTemiSelect(); render(); setHelp(`✨ AI: "${v.it}" — ${langs.map(c => c + '=' + (v[c] || '?')).join(', ')}`, 'success'); }
@@ -2343,7 +2364,8 @@ async function completaConAI() {
     try {
       const langs = currentLangs.filter(c => !(v[c] || '').trim());
       const sugg = await aiClassificaERTraducici(visiblePart(v.it), langs);
-      if (sugg.tema && !v.tema) v.tema = sugg.tema;
+      const temaIA = temaIADaUsare(sugg.tema);
+      if (temaIA && !v.tema) v.tema = temaIA;
       if (sugg.livello && !v.livello && /^[AB][12]$/.test(sugg.livello)) v.livello = sugg.livello;
       if (sugg.translations) Object.keys(sugg.translations).forEach(c => { if (!(v[c] || '').trim() && sugg.translations[c]) v[c] = sugg.translations[c]; });
       if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v)); ok++;

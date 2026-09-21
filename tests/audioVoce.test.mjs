@@ -52,8 +52,9 @@ test('entry null/undefined → null, niente crash', () => {
 });
 
 test('la voce pilota "tirare" in VOCABOLARIO_DEFAULT ha il file che esiste nel repo', () => {
-  assert.match(INDEX, /it:"tirare"[^\n]*audio:\{sp:"tiae\.mp3"\}/,
-    'la voce "tirare" deve avere audio:{sp:"tiae.mp3"}');
+  // edit.html serializza le chiavi tra virgolette: audio:{"sp":"tiae.mp3"}
+  assert.match(INDEX, /it:"tirare"[^\n]*audio:\{"sp":"tiae\.mp3"\}/,
+    'la voce "tirare" deve avere audio:{"sp":"tiae.mp3"}');
   assert.ok(fs.existsSync(ROOT + '/audio/sp/tiae.mp3'),
     'audio/sp/tiae.mp3 deve esistere nel repo');
 });

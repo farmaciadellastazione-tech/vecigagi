@@ -4,10 +4,11 @@
 //
 //   node tools/validate_vocabolario.mjs [index.html]
 //
-// ERRORI (bloccanti): livello/tema mancanti o invalidi, chiave "undefined",
-//   valore non-stringa, verif malformato, e COLONNE DISALLINEATE (testo in un
-//   alfabeto incompatibile con la lingua della colonna — la classe di bug
-//   delle 115 voci bonificate).
+// ERRORI (bloccanti): livello invalido, TEMA NON DEFINITO in TEMI (un refuso
+//   come "animale" invece di "animali": il quiz non mostrerebbe badge né
+//   filtro), chiave "undefined", valore non-stringa, verif malformato, e
+//   COLONNE DISALLINEATE (testo in un alfabeto incompatibile con la lingua
+//   della colonna — la classe di bug delle 115 voci bonificate).
 // WARNING (non bloccanti): orfani verif/src/note, chiavi lingua ignote,
 //   celle vuote, pattern IA sospetti (mn = it/ge con fonte IA non verificata).
 
@@ -69,10 +70,31 @@ function estraiArray(html) {
   return new Function('return ' + html.slice(open, i))();
 }
 
+// ── Estrazione dei temi definiti (const TEMI = { chiave: {label, emoji}, ... }) ──
+// Restituisce l'insieme delle chiavi, o null se il blocco non c'è.
+function estraiTemi(html) {
+  const m = /const\s+TEMI\s*=\s*\{/.exec(html);
+  if (!m) return null;
+  const open = html.indexOf('{', m.index);
+  let depth = 0, inStr = null, esc = false, i = open;
+  for (; i < html.length; i++) {
+    const ch = html[i], nx = html[i + 1];
+    if (esc) { esc = false; continue; }
+    if (inStr) { if (ch === '\\') esc = true; else if (ch === inStr) inStr = null; continue; }
+    if (ch === '/' && nx === '/') { i = html.indexOf('\n', i); if (i < 0) break; continue; }
+    if (ch === '/' && nx === '*') { i = html.indexOf('*/', i) + 1; continue; }
+    if (ch === '"' || ch === "'" || ch === '`') { inStr = ch; continue; }
+    if (ch === '{') depth++; else if (ch === '}') { depth--; if (depth === 0) { i++; break; } }
+  }
+  return new Set(Object.keys(new Function('return ' + html.slice(open, i))()));
+}
+
 // ── Validazione ──────────────────────────────────────────────────────────────
 const errors = [], warns = [];
 const html = fs.readFileSync(SRC_HTML, 'utf8');
 const voci = estraiArray(html);
+const TEMI_NOTI = estraiTemi(html);
+if (!TEMI_NOTI) warns.push(`TEMI non trovato in ${SRC_HTML}: controllo dei temi saltato`);
 
 const visti = new Map();
 voci.forEach((v, idx) => {
@@ -82,6 +104,8 @@ voci.forEach((v, idx) => {
 
   if (!v || typeof v !== 'object') { E('voce non è un oggetto'); return; }
   if (!v.tema) W('manca "tema" (l\'app non applica filtri/bilanciamento tema)');
+  else if (TEMI_NOTI && !TEMI_NOTI.has(v.tema))
+    E(`tema sconosciuto: ${JSON.stringify(v.tema)} (non è definito in TEMI: niente badge né filtro nel quiz)`);
   if (v.livello === undefined) W('manca "livello" (l\'app usa A1 di default)');
   else if (!LIVELLI.has(v.livello)) E(`livello invalido: ${JSON.stringify(v.livello)}`);
 

@@ -2,7 +2,7 @@
 // Schema input: array di { mn, it, cat, pag }.
 // Schema output (per ogni nuova voce di candidato):
 //   { it, mn, src:{mn:"📕 Dizionario manarolese"}, verif:"mn:y", note:{mn:"cat:... | p:..."} }
-// (più tema:"dialetti" come default per le entry create da zero — facilita la promozione)
+// (senza tema per le entry create da zero: si sceglie in fase di promozione)
 //
 // Politica:
 //   - Voci con (it, mn) identica a una in index.html VOCABOLARIO_DEFAULT → skip duplicato.
@@ -103,15 +103,17 @@ for (const r of jsonData) {
   }
 
   // 3. Nuova entry — eredita tema dalla voce in index se presente (es. 14 conflitti + 3 arricch.idx)
-  const tema = (inIdx && inIdx.tema) ? inIdx.tema : 'dialetti';
+  // Nessun tema di default: la categoria "dialetti" è stata eliminata (daedc94),
+  // il tema si sceglie in fase di promozione da dialetti.html.
+  const tema = (inIdx && inIdx.tema) ? inIdx.tema : '';
   const livello = (inIdx && inIdx.livello) ? inIdx.livello : undefined;
   const newEntry = {
-    tema,
     it,
     mn,
     src: { mn: SRC_LABEL },
     verif: 'mn:y',
   };
+  if (tema) newEntry.tema = tema;
   if (livello) newEntry.livello = livello;
   if (noteStr) newEntry.note = { mn: noteStr };
   candVoc.push(newEntry);

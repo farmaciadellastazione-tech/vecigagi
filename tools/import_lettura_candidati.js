@@ -113,8 +113,10 @@ for (const r of jsonData) {
   }
 
   // 3. Nuova entry — eredita tema dalla voce in index se presente
-  const tema = (inIdx && inIdx.tema) ? inIdx.tema : (r.tema || 'dialetti');
-  const newEntry = { tema, it, [lingua]: val, src: { [lingua]: SRC_LABEL } };
+  // Nessun tema di default: la categoria "dialetti" è stata eliminata (daedc94).
+  const tema = (inIdx && inIdx.tema) ? inIdx.tema : (r.tema || '');
+  const newEntry = { it, [lingua]: val, src: { [lingua]: SRC_LABEL } };
+  if (tema) newEntry.tema = tema;
   if (noteStr) newEntry.note = { [lingua]: noteStr };
   candVoc.push(newEntry);
   candByIt.set(it, newEntry);
