@@ -3617,8 +3617,24 @@ function candidatiDopoPromozione(voci, promosse) {
 }
 
 async function adminPromuovi() {
-  const ok = adminVoc.filter(v => v.ok);
+  let ok = adminVoc.filter(v => v.ok);
   if (!ok.length) { alert('Nessuna voce marcata OK.'); return; }
+
+  // Guardia: i temi in TEMI_SOLO_ADMIN (gergo, linguistica) non esistono in
+  // TEMI di index.html — se promossi finirebbero pubblicati senza badge/filtro
+  // e visibili a tutti, perdendo lo scopo di tenerli fuori dalla vista pubblica.
+  const daSoloAdmin = ok.filter(v => TEMI_SOLO_ADMIN.includes(v.tema));
+  if (daSoloAdmin.length) {
+    const elenco = daSoloAdmin.slice(0, 10).map(v => `  · ${v.it} [${v.tema}]`).join('\n');
+    const extra = daSoloAdmin.length > 10 ? `\n  …e altre ${daSoloAdmin.length - 10}` : '';
+    if (!confirm(
+      `⚠️ ${daSoloAdmin.length} voci marcate OK hanno un tema riservato all'admin (${TEMI_SOLO_ADMIN.join(', ')}), non definito in TEMI di index.html:\n\n${elenco}${extra}\n\n` +
+      `Escluderle dalla promozione e continuare con le altre?\n(Annulla per fermare tutto e sistemare i temi prima)`
+    )) { adminLog(`🚫 Promozione annullata: ${daSoloAdmin.length} voci con tema solo-admin da sistemare prima.`, 'error'); return; }
+    ok = ok.filter(v => !TEMI_SOLO_ADMIN.includes(v.tema));
+    if (!ok.length) { alert('Nessuna voce da promuovere dopo aver escluso quelle con tema solo-admin.'); return; }
+  }
+
   if (!adminAssicuraToken()) return;
 
   // Anteprima
