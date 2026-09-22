@@ -106,7 +106,9 @@ voci.forEach((v, idx) => {
   if (!v.tema) W('manca "tema" (l\'app non applica filtri/bilanciamento tema)');
   else if (TEMI_NOTI && !TEMI_NOTI.has(v.tema))
     E(`tema sconosciuto: ${JSON.stringify(v.tema)} (non è definito in TEMI: niente badge né filtro nel quiz)`);
-  if (v.livello === undefined) W('manca "livello" (l\'app usa A1 di default)');
+  // "" è lo stato legittimo di una voce svuotata in edit.html (equivale a
+  // undefined per l'app: vedi tests/pesoCefr.test.mjs), non un valore invalido.
+  if (v.livello === undefined || v.livello === '') W('manca "livello" (l\'app la propone come la più difficile, non come A1: va in fondo alla coda di priorità e si sblocca solo quando l\'utente ha raggiunto B2)');
   else if (!LIVELLI.has(v.livello)) E(`livello invalido: ${JSON.stringify(v.livello)}`);
 
   const langKeys = Object.keys(v).filter(k => !META.has(k));

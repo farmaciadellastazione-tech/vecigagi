@@ -325,6 +325,36 @@ test('adminPromuovi: usa i nuovi helper e salta i candidati con omonimi in index
   assert.ok(/omonim/i.test(src), 'il salto per ambiguità deve essere spiegato all\'utente');
 });
 
+// Prima: adminPromuovi non controllava il tema prima di promuovere. I temi in
+// TEMI_SOLO_ADMIN (gergo, linguistica) non esistono in TEMI di index.html: una
+// voce "gergo" marcata OK per errore (o in una selezione multipla) finiva
+// pubblicata senza badge/filtro e visibile a tutti, perdendo lo scopo di
+// tenerla fuori dalla vista pubblica. Dopo: guardia esplicita, con avviso ed
+// esclusione (non blocco silenzioso) delle voci con tema solo-admin.
+test('adminPromuovi: avvisa ed esclude le voci con tema in TEMI_SOLO_ADMIN prima di promuovere', () => {
+  const src = extractFn(DIAL, 'adminPromuovi');
+  assert.ok(/TEMI_SOLO_ADMIN\.includes\(v\.tema\)/.test(src),
+    'la guardia deve riusare TEMI_SOLO_ADMIN (stessa lista che nasconde le voci al pubblico in dialetti.html)');
+  // la guardia deve avvenire PRIMA di adminAssicuraToken (nessuna chiamata di
+  // rete finché non è chiaro cosa si sta per promuovere)
+  const iGuardia = src.indexOf('TEMI_SOLO_ADMIN');
+  const iToken = src.indexOf('adminAssicuraToken');
+  assert.ok(iGuardia >= 0 && iToken >= 0 && iGuardia < iToken,
+    'la guardia sul tema deve precedere la chiamata di rete (adminAssicuraToken)');
+  // deve poter continuare la promozione ESCLUDENDO solo le voci solo-admin,
+  // non richiedere di ricominciare da capo
+  assert.ok(/ok\s*=\s*ok\.filter\(v => !TEMI_SOLO_ADMIN\.includes\(v\.tema\)\)/.test(src),
+    'dopo l\'avviso, le voci solo-admin vanno escluse da `ok` (non solo segnalate)');
+});
+
+test('TEMI_SOLO_ADMIN comprende gergo e linguistica (stessa lista usata da pubblicoVisibile e da adminPromuovi)', () => {
+  const m = /const TEMI_SOLO_ADMIN\s*=\s*(\[[^\]]*\])/.exec(DIAL);
+  assert.ok(m, 'TEMI_SOLO_ADMIN non trovata in dialetti.html');
+  const lista = JSON.parse(m[1].replace(/'/g, '"'));
+  assert.deepEqual(lista.sort(), ['gergo', 'linguistica']);
+  assert.ok(DIAL.includes('!TEMI_SOLO_ADMIN.includes(e.tema)'), 'pubblicoVisibile deve ancora usare la stessa lista');
+});
+
 test('adminRowKey: ignora punto/puntini finali ("pescecane." == "pescecane")', () => {
   const ctx = vm.createContext({});
   vm.runInContext(extractFn(DIAL, 'adminRowKey'), ctx);

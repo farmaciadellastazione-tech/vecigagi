@@ -391,14 +391,35 @@ const INTERVALLI = [0, 1, 3, 7, 14, 30, 90, 180];
 const SOGLIA_APPRESA = 3; // livello minimo per considerare una parola "appresa"
 const LIVELLO_MAX = INTERVALLI.length - 1;
 
-// Peso CEFR: le parole A1 vengono proposte prima delle A2, poi B1, poi B2
+// Peso CEFR: le parole A1 vengono proposte prima delle A2, poi B1, poi B2.
+// Una voce senza livello (o con un livello non tra questi) va DOPO le B2, non
+// trattata come A1: 343 voci di VOCABOLARIO_DEFAULT non hanno ancora un
+// livello, e proporle come se fossero le più semplici le mischiava alle vere
+// A1 davanti alle B1/B2 vere.
 const PESO_CEFR = {
   A1: 0,
   A2: 1,
   B1: 2,
-  B2: 3,
-  "": 0
+  B2: 3
 };
+const PESO_CEFR_SCONOSCIUTO = 4; // STRETTAMENTE dopo B2 (peso 3): qui conta solo l'ORDINE
+// tra parole già ammesse. Non confondere con CEFR_IDX_SCONOSCIUTO (dentro
+// estraiCarte): quella è la soglia di AMMISSIONE di passaCEFR e vale invece
+// come B2 (non dopo), perché lì serve dire QUANDO una voce sconosciuta si
+// sblocca, non solo dove va in coda — le due costanti sono intenzionalmente
+// diverse, non un doppione da unificare.
+
+// Peso CEFR di una carta per l'ordinamento delle "nuove" (usata sia da
+// estraiCarte sia da estraiCarteDettato, stesso comparatore prima duplicato
+// alla lettera nei due punti). Le carte di coniugazione (generaEserciziConiugazioni)
+// hanno un `entry` sintetico che non ha MAI un campo livello, per costruzione:
+// non sono voci di VOCABOLARIO_DEFAULT, quindi PESO_CEFR_SCONOSCIUTO non deve
+// applicarsi a loro (le penalizzerebbe come se fossero vocabolario senza
+// livello, cosa mai intesa) — restano al peso 0, come prima di questo fix.
+function pesoCEFRCarta(carta) {
+  if (carta.tipo === 'coniugazione') return 0;
+  return PESO_CEFR[carta.entry.livello] ?? PESO_CEFR_SCONOSCIUTO;
+}
 
 // ── Traduzione interfaccia IT/EN ──────────────────────────────────────────
 const UI = {
@@ -517,6 +538,7 @@ const UI = {
     tema: "Tema",
     tuttiitemi: "Tutti i temi",
     tuttilivelli: "Tutti i livelli",
+    senzalivello: "Senza livello",
     ndomande: "N. domande",
     scegliquante: "Scegli quante domande",
     illimitate: "Illimitate",
@@ -609,6 +631,7 @@ const UI = {
     tema: "Theme",
     tuttiitemi: "All themes",
     tuttilivelli: "All levels",
+    senzalivello: "No level",
     compilaalmeno: "Fill in at least 2 languages.",
     ndomande: "Number of questions",
     scegliquante: "Choose how many questions",
@@ -813,6 +836,7 @@ const UI = {
     nota_verbi_en: "ℹ️ Les verbes anglais n'incluent pas \"to\" (ex. \"go\" et non \"to go\")",
     tuttiitemi: "Tous les thèmes",
     tuttilivelli: "Tous les niveaux",
+    senzalivello: "Sans niveau",
     sceltamultipla: "Choix multiple",
     desc_sceltamultipla: "🎯 5-12 options, niveau adaptatif"
   },
@@ -885,6 +909,7 @@ const UI = {
     tema: "Tema",
     tuttiitemi: "Todos los temas",
     tuttilivelli: "Todos los niveles",
+    senzalivello: "Sin nivel",
     scegliquante: "Elige cuántas preguntas",
     illimitate: "Ilimitadas",
     migliorperc: "Mejor %",
@@ -1023,6 +1048,7 @@ const UI = {
     tema: "Thema",
     tuttiitemi: "Alle Themen",
     tuttilivelli: "Alle Niveaus",
+    senzalivello: "Ohne Niveau",
     scegliquante: "Wähle wie viele Fragen",
     illimitate: "Unbegrenzt",
     migliorperc: "Bester %",
@@ -1161,6 +1187,7 @@ const UI = {
     tema: "Tema",
     tuttiitemi: "Todos os temas",
     tuttilivelli: "Todos os níveis",
+    senzalivello: "Sem nível",
     scegliquante: "Escolhe quantas perguntas",
     illimitate: "Ilimitadas",
     migliorperc: "Melhor %",
@@ -1292,6 +1319,7 @@ const UI = {
     tema: "Тема",
     tuttiitemi: "Все темы",
     tuttilivelli: "Все уровни",
+    senzalivello: "Без уровня",
     ndomande: "Вопросы",
     oggi: "Сегодня",
     domani: "Завтра",
@@ -1428,6 +1456,7 @@ const UI = {
     tema: "主题",
     tuttiitemi: "所有主题",
     tuttilivelli: "所有级别",
+    senzalivello: "无级别",
     ndomande: "题目数量",
     oggi: "今天",
     domani: "明天",
@@ -1568,6 +1597,7 @@ const UI = {
     tema: "주제",
     tuttiitemi: "모든 주제",
     tuttilivelli: "모든 레벨",
+    senzalivello: "레벨 없음",
     ndomande: "문제 수",
     oggi: "오늘",
     domani: "내일",
@@ -1706,6 +1736,7 @@ const UI = {
     tema: "Tema",
     tuttiitemi: "Tots els temes",
     tuttilivelli: "Tots els nivells",
+    senzalivello: "Sense nivell",
     ndomande: "Preguntes",
     oggi: "Avui",
     domani: "Demà",
@@ -4385,7 +4416,10 @@ function contaScadute(vocabolario, stats, lingue, filtri) {
 }
 function passaFiltri(entry, filtri) {
   if (filtri.temi.length > 0 && !filtri.temi.includes(entry.tema || "")) return false;
-  if (filtri.livelli.length > 0 && !filtri.livelli.includes(entry.livello || "A1")) return false;
+  // Una voce senza livello non corrisponde a NESSUN filtro di livello esplicito
+  // (prima "|| A1" la faceva comparire sotto il filtro A1: contraddiceva
+  // passaCEFR/PESO_CEFR, che ora la trattano come la piu' difficile, non A1).
+  if (filtri.livelli.length > 0 && !filtri.livelli.includes(entry.livello || "")) return false;
   // Escludi voci con traduzione mancante ("?") in qualsiasi lingua attiva
   if (Object.values(entry).some(v => v === "?")) return false;
   return true;
@@ -4406,8 +4440,26 @@ function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAF
   const cefrMax = livelloUtente < 1 ? "A1" : livelloUtente < 2 ? "A2" : livelloUtente < 4 ? "B1" : "B2";
   const cefrOrdine = ["A1", "A2", "B1", "B2"];
   const cefrIdx = cefrOrdine.indexOf(cefrMax);
+  // Una voce senza livello (o con un livello non tra questi) NON deve passare
+  // sempre: prima trattarla come "A1" la rendeva ammessa fin da subito anche
+  // ai veri principianti, qualunque fosse la sua reale difficoltà (343 voci
+  // di VOCABOLARIO_DEFAULT non hanno ancora un livello). Ora vale come B2, il
+  // livello più alto già definito: si sblocca insieme alle B2 vere, quando
+  // l'utente non è più un principiante, invece di essere sempre ammessa.
+  const CEFR_IDX_SCONOSCIUTO = cefrOrdine.length - 1; // = indice di "B2" (non
+  // confondere con PESO_CEFR_SCONOSCIUTO più in alto nel file: quella ordina
+  // le parole già ammesse e vale STRETTAMENTE dopo B2; questa è la soglia di
+  // AMMISSIONE, e vale COME B2 apposta, per sbloccarsi insieme a essa)
+  // Se l'utente ha scelto esplicitamente il filtro "❓ Senza livello"
+  // (filtri.livelli include ""), la soglia adattiva NON deve bloccare quelle
+  // voci: le ha chieste apposta, non gliele si sta proponendo di sorpresa.
+  // Senza questa eccezione, filtrare solo "senza livello" restituirebbe una
+  // sessione silenziosamente vuota per chiunque non abbia ancora raggiunto B2.
+  const vuoleSenzaLivello = filtri.livelli.includes('');
   function passaCEFR(e) {
-    return cefrOrdine.indexOf(e.livello || "A1") <= cefrIdx;
+    const idx = cefrOrdine.indexOf(e.livello);
+    if (idx === -1) return vuoleSenzaLivello || CEFR_IDX_SCONOSCIUTO <= cefrIdx;
+    return idx <= cefrIdx;
   }
 
   // ── Parole normali ───────────────────────────────────────────────────
@@ -4455,8 +4507,8 @@ function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAF
   });
   // Nuove: ordina per CEFR poi mescola dentro ogni livello
   nu.sort((a, b) => {
-    const da = PESO_CEFR[a.entry.livello || "A1"],
-      db = PESO_CEFR[b.entry.livello || "A1"];
+    const da = pesoCEFRCarta(a),
+      db = pesoCEFRCarta(b);
     if (da !== db) return da - db;
     return Math.random() - 0.5;
   });
@@ -5164,7 +5216,12 @@ function PannelloFiltri({
     onClick: () => toggleLivello(k),
     "aria-pressed": loc.livelli.includes(k),
     className: `text-xs px-3 py-1.5 rounded-full font-semibold transition ${loc.livelli.includes(k) ? v.colore : "bg-zinc-900 text-slate-500"}`
-  }, v.label))), /*#__PURE__*/React.createElement("p", {
+  }, v.label)), /*#__PURE__*/React.createElement("button", {
+    key: "",
+    onClick: () => toggleLivello(""),
+    "aria-pressed": loc.livelli.includes(""),
+    className: `text-xs px-3 py-1.5 rounded-full font-semibold transition ${loc.livelli.includes("") ? "bg-zinc-600 text-white" : "bg-zinc-900 text-slate-500"}`
+  }, "❓ ", t.senzalivello)), /*#__PURE__*/React.createElement("p", {
     className: "text-xs uppercase tracking-widest text-slate-500 mb-2"
   }, t.tema), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-2 mb-5 flex-wrap"
@@ -5175,7 +5232,7 @@ function PannelloFiltri({
     className: `text-xs px-3 py-1.5 rounded-full font-semibold transition ${loc.temi.includes(k) ? "bg-sky-500 text-white" : "bg-zinc-900 text-slate-400"}`
   }, v.emoji, " ", v.label))), /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-slate-500 mb-4"
-  }, loc.temi.length === 0 && loc.livelli.length === 0 ? t.nessunfiltro : `${t.filtriattivi}: ${[...loc.livelli, ...loc.temi.map(t => TEMI[t]?.label || t)].join(", ")}`), /*#__PURE__*/React.createElement("div", {
+  }, loc.temi.length === 0 && loc.livelli.length === 0 ? t.nessunfiltro : `${t.filtriattivi}: ${[...loc.livelli.map(l => l || t.senzalivello), ...loc.temi.map(t => TEMI[t]?.label || t)].join(", ")}`), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-3"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: () => setLoc({
@@ -5436,6 +5493,27 @@ function estraiCarteDettato(vocabolario, stats, lingue, filtri, linguaDaFissa, l
   const lingueAttive = lingue.filter(l => l.attiva);
   // La lingua dell'interfaccia è già conosciuta — escludi dalle domande del dettato
   const linguaUI = getUILang(); // es. "it" o "en"
+  // CEFR adattivo anche per dettato — spostato PRIMA del ciclo (serve per
+  // filtrare le parole nuove mentre si costruiscono i mazzi, vedi passaCEFRD
+  // sotto): prima era calcolato solo dopo, e usato solo per l'ordine, non per
+  // ammettere le parole. A differenza del quiz normale (passaCEFR in
+  // estraiCarte), qui ogni parola mai praticata entrava comunque nel mazzo
+  // "nuove", qualunque fosse la sua difficoltà — un principiante in Dettato
+  // riceveva fin da subito parole B1/B2 vere e tutte quelle senza livello.
+  const livelliVistiD = Object.values(stats).map(s => s.livello || 0).filter(l => l > 0);
+  const livelloUtenteD = livelliVistiD.length > 0 ? livelliVistiD.reduce((a, b) => a + b, 0) / livelliVistiD.length : 0;
+  const cefrMaxD = livelloUtenteD < 1 ? "A1" : livelloUtenteD < 2 ? "A2" : livelloUtenteD < 4 ? "B1" : "B2";
+  const cefrOrdineD = ["A1", "A2", "B1", "B2"];
+  const cefrIdxD = cefrOrdineD.indexOf(cefrMaxD);
+  const CEFR_IDX_SCONOSCIUTO_D = cefrOrdineD.length - 1; // = indice di "B2", come CEFR_IDX_SCONOSCIUTO in estraiCarte
+  // Stessa eccezione di passaCEFR in estraiCarte: il filtro esplicito "❓
+  // Senza livello" bypassa la soglia adattiva.
+  const vuoleSenzaLivelloD = filtri.livelli.includes('');
+  function passaCEFRD(e) {
+    const idx = cefrOrdineD.indexOf(e.livello);
+    if (idx === -1) return vuoleSenzaLivelloD || CEFR_IDX_SCONOSCIUTO_D <= cefrIdxD;
+    return idx <= cefrIdxD;
+  }
   pool.forEach(e => {
     const ld = lingueAttiveEntry(e, lingue);
     if (ld.length < 1) return;
@@ -5459,19 +5537,13 @@ function estraiCarteDettato(vocabolario, stats, lingue, filtri, linguaDaFissa, l
         key,
         tipo: "dettato"
       };
-      if (c.livello === 0) nu.push(carta);else if (isScaduta(stats, key)) sc.push(carta);else if (isAppresa(stats, key) && Math.random() < 0.05) ap.push(carta);
+      if (c.livello === 0 && passaCEFRD(e)) nu.push(carta);else if (isScaduta(stats, key)) sc.push(carta);else if (isAppresa(stats, key) && Math.random() < 0.05) ap.push(carta);
     });
   });
-  // CEFR adattivo anche per dettato
-  const livelliVistiD = Object.values(stats).map(s => s.livello || 0).filter(l => l > 0);
-  const livelloUtenteD = livelliVistiD.length > 0 ? livelliVistiD.reduce((a, b) => a + b, 0) / livelliVistiD.length : 0;
-  const cefrMaxD = livelloUtenteD < 1 ? "A1" : livelloUtenteD < 2 ? "A2" : livelloUtenteD < 4 ? "B1" : "B2";
-  const cefrOrdineD = ["A1", "A2", "B1", "B2"];
-  const cefrIdxD = cefrOrdineD.indexOf(cefrMaxD);
   sc.sort((a, b) => getCoppia(stats, a.key).prossima - getCoppia(stats, b.key).prossima);
   nu.sort((a, b) => {
-    const da = PESO_CEFR[a.entry.livello || "A1"],
-      db = PESO_CEFR[b.entry.livello || "A1"];
+    const da = pesoCEFRCarta(a),
+      db = pesoCEFRCarta(b);
     if (da !== db) return da - db;
     return Math.random() - 0.5;
   });
@@ -8244,13 +8316,15 @@ function ModificaParola({
   }, v.emoji, " ", v.label)))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
     className: "text-xs text-slate-500 block mb-1"
   }, t.livello), /*#__PURE__*/React.createElement("select", {
-    value: form.livello || "A1",
+    value: form.livello || "", // "" se non ancora classificata
     onChange: e => setForm(f => ({
       ...f,
       livello: e.target.value
     })),
     className: "border-2 border-zinc-700 rounded-lg px-2 py-1 text-sm focus:outline-none focus:border-sky-400"
-  }, Object.keys(LIVELLI).map(k => /*#__PURE__*/React.createElement("option", {
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "❓ ", t.senzalivello), Object.keys(LIVELLI).map(k => /*#__PURE__*/React.createElement("option", {
     key: k,
     value: k
   }, k))))), lingue.map(l => entry[l.codice] !== undefined || l.attiva ? /*#__PURE__*/React.createElement("div", {
@@ -9256,13 +9330,16 @@ function Vocabolario({
   const [filtro, setFiltro] = useState("tutte");
   const [temaFiltro, setTemaFiltro] = useState("");
   const [livelloFiltro, setLivelloFiltro] = useState("");
+  // Sentinella per "solo le voci senza livello" nel select qui sotto: "" è
+  // già "tutti i livelli" (nessun filtro attivo), serve un valore diverso.
+  const SENZA_LIVELLO = "__senza__";
   const [modificando, setModificando] = useState(null);
   const lingueAttive = lingue.filter(l => l.attiva);
   const filtrate = vocabolario.filter(e => {
     if (filtro === "apprese" && !parolaAppresa(e, stats, lingue)) return false;
     if (filtro === "daImparare" && parolaAppresa(e, stats, lingue)) return false;
     if (temaFiltro && e.tema !== temaFiltro) return false;
-    if (livelloFiltro && e.livello !== livelloFiltro) return false;
+    if (livelloFiltro === SENZA_LIVELLO ? !!e.livello : livelloFiltro && e.livello !== livelloFiltro) return false;
     return true;
   });
   return /*#__PURE__*/React.createElement("div", {
@@ -9307,7 +9384,9 @@ function Vocabolario({
     className: "text-xs border border-zinc-700 rounded-lg px-2 py-1 text-slate-400 bg-zinc-900"
   }, /*#__PURE__*/React.createElement("option", {
     value: ""
-  }, "Tutti i livelli"), Object.keys(LIVELLI).map(k => /*#__PURE__*/React.createElement("option", {
+  }, "Tutti i livelli"), /*#__PURE__*/React.createElement("option", {
+    value: SENZA_LIVELLO
+  }, "❓ ", t.senzalivello), Object.keys(LIVELLI).map(k => /*#__PURE__*/React.createElement("option", {
     key: k,
     value: k
   }, k)))), /*#__PURE__*/React.createElement("div", {
@@ -9315,7 +9394,7 @@ function Vocabolario({
   }, filtrate.map((entry, i) => {
     const idxReale = vocabolario.indexOf(entry);
     const appresa = parolaAppresa(entry, stats, lingue);
-    const lv = LIVELLI[entry.livello || "A1"];
+    const lv = LIVELLI[entry.livello || ""]; // "" -> undefined -> niente badge, come tm/TEMI
     const tm = TEMI[entry.tema || ""];
     return /*#__PURE__*/React.createElement("div", {
       key: i,
@@ -11049,7 +11128,7 @@ function SchermataQuiz({
   const attesoCorrente = carta ? (carta.tipo === "coniugazione" ? carta.atteso : carta.entry[carta.a]) : null;
   const livello = carta ? getCoppia(stats, carta.key).livello : 0;
   const isRipasso = carta ? isAppresa(stats, carta.key) : false;
-  const lv = carta ? LIVELLI[carta.entry.livello || "A1"] : null;
+  const lv = carta ? LIVELLI[carta.entry.livello || ""] : null; // "" -> undefined -> niente badge, come tm/TEMI
   const tm = carta ? TEMI[carta.entry.tema || ""] : null;
   // Dialetto con TTS adattata (mn/sp/ge/cr) coinvolto in questa carta, se
   // presente — usato per mostrare "🎤 Proponi pronuncia" solo dove la voce

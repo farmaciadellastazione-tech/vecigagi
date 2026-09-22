@@ -84,6 +84,19 @@ test('senza blocco TEMI il controllo è saltato con un WARNING', () => {
   assert.match(r.out, /TEMI non trovato/);
 });
 
+// Prima: livello:"" (stato raggiungibile svuotando la cella in edit.html,
+// vedi tests/pesoCefr.test.mjs) cadeva nel ramo "livello invalido" (ERRORE
+// bloccante), perché il controllo era `v.livello === undefined` — "" non è
+// `undefined`. Dopo: "" vale come "manca il livello" (solo WARNING), come
+// documentato dal fix di PESO_CEFR/passaCEFR in index.html.
+test('livello:"" (svuotato in edit.html) è un WARNING come "manca livello", non un errore', () => {
+  const r = valida(`<script>\nconst TEMI = { casa: { label: "Casa", emoji: "🏠" } };\n` +
+    `const VOCABOLARIO_DEFAULT = [\n  { tema:"casa", livello:"", it:"tavolo", en:"table" },\n];\n</script>\n`);
+  assert.strictEqual(r.code, 0, r.out);
+  assert.match(r.out, /manca "…"/);
+  assert.doesNotMatch(r.out, /livello invalido/);
+});
+
 test('index.html reale: ogni tema usato è definito in TEMI', () => {
   const r = spawnSync(process.execPath, [VALIDATORE, path.join(ROOT, 'index.html')], { encoding: 'utf8' });
   assert.strictEqual(r.status, 0, (r.stdout || '') + (r.stderr || ''));
