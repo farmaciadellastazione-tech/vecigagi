@@ -10,7 +10,11 @@
 //
 // Dopo: una voce senza livello (o con un livello non riconosciuto) vale come
 // B2 (il livello più alto definito): passa la soglia solo quando l'utente ha
-// raggiunto B2, come le vere B2 — non è più sempre ammessa.
+// raggiunto B2, come le vere B2 — non è più sempre ammessa. ECCEZIONE: se
+// l'utente ha scelto esplicitamente il filtro "❓ Senza livello"
+// (filtri.livelli include ""), la soglia non blocca quelle voci — le ha
+// chieste apposta (altrimenti il filtro darebbe una sessione vuota per
+// chiunque non abbia ancora raggiunto B2).
 //   eseguire con:  node --test
 import { test } from 'node:test';
 import assert from 'node:assert';
@@ -22,29 +26,49 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(fileURLToPath(import.meta.url)) + '/..';
 const INDEX = fs.readFileSync(ROOT + '/index.html', 'utf8');
 
-// Estrae, per ogni cefrIdx possibile (0=A1 .. 3=B2), la funzione passaCEFR
-// così com'è scritta nel file, ricreando l'ambiente minimo di cui ha bisogno
-// (cefrOrdine, CEFR_IDX_SCONOSCIUTO, cefrIdx).
-function passaCEFRConSoglia(cefrIdx) {
-  const iOrdine = INDEX.indexOf('const cefrOrdine = ');
-  assert.ok(iOrdine >= 0, 'cefrOrdine non trovato in index.html');
-  const finOrdine = INDEX.indexOf(';', iOrdine) + 1;
-  const iSconosciuto = INDEX.indexOf('const CEFR_IDX_SCONOSCIUTO', finOrdine);
-  assert.ok(iSconosciuto >= 0, 'CEFR_IDX_SCONOSCIUTO non trovato in index.html');
-  const finSconosciuto = INDEX.indexOf(';', iSconosciuto) + 1;
-  const iFunc = INDEX.indexOf('function passaCEFR', finSconosciuto);
+// Scansiona `src` da `start` bilanciando i caratteri indicati in `apre`/`chiude`,
+// saltando stringhe e commenti riga/blocco (i commenti in italiano di questo
+// codebase contengono apostrofi che un tracker senza supporto commenti
+// scambia per apertura di stringa — vedi tests/streak.test.mjs e altri).
+function scansionaBilanciato(src, start, apre, chiude) {
+  let depth = 0, i = start, inStr = false, esc = false, q = null, inLineComment = false, inBlockComment = false, started = false;
+  for (; i < src.length; i++) {
+    const c = src[i], c2 = src[i + 1];
+    if (inLineComment) { if (c === '\n') inLineComment = false; continue; }
+    if (inBlockComment) { if (c === '*' && c2 === '/') { inBlockComment = false; i++; } continue; }
+    if (inStr) {
+      if (esc) esc = false;
+      else if (c === '\\') esc = true;
+      else if (c === q) inStr = false;
+      continue;
+    }
+    if (c === '/' && c2 === '/') { inLineComment = true; i++; continue; }
+    if (c === '/' && c2 === '*') { inBlockComment = true; i++; continue; }
+    if (c === '"' || c === "'" || c === '`') { inStr = true; q = c; continue; }
+    if (c === apre) { depth++; started = true; }
+    else if (c === chiude) { depth--; if (started && depth === 0) { i++; break; } }
+  }
+  return i;
+}
+
+// Estrae, dal `const cefrOrdine = ...` fino alla chiusura di `passaCEFR`, TUTTO
+// il blocco intermedio (comprese eventuali dichiarazioni future, es.
+// vuoleSenzaLivello): non enumera le singole const per nome, quindi resta
+// corretto anche se se ne aggiungono altre nel mezzo.
+function passaCEFRConSoglia(cefrIdx, filtri = { livelli: [] }) {
+  const start = INDEX.indexOf('const cefrOrdine = ');
+  assert.ok(start >= 0, 'cefrOrdine non trovato in index.html');
+  const iFunc = INDEX.indexOf('function passaCEFR(', start);
   assert.ok(iFunc >= 0, 'passaCEFR non trovata in index.html');
   const corpoStart = INDEX.indexOf('{', iFunc);
-  // corpo breve (2 righe): non serve lo scanner a profondità, basta la prima "\n  }"
-  const corpoEnd = INDEX.indexOf('\n  }', corpoStart) + 4;
-  const ctx = { cefrIdx };
+  const corpoEnd = scansionaBilanciato(INDEX, corpoStart, '{', '}');
+  // Il blocco include "const cefrIdx = cefrOrdine.indexOf(cefrMax);": la
+  // togliamo per usare il cefrIdx passato dal test (cefrMax dipenderebbe da
+  // `stats`, che qui non vogliamo dover simulare).
+  const blocco = INDEX.slice(start, corpoEnd).replace(/const cefrIdx = cefrOrdine\.indexOf\(cefrMax\);\n?/, '');
+  const ctx = { cefrIdx, filtri };
   vm.createContext(ctx);
-  vm.runInContext(
-    INDEX.slice(iOrdine, finOrdine) + '\n' + INDEX.slice(iSconosciuto, finSconosciuto) +
-    '\nfunction passaCEFR(e) ' + INDEX.slice(corpoStart, corpoEnd) +
-    '\nthis.passaCEFR = passaCEFR;',
-    ctx
-  );
+  vm.runInContext(blocco + '\nthis.passaCEFR = passaCEFR;', ctx);
   return ctx.passaCEFR;
 }
 
@@ -81,4 +105,15 @@ test('un livello sconosciuto (es. refuso) è trattato come "senza livello", non 
 test('livello:"" (svuotato in edit.html) si comporta come undefined, non come A1', () => {
   assert.strictEqual(passaCEFRConSoglia(0)({ livello: '' }), false);
   assert.strictEqual(passaCEFRConSoglia(3)({ livello: '' }), true);
+});
+
+test('il filtro esplicito "❓ Senza livello" fa passare le voci senza livello anche per un principiante', () => {
+  const passaCEFR = passaCEFRConSoglia(0, { livelli: [''] }); // principiante, ma ha chiesto "senza livello"
+  assert.strictEqual(passaCEFR({ livello: undefined }), true);
+  assert.strictEqual(passaCEFR({}), true);
+});
+
+test('il filtro esplicito "❓ Senza livello" NON cambia il comportamento delle voci CON un livello reale', () => {
+  const passaCEFR = passaCEFRConSoglia(0, { livelli: [''] });
+  assert.strictEqual(passaCEFR({ livello: 'B2' }), false, 'una B2 vera resta bloccata per un principiante, anche col filtro attivo');
 });

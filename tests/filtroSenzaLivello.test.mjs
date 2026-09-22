@@ -40,11 +40,16 @@ test('tutte le 10 lingue dell\'interfaccia hanno la chiave senzalivello', () => 
   assert.strictEqual(occorrenzeSenza, occorrenzeTutti, 'senzalivello deve esistere in tutte le lingue che hanno tuttilivelli');
 });
 
-test('Vocabolario (lista admin): il select di livello offre l\'opzione "__senza__"', () => {
+test('Vocabolario (lista admin): il select di livello offre l\'opzione "senza livello", con un\'unica costante condivisa', () => {
   const i = INDEX.indexOf('function Vocabolario');
   const fine = INDEX.indexOf('\nfunction ', i + 10);
   const corpo = INDEX.slice(i, fine);
-  assert.match(corpo, /value: "__senza__"/, 'manca l\'opzione "senza livello" nel select');
-  assert.match(corpo, /livelloFiltro === "__senza__" \? !!e\.livello : livelloFiltro && e\.livello !== livelloFiltro/,
-    'il filtro deve trattare "__senza__" come "solo le voci senza livello", non come un livello letterale');
+  assert.match(corpo, /const SENZA_LIVELLO = "__senza__";/, 'manca la costante condivisa SENZA_LIVELLO');
+  assert.match(corpo, /value: SENZA_LIVELLO/, 'l\'opzione del select deve usare la costante, non il letterale ripetuto');
+  assert.match(corpo, /livelloFiltro === SENZA_LIVELLO \? !!e\.livello : livelloFiltro && e\.livello !== livelloFiltro/,
+    'il filtro deve trattare SENZA_LIVELLO come "solo le voci senza livello", non come un livello letterale');
+  // le due occorrenze del sentinel devono derivare dalla stessa costante,
+  // non essere due stringhe "__senza__" scollegate
+  const occorrenzeLetterale = (corpo.match(/"__senza__"/g) || []).length;
+  assert.strictEqual(occorrenzeLetterale, 1, 'il letterale "__senza__" deve comparire una sola volta (nella dichiarazione della costante)');
 });
