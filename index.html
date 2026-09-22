@@ -526,6 +526,7 @@ const UI = {
     tema: "Tema",
     tuttiitemi: "Tutti i temi",
     tuttilivelli: "Tutti i livelli",
+    senzalivello: "Senza livello",
     ndomande: "N. domande",
     scegliquante: "Scegli quante domande",
     illimitate: "Illimitate",
@@ -618,6 +619,7 @@ const UI = {
     tema: "Theme",
     tuttiitemi: "All themes",
     tuttilivelli: "All levels",
+    senzalivello: "No level",
     compilaalmeno: "Fill in at least 2 languages.",
     ndomande: "Number of questions",
     scegliquante: "Choose how many questions",
@@ -822,6 +824,7 @@ const UI = {
     nota_verbi_en: "ℹ️ Les verbes anglais n'incluent pas \"to\" (ex. \"go\" et non \"to go\")",
     tuttiitemi: "Tous les thèmes",
     tuttilivelli: "Tous les niveaux",
+    senzalivello: "Sans niveau",
     sceltamultipla: "Choix multiple",
     desc_sceltamultipla: "🎯 5-12 options, niveau adaptatif"
   },
@@ -894,6 +897,7 @@ const UI = {
     tema: "Tema",
     tuttiitemi: "Todos los temas",
     tuttilivelli: "Todos los niveles",
+    senzalivello: "Sin nivel",
     scegliquante: "Elige cuántas preguntas",
     illimitate: "Ilimitadas",
     migliorperc: "Mejor %",
@@ -1032,6 +1036,7 @@ const UI = {
     tema: "Thema",
     tuttiitemi: "Alle Themen",
     tuttilivelli: "Alle Niveaus",
+    senzalivello: "Ohne Niveau",
     scegliquante: "Wähle wie viele Fragen",
     illimitate: "Unbegrenzt",
     migliorperc: "Bester %",
@@ -1170,6 +1175,7 @@ const UI = {
     tema: "Tema",
     tuttiitemi: "Todos os temas",
     tuttilivelli: "Todos os níveis",
+    senzalivello: "Sem nível",
     scegliquante: "Escolhe quantas perguntas",
     illimitate: "Ilimitadas",
     migliorperc: "Melhor %",
@@ -1301,6 +1307,7 @@ const UI = {
     tema: "Тема",
     tuttiitemi: "Все темы",
     tuttilivelli: "Все уровни",
+    senzalivello: "Без уровня",
     ndomande: "Вопросы",
     oggi: "Сегодня",
     domani: "Завтра",
@@ -1437,6 +1444,7 @@ const UI = {
     tema: "主题",
     tuttiitemi: "所有主题",
     tuttilivelli: "所有级别",
+    senzalivello: "无级别",
     ndomande: "题目数量",
     oggi: "今天",
     domani: "明天",
@@ -1577,6 +1585,7 @@ const UI = {
     tema: "주제",
     tuttiitemi: "모든 주제",
     tuttilivelli: "모든 레벨",
+    senzalivello: "레벨 없음",
     ndomande: "문제 수",
     oggi: "오늘",
     domani: "내일",
@@ -1715,6 +1724,7 @@ const UI = {
     tema: "Tema",
     tuttiitemi: "Tots els temes",
     tuttilivelli: "Tots els nivells",
+    senzalivello: "Sense nivell",
     ndomande: "Preguntes",
     oggi: "Avui",
     domani: "Demà",
@@ -5187,7 +5197,12 @@ function PannelloFiltri({
     onClick: () => toggleLivello(k),
     "aria-pressed": loc.livelli.includes(k),
     className: `text-xs px-3 py-1.5 rounded-full font-semibold transition ${loc.livelli.includes(k) ? v.colore : "bg-zinc-900 text-slate-500"}`
-  }, v.label))), /*#__PURE__*/React.createElement("p", {
+  }, v.label)), /*#__PURE__*/React.createElement("button", {
+    key: "",
+    onClick: () => toggleLivello(""),
+    "aria-pressed": loc.livelli.includes(""),
+    className: `text-xs px-3 py-1.5 rounded-full font-semibold transition ${loc.livelli.includes("") ? "bg-zinc-600 text-white" : "bg-zinc-900 text-slate-500"}`
+  }, "❓ ", t.senzalivello)), /*#__PURE__*/React.createElement("p", {
     className: "text-xs uppercase tracking-widest text-slate-500 mb-2"
   }, t.tema), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-2 mb-5 flex-wrap"
@@ -5198,7 +5213,7 @@ function PannelloFiltri({
     className: `text-xs px-3 py-1.5 rounded-full font-semibold transition ${loc.temi.includes(k) ? "bg-sky-500 text-white" : "bg-zinc-900 text-slate-400"}`
   }, v.emoji, " ", v.label))), /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-slate-500 mb-4"
-  }, loc.temi.length === 0 && loc.livelli.length === 0 ? t.nessunfiltro : `${t.filtriattivi}: ${[...loc.livelli, ...loc.temi.map(t => TEMI[t]?.label || t)].join(", ")}`), /*#__PURE__*/React.createElement("div", {
+  }, loc.temi.length === 0 && loc.livelli.length === 0 ? t.nessunfiltro : `${t.filtriattivi}: ${[...loc.livelli.map(l => l || t.senzalivello), ...loc.temi.map(t => TEMI[t]?.label || t)].join(", ")}`), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-3"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: () => setLoc({
@@ -5459,6 +5474,23 @@ function estraiCarteDettato(vocabolario, stats, lingue, filtri, linguaDaFissa, l
   const lingueAttive = lingue.filter(l => l.attiva);
   // La lingua dell'interfaccia è già conosciuta — escludi dalle domande del dettato
   const linguaUI = getUILang(); // es. "it" o "en"
+  // CEFR adattivo anche per dettato — spostato PRIMA del ciclo (serve per
+  // filtrare le parole nuove mentre si costruiscono i mazzi, vedi passaCEFRD
+  // sotto): prima era calcolato solo dopo, e usato solo per l'ordine, non per
+  // ammettere le parole. A differenza del quiz normale (passaCEFR in
+  // estraiCarte), qui ogni parola mai praticata entrava comunque nel mazzo
+  // "nuove", qualunque fosse la sua difficoltà — un principiante in Dettato
+  // riceveva fin da subito parole B1/B2 vere e tutte quelle senza livello.
+  const livelliVistiD = Object.values(stats).map(s => s.livello || 0).filter(l => l > 0);
+  const livelloUtenteD = livelliVistiD.length > 0 ? livelliVistiD.reduce((a, b) => a + b, 0) / livelliVistiD.length : 0;
+  const cefrMaxD = livelloUtenteD < 1 ? "A1" : livelloUtenteD < 2 ? "A2" : livelloUtenteD < 4 ? "B1" : "B2";
+  const cefrOrdineD = ["A1", "A2", "B1", "B2"];
+  const cefrIdxD = cefrOrdineD.indexOf(cefrMaxD);
+  const CEFR_IDX_SCONOSCIUTO_D = cefrOrdineD.length - 1; // = indice di "B2", come CEFR_IDX_SCONOSCIUTO in estraiCarte
+  function passaCEFRD(e) {
+    const idx = cefrOrdineD.indexOf(e.livello);
+    return (idx === -1 ? CEFR_IDX_SCONOSCIUTO_D : idx) <= cefrIdxD;
+  }
   pool.forEach(e => {
     const ld = lingueAttiveEntry(e, lingue);
     if (ld.length < 1) return;
@@ -5482,15 +5514,9 @@ function estraiCarteDettato(vocabolario, stats, lingue, filtri, linguaDaFissa, l
         key,
         tipo: "dettato"
       };
-      if (c.livello === 0) nu.push(carta);else if (isScaduta(stats, key)) sc.push(carta);else if (isAppresa(stats, key) && Math.random() < 0.05) ap.push(carta);
+      if (c.livello === 0 && passaCEFRD(e)) nu.push(carta);else if (isScaduta(stats, key)) sc.push(carta);else if (isAppresa(stats, key) && Math.random() < 0.05) ap.push(carta);
     });
   });
-  // CEFR adattivo anche per dettato
-  const livelliVistiD = Object.values(stats).map(s => s.livello || 0).filter(l => l > 0);
-  const livelloUtenteD = livelliVistiD.length > 0 ? livelliVistiD.reduce((a, b) => a + b, 0) / livelliVistiD.length : 0;
-  const cefrMaxD = livelloUtenteD < 1 ? "A1" : livelloUtenteD < 2 ? "A2" : livelloUtenteD < 4 ? "B1" : "B2";
-  const cefrOrdineD = ["A1", "A2", "B1", "B2"];
-  const cefrIdxD = cefrOrdineD.indexOf(cefrMaxD);
   sc.sort((a, b) => getCoppia(stats, a.key).prossima - getCoppia(stats, b.key).prossima);
   nu.sort((a, b) => {
     const da = PESO_CEFR[a.entry.livello] ?? PESO_CEFR_SCONOSCIUTO,
@@ -9285,7 +9311,7 @@ function Vocabolario({
     if (filtro === "apprese" && !parolaAppresa(e, stats, lingue)) return false;
     if (filtro === "daImparare" && parolaAppresa(e, stats, lingue)) return false;
     if (temaFiltro && e.tema !== temaFiltro) return false;
-    if (livelloFiltro && e.livello !== livelloFiltro) return false;
+    if (livelloFiltro === "__senza__" ? !!e.livello : livelloFiltro && e.livello !== livelloFiltro) return false;
     return true;
   });
   return /*#__PURE__*/React.createElement("div", {
@@ -9330,7 +9356,9 @@ function Vocabolario({
     className: "text-xs border border-zinc-700 rounded-lg px-2 py-1 text-slate-400 bg-zinc-900"
   }, /*#__PURE__*/React.createElement("option", {
     value: ""
-  }, "Tutti i livelli"), Object.keys(LIVELLI).map(k => /*#__PURE__*/React.createElement("option", {
+  }, "Tutti i livelli"), /*#__PURE__*/React.createElement("option", {
+    value: "__senza__"
+  }, "❓ ", t.senzalivello), Object.keys(LIVELLI).map(k => /*#__PURE__*/React.createElement("option", {
     key: k,
     value: k
   }, k)))), /*#__PURE__*/React.createElement("div", {
