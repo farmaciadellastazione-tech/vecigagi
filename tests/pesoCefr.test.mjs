@@ -44,3 +44,15 @@ test('i due punti che ordinano le parole nuove usano il fallback sicuro, non pi�
   assert.strictEqual(occorrenze.length, 2, 'attesi 2 usi (estraiCarte e estraiCarteDettato)');
   assert.doesNotMatch(INDEX, /PESO_CEFR\[a\.entry\.livello \|\| "A1"\]/, 'non deve restare il vecchio fallback "A1" per il peso CEFR');
 });
+
+// edit.html può salvare esplicitamente livello:"" (non solo lasciarlo assente)
+// quando un admin svuota la cella Livello di una voce già popolata — stato
+// raggiungibile in pratica, non solo ipotetico. Deve valere come "sconosciuto"
+// esattamente come una voce senza il campo, non più come A1.
+test('livello:"" (svuotato in edit.html) vale come sconosciuto, non come A1', () => {
+  const codicePeso = estraiCostante('PESO_CEFR');
+  const PESO_CEFR = new Function('return ' + codicePeso.replace(/^const PESO_CEFR\s*=\s*/, '').replace(/;$/, ''))();
+  const codiceSconosciuto = estraiCostante('PESO_CEFR_SCONOSCIUTO');
+  const SCONOSCIUTO = new Function('return ' + codiceSconosciuto.replace(/^const PESO_CEFR_SCONOSCIUTO\s*=\s*/, '').replace(/;$/, ''))();
+  assert.strictEqual(PESO_CEFR[''] ?? SCONOSCIUTO, SCONOSCIUTO);
+});

@@ -74,3 +74,11 @@ test('un livello sconosciuto (es. refuso) è trattato come "senza livello", non 
   assert.strictEqual(passaCEFR({ livello: 'C1' }), false);
   assert.strictEqual(passaCEFR({ livello: 'xyz' }), false);
 });
+
+// edit.html può salvare esplicitamente livello:"" (non solo lasciarlo assente)
+// quando un admin svuota la cella Livello di una voce già popolata — stato
+// raggiungibile in pratica, non solo ipotetico. Deve comportarsi come undefined.
+test('livello:"" (svuotato in edit.html) si comporta come undefined, non come A1', () => {
+  assert.strictEqual(passaCEFRConSoglia(0)({ livello: '' }), false);
+  assert.strictEqual(passaCEFRConSoglia(3)({ livello: '' }), true);
+});
