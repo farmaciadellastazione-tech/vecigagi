@@ -4410,8 +4410,16 @@ function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAF
   const cefrMax = livelloUtente < 1 ? "A1" : livelloUtente < 2 ? "A2" : livelloUtente < 4 ? "B1" : "B2";
   const cefrOrdine = ["A1", "A2", "B1", "B2"];
   const cefrIdx = cefrOrdine.indexOf(cefrMax);
+  // Una voce senza livello (o con un livello non tra questi) NON deve passare
+  // sempre: prima trattarla come "A1" la rendeva ammessa fin da subito anche
+  // ai veri principianti, qualunque fosse la sua reale difficoltà (343 voci
+  // di VOCABOLARIO_DEFAULT non hanno ancora un livello). Ora vale come B2, il
+  // livello più alto già definito: si sblocca insieme alle B2 vere, quando
+  // l'utente non è più un principiante, invece di essere sempre ammessa.
+  const CEFR_IDX_SCONOSCIUTO = cefrOrdine.length - 1; // = indice di "B2"
   function passaCEFR(e) {
-    return cefrOrdine.indexOf(e.livello || "A1") <= cefrIdx;
+    const idx = cefrOrdine.indexOf(e.livello);
+    return (idx === -1 ? CEFR_IDX_SCONOSCIUTO : idx) <= cefrIdx;
   }
 
   // ── Parole normali ───────────────────────────────────────────────────
