@@ -4341,11 +4341,16 @@ function renderTable() {
 }
 
 // Ordine di priorità per la modalità guidata: livello CEFR crescente, poi le
-// parole senza livello. Il sort è stabile: a parità di livello resta l'ordine
-// originale (alfabetico) di CANDIDATI.
-const LIVELLO_ORDINE = { A1: 1, A2: 2, B1: 3, B2: 4 };
+// parole senza livello (o con un livello che non è tra questi, es. C1/C2: non
+// dovrebbe capitare per i candidati, ma non le nasconde, le mette solo per
+// ultime). Il sort è stabile: a parità di livello resta l'ordine relativo che
+// CANDIDATI ha in quel momento — NON è detto sia alfabetico (non lo è nel file
+// sorgente, e la tabella completa può riordinare CANDIDATI stesso con sortBy()).
+// C1/C2 elencati per coerenza con ORDINE in edit.html (scegliLivelloCanonico).
+const LIVELLO_ORDINE = { A1: 1, A2: 2, B1: 3, B2: 4, C1: 5, C2: 6 };
+const LIVELLO_SCONOSCIUTO = Object.keys(LIVELLO_ORDINE).length + 1; // dopo l'ultimo livello noto
 function ordinePerLivello(a, b) {
-  return (LIVELLO_ORDINE[a.livello] || 9) - (LIVELLO_ORDINE[b.livello] || 9);
+  return (LIVELLO_ORDINE[a.livello] || LIVELLO_SCONOSCIUTO) - (LIVELLO_ORDINE[b.livello] || LIVELLO_SCONOSCIUTO);
 }
 
 // ── Modalità guidata (pubblico) ─────────────────────────────────────────
