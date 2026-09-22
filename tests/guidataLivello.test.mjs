@@ -21,22 +21,32 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(fileURLToPath(import.meta.url)) + '/..';
 const DIAL = fs.readFileSync(ROOT + '/dialetti.html', 'utf8');
 
-// Estrae il codice sorgente da `start` fino alla chiusura bilanciata di `{}`
-// che si apre per prima dopo `start` (a profondità di parentesi graffe,
-// rispettando le stringhe fra apici) — non si ferma alla prima "\n}" che
-// incontra, quindi resta corretto anche se il corpo della funzione dovesse
-// contenere un oggetto multilinea o un commento che inizia con "}".
-function estraiBilanciato(src, start) {
-  let i = src.indexOf('{', start), depth = 0, q = null, esc = false;
-  const s = i;
+// Scansiona `src` da `start` bilanciando i caratteri indicati in `apre`/`chiude`
+// (stesso carattere per depth++/depth--), saltando stringhe ('/"/`), commenti
+// riga (//) e commenti blocco (/* */). NECESSARIO in questo codebase: i
+// commenti in italiano contengono apostrofi (es. "l'ordine", "l'utente") che
+// un tokenizer senza supporto commenti scambia per apertura di stringa,
+// sballando il bilanciamento graffe/parentesi su distanze lunghe.
+// (stessa funzione di tests/streak.test.mjs e altri — vedi [[feedback_riuso_liguria]])
+function scansionaBilanciato(src, start, apre, chiude) {
+  let depth = 0, i = start, inStr = false, esc = false, q = null, inLineComment = false, inBlockComment = false, started = false;
   for (; i < src.length; i++) {
-    const c = src[i];
-    if (esc) { esc = false; continue; }
-    if (q) { if (c === '\\') esc = true; else if (c === q) q = null; continue; }
-    if (c === '"' || c === "'" || c === '`') { q = c; continue; }
-    if (c === '{') depth++; else if (c === '}') { depth--; if (depth === 0) { i++; break; } }
+    const c = src[i], c2 = src[i + 1];
+    if (inLineComment) { if (c === '\n') inLineComment = false; continue; }
+    if (inBlockComment) { if (c === '*' && c2 === '/') { inBlockComment = false; i++; } continue; }
+    if (inStr) {
+      if (esc) esc = false;
+      else if (c === '\\') esc = true;
+      else if (c === q) inStr = false;
+      continue;
+    }
+    if (c === '/' && c2 === '/') { inLineComment = true; i++; continue; }
+    if (c === '/' && c2 === '*') { inBlockComment = true; i++; continue; }
+    if (c === '"' || c === "'" || c === '`') { inStr = true; q = c; continue; }
+    if (c === apre) { depth++; started = true; }
+    else if (c === chiude) { depth--; if (started && depth === 0) { i++; break; } }
   }
-  return src.slice(s, i);
+  return i;
 }
 
 function ambiente() {
@@ -48,9 +58,10 @@ function ambiente() {
   const finSconosciuto = DIAL.indexOf(';', iSconosciuto) + 1;
   const iFunc = DIAL.indexOf('function ordinePerLivello', finSconosciuto);
   assert.ok(iFunc >= 0, 'ordinePerLivello non trovato in dialetti.html');
-  const corpoFunc = estraiBilanciato(DIAL, iFunc);
+  const corpoStart = DIAL.indexOf('{', iFunc);
+  const corpoEnd = scansionaBilanciato(DIAL, corpoStart, '{', '}');
   const codice = DIAL.slice(iConst, finConst) + '\n' + DIAL.slice(iSconosciuto, finSconosciuto) +
-    '\nfunction ordinePerLivello(a, b) ' + corpoFunc +
+    '\nfunction ordinePerLivello(a, b) ' + DIAL.slice(corpoStart, corpoEnd) +
     '\nthis.ordinePerLivello = ordinePerLivello; this.LIVELLO_ORDINE = LIVELLO_ORDINE;';
   const ctx = {};
   vm.createContext(ctx);
@@ -85,10 +96,11 @@ test('renderGuided usa l\'ordinamento per livello', () => {
   assert.match(corpo, /\.sort\(ordinePerLivello\)/);
 });
 
-test('la tabella completa NON è ordinata per livello (resta come CANDIDATI/sortBy la lasciano)', () => {
-  const usi = DIAL.match(/ordinePerLivello/g) || [];
-  // 1 definizione + 1 uso in renderGuided (+ nessun altro punto)
-  assert.strictEqual(usi.length, 2, 'ordinePerLivello deve essere usato solo in renderGuided');
+test('ordinePerLivello: una sola definizione e una sola chiamata (in renderGuided) — non conta le menzioni in commenti', () => {
+  const definizioni = DIAL.match(/function ordinePerLivello\(/g) || [];
+  const chiamate = DIAL.match(/\.sort\(ordinePerLivello\)/g) || [];
+  assert.strictEqual(definizioni.length, 1, 'attesa una sola definizione di ordinePerLivello');
+  assert.strictEqual(chiamate.length, 1, 'ordinePerLivello deve essere chiamata solo in renderGuided (la tabella completa resta come CANDIDATI/sortBy la lasciano)');
 });
 
 test('i candidati che stanno anche in index ereditano il livello (dati)', () => {
