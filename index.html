@@ -4389,7 +4389,10 @@ function contaScadute(vocabolario, stats, lingue, filtri) {
 }
 function passaFiltri(entry, filtri) {
   if (filtri.temi.length > 0 && !filtri.temi.includes(entry.tema || "")) return false;
-  if (filtri.livelli.length > 0 && !filtri.livelli.includes(entry.livello || "A1")) return false;
+  // Una voce senza livello non corrisponde a NESSUN filtro di livello esplicito
+  // (prima "|| A1" la faceva comparire sotto il filtro A1: contraddiceva
+  // passaCEFR/PESO_CEFR, che ora la trattano come la piu' difficile, non A1).
+  if (filtri.livelli.length > 0 && !filtri.livelli.includes(entry.livello || "")) return false;
   // Escludi voci con traduzione mancante ("?") in qualsiasi lingua attiva
   if (Object.values(entry).some(v => v === "?")) return false;
   return true;
@@ -9327,7 +9330,7 @@ function Vocabolario({
   }, filtrate.map((entry, i) => {
     const idxReale = vocabolario.indexOf(entry);
     const appresa = parolaAppresa(entry, stats, lingue);
-    const lv = LIVELLI[entry.livello || "A1"];
+    const lv = LIVELLI[entry.livello || ""]; // "" -> undefined -> niente badge, come tm/TEMI
     const tm = TEMI[entry.tema || ""];
     return /*#__PURE__*/React.createElement("div", {
       key: i,
@@ -11061,7 +11064,7 @@ function SchermataQuiz({
   const attesoCorrente = carta ? (carta.tipo === "coniugazione" ? carta.atteso : carta.entry[carta.a]) : null;
   const livello = carta ? getCoppia(stats, carta.key).livello : 0;
   const isRipasso = carta ? isAppresa(stats, carta.key) : false;
-  const lv = carta ? LIVELLI[carta.entry.livello || "A1"] : null;
+  const lv = carta ? LIVELLI[carta.entry.livello || ""] : null; // "" -> undefined -> niente badge, come tm/TEMI
   const tm = carta ? TEMI[carta.entry.tema || ""] : null;
   // Dialetto con TTS adattata (mn/sp/ge/cr) coinvolto in questa carta, se
   // presente — usato per mostrare "🎤 Proponi pronuncia" solo dove la voce
