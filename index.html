@@ -409,6 +409,18 @@ const PESO_CEFR_SCONOSCIUTO = 4; // STRETTAMENTE dopo B2 (peso 3): qui conta sol
 // sblocca, non solo dove va in coda — le due costanti sono intenzionalmente
 // diverse, non un doppione da unificare.
 
+// Peso CEFR di una carta per l'ordinamento delle "nuove" (usata sia da
+// estraiCarte sia da estraiCarteDettato, stesso comparatore prima duplicato
+// alla lettera nei due punti). Le carte di coniugazione (generaEserciziConiugazioni)
+// hanno un `entry` sintetico che non ha MAI un campo livello, per costruzione:
+// non sono voci di VOCABOLARIO_DEFAULT, quindi PESO_CEFR_SCONOSCIUTO non deve
+// applicarsi a loro (le penalizzerebbe come se fossero vocabolario senza
+// livello, cosa mai intesa) — restano al peso 0, come prima di questo fix.
+function pesoCEFRCarta(carta) {
+  if (carta.tipo === 'coniugazione') return 0;
+  return PESO_CEFR[carta.entry.livello] ?? PESO_CEFR_SCONOSCIUTO;
+}
+
 // ── Traduzione interfaccia IT/EN ──────────────────────────────────────────
 const UI = {
   it: {
@@ -4438,9 +4450,16 @@ function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAF
   // confondere con PESO_CEFR_SCONOSCIUTO più in alto nel file: quella ordina
   // le parole già ammesse e vale STRETTAMENTE dopo B2; questa è la soglia di
   // AMMISSIONE, e vale COME B2 apposta, per sbloccarsi insieme a essa)
+  // Se l'utente ha scelto esplicitamente il filtro "❓ Senza livello"
+  // (filtri.livelli include ""), la soglia adattiva NON deve bloccare quelle
+  // voci: le ha chieste apposta, non gliele si sta proponendo di sorpresa.
+  // Senza questa eccezione, filtrare solo "senza livello" restituirebbe una
+  // sessione silenziosamente vuota per chiunque non abbia ancora raggiunto B2.
+  const vuoleSenzaLivello = filtri.livelli.includes('');
   function passaCEFR(e) {
     const idx = cefrOrdine.indexOf(e.livello);
-    return (idx === -1 ? CEFR_IDX_SCONOSCIUTO : idx) <= cefrIdx;
+    if (idx === -1) return vuoleSenzaLivello || CEFR_IDX_SCONOSCIUTO <= cefrIdx;
+    return idx <= cefrIdx;
   }
 
   // ── Parole normali ───────────────────────────────────────────────────
@@ -4488,8 +4507,8 @@ function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAF
   });
   // Nuove: ordina per CEFR poi mescola dentro ogni livello
   nu.sort((a, b) => {
-    const da = PESO_CEFR[a.entry.livello] ?? PESO_CEFR_SCONOSCIUTO,
-      db = PESO_CEFR[b.entry.livello] ?? PESO_CEFR_SCONOSCIUTO;
+    const da = pesoCEFRCarta(a),
+      db = pesoCEFRCarta(b);
     if (da !== db) return da - db;
     return Math.random() - 0.5;
   });
@@ -5487,9 +5506,13 @@ function estraiCarteDettato(vocabolario, stats, lingue, filtri, linguaDaFissa, l
   const cefrOrdineD = ["A1", "A2", "B1", "B2"];
   const cefrIdxD = cefrOrdineD.indexOf(cefrMaxD);
   const CEFR_IDX_SCONOSCIUTO_D = cefrOrdineD.length - 1; // = indice di "B2", come CEFR_IDX_SCONOSCIUTO in estraiCarte
+  // Stessa eccezione di passaCEFR in estraiCarte: il filtro esplicito "❓
+  // Senza livello" bypassa la soglia adattiva.
+  const vuoleSenzaLivelloD = filtri.livelli.includes('');
   function passaCEFRD(e) {
     const idx = cefrOrdineD.indexOf(e.livello);
-    return (idx === -1 ? CEFR_IDX_SCONOSCIUTO_D : idx) <= cefrIdxD;
+    if (idx === -1) return vuoleSenzaLivelloD || CEFR_IDX_SCONOSCIUTO_D <= cefrIdxD;
+    return idx <= cefrIdxD;
   }
   pool.forEach(e => {
     const ld = lingueAttiveEntry(e, lingue);
@@ -5519,8 +5542,8 @@ function estraiCarteDettato(vocabolario, stats, lingue, filtri, linguaDaFissa, l
   });
   sc.sort((a, b) => getCoppia(stats, a.key).prossima - getCoppia(stats, b.key).prossima);
   nu.sort((a, b) => {
-    const da = PESO_CEFR[a.entry.livello] ?? PESO_CEFR_SCONOSCIUTO,
-      db = PESO_CEFR[b.entry.livello] ?? PESO_CEFR_SCONOSCIUTO;
+    const da = pesoCEFRCarta(a),
+      db = pesoCEFRCarta(b);
     if (da !== db) return da - db;
     return Math.random() - 0.5;
   });
@@ -8293,13 +8316,15 @@ function ModificaParola({
   }, v.emoji, " ", v.label)))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
     className: "text-xs text-slate-500 block mb-1"
   }, t.livello), /*#__PURE__*/React.createElement("select", {
-    value: form.livello || "", // come il tema poco sopra: "" se non ancora classificata
+    value: form.livello || "", // "" se non ancora classificata
     onChange: e => setForm(f => ({
       ...f,
       livello: e.target.value
     })),
     className: "border-2 border-zinc-700 rounded-lg px-2 py-1 text-sm focus:outline-none focus:border-sky-400"
-  }, Object.keys(LIVELLI).map(k => /*#__PURE__*/React.createElement("option", {
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "❓ ", t.senzalivello), Object.keys(LIVELLI).map(k => /*#__PURE__*/React.createElement("option", {
     key: k,
     value: k
   }, k))))), lingue.map(l => entry[l.codice] !== undefined || l.attiva ? /*#__PURE__*/React.createElement("div", {
@@ -9305,13 +9330,16 @@ function Vocabolario({
   const [filtro, setFiltro] = useState("tutte");
   const [temaFiltro, setTemaFiltro] = useState("");
   const [livelloFiltro, setLivelloFiltro] = useState("");
+  // Sentinella per "solo le voci senza livello" nel select qui sotto: "" è
+  // già "tutti i livelli" (nessun filtro attivo), serve un valore diverso.
+  const SENZA_LIVELLO = "__senza__";
   const [modificando, setModificando] = useState(null);
   const lingueAttive = lingue.filter(l => l.attiva);
   const filtrate = vocabolario.filter(e => {
     if (filtro === "apprese" && !parolaAppresa(e, stats, lingue)) return false;
     if (filtro === "daImparare" && parolaAppresa(e, stats, lingue)) return false;
     if (temaFiltro && e.tema !== temaFiltro) return false;
-    if (livelloFiltro === "__senza__" ? !!e.livello : livelloFiltro && e.livello !== livelloFiltro) return false;
+    if (livelloFiltro === SENZA_LIVELLO ? !!e.livello : livelloFiltro && e.livello !== livelloFiltro) return false;
     return true;
   });
   return /*#__PURE__*/React.createElement("div", {
@@ -9357,7 +9385,7 @@ function Vocabolario({
   }, /*#__PURE__*/React.createElement("option", {
     value: ""
   }, "Tutti i livelli"), /*#__PURE__*/React.createElement("option", {
-    value: "__senza__"
+    value: SENZA_LIVELLO
   }, "❓ ", t.senzalivello), Object.keys(LIVELLI).map(k => /*#__PURE__*/React.createElement("option", {
     key: k,
     value: k
