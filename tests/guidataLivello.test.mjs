@@ -106,6 +106,9 @@ test('ordinePerLivello: una sola definizione e una sola chiamata (in renderGuide
 // Estrae un array letterale (VOCABOLARIO_DEFAULT o CANDIDATI) a profondità di
 // parentesi quadre, rispettando le stringhe (non i commenti: sufficiente qui,
 // gli array delle voci non hanno commenti `//` al loro interno).
+// (identica a `estrai` in tests/cleanup.test.mjs e a `estraiArray` in
+// tests/vocDelta.test.mjs — 3 copie della stessa funzione, per convenzione di
+// questo progetto: ogni file di test è indipendente, senza modulo condiviso)
 function estraiArray(src, re) {
   const m = re.exec(src); if (!m) throw new Error('marker non trovato');
   const start = m.index + m[0].length; let depth = 1, i = start, inStr = false, esc = false, q = null;

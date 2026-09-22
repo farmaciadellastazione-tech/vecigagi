@@ -19,23 +19,21 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.dirname(fileURLToPath(import.meta.url)) + '/..';
 const INDEX = fs.readFileSync(ROOT + '/index.html', 'utf8');
 
-function estraiCostante(nome) {
+// Estrae `const NOME = ...;` da index.html e ne valuta il valore letterale.
+function valoreCostante(nome) {
   const i = INDEX.indexOf('const ' + nome);
   assert.ok(i >= 0, `${nome} non trovata in index.html`);
   const fine = INDEX.indexOf(';', i) + 1;
-  return INDEX.slice(i, fine);
+  const codice = INDEX.slice(i, fine);
+  return new Function('return ' + codice.replace(new RegExp('^const ' + nome + '\\s*=\\s*'), '').replace(/;$/, ''))();
 }
 
 test('PESO_CEFR non ha più un fallback "" -> 0 (che equivaleva "senza livello" ad A1)', () => {
-  const codice = estraiCostante('PESO_CEFR');
-  const PESO_CEFR = new Function('return ' + codice.replace(/^const PESO_CEFR\s*=\s*/, '').replace(/;$/, ''))();
-  assert.deepStrictEqual(PESO_CEFR, { A1: 0, A2: 1, B1: 2, B2: 3 });
+  assert.deepStrictEqual(valoreCostante('PESO_CEFR'), { A1: 0, A2: 1, B1: 2, B2: 3 });
 });
 
 test('PESO_CEFR_SCONOSCIUTO è maggiore di B2 (le voci senza livello vanno per ultime)', () => {
-  const codice = estraiCostante('PESO_CEFR_SCONOSCIUTO');
-  const val = new Function('return ' + codice.replace(/^const PESO_CEFR_SCONOSCIUTO\s*=\s*/, '').replace(/;$/, ''))();
-  assert.ok(val > 3, `atteso > 3 (peso di B2), trovato ${val}`);
+  assert.ok(valoreCostante('PESO_CEFR_SCONOSCIUTO') > 3, `atteso > 3 (peso di B2), trovato ${valoreCostante('PESO_CEFR_SCONOSCIUTO')}`);
 });
 
 test('i due punti che ordinano le parole nuove usano il fallback sicuro, non più "|| \\"A1\\""', () => {
@@ -50,9 +48,7 @@ test('i due punti che ordinano le parole nuove usano il fallback sicuro, non pi�
 // raggiungibile in pratica, non solo ipotetico. Deve valere come "sconosciuto"
 // esattamente come una voce senza il campo, non più come A1.
 test('livello:"" (svuotato in edit.html) vale come sconosciuto, non come A1', () => {
-  const codicePeso = estraiCostante('PESO_CEFR');
-  const PESO_CEFR = new Function('return ' + codicePeso.replace(/^const PESO_CEFR\s*=\s*/, '').replace(/;$/, ''))();
-  const codiceSconosciuto = estraiCostante('PESO_CEFR_SCONOSCIUTO');
-  const SCONOSCIUTO = new Function('return ' + codiceSconosciuto.replace(/^const PESO_CEFR_SCONOSCIUTO\s*=\s*/, '').replace(/;$/, ''))();
+  const PESO_CEFR = valoreCostante('PESO_CEFR');
+  const SCONOSCIUTO = valoreCostante('PESO_CEFR_SCONOSCIUTO');
   assert.strictEqual(PESO_CEFR[''] ?? SCONOSCIUTO, SCONOSCIUTO);
 });

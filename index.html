@@ -402,7 +402,12 @@ const PESO_CEFR = {
   B1: 2,
   B2: 3
 };
-const PESO_CEFR_SCONOSCIUTO = 4;
+const PESO_CEFR_SCONOSCIUTO = 4; // STRETTAMENTE dopo B2 (peso 3): qui conta solo l'ORDINE
+// tra parole già ammesse. Non confondere con CEFR_IDX_SCONOSCIUTO (dentro
+// estraiCarte): quella è la soglia di AMMISSIONE di passaCEFR e vale invece
+// come B2 (non dopo), perché lì serve dire QUANDO una voce sconosciuta si
+// sblocca, non solo dove va in coda — le due costanti sono intenzionalmente
+// diverse, non un doppione da unificare.
 
 // ── Traduzione interfaccia IT/EN ──────────────────────────────────────────
 const UI = {
@@ -4419,7 +4424,10 @@ function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAF
   // di VOCABOLARIO_DEFAULT non hanno ancora un livello). Ora vale come B2, il
   // livello più alto già definito: si sblocca insieme alle B2 vere, quando
   // l'utente non è più un principiante, invece di essere sempre ammessa.
-  const CEFR_IDX_SCONOSCIUTO = cefrOrdine.length - 1; // = indice di "B2"
+  const CEFR_IDX_SCONOSCIUTO = cefrOrdine.length - 1; // = indice di "B2" (non
+  // confondere con PESO_CEFR_SCONOSCIUTO più in alto nel file: quella ordina
+  // le parole già ammesse e vale STRETTAMENTE dopo B2; questa è la soglia di
+  // AMMISSIONE, e vale COME B2 apposta, per sbloccarsi insieme a essa)
   function passaCEFR(e) {
     const idx = cefrOrdine.indexOf(e.livello);
     return (idx === -1 ? CEFR_IDX_SCONOSCIUTO : idx) <= cefrIdx;
@@ -8259,7 +8267,7 @@ function ModificaParola({
   }, v.emoji, " ", v.label)))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
     className: "text-xs text-slate-500 block mb-1"
   }, t.livello), /*#__PURE__*/React.createElement("select", {
-    value: form.livello || "A1",
+    value: form.livello || "", // come il tema poco sopra: "" se non ancora classificata
     onChange: e => setForm(f => ({
       ...f,
       livello: e.target.value
