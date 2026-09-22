@@ -103,9 +103,54 @@ test('ordinePerLivello: una sola definizione e una sola chiamata (in renderGuide
   assert.strictEqual(chiamate.length, 1, 'ordinePerLivello deve essere chiamata solo in renderGuided (la tabella completa resta come CANDIDATI/sortBy la lasciano)');
 });
 
-test('i candidati che stanno anche in index ereditano il livello (dati)', () => {
-  const con = (DIAL.match(/\{ tema:"[^"]*", livello:"(A1|A2|B1|B2)", it:/g) || []).length;
-  assert.ok(con >= 300, `attesi almeno 300 candidati con livello, trovati ${con}`);
+// Estrae un array letterale (VOCABOLARIO_DEFAULT o CANDIDATI) a profondità di
+// parentesi quadre, rispettando le stringhe (non i commenti: sufficiente qui,
+// gli array delle voci non hanno commenti `//` al loro interno).
+function estraiArray(src, re) {
+  const m = re.exec(src); if (!m) throw new Error('marker non trovato');
+  const start = m.index + m[0].length; let depth = 1, i = start, inStr = false, esc = false, q = null;
+  while (i < src.length) {
+    const c = src[i];
+    if (inStr) { if (esc) esc = false; else if (c === '\\') esc = true; else if (c === q) inStr = false; }
+    else { if (c === '"' || c === "'") { inStr = true; q = c; } else if (c === '[') depth++; else if (c === ']') { depth--; if (depth === 0) break; } }
+    i++;
+  }
+  return (new Function('return [' + src.slice(start, i) + ']'))();
+}
+
+// Prima: il test contava solo QUANTI candidati avessero un campo `livello`
+// (>= 300), senza verificare che il valore fosse davvero quello ereditato da
+// index.html — un livello sbagliato o contraddittorio sarebbe passato lo
+// stesso, dando una falsa sicurezza (la review lo ha segnalato: il conteggio
+// era già ≥300 PRIMA di queste aggiunte, quindi il test non testava nulla di
+// nuovo). Dopo: verifica la vera coerenza, parola per parola.
+test('i candidati che stanno anche in index (con un livello univoco) hanno lo stesso livello (dati)', () => {
+  const INDEX = fs.readFileSync(ROOT + '/index.html', 'utf8');
+  const voc = estraiArray(INDEX, /^\s*const VOCABOLARIO_DEFAULT = \[/m);
+  const cand = estraiArray(DIAL, /^\s*(const|let|var) CANDIDATI\s*=\s*\[/m);
+
+  const norm = s => String(s || '').trim().toLowerCase();
+  const livelliIndexByIt = new Map(); // it normalizzato -> Set di livelli in index
+  for (const v of voc) {
+    if (!v.livello) continue;
+    const k = norm(v.it);
+    if (!livelliIndexByIt.has(k)) livelliIndexByIt.set(k, new Set());
+    livelliIndexByIt.get(k).add(v.livello);
+  }
+
+  let confrontati = 0;
+  const incoerenti = [];
+  for (const c of cand) {
+    if (!c.livello) continue;
+    const set = livelliIndexByIt.get(norm(c.it));
+    if (!set || set.size !== 1) continue; // non in index, o livello ambiguo (omonimi, es. "lumaca"): non confrontabile
+    confrontati++;
+    const livelloIndex = [...set][0];
+    if (c.livello !== livelloIndex) incoerenti.push(`"${c.it}": candidato=${c.livello}, index=${livelloIndex}`);
+  }
+
+  assert.ok(confrontati >= 300, `attesi almeno 300 candidati confrontabili con index, trovati ${confrontati}`);
+  assert.deepStrictEqual(incoerenti, [], 'livello del candidato diverso da quello (univoco) della stessa parola in index.html');
 });
 
 test('LIVELLO_ORDINE è coerente con ORDINE di edit.html (stessi livelli, stesso ordine relativo)', () => {
