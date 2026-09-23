@@ -12501,6 +12501,18 @@ function App() {
           return prev;
         });
       }
+      // Progressione N. domande (adattiva +/- in base al risultato): salvata
+      // subito, non solo premendo "🔁 Ancora" — altrimenti uscendo con Home
+      // dopo un 100% il badge "N → M ⬆" mostrato sul bottone non si
+      // avverava mai (stesso bug corretto in Scelta multipla).
+      if (modalita !== "nonstop" && nDomandeUsate > 0) {
+        const inc = modalita === "quiz" ? 5 : 1;
+        const nDomProssimo = percFin === 100 ? nDomandeUsate + inc : percFin < 50 ? Math.max(5, nDomandeUsate - inc) : nDomandeUsate;
+        if (nDomProssimo !== nDomandeUsate) {
+          const ndomMem = loadJSON(SK_NDOM, {});
+          saveJSON(SK_NDOM, { ...ndomMem, [modalita]: nDomProssimo });
+        }
+      }
     } else {
       setCarte(nc);
       setIndice(i => i + 1);
@@ -12711,30 +12723,10 @@ function App() {
     onFaiFrase: apriFraseLiberaCon,
     carteErrate: carteErrate,
     onAvviaAncora: () => {
-      let nPross = nDomandeUsate;
-      if (modalita !== "nonstop" && nDomandeUsate > 0) {
-        const tot = punteggio.giusti + punteggio.sbagliati;
-        const perc = tot > 0 ? Math.round(punteggio.giusti / tot * 100) : 0;
-        // Per quiz: 100% = zero errori nella sessione
-        // Per allenamento/dettato/ascolto/voce: perfetto = carteErrate vuote (errori corretti)
-        if (perc === 100) {
-          const inc = modalita === "quiz" ? 5 : 1;
-          nPross = nDomandeUsate + inc;
-          const pk = `perc_${modalita}_${linguaDaUsata || "any"}_${linguaAUsata || "any"}`;
-          const recNDom = recordPerc[pk] || 0;
-          if (nDomandeUsate > recNDom) {
-            const nuovoRec = {
-              ...recordPerc,
-              [pk]: nDomandeUsate
-            };
-            setRecordPerc(nuovoRec);
-            saveJSON(SK_RECORD_PERC, nuovoRec);
-          }
-        } else if (perc < 50) {
-          const inc = modalita === "quiz" ? 5 : 1;
-          nPross = Math.max(5, nDomandeUsate - inc);
-        }
-      }
+      // Record e progressione N. domande sono già salvati al termine della
+      // sessione precedente (vedi verificaRisposta): qui si rilegge soltanto
+      // SK_NDOM, invece di ricalcolare/risalvare tutto una seconda volta.
+      const nPross = modalita !== "nonstop" ? (loadJSON(SK_NDOM, {})[modalita] || nDomandeUsate) : nDomandeUsate;
       avvia(vocabolario, stats, modalita, lingue, filtriSessione, linguaDaUsata, linguaAUsata, nPross || null);
     }
   }));
