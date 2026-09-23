@@ -69,6 +69,32 @@ function extractFn(src, name) {
 }
 
 const APP = extractFn(INDEX, 'App');
+const SCHERMATA_QUIZ = extractFn(INDEX, 'SchermataQuiz');
+
+// Richiesto da Dino dopo il fix del tetto QUIZ_LEN (2026-09-23): la
+// progressione +5/+1 dopo un 100% non deve crescere all'infinito, per non
+// costruire sessioni troppo lunghe (la stanchezza aumenta gli errori a fine
+// sessione, penalizzando ingiustamente SM-2 parole in realtà sapute).
+test('NDOM_MAX esiste ed è 20: tetto alla crescita, non un reset come in Scelta multipla', () => {
+  const m = INDEX.match(/^const NDOM_MAX = (\d+);/m);
+  assert.ok(m, 'const NDOM_MAX non trovata in index.html');
+  assert.strictEqual(Number(m[1]), 20);
+});
+
+test('a fine sessione, la progressione N. domande è tappata a NDOM_MAX', () => {
+  const fineSessione = APP.slice(
+    APP.indexOf('// Salva record percentuale immediatamente al termine sessione'),
+    APP.indexOf('} else {', APP.indexOf('// Salva record percentuale immediatamente al termine sessione'))
+  );
+  assert.ok(/Math\.min\(nDomandeUsate \+ inc, NDOM_MAX\)/.test(fineSessione),
+    'la crescita dopo un 100% deve passare da Math.min(..., NDOM_MAX), non crescere senza limite');
+});
+
+test('anche il badge di anteprima su "Ancora" (stepPross) rispetta lo stesso tetto', () => {
+  const stepPross = SCHERMATA_QUIZ.slice(SCHERMATA_QUIZ.indexOf('const stepPross ='), SCHERMATA_QUIZ.indexOf('return nDomandeUsate;', SCHERMATA_QUIZ.indexOf('const stepPross =')));
+  assert.ok(/Math\.min\(nDomandeUsate \+ inc, NDOM_MAX\)/.test(stepPross),
+    'il badge mostrato sul bottone "Ancora" non deve promettere una crescita oltre NDOM_MAX');
+});
 
 test('SK_NDOM (progressione adattiva) si salva al termine sessione, non solo su "Ancora"', () => {
   const fineSessione = APP.slice(

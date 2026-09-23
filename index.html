@@ -363,6 +363,14 @@ const {
 
 // ── Costanti ──────────────────────────────────────────────────────────────
 const QUIZ_LEN = 10;
+// Tetto alla progressione adattiva del numero di domande in Quiz/Allenamento/
+// Ascolto/Voce/Dettato (+5 o +1 dopo un 100%, vedi avvia()): sessioni troppo
+// lunghe fanno più danno che bene (la stanchezza aumenta gli errori a fine
+// sessione, penalizzando SM-2 parole in realtà sapute). A differenza di
+// Scelta multipla (che cresce fino a 50 domande e poi si resetta aumentando
+// le scelte) qui non c'è una seconda dimensione di difficoltà da compensare:
+// il tetto si limita a fermare la crescita, senza reset.
+const NDOM_MAX = 20;
 // storie.js non è più caricato eager: contiene i testi di "Lettura Guidata"
 // (STORIE_DEFAULT) e cresce nel tempo, quindi lo iniettiamo solo quando serve
 // (tap su "Lettura Guidata" o deep link ?storia=). Evita che ogni caricamento
@@ -11243,7 +11251,7 @@ function SchermataQuiz({
     const stepPross = (() => {
       if (isNS || nDomandeUsate === 0) return null;
       const inc = modalita === "quiz" ? 5 : 1;
-      if (perc === 100) return nDomandeUsate + inc;
+      if (perc === 100) return Math.min(nDomandeUsate + inc, NDOM_MAX);
       if (perc < 50) return Math.max(5, nDomandeUsate - inc);
       return nDomandeUsate;
     })();
@@ -12516,7 +12524,7 @@ function App() {
       // avverava mai (stesso bug corretto in Scelta multipla).
       if (modalita !== "nonstop" && nDomandeUsate > 0) {
         const inc = modalita === "quiz" ? 5 : 1;
-        const nDomProssimo = percFin === 100 ? nDomandeUsate + inc : percFin < 50 ? Math.max(5, nDomandeUsate - inc) : nDomandeUsate;
+        const nDomProssimo = percFin === 100 ? Math.min(nDomandeUsate + inc, NDOM_MAX) : percFin < 50 ? Math.max(5, nDomandeUsate - inc) : nDomandeUsate;
         if (nDomProssimo !== nDomandeUsate) {
           const ndomMem = loadJSON(SK_NDOM, {});
           saveJSON(SK_NDOM, { ...ndomMem, [modalita]: nDomProssimo });
