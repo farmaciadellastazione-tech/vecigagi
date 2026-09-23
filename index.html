@@ -4461,9 +4461,14 @@ function paroleToccateTema(tema, vocabolario, stats, lingue) {
   });
   return n;
 }
-function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAFissa, nonstop = false) {
+// nDomRichieste: quante carte servono davvero (dal selettore "N. domande" o
+// dalla progressione adattiva, vedi avvia()). QUIZ_LEN resta solo il
+// fallback per chi non lo specifica: prima era un tetto fisso che ignorava
+// del tutto la richiesta, quindi le sessioni non superavano mai 10 domande
+// anche scegliendone 15/20/30/50 (bug segnalato da Dino).
+function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAFissa, nonstop = false, nDomRichieste = QUIZ_LEN) {
   const lingueAttive = lingue.filter(l => l.attiva);
-  const limite = nonstop ? 9999 : QUIZ_LEN;
+  const limite = nonstop ? 9999 : nDomRichieste;
   const modalitaNS = ["quiz", "allenamento", "ascolto"];
   const pool = vocabolario.filter(e => passaFiltri(e, filtri));
   const sc = [],
@@ -5522,7 +5527,7 @@ function PannelloBilingue({
 
 // ── Dettato: stessa lingua per domanda e risposta ────────────────────────
 // Dettato: senti e scrivi nella stessa lingua (da=a), la lingua B serve solo per mostrare la traduzione
-function estraiCarteDettato(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaBFissa) {
+function estraiCarteDettato(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaBFissa, nDomRichieste = QUIZ_LEN) {
   const pool = vocabolario.filter(e => passaFiltri(e, filtri));
   const sc = [],
     nu = [],
@@ -5589,7 +5594,7 @@ function estraiCarteDettato(vocabolario, stats, lingue, filtri, linguaDaFissa, l
     usate = new Set(),
     usateTemiD = {};
   function aggiungiD(c) {
-    if (res.length >= QUIZ_LEN) return false;
+    if (res.length >= nDomRichieste) return false;
     if (usate.has(c.key)) return false;
     const tema = c.entry?.tema || "";
     if (tema && (usateTemiD[tema] || 0) >= 3) return false;
@@ -5601,9 +5606,9 @@ function estraiCarteDettato(vocabolario, stats, lingue, filtri, linguaDaFissa, l
   for (const c of sc) aggiungiD(c);
   for (const c of nu) aggiungiD(c);
   for (const c of ap) aggiungiD(c);
-  if (res.length < QUIZ_LEN) {
+  if (res.length < nDomRichieste) {
     for (const c of [...sc, ...nu, ...ap]) {
-      if (res.length >= QUIZ_LEN) break;
+      if (res.length >= nDomRichieste) break;
       if (!usate.has(c.key)) {
         res.push(c);
         usate.add(c.key);
@@ -12227,24 +12232,28 @@ function App() {
     let a = linguaA !== undefined ? linguaA : linguaAUsata;
     const isNonstop = m === "nonstop";
     statsInizioSessioneRef.current = s;
-    let carteTutte;
-    if (m === "dettato") {
-      setLinguaDaUsata(da);
-      setLinguaAUsata(da);
-      carteTutte = estraiCarteDettato(v, s, lg, f, da, a);
-    } else {
-      setLinguaDaUsata(da);
-      setLinguaAUsata(a);
-      carteTutte = estraiCarte(v, s, lg, f, da, a, isNonstop);
-    }
-    // Per modalità con ripetizione: usa il valore adattivo da SK_NDOM (default 5)
+    // Per modalità con ripetizione: usa il valore adattivo da SK_NDOM (default 5).
+    // Calcolato PRIMA di generare le carte: estraiCarte/estraiCarteDettato
+    // devono sapere quante ne servono davvero, altrimenti restano ferme al
+    // tetto QUIZ_LEN=10 anche scegliendo 15/20/30/50 (bug segnalato da Dino).
     const conRip = ["allenamento", "voce", "ascolto", "dettato"].includes(m);
     let nDomEff = nDom;
     if (conRip && !nDomEff) {
       const ndomMem = loadJSON(SK_NDOM, {});
       nDomEff = ndomMem[m] || 5;
     }
-    // Limita il numero di domande se specificato
+    let carteTutte;
+    if (m === "dettato") {
+      setLinguaDaUsata(da);
+      setLinguaAUsata(da);
+      carteTutte = estraiCarteDettato(v, s, lg, f, da, a, nDomEff || undefined);
+    } else {
+      setLinguaDaUsata(da);
+      setLinguaAUsata(a);
+      carteTutte = estraiCarte(v, s, lg, f, da, a, isNonstop, nDomEff || undefined);
+    }
+    // Limita il numero di domande se specificato (difesa in profondità: le
+    // funzioni sopra già generano al più nDomEff carte)
     const carteFin = nDomEff > 0 ? carteTutte.slice(0, nDomEff) : carteTutte;
     setCarte(carteFin);
     // Usa il numero effettivo di carte disponibili, non quello richiesto
