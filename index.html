@@ -3999,6 +3999,7 @@ const SK_STORIE_PRIVATE = "qml_v1_storie_private"; // testi privati (eventualmen
 const SK_STORIE_LETTE = "qml_v1_storie_lette"; // id delle storie completate in Lettura guidata (raggiunta l'ultima frase), solo in questo browser — per il badge "✓ Letta" nella lista, utile ora che le storie sono tante
 const SK_LAST_EXPORT = "qml_v1_last_export"; // timestamp ultimo export progressi, per il promemoria di backup in Home
 const SK_STORICO_APPRESE = "qml_v1_storico_apprese"; // storico giornaliero [{d: timestamp (oggi()), n: parole apprese}], per il confronto "rispetto a N giorni fa" in Statistiche
+const SK_FASE_TEMI = "qml_v1_fase1_temi"; // solo nuovi utenti: {ordine, indice, completata} — sessioni bloccate su un tema alla volta finché non li si è passati in rassegna tutti, poi per sempre "completata"
 
 // Pubblicazione di una storia privata → STORIE_DEFAULT su GitHub (storie.js): stessa
 // infrastruttura di scrittura di edit-storie.html, stesso token admin (già presente in
@@ -4265,7 +4266,7 @@ function saveJSON(key, val) {
 // API IA, tema e lingua UI. Qui rimuoviamo solo lo stato dell'app che può impedire
 // il boot. Whitelist esplicita: mai toccare chiavi sconosciute, perché
 // edit.html/dialetti.html condividono la stessa origin e salvano le loro.
-const SK_RESET_RECOVERY = [SK_VOC, SK_VOC_VER, SK_STATS, SK_LINGUE, SK_FILTRI, SK_RECORD, SK_RECORD_PERC, SK_STREAK, SK_NDOM, "qml_v11_sm_global" /* SK_SM, definita dentro SchermataSceltaMultipla */];
+const SK_RESET_RECOVERY = [SK_VOC, SK_VOC_VER, SK_STATS, SK_LINGUE, SK_FILTRI, SK_RECORD, SK_RECORD_PERC, SK_STREAK, SK_NDOM, SK_FASE_TEMI, "qml_v11_sm_global" /* SK_SM, definita dentro SchermataSceltaMultipla */];
 function resetStorageRecovery() {
   SK_RESET_RECOVERY.forEach(k => {
     try {
@@ -4433,6 +4434,32 @@ function passaFiltri(entry, filtri) {
   // Escludi voci con traduzione mancante ("?") in qualsiasi lingua attiva
   if (Object.values(entry).some(v => v === "?")) return false;
   return true;
+}
+// Fase 1 (solo nuovi utenti, vedi SK_FASE_TEMI): ordine di attraversamento
+// dei temi per la sessione "un tema alla volta" — temi piccoli prima, per
+// dare vittorie rapide invece di partire da un tema enorme.
+function ordinaTemiPerDimensione(vocabolario) {
+  const conteggi = {};
+  vocabolario.forEach(e => {
+    const t = e.tema;
+    if (t && TEMI[t]) conteggi[t] = (conteggi[t] || 0) + 1;
+  });
+  return Object.keys(TEMI).filter(t => conteggi[t] > 0).sort((a, b) => conteggi[a] - conteggi[b]);
+}
+// Quante parole di un tema sono state "toccate con successo" almeno una
+// volta (una coppia direzionale a livello >= 1, cioè risposta corretta
+// almeno una volta): soglia leggera per l'avanzamento di fase 1, apposta
+// più permissiva del criterio "parola appresa" (75% su tutte le coppie).
+function paroleToccateTema(tema, vocabolario, stats, lingue) {
+  let n = 0;
+  vocabolario.forEach(e => {
+    if ((e.tema || "") !== tema) return;
+    const ld = lingueAttiveEntry(e, lingue);
+    if (ld.length < 2) return;
+    const toccata = ld.some(da => ld.some(a => da !== a && getCoppia(stats, coppiaKey(e, da, a)).livello >= 1));
+    if (toccata) n++;
+  });
+  return n;
 }
 function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAFissa, nonstop = false) {
   const lingueAttive = lingue.filter(l => l.attiva);
@@ -11993,6 +12020,17 @@ function App() {
     temi: [],
     livelli: []
   }));
+  // Fase 1 (solo nuovi utenti, vedi SK_FASE_TEMI in cima al file): sessioni
+  // bloccate su un tema alla volta finché non li si è passati in rassegna
+  // tutti, poi "completata" per sempre. Chi ha già storico (SK_STATS
+  // preesistente) non entra in fase 1: comportamento invariato.
+  const [fase1, setFase1] = useState(() => {
+    const salvato = loadJSON(SK_FASE_TEMI, null);
+    if (salvato) return salvato;
+    const nuovoUtente = localStorage.getItem(SK_STATS) === null;
+    if (!nuovoUtente) return { completata: true };
+    return { ordine: ordinaTemiPerDimensione(vocabolario), indice: 0, completata: false };
+  });
   const [schermata, setSchermata] = useState("home"); // splash disabilitata
   const [glossarioLang, setGlossarioLang] = useState(null); // dialetto preselezionato dal deep-link #glossario/<codice>
   const [caricandoStorie, setCaricandoStorie] = useState(false); // true mentre storie.js viene iniettato lazy
@@ -12083,6 +12121,37 @@ function App() {
   useEffect(() => {
     saveJSON(SK_FILTRI, filtri);
   }, [filtri]);
+  useEffect(() => {
+    saveJSON(SK_FASE_TEMI, fase1);
+  }, [fase1]);
+  useEffect(() => {
+    // Avanzamento fase 1: quando il tema corrente ha abbastanza parole
+    // "toccate con successo" (soglia leggera, vedi paroleToccateTema), si
+    // passa al tema successivo. Un tema non praticabile con le lingue
+    // attive correnti (0 voci disponibili) viene saltato subito, invece di
+    // bloccare la sequenza per sempre.
+    if (fase1.completata) return;
+    const tema = fase1.ordine[fase1.indice];
+    if (tema === undefined) { setFase1(f => ({ ...f, completata: true })); return; }
+    const disponibili = vocabolario.filter(e => (e.tema || "") === tema && lingueAttiveEntry(e, lingue).length >= 2).length;
+    const soglia = Math.min(3, disponibili);
+    if (paroleToccateTema(tema, vocabolario, stats, lingue) >= soglia) {
+      setFase1(f => {
+        const prossimo = f.indice + 1;
+        return { ...f, indice: prossimo, completata: prossimo >= f.ordine.length };
+      });
+    }
+  }, [stats, vocabolario, lingue, fase1]);
+  // Filtro davvero usato per comporre una sessione: se l'utente non ha
+  // scelto un tema a mano, in fase 1 si sostituisce silenziosamente col
+  // tema corrente della sequenza. Una scelta esplicita dell'utente vince
+  // sempre (vedi PannelloFiltri/Home, che restano sulla filtri "vera").
+  const temaFase1Corrente = !fase1.completata ? fase1.ordine?.[fase1.indice] : null;
+  const filtriSessione = useMemo(() => (
+    temaFase1Corrente && filtri.temi.length === 0
+      ? { ...filtri, temi: [temaFase1Corrente] }
+      : filtri
+  ), [filtri, temaFase1Corrente]);
   useEffect(() => {
     saveJSON(SK_AI, aiSettings);
   }, [aiSettings]);
@@ -12379,7 +12448,7 @@ function App() {
     }
     // Non-stop: se corretto e siamo all'ultima carta, aggiungi nuove carte
     if (ok && modalita === "nonstop" && indice + 1 >= nc.length) {
-      const nuove = estraiCarte(vocabolario, stats, lingue, filtri, linguaDaUsata, linguaAUsata, true).filter(c => !nc.some(e => e.key === c.key));
+      const nuove = estraiCarte(vocabolario, stats, lingue, filtriSessione, linguaDaUsata, linguaAUsata, true).filter(c => !nc.some(e => e.key === c.key));
       if (nuove.length > 0) {
         nc = [...nc, ...nuove.slice(0, 10)];
         setCarte(nc);
@@ -12511,12 +12580,12 @@ function App() {
   if (configurando) return /*#__PURE__*/React.createElement(ConfigurazioneQuiz, {
     modalita: modalitaInAttesa,
     lingue: lingue,
-    filtri: filtri,
+    filtri: filtriSessione,
     vocabolario: vocabolario,
     stats: stats,
     onAvvia: (da, a, nDom) => {
       setConfigurando(false);
-      avvia(vocabolario, stats, modalitaInAttesa, lingue, filtri, da, a, nDom);
+      avvia(vocabolario, stats, modalitaInAttesa, lingue, filtriSessione, da, a, nDom);
     },
     onAnnulla: () => setConfigurando(false)
   });
@@ -12659,7 +12728,7 @@ function App() {
           nPross = Math.max(5, nDomandeUsate - inc);
         }
       }
-      avvia(vocabolario, stats, modalita, lingue, filtri, linguaDaUsata, linguaAUsata, nPross || null);
+      avvia(vocabolario, stats, modalita, lingue, filtriSessione, linguaDaUsata, linguaAUsata, nPross || null);
     }
   }));
 }

@@ -86,6 +86,7 @@ const DA_RIMUOVERE = {
   qml_v10_streak: '{}',
   qml_v10_ndom: '{}',
   qml_v11_sm_global: '{}',
+  qml_v1_fase1_temi: '{}',
 };
 // Chiavi che il recovery DEVE preservare
 const DA_PRESERVARE = {
