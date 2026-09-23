@@ -539,6 +539,7 @@ const UI = {
     tuttiitemi: "Tutti i temi",
     tuttilivelli: "Tutti i livelli",
     senzalivello: "Senza livello",
+    senzatema: "Senza tema",
     ndomande: "N. domande",
     scegliquante: "Scegli quante domande",
     illimitate: "Illimitate",
@@ -632,6 +633,7 @@ const UI = {
     tuttiitemi: "All themes",
     tuttilivelli: "All levels",
     senzalivello: "No level",
+    senzatema: "No theme",
     compilaalmeno: "Fill in at least 2 languages.",
     ndomande: "Number of questions",
     scegliquante: "Choose how many questions",
@@ -837,6 +839,7 @@ const UI = {
     tuttiitemi: "Tous les thèmes",
     tuttilivelli: "Tous les niveaux",
     senzalivello: "Sans niveau",
+    senzatema: "Sans thème",
     sceltamultipla: "Choix multiple",
     desc_sceltamultipla: "🎯 5-12 options, niveau adaptatif"
   },
@@ -910,6 +913,7 @@ const UI = {
     tuttiitemi: "Todos los temas",
     tuttilivelli: "Todos los niveles",
     senzalivello: "Sin nivel",
+    senzatema: "Sin tema",
     scegliquante: "Elige cuántas preguntas",
     illimitate: "Ilimitadas",
     migliorperc: "Mejor %",
@@ -1049,6 +1053,7 @@ const UI = {
     tuttiitemi: "Alle Themen",
     tuttilivelli: "Alle Niveaus",
     senzalivello: "Ohne Niveau",
+    senzatema: "Ohne Thema",
     scegliquante: "Wähle wie viele Fragen",
     illimitate: "Unbegrenzt",
     migliorperc: "Bester %",
@@ -1188,6 +1193,7 @@ const UI = {
     tuttiitemi: "Todos os temas",
     tuttilivelli: "Todos os níveis",
     senzalivello: "Sem nível",
+    senzatema: "Sem tema",
     scegliquante: "Escolhe quantas perguntas",
     illimitate: "Ilimitadas",
     migliorperc: "Melhor %",
@@ -1320,6 +1326,7 @@ const UI = {
     tuttiitemi: "Все темы",
     tuttilivelli: "Все уровни",
     senzalivello: "Без уровня",
+    senzatema: "Без темы",
     ndomande: "Вопросы",
     oggi: "Сегодня",
     domani: "Завтра",
@@ -1457,6 +1464,7 @@ const UI = {
     tuttiitemi: "所有主题",
     tuttilivelli: "所有级别",
     senzalivello: "无级别",
+    senzatema: "无主题",
     ndomande: "题目数量",
     oggi: "今天",
     domani: "明天",
@@ -1598,6 +1606,7 @@ const UI = {
     tuttiitemi: "모든 주제",
     tuttilivelli: "모든 레벨",
     senzalivello: "레벨 없음",
+    senzatema: "주제 없음",
     ndomande: "문제 수",
     oggi: "오늘",
     domani: "내일",
@@ -1737,6 +1746,7 @@ const UI = {
     tuttiitemi: "Tots els temes",
     tuttilivelli: "Tots els nivells",
     senzalivello: "Sense nivell",
+    senzatema: "Sense tema",
     ndomande: "Preguntes",
     oggi: "Avui",
     domani: "Demà",
@@ -8310,7 +8320,9 @@ function ModificaParola({
       tema: e.target.value
     })),
     className: "border-2 border-zinc-700 rounded-lg px-2 py-1 text-sm focus:outline-none focus:border-sky-400"
-  }, Object.entries(TEMI).map(([k, v]) => /*#__PURE__*/React.createElement("option", {
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "❓ ", t.senzatema), Object.entries(TEMI).map(([k, v]) => /*#__PURE__*/React.createElement("option", {
     key: k,
     value: k
   }, v.emoji, " ", v.label)))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
