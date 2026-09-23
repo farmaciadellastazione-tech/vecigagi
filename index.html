@@ -9727,6 +9727,15 @@ function SchermataSceltaMultipla({
     // dal guard su fraseFine perché deve contare anche se frasaFineSP non trova
     // una frase da mostrare (caso limite, non deve bloccare l'aggiornamento streak).
     if (onStreak && punteggio > 0) onStreak();
+    // Progressione (nScelte/nDom): salvata appena si arriva sui risultati, non
+    // solo premendo "Gioca ancora" — altrimenti uscendo con "← Home" dopo un
+    // 100% il progresso di difficoltà si perdeva silenziosamente (bug
+    // segnalato da Dino). giocaAncora() ora riusa semplicemente `stato`,
+    // già aggiornato qui.
+    const percFinale = Math.round(punteggio / nDomBase() * 100);
+    const nuovoStato = calcolaProssimoStato(percFinale);
+    salvaStato(nuovoStato);
+    setStato(nuovoStato);
     if (fraseFine) return;
     const perc = Math.round(punteggio / nDomBase() * 100);
     const f = frasaFineSP(perc);
@@ -9794,11 +9803,9 @@ function SchermataSceltaMultipla({
   }
 
   function giocaAncora() {
-    const percFinale = Math.round(punteggio / nDomBase() * 100);
-    const nuovoStato = calcolaProssimoStato(percFinale);
-    salvaStato(nuovoStato);
-    setStato(nuovoStato);
-    generaCarte(nuovoStato);
+    // stato è già la progressione aggiornata: la salva/applica l'effetto
+    // su isFineSchermata appena si arriva su questa schermata (vedi sopra).
+    generaCarte(stato);
   }
 
   const statoDisplay = stato;

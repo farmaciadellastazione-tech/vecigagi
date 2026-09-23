@@ -98,3 +98,13 @@ test('generaCarte() azzera errori e riepilogo (nuova sessione pulita)', () => {
   assert.ok(/setCarteErrate\(\[\]\)/.test(gen), 'generaCarte deve azzerare il riepilogo errori');
   assert.ok(/setErrateKeys\(\{\}\)/.test(gen), 'generaCarte deve azzerare la mappa errori');
 });
+
+// Bug segnalato da Dino, 2026-09-23: dopo il 100%, uscendo con "← Home"
+// invece di premere "Gioca ancora" la progressione (nScelte/nDom, SK_SM)
+// non veniva salvata — salvaStato/setStato stavano SOLO dentro giocaAncora(),
+// mai chiamate al semplice arrivo sulla schermata finale.
+test('la progressione (nScelte/nDom) si salva appena si arriva sulla schermata finale, non solo con "Gioca ancora"', () => {
+  const effettoFine = SM.slice(SM.indexOf('// Autoplay frase di fine sessione'), SM.indexOf('function scegli(s)'));
+  assert.ok(/salvaStato\(/.test(effettoFine), 'l\'effetto che scatta su isFineSchermata deve salvare lo stato (altrimenti si perde uscendo senza "Gioca ancora")');
+  assert.ok(/setStato\(/.test(effettoFine), 'l\'effetto che scatta su isFineSchermata deve aggiornare lo stato React, non solo il localStorage');
+});
