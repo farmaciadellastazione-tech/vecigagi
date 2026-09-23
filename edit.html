@@ -234,6 +234,7 @@
     <label>Livello
       <select id="livello-select">
         <option value="">tutti</option>
+        <option value="__senza__">❓ senza livello</option>
         <option>A1</option><option>A2</option><option>B1</option><option>B2</option>
       </select>
     </label>
@@ -581,6 +582,7 @@ let originalVocabJs = null;
 let currentLangs = ['mn'];   // array ordinato di codici lingua visibili in tabella
 let currentTema = '';
 let currentLivello = '';
+const SENZA = '__senza__'; // sentinella per "voci senza tema/livello" nei due filtri qui sopra
 let currentSearch = '';
 let onlyEmpty = false;
 let onlySuspect = false;
@@ -1140,7 +1142,7 @@ function temaIADaUsare(t) { return t && temiEsistenti().includes(t) ? t : ''; }
 
 function popolaTemiSelect() {
   const sel = document.getElementById('tema-select');
-  sel.innerHTML = '<option value="">tutti</option>';
+  sel.innerHTML = '<option value="">tutti</option><option value="__senza__">❓ senza tema</option>';
   temiEsistenti().forEach(t => {
     const o = document.createElement('option'); o.value = t; o.textContent = t; sel.appendChild(o);
   });
@@ -1401,8 +1403,8 @@ function filtroVoci() {
     ? diaInVista.some(k => (v[k] || '').trim() && statoCella(v, k) === stato)
     : (stato === 'y' ? campiGialli(v).size > 0 : stato === 'r' ? campiSospetti(v).size > 0 : campiVerificati(v).size > 0);
   return vocabolario.filter(v => {
-    if (currentTema && v.tema !== currentTema) return false;
-    if (currentLivello && v.livello !== currentLivello) return false;
+    if (currentTema && (currentTema === SENZA ? !!v.tema : v.tema !== currentTema)) return false;
+    if (currentLivello && (currentLivello === SENZA ? !!v.livello : v.livello !== currentLivello)) return false;
     if (onlyEmpty && ((v[lang0] || '').trim() !== '' || dialNT(v, lang0))) return false;
     if (onlySuspect) {
       if (suspectLang) { if (statoCella(v, suspectLang) !== 'r') return false; }
@@ -1804,8 +1806,8 @@ function exportExcel() {
   // Nome file: riflette TUTTI i filtri attivi, non solo tema/livello. '_tutto'
   // solo quando l'export e' davvero l'intero vocabolario del dialetto.
   const parti = [];
-  if (currentTema) parti.push(currentTema);
-  if (currentLivello) parti.push(currentLivello);
+  if (currentTema) parti.push(currentTema === SENZA ? 'senza-tema' : currentTema);
+  if (currentLivello) parti.push(currentLivello === SENZA ? 'senza-livello' : currentLivello);
   if (onlyEmpty) parti.push('da-tradurre');
   if (onlySuspect) parti.push(suspectLang ? 'sospette-' + suspectLang : 'sospette');
   if (onlyVerified) parti.push('verificate');
@@ -2229,13 +2231,6 @@ function langName(code) { const l = LINGUE.find(x => x.code === code); return l 
 
 function buildAIPrompt(italianTerm, langCodes, contextSamples) {
   const langList = langCodes.map(c => `${c} (${langName(c)})`).join(', ');
-  const targetHaDialetto = langCodes.some(c => DIALETTI_TTS_ITA.includes(c));
-  let dialettoContext = '';
-  if (targetHaDialetto) {
-    const dialCode = langCodes.find(c => DIALETTI_TTS_ITA.includes(c));
-    const samplesDialetto = vocabolario.filter(v => v[dialCode] && String(v[dialCode]).includes('/')).slice(0, 6).map(v => ({ it: v.it, [dialCode]: v[dialCode] }));
-    if (samplesDialetto.length) dialettoContext = `\n\nESEMPI CONVENZIONE DIALETTO (${dialCode}):\n` + samplesDialetto.map(s => JSON.stringify(s)).join('\n') + `\nParte PRIMA "/" = trascrizione TTS; parte DOPO = grafia tradizionale.`;
-  }
   let context = '';
   if (contextSamples && contextSamples.length) context = '\n\nEsempi dal vocabolario:\n' + contextSamples.slice(0, 6).map(s => JSON.stringify(s)).join('\n');
   const exampleTranslations = langCodes.map(c => `"${c}":"..."`).join(', ');
@@ -2245,15 +2240,24 @@ function buildAIPrompt(italianTerm, langCodes, contextSamples) {
   return `Sei un assistente per un quiz di vocabolario multilingue italiano. Per il termine italiano "${italianTerm}", fornisci:
 1. Una traduzione concisa (1-3 parole) in: ${langList}
 2. Livello CEFR: A1/A2/B1/B2
-3. Tema: scegli UNO tra quelli esistenti (${elencoTemi}), in base al significato della parola${dialettoContext}
+3. Tema: scegli UNO tra quelli esistenti (${elencoTemi}), in base al significato della parola
 Rispondi SOLO con JSON valido:
 {"tema":"...", "livello":"A1|A2|B1|B2", "translations":{${exampleTranslations}}}${context}`;
 }
 
+// L'AI non genera/traduce MAI parole dialettali (mn/sp/ge/cr): in passato ha
+// inventato voci plausibili ma false (vedi memoria progetto, commit 5badd31 e
+// 13198ab). Il filtro è qui, punto unico di chiamata all'IA, cosí vale per
+// ogni chiamante presente e futuro, non solo per chi ci pensa da sé.
 async function aiClassificaERTraducici(italianTerm, langCodes) {
   if (!aiConfig || !aiConfig.provider || !aiConfig.key) throw new Error('AI non configurata.');
-  const samples = vocabolario.filter(v => v.tema && v.livello && langCodes.every(c => v[c])).slice(0, 8).map(v => { const o = { it: v.it, tema: v.tema, livello: v.livello }; langCodes.forEach(c => o[c] = v[c]); return o; });
-  const prompt = buildAIPrompt(italianTerm, langCodes, samples);
+  const langCodesNoDialetti = langCodes.filter(c => !DIALETTI_TTS_ITA.includes(c));
+  // Se restano solo dialetti (o l'elenco era vuoto), l'IA serve solo a
+  // classificare tema/livello: 'en' è una lingua neutra, mai scritta in un
+  // campo dialettale dai chiamanti.
+  const langsPerPrompt = langCodesNoDialetti.length ? langCodesNoDialetti : ['en'];
+  const samples = vocabolario.filter(v => v.tema && v.livello && langsPerPrompt.every(c => v[c])).slice(0, 8).map(v => { const o = { it: v.it, tema: v.tema, livello: v.livello }; langsPerPrompt.forEach(c => o[c] = v[c]); return o; });
+  const prompt = buildAIPrompt(italianTerm, langsPerPrompt, samples);
   let text;
   if (aiConfig.provider === 'groq') text = await callGroq(prompt);
   else if (aiConfig.provider === 'gemini') text = await callGemini(prompt);
@@ -2263,6 +2267,9 @@ async function aiClassificaERTraducici(italianTerm, langCodes) {
   let parsed;
   try { const cleaned = text.replace(/```json|```/g, '').trim(); const m = cleaned.match(/\{[\s\S]*\}/); parsed = JSON.parse(m ? m[0] : cleaned); }
   catch(e) { throw new Error('Risposta AI non in JSON: ' + text.slice(0, 200)); }
+  // Scarta comunque eventuali chiavi dialettali: l'IA potrebbe restituirle
+  // anche senza che siano state richieste.
+  if (parsed && parsed.translations) DIALETTI_TTS_ITA.forEach(c => { delete parsed.translations[c]; });
   return parsed;
 }
 
@@ -2291,13 +2298,12 @@ async function aiCompletaRiga(btn) {
   if (!aiConfig || !aiConfig.provider || !aiConfig.key) { if (confirm('AI non configurata. Configurarla ora?')) apriConfigAI(); return; }
   const tr = btn.closest('tr'), v = tr._voce;
   if (!v || !v.it || !v.it.trim()) { alert('Compila prima il campo italiano.'); return; }
-  const langsToTranslate = currentLangs.filter(c => !(v[c] || '').trim());
-  const dialettiTarget = langsToTranslate.filter(c => DIALETTI_TTS_ITA.includes(c));
-  if (dialettiTarget.length > 0 && !confirm(`⚠️ L'AI ha scarsa conoscenza dei dialetti (${dialettiTarget.map(c => LINGUE.find(l => l.code === c).name).join(', ')}). Verificare il risultato. Procedere?`)) return;
+  // I dialetti restano sempre fuori: vanno scritti a mano, l'AI non li tocca.
+  const langsToTranslate = currentLangs.filter(c => !(v[c] || '').trim() && !DIALETTI_TTS_ITA.includes(c));
   btn.classList.add('ai-pending'); btn.disabled = true; setHelp(`✨ AI sta elaborando "${v.it}"...`, 'info');
-  if (langsToTranslate.length === 0 && v.tema && v.livello) { btn.classList.remove('ai-pending'); btn.disabled = false; if (!confirm('Voce già completa. Chiedere all\'AI di rivedere tema/livello?')) return; btn.classList.add('ai-pending'); btn.disabled = true; }
+  if (langsToTranslate.length === 0 && v.tema && v.livello) { btn.classList.remove('ai-pending'); btn.disabled = false; if (!confirm('Voce già completa (a parte eventuali dialetti, che l\'AI non tocca). Chiedere all\'AI di rivedere tema/livello?')) return; btn.classList.add('ai-pending'); btn.disabled = true; }
   try {
-    const langs = langsToTranslate.length ? langsToTranslate : [currentLangs[0]];
+    const langs = langsToTranslate.length ? langsToTranslate : [currentLangs.find(c => !DIALETTI_TTS_ITA.includes(c)) || 'en'];
     const sugg = await aiClassificaERTraducici(visiblePart(v.it), langs);
     let changed = false;
     const temaIA = temaIADaUsare(sugg.tema);
@@ -2351,18 +2357,19 @@ Risposta SOLO JSON: {"trascrizione":"..."}`;
 
 async function completaConAI() {
   if (!aiConfig || !aiConfig.provider || !aiConfig.key) { if (confirm('AI non configurata. Configurarla ora?')) apriConfigAI(); return; }
-  const filtrate = filtroVoci(), daCompletare = filtrate.filter(v => !(v[currentLangs[0]] || '').trim() || !v.tema || !v.livello);
-  if (!daCompletare.length) { alert('Nessuna voce da completare.'); return; }
+  // Una voce a cui manca solo il dialetto non entra nel batch: l'AI non lo
+  // traduce, va scritto a mano (vedi aiClassificaERTraducici).
+  const filtrate = filtroVoci(), daCompletare = filtrate.filter(v => !v.tema || !v.livello || currentLangs.some(c => !DIALETTI_TTS_ITA.includes(c) && !(v[c] || '').trim()));
+  if (!daCompletare.length) { alert('Nessuna voce da completare (i dialetti vanno scritti a mano, l\'AI non li tocca).'); return; }
   const max = Math.min(daCompletare.length, 30);
-  const targetDialetti = currentLangs.filter(c => DIALETTI_TTS_ITA.includes(c)).map(c => LINGUE.find(l => l.code === c).name);
-  if (targetDialetti.length && !confirm(`⚠️ Il batch include dialetti (${targetDialetti.join(', ')}). L'AI ha conoscenza limitata. Procedere?`)) return;
-  if (!confirm(`Completare ${max} voci con AI (${aiConfig.provider})?`)) return;
+  if (!confirm(`Completare ${max} voci con AI (${aiConfig.provider})? I campi dialettali restano esclusi.`)) return;
   const btn = document.getElementById('btn-ai-batch'); btn.disabled = true; const origLabel = btn.textContent;
   let ok = 0, ko = 0;
   for (let i = 0; i < max; i++) {
     const v = daCompletare[i]; btn.textContent = `✨ ${i + 1}/${max}...`; setHelp(`✨ AI: ${i + 1}/${max} — "${v.it}"`, 'info');
     try {
-      const langs = currentLangs.filter(c => !(v[c] || '').trim());
+      const langsVuoti = currentLangs.filter(c => !DIALETTI_TTS_ITA.includes(c) && !(v[c] || '').trim());
+      const langs = langsVuoti.length ? langsVuoti : [currentLangs.find(c => !DIALETTI_TTS_ITA.includes(c)) || 'en'];
       const sugg = await aiClassificaERTraducici(visiblePart(v.it), langs);
       const temaIA = temaIADaUsare(sugg.tema);
       if (temaIA && !v.tema) v.tema = temaIA;
