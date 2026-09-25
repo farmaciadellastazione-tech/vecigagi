@@ -2268,8 +2268,19 @@ async function aiClassificaERTraducici(italianTerm, langCodes) {
   try { const cleaned = text.replace(/```json|```/g, '').trim(); const m = cleaned.match(/\{[\s\S]*\}/); parsed = JSON.parse(m ? m[0] : cleaned); }
   catch(e) { throw new Error('Risposta AI non in JSON: ' + text.slice(0, 200)); }
   // Scarta comunque eventuali chiavi dialettali: l'IA potrebbe restituirle
-  // anche senza che siano state richieste.
-  if (parsed && parsed.translations) DIALETTI_TTS_ITA.forEach(c => { delete parsed.translations[c]; });
+  // anche senza che siano state richieste. Tiene invece le lingue extra non
+  // richieste, purché siano codici di LINGUE con valore testuale: una chiave
+  // inventata ("spanish", "zh-CN") finirebbe altrimenti come campo spazzatura
+  // in index.html (serializzaVoce salva anche le chiavi sconosciute).
+  if (parsed && parsed.translations && typeof parsed.translations === 'object') {
+    const codiciValidi = new Set(LINGUE.map(l => l.code).filter(c => !DIALETTI_TTS_ITA.includes(c) && c !== 'it'));
+    const pulite = {};
+    Object.keys(parsed.translations).forEach(c => {
+      const val = parsed.translations[c];
+      if (codiciValidi.has(c) && typeof val === 'string' && val.trim()) pulite[c] = val.trim();
+    });
+    parsed.translations = pulite;
+  } else if (parsed) parsed.translations = {};
   return parsed;
 }
 
