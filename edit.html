@@ -2366,6 +2366,23 @@ Risposta SOLO JSON: {"trascrizione":"..."}`;
   return (parsed.trascrizione || '').toString().trim().replace(/[\/|]/g, '').trim();
 }
 
+// Riprova su HTTP 429 (limite richieste/token al minuto, tipico del piano
+// gratuito Groq): attende il tempo suggerito nel messaggio ("try again in
+// 7.5s" / "1m2.3s"), altrimenti 10 s. Gli altri errori passano subito.
+async function conRetry429(fn, onAttesa) {
+  for (let tentativo = 0; ; tentativo++) {
+    try { return await fn(); }
+    catch(e) {
+      if (tentativo >= 3 || !/HTTP 429/.test(e.message)) throw e;
+      const m = e.message.match(/try again in (?:(\d+)m)?([\d.]+)s/i);
+      const sec = m ? (parseInt(m[1] || '0') * 60 + parseFloat(m[2])) : 10;
+      const ms = Math.min(Math.ceil(sec * 1000) + 500, 90000);
+      if (onAttesa) onAttesa(Math.round(ms / 1000), tentativo + 1);
+      await new Promise(r => setTimeout(r, ms));
+    }
+  }
+}
+
 async function completaConAI() {
   if (!aiConfig || !aiConfig.provider || !aiConfig.key) { if (confirm('AI non configurata. Configurarla ora?')) apriConfigAI(); return; }
   // Una voce a cui manca solo il dialetto non entra nel batch: l'AI non lo
@@ -2375,23 +2392,27 @@ async function completaConAI() {
   const max = Math.min(daCompletare.length, 30);
   if (!confirm(`Completare ${max} voci con AI (${aiConfig.provider})? I campi dialettali restano esclusi.`)) return;
   const btn = document.getElementById('btn-ai-batch'); btn.disabled = true; const origLabel = btn.textContent;
-  let ok = 0, ko = 0;
+  let ok = 0, ko = 0, primoErrore = '';
   for (let i = 0; i < max; i++) {
     const v = daCompletare[i]; btn.textContent = `✨ ${i + 1}/${max}...`; setHelp(`✨ AI: ${i + 1}/${max} — "${v.it}"`, 'info');
     try {
       const langsVuoti = currentLangs.filter(c => !DIALETTI_TTS_ITA.includes(c) && !(v[c] || '').trim());
       const langs = langsVuoti.length ? langsVuoti : [currentLangs.find(c => !DIALETTI_TTS_ITA.includes(c)) || 'en'];
-      const sugg = await aiClassificaERTraducici(visiblePart(v.it), langs);
+      const sugg = await conRetry429(() => aiClassificaERTraducici(visiblePart(v.it), langs),
+        (sec, n) => setHelp(`⏳ AI: limite richieste del provider, attendo ${sec} s e riprovo (tentativo ${n}/3) — ${i + 1}/${max} "${v.it}"`, 'info'));
       const temaIA = temaIADaUsare(sugg.tema);
       if (temaIA && !v.tema) v.tema = temaIA;
       if (sugg.livello && !v.livello && /^[AB][12]$/.test(sugg.livello)) v.livello = sugg.livello;
       if (sugg.translations) Object.keys(sugg.translations).forEach(c => { if (!(v[c] || '').trim() && sugg.translations[c]) v[c] = sugg.translations[c]; });
       if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v)); ok++;
-    } catch(e) { console.error('AI batch:', v.it, e); ko++; }
-    await new Promise(r => setTimeout(r, 250));
+    } catch(e) { console.error('AI batch:', v.it, e); ko++; if (!primoErrore) primoErrore = `"${v.it}": ${e.message.slice(0, 200)}`; }
+    // Groq gratuito ha limiti al minuto stretti: pausa piú lunga per non
+    // finire subito nei 429 (che comunque vengono ritentati sopra).
+    await new Promise(r => setTimeout(r, aiConfig.provider === 'groq' ? 2000 : 250));
   }
   popolaTemiSelect(); render(); btn.textContent = origLabel; btn.disabled = false;
-  setHelp(`✨ AI: ${ok} ok, ${ko} errori. Ricorda ☁️.`, ok && !ko ? 'success' : 'error');
+  const dettaglio = primoErrore ? ` Primo errore — ${primoErrore.replace(/</g, '&lt;')}` : '';
+  setHelp(`✨ AI: ${ok} ok, ${ko} errori. Ricorda ☁️.${dettaglio}`, ok && !ko ? 'success' : 'error');
 }
 
 // ==========================================================================
