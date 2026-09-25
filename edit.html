@@ -2229,7 +2229,10 @@ function salvaConfigAI() {
 
 function langName(code) { const l = LINGUE.find(x => x.code === code); return l ? l.name : code; }
 
-function buildAIPrompt(italianTerm, langCodes, contextSamples) {
+// voceCtx (facoltativo): { tema, en } della voce già presenti, per far
+// scegliere all'IA il senso giusto delle parole ambigue (es. "ciabatta" con
+// tema vestiti = pantofola, non il pane; "compressa" con en "tablet").
+function buildAIPrompt(italianTerm, langCodes, contextSamples, voceCtx) {
   const langList = langCodes.map(c => `${c} (${langName(c)})`).join(', ');
   let context = '';
   if (contextSamples && contextSamples.length) context = '\n\nEsempi dal vocabolario:\n' + contextSamples.slice(0, 6).map(s => JSON.stringify(s)).join('\n');
@@ -2237,8 +2240,12 @@ function buildAIPrompt(italianTerm, langCodes, contextSamples) {
   // Temi realmente presenti nel vocabolario (nessun elenco fisso da tenere allineato).
   const temiNoti = temiEsistenti();
   const elencoTemi = temiNoti.length ? temiNoti.map(t => `"${t}"`).join(', ') : '"casa", "cibo", "verbi", "famiglia", "lavoro", "natura", "corpo", "tempo", "viaggi", "saluti", "numeri"';
-  return `Sei un assistente per un quiz di vocabolario multilingue italiano. Per il termine italiano "${italianTerm}", fornisci:
-1. Una traduzione concisa (1-3 parole) in: ${langList}
+  const indizi = [];
+  if (voceCtx && voceCtx.tema) indizi.push(`tema della voce: "${voceCtx.tema}"`);
+  if (voceCtx && voceCtx.en) indizi.push(`traduzione inglese già verificata: "${voceCtx.en}"`);
+  const senso = indizi.length ? `\nContesto (${indizi.join('; ')}): se la parola ha più significati, traduci SOLO quello coerente con questo contesto.` : '';
+  return `Sei un assistente per un quiz di vocabolario multilingue italiano. Per il termine italiano "${italianTerm}", fornisci:${senso}
+1. La traduzione in: ${langList}. Per una parola singola sii conciso (1-3 parole); per una frase o domanda traduci la frase intera in forma naturale, senza accorciarla.
 2. Livello CEFR: A1/A2/B1/B2
 3. Tema: scegli UNO tra quelli esistenti (${elencoTemi}), in base al significato della parola
 Rispondi SOLO con JSON valido:
@@ -2249,7 +2256,7 @@ Rispondi SOLO con JSON valido:
 // inventato voci plausibili ma false (vedi memoria progetto, commit 5badd31 e
 // 13198ab). Il filtro è qui, punto unico di chiamata all'IA, cosí vale per
 // ogni chiamante presente e futuro, non solo per chi ci pensa da sé.
-async function aiClassificaERTraducici(italianTerm, langCodes) {
+async function aiClassificaERTraducici(italianTerm, langCodes, voceCtx) {
   if (!aiConfig || !aiConfig.provider || !aiConfig.key) throw new Error('AI non configurata.');
   const langCodesNoDialetti = langCodes.filter(c => !DIALETTI_TTS_ITA.includes(c));
   // Se restano solo dialetti (o l'elenco era vuoto), l'IA serve solo a
@@ -2257,7 +2264,7 @@ async function aiClassificaERTraducici(italianTerm, langCodes) {
   // campo dialettale dai chiamanti.
   const langsPerPrompt = langCodesNoDialetti.length ? langCodesNoDialetti : ['en'];
   const samples = vocabolario.filter(v => v.tema && v.livello && langsPerPrompt.every(c => v[c])).slice(0, 8).map(v => { const o = { it: v.it, tema: v.tema, livello: v.livello }; langsPerPrompt.forEach(c => o[c] = v[c]); return o; });
-  const prompt = buildAIPrompt(italianTerm, langsPerPrompt, samples);
+  const prompt = buildAIPrompt(italianTerm, langsPerPrompt, samples, voceCtx);
   let text;
   if (aiConfig.provider === 'groq') text = await callGroq(prompt);
   else if (aiConfig.provider === 'gemini') text = await callGemini(prompt);
@@ -2315,7 +2322,7 @@ async function aiCompletaRiga(btn) {
   if (langsToTranslate.length === 0 && v.tema && v.livello) { btn.classList.remove('ai-pending'); btn.disabled = false; if (!confirm('Voce già completa (a parte eventuali dialetti, che l\'AI non tocca). Chiedere all\'AI di rivedere tema/livello?')) return; btn.classList.add('ai-pending'); btn.disabled = true; }
   try {
     const langs = langsToTranslate.length ? langsToTranslate : [currentLangs.find(c => !DIALETTI_TTS_ITA.includes(c)) || 'en'];
-    const sugg = await aiClassificaERTraducici(visiblePart(v.it), langs);
+    const sugg = await conRetryAI(() => aiClassificaERTraducici(visiblePart(v.it), langs, contestoVoce(v)));
     let changed = false;
     const temaIA = temaIADaUsare(sugg.tema);
     if (temaIA && !v.tema) { v.tema = temaIA; changed = true; }
@@ -2366,14 +2373,24 @@ Risposta SOLO JSON: {"trascrizione":"..."}`;
   return (parsed.trascrizione || '').toString().trim().replace(/[\/|]/g, '').trim();
 }
 
-// Riprova su HTTP 429 (limite richieste/token al minuto, tipico del piano
-// gratuito Groq): attende il tempo suggerito nel messaggio ("try again in
-// 7.5s" / "1m2.3s"), altrimenti 10 s. Gli altri errori passano subito.
-async function conRetry429(fn, onAttesa) {
-  for (let tentativo = 0; ; tentativo++) {
+// Contesto della voce per disambiguare il senso (vedi buildAIPrompt).
+function contestoVoce(v) { return { tema: v.tema || '', en: visiblePart(v.en || '') }; }
+
+// Riprova le chiamate IA sugli errori passeggeri:
+// - JSON non valido (Groq "json_validate_failed", o risposta non parsabile):
+//   subito, fino a 2 volte; spesso al secondo giro il modello risponde bene;
+// - HTTP 429 (limite richieste/token al minuto, tipico del piano gratuito
+//   Groq): attende il tempo suggerito nel messaggio ("try again in 7.5s" /
+//   "1m2.3s"), altrimenti 10 s, fino a 3 volte.
+// Gli altri errori passano subito.
+async function conRetryAI(fn, onAttesa) {
+  let n429 = 0, nJson = 0;
+  for (;;) {
     try { return await fn(); }
     catch(e) {
-      if (tentativo >= 3 || !/HTTP 429/.test(e.message)) throw e;
+      if (/json_validate_failed|non in JSON/.test(e.message) && nJson < 2) { nJson++; continue; }
+      if (!/HTTP 429/.test(e.message) || n429 >= 3) throw e;
+      const tentativo = n429++;
       const m = e.message.match(/try again in (?:(\d+)m)?([\d.]+)s/i);
       const sec = m ? (parseInt(m[1] || '0') * 60 + parseFloat(m[2])) : 10;
       const ms = Math.min(Math.ceil(sec * 1000) + 500, 90000);
@@ -2398,7 +2415,7 @@ async function completaConAI() {
     try {
       const langsVuoti = currentLangs.filter(c => !DIALETTI_TTS_ITA.includes(c) && !(v[c] || '').trim());
       const langs = langsVuoti.length ? langsVuoti : [currentLangs.find(c => !DIALETTI_TTS_ITA.includes(c)) || 'en'];
-      const sugg = await conRetry429(() => aiClassificaERTraducici(visiblePart(v.it), langs),
+      const sugg = await conRetryAI(() => aiClassificaERTraducici(visiblePart(v.it), langs, contestoVoce(v)),
         (sec, n) => setHelp(`⏳ AI: limite richieste del provider, attendo ${sec} s e riprovo (tentativo ${n}/3) — ${i + 1}/${max} "${v.it}"`, 'info'));
       const temaIA = temaIADaUsare(sugg.tema);
       if (temaIA && !v.tema) v.tema = temaIA;
