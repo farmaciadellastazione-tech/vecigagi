@@ -2237,7 +2237,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
-      { tema:"corpo", livello:"A1", it:"destra", en:"right", sp:"drita" },
+      { tema:"corpo", livello:"A1", it:"destra", en:"right", sp:"drita", verif:"sp:g" },
       { tema:"natura", livello:"A2", it:"valle", en:"valley", ge:"vallâ" },
       { tema:"astratti", livello:"A1", it:"azione", en:"action", ge:"açion" },
       { tema:"emotivi", livello:"B1", it:"tormento", en:"torment", ge:"tormento" },
@@ -4067,7 +4067,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 575;
+const VOC_VERSION = 576;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
