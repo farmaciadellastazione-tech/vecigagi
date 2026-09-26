@@ -2393,8 +2393,7 @@ async function conRetryAI(fn, onAttesa) {
     try { return await fn(); }
     catch(e) {
       if (/json_validate_failed|non in JSON/.test(e.message) && nJson < 2) { nJson++; continue; }
-      if (!/HTTP 429/.test(e.message) || n429 >= 3) throw e;
-      const tentativo = n429++;
+      if (!/HTTP 429/.test(e.message)) throw e;
       const m = e.message.match(/try again in (?:(\d+)h)?(?:(\d+)m)?(?:([\d.]+)s)?/i);
       const sec = m && m[0].length > 'try again in '.length ? (parseInt(m[1] || '0') * 3600 + parseInt(m[2] || '0') * 60 + parseFloat(m[3] || '0')) : 10;
       if (/per day|\((?:TPD|RPD)\)/i.test(e.message) || sec > 90) {
@@ -2403,6 +2402,9 @@ async function conRetryAI(fn, onAttesa) {
         err.limiteGiornaliero = true;
         throw err;
       }
+      // Dopo il controllo giornaliero: anche al 4° 429 va riconosciuto.
+      if (n429 >= 3) throw e;
+      const tentativo = n429++;
       const ms = Math.min(Math.ceil(sec * 1000) + 500, 90000);
       if (onAttesa) onAttesa(Math.round(ms / 1000), tentativo + 1);
       await new Promise(r => setTimeout(r, ms));

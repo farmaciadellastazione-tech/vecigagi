@@ -69,6 +69,14 @@ test('429 al minuto (TPM): attende e ritenta come prima', async () => {
   assert.deepStrictEqual(attese, [8000]);
 });
 
+test('429 giornaliero dopo 3 ritentativi al minuto: resta marcato', async () => {
+  const { ctx } = ambiente();
+  let chiamate = 0;
+  ctx.fn = async () => { throw new Error(++chiamate <= 3 ? MSG_TPM : MSG_TPD); };
+  await assert.rejects(vm.runInContext('conRetryAI(fn)', ctx), e => e.limiteGiornaliero === true);
+  assert.strictEqual(chiamate, 4);
+});
+
 test('completaConAI: al limite giornaliero il batch si ferma alla prima voce', async () => {
   const voci = [{ it: 'uno' }, { it: 'due' }, { it: 'tre' }];
   const messaggi = [];
