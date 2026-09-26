@@ -2237,6 +2237,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"corpo", livello:"A1", it:"destra", en:"right", sp:"drita" },
       { tema:"natura", livello:"A2", it:"valle", en:"valley", ge:"vallâ" },
       { tema:"astratti", livello:"A1", it:"azione", en:"action", ge:"açion" },
       { tema:"emotivi", livello:"B1", it:"tormento", en:"torment", ge:"tormento" },
@@ -2276,7 +2277,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"grammatica", livello:"A1", it:"lui| egli", en:"he", sp:"lü", cr:"lù, lulì, lulà", ge:"lê", ro:"el", verif:"cr:g,ge:g,sp:g" },
       { tema:"aggettivi", livello:"A1", it:"rumeno", en:"Romanian", ge:"romen", ro:"român" },
       { tema:"aggettivi", livello:"A1", it:"inglese", en:"English", sp:"engrese", cr:"ingles", ge:"ingleise", ro:"engleză" },
-      { tema:"saluti", livello:"A1", it:"buon pomeriggio", en:"good afternoon", ro:"bună după-amiază, bună ziua" },
+      { tema:"saluti", livello:"A1", it:"buon pomeriggio", en:"good afternoon", sp:"bon dopodisnà", ro:"bună după-amiază, bună ziua" },
       { tema:"saluti", livello:"A1", it:"buona giornata", en:"have a good day", sp:"bona giornà", ro:"o zi buna" },
       { tema:"luoghi", livello:"A1", it:"su", en:"on", sp:"sü", cr:"su", ge:"in sce, sciù", ro:"pe" },
       { tema:"cibo", livello:"A1", it:"tè", en:"tea", sp:"tè", mn:"té", cr:"tè", ge:"té", ro:"ceai", verif:"sp:g,ge:g,cr:g,mn:g" },
@@ -2364,7 +2365,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"amare", en:"love", fr:"aimer", es:"amar", de:"lieben", pt:"amar", ru:"любить", ca:"estimar|amar", sp:"amahehe, voré ben/amae, voree ben", mn:"vhree bèn/vrëëbën", cr:"amar, voler ben", ge:"ammâ , voei ben", ko:"사랑하다", ar:"يحب", zh:"爱", ja:"愛する", ia:"amar", la:"amare", grc:"φιλεῖν|ἀγαπᾶν", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"cibo", livello:"A2", it:"amaro", en:"bitter", fr:"amer", es:"amargo", de:"bitter", pt:"amargo", sp:"amao", mn:"amau", cr:"amar", ge:"amau/amao", ko:"쓴", ar:"مر", zh:"苦", ja:"苦い", ia:"amar", la:"amarus", grc:"πικρός", verif:"mn:g,sp:g,ge:g" },
       { tema:"verbi", livello:"A1", it:"amarsi", en:"to love each other", sp:"amasse", mn:"vrësébèn/vrësébën", cr:"amars", ge:"ammâse", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"luoghi", livello:"A2", it:"America", en:"America", sp:"America", mn:"America", cr:"America", ge:"America", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g,mn:g" },
+      { tema:"luoghi", livello:"A2", it:"America", en:"America", sp:"America", mn:"America", cr:"America", ge:"America", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g,mn:g,sp:g" },
       { tema:"persone", livello:"A1", it:"amico", en:"friend", fr:"ami", es:"amigo", de:"Freund", pt:"amigo", sp:"amigo", mn:"amigu", cr:"amic ", ge:"amigu/amigo", ko:"친구", ar:"صديق", zh:"朋友", ja:"友達", ia:"amico", la:"amicus", grc:"φίλος", verif:"mn:g,sp:g,ge:g,cr:g", ro:"prieten" },
       { tema:"mestieri", livello:"B2", it:"ammiraglio", en:"admiral", sp:"armiralio", mn:"armiragliu", cr:"am'miraglio/ammiraglio", ge:"amiraliu/amiralio", verif:"ge:g,sp:g,mn:g" },
       { tema:"emotivi", livello:"A2", it:"amore", en:"love", fr:"amour", es:"amor", de:"Liebe", pt:"amor", ru:"любовь", ca:"amor", sp:"amo'e/amoe", mn:"amùu/amuu", cr:"amor", ge:"amùu/amô", verif:"mn:g,sp:g,ge:g" },
@@ -2755,7 +2756,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"contento| lieto", en:"pleased", fr:"content|ravi", es:"contento|satisfecho", de:"erfreut", pt:"contente", ru:"доволен", ca:"content", sp:"contento", cr:"content", ge:"contento", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialogo", livello:"A2", it:"continua", en:"keep going", fr:"continue", es:"continúa", pt:"continua", sp:"continüa", mn:"continua", cr:"continua", ge:"continua", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,cr:g" },
       { tema:"verbi", livello:"A2", it:"continuare", en:"keep going", fr:"continuer", es:"continuar", de:"fortsetzen", pt:"continuar", sp:"continüae", mn:"cuntinuâ", cr:"cuntinuar", ge:"continuâ", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
-      { tema:"valute", livello:"A2", it:"conto", en:"account", fr:"compte", es:"cuenta", de:"Konto", pt:"conta", sp:"conto", mn:"cuntu", cr:"cont", ge:"kuntu/conto", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
+      { tema:"valute", livello:"A2", it:"conto", en:"bill", fr:"compte", es:"cuenta", de:"Konto", pt:"conta", sp:"conto", mn:"cuntu", cr:"cont", ge:"kuntu/conto", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
       { tema:"lavoro", livello:"A2", it:"contratto", en:"contract", fr:"contrat", es:"contrato", de:"Vertrag", pt:"contrato", sp:"contrato", mn:"cuntratu", cr:"contrat", ge:"contræto", ko:"계약", ar:"عقد", zh:"合同", ja:"契約", ia:"contracto", la:"pactum", grc:"συμβόλαιον", verif:"mn:g" },
       { tema:"farmaci", livello:"B2", it:"controindicazione", en:"contraindication", fr:"contre-indication", es:"contraindicación", de:"Kontraindikation", pt:"contraindicação|contraindicacao", ko:"금기사항", ar:"موانع الاستخدام", zh:"禁忌症", ja:"禁忌", nt:["mn"] },
       { tema:"verbi", livello:"A2", it:"controllare", en:"check", fr:"vérifier", es:"comprobar", de:"prüfen", pt:"verificar", sp:"controlahe/controlae", mn:"cuntrulaha/cuntrulaa", cr:"controlar", ge:"controlaha/controlâ", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
@@ -2819,7 +2820,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"dare", en:"give", fr:"donner", es:"dar", de:"geben", pt:"dar", ru:"давать", ca:"donar", sp:"dae", mn:"daa", cr:"dar", ge:"dâ", ko:"주다", ar:"يعطي", zh:"给", ja:"あげる", ia:"dar", la:"dare", grc:"δίδωναι", verif:"mn:g,sp:g" },
       { tema:"valute", livello:"B1", it:"debito", en:"debt", sp:"debito, pufo", mn:"diébitu/diebitu", cr:"debt", ge:"debito, poffo", verif:"mn:g" },
       { tema:"verbi", livello:"B1", it:"decidere", en:"decide", fr:"décider", es:"decidir", de:"entscheiden", pt:"decidir", ru:"решать", ca:"decidir", sp:"decide", mn:"decìde", cr:"decidr", ge:"deçidde", ko:"결정하다", ar:"يقرر", zh:"决定", ja:"決める", ia:"decider", la:"decernere", grc:"ἀποφαίνεσθαι", verif:"mn:g" },
-      { tema:"animali", livello:"A2", it:"delfino", en:"dolphin", fr:"dauphin", es:"delfín", de:"Delfin", pt:"golfinho", ru:"дельфин", ca:"dofí", sp:"darfin", mn:"darfin", cr:"drafin", ge:"drafin", ko:"돌고래", ar:"دلفين", zh:"海豚", ja:"イルカ", ia:"delfino", la:"delphinus", grc:"δελφίς", verif:"mn:g" },
+      { tema:"animali", livello:"A2", it:"delfino", en:"dolphin", fr:"dauphin", es:"delfín", de:"Delfin", pt:"golfinho", ru:"дельфин", ca:"dofí", sp:"darfin, drafin", mn:"darfin", cr:"drafin", ge:"drafin", ko:"돌고래", ar:"دلفين", zh:"海豚", ja:"イルカ", ia:"delfino", la:"delphinus", grc:"δελφίς", verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"deluso", en:"disappointed", fr:"déçu", es:"decepcionado", de:"enttäuscht", pt:"decepcionado", ru:"разочарованный", ca:"decebut", cr:"delus", ko:"실망한", ar:"خائب الأمل", zh:"失望", ja:"失望した", ia:"decepte", la:"deceptus", grc:"ἀπογοητευμένος", nt:["mn"] },
       { tema:"astratti", livello:"B2", it:"democrazia", en:"democracy", fr:"démocratie", es:"democracia", de:"Demokratie", pt:"democracia", ru:"демократия", ca:"democràcia", sp:"democrasia", mn:"democrasia", ge:"democraçia", ko:"민주주의", ar:"ديمقراطية", zh:"民主", ja:"民主主義", ia:"democratia", la:"democratia", grc:"δημοκρατία" },
       { tema:"valute", livello:"A1", it:"denaro", en:"money", sp:"dinàao/dinào", mn:"dinaa", cr:"denari", ge:"dinæ, palanche", src:{"mn":"🤖 IA"}, verif:"mn:g" },
@@ -4066,7 +4067,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 574;
+const VOC_VERSION = 575;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
