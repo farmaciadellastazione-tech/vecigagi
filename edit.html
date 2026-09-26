@@ -2382,6 +2382,10 @@ function contestoVoce(v) { return { tema: v.tema || '', en: visiblePart(v.en || 
 // - HTTP 429 (limite richieste/token al minuto, tipico del piano gratuito
 //   Groq): attende il tempo suggerito nel messaggio ("try again in 7.5s" /
 //   "1m2.3s"), altrimenti 10 s, fino a 3 volte.
+// - HTTP 429 giornaliero ("per day", TPD/RPD) o con attesa oltre 90 s: NON si
+//   ritenta (prima: 3 × 90 s inutili per ogni voce, il batch sembrava
+//   bloccato); l'errore esce marcato limiteGiornaliero, cosí completaConAI
+//   interrompe il batch.
 // Gli altri errori passano subito.
 async function conRetryAI(fn, onAttesa) {
   let n429 = 0, nJson = 0;
@@ -2391,8 +2395,14 @@ async function conRetryAI(fn, onAttesa) {
       if (/json_validate_failed|non in JSON/.test(e.message) && nJson < 2) { nJson++; continue; }
       if (!/HTTP 429/.test(e.message) || n429 >= 3) throw e;
       const tentativo = n429++;
-      const m = e.message.match(/try again in (?:(\d+)m)?([\d.]+)s/i);
-      const sec = m ? (parseInt(m[1] || '0') * 60 + parseFloat(m[2])) : 10;
+      const m = e.message.match(/try again in (?:(\d+)h)?(?:(\d+)m)?(?:([\d.]+)s)?/i);
+      const sec = m && m[0].length > 'try again in '.length ? (parseInt(m[1] || '0') * 3600 + parseInt(m[2] || '0') * 60 + parseFloat(m[3] || '0')) : 10;
+      if (/per day|\((?:TPD|RPD)\)/i.test(e.message) || sec > 90) {
+        const tra = m ? m[0].replace(/^try again in /i, '') : '';
+        const err = new Error(`limite giornaliero di ${aiConfig.provider} raggiunto${tra ? ' (riprova tra ' + tra + ')' : ''}: cambia provider da ⚙️ AI o riprova più tardi.`);
+        err.limiteGiornaliero = true;
+        throw err;
+      }
       const ms = Math.min(Math.ceil(sec * 1000) + 500, 90000);
       if (onAttesa) onAttesa(Math.round(ms / 1000), tentativo + 1);
       await new Promise(r => setTimeout(r, ms));
@@ -2409,7 +2419,7 @@ async function completaConAI() {
   const max = Math.min(daCompletare.length, 30);
   if (!confirm(`Completare ${max} voci con AI (${aiConfig.provider})? I campi dialettali restano esclusi.`)) return;
   const btn = document.getElementById('btn-ai-batch'); btn.disabled = true; const origLabel = btn.textContent;
-  let ok = 0, ko = 0, primoErrore = '';
+  let ok = 0, ko = 0, primoErrore = '', limite = '';
   for (let i = 0; i < max; i++) {
     const v = daCompletare[i]; btn.textContent = `✨ ${i + 1}/${max}...`; setHelp(`✨ AI: ${i + 1}/${max} — "${v.it}"`, 'info');
     try {
@@ -2422,14 +2432,18 @@ async function completaConAI() {
       if (sugg.livello && !v.livello && /^[AB][12]$/.test(sugg.livello)) v.livello = sugg.livello;
       if (sugg.translations) Object.keys(sugg.translations).forEach(c => { if (!(v[c] || '').trim() && sugg.translations[c]) v[c] = sugg.translations[c]; });
       if (!newKeys.has(rowKey(v))) modifiedKeys.add(rowKey(v)); ok++;
-    } catch(e) { console.error('AI batch:', v.it, e); ko++; if (!primoErrore) primoErrore = `"${v.it}": ${e.message.slice(0, 200)}`; }
+    } catch(e) {
+      // Limite giornaliero: inutile proseguire, fallirebbero tutte le voci restanti.
+      if (e.limiteGiornaliero) { limite = `⛔ AI fermata a ${i + 1}/${max}: ${e.message}`; break; }
+      console.error('AI batch:', v.it, e); ko++; if (!primoErrore) primoErrore = `"${v.it}": ${e.message.slice(0, 200)}`;
+    }
     // Groq gratuito ha limiti al minuto stretti: pausa piú lunga per non
     // finire subito nei 429 (che comunque vengono ritentati sopra).
     await new Promise(r => setTimeout(r, aiConfig.provider === 'groq' ? 2000 : 250));
   }
   popolaTemiSelect(); render(); btn.textContent = origLabel; btn.disabled = false;
   const dettaglio = primoErrore ? ` Primo errore — ${primoErrore.replace(/</g, '&lt;')}` : '';
-  setHelp(`✨ AI: ${ok} ok, ${ko} errori. Ricorda ☁️.${dettaglio}`, ok && !ko ? 'success' : 'error');
+  setHelp(`${limite ? limite.replace(/</g, '&lt;') + ' ' : ''}✨ AI: ${ok} ok, ${ko} errori. Ricorda ☁️.${dettaglio}`, ok && !ko && !limite ? 'success' : 'error');
 }
 
 // ==========================================================================
