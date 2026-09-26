@@ -11314,6 +11314,11 @@ function SchermataQuiz({
   useEffect(() => {
     function handleKey(e) {
       if (e.key !== "Enter") return;
+      // L'Enter che conferma la risposta nella casella arriva qui DOPO che
+      // React ha già portato lo stato a corretto/sbagliato: senza questo
+      // controllo faceva anche "Continua" e il risultato spariva subito.
+      // Ignorato anche l'Enter tenuto premuto, che salterebbe più carte.
+      if (e.repeat || e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
       if (stato === "corretto" || stato === "sbagliato") setTimeout(() => onAvanti(), 100);
     }
     window.addEventListener("keydown", handleKey);
