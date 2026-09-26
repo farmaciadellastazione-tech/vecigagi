@@ -463,6 +463,8 @@ const UI = {
     ottimo: "Eccellente!",
     nonproprio: "Non proprio…",
     riproveremo: "Riproveremo!",
+    quasiriprova: "🟡 Quasi! Riprova:",
+    giustaaiutino: "Giusta, con aiutino",
     sessione: "Sessione completata",
     corrette: "Corrette",
     errori: "Errori",
@@ -603,6 +605,8 @@ const UI = {
     ottimo: "Excellent!",
     nonproprio: "Not quite…",
     riproveremo: "We'll try again!",
+    quasiriprova: "🟡 Almost! Try again:",
+    giustaaiutino: "Correct, with a hint",
     sessione: "Session completed",
     corrette: "Correct",
     errori: "Errors",
@@ -743,6 +747,8 @@ const UI = {
     ottimo: "Excellent!",
     nonproprio: "Pas tout à fait…",
     riproveremo: "On réessaiera!",
+    quasiriprova: "🟡 Presque ! Réessaie :",
+    giustaaiutino: "Juste, avec un indice",
     sessione: "Session terminée",
     corrette: "Correctes",
     errori: "Erreurs",
@@ -883,6 +889,8 @@ const UI = {
     ottimo: "¡Excelente!",
     nonproprio: "No exactamente…",
     riproveremo: "¡Lo intentaremos de nuevo!",
+    quasiriprova: "🟡 ¡Casi! Inténtalo de nuevo:",
+    giustaaiutino: "Correcta, con una pista",
     sessione: "Sesión completada",
     corrette: "Correctas",
     errori: "Errores",
@@ -1023,6 +1031,8 @@ const UI = {
     ottimo: "Ausgezeichnet!",
     nonproprio: "Nicht ganz…",
     riproveremo: "Wir versuchen es nochmal!",
+    quasiriprova: "🟡 Fast! Versuch es nochmal:",
+    giustaaiutino: "Richtig, mit Hinweis",
     sessione: "Sitzung abgeschlossen",
     corrette: "Richtig",
     errori: "Fehler",
@@ -1163,6 +1173,8 @@ const UI = {
     ottimo: "Excelente!",
     nonproprio: "Não exatamente…",
     riproveremo: "Vamos tentar de novo!",
+    quasiriprova: "🟡 Quase! Tente de novo:",
+    giustaaiutino: "Certa, com uma dica",
     sessione: "Sessão concluída",
     corrette: "Corretas",
     errori: "Erros",
@@ -1303,6 +1315,8 @@ const UI = {
     ottimo: "Отлично!",
     nonproprio: "Не совсем…",
     riproveremo: "Попробуем ещё раз!",
+    quasiriprova: "🟡 Почти! Попробуй ещё раз:",
+    giustaaiutino: "Верно, с подсказкой",
     sessione: "Сессия завершена",
     corrette: "Правильно",
     errori: "Ошибки",
@@ -1443,6 +1457,8 @@ const UI = {
     ottimo: "太棒了！",
     nonproprio: "不太对…",
     riproveremo: "再试一次！",
+    quasiriprova: "🟡 差一点！再试一次：",
+    giustaaiutino: "正确（用了提示）",
     sessione: "本次结束",
     corrette: "正确",
     errori: "错误",
@@ -1583,6 +1599,8 @@ const UI = {
     ottimo: "훌륭해요！",
     nonproprio: "정확하지 않아요…",
     riproveremo: "다시 해봐요！",
+    quasiriprova: "🟡 거의 맞았어요! 다시 해 보세요:",
+    giustaaiutino: "정답 (힌트 사용)",
     sessione: "세션 완료",
     corrette: "맞음",
     errori: "오류",
@@ -1723,6 +1741,8 @@ const UI = {
     ottimo: "Excel·lent!",
     nonproprio: "No exactament…",
     riproveremo: "Ho tornarem a intentar!",
+    quasiriprova: "🟡 Gairebé! Torna-ho a provar:",
+    giustaaiutino: "Correcta, amb una pista",
     sessione: "Sessió completada",
     corrette: "Correctes",
     errori: "Errors",
@@ -11232,6 +11252,7 @@ function SchermataQuiz({
   linguaAUsata,
   nDomandeUsate,
   aiSettings,
+  aiutino,
   onVerifica,
   onAvanti,
   onSalta,
@@ -11285,8 +11306,8 @@ function SchermataQuiz({
     }
   }, [carta?.key, stato]);
   useEffect(() => {
-    if (stato === "domanda" && inputRef.current && modalitaEffettiva !== "voce" && modalitaEffettiva !== "dettato") inputRef.current.focus();
-  }, [stato, carta?.key]);
+    if (stato === "domanda" && inputRef.current && (modalitaEffettiva !== "voce" && modalitaEffettiva !== "dettato" || aiutino)) inputRef.current.focus();
+  }, [stato, carta?.key, aiutino]);
 
   // Enter globale: su PC conferma anche Continua/Ho capito
   // Ma solo dopo che la pronuncia ha avuto il tempo di partire (500ms)
@@ -11693,7 +11714,14 @@ function SchermataQuiz({
     className: "text-2xl"
   }, lA?.bandiera), /*#__PURE__*/React.createElement("span", {
     className: "text-sm uppercase tracking-widest text-slate-400 font-bold"
-  }, lA?.nome)))), stato === "domanda" && (modalitaEffettiva === "quiz" || modalitaEffettiva === "allenamento" || modalitaEffettiva === "ascolto" || modalitaEffettiva === "dettato" || modalita === "nonstop") && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("input", {
+  }, lA?.nome)))), stato === "domanda" && (modalitaEffettiva === "quiz" || modalitaEffettiva === "allenamento" || modalitaEffettiva === "ascolto" || modalitaEffettiva === "dettato" || modalita === "nonstop") && /*#__PURE__*/React.createElement("div", null, aiutino && /*#__PURE__*/React.createElement("div", {
+    className: "p-4 bg-amber-950 border-2 border-amber-700 rounded-2xl text-center mb-4",
+    role: "status"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-amber-300 font-bold mb-1"
+  }, t.quasiriprova), /*#__PURE__*/React.createElement("p", {
+    className: "text-2xl font-bold text-white tracking-widest"
+  }, aiutino.maschera)), /*#__PURE__*/React.createElement("input", {
     ref: inputRef,
     type: "text",
     value: input,
@@ -11747,7 +11775,7 @@ function SchermataQuiz({
     className: "text-5xl mb-3"
   }, "\u2705"), /*#__PURE__*/React.createElement("p", {
     className: "text-green-400 font-extrabold text-xl mb-1"
-  }, "Eccellente!"), /*#__PURE__*/React.createElement("p", {
+  }, aiutino ? t.giustaaiutino : "Eccellente!"), /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-slate-500 mb-3"
   }, "Prossimo ripasso: ", /*#__PURE__*/React.createElement("span", {
     className: "font-semibold text-slate-300"
@@ -12158,6 +12186,7 @@ function App() {
   const statsInizioSessioneRef = useRef({}); // snapshot di stats all'avvio della sessione, per calcolare il bilancio a fine esercizio
   const [carteErrate, setCarteErrate] = useState([]); // carte sbagliate nella sessione
   const [cardErrori, setCardErrori] = useState({}); // n. errori per chiave carta
+  const [aiutino, setAiutino] = useState(null); // { maschera } dopo una risposta "quasi giusta" (vedi verificaRisposta)
   const [segnalando, setSegnalando] = useState(false);
   const [pronunciaAperta, setPronunciaAperta] = useState(null); // codice lingua dialettale, o null
   const [configurando, setConfigurando] = useState(false);
@@ -12360,6 +12389,7 @@ function App() {
     setIndice(0);
     setInput("");
     setStato("domanda");
+    setAiutino(null);
     setPunteggio({
       giusti: 0,
       sbagliati: 0
@@ -12447,7 +12477,21 @@ function App() {
       if (basi.length) attesoConfronto = atteso + "|" + basi.join("|");
     }
     const ok = isCorretta(attesoConfronto, risposta, lA?.bcp47, lA?.codice);
-    const ns = aggiornaStatsCoppia(stats, carta.key, ok);
+    // Aiutino (Allenamento, Ascolta e scrivi, Dettato): se la risposta è
+    // sbagliata di 1-2 lettere, invece del ❌ mostra la parola con i buchi e
+    // concede un secondo tentativo, una volta sola. Niente statistiche né
+    // audio della soluzione finché non si risponde di nuovo.
+    if (!ok && !aiutino && (modalita === "allenamento" || modalita === "ascolto" || modalita === "dettato")) {
+      const q = quasiGiusta(attesoConfronto, risposta, lA?.codice);
+      if (q) {
+        setAiutino({ maschera: mascheraAiutino(q.forma, risposta) });
+        setInput(risposta);
+        return;
+      }
+    }
+    // Giusta con l'aiutino: conta nel punteggio, ma per il ripasso SM-2 vale
+    // come errore, così la parola torna presto.
+    const ns = aggiornaStatsCoppia(stats, carta.key, ok && !aiutino);
     setStats(ns);
     setInput(risposta);
     // Non-stop: termina al primo errore e aggiorna record
@@ -12511,6 +12555,7 @@ function App() {
       setIndice(i => i + 1);
       setInput("");
       setStato("domanda");
+      setAiutino(null);
     }
   }
   function nonLoSo() {
@@ -12560,6 +12605,7 @@ function App() {
         setIndice(i => i + 1);
         setInput("");
         setStato("domanda");
+        setAiutino(null);
         return;
       }
     }
@@ -12616,6 +12662,7 @@ function App() {
       setIndice(i => i + 1);
       setInput("");
       setStato("domanda");
+      setAiutino(null);
     }
   }
   function handleEsporta() {
@@ -12807,6 +12854,7 @@ function App() {
     linguaAUsata: linguaAUsata,
     nDomandeUsate: nDomandeUsate,
     aiSettings: aiSettings,
+    aiutino: aiutino,
     onVerifica: verificaRisposta,
     onAvanti: avanti,
     onSalta: salta,

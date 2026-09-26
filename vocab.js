@@ -170,6 +170,78 @@ function frasaFineSP(perc) {
   return cand.length ? cand[Math.floor(Math.random() * cand.length)] : null;
 }
 
+// ── Aiutino sulle risposte "quasi giuste" ────────────────────────────────
+
+// Distanza di modifica (Damerau "optimal string alignment"): sostituzione,
+// inserimento, cancellazione e scambio di due lettere vicine valgono 1.
+function distanzaOSA(a, b) {
+  const d = [];
+  for (let i = 0; i <= a.length; i++) { d[i] = [i]; }
+  for (let j = 0; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const costo = a[i - 1] === b[j - 1] ? 0 : 1;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + costo);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+    }
+  }
+  return d[a.length][b.length];
+}
+
+// Se `dato` è sbagliato di poco rispetto a una delle forme di `atteso`
+// (1 lettera fino a 5 lettere, 2 oltre), restituisce { forma } con la forma
+// più vicina così come è scritta nel vocabolario; altrimenti null.
+// Stesse regole di isCorretta: sinonimi su "/ , ; |", parentesi ignorate,
+// accenti e maiuscole non contano, in inglese il "to" iniziale è facoltativo.
+function quasiGiusta(atteso, dato, codLingua) {
+  if (!atteso || !dato) return null;
+  const isEn = codLingua === "en";
+  const senzaTo = s => s.startsWith("to ") ? s.slice(3) : s;
+  const nDato = isEn ? normalizzaEn(dato) : normalizza(dato);
+  if (!nDato) return null;
+  const datoConTo = isEn && normalizza(dato).startsWith("to ");
+  let migliore = null;
+  for (const grezza of atteso.split(/[/,;|]/)) {
+    let forma = grezza.replace(/\(.*?\)/g, "").trim();
+    let nForma = normalizza(forma);
+    if (!nForma) continue;
+    if (isEn && !datoConTo && nForma.startsWith("to ")) { forma = forma.replace(/^to\s+/i, ""); nForma = senzaTo(nForma); }
+    const nConfronto = isEn ? senzaTo(nForma) : nForma;
+    const dist = distanzaOSA(nConfronto, nDato);
+    if (dist === 0) return null;
+    const soglia = nConfronto.replace(/\s/g, "").length <= 5 ? 1 : 2;
+    if (dist <= soglia && (!migliore || dist < migliore.dist)) migliore = { forma, dist };
+  }
+  return migliore ? { forma: migliore.forma } : null;
+}
+
+// La forma giusta con "_" al posto delle lettere che nella risposta mancano
+// o sono sbagliate. Spazi, apostrofi e accenti della forma restano visibili.
+function mascheraAiutino(forma, dato) {
+  const chars = [...forma];
+  const pos = [], a = [];
+  chars.forEach((c, i) => { const b = normalizza(c); if (b) { pos.push(i); a.push(b); } });
+  const b = [...normalizza(dato).replace(/\s/g, "")];
+  const d = [];
+  for (let i = 0; i <= a.length; i++) { d[i] = [i]; }
+  for (let j = 0; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++)
+    for (let j = 1; j <= b.length; j++)
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+  // Ripercorre l'allineamento dalla fine: le lettere della forma allineate a
+  // una lettera uguale restano, le altre diventano "_".
+  const visibile = new Array(a.length).fill(false);
+  let i = a.length, j = b.length;
+  while (i > 0) {
+    if (j > 0 && a[i - 1] === b[j - 1] && d[i][j] === d[i - 1][j - 1]) { visibile[i - 1] = true; i--; j--; }
+    else if (j > 0 && d[i][j] === d[i - 1][j - 1] + 1) { i--; j--; }
+    else if (d[i][j] === d[i - 1][j] + 1) i--;
+    else j--;
+  }
+  visibile.forEach((v, k) => { if (!v) chars[pos[k]] = "_"; });
+  return chars.join("");
+}
+
 // ── Export per browser + Node ────────────────────────────────────────────
 
 const _exports = {
@@ -178,6 +250,7 @@ const _exports = {
   normalizza, normalizzaDialetto, espandiContrazioni, normalizzaEn,
   convertiNumeriDialetto, wordKey, frasaFineSP,
   formaBaseDialetto, variantiBaseDialetto,
+  distanzaOSA, quasiGiusta, mascheraAiutino,
 };
 Object.assign(globalThis, _exports);
 if (typeof module !== 'undefined' && module.exports) module.exports = _exports;
