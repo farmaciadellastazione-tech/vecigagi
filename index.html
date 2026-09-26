@@ -2243,7 +2243,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"astratti", livello:"A1", it:"idea", en:"idea", ge:"idea" },
       { tema:"corpo", livello:"A1", it:"spalla", en:"shoulder", sp:"spala", ge:"spalla" },
       { tema:"astratti", livello:"A1", it:"morte", en:"death", ge:"mòrte" },
-      { tema:"viaggi", livello:"A2", it:"cammino", en:"journey", ge:"cammin" },
+      { tema:"viaggi", livello:"A2", it:"cammino", en:"journey| path", ge:"cammin" },
       { tema:"dialogo", livello:"A1", it:"nome", en:"name", sp:"nome", ge:"nomme " },
       { tema:"astratti", livello:"B1", it:"ragione", en:"reason", ge:"raxon" },
       { tema:"astratti", livello:"A1", it:"mente", en:"mind", sp:"mente", cr:"menta", ge:"mente", verif:"ge:g,sp:g" },
@@ -4046,7 +4046,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 572;
+const VOC_VERSION = 573;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
