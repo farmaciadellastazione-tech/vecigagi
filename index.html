@@ -2237,6 +2237,8 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"tempo", livello:"A1", it:"pomeriggio", en:"afternoon", sp:"dopodisnà", ge:"poidisnâ, doppodisnâ" },
+      { tema:"corpo", livello:"A1", it:"destra", en:"right", sp:"drita", verif:"sp:g" },
       { tema:"natura", livello:"A2", it:"valle", en:"valley", ge:"vallâ" },
       { tema:"astratti", livello:"A1", it:"azione", en:"action", ge:"açion" },
       { tema:"emotivi", livello:"B1", it:"tormento", en:"torment", ge:"tormento" },
@@ -2276,7 +2278,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"grammatica", livello:"A1", it:"lui| egli", en:"he", sp:"lü", cr:"lù, lulì, lulà", ge:"lê", ro:"el", verif:"cr:g,ge:g,sp:g" },
       { tema:"aggettivi", livello:"A1", it:"rumeno", en:"Romanian", ge:"romen", ro:"român" },
       { tema:"aggettivi", livello:"A1", it:"inglese", en:"English", sp:"engrese", cr:"ingles", ge:"ingleise", ro:"engleză" },
-      { tema:"saluti", livello:"A1", it:"buon pomeriggio", en:"good afternoon", ro:"bună după-amiază, bună ziua" },
+      { tema:"saluti", livello:"A1", it:"buon pomeriggio", en:"good afternoon", sp:"bon dopodisnà", ro:"bună după-amiază, bună ziua" },
       { tema:"saluti", livello:"A1", it:"buona giornata", en:"have a good day", sp:"bona giornà", ro:"o zi buna" },
       { tema:"luoghi", livello:"A1", it:"su", en:"on", sp:"sü", cr:"su", ge:"in sce, sciù", ro:"pe" },
       { tema:"cibo", livello:"A1", it:"tè", en:"tea", sp:"tè", mn:"té", cr:"tè", ge:"té", ro:"ceai", verif:"sp:g,ge:g,cr:g,mn:g" },
@@ -2364,7 +2366,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"amare", en:"love", fr:"aimer", es:"amar", de:"lieben", pt:"amar", ru:"любить", ca:"estimar|amar", sp:"amahehe, voré ben/amae, voree ben", mn:"vhree bèn/vrëëbën", cr:"amar, voler ben", ge:"ammâ , voei ben", ko:"사랑하다", ar:"يحب", zh:"爱", ja:"愛する", ia:"amar", la:"amare", grc:"φιλεῖν|ἀγαπᾶν", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html"}, verif:"mn:g,sp:g" },
       { tema:"cibo", livello:"A2", it:"amaro", en:"bitter", fr:"amer", es:"amargo", de:"bitter", pt:"amargo", sp:"amao", mn:"amau", cr:"amar", ge:"amau/amao", ko:"쓴", ar:"مر", zh:"苦", ja:"苦い", ia:"amar", la:"amarus", grc:"πικρός", verif:"mn:g,sp:g,ge:g" },
       { tema:"verbi", livello:"A1", it:"amarsi", en:"to love each other", sp:"amasse", mn:"vrësébèn/vrësébën", cr:"amars", ge:"ammâse", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"luoghi", livello:"A2", it:"America", en:"America", sp:"America", mn:"America", cr:"America", ge:"America", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g,mn:g" },
+      { tema:"luoghi", livello:"A2", it:"America", en:"America", sp:"America", mn:"America", cr:"America", ge:"America", src:{"ge":"🔗 dialetti.html"}, verif:"ge:g,mn:g,sp:g" },
       { tema:"persone", livello:"A1", it:"amico", en:"friend", fr:"ami", es:"amigo", de:"Freund", pt:"amigo", sp:"amigo", mn:"amigu", cr:"amic ", ge:"amigu/amigo", ko:"친구", ar:"صديق", zh:"朋友", ja:"友達", ia:"amico", la:"amicus", grc:"φίλος", verif:"mn:g,sp:g,ge:g,cr:g", ro:"prieten" },
       { tema:"mestieri", livello:"B2", it:"ammiraglio", en:"admiral", sp:"armiralio", mn:"armiragliu", cr:"am'miraglio/ammiraglio", ge:"amiraliu/amiralio", verif:"ge:g,sp:g,mn:g" },
       { tema:"emotivi", livello:"A2", it:"amore", en:"love", fr:"amour", es:"amor", de:"Liebe", pt:"amor", ru:"любовь", ca:"amor", sp:"amo'e/amoe", mn:"amùu/amuu", cr:"amor", ge:"amùu/amô", verif:"mn:g,sp:g,ge:g" },
@@ -2402,7 +2404,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"animali", livello:"A1", it:"ape", en:"bee", sp:"àavoha, àapia, ave/àvoa, àpia, àve", mn:"ava", cr:"abia", ge:"aavia, ava/avia, ava", verif:"ge:g,sp:g,cr:g", src:{"ge":"🔗 dialetti.html"} },
       { tema:"aggettivi", livello:"A1", it:"aperto", en:"open", fr:"ouvert", es:"abierto", de:"offen", pt:"aberto", ru:"открытый", ca:"obert", sp:"ravèrto, avèrto", mn:"ravertu, avèr tu/ravertu, avertu", cr:"apert", ge:"avert-u/averto", ko:"열린", ar:"مفتوح", zh:"开着的", ja:"開いた", ia:"aperte", la:"apertus", grc:"ἀνοικτός", verif:"ge:g,sp:g,mn:g,cr:g", src:{"ge":"🔗 dialetti.html"} },
       { tema:"astratti", livello:"A2", it:"apertura", en:"opening", sp:"aver tua/avertüa", mn:"aver tua/àvèrtüa", cr:"apertura", ge:"avertua", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g,cr:g" },
-      { tema:"luoghi", livello:"A2", it:"appartamento", en:"flat", fr:"appartement", es:"apartamento|piso", de:"Wohnung", pt:"apartamento", ru:"квартира", ca:"pis|apartament", sp:"quartéo", mn:"quar  tié/quartié", ge:" scîto", ia:"appartamento", la:"appartamentum", verif:"mn:g", ro:"apartament" },
+      { tema:"luoghi", livello:"A2", it:"appartamento", en:"flat", fr:"appartement", es:"apartamento|piso", de:"Wohnung", pt:"apartamento", ru:"квартира", ca:"pis|apartament", sp:"quartéo", mn:"quar  tié/quartié", ge:"scîto, appartamento", ia:"appartamento", la:"appartamentum", verif:"mn:g", ro:"apartament" },
       { tema:"verbi", livello:"B1", it:"appartenere", en:"belong", fr:"appartenir", es:"pertenecer", de:"gehören", pt:"pertencer", ru:"принадлежать", ca:"pertànyer", sp:"apartegnì'e/apartegnie", mn:"apartegnii", ge:"appartegnî", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
       { tema:"casa", livello:"A2", it:"appendiabiti", en:"coat hanger", fr:"cintre", es:"percha", de:"Kleiderhaken", pt:"cabide", sp:"ométo", mn:"umettu/umëtu", ge:"ommetto", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"corpo", livello:"A2", it:"appetito", en:"appetite", sp:"badacióna/badacióna", cr:"aptit", ge:"appetitu/appetitto", src:{"mn":"🤖 IA"}, verif:"mn:y,sp:g,cr:g", nt:["mn"] },
@@ -2544,8 +2546,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A1", it:"bottiglia", en:"bottle", sp:"botigia", mn:"butiì già/butìgia", cr:"butia,", ge:"bottiggia", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
       { tema:"vestiti", livello:"A2", it:"bottone", en:"button", fr:"bouton", es:"botón", de:"Knopf", pt:"botão|botao", sp:"pomèo, animeta, animéta", mn:"pumèe", cr:"bton", ge:"pomello", ia:"button", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"corpo", livello:"A1", it:"braccio", en:"arm", fr:"bras", es:"brazo", de:"Arm", pt:"braço|braco", ru:"рука", ca:"braç", sp:"brasso", mn:"bràssu/bràssu", cr:"braz'", ge:"bràssso/bràsso", ko:"팔", ar:"ذراع", zh:"手臂", ja:"腕", ia:"bracio", la:"brachium", grc:"βραχίων", src:{"mn":"🤖 IA"}, verif:"mn:g" },
-      { tema:"animali", livello:"A1", it:"branzino", en:"sea bass", sp:"lovasso,loasso", mn:"luàssu/lùassu", cr:"branzin", ge:"loasso", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
-      { tema:"cibo", livello:"A2", it:"branzino| spigola", en:"sea bass", fr:"loup de mer", es:"lubina", de:"Wolfsbarsch", pt:"robalo", ru:"морской окунь", ca:"llobarro", sp:"lovasso", mn:"luassu", cr:"branzin", ge:"loâso", ko:"바다농어", ar:"قاروص البحر", zh:"海鲈", ja:"スズキ", ia:"lup de mare", la:"lupus marinus", grc:"λαβράκι", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"biban-de-mare" },
+      { tema:"cibo", livello:"A2", it:"branzino| spigola", en:"sea bass", fr:"loup de mer", es:"lubina", de:"Wolfsbarsch", pt:"robalo", ru:"морской окунь", ca:"llobarro", sp:"lovasso", mn:"luassu", cr:"branzin", ge:"loâsso", ko:"바다농어", ar:"قاروص البحر", zh:"海鲈", ja:"スズキ", ia:"lup de mare", la:"lupus marinus", grc:"λαβράκι", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"biban-de-mare" },
       { tema:"aggettivi", livello:"A1", it:"bravo", en:"good", sp:"brao, bravo", mn:"brau", cr:"brav", ge:"bravo", src:{"sp":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"sp:g,cr:g,mn:g" },
       { tema:"vestiti", livello:"A2", it:"bretelle", en:"suspenders", sp:"bertéle", mn:"bertèle", ge:"bertèlle", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"cibo", livello:"A1", it:"briciola", en:"crumb", sp:"fregoggia, brusààggia,brugiaasa/fregógia, brüsàgia, brugiasa", mn:"brìsuha/brizua", cr:"brisa, brisol", ge:"fregoggia ", verif:"sp:g,mn:g" },
@@ -2561,7 +2562,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A1", it:"buio", en:"dark", sp:"scüo", cr:"bui, scur", ge:"scüo", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g", nt:["mn"] },
       { tema:"cibo", livello:"A1", it:"buon appetito!", en:"enjoy your meal", fr:"bon appétit", es:"buen provecho", de:"guten Appetit", pt:"bom apetite", ca:"bon profit", ge:"bon appetitto", la:"bonum appetitum", src:{"mn":"🤖 IA"}, verif:"mn:r", nt:["mn","sp"], ro:"poftă bună!" },
       { tema:"saluti", livello:"A1", it:"buonanotte", en:"goodnight", fr:"bonne nuit", es:"buenas noches", de:"gute Nacht", pt:"boa noite", ca:"bona nit", sp:"bonanote", mn:"bunanota", cr:"bonanota", ge:"boñaneutte ", la:"noctem", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g", ro:"noapte bună" },
-      { tema:"saluti", livello:"A1", it:"buonasera", en:"good evening", fr:"bonsoir", es:"buenas noches", de:"guten Abend", pt:"boa noite", ca:"bona nit", sp:"bonaséa", mn:"bona se'a/bonasëa", cr:"bonasera", ge:"bónn-a séia", la:"bona sera", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"bună seara" },
+      { tema:"saluti", livello:"A1", it:"buonasera", en:"good evening", fr:"bonsoir", es:"buenas noches", de:"guten Abend", pt:"boa noite", ca:"bona nit", sp:"bonaséa", mn:"bona se'a/bonasëa", cr:"bonasera", ge:"boñaseia", la:"bona sera", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"bună seara" },
       { tema:"saluti", livello:"A1", it:"buongiorno", en:"good morning", fr:"bonjour", es:"buenos días", de:"guten Morgen", pt:"bom dia", ca:"bon dia", sp:"bongiorno", mn:"bungiurnu", cr:"bondi", ge:"bongiorno", la:"bonum mane", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g", ro:"bună dimineața" },
       { tema:"aggettivi", livello:"A1", it:"buono", en:"good", sp:"bon", mn:"buun/bùn", cr:"bon", ge:"bôn", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
       { tema:"oggetti", livello:"B2", it:"burattino", en:"puppet", fr:"marionnette", es:"marioneta", de:"Marionette", pt:"marionete", ru:"марионетка", ca:"titella", sp:"bua tin/büatin", mn:"bühatìn/büatìn", cr:"buratin", ge:"burattin", ko:"인형", la:"pupus", grc:"νευρόσπαστον", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
@@ -2590,7 +2591,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A1", it:"calore", en:"heat", sp:"calóe", mn:"caùu/cauu", cr:"calor", ge:"calô, cado", verif:"sp:g,mn:g" },
       { tema:"verbi", livello:"B1", it:"calpestare", en:"to trample", sp:"scafolaà'e, scaossigaà'e, baligiae/scafolae, scaossigae, baligiae", mn:"savata'a/savataa", cr:"z'anpicar, pstar, badicar", ge:"calpesta", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
       { tema:"vestiti", livello:"A1", it:"calza", en:"sock", sp:"cà'ossa/càossa", mn:"kahussa/càusa", cr:"calza", ge:"cäsetta", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g,cr:g" },
-      { tema:"verbi", livello:"B1", it:"camallare|sfacchinare|portare in spalla", en:"to haul", fr:"traîner", es:"acarrear", de:"schleppen", pt:"carregar", ru:"тащить", ca:"arrossegar", sp:"camalà e/camalae", mn:"camalaa", cr:"camalar", ge:"camallà", ko:"끌다", ar:"سحب", zh:"拖", ja:"担ぐ", ia:"traher", la:"trahere", grc:"ἑλκύω", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"a trage" },
+      { tema:"verbi", livello:"B1", it:"camallare|sfacchinare|portare in spalla", en:"to haul", fr:"traîner", es:"acarrear", de:"schleppen", pt:"carregar", ru:"тащить", ca:"arrossegar", sp:"camalà e/camalae", mn:"camalaa", cr:"camalar", ge:"camallâ", ko:"끌다", ar:"سحب", zh:"拖", ja:"担ぐ", ia:"traher", la:"trahere", grc:"ἑλκύω", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"a trage" },
       { tema:"verbi", livello:"B1", it:"cambiare", en:"change", fr:"changer", es:"cambiar", de:"ändern", pt:"mudar", ru:"менять", ca:"canviar", sp:"cangiae /cangiae", mn:"cangiaa/cangiaa", cr:"canbiar", ge:"cangiâ", ko:"바꾸다", ar:"يغير", zh:"改变", ja:"変える", ia:"cambiar", la:"mutare", grc:"ἀλλάσσειν", verif:"mn:g,sp:g" },
       { tema:"verbi", livello:"B1", it:"cambiare piani", en:"change plans", fr:"changer de plans", es:"cambiar planes", de:"Pläne ändern", pt:"mudar planos", sp:"cangiae piani", cr:"canbiar pian", ge:"cangiâ cen", verif:"sp:g", nt:["mn"] },
       { tema:"dialogo", livello:"A1", it:"cambio", en:"change", sp:"cangio", mn:"cangiu", cr:"canbi, scanbi", ge:"cangio", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
@@ -2606,7 +2607,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"sport", livello:"A2", it:"campionato", en:"championship", fr:"championnat", es:"campeonato", de:"Meisterschaft", pt:"campeonato", cr:"canpionat", ko:"챔피언십", ar:"بطولة", zh:"锦标赛", ja:"チャンピオンシップ", ia:"campionato", nt:["sp","mn"] },
       { tema:"natura", livello:"A1", it:"campo", en:"field", es:"campo", sp:"canpo", mn:"cian|campu", cr:"canp", ge:"campo", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"natura", livello:"A2", it:"canale", en:"channel", sp:"canao", mn:"canàa/canàa", cr:"canal, btal, gora", ge:"canâ", verif:"sp:g,mn:g" },
-      { tema:"animali", livello:"A1", it:"canarino", en:"canary", fr:"canari", es:"canario", de:"Kanarienvogel", pt:"canário", ru:"канарейка", ca:"canari", sp:"canaìn", mn:"canaìn", cr:"canarin", ge:"canaÏn", ia:"canario", la:"canarius", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"canar" },
+      { tema:"animali", livello:"A1", it:"canarino", en:"canary", fr:"canari", es:"canario", de:"Kanarienvogel", pt:"canário", ru:"канарейка", ca:"canari", sp:"canaìn", mn:"canaìn", cr:"canarin", ge:"canäio", ia:"canario", la:"canarius", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g", ro:"canar" },
       { tema:"casa", livello:"A1", it:"candela", en:"candle", sp:"candea", mn:"candëa", cr:"cand'da / candeda", ge:"candeia", verif:"sp:g,mn:g" },
       { tema:"animali", livello:"A1", it:"cane", en:"dog", fr:"chien", es:"perro", de:"Hund", pt:"cão|cao", ru:"собака", ca:"gos", sp:"can", mn:"kan/can", cr:"can", ge:"can", verif:"mn:g" },
       { tema:"vestiti", livello:"B1", it:"canottiera", en:"vest", fr:"débardeur", es:"camiseta", de:"Unterhemd", pt:"camiseta regata", sp:"pelissòn/pelisson", mn:"pelissùn/pelisùn", cr:"canotiera", ia:"subcamisa", verif:"mn:g" },
@@ -2755,7 +2756,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"contento| lieto", en:"pleased", fr:"content|ravi", es:"contento|satisfecho", de:"erfreut", pt:"contente", ru:"доволен", ca:"content", sp:"contento", cr:"content", ge:"contento", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"dialogo", livello:"A2", it:"continua", en:"keep going", fr:"continue", es:"continúa", pt:"continua", sp:"continüa", mn:"continua", cr:"continua", ge:"continua", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,cr:g" },
       { tema:"verbi", livello:"A2", it:"continuare", en:"keep going", fr:"continuer", es:"continuar", de:"fortsetzen", pt:"continuar", sp:"continüae", mn:"cuntinuâ", cr:"cuntinuar", ge:"continuâ", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
-      { tema:"valute", livello:"A2", it:"conto", en:"account", fr:"compte", es:"cuenta", de:"Konto", pt:"conta", sp:"conto", mn:"cuntu", cr:"cont", ge:"kuntu/conto", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
+      { tema:"valute", livello:"A2", it:"conto", en:"bill", fr:"compte", es:"cuenta", de:"Konto", pt:"conta", sp:"conto", mn:"cuntu", cr:"cont", ge:"kuntu/conto", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
       { tema:"lavoro", livello:"A2", it:"contratto", en:"contract", fr:"contrat", es:"contrato", de:"Vertrag", pt:"contrato", sp:"contrato", mn:"cuntratu", cr:"contrat", ge:"contræto", ko:"계약", ar:"عقد", zh:"合同", ja:"契約", ia:"contracto", la:"pactum", grc:"συμβόλαιον", verif:"mn:g" },
       { tema:"farmaci", livello:"B2", it:"controindicazione", en:"contraindication", fr:"contre-indication", es:"contraindicación", de:"Kontraindikation", pt:"contraindicação|contraindicacao", ko:"금기사항", ar:"موانع الاستخدام", zh:"禁忌症", ja:"禁忌", nt:["mn"] },
       { tema:"verbi", livello:"A2", it:"controllare", en:"check", fr:"vérifier", es:"comprobar", de:"prüfen", pt:"verificar", sp:"controlahe/controlae", mn:"cuntrulaha/cuntrulaa", cr:"controlar", ge:"controlaha/controlâ", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
@@ -2804,13 +2805,13 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"cucire", en:"to sew", sp:"kusi'e,  kuse/cüsìe,, cüše", cr:"cusir", ge:"cuxî ", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"vestiti", livello:"A2", it:"cuffia", en:"bonnet", sp:"scüfia", cr:"scufia, cufia", ge:"scuffia", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"famiglia", livello:"A2", it:"cugina", en:"cousin", fr:"cousine", es:"prima", de:"Cousine", pt:"prima", sp:"cusìna", mn:"cusìna/cuzina", cr:"cusina", ge:"coxiña, coxa", verif:"mn:g" },
-      { tema:"famiglia", livello:"A2", it:"cugino", en:"cousin", fr:"cousin", es:"primo", de:"Cousin", pt:"primo", ru:"двоюродный брат", ca:"cosí", sp:"cosìn", mn:"cusin/cuzin", cr:"cusin", ge:"cuxìn|côxo", ko:"사촌", ar:"ابن عم", zh:"表兄弟", ja:"いとこ", ia:"cousino", la:"patrueles", grc:"ξάδελφος", src:{"mn":"🤖nmc"}, verif:"mn:g", ro:"văr" },
+      { tema:"famiglia", livello:"A2", it:"cugino", en:"cousin", fr:"cousin", es:"primo", de:"Cousin", pt:"primo", ru:"двоюродный брат", ca:"cosí", sp:"cosìn", mn:"cusin/cuzin", cr:"cusin", ge:"coxìn|côxo", ko:"사촌", ar:"ابن عم", zh:"表兄弟", ja:"いとこ", ia:"cousino", la:"patrueles", grc:"ξάδελφος", src:{"mn":"🤖nmc"}, verif:"mn:g", ro:"văr" },
       { tema:"corpo", livello:"B1", it:"culo", en:"butt", sp:"cüo", mn:"cüü", cr:"cul", ge:"cuhu/cû", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"verbi", livello:"A2", it:"cuocere", en:"cook", fr:"cuire", sp:"chése", mn:"kese/chéze", cr:"coz'r", ge:"cheuxe", verif:"mn:g" },
       { tema:"mestieri", livello:"A2", it:"cuoco", en:"cook", fr:"cuisinier", es:"cocinero", de:"Koch", pt:"cozinheiro", ru:"повар", ca:"cuiner", sp:"chègo", mn:"kegu/chégu", cr:"coc", ge:"cheugo", ko:"요리사", ar:"طاهٍ", zh:"厨师", ja:"料理人", ia:"coco", la:"coquus", grc:"μάγειρος", verif:"mn:g" },
       { tema:"oggetti", livello:"A2", it:"cuoio", en:"leather", sp:"chèio", cr:"coi", ge:"cheuio", verif:"sp:g" },
       { tema:"corpo", livello:"A2", it:"cuore", en:"heart", fr:"cœur", es:"corazón", de:"Herz", pt:"coração|coracao", ru:"сердце", ca:"cor", sp:"kehe/chèe", mn:"kehe/chèe", cr:"cor", ge:"chêu", ko:"심장", ar:"قلب", zh:"心脏", ja:"心臓", ia:"corde", la:"cor", grc:"καρδία", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
-      { tema:"dialogo", livello:"A1", it:"da dove vieni?", en:"Where are you from?", sp:"donde tevén/donde te vén", mn:"dunde teve egnii/d'unde te vegni", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g", ro:"de unde ești?" },
+      { tema:"dialogo", livello:"A1", it:"da dove vieni?", en:"Where are you from?", sp:"donde tevén/donde te vén", mn:"dunde teve egnii/dunde te vegni", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g", ro:"de unde ești?" },
       { tema:"luoghi", livello:"B1", it:"da qualche parte", en:"somewhere", fr:"quelque part", es:"en algún lugar", de:"irgendwo", pt:"em algum lugar", ru:"где-то", ca:"en algun lloc", nt:["mn"] },
       { tema:"tempo", livello:"B1", it:"da quando| da", en:"since", fr:"depuis", es:"desde|desde que", de:"seit", pt:"desde", ru:"с тех пор как", ca:"des de", mn:"de dopu che", verif:"mn:g" },
       { tema:"dialogo", livello:"A2", it:"Da quanto tempo ha questi sintomi?", en:"How long have you had these symptoms?", fr:"Depuis combien de temps avez-vous ces symptômes?", es:"¿Desde cuándo tiene estos síntomas?", de:"Seit wann haben Sie diese Symptome?", pt:"Há quanto tempo tem esses sintomas?|Ha quanto tempo tem esses sintomas?", ko:"이 증상이 얼마나 됐나요?", ar:"منذ متى وأنت تعاني من هذه الأعراض؟", zh:"这些症状有多久了？", ja:"この症状はいつからですか？", nt:["mn"] },
@@ -2819,7 +2820,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"dare", en:"give", fr:"donner", es:"dar", de:"geben", pt:"dar", ru:"давать", ca:"donar", sp:"dae", mn:"daa", cr:"dar", ge:"dâ", ko:"주다", ar:"يعطي", zh:"给", ja:"あげる", ia:"dar", la:"dare", grc:"δίδωναι", verif:"mn:g,sp:g" },
       { tema:"valute", livello:"B1", it:"debito", en:"debt", sp:"debito, pufo", mn:"diébitu/diebitu", cr:"debt", ge:"debito, poffo", verif:"mn:g" },
       { tema:"verbi", livello:"B1", it:"decidere", en:"decide", fr:"décider", es:"decidir", de:"entscheiden", pt:"decidir", ru:"решать", ca:"decidir", sp:"decide", mn:"decìde", cr:"decidr", ge:"deçidde", ko:"결정하다", ar:"يقرر", zh:"决定", ja:"決める", ia:"decider", la:"decernere", grc:"ἀποφαίνεσθαι", verif:"mn:g" },
-      { tema:"animali", livello:"A2", it:"delfino", en:"dolphin", fr:"dauphin", es:"delfín", de:"Delfin", pt:"golfinho", ru:"дельфин", ca:"dofí", sp:"darfin", mn:"darfin", cr:"drafin", ge:"drafin", ko:"돌고래", ar:"دلفين", zh:"海豚", ja:"イルカ", ia:"delfino", la:"delphinus", grc:"δελφίς", verif:"mn:g" },
+      { tema:"animali", livello:"A2", it:"delfino", en:"dolphin", fr:"dauphin", es:"delfín", de:"Delfin", pt:"golfinho", ru:"дельфин", ca:"dofí", sp:"darfin, drafin", mn:"darfin", cr:"drafin", ge:"drafin", ko:"돌고래", ar:"دلفين", zh:"海豚", ja:"イルカ", ia:"delfino", la:"delphinus", grc:"δελφίς", verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"deluso", en:"disappointed", fr:"déçu", es:"decepcionado", de:"enttäuscht", pt:"decepcionado", ru:"разочарованный", ca:"decebut", cr:"delus", ko:"실망한", ar:"خائب الأمل", zh:"失望", ja:"失望した", ia:"decepte", la:"deceptus", grc:"ἀπογοητευμένος", nt:["mn"] },
       { tema:"astratti", livello:"B2", it:"democrazia", en:"democracy", fr:"démocratie", es:"democracia", de:"Demokratie", pt:"democracia", ru:"демократия", ca:"democràcia", sp:"democrasia", mn:"democrasia", ge:"democraçia", ko:"민주주의", ar:"ديمقراطية", zh:"民主", ja:"民主主義", ia:"democratia", la:"democratia", grc:"δημοκρατία" },
       { tema:"valute", livello:"A1", it:"denaro", en:"money", sp:"dinàao/dinào", mn:"dinaa", cr:"denari", ge:"dinæ, palanche", src:{"mn":"🤖 IA"}, verif:"mn:g" },
@@ -2827,7 +2828,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"corpo", livello:"A2", it:"denti", en:"teeth", fr:"dents", es:"dientes", de:"Zähne", pt:"dentes", ru:"зубы", ca:"dents", sp:"denti", mn:"denti", cr:"denti", ge:"denti", verif:"mn:g,sp:g,cr:g" },
       { tema:"corpo", livello:"B1", it:"dentiera", en:"denture", sp:"dentéa", cr:"dentera", ge:"dentea", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"cosmetica", livello:"A2", it:"dentifricio", en:"toothpaste", fr:"dentifrice", es:"pasta de dientes", de:"Zahnpasta", pt:"pasta de dentes", ru:"зубная паста", ca:"pasta de dents", nt:["mn","ge"] },
-      { tema:"luoghi", livello:"A1", it:"dentro", en:"inside", fr:"dedans", es:"dentro", de:"drinnen", pt:"dentro", ru:"внутри", ca:"dins", sp:"drento", mn:"drëntu", cr:"drent", ge:"drénto", ko:"안에", ar:"داخل", zh:"里面", ja:"中", ia:"in", la:"intus", grc:"ἔσω", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"înăuntru" },
+      { tema:"luoghi", livello:"A1", it:"dentro", en:"inside", fr:"dedans", es:"dentro", de:"drinnen", pt:"dentro", ru:"внутри", ca:"dins", sp:"drento", mn:"drëntu", cr:"drent", ge:"drénto", ko:"안에", ar:"داخل", zh:"里面", ja:"中", ia:"in", la:"intus", grc:"ἔσω", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g", ro:"înăuntru" },
       { tema:"cosmetica", livello:"A2", it:"deodorante", en:"deodorant", fr:"déodorant", es:"desodorante", de:"Deodorant", pt:"desodorante", ko:"데오도란트", ar:"مزيل عرق", zh:"除臭剂", ja:"デオドラント", nt:["mn"] },
       { tema:"verbi", livello:"B1", it:"descrivere", en:"describe", fr:"décrire", es:"describir", de:"beschreiben", pt:"descrever", sp:"descrive", mn:"descrive/déscrivé", cr:"descriver", ge:"descrive", ko:"묘사하다", ar:"يصف", zh:"描述", ja:"描写する", ia:"describer", la:"describere", grc:"περιγράφειν", verif:"mn:g,sp:g,ge:g", ro:"a descrie" },
       { tema:"astratti", livello:"B1", it:"destino|fato", en:"fate", fr:"destin", es:"destino", de:"Schicksal", pt:"destino", sp:"destìn", mn:"destin", cr:"fat, dstin", ge:"destin, sciòrte", ko:"운명", ar:"مصير", zh:"命运", ja:"運命", ia:"fato", la:"fatum", grc:"μοῖρα" },
@@ -2876,8 +2877,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"doppio", en:"double", sp:"doccio/dócio", mn:"duciu", cr:"dopi, dò", ge:"doggio", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"dormire", en:"sleep", ru:"спать", ca:"dormir", sp:"dormie, polae", mn:"durmii, pulaa", cr:"durmir", ge:"dormii/dormi", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g", ro:"a dormi" },
       { tema:"farmaci", livello:"A1", it:"dosaggio|dose", en:"dosage", fr:"posologie", es:"dosis", de:"Dosierung", pt:"dosagem", sp:"dose", mn:"dose", cr:"dosa", ge:"dòse", ko:"복용량", ar:"جرعة", zh:"剂量", ja:"用量" },
-      { tema:"dialogo", livello:"A1", it:"dov'è il bagno?", en:"where is the toilet", fr:"où sont les toilettes", es:"¿dónde está el baño", de:"wo ist die Toilette", pt:"onde fica o banheiro", sp:"dov'i è 'r bagno", mn:"in di l'é 'r bagnu", ge:"dove l'é o bagno", ia:"ube es le toilette", la:"ubi est latrina", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"unde este baia?" },
-      { tema:"grammatica", livello:"A2", it:"dove", en:"where", sp:"donde,onde", mn:"unde/ùndé", cr:"ndov/'ndov", ge:"donde", verif:"mn:g" },
+      { tema:"dialogo", livello:"A1", it:"dov'è il bagno?", en:"where is the toilet", fr:"où sont les toilettes", es:"¿dónde está el baño", de:"wo ist die Toilette", pt:"onde fica o banheiro", sp:"dov'i è er bagno?", mn:"in di l'é er bagnu?", ge:"donde o l'é o bagno| dond'o l'è o bagno", ia:"ube es le toilette", la:"ubi est latrina", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"unde este baia?" },
+      { tema:"grammatica", livello:"A2", it:"dove", en:"where", sp:"dove, donde,onde", mn:"unde/ùndé", cr:"ndov/'ndov", ge:"donde", verif:"mn:g" },
       { tema:"dialogo", livello:"A1", it:"Dove fa male?", en:"Where does it hurt?", fr:"Où avez-vous mal?", es:"¿Dónde le duele?", de:"Wo tut es weh?", pt:"Onde dói?|Onde doi?", ko:"어디가 아프세요?", ar:"أين يؤلمك؟", zh:"哪里疼？", ja:"どこが痛いですか？", ia:"Ubi il face mal?", nt:["mn"] },
       { tema:"tempo", livello:"A2", it:"due volte", en:"twice", fr:"deux fois", es:"dos veces", de:"zweimal", pt:"duas vezes", ru:"дважды", ca:"dues vegades", sp:"doa vòte ", nt:["mn"] },
       { tema:"istruzioni", livello:"A2", it:"due volte al giorno", en:"twice a day", fr:"deux fois par jour", es:"dos veces al día", de:"zweimal täglich", pt:"duas vezes ao dia", sp:"doa vòte ao dì", ko:"하루 두 번", ar:"مرتين يومياً", zh:"每天两次", ja:"1日2回", nt:["mn"] },
@@ -3054,7 +3055,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"viaggi", livello:"A2", it:"giro", en:"trip", sp:"zio", mn:"ziu/ziu", cr:"zir", verif:"mn:g" },
       { tema:"sport", livello:"A2", it:"girotondo", en:"circle game", sp:"riónda", mn:"zìutundu", verif:"mn:g" },
       { tema:"viaggi", livello:"A2", it:"gita", en:"trip", fr:"voyage|excursion", es:"viaje|excursión", de:"Reise|Ausflug", pt:"viagem|excursão", ru:"поездка|экскурсия", ca:"viatge|excursió", cr:"gita", verif:"mn:g,cr:g" },
-      { tema:"luoghi", livello:"A2", it:"giù", en:"downstairs", sp:"zü", mn:"zü/zü", cr:"zù", verif:"mn:g" },
+      { tema:"luoghi", livello:"A2", it:"giù", en:"downstairs", sp:"zü", mn:"zü/zü", cr:"zù", ge:"zu", verif:"mn:g" },
       { tema:"verbi", livello:"B2", it:"giudicare", en:"to judge", sp:"giudicahe/giudicae", cr:"g'udicar", ia:"judicar", la:"iudicare", grc:"κρίνειν", verif:"sp:g" },
       { tema:"mesi", livello:"A1", it:"giugno", en:"June", fr:"juin", es:"junio", de:"Juni", pt:"junho", ru:"июнь", ca:"juny", sp:"zügno", mn:"zuniu/zügnu", cr:"giugn'/giugn", ko:"6월", ar:"يونيو", zh:"六月", ja:"6月", ia:"junio", la:"Iunius", grc:"Ἰούνιος", verif:"sp:g,mn:g" },
       { tema:"natura", livello:"A2", it:"giunco", en:"reed", sp:"zünco", mn:"zuncu", cr:"zunc", verif:"mn:g" },
@@ -3183,7 +3184,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"vestiti", livello:"A1", it:"maglia", en:"sweater", sp:"ma già/màgia", mn:"ma già/màgia", cr:"maia", ge:"màggia", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"vestiti", livello:"A2", it:"maglione", en:"sweater|jumper", fr:"pull|chandail", es:"jersey|suéter", de:"Pullover", pt:"camisola", ru:"свитер", ca:"jersei", sp:"magion", mn:"magiùn", cr:"maion", ko:"스웨터", ar:"سُترَة", zh:"毛衣", ja:"セーター", verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"magro", en:"lean", sp:"magro", cr:"magr", verif:"sp:g" },
-      { tema:"grammatica", livello:"A1", it:"mai", en:"never", sp:"mai", mn:"mai", cr:"mai", ge:"mai", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g,cr:g" },
+      { tema:"grammatica", livello:"A1", it:"mai", en:"never", sp:"mai", mn:"mai", cr:"mai", ge:"mai", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g,cr:g,ge:g,sp:g" },
       { tema:"salute", livello:"A2", it:"mal di denti", en:"toothache", fr:"mal aux dents", es:"dolor de muelas", de:"Zahnschmerzen", pt:"dor de dente", ru:"зубная боль", ca:"mal de dents", sp:"máo de dènti" },
       { tema:"sintomi", livello:"A1", it:"mal di gola", en:"sore throat", fr:"mal de gorge", es:"dolor de garganta", de:"Halsschmerzen", pt:"dor de garganta", sp:"mardegoa/ mar de góa", ko:"인후통", ar:"التهاب الحلق", zh:"喉咙痛", ja:"喉の痛み", verif:"sp:g" },
       { tema:"sintomi", livello:"A1", it:"mal di stomaco", en:"stomachache", fr:"mal au ventre", es:"dolor de estómago", de:"Bauchschmerzen", pt:"dor de estômago|dor de estomago", ko:"복통", ar:"ألم في المعدة", zh:"胃痛", ja:"腹痛" },
@@ -3229,7 +3230,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"grammatica", livello:"A2", it:"mezzo", en:"middle", fr:"milieu|centre", es:"centro|medio", de:"Mitte", pt:"meio|centro", ru:"середина|центр", ca:"mig|centre", sp:"meso/mèzo", mn:"mesu/mézu", cr:"mez", ge:"mesu/mezo", verif:"mn:g" },
       { tema:"saluti", livello:"A1", it:"mi chiamo...", en:"my name is", mn:"me ciamu", verif:"mn:g", ro:"mă numesc..." },
       { tema:"citazioni", livello:"B1", it:"mi fai morire", en:"you're killing me", fr:"tu me tues", es:"me estás matando", de:"du bringst mich um", pt:"me estás matando", ru:"ты меня убиваешь", ca:"em mates", sp:"te me feè moì'e/te me fe moìe", ia:"tu me occide", la:"me necas", verif:"sp:g", ro:"mă omori" },
-      { tema:"dialogo", livello:"A1", it:"mi piace", en:"I like", sp:"me ciasa", mn:"me ciasa", verif:"mn:g", ro:"îmi place" },
+      { tema:"dialogo", livello:"A1", it:"mi piace", en:"I like", sp:"me ciasa", mn:"me ciaza", ge:"me piaxe", verif:"mn:g", ro:"îmi place" },
       { tema:"grammatica", livello:"A2", it:"mica", en:"not at all", sp:"miga", mn:"miga", cr:"miga, mia", ge:"miga", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"grammatica", livello:"A2", it:"miei|mie", en:"mine", fr:"les miens", es:"míos", de:"meine", pt:"meus", sp:"méi|mee", mn:"mé|mè", verif:"mn:g" },
       { tema:"cibo", livello:"A2", it:"miele", en:"honey", fr:"miel", es:"miel", de:"Honig", pt:"mel", ru:"мёд", ca:"mel", sp:"méo", mn:"mié", cr:"mel", ge:"amê", verif:"mn:g", ro:"miere" },
@@ -3282,11 +3283,11 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"grammatica", livello:"A1", it:"niente", en:"nothing", sp:"gnente, nisba", mn:"niente/gnénté", cr:"gnennt/gnent", ge:"ninte", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"famiglia", livello:"A1", it:"nipote", en:"grandchild", sp:"néHvo, néHssa/névo, nèssa", mn:"niéu  ,  néHssa/nieu,  nèssa", cr:"npot", ge:"nevo |nessa", verif:"mn:g" },
       { tema:"famiglia", livello:"A2", it:"nipotino", en:"grandchild", sp:"nevéto ", cr:"n'putin", verif:"sp:g" },
-      { tema:"saluti", livello:"A1", it:"no", en:"no", fr:"non", es:"no", de:"nein", pt:"não", ca:"no", sp:"no", mn:"nu", cr:"no", ge:"no", la:"non", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,cr:g", ro:"nu" },
+      { tema:"saluti", livello:"A1", it:"no", en:"no", fr:"non", es:"no", de:"nein", pt:"não", ca:"no", sp:"no", mn:"nu", cr:"no", ge:"no, na", la:"non", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,cr:g,ge:g", ro:"nu" },
       { tema:"dialogo", livello:"A2", it:"no, scendo più in là", en:"no, I'll get off further down", fr:"non, je descends plus loin", es:"no, bajo más abajo", de:"nein, ich steige weiter unten aus", pt:"não, desço mais adiante", ca:"no, baixo més avall", sp:"no, a chino ciü en là", mn:"no , a chinu ciü en là/nu, a chinu ciü en là", ia:"no, me descende plus in basso", verif:"mn:g", ro:"nu, cobor mai jos" },
       { tema:"cibo", livello:"A2", it:"noce (frutto)", en:"walnut", sp:"n'óse/nóse", cr:"nósa/noza", verif:"sp:g" },
       { tema:"grammatica", livello:"A1", it:"noi", en:"we", sp:"noi, noiàotri", mn:"nuautri", cr:"no, noa, noaltri", ge:" gniatri/niatri", ro:"noi" },
-      { tema:"dialogo", livello:"A1", it:"non capisco", en:"I don't understand", de:"ich verstehe nicht", sp:"a ne capisso", mn:"a nu capissu", ge:"nucapisciu/no accapiscio", verif:"mn:g", ro:"nu înțeleg" },
+      { tema:"dialogo", livello:"A1", it:"non capisco", en:"I don't understand", de:"ich verstehe nicht", sp:"a ne capisso", mn:"a nu capissu", ge:"nucapisciu/no accapiscio| no capiscio", verif:"mn:g", ro:"nu înțeleg" },
       { tema:"dialogo", livello:"A1", it:"non mi piace", en:"I don't like it", sp:"ne me ciasa", mn:"nu me ciasa", verif:"mn:g", ro:"nu-mi place" },
       { tema:"famiglia", livello:"A1", it:"nonna", en:"grandmother", fr:"grand-mère", es:"abuela", de:"Oma|Großmutter", pt:"avó|avo", ru:"бабушка", ca:"àvia", sp:"nona", mn:"nona", cr:"nona", ge:"nona, madunaha /nònna, madonnâ", ko:"할머니", ar:"جدة", zh:"奶奶", ia:"avia", la:"avia", grc:"τήθη", verif:"mn:g,sp:g,ge:g", ro:"bunică" },
       { tema:"famiglia", livello:"A1", it:"nonno", en:"grandfather", fr:"grand-père", es:"abuelo", de:"Großvater|Opa", pt:"avô|avo", ca:"avi", sp:"nono", mn:"nònu", cr:"nono", ge:"nonnu, messiaavu, puegrande/nònno, messiavo, poæ grande", ko:"할아버지", ar:"جد", zh:"祖父|爷爷", ja:"祖父", ia:"avo", la:"avus", grc:"πάππος", verif:"mn:g,sp:g,ge:g", ro:"bunic" },
@@ -3315,7 +3316,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A2", it:"ombra", en:"shadow", fr:"ombre", es:"sombra", de:"Schatten", pt:"sombra", ru:"тень", ca:"ombra", sp:"onbêa", mn:"umbra", cr:"onbra", ge:"ombra", ko:"그림자", ar:"ظل", zh:"阴影", ja:"影", ia:"umbra", la:"umbra", grc:"σκιά", verif:"mn:g,ge:g" },
       { tema:"oggetti", livello:"A2", it:"ometto |gruccia", en:"hunchback", sp:"ometo", mn:"ümétu", cr:"omet", ge:"ommetto", verif:"mn:g" },
       { tema:"emotivi", livello:"A2", it:"onestà", en:"honesty", sp:"onestà", mn:"unestà/unéstà", cr:"onestà", ge:"onestæ", verif:"mn:g" },
-      { tema:"tempo", livello:"A1", it:"ora", en:"hour", sp:"óha/óa", mn:"auua/aua", cr:"ora ", ge:"uua/oa", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
+      { tema:"tempo", livello:"A1", it:"ora", en:"hour", sp:"óha/óa", mn:"uua/ua", cr:"ora ", ge:"uua/oa", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"mestieri", livello:"B1", it:"oratore", en:"orator", fr:"orateur", es:"orador", de:"Redner", pt:"orador", sp:"oratoe", cr:"orator", ge:"oratô ", ko:"연설가", ar:"خطيب", zh:"演说家", ja:"弁士", ia:"orator", la:"orator", grc:"ῥήτωρ", verif:"sp:g" },
       { tema:"arte", livello:"B1", it:"orchestra", en:"orchestra", fr:"orchestre", es:"orquesta", de:"Orchester", pt:"orquestra", ru:"оркестр", ca:"orquestra", sp:"orchestra", mn:"urchestra", cr:"orchestra", ge:"orchestra", ko:"오케스트라", ar:"أوركسترا", zh:"管弦乐团", ja:"オーケストラ", ia:"orchestra", grc:"ὀρχήστρα" },
       { tema:"dialogo", livello:"A2", it:"ordine| comando", en:"order", sp:"ordine", mn:"ù'rden /ùrdén", cr:"comand", ge:"ordine, commando", verif:"mn:g" },
@@ -3349,7 +3350,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A1", it:"pane", en:"bread", sp:"pan", mn:"pan", cr:"pan", ge:"pan", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"pâine" },
       { tema:"mestieri", livello:"A2", it:"panettiere", en:"baker", fr:"boulanger", es:"panadero", de:"Bäcker", pt:"padeiro", sp:"panetéo, panadéo, paneréo, panatéo", mn:"panatee", cr:"panatier", ge:"panatee/panatê", ko:"제빵사", ar:"خباز", zh:"面包师", ja:"パン屋", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"vestiti", livello:"A1", it:"pantaloni", en:"trousers", fr:"pantalon", es:"pantalones", de:"Hose", pt:"calças|calcas", ru:"брюки", ca:"pantalons", sp:"braghe", cr:"calz'on, braga", ge:"braghe", ko:"바지", ar:"بنطلون", zh:"裤子", ja:"ズボン", ia:"pantalones", verif:"sp:g" },
-      { tema:"vestiti", livello:"A2", it:"pantofola|ciabatta", en:"slipper", fr:"pantoufle", es:"zapatilla", de:"Pantoffel", pt:"chinelo", ca:"pantufa", sp:"savata", mn:"savàta", cr:"pantofla, z'avata", ge:"savàtta", ia:"pantuflo", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"papuc" },
+      { tema:"vestiti", livello:"A2", it:"pantofola|ciabatta", en:"slipper", fr:"pantoufle", es:"zapatilla", de:"Pantoffel", pt:"chinelo", ca:"pantufa", sp:"savata", mn:"savàta", cr:"pantofla, z'avata", ge:"savatta", ia:"pantuflo", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g", ro:"papuc" },
       { tema:"verbi", livello:"A2", it:"pare|sembra", en:"seems", sp:"a paa", mn:"a pàa", verif:"mn:g" },
       { tema:"famiglia", livello:"B1", it:"parente", en:"relative", fr:"parent|proche", es:"pariente|familiar", de:"Verwandter", pt:"parente", ru:"родственник", ca:"parent", sp:"pahente/paente", cr:"parent", ge:"pænte", verif:"sp:g" },
       { tema:"aggettivi", livello:"A2", it:"pari", en:"even", fr:"pair", es:"par", de:"gerade", pt:"par", sp:"páo/páo", mn:"paau/pau", cr:"par", verif:"mn:g,sp:g" },
@@ -3434,7 +3435,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A1", it:"pisello", en:"pea", sp:"pesela", mn:"peséla/pézèla", cr:"pseda", ge:"poïscio", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"mestieri", livello:"B1", it:"pittore", en:"painter", fr:"peintre", es:"pintor", de:"Maler", pt:"pintor", ru:"художник", ca:"pintor", sp:"pitoe", mn:"pituu", cr:"pitor", ge:"pittô ", verif:"mn:g" },
       { tema:"arte", livello:"B1", it:"pittura|dipinto", en:"painting", fr:"peinture|tableau", es:"pintura|cuadro", de:"Gemälde", pt:"pintura|quadro", ru:"картина|живопись", ca:"pintura|quadre", sp:"pitüa", mn:"pétüa", cr:"pitura", ge:"pittua ", verif:"mn:g" },
-      { tema:"numeri", livello:"A1", it:"più", en:"plus", es:"más", sp:"ciü", mn:"ciü", cr:"pu", verif:"mn:g,sp:g" },
+      { tema:"numeri", livello:"A1", it:"più", en:"more| plus", es:"más", sp:"ciü", mn:"ciü", cr:"pu", ge:"ciù", verif:"mn:g,sp:g" },
       { tema:"animali", livello:"A1", it:"piuma", en:"feather", sp:"ciuüma/ciüma", mn:"ciüma", cr:"piuma", ge:"ciümma", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"grammatica", livello:"A2", it:"piuttosto", en:"rather", sp:"ciütosto", mn:"nàansi/nànsi", cr:"putost", ge:"ciutòsto", verif:"mn:g" },
       { tema:"viaggi", livello:"A1", it:"pneumatico|gomma", en:"tyre", fr:"pneu", es:"neumático", de:"Reifen", pt:"pneu", ru:"шина", ca:"pneumàtic", sp:"goma ", cr:"goma ", ge:"gomma ", nt:["mn"] },
@@ -3464,7 +3465,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"B1", it:"pregare", en:"pray", fr:"prier", es:"rezar", de:"beten", pt:"rezar", sp:"pregae", cr:"prgar", ge:"pregâ", ko:"기도하다", ar:"يصلي", zh:"祈祷", ja:"祈る", ia:"precar", la:"orare", grc:"προσεύχεσθαι" },
       { tema:"saluti", livello:"A1", it:"prego", en:"you're welcome", sp:"figuate, prego, de gnente", mn:"pregu", cr:"figurt, d' gnent, preg", ge:"de ninte", verif:"mn:g", ro:"cu plăcere" },
       { tema:"verbi", livello:"B1", it:"premere", en:"press", fr:"appuyer|presser", es:"presionar", de:"drücken", pt:"pressionar", ru:"нажимать", ca:"prémer", sp:"schissae, saquarae", cr:"schiz'ar, calcar", ge:"sciaccâ ,schissâ", verif:"sp:g" },
-      { tema:"verbi", livello:"A1", it:"prendere", en:"take", fr:"prendre", es:"tomar", de:"nehmen", pt:"pegar", ru:"брать", ca:"agafar|prendre", sp:" piae, ciapàe", mn:"pigiaa| ciapaa", cr:"piar", ge:" pigiâ| aciapâ", ko:"잡다", ar:"يأخذ", zh:"拿", ja:"取る", ia:"prender", la:"capere", grc:"λαμβάνειν", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g", ro:"a lua" },
+      { tema:"verbi", livello:"A1", it:"prendere", en:"take", fr:"prendre", es:"tomar", de:"nehmen", pt:"pegar", ru:"брать", ca:"agafar|prendre", sp:" piae, ciapàe", mn:"pigiaa| ciapaa", cr:"piar", ge:"piggiâ| acciappâ", ko:"잡다", ar:"يأخذ", zh:"拿", ja:"取る", ia:"prender", la:"capere", grc:"λαμβάνειν", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g", ro:"a lua" },
       { tema:"verbi", livello:"B1", it:"prendere in prestito", en:"borrow", fr:"emprunter", es:"pedir prestado", de:"ausleihen", pt:"pedir emprestado", ru:"брать взаймы", ca:"manllevar" },
       { tema:"verbi", livello:"B1", it:"preoccuparsi", en:"worry", fr:"s'inquiéter", es:"preocuparse", de:"sich sorgen", pt:"preocupar-se", ru:"беспокоиться", ca:"preocupar-se", sp:"preocüpasse", cr:"preocupars", ge:"preoccupâse" },
       { tema:"salute", livello:"B2", it:"pressione arteriosa", en:"blood pressure|pressure", fr:"tension", es:"presión", de:"Blutdruck", pt:"pressão|pressao", sp:"pressyon/pressión", mn:"presiùn", ko:"혈압", ar:"ضغط الدم", zh:"血压", ja:"血圧", ia:"pression", verif:"mn:g" },
@@ -3502,11 +3503,11 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"grammatica", livello:"A2", it:"qualcuno", en:"somebody", fr:"quelqu'un", es:"alguien", de:"jemand", pt:"alguém", ru:"кто-то", ca:"algú", sp:"quarkedun/quarchedün", mn:"quarkedun/quarchedùn", cr:"qualcun, qualcdun", ge:"quarkedun/quarchedùn", ia:"alcuno", la:"quidam", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"cineva" },
       { tema:"dialogo", livello:"A1", it:"quanti anni hai?", en:"How old are you?", mn:"quant ani t'aa", ro:"câți ani ai?" },
       { tema:"dialogo", livello:"A1", it:"quanto costa?", en:"How much does it cost?", sp:"quanto costa?", mn:"quantu custa?", ge:"quanto costa?", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"cât costă?" },
-      { tema:"numeri", livello:"A1", it:"quaranta", en:"forty", fr:"quarante", es:"cuarenta", de:"vierzig", pt:"quarenta", ru:"сорок", sp:"quaanta", mn:"quaanta", cr:"quaranta", ge:"quarànta", ia:"quaranta", la:"quadraginta", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"patruzeci" },
+      { tema:"numeri", livello:"A1", it:"quaranta", en:"forty", fr:"quarante", es:"cuarenta", de:"vierzig", pt:"quarenta", ru:"сорок", sp:"quaanta", mn:"quaanta", cr:"quaranta", ge:"quarànta", ia:"quaranta", la:"quadraginta", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g,cr:g", ro:"patruzeci" },
       { tema:"numeri", livello:"A1", it:"quarantadue|42", en:"forty-two", fr:"quarante-deux", es:"cuarenta y dos", de:"zweiundvierzig", pt:"quarenta e dois", sp:"quaantadooi|quaantadoa/quaantadoi|quaantadoa", mn:"quaanta duui /quàantadùi", cr:"quarantadò", ge:"quarantedoî", ia:"quaranta-duo", la:"quadraginta duo", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"patruzeci și doi" },
       { tema:"numeri", livello:"A1", it:"quarto", en:"fourth", fr:"quatrième", es:"cuarto", de:"vierte", pt:"quarto", sp:"quarto", mn:"quàrtu", cr:"quart", ge:"quartu/quàrto", ia:"quarte", la:"quartus", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g", ro:"al patrulea" },
       { tema:"grammatica", livello:"A2", it:"quasi", en:"almost", fr:"presque", es:"casi", de:"fast", pt:"quase", ru:"почти", ca:"gairebé", sp:"squasi", mn:"asquasi/asquazi", cr:"squasi", ge:"squæxi", verif:"sp:g,mn:g" },
-      { tema:"numeri", livello:"A1", it:"quattordici", en:"fourteen", fr:"quatorze", es:"catorce", de:"vierzehn", pt:"catorze", ru:"четырнадцать", ca:"catorze", sp:"quatorze", mn:"quattorse|quatòrze", cr:"quattordz", ge:"quattòrze|quatòrze", ia:"quattorde", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"paisprezece" },
+      { tema:"numeri", livello:"A1", it:"quattordici", en:"fourteen", fr:"quatorze", es:"catorce", de:"vierzehn", pt:"catorze", ru:"четырнадцать", ca:"catorze", sp:"quatorze", mn:"quattorse|quatòrze", cr:"quattordz", ge:"quattòrze|quatòrze", ia:"quattorde", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g", ro:"paisprezece" },
       { tema:"numeri", livello:"A1", it:"quattro|4", en:"four", fr:"quatre", es:"cuatro", de:"vier", pt:"quatro", ru:"четыре", ca:"quatre", sp:"quatro/quattro/quatro", mn:"quatru/quattru/quatru", cr:"quatr", ge:"quattro", ko:"사", ar:"أربعة", zh:"四", ja:"四", ia:"quatro", la:"quattuor", verif:"mn:g", ro:"patru" },
       { tema:"dialogo", livello:"B1", it:"Questo farmaco può dare sonnolenza", en:"This medicine may cause drowsiness", fr:"Ce médicament peut provoquer de la somnolence", es:"Este medicamento puede causar somnolencia", de:"Dieses Medikament kann Schläfrigkeit verursachen", pt:"Este medicamento pode causar sonolência|Este medicamento pode causar sonolencia", ko:"이 약은 졸음을 유발할 수 있습니다", ar:"قد يسبب هذا الدواء النعاس", zh:"这种药可能会引起嗜睡", ja:"この薬は眠気を催すことがあります" },
       { tema:"luoghi", livello:"A1", it:"qui", en:"here", fr:"ici", es:"aquí", de:"hier", pt:"aqui", sp:"chì", mn:"chi", cr:"q'i, qua", ge:"chì", ko:"여기", ar:"هنا", zh:"这里", ja:"ここ", ia:"hic", la:"hic", grc:"ἐνθάδε", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
@@ -3653,10 +3654,10 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A2", it:"secco", en:"dry", fr:"sec", es:"seco", de:"trocken", pt:"seco", ru:"сухой", ca:"sec", sp:"seco", ko:"건조한", ar:"جاف", zh:"干燥", ja:"乾燥", ia:"sic", la:"siccus", grc:"ξηρός", verif:"sp:g" },
       { tema:"numeri", livello:"A2", it:"secondo", en:"second", fr:"deuxième", es:"segundo", de:"zweite", pt:"segundo", sp:"segondo", mn:"secundu", cr:"sgond", ge:"segóndo", ko:"두 번째", ar:"الثاني", zh:"第二", ja:"二番目", ia:"secunde", la:"secundus", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"al doilea" },
       { tema:"verbi", livello:"A1", it:"sedersi", en:"sit down", fr:"s'asseoir", es:"sentarse", de:"sitzen", pt:"sentar-se", ru:"садиться", ca:"seure|asseure's", sp:"setarse", mn:"setasse/setase", ko:"앉다", ar:"يجلس", zh:"坐下", ja:"座る", ia:"seder se", la:"sedere", grc:"καθίζειν", verif:"mn:g" },
-      { tema:"casa", livello:"A1", it:"sedia|seggiola", en:"chair", fr:"chaise", es:"silla", de:"Stuhl", pt:"cadeira", ru:"стул", ca:"cadira", sp:"caréga|scrana", mn:"cariega", cr:"scrana", ge:"carêga", ko:"의자", ar:"كرسي", zh:"椅子", ja:"椅子", ia:"sedia", la:"cathedra", grc:"καθίσμα", src:{"mn":"🤖dona"}, verif:"mn:g,sp:g,cr:g", ro:"scaun" },
+      { tema:"casa", livello:"A1", it:"sedia|seggiola", en:"chair", fr:"chaise", es:"silla", de:"Stuhl", pt:"cadeira", ru:"стул", ca:"cadira", sp:"caréga|scrana", mn:"cariega", cr:"scrana", ge:"carrêga", ko:"의자", ar:"كرسي", zh:"椅子", ja:"椅子", ia:"sedia", la:"cathedra", grc:"καθίσμα", src:{"mn":"🤖dona"}, verif:"mn:g,sp:g,cr:g", ro:"scaun" },
       { tema:"numeri", livello:"A1", it:"sedici", en:"sixteen", ru:"шестнадцать", sp:"sèze", mn:"sese/sëze", ge:"sezze", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"numeri", livello:"A1", it:"sei", en:"six", sp:"sei", mn:"sciéi", cr:"se", ge:"sëi", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"șase" },
-      { tema:"citazioni", livello:"B1", it:"Sei duro come il marmo di Carrara", en:"you're as hard as marble", fr:"tu es dur comme le marbre", es:"eres duro como el mármol", de:"du bist hart wie Marmor", pt:"você é duro como o mármore", ca:"ets dur com el marbre", sp:"Tei düo come er marmo de caraa", ge:"ti l'æ duro comme o marmao de Carrara", ia:"tu es dure como le marbre", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g", ro:"ești tare ca marmora" },
+      { tema:"citazioni", livello:"B1", it:"Sei duro come il marmo di Carrara", en:"you're as hard as marble", fr:"tu es dur comme le marbre", es:"eres duro como el mármol", de:"du bist hart wie Marmor", pt:"você é duro como o mármore", ca:"ets dur com el marbre", sp:"Tei düo come er marmo de caraa", ge:"ti t’ê duo comme o marmao de Carræa", ia:"tu es dure como le marbre", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g", ro:"ești tare ca marmora" },
       { tema:"citazioni", livello:"B2", it:"sei fuori come un balcone", en:"you’re out of your mind", sp:"t'ei fèa come na terassa", verif:"sp:g" },
       { tema:"insulti", livello:"B2", it:"sei un belinone", en:"you are a big idiot", sp:"tèiin belinòn/ t'ei un belinon", verif:"sp:g" },
       { tema:"numeri", livello:"A1", it:"sei|6", en:"six", fr:"six", es:"seis", de:"sechs", pt:"seis", ru:"шесть", ca:"sis", sp:"sei", mn:"sciéi", cr:"se", ge:"sëi", ko:"육", ar:"ستة", zh:"六", ja:"六", ia:"sex", la:"sex", grc:"ἕξ", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
@@ -3672,20 +3673,20 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"sessanta|60", en:"sixty", ru:"шестьдесят", sp:"sessanta|60", mn:"sesanta", cr:"sesanta", ge:"sciusciànta", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"numeri", livello:"A1", it:"sessantanove|69", en:"sixty-nine", sp:"sessantaneve|69", mn:"sesanta neve/sesantanéve|69", cr:"sesantanovi", ge:"sciuscianteneuve ", verif:"mn:g,sp:g" },
       { tema:"numeri", livello:"A1", it:"sessantasei|66", en:"sixty-six", sp:"sessantasèi|66", mn:"sessantasciei/sesantasciéi|66", cr:"sesantasé", ge:"sciusciantesëi ", verif:"mn:g,sp:g" },
-      { tema:"numeri", livello:"A1", it:"sesto", en:"sixth", fr:"sixième", es:"sexto", de:"sechste", pt:"sexto", sp:"sèsto", mn:"sèstu", cr:"sest", ge:"sèsto", ia:"sexte", la:"sextus", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"al șaselea" },
+      { tema:"numeri", livello:"A1", it:"sesto", en:"sixth", fr:"sixième", es:"sexto", de:"sechste", pt:"sexto", sp:"sèsto", mn:"sèstu", cr:"sest", ge:"sèsto", ia:"sexte", la:"sextus", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g", ro:"al șaselea" },
       { tema:"corpo", livello:"A1", it:"sete", en:"thirst", fr:"soif", es:"sed", de:"Durst", pt:"sede", sp:"séde", mn:"sëde", verif:"mn:g" },
       { tema:"numeri", livello:"A1", it:"settanta|70", en:"seventy", sp:"setanta", mn:"setanta", cr:"setanta", ge:"setanta", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,cr:g,ge:g" },
       { tema:"numeri", livello:"A1", it:"settantacinque|75", en:"seventy-five", sp:"Setantasinque", mn:"Setantassinque/Setantasinque", cr:"setantaz'inqui", ge:"settanteçinque ", verif:"mn:g" },
       { tema:"numeri", livello:"A1", it:"settantadue|72", en:"seventy-two", sp:"setantadoi|setantadoa", mn:"setantadùi|setantadue", cr:"setantadò", ge:"settantedoî", verif:"mn:g,cr:g,ge:g" },
       { tema:"numeri", livello:"A1", it:"sette|7", en:"seven", fr:"sept", es:"siete", de:"sieben", pt:"sete", ru:"семь", ca:"set", sp:"sete", mn:"sète", cr:"séta, sèt", ge:"sette", ko:"칠", ar:"سبعة", zh:"七", ja:"七", ia:"septe", la:"septem", grc:"ἑπτά", verif:"mn:g" },
       { tema:"mesi", livello:"A1", it:"settembre", en:"September", fr:"septembre", es:"septiembre", de:"September", pt:"setembro", ru:"сентябрь", ca:"setembre", sp:"setenbre", mn:"sétëmbre", cr:"sténbra", ge:"settembre", ko:"9월", ar:"سبتمبر", zh:"九月", ja:"9月", ia:"septembre", la:"September", grc:"Σεπτέμβριος", verif:"mn:g" },
-      { tema:"numeri", livello:"A1", it:"settimo", en:"seventh", fr:"septième", es:"séptimo", de:"siebte", pt:"sétimo", mn:"sètimu", ge:"sètimo|setén", ia:"septime", la:"septimus", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"al șaptelea" },
+      { tema:"numeri", livello:"A1", it:"settimo", en:"seventh", fr:"septième", es:"séptimo", de:"siebte", pt:"sétimo", mn:"sètimu", ge:"sèttimo|settén", ia:"septime", la:"septimus", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"al șaptelea" },
       { tema:"insulti", livello:"B1", it:"sgarbo", en:"rudeness", mn:"sgarbu/zgàrbu", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"persone", livello:"A2", it:"sgobbone", en:"hard worker", mn:"sgubbuun/zgubùn", verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"sgraffignare|rubare", en:"to pinch", mn:"sgrafigna a/zgràfignaa/sgràfignaa", verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"sgusciare", en:"to drip", fr:"s'écouler", mn:"sgüssaaa/zgüssaa", verif:"mn:g" },
       { tema:"cosmetica", livello:"A2", it:"shampoo", en:"shampoo", fr:"shampooing", es:"champú", de:"Shampoo", pt:"shampoo", ko:"샴푸", ar:"شامبو", zh:"洗发水", ja:"シャンプー", nt:["sp"] },
-      { tema:"saluti", livello:"A1", it:"sì", en:"yes", fr:"oui", es:"sí", de:"ja", pt:"sim", ca:"sí", sp:"si", mn:"si", cr:"si", ge:"si", la:"ita", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g,sp:g,ge:g", ro:"da" },
+      { tema:"saluti", livello:"A1", it:"sì", en:"yes", fr:"oui", es:"sí", de:"ja", pt:"sim", ca:"sí", sp:"si", mn:"si", cr:"si", ge:"scì ", la:"ita", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g,sp:g,ge:g", ro:"da" },
       { tema:"natura", livello:"A2", it:"siccità", en:"drought", fr:"sécheresse", es:"sequía", de:"Dürre", pt:"seca", ru:"засуха", ca:"sequera|secada", ko:"가뭄", ar:"جفاف", zh:"干旱", ja:"干ばつ", ia:"siccitate", la:"siccitas", grc:"αὐχμός", nt:["sp"] },
       { tema:"emotivi", livello:"A1", it:"sicuro", en:"sure", sp:"següo", mn:"següü", verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"significare", en:"mean that", fr:"vouloir dire", es:"significar", de:"bedeuten", pt:"significar", nt:["sp"] },
@@ -3769,7 +3770,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A2", it:"sugo di carne", en:"meat sauce", fr:"sauce de viande", es:"salsa de carne", de:"Fleischsoße", pt:"molho de carne", sp:"tóco", mn:"tucu", cr:"sug", verif:"sp:g,mn:g" },
       { tema:"famiglia", livello:"A2", it:"suocera", en:"mother-in-law", sp:" sèdzóa/sèsoa ", mn:"sésséeha/sézéa", cr:"soz'ra", ge:"Sêuxoa ", verif:"sp:g,mn:g,ge:g" },
       { tema:"famiglia", livello:"A1", it:"suocero", en:"father-in-law", fr:"beau-père", es:"suegro", de:"Schwiegervater", pt:"sogro", ru:"свёкор|тесть", ca:"sogre", sp:"sèsoo", mn:"sèseu/sëzeu", ko:"시아버지", ar:"حمو", zh:"公公", ja:"義父", ia:"socer", la:"socer", grc:"πενθερός", verif:"mn:g" },
-      { tema:"verbi", livello:"A2", it:"suono|sembrare", en:"sound", fr:"son|sembler", es:"sonido|parecer", de:"Klang|klingen", pt:"som|parecer", ru:"звук|звучать", ca:"so|semblar", sp:"son", verif:"sp:g" },
+      { tema:"verbi", livello:"A2", it:"suono", en:"sound", fr:"son|sembler", es:"sonido|parecer", de:"Klang|klingen", pt:"som|parecer", ru:"звук|звучать", ca:"so|semblar", sp:"son", mn:"sun", ge:"son", verif:"sp:g" },
       { tema:"casa", livello:"A1", it:"sveglia", en:"alarm clock", sp:"resve gin/resvegin", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"verbi", livello:"A2", it:"svegliare", en:"to wake up", sp:"dé svégiàæ ,der vegià e,sve giae/desvegiae,dervegiae,svegiae", mn:"svegiaaa/zvegiaa", verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"sveglio|scaltro|smaliziato", en:"sharp", sp:"svegio", mn:"svégiu/zvégiu", verif:"mn:g" },
@@ -3823,8 +3824,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A1", it:"tornare", en:"come back", fr:"revenir", es:"volver", de:"zurückkommen", pt:"voltar", ru:"возвращаться", ca:"tornar", sp:"tornae", mn:"tuurnaha/turnaa", verif:"sp:g,mn:g" },
       { tema:"dialogo", livello:"A2", it:"Torni se non migliora", en:"Come back if it doesn't improve", fr:"Revenez si ça ne s'améliore pas", es:"Vuelva si no mejora", de:"Kommen Sie wieder, wenn es sich nicht bessert", pt:"Volte se não melhorar|Volte se nao melhorar", ko:"나아지지 않으면 다시 오세요", ar:"عد إذا لم تتحسن الحالة", zh:"如果没有好转请回来", ja:"改善しなければ戻ってください" },
       { tema:"animali", livello:"A2", it:"toro", en:"bull", sp:"tòo", mn:"tòru", verif:"mn:g" },
-      { tema:"corpo", livello:"A2", it:"tosse con catarro", en:"cough with phlegm", fr:"toux avec catarrhe", es:"tos con catarro", de:"Husten mit Schleim", pt:"tosse com catarro", ca:"tos amb catarr", sp:"rantega", mn:"ràntéga/rantéga", ge:"tosse con cataro", ia:"tusse con catarro", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"tuse cu secreții" },
-      { tema:"salute", livello:"A2", it:"tosse secca", en:"dry cough", fr:"toux sèche", es:"tos seca", de:"trockener Husten", pt:"tosse seca", ca:"tos seca", sp:"bèssega", mn:"bèssega/bëssega", ge:"tòsse sécca", ia:"tusse seca", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"tuse seacă" },
+      { tema:"corpo", livello:"A2", it:"tosse con catarro", en:"cough with phlegm", fr:"toux avec catarrhe", es:"tos con catarro", de:"Husten mit Schleim", pt:"tosse com catarro", ca:"tos amb catarr", sp:"rantega", mn:"ràntéga/rantéga", ge:"dorbega, rantega", ia:"tusse con catarro", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"tuse cu secreții" },
+      { tema:"salute", livello:"A2", it:"tosse secca", en:"dry cough", fr:"toux sèche", es:"tos seca", de:"trockener Husten", pt:"tosse seca", ca:"tos seca", sp:"bèssega", mn:"bèssega/bëssega", ge:"tòssa sécca", ia:"tusse seca", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g", ro:"tuse seacă" },
       { tema:"salute", livello:"A2", it:"tossico", en:"toxic", mn:"tòséguu/tòségu", verif:"mn:g" },
       { tema:"insulti", livello:"A2", it:"tosto|duro di comprendonio", en:"thick-headed", mn:"tòstu", verif:"mn:g" },
       { tema:"valute", livello:"A2", it:"totale", en:"total", fr:"total", es:"total", de:"Gesamt", pt:"total", ru:"общий|итого|всего", ca:"total", sp:"fatiga", mn:"fatiga", ko:"합계", ar:"المجموع", zh:"总计", ja:"合計", ia:"total", verif:"mn:g" },
@@ -4003,6 +4004,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A1", it:"zucchino", en:"courgette", sp:"süchèo", mn:"suchìn/suchin", cr:"zuched", ge:"succhin ", src:{"sp":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"sp:g,cr:g", ro:"dovlecel" },
       { tema:"persone", livello:"A1", it:"gente", en:"people", sp:"gente", mn:"genta", cr:"zenta", ge:"gente", verif:"sp:g,ge:g,cr:g,mn:g" },
       { tema:"tempo", livello:"A1", it:"volta", en:"time", sp:"vòta", mn:"òta", cr:"volta", ge:"vòtta", verif:"cr:g,ge:g,sp:g,mn:g" },
+      { tema:"tempo", livello:"A1", it:"poi", en:"then", sp:"poi", ge:"pöi" },
+      { tema:"luoghi", livello:"A1", it:"lì| là", en:"there", sp:"lì", mn:"lì", cr:"lì", ge:"lì" },
     ];
 
 // ── Storage ───────────────────────────────────────────────────────────────
@@ -4066,7 +4069,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 574;
+const VOC_VERSION = 579;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
@@ -5998,6 +6001,54 @@ const CONIUGAZIONI = {
         { p: "1ª plur.", en: "do", it: "facciamo" },
         { p: "2ª plur.", en: "do", it: "fate" },
         { p: "3ª plur.", en: "do", it: "fanno" }
+      ]
+    }
+    }
+  },
+  potere: {
+    nome: "potere",
+    tempi: {
+    presente: {
+      nome: "presente",
+      forme: [
+        { p: "1ª sing.", it: "posso", en: "I can", fr: "je peux", es: "puedo", pt: "posso", de: "ich kann", la: "possum", grc: "δύναμαι", ia: "io pote", ge: "pòsso" },
+        { p: "2ª sing.", it: "puoi", en: "you can", fr: "tu peux", es: "puedes", pt: "podes", de: "du kannst", la: "potes", grc: "δύνασαι", ia: "tu pote", ge: " ti peu" },
+        { p: "3ª sing.", it: "può", en: "he/she/it can", fr: "il/elle peut", es: "puede", pt: "pode", de: "er/sie/es kann", la: "potest", grc: "δύναται", ia: "ille/illa pote", ge: "o peu/ a peu" },
+        { p: "1ª plur.", it: "possiamo", en: "we can", fr: "nous pouvons", es: "podemos", pt: "podemos", de: "wir können", la: "possumus", grc: "δυνάμεθα", ia: "nos pote", ge: "poemmo/poemo" },
+        { p: "2ª plur.", it: "potete", en: "you can", fr: "vous pouvez", es: "podéis", pt: "podeis", de: "ihr könnt", la: "potestis", grc: "δύνασθε", ia: "vos pote", ge: "poei" },
+        { p: "3ª plur.", it: "possono", en: "they can", fr: "ils/elles peuvent", es: "pueden", pt: "podem", de: "sie können", la: "possunt", grc: "δύνανται", ia: "illes/illas pote", ge: "peuan" }
+      ]
+    }
+    }
+  },
+  venire: {
+    nome: "venire",
+    tempi: {
+    presente: {
+      nome: "presente",
+      forme: [
+        { p: "1ª sing.", it: "vengo", en: "come", fr: "viens", es: "vengo", pt: "venho", de: "komme", la: "venio", grc: "ἔρχομαι", ia: "veni", ge: "vëgno" },
+        { p: "2ª sing.", it: "vieni", en: "come", fr: "viens", es: "vienes", pt: "vens", de: "kommst", la: "venis", grc: "ἔρχῃ", ia: "veni", ge: "ti vëgni" },
+        { p: "3ª sing.", it: "viene", en: "comes", fr: "vient", es: "viene", pt: "vem", de: "kommt", la: "venit", grc: "ἔρχεται", ia: "veni", ge: "o vëgne/o ven /a vëgne/a ven" },
+        { p: "1ª plur.", it: "veniamo", en: "come", fr: "venons", es: "venimos", pt: "vimos", de: "kommen", la: "venimus", grc: "ἐρχόμεθα", ia: "veni", ge: "vegnimmo" },
+        { p: "2ª plur.", it: "venite", en: "come", fr: "venez", es: "venís", pt: "vindes", de: "kommt", la: "venitis", grc: "ἔρχεσθε", ia: "veni", ge: "vegnî" },
+        { p: "3ª plur.", it: "vengono", en: "come", fr: "viennent", es: "vienen", pt: "vêm", de: "kommen", la: "veniunt", grc: "ἔρχονται", ia: "veni", ge: "vëgnan" }
+      ]
+    }
+    }
+  },
+  andare: {
+    nome: "andare",
+    tempi: {
+    presente: {
+      nome: "presente",
+      forme: [
+        { p: "1ª sing.", it: "vado", en: "I go", fr: "je vais", es: "yo voy", pt: "eu vou", de: "ich gehe", la: "eo", grc: "ἔρχομαι", ia: "io va", ge: "vaggo/vaddo" },
+        { p: "2ª sing.", it: "vai", en: "you go", fr: "tu vas", es: "tú vas", pt: "tu vais", de: "du gehst", la: "is", grc: "ἔρχῃ", ia: "tu va", ge: "ti væ" },
+        { p: "3ª sing.", it: "va", en: "he/she/it goes", fr: "il/elle va", es: "él/ella va", pt: "ele/ela vai", de: "er/sie/es geht", la: "it", grc: "ἔρχεται", ia: "ille/illa va", ge: " o va/a va" },
+        { p: "1ª plur.", it: "andiamo", en: "we go", fr: "nous allons", es: "nosotros/nosotras vamos", pt: "nós vamos", de: "wir gehen", la: "imus", grc: "ἐρχόμεθα", ia: "nos vamos", ge: "anemmo" },
+        { p: "2ª plur.", it: "andate", en: "you go", fr: "vous allez", es: "vosotros/vosotras vais", pt: "vós ides", de: "ihr geht", la: "itis", grc: "ἔρχεσθε", ia: "vos vas", ge: "anæ" },
+        { p: "3ª plur.", it: "vanno", en: "they go", fr: "ils/elles vont", es: "ellos/ellas van", pt: "eles/elas vão", de: "sie gehen", la: "eunt", grc: "ἔρχονται", ia: "illes/illas va", ge: "van" }
       ]
     }
     }
