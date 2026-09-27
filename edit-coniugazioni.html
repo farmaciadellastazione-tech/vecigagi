@@ -341,6 +341,11 @@ const PERSONE_STANDARD = ['1ª sing.', '2ª sing.', '3ª sing.', '1ª plur.', '2
 // (copia al caricamento/ultimo salvataggio) e lo stato corrente.
 // ==========================================================================
 const DRAFT_LS = 'lq_editconiugazioni_draft_v1';
+// La chiave è unica per tutte le schede: ogni bozza porta l'id della scheda
+// che l'ha scritta, e una scheda cancella solo la PROPRIA (altrimenti una
+// scheda senza modifiche butterebbe la bozza di un'altra). Limite noto: due
+// schede CON modifiche si sovrascrivono a vicenda — vince l'ultima che scrive.
+const TAB_ID = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
 let coniugazioniCaricate = null;
 let draftSaveTimer = null;
 
@@ -396,12 +401,15 @@ function scriviBozzaOra() {
   const b = calcolaBozzaVerbi(coniugazioniCaricate, coniugazioni);
   const el = document.getElementById('draft-indicator');
   if (!Object.keys(b.verbi).length) {
-    try { localStorage.removeItem(DRAFT_LS); } catch (_) {}
+    try {
+      const esistente = leggiBozzaLocale();
+      if (esistente && esistente.tab === TAB_ID) localStorage.removeItem(DRAFT_LS);
+    } catch (_) {}
     if (el) el.textContent = '';
     return;
   }
   try {
-    localStorage.setItem(DRAFT_LS, JSON.stringify({ savedAt: Date.now(), basi: b.basi, verbi: b.verbi }));
+    localStorage.setItem(DRAFT_LS, JSON.stringify({ savedAt: Date.now(), tab: TAB_ID, basi: b.basi, verbi: b.verbi }));
     mostraIndicatoreBozza();
   } catch (_) {} // localStorage pieno o non disponibile: il beforeunload resta comunque attivo
 }
@@ -438,6 +446,9 @@ function proponiRipristinoBozza(fresco) {
     return '';
   }
   const r = applicaBozzaVerbi(fresco, bozza);
+  // La bozza letta è stata "presa in carico": la si toglie, e questa scheda
+  // riscrive la propria (col suo TAB_ID) al primo render se restano modifiche.
+  try { localStorage.removeItem(DRAFT_LS); } catch (_) {}
   // Conflitti: il verbo è cambiato anche su GitHub dopo la bozza. Si chiede
   // verbo per verbo quale versione tenere, invece di scegliere in silenzio.
   const tenuteMie = [], tenuteGitHub = [];
@@ -772,13 +783,16 @@ async function salvaSuGitHub() {
       );
     }
     const nuovoSrc = ricostruisciSorgente(originalSourceFile);
+    // Copia di ciò che va DAVVERO su GitHub, presa prima del PUT: le modifiche
+    // fatte mentre il salvataggio è in corso restano "da salvare" (e in bozza).
+    const salvate = JSON.parse(JSON.stringify(coniugazioni));
     const bytes = new TextEncoder().encode(nuovoSrc); let bin = ''; for (let j = 0; j < bytes.length; j++) bin += String.fromCharCode(bytes[j]);
     const msgCommit = `Coniugazioni aggiornate da edit-coniugazioni.html (${nVerbi} verbi)`;
     const putRes = await fetchTimeout(apiBase, { method: 'PUT', headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }), body: JSON.stringify({ message: msgCommit, content: btoa(bin), branch: GH_BRANCH, sha }) }, 60000);
     if (!putRes.ok) { if (putRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('PUT fallito (' + putRes.status + ')'); }
     originalSourceFile = nuovoSrc;
-    coniugazioniCaricate = JSON.parse(JSON.stringify(coniugazioni));
-    scriviBozzaOra(); // diff ora vuoto → rimuove la bozza
+    coniugazioniCaricate = salvate;
+    scriviBozzaOra(); // rimuove la bozza, o la riscrive se hai modificato durante il salvataggio
     setHelp('✅ Salvato su GitHub (' + nVerbi + ' verbi).', 'success');
   } catch (err) {
     console.error(err);
