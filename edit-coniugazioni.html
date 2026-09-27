@@ -91,6 +91,7 @@
   <button class="primary" id="btn-salva" onclick="salvaSuGitHub()">☁️ Salva su GitHub</button>
   <button onclick="caricaDaGitHub()">🔄 Ricarica da GitHub</button>
   <button onclick="impostaToken()">🔑 Token GitHub</button>
+  <span id="draft-indicator" style="color:var(--muted);font-size:0.85rem;align-self:center"></span>
 </div>
 
 <div class="modal-overlay" id="persona-modal" hidden>
@@ -328,22 +329,160 @@ function chiaveLibera(base, esistenti) {
 
 const PERSONE_STANDARD = ['1ª sing.', '2ª sing.', '3ª sing.', '1ª plur.', '2ª plur.', '3ª plur.'];
 
+// ==========================================================================
+// BOZZA LOCALE (autosave in localStorage, per non perdere il lavoro in caso
+// di chiusura/refresh/crash, o quando la guardia anti-clobber blocca il
+// salvataggio perché index.html è cambiato su GitHub nel frattempo).
+// Stesso principio di edit.html (bozza per-riga), qui PER VERBO: si salvano
+// solo i verbi toccati + la loro versione di partenza (basi), così al
+// ripristino ogni verbo viene riapplicato sulla base fresca e quelli cambiati
+// anche su GitHub diventano conflitti espliciti, mai sovrascritti in silenzio.
+// Niente flag "modificato" sparsi: la bozza è il diff tra coniugazioniCaricate
+// (copia al caricamento/ultimo salvataggio) e lo stato corrente.
+// ==========================================================================
+const DRAFT_LS = 'lq_editconiugazioni_draft_v1';
+let coniugazioniCaricate = null;
+let draftSaveTimer = null;
+
+function stessoVerbo(a, b) {
+  return JSON.stringify(a === undefined ? null : a) === JSON.stringify(b === undefined ? null : b);
+}
+
+// Puro: { basi, verbi } con i soli verbi diversi. null = verbo assente
+// (in basi: verbo nuovo; in verbi: verbo rimosso).
+function calcolaBozzaVerbi(caricate, attuali) {
+  const basi = {}, verbi = {};
+  const chiavi = new Set([...Object.keys(caricate || {}), ...Object.keys(attuali || {})]);
+  chiavi.forEach(k => {
+    const base = (caricate || {})[k], ora = (attuali || {})[k];
+    if (stessoVerbo(base, ora)) return;
+    basi[k] = base === undefined ? null : base;
+    verbi[k] = ora === undefined ? null : ora;
+  });
+  return { basi, verbi };
+}
+
+// Puro: riapplica la bozza sulla base fresca. Per ogni verbo della bozza:
+//   - il remoto è già uguale alla bozza → "gia";
+//   - il remoto è ancora uguale alla base → riapplica ("applicati");
+//   - il remoto è cambiato dopo la bozza → "conflitti", verbo remoto intatto.
+function applicaBozzaVerbi(fresco, bozza) {
+  const out = JSON.parse(JSON.stringify(fresco || {}));
+  const applicati = [], gia = [], conflitti = [];
+  Object.keys(bozza.verbi || {}).forEach(k => {
+    const mio = bozza.verbi[k], base = (bozza.basi || {})[k], remoto = out[k];
+    if (stessoVerbo(remoto, mio)) { gia.push(k); return; }
+    if (!stessoVerbo(remoto, base)) { conflitti.push(k); return; }
+    if (mio === null) delete out[k]; else out[k] = JSON.parse(JSON.stringify(mio));
+    applicati.push(k);
+  });
+  return { coniugazioni: out, applicati, gia, conflitti };
+}
+
+function haModifiche() {
+  if (!coniugazioni || !coniugazioniCaricate) return false;
+  return Object.keys(calcolaBozzaVerbi(coniugazioniCaricate, coniugazioni).verbi).length > 0;
+}
+
+window.addEventListener('beforeunload', e => {
+  if (haModifiche()) { e.preventDefault(); e.returnValue = ''; }
+});
+
+// Scrittura immediata (usata prima di ricaricare e quando il salvataggio
+// viene bloccato); salvaBozzaLocale() è la versione con debounce per l'input.
+function scriviBozzaOra() {
+  clearTimeout(draftSaveTimer);
+  if (!coniugazioni || !coniugazioniCaricate) return;
+  const b = calcolaBozzaVerbi(coniugazioniCaricate, coniugazioni);
+  const el = document.getElementById('draft-indicator');
+  if (!Object.keys(b.verbi).length) {
+    try { localStorage.removeItem(DRAFT_LS); } catch (_) {}
+    if (el) el.textContent = '';
+    return;
+  }
+  try {
+    localStorage.setItem(DRAFT_LS, JSON.stringify({ savedAt: Date.now(), basi: b.basi, verbi: b.verbi }));
+    mostraIndicatoreBozza();
+  } catch (_) {} // localStorage pieno o non disponibile: il beforeunload resta comunque attivo
+}
+function salvaBozzaLocale() {
+  clearTimeout(draftSaveTimer);
+  draftSaveTimer = setTimeout(scriviBozzaOra, 1000);
+}
+function mostraIndicatoreBozza() {
+  const el = document.getElementById('draft-indicator');
+  if (!el) return;
+  const ora = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+  el.textContent = `· bozza salvata alle ${ora}`;
+}
+function leggiBozzaLocale() {
+  try {
+    const raw = localStorage.getItem(DRAFT_LS);
+    if (!raw) return null;
+    const b = JSON.parse(raw);
+    if (!b || !b.verbi || typeof b.verbi !== 'object' || !Object.keys(b.verbi).length) return null;
+    return b;
+  } catch (_) { return null; }
+}
+
+// Propone il ripristino sulla base fresca appena scaricata. Ritorna un testo
+// di esito per la barra di aiuto ('' se non c'era bozza o è stata scartata).
+function proponiRipristinoBozza(fresco) {
+  const bozza = leggiBozzaLocale();
+  if (!bozza) return '';
+  const nomeDi = k => ((bozza.verbi[k] || bozza.basi[k] || {}).nome) || k;
+  const elenco = Object.keys(bozza.verbi).map(nomeDi).join(', ');
+  const data = new Date(bozza.savedAt).toLocaleString('it-IT');
+  if (!confirm(`Trovate modifiche non salvate del ${data} ai verbi: ${elenco}.\n\nRipristinarle?\n(Annulla = scarta la bozza)`)) {
+    try { localStorage.removeItem(DRAFT_LS); } catch (_) {}
+    return '';
+  }
+  const r = applicaBozzaVerbi(fresco, bozza);
+  // Conflitti: il verbo è cambiato anche su GitHub dopo la bozza. Si chiede
+  // verbo per verbo quale versione tenere, invece di scegliere in silenzio.
+  const tenuteMie = [], tenuteGitHub = [];
+  r.conflitti.forEach(k => {
+    const mio = bozza.verbi[k];
+    const tieniMia = confirm(
+      `⚠️ Il verbo "${nomeDi(k)}" è stato modificato ANCHE su GitHub dopo la tua bozza.\n\n` +
+      `OK = tieni la TUA versione (le modifiche fatte su GitHub a questo verbo andranno perse al salvataggio)\n` +
+      `Annulla = tieni la versione di GitHub (le tue modifiche a questo verbo vengono scartate)`
+    );
+    if (tieniMia) {
+      if (mio === null) delete r.coniugazioni[k]; else r.coniugazioni[k] = JSON.parse(JSON.stringify(mio));
+      tenuteMie.push(nomeDi(k));
+    } else tenuteGitHub.push(nomeDi(k));
+  });
+  coniugazioni = r.coniugazioni;
+  let msg = ` Bozza ripristinata (${r.applicati.length + tenuteMie.length} verbi da salvare).`;
+  if (tenuteMie.length) msg += ` Conflitti risolti con la tua versione: ${tenuteMie.join(', ')}.`;
+  if (tenuteGitHub.length) msg += ` Tenuta la versione GitHub: ${tenuteGitHub.join(', ')}.`;
+  return msg;
+}
+
 // ── Caricamento ───────────────────────────────────────────────────────────
 async function caricaDaGitHub() {
+  // Prima di sostituire i dati, fissa subito nella bozza le modifiche in
+  // corso: "🔄 Ricarica" non deve mai buttarle (verranno riproposte sotto).
+  scriviBozzaOra();
   setHelp('⏳ Carico CONIUGAZIONI da GitHub...', 'info');
   try {
     const url = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_PATH}?t=${Date.now()}`;
     const res = await fetchTimeout(url, {}, 25000);
     if (!res.ok) throw new Error('HTTP ' + res.status);
-    originalSourceFile = await res.text();
-    coniugazioni = estraiConiugazioni(originalSourceFile);
+    const testo = await res.text();
+    const fresco = estraiConiugazioni(testo);
+    originalSourceFile = testo;
+    coniugazioniCaricate = JSON.parse(JSON.stringify(fresco));
+    coniugazioni = fresco;
+    const esitoBozza = proponiRipristinoBozza(fresco);
     const verbi = Object.keys(coniugazioni);
     verboCorrente = verbi[0] || null;
     tempoCorrente = verboCorrente ? Object.keys(coniugazioni[verboCorrente].tempi)[0] : null;
     popolaVerbi();
     popolaTempi();
     renderTabella();
-    setHelp(`✅ Caricati <strong>${verbi.length}</strong> verbi. Modifica le celle e clicca <strong>☁️ Salva su GitHub</strong> quando hai finito.`, 'success');
+    setHelp(`✅ Caricati <strong>${verbi.length}</strong> verbi.${esitoBozza} Modifica le celle e clicca <strong>☁️ Salva su GitHub</strong> quando hai finito.`, 'success');
   } catch (err) {
     console.error(err);
     setHelp('❌ Errore caricamento da GitHub: ' + err.message, 'error');
@@ -409,7 +548,7 @@ function renderTabella() {
     const tr = document.createElement('tr');
     const tdP = document.createElement('td'); tdP.className = 'persona-cell';
     const inpP = document.createElement('input'); inpP.type = 'text'; inpP.value = f.p || '';
-    inpP.oninput = () => { f.p = inpP.value; };
+    inpP.oninput = () => { f.p = inpP.value; salvaBozzaLocale(); };
     tdP.appendChild(inpP);
     tr.appendChild(tdP);
 
@@ -417,7 +556,7 @@ function renderTabella() {
       const td = document.createElement('td');
       const inp = document.createElement('input'); inp.type = 'text'; inp.value = f[code] || '';
       inp.placeholder = '—';
-      inp.oninput = () => { if (inp.value.trim()) f[code] = inp.value; else delete f[code]; };
+      inp.oninput = () => { if (inp.value.trim()) f[code] = inp.value; else delete f[code]; salvaBozzaLocale(); };
       td.appendChild(inp);
       if (['sp','ge','mn','cr','it'].includes(code)) {
         const btn = document.createElement('button');
@@ -437,6 +576,10 @@ function renderTabella() {
 
     tab.appendChild(tr);
   });
+  // Ogni modifica strutturale (verbo/tempo/riga/lingua aggiunti o tolti, IA)
+  // passa da qui: basta un solo aggancio per la bozza. Sulla sola navigazione
+  // tra verbi il diff non cambia.
+  salvaBozzaLocale();
 }
 
 function ascoltaAnteprima(testo, code) {
@@ -620,10 +763,12 @@ async function salvaSuGitHub() {
     // (es. un salvataggio da edit.html nel frattempo), non sovrascrivere alla cieca.
     const remoto = decodificaContenutoGh(ghJson);
     if (remoto !== null && remoto !== originalSourceFile) {
+      scriviBozzaOra();
       throw new Error(
         `"${GH_PATH}" su GitHub è cambiato dopo il tuo caricamento (probabilmente un salvataggio ` +
         `da edit.html o da un'altra scheda).\n\nSalvataggio ANNULLATO per non perdere quelle modifiche.\n\n` +
-        `Clicca "🔄 Ricarica da GitHub" e ripeti le tue modifiche alle coniugazioni.`
+        `Clicca "🔄 Ricarica da GitHub": le tue modifiche sono al sicuro nella bozza locale e ` +
+        `ti verranno riproposte sulla versione aggiornata.`
       );
     }
     const nuovoSrc = ricostruisciSorgente(originalSourceFile);
@@ -632,6 +777,8 @@ async function salvaSuGitHub() {
     const putRes = await fetchTimeout(apiBase, { method: 'PUT', headers: Object.assign({}, headers, { 'Content-Type': 'application/json' }), body: JSON.stringify({ message: msgCommit, content: btoa(bin), branch: GH_BRANCH, sha }) }, 60000);
     if (!putRes.ok) { if (putRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('PUT fallito (' + putRes.status + ')'); }
     originalSourceFile = nuovoSrc;
+    coniugazioniCaricate = JSON.parse(JSON.stringify(coniugazioni));
+    scriviBozzaOra(); // diff ora vuoto → rimuove la bozza
     setHelp('✅ Salvato su GitHub (' + nVerbi + ' verbi).', 'success');
   } catch (err) {
     console.error(err);
