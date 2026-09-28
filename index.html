@@ -5699,6 +5699,7 @@ const SOGGETTI = {
     "1ª sing.": "io",
     "2ª sing.": "tu",
     "3ª sing.": "lui",
+    "3ª sing. f.": "lei",
     "1ª plur.": "noi",
     "2ª plur.": "voi",
     "3ª plur.": "loro"
@@ -5707,6 +5708,7 @@ const SOGGETTI = {
     "1ª sing.": "je",
     "2ª sing.": "tu",
     "3ª sing.": "il",
+    "3ª sing. f.": "elle",
     "1ª plur.": "nous",
     "2ª plur.": "vous",
     "3ª plur.": "ils"
@@ -5715,6 +5717,7 @@ const SOGGETTI = {
     "1ª sing.": "yo",
     "2ª sing.": "tú",
     "3ª sing.": "él",
+    "3ª sing. f.": "ella",
     "1ª plur.": "nosotros",
     "2ª plur.": "vosotros",
     "3ª plur.": "ellos"
@@ -5723,6 +5726,7 @@ const SOGGETTI = {
     "1ª sing.": "eu",
     "2ª sing.": "tu",
     "3ª sing.": "ele",
+    "3ª sing. f.": "ela",
     "1ª plur.": "nós",
     "2ª plur.": "vós",
     "3ª plur.": "eles"
@@ -5731,6 +5735,7 @@ const SOGGETTI = {
     "1ª sing.": "I",
     "2ª sing.": "you",
     "3ª sing.": "he",
+    "3ª sing. f.": "she",
     "1ª plur.": "we",
     "2ª plur.": "you",
     "3ª plur.": "they"
@@ -5739,6 +5744,7 @@ const SOGGETTI = {
     "1ª sing.": "ich",
     "2ª sing.": "du",
     "3ª sing.": "er",
+    "3ª sing. f.": "sie",
     "1ª plur.": "wir",
     "2ª plur.": "ihr",
     "3ª plur.": "sie"
@@ -5747,6 +5753,7 @@ const SOGGETTI = {
     "1ª sing.": "io",
     "2ª sing.": "tu",
     "3ª sing.": "ille",
+    "3ª sing. f.": "illa",
     "1ª plur.": "nos",
     "2ª plur.": "vos",
     "3ª plur.": "illes"
@@ -6262,6 +6269,10 @@ const CONIUGAZIONI = {
 
           ge: "o peu"
         }, {
+          p: "3ª sing. f.",
+          it: "può",
+          ge: "a peu"
+        }, {
           p: "1ª plur.",
           it: "possiamo",
           fr: "pouvons",
@@ -6434,7 +6445,8 @@ const CONIUGAZIONI = {
       forme: [
         { p: "1ª sing.", it: "vengo", en: "come", fr: "viens", es: "vengo", pt: "venho", de: "komme", la: "venio", grc: "ἔρχομαι", ia: "veni", ge: "vëgno" },
         { p: "2ª sing.", it: "vieni", en: "come", fr: "viens", es: "vienes", pt: "vens", de: "kommst", la: "venis", grc: "ἔρχῃ", ia: "veni", ge: "ti vëgni" },
-        { p: "3ª sing.", it: "viene", en: "comes", fr: "vient", es: "viene", pt: "vem", de: "kommt", la: "venit", grc: "ἔρχεται", ia: "veni", ge: "o vëgne/o ven /a vëgne/a ven" },
+        { p: "3ª sing.", it: "viene", en: "comes", fr: "vient", es: "viene", pt: "vem", de: "kommt", la: "venit", grc: "ἔρχεται", ia: "veni", ge: "o vëgne|o ven" },
+        { p: "3ª sing. f.", it: "viene", ge: "a vëgne|a ven" },
         { p: "1ª plur.", it: "veniamo", en: "come", fr: "venons", es: "venimos", pt: "vimos", de: "kommen", la: "venimus", grc: "ἐρχόμεθα", ia: "veni", ge: "vegnimmo" },
         { p: "2ª plur.", it: "venite", en: "come", fr: "venez", es: "venís", pt: "vindes", de: "kommt", la: "venitis", grc: "ἔρχεσθε", ia: "veni", ge: "vegnî" },
         { p: "3ª plur.", it: "vengono", en: "come", fr: "viennent", es: "vienen", pt: "vêm", de: "kommen", la: "veniunt", grc: "ἔρχονται", ia: "veni", ge: "vëgnan" }
@@ -6486,6 +6498,10 @@ const CONIUGAZIONI = {
           la: "it",
           sp: "i va",
           ge: "lé u va/lê o va"
+        }, {
+          p: "3ª sing. f.",
+          it: "va",
+          ge: "a va"
         }, {
           p: "1ª plur.",
           it: "andiamo",
@@ -6699,7 +6715,8 @@ const CONIUGAZIONI = {
       forme: [
         { p: "1ª sing.", ge: "daggo", it: "do", en: "give", fr: "donne", es: "doy", pt: "dou", de: "gebe", la: "do", grc: "δίδωμι", ia: "da" },
         { p: "2ª sing.", ge: "ti dæ", it: "dai", en: "give", fr: "donnes", es: "das", pt: "dás", de: "gibst", la: "das", grc: "δίδως", ia: "da" },
-        { p: "3ª sing.", ge: "o/a dà", it: "dà", en: "gives", fr: "donne", es: "da", pt: "dá", de: "gibt", la: "dat", grc: "δίδωσι", ia: "da" },
+        { p: "3ª sing.", ge: "o dà", it: "dà", en: "gives", fr: "donne", es: "da", pt: "dá", de: "gibt", la: "dat", grc: "δίδωσι", ia: "da" },
+        { p: "3ª sing. f.", it: "dà", ge: "a dà" },
         { p: "1ª plur.", ge: "demmo", it: "diamo", en: "give", fr: "donnons", es: "damos", pt: "damos", de: "geben", la: "damus", grc: "δίδομεν", ia: "da" },
         { p: "2ª plur.", ge: "dæ", it: "date", en: "give", fr: "donnez", es: "dais", pt: "dais", de: "gebt", la: "datis", grc: "δίδοτε", ia: "da" },
         { p: "3ª plur.", ge: "dan", it: "danno", en: "give", fr: "donnent", es: "dan", pt: "dão", de: "geben", la: "dant", grc: "διδόασι", ia: "da" }
@@ -6715,7 +6732,8 @@ const CONIUGAZIONI = {
       forme: [
         { p: "1ª sing.", it: "sto", en: "stay", fr: "reste", es: "estoy", pt: "estou", de: "bleibe", la: "sto", grc: "ἵσταμαι", ia: "sta", ge: "staggo" },
         { p: "2ª sing.", it: "stai", en: "stay", fr: "restes", es: "estás", pt: "estás", de: "bleibst", la: "stas", grc: "ἵστασαι", ia: "sta", ge: " ti stæ" },
-        { p: "3ª sing.", it: "sta", en: "stays", fr: "reste", es: "está", pt: "está", de: "bleibt", la: "stat", grc: "ἵσταται", ia: "sta", ge: "o/a stà" },
+        { p: "3ª sing.", it: "sta", en: "stays", fr: "reste", es: "está", pt: "está", de: "bleibt", la: "stat", grc: "ἵσταται", ia: "sta", ge: "o stà" },
+        { p: "3ª sing. f.", it: "sta", ge: "a stà" },
         { p: "1ª plur.", it: "stiamo", en: "stay", fr: "restons", es: "estamos", pt: "estamos", de: "bleiben", la: "stamus", grc: "ἱστάμεθα", ia: "sta", ge: "stemmo" },
         { p: "2ª plur.", it: "state", en: "stay", fr: "restez", es: "estáis", pt: "estais", de: "bleibt", la: "statis", grc: "ἵστασθε", ia: "sta", ge: "stæ" },
         { p: "3ª plur.", it: "stanno", en: "stay", fr: "restent", es: "están", pt: "estão", de: "bleiben", la: "stant", grc: "ἵστανται", ia: "sta", ge: "stan" }
@@ -6731,7 +6749,8 @@ const CONIUGAZIONI = {
       forme: [
         { p: "1ª sing.", it: "tiro", en: "pull", fr: "tire", es: "tiro", pt: "tiro", de: "ziehe", la: "traho", grc: "ἕλκω", ia: "tira", ge: "tio" },
         { p: "2ª sing.", it: "tiri", en: "pull", fr: "tires", es: "tiras", pt: "tiras", de: "ziehst", la: "trahis", grc: "ἕλκεις", ia: "tira", ge: "ti tii" },
-        { p: "3ª sing.", it: "tira", en: "pulls", fr: "tire", es: "tira", pt: "tira", de: "zieht", la: "trahit", grc: "ἕλκει", ia: "tira", ge: "o/a tia" },
+        { p: "3ª sing.", it: "tira", en: "pulls", fr: "tire", es: "tira", pt: "tira", de: "zieht", la: "trahit", grc: "ἕλκει", ia: "tira", ge: "o tia" },
+        { p: "3ª sing. f.", it: "tira", ge: "a tia" },
         { p: "1ª plur.", it: "tiriamo", en: "pull", fr: "tirons", es: "tiramos", pt: "tiramos", de: "ziehen", la: "trahimus", grc: "ἕλκομεν", ia: "tira", ge: "tiemmo/tiemo" },
         { p: "2ª plur.", it: "tirate", en: "pull", fr: "tirez", es: "tiráis", pt: "tirais", de: "zieht", la: "trahitis", grc: "ἕλκετε", ia: "tira", ge: "tiæ" },
         { p: "3ª plur.", it: "tirano", en: "pull", fr: "tirent", es: "tiran", pt: "tiram", de: "ziehen", la: "trahunt", grc: "ἕλκουσι", ia: "tira", ge: "tian" }
@@ -6789,6 +6808,10 @@ const CONIUGAZIONI = {
           grc: "βούλεται",
 
           ge: "o veu/eu"
+        }, {
+          p: "3ª sing. f.",
+          it: "vuole",
+          ge: "a veu/eu"
         }, {
           p: "1ª plur.",
           it: "vogliamo",
@@ -6962,7 +6985,8 @@ const CONIUGAZIONI = {
       forme: [
         { p: "1ª sing.", it: "so", en: "know", fr: "sais", es: "sé", pt: "sei", de: "weiß", la: "scio", grc: "οἶδα", ia: "sape", ge: "sò" },
         { p: "2ª sing.", it: "sai", en: "know", fr: "sais", es: "sabes", pt: "sabes", de: "weißt", la: "scis", grc: "οἶσθα", ia: "sape", ge: "ti sæ" },
-        { p: "3ª sing.", it: "sa", en: "knows", fr: "sait", es: "sabe", pt: "sabe", de: "weiß", la: "scit", grc: "οἶδε", ia: "sape", ge: "o/a sa" },
+        { p: "3ª sing.", it: "sa", en: "knows", fr: "sait", es: "sabe", pt: "sabe", de: "weiß", la: "scit", grc: "οἶδε", ia: "sape", ge: "o sa" },
+        { p: "3ª sing. f.", it: "sa", ge: "a sa" },
         { p: "1ª plur.", it: "sappiamo", en: "know", fr: "savons", es: "sabemos", pt: "sabemos", de: "wissen", la: "scimus", grc: "ἴσμεν", ia: "sape", ge: "savemmo/semmo" },
         { p: "2ª plur.", it: "sapete", en: "know", fr: "savez", es: "sabéis", pt: "sabeis", de: "wisst", la: "scitis", grc: "ἴστε", ia: "sape", ge: "sei/savei" },
         { p: "3ª plur.", it: "sanno", en: "know", fr: "savent", es: "saben", pt: "sabem", de: "wissen", la: "sciunt", grc: "ἴσασι(ν)", ia: "sape", ge: "san" }
