@@ -10295,7 +10295,7 @@ function SchermataSceltaMultipla({
       title: "Riascolta lentamente", "aria-label": "Riascolta lentamente"
     }, "🐢")), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-600 mb-6"
-    }, prossimoStato.nScelte > stSess.nScelte ? "🎉 +2 scelte, reset a 10 dom" : prossimoStato.nDom > stSess.nDom ? "⬆️ +5 dom al prossimo giro" : prossimoStato.nDom < stSess.nDom ? "⬇️ -5 dom al prossimo giro" : "➡️ Stesso livello"),/*#__PURE__*/React.createElement("p", {
+    }, perc === 100 && stSess.nDom >= 50 ? "🎉 +2 scelte, reset a 10 dom" : prossimoStato.nDom > stSess.nDom ? "⬆️ +5 dom al prossimo giro" : prossimoStato.nDom < stSess.nDom ? "⬇️ -5 dom al prossimo giro" : "➡️ Stesso livello"),/*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-700 mb-6"
     }, "Prossimo: ", prossimoStato.nScelte, " scelte \xB7 ", prossimoStato.nDom, " dom"), /*#__PURE__*/React.createElement("button", {
       onClick: giocaAncora,
@@ -12857,10 +12857,12 @@ function App() {
       setNuoveApprese(nuove);
       setParoleRegredite(regredite);
       setFine(true);
-      if (punteggio.giusti + (ok ? 1 : 0) > 0) aggiornaStreak();
+      // punteggio include già l'ultima risposta (verificaRisposta/nonLoSo):
+      // non va risommata, sennò la percentuale salvata supera quella mostrata.
+      if (punteggio.giusti > 0) aggiornaStreak();
       // Salva record percentuale immediatamente al termine sessione
-      const totFin = punteggio.giusti + (ok ? 1 : 0) + punteggio.sbagliati;
-      const percFin = totFin > 0 ? Math.round((punteggio.giusti + (ok ? 1 : 0)) / totFin * 100) : 0;
+      const totFin = punteggio.giusti + punteggio.sbagliati;
+      const percFin = totFin > 0 ? Math.round(punteggio.giusti / totFin * 100) : 0;
       if (modalita !== "nonstop" && percFin === 100 && nDomandeUsate > 0) {
         const pk = `perc_${modalita}_${linguaDaUsataConf || "any"}_${linguaAUsataConf || "any"}`;
         setRecordPerc(prev => {
