@@ -5069,7 +5069,7 @@ function rimuoviSoggetto(str, codLingua) {
   if (!SOGGETTI[codLingua]) return str;
   const n = normalizza(str);
   // Prova tutti i soggetti di quella lingua
-  const soggetti = Object.values(SOGGETTI[codLingua]).map(s => normalizza(s));
+  const soggetti = [...Object.values(SOGGETTI[codLingua]), ...(SOGGETTI_ALTRI[codLingua] || [])].map(s => normalizza(s));
   for (const sogg of soggetti) {
     if (!sogg) continue;
     // "you loved" -> rimuove "you "
@@ -5759,6 +5759,18 @@ const SOGGETTI = {
     "2ª plur.": "voi",
     "3ª plur.": "loo"
   }
+};
+// Altri pronomi soggetto (femminili/neutri) che rimuoviSoggetto toglie dalla
+// risposta: SOGGETTI ha solo quelli mostrati, al maschile, ma "she can" o
+// "sie kann" alla 3ª sing. sono risposte giuste.
+const SOGGETTI_ALTRI = {
+  it: ["lei"],
+  fr: ["elle", "elles", "on"],
+  es: ["ella", "ellas", "nosotras", "vosotras"],
+  pt: ["ela", "elas"],
+  en: ["she", "it"],
+  de: ["es"],
+  ia: ["illa", "illas"]
 };
 // Lingue dove il soggetto è grammaticalmente necessario (o molto utile per audio)
 const LINGUE_CON_SOGGETTO = new Set(["fr", "en", "de", "pt", "ia"]);
