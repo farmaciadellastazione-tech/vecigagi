@@ -5790,6 +5790,9 @@ const PRONUNCIA_TTS_SOGGETTO = {
 };
 // Restituisce il testo da leggere ad alta voce per una forma coniugata
 function testoAudio(forma, persona, codLingua) {
+  // Solo la parte da leggere: pronuncia nei dialetti ("mi sun/mi son" → "mi
+  // sun"), primo sinonimo altrove, mai le alternative nascoste dopo "|".
+  forma = formaTTS(forma);
   const p = persona ? persona.replace(/ \(.*\)/, "").trim() : ""; // rimuove "(io/I/je...)"
   const sogg = SOGGETTI[codLingua]?.[p];
   if (!sogg) return forma;
@@ -11989,8 +11992,8 @@ function SchermataQuiz({
     className: "text-slate-300 text-base"
   }, t.risposta, ": ", /*#__PURE__*/React.createElement("span", {
     className: "font-bold text-xl text-white"
-  }, carta.tipo === "coniugazione" ? carta.atteso : formaDisplay(carta.entry[carta.a], carta.a))), lA && /*#__PURE__*/React.createElement(BtnAudio, {
-    testo: carta.tipo === "coniugazione" ? testoAudio(carta.atteso, carta.persona, carta.a) : formaTTS(carta.entry[carta.a]),
+  }, carta.tipo === "coniugazione" ? formaDisplay(carta.atteso, lA?.codice) : formaDisplay(carta.entry[carta.a], carta.a))), lA && /*#__PURE__*/React.createElement(BtnAudio, {
+    testo: carta.tipo === "coniugazione" ? testoAudio(carta.atteso, carta.persona, lA.codice) : formaTTS(carta.entry[carta.a]),
     bcp47: lA.bcp47,
     codice: carta.a,
     audioFile: carta.tipo === "coniugazione" ? null : audioVoce(carta.entry, carta.a)
@@ -12081,8 +12084,8 @@ function SchermataQuiz({
     className: "text-slate-300 text-base"
   }, t.corretta, ": ", /*#__PURE__*/React.createElement("span", {
     className: "font-bold text-xl text-sky-300"
-  }, carta.tipo === "coniugazione" ? carta.atteso : formaDisplay(carta.entry[carta.a], carta.a))), lA && /*#__PURE__*/React.createElement(BtnAudio, {
-    testo: carta.tipo === "coniugazione" ? testoAudio(carta.atteso, carta.persona, carta.a) : formaTTS(carta.entry[carta.a]),
+  }, carta.tipo === "coniugazione" ? formaDisplay(carta.atteso, lA?.codice) : formaDisplay(carta.entry[carta.a], carta.a))), lA && /*#__PURE__*/React.createElement(BtnAudio, {
+    testo: carta.tipo === "coniugazione" ? testoAudio(carta.atteso, carta.persona, lA.codice) : formaTTS(carta.entry[carta.a]),
     bcp47: lA.bcp47,
     codice: carta.a,
     audioFile: carta.tipo === "coniugazione" ? null : audioVoce(carta.entry, carta.a)
