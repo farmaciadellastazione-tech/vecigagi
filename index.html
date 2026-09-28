@@ -371,6 +371,23 @@ const QUIZ_LEN = 10;
 // le scelte) qui non c'è una seconda dimensione di difficoltà da compensare:
 // il tetto si limita a fermare la crescita, senza reset.
 const NDOM_MAX = 20;
+// Percentuale sotto cui si torna indietro di un passo nel n. di domande
+// (richiesta di Dino, 2026-09-28): più domande, più alta la soglia per
+// restare, così gli esercizi non si allungano se non li si padroneggia.
+// Vale per tutte le modalità con progressione, Scelta multipla compresa.
+function sogliaRetrocessione(nDom) {
+  if (nDom > 20) return 90;
+  if (nDom > 10) return 80;
+  return 50;
+}
+// Esercizio abbandonato a metà (← Home prima della fine): si valuta sulle
+// risposte date. Solo retrocessione (non è finito, quindi niente promozione)
+// e solo con almeno 3 risposte (uscita per sbaglio/interruzione).
+function nDomDopoAbbandono(nDom, giusti, risposte, passo, minimo) {
+  if (risposte < 3) return nDom;
+  const perc = Math.round(giusti / risposte * 100);
+  return perc < sogliaRetrocessione(nDom) ? Math.max(minimo, nDom - passo) : nDom;
+}
 // storie.js non è più caricato eager: contiene i testi di "Lettura Guidata"
 // (STORIE_DEFAULT) e cresce nel tempo, quindi lo iniettiamo solo quando serve
 // (tap su "Lettura Guidata" o deep link ?storia=). Evita che ogni caricamento
@@ -9901,6 +9918,20 @@ function SpiegaAI({
     className: "text-xs text-zinc-500 hover:text-zinc-400 transition"
   }, "\u2715 Chiudi")));
 }
+// Scelta multipla, progressione globale: 5\u219212 scelte, 10\u219250 domande (passo 5).
+// `st` = stato con cui \u00e8 stata giocata la sessione.
+function prossimoStatoSM(st, percentuale) {
+  if (percentuale === 100) {
+    if (st.nDom >= 50) {
+      // Massimo domande raggiunto: incrementa scelte e resetta domande a 10
+      const nuoveScelte = Math.min(st.nScelte + 2, 12);
+      return { nScelte: nuoveScelte, nDom: 10, corrette: 0 };
+    }
+    return { ...st, nDom: Math.min(st.nDom + 5, 50), corrette: 0 };
+  }
+  if (percentuale < sogliaRetrocessione(st.nDom)) return { ...st, nDom: Math.max(st.nDom - 5, 10), corrette: 0 };
+  return { ...st, corrette: 0 };
+}
 function SchermataSceltaMultipla({
   vocabolario,
   lingue,
@@ -9929,6 +9960,7 @@ function SchermataSceltaMultipla({
   }
 
   const [stato, setStato] = useState(loadStato);
+  const statoSessioneRef = useRef(null); // stato con cui è stata generata la sessione in corso
   const [indice, setIndice] = useState(0);
   const [carte, setCarte] = useState([]);
   const [risposta, setRisposta] = useState(null);
@@ -9955,6 +9987,7 @@ function SchermataSceltaMultipla({
 
   function generaCarte(statoOverride) {
     const st = statoOverride || stato;
+    statoSessioneRef.current = st;
     if (lingueAttive.length < 2) { setErroreSetup("Servono almeno 2 lingue attive."); return; }
     if (!lP) { setErroreSetup("Lingua prompt non trovata."); return; }
     const candidatiLA = lingueAttive.filter(l => l.codice !== lP.codice);
@@ -10089,18 +10122,23 @@ function SchermataSceltaMultipla({
     if (indice < carte.length - 1) { setIndice(i => i + 1); setRisposta(null); }
   }
 
-  // Progressione globale: 5→12 scelte, 10→50 domande
+  // Sempre dallo stato con cui si è giocata la sessione: l'effetto di fine
+  // sessione aggiorna `stato`, e ricalcolare da lì (anteprima "Prossimo")
+  // conterebbe il passo due volte.
   function calcolaProssimoStato(percentuale) {
-    if (percentuale === 100) {
-      if (stato.nDom >= 50) {
-        // Massimo domande raggiunto: incrementa scelte e resetta domande a 10
-        const nuoveScelte = Math.min(stato.nScelte + 2, 12);
-        return { nScelte: nuoveScelte, nDom: 10, corrette: 0 };
-      }
-      return { ...stato, nDom: Math.min(stato.nDom + 5, 50), corrette: 0 };
+    return prossimoStatoSM(statoSessioneRef.current || stato, percentuale);
+  }
+
+  // ← Home a metà esercizio: retrocessione valutata sulle risposte date
+  // (vedi nDomDopoAbbandono). A fine esercizio la progressione è già salvata.
+  function esciAMeta() {
+    if (!isFineSchermata && carte.length > 0) {
+      const st = statoSessioneRef.current || stato;
+      const risposte = punteggio + Object.keys(errateKeys).length;
+      const nDom = nDomDopoAbbandono(st.nDom, punteggio, risposte, 5, 10);
+      if (nDom !== st.nDom) salvaStato({ ...st, nDom, corrette: 0 });
     }
-    if (percentuale < 50) return { ...stato, nDom: Math.max(stato.nDom - 5, 10), corrette: 0 };
-    return { ...stato, corrette: 0 };
+    onHome();
   }
 
   function giocaAncora() {
@@ -10137,7 +10175,7 @@ function SchermataSceltaMultipla({
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-between mb-4"
   }, /*#__PURE__*/React.createElement("button", {
-    onClick: onHome,
+    onClick: esciAMeta,
     className: "text-zinc-500 hover:text-white transition text-sm"
   }, "\u2190 Home"), /*#__PURE__*/React.createElement("div", {
     className: "text-center"
@@ -10203,6 +10241,7 @@ function SchermataSceltaMultipla({
   }, indice < carte.length - 1 ? "Avanti →" : "Risultati →"), /*#__PURE__*/React.createElement("div", {
     className: "text-center mt-3 text-zinc-600 text-sm"
   }, "\u2705 ", punteggio, " / ", indice + 1)), fine && (() => {
+    const stSess = statoSessioneRef.current || stato;
     const prossimoStato = calcolaProssimoStato(perc);
     return /*#__PURE__*/React.createElement("div", {
       className: "flex-1 flex flex-col items-center justify-center text-center"
@@ -10256,7 +10295,7 @@ function SchermataSceltaMultipla({
       title: "Riascolta lentamente", "aria-label": "Riascolta lentamente"
     }, "🐢")), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-600 mb-6"
-    }, perc === 100 && stato.nDom >= 50 ? "🎉 +2 scelte, reset a 10 dom" : perc === 100 ? "⬆️ +5 dom al prossimo giro" : perc < 50 ? "⬇️ -5 dom al prossimo giro" : "➡️ Stesso livello"), /*#__PURE__*/React.createElement("p", {
+    }, prossimoStato.nScelte > stSess.nScelte ? "🎉 +2 scelte, reset a 10 dom" : prossimoStato.nDom > stSess.nDom ? "⬆️ +5 dom al prossimo giro" : prossimoStato.nDom < stSess.nDom ? "⬇️ -5 dom al prossimo giro" : "➡️ Stesso livello"),/*#__PURE__*/React.createElement("p", {
       className: "text-xs text-zinc-700 mb-6"
     }, "Prossimo: ", prossimoStato.nScelte, " scelte \xB7 ", prossimoStato.nDom, " dom"), /*#__PURE__*/React.createElement("button", {
       onClick: giocaAncora,
@@ -11546,7 +11585,7 @@ function SchermataQuiz({
       if (isNS || nDomandeUsate === 0) return null;
       const inc = modalita === "quiz" ? 5 : 1;
       if (perc === 100) return Math.min(nDomandeUsate + inc, NDOM_MAX);
-      if (perc < 50) return Math.max(5, nDomandeUsate - inc);
+      if (perc < sogliaRetrocessione(nDomandeUsate)) return Math.max(5, nDomandeUsate - inc);
       return nDomandeUsate;
     })();
     return /*#__PURE__*/React.createElement("div", {
@@ -12843,7 +12882,7 @@ function App() {
       // avverava mai (stesso bug corretto in Scelta multipla).
       if (modalita !== "nonstop" && nDomandeUsate > 0) {
         const inc = modalita === "quiz" ? 5 : 1;
-        const nDomProssimo = percFin === 100 ? Math.min(nDomandeUsate + inc, NDOM_MAX) : percFin < 50 ? Math.max(5, nDomandeUsate - inc) : nDomandeUsate;
+        const nDomProssimo = percFin === 100 ? Math.min(nDomandeUsate + inc, NDOM_MAX) : percFin < sogliaRetrocessione(nDomandeUsate) ? Math.max(5, nDomandeUsate - inc) : nDomandeUsate;
         if (nDomProssimo !== nDomandeUsate) {
           const ndomMem = loadJSON(SK_NDOM, {});
           saveJSON(SK_NDOM, { ...ndomMem, [modalita]: nDomProssimo });
@@ -13053,7 +13092,15 @@ function App() {
     onNonLoSo: nonLoSo,
     onSegnalaErrore: () => setSegnalando(true),
     onProponiPronuncia: lingua => setPronunciaAperta(lingua),
-    onHome: () => setSchermata("home"),
+    onHome: () => {
+      // ← Home a metà esercizio: retrocessione valutata sulle risposte date
+      // (vedi nDomDopoAbbandono). A fine sessione SK_NDOM è già salvato.
+      if (!fine && modalita !== "nonstop" && nDomandeUsate > 0) {
+        const nDom = nDomDopoAbbandono(nDomandeUsate, punteggio.giusti, punteggio.giusti + punteggio.sbagliati, modalita === "quiz" ? 5 : 1, 5);
+        if (nDom !== nDomandeUsate) saveJSON(SK_NDOM, { ...loadJSON(SK_NDOM, {}), [modalita]: nDom });
+      }
+      setSchermata("home");
+    },
     nuoveApprese: nuoveApprese,
     paroleRegredite: paroleRegredite,
     fine: fine,
