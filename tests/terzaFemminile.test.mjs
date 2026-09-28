@@ -34,7 +34,7 @@ const F = '3ª sing. f.';
 
 test('i verbi con il femminile ge nei dati hanno la riga 3ª sing. f. nel presente', () => {
   const attesi = {
-    andare: ['va', 'a va'], potere: ['può', 'a peu'], volere: ['vuole', 'a veu/eu'],
+    andare: ['va', 'a va'], potere: ['può', 'a peu'], volere: ['vuole', 'a veu|a eu'],
     stare: ['sta', 'a stà'], tirare: ['tira', 'a tia'], sapere: ['sa', 'a sa'],
     dare: ['dà', 'a dà'], venire: ['viene', 'a vëgne|a ven'],
   };
