@@ -3346,11 +3346,18 @@ async function adminGhPutFile(path, nuovoSrc, commitMessage) {
   // Se il file su GitHub è cambiato dopo il caricamento di questa pagina
   // (salvataggio da un'altra scheda/pagina/dispositivo, o un push),
   // sovrascriverlo dallo snapshot in memoria cancellerebbe quelle modifiche
-  // (clobber storico: commit b8b23a0). Fail-open se l'API omette il
-  // contenuto (file oltre ~1 MB).
+  // (clobber storico: commit b8b23a0). Sopra ~1 MB la GET JSON non include
+  // il contenuto: lo si rilegge dalla stessa API in formato raw (fino a
+  // 100 MB; non da raw.githubusercontent, che può servire una copia vecchia
+  // di minuti). Se fallisce, ci si ferma.
   const snapshot = adminSnapshotPerPath(path);
-  const remoto = adminDecodificaContenutoGh(ghJson);
-  if (snapshot !== null && remoto !== null && remoto !== snapshot) {
+  let remoto = adminDecodificaContenutoGh(ghJson);
+  if (snapshot !== null && remoto === null) {
+    const rawRes = await fetch(apiBase + '?ref=' + GH_BRANCH, { headers: { ...headers, 'Accept': 'application/vnd.github.raw' }, cache: 'no-store' });
+    if (!rawRes.ok) throw new Error(`Impossibile rileggere ${path} da GitHub (${rawRes.status}): operazione annullata per sicurezza. Riprova.`);
+    remoto = await rawRes.text();
+  }
+  if (snapshot !== null && remoto !== snapshot) {
     throw new Error(
       `"${path}" su GitHub è cambiato dopo il caricamento di questa pagina ` +
       `(probabilmente un salvataggio da un'altra scheda o da edit.html).\n\n` +

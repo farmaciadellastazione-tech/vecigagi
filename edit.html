@@ -576,7 +576,8 @@ const PAGE_SIZE = 50;
 let vocabolario = [];
 let frasiSP = [];                // array editabile di frasi a fine esercizio (spezzino)
 let frasiSPModificate = false;   // flag per save: le frasi sono state cambiate
-let originalSourceFile = null;
+let originalSourceFile = null;   // base su cui si ricostruisce il file (può includere modifiche locali, es. nuova lingua)
+let sorgenteRemoto = null;       // il file com'è su GitHub (ultimo caricamento/salvataggio): per la guardia anti-clobber
 let originalSourceSha = null;
 let originalVocabJs = null;
 let currentLangs = ['mn'];   // array ordinato di codici lingua visibili in tabella
@@ -1044,6 +1045,7 @@ async function caricaIndexDaGitHub() {
     ]);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     originalSourceFile = await res.text();
+    sorgenteRemoto = originalSourceFile;
     originalSourceSha = null;
     baseVoci = null; // la cache delle versioni "di partenza" segue il file appena caricato
     originalVocabJs = (vocabRes && vocabRes.ok) ? await vocabRes.text() : null;
@@ -2950,9 +2952,19 @@ async function salvaSuGitHub() {
     // un'altra scheda/pagina/dispositivo, o un push), sovrascriverlo con la
     // versione ricostruita da QUESTO snapshot cancellerebbe quelle modifiche
     // (è già successo: commit b8b23a0 azzerò 283 tag verif). Meglio fermarsi.
-    // Se l'API non include il contenuto (file > ~1 MB) il controllo è saltato.
-    const remoto = decodificaContenutoGh(ghJson);
-    if (remoto !== null && remoto !== originalSourceFile) {
+    // Sopra ~1 MB la GET JSON non include il contenuto: lo si rilegge dalla
+    // stessa API in formato raw (fino a 100 MB; non da raw.githubusercontent,
+    // che può servire una copia vecchia di minuti). Se fallisce, ci si ferma.
+    let remoto = decodificaContenutoGh(ghJson);
+    if (remoto === null) {
+      const rawRes = await fetchTimeout(apiBase + '?ref=' + GH_BRANCH, { headers: { ...headers, 'Accept': 'application/vnd.github.raw' }, cache: 'no-store' }, 30000);
+      if (!rawRes.ok) throw new Error('Impossibile rileggere il file da GitHub (' + rawRes.status + '): salvataggio annullato per sicurezza. Riprova.');
+      remoto = await rawRes.text();
+    }
+    // Confronto con sorgenteRemoto, non con originalSourceFile: quest'ultimo
+    // può contenere modifiche locali (es. "Aggiungi lingua") e farebbe
+    // risultare il file sempre "cambiato", bloccando ogni salvataggio.
+    if (remoto !== sorgenteRemoto) {
       throw new Error(
         `"${sorgentePath()}" su GitHub è cambiato dopo il tuo caricamento ` +
         `(probabilmente un salvataggio da un'altra pagina o dispositivo).\n\n` +
@@ -2967,7 +2979,7 @@ async function salvaSuGitHub() {
       : `Aggiornamento da edit.html (${tot} voci, ${modCount} modifiche)`;
     const putRes = await fetchTimeout(apiBase, { method:'PUT', headers:Object.assign({}, headers, {'Content-Type':'application/json'}), body:JSON.stringify({ message: msgCommit, content:btoa(bin), branch:GH_BRANCH, sha }) }, 60000);
     if (!putRes.ok) { if (putRes.status === 401 && confirm('Token rifiutato. Cancello?')) localStorage.removeItem(GH_TOKEN_KEY); throw new Error('PUT fallito (' + putRes.status + ')'); }
-    originalSourceFile = nuovoSrc; originalSourceSha = (await putRes.json()).content.sha;
+    originalSourceFile = nuovoSrc; sorgenteRemoto = nuovoSrc; originalSourceSha = (await putRes.json()).content.sha;
     // Salva vocab.js se le frasi spezzine sono state modificate (solo modalità index)
     if (frasiSPModificate && !isCandidatiMode()) {
       const nuovoVocabJs = ricostruisciVocabJs();

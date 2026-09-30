@@ -806,8 +806,16 @@ async function salvaSuGitHub() {
     const sha = ghJson.sha;
     // Guardia anti-clobber: se index.html è cambiato su GitHub dopo il caricamento
     // (es. un salvataggio da edit.html nel frattempo), non sovrascrivere alla cieca.
-    const remoto = decodificaContenutoGh(ghJson);
-    if (remoto !== null && remoto !== originalSourceFile) {
+    // Sopra ~1 MB la GET JSON non include il contenuto: lo si rilegge dalla
+    // stessa API in formato raw (fino a 100 MB; non da raw.githubusercontent,
+    // che può servire una copia vecchia di minuti). Se fallisce, ci si ferma.
+    let remoto = decodificaContenutoGh(ghJson);
+    if (remoto === null) {
+      const rawRes = await fetchTimeout(apiBase + '?ref=' + GH_BRANCH, { headers: { ...headers, 'Accept': 'application/vnd.github.raw' }, cache: 'no-store' }, 30000);
+      if (!rawRes.ok) throw new Error('Impossibile rileggere il file da GitHub (' + rawRes.status + '): salvataggio annullato per sicurezza. Riprova.');
+      remoto = await rawRes.text();
+    }
+    if (remoto !== originalSourceFile) {
       scriviBozzaOra();
       throw new Error(
         `"${GH_PATH}" su GitHub è cambiato dopo il tuo caricamento (probabilmente un salvataggio ` +

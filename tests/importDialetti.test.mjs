@@ -244,7 +244,8 @@ function makeGuardCtx({ remoto, snapshot, senzaContent = false }) {
         const body = senzaContent
           ? { sha: 'sha1' }
           : { sha: 'sha1', content: Buffer.from(remoto, 'utf8').toString('base64') };
-        return { ok: true, status: 200, json: async () => body };
+        // text(): risposta alla GET in formato raw (rilettura oltre 1 MB)
+        return { ok: true, status: 200, json: async () => body, text: async () => remoto };
       }
       return { ok: true, status: 200, json: async () => ({ content: { sha: 'sha2' } }) };
     },
@@ -278,10 +279,13 @@ test('guardia dialetti: remoto CAMBIATO → salvataggio bloccato, PUT non chiama
   assert.deepEqual(chiamate, ['GET'], 'la PUT non deve partire');
 });
 
-test('guardia dialetti: content assente dalla GET (file >1MB) → fail-open, PUT eseguita', async () => {
-  const { ctx, chiamate } = makeGuardCtx({ remoto: '', snapshot: 'contenuto-v1', senzaContent: true });
+// 2026-09-30: prima era fail-open (senza contenuto si salvava alla cieca);
+// ora il file si rilegge in formato raw e il controllo avviene comunque
+// (casi "cambiato"/"rilettura fallita" in tests/guardiaOltre1MB.test.mjs).
+test('guardia dialetti: content assente dalla GET (file >1MB) → rilegge il file, poi PUT', async () => {
+  const { ctx, chiamate } = makeGuardCtx({ remoto: 'contenuto-v1', snapshot: 'contenuto-v1', senzaContent: true });
   await vm.runInContext('adminGhPutFile(GH_PATH_DIALETTI, "nuovo", "msg")', ctx);
-  assert.deepEqual(chiamate, ['GET', 'PUT']);
+  assert.deepEqual(chiamate, ['GET', 'GET', 'PUT']);
 });
 
 // ── Promozione e omonimi (bug "vassoio"/"cacciare", 2026-07-12) ─────────────
