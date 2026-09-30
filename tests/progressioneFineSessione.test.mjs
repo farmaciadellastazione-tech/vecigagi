@@ -16,7 +16,8 @@ const ROOT = path.dirname(fileURLToPath(import.meta.url)) + '/..';
 const INDEX = fs.readFileSync(ROOT + '/index.html', 'utf8');
 
 test('fine sessione: percentuale e streak non contano due volte l\'ultima risposta', () => {
-  const a = INDEX.indexOf('function avanti() {\n    const ok = stato === "corretto";');
+  // \r?\n: con core.autocrlf=true i file locali hanno a capo Windows
+  const a = INDEX.search(/function avanti\(\) \{\r?\n    const ok = stato === "corretto";/);
   assert.ok(a > 0, 'avanti() di App non trovata');
   const fine = INDEX.slice(a, INDEX.indexOf('saveJSON(SK_NDOM, { ...ndomMem, [modalita]: nDomProssimo })', a));
   assert.doesNotMatch(fine, /punteggio\.giusti \+ \(ok \? 1 : 0\)/,
