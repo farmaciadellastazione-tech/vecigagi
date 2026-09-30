@@ -2950,9 +2950,16 @@ async function salvaSuGitHub() {
     // un'altra scheda/pagina/dispositivo, o un push), sovrascriverlo con la
     // versione ricostruita da QUESTO snapshot cancellerebbe quelle modifiche
     // (è già successo: commit b8b23a0 azzerò 283 tag verif). Meglio fermarsi.
-    // Se l'API non include il contenuto (file > ~1 MB) il controllo è saltato.
-    const remoto = decodificaContenutoGh(ghJson);
-    if (remoto !== null && remoto !== originalSourceFile) {
+    // Sopra ~1 MB la GET JSON non include il contenuto: lo si rilegge dalla
+    // stessa API in formato raw (fino a 100 MB; non da raw.githubusercontent,
+    // che può servire una copia vecchia di minuti). Se fallisce, ci si ferma.
+    let remoto = decodificaContenutoGh(ghJson);
+    if (remoto === null) {
+      const rawRes = await fetchTimeout(apiBase + '?ref=' + GH_BRANCH, { headers: { ...headers, 'Accept': 'application/vnd.github.raw' }, cache: 'no-store' }, 30000);
+      if (!rawRes.ok) throw new Error('Impossibile rileggere il file da GitHub (' + rawRes.status + '): salvataggio annullato per sicurezza. Riprova.');
+      remoto = await rawRes.text();
+    }
+    if (remoto !== originalSourceFile) {
       throw new Error(
         `"${sorgentePath()}" su GitHub è cambiato dopo il tuo caricamento ` +
         `(probabilmente un salvataggio da un'altra pagina o dispositivo).\n\n` +
