@@ -6031,430 +6031,86 @@ const CONIUGAZIONI = {
   fare: {
     nome: "fare",
     tempi: {
-      presente: {
-        nome: "Presente",
-        forme: [{
-          p: "1ª sing.",
-          it: "faccio",
-          fr: "fais",
-          es: "hago",
-          pt: "faço/faco",
-          en: "do/make",
-          de: "mache",
-          ia: "face"
-        }, {
-          p: "2ª sing.",
-          it: "fai",
-          fr: "fais",
-          es: "haces",
-          pt: "fazes",
-          en: "do/make",
-          de: "machst",
-          ia: "face"
-        }, {
-          p: "3ª sing.",
-          it: "fa",
-          fr: "fait",
-          es: "hace",
-          pt: "faz",
-          en: "does/makes",
-          de: "macht",
-          ia: "face"
-        }, {
-          p: "1ª plur.",
-          it: "facciamo",
-          fr: "faisons",
-          es: "hacemos",
-          pt: "fazemos",
-          en: "do/make",
-          de: "machen",
-          ia: "face"
-        }, {
-          p: "2ª plur.",
-          it: "fate",
-          fr: "faites",
-          es: "hacéis",
-          pt: "fazeis",
-          en: "do/make",
-          de: "macht",
-          ia: "face"
-        }, {
-          p: "3ª plur.",
-          it: "fanno",
-          fr: "font",
-          es: "hacen",
-          pt: "fazem",
-          en: "do/make",
-          de: "machen",
-          ia: "face"
-        }]
-      },
-      imperfetto: {
-        nome: "Imperfetto",
-        forme: [{
-          p: "1ª sing.",
-          it: "facevo",
-          fr: "faisais",
-          es: "hacía",
-          pt: "fazia",
-          en: "did/made",
-          de: "machte",
-          ia: "faceva"
-        }, {
-          p: "2ª sing.",
-          it: "facevi",
-          fr: "faisais",
-          es: "hacías",
-          pt: "fazias",
-          en: "did/made",
-          de: "machtest",
-          ia: "faceva"
-        }, {
-          p: "3ª sing.",
-          it: "faceva",
-          fr: "faisait",
-          es: "hacía",
-          pt: "fazia",
-          en: "did/made",
-          de: "machte",
-          ia: "faceva"
-        }, {
-          p: "1ª plur.",
-          it: "facevamo",
-          fr: "faisions",
-          es: "hacíamos",
-          pt: "fazíamos/faziamos",
-          en: "did/made",
-          de: "machten",
-          ia: "faceva"
-        }, {
-          p: "2ª plur.",
-          it: "facevate",
-          fr: "faisiez",
-          es: "hacíais",
-          pt: "fazíeis/fazieis",
-          en: "did/made",
-          de: "machtet",
-          ia: "faceva"
-        }, {
-          p: "3ª plur.",
-          it: "facevano",
-          fr: "faisaient",
-          es: "hacían",
-          pt: "faziam",
-          en: "did/made",
-          de: "machten",
-          ia: "faceva"
-        }]
-      },
-      futuro: {
-        nome: "Futuro",
-        forme: [{
-          p: "1ª sing.",
-          it: "farò",
-          fr: "ferai",
-          es: "haré",
-          pt: "farei",
-          en: "will do",
-          de: "werde machen",
-          ia: "facera"
-        }, {
-          p: "2ª sing.",
-          it: "farai",
-          fr: "feras",
-          es: "harás",
-          pt: "farás/faras",
-          en: "will do",
-          de: "wirst machen",
-          ia: "facera"
-        }, {
-          p: "3ª sing.",
-          it: "farà",
-          fr: "fera",
-          es: "hará",
-          pt: "fará/fara",
-          en: "will do",
-          de: "wird machen",
-          ia: "facera"
-        }, {
-          p: "1ª plur.",
-          it: "faremo",
-          fr: "ferons",
-          es: "haremos",
-          pt: "faremos",
-          en: "will do",
-          de: "werden machen",
-          ia: "facera"
-        }, {
-          p: "2ª plur.",
-          it: "farete",
-          fr: "ferez",
-          es: "haréis",
-          pt: "fareis",
-          en: "will do",
-          de: "werdet machen",
-          ia: "facera"
-        }, {
-          p: "3ª plur.",
-          it: "faranno",
-          fr: "feront",
-          es: "harán",
-          pt: "farão/farao",
-          en: "will do",
-          de: "werden machen",
-          ia: "facera"
-        }]
-      },
-      imperativo: {
-        nome: "Imperativo",
-        forme: [{
-          p: "2ª sing.",
-          it: "fai!/fa'!",
-          fr: "fais!",
-          es: "¡haz!",
-          pt: "faz!",
-          en: "do!/make!",
-          de: "mach!",
-          ia: "face!"
-        }, {
-          p: "1ª plur.",
-          it: "facciamo!",
-          fr: "faisons!",
-          es: "¡hagamos!",
-          pt: "façamos/facamos!",
-          en: "let's do!",
-          de: "machen wir!",
-          ia: "face!"
-        }, {
-          p: "2ª plur.",
-          it: "fate!",
-          fr: "faites!",
-          es: "¡haced!",
-          pt: "fazei!",
-          en: "do!/make!",
-          de: "macht!",
-          ia: "face!"
-        }]
-      }
+    presente: {
+      nome: "Presente",
+      forme: [
+        { p: "1ª sing.", it: "faccio", fr: "fais", es: "hago", pt: "faço/faco", en: "do/make", de: "mache", ia: "face" },
+        { p: "2ª sing.", it: "fai", fr: "fais", es: "haces", pt: "fazes", en: "do/make", de: "machst", ia: "face" },
+        { p: "3ª sing.", it: "fa", fr: "fait", es: "hace", pt: "faz", en: "does/makes", de: "macht", ia: "face" },
+        { p: "1ª plur.", it: "facciamo", fr: "faisons", es: "hacemos", pt: "fazemos", en: "do/make", de: "machen", ia: "face" },
+        { p: "2ª plur.", it: "fate", fr: "faites", es: "hacéis", pt: "fazeis", en: "do/make", de: "macht", ia: "face" },
+        { p: "3ª plur.", it: "fanno", fr: "font", es: "hacen", pt: "fazem", en: "do/make", de: "machen", ia: "face" }
+      ]
+    },
+    imperfetto: {
+      nome: "Imperfetto",
+      forme: [
+        { p: "1ª sing.", it: "facevo", fr: "faisais", es: "hacía", pt: "fazia", en: "did/made", de: "machte", ia: "faceva" },
+        { p: "2ª sing.", it: "facevi", fr: "faisais", es: "hacías", pt: "fazias", en: "did/made", de: "machtest", ia: "faceva" },
+        { p: "3ª sing.", it: "faceva", fr: "faisait", es: "hacía", pt: "fazia", en: "did/made", de: "machte", ia: "faceva" },
+        { p: "1ª plur.", it: "facevamo", fr: "faisions", es: "hacíamos", pt: "fazíamos/faziamos", en: "did/made", de: "machten", ia: "faceva" },
+        { p: "2ª plur.", it: "facevate", fr: "faisiez", es: "hacíais", pt: "fazíeis/fazieis", en: "did/made", de: "machtet", ia: "faceva" },
+        { p: "3ª plur.", it: "facevano", fr: "faisaient", es: "hacían", pt: "faziam", en: "did/made", de: "machten", ia: "faceva" }
+      ]
+    },
+    futuro: {
+      nome: "Futuro",
+      forme: [
+        { p: "1ª sing.", it: "farò", fr: "ferai", es: "haré", pt: "farei", en: "will do", de: "werde machen", ia: "facera" },
+        { p: "2ª sing.", it: "farai", fr: "feras", es: "harás", pt: "farás/faras", en: "will do", de: "wirst machen", ia: "facera" },
+        { p: "3ª sing.", it: "farà", fr: "fera", es: "hará", pt: "fará/fara", en: "will do", de: "wird machen", ia: "facera" },
+        { p: "1ª plur.", it: "faremo", fr: "ferons", es: "haremos", pt: "faremos", en: "will do", de: "werden machen", ia: "facera" },
+        { p: "2ª plur.", it: "farete", fr: "ferez", es: "haréis", pt: "fareis", en: "will do", de: "werdet machen", ia: "facera" },
+        { p: "3ª plur.", it: "faranno", fr: "feront", es: "harán", pt: "farão/farao", en: "will do", de: "werden machen", ia: "facera" }
+      ]
+    },
+    imperativo: {
+      nome: "Imperativo",
+      forme: [
+        { p: "2ª sing.", it: "fai!/fa'!", fr: "fais!", es: "¡haz!", pt: "faz!", en: "do!/make!", de: "mach!", ia: "face!" },
+        { p: "1ª plur.", it: "facciamo!", fr: "faisons!", es: "¡hagamos!", pt: "façamos/facamos!", en: "let's do!", de: "machen wir!", ia: "face!" },
+        { p: "2ª plur.", it: "fate!", fr: "faites!", es: "¡haced!", pt: "fazei!", en: "do!/make!", de: "macht!", ia: "face!" }
+      ]
+    }
     }
   },
   potere: {
     nome: "potere",
     tempi: {
-      presente: {
-        nome: "Presente",
-        forme: [{
-          p: "1ª sing.",
-          it: "posso",
-          fr: "peux/puis",
-          es: "puedo",
-          pt: "posso",
-          en: "can",
-          de: "kann",
-          ia: "pote",
-
-          la: "possum",
-
-          grc: "δύναμαι",
-
-          ge: "pòsso"
-        }, {
-          p: "2ª sing.",
-          it: "puoi",
-          fr: "peux",
-          es: "puedes",
-          pt: "podes",
-          en: "can",
-          de: "kannst",
-          ia: "pote",
-
-          la: "potes",
-
-          grc: "δύνασαι",
-
-          ge: "ti peu"
-        }, {
-          p: "3ª sing.",
-          it: "può",
-          fr: "peut",
-          es: "puede",
-          pt: "pode",
-          en: "can",
-          de: "kann",
-          ia: "pote",
-
-          la: "potest",
-
-          grc: "δύναται",
-
-          ge: "o peu"
-        }, {
-          p: "3ª sing. f.",
-          it: "può",
-          ge: "a peu"
-        }, {
-          p: "1ª plur.",
-          it: "possiamo",
-          fr: "pouvons",
-          es: "podemos",
-          pt: "podemos",
-          en: "can",
-          de: "können",
-          ia: "pote",
-
-          la: "possumus",
-
-          grc: "δυνάμεθα",
-
-          ge: "poemmo|poemo"
-        }, {
-          p: "2ª plur.",
-          it: "potete",
-          fr: "pouvez",
-          es: "podéis",
-          pt: "podeis",
-          en: "can",
-          de: "könnt",
-          ia: "pote",
-
-          la: "potestis",
-
-          grc: "δύνασθε",
-
-          ge: "poei"
-        }, {
-          p: "3ª plur.",
-          it: "possono",
-          fr: "peuvent",
-          es: "pueden",
-          pt: "podem",
-          en: "can",
-          de: "können",
-          ia: "pote",
-
-          la: "possunt",
-
-          grc: "δύνανται",
-
-          ge: "peuan"
-        }]
-      },
-      imperfetto: {
-        nome: "Imperfetto",
-        forme: [{
-          p: "1ª sing.",
-          it: "potevo",
-          fr: "pouvais",
-          es: "podía",
-          pt: "podia",
-          en: "could",
-          de: "konnte",
-          ia: "poteva"
-        }, {
-          p: "2ª sing.",
-          it: "potevi",
-          fr: "pouvais",
-          es: "podías",
-          pt: "podias",
-          en: "could",
-          de: "konntest",
-          ia: "poteva"
-        }, {
-          p: "3ª sing.",
-          it: "poteva",
-          fr: "pouvait",
-          es: "podía",
-          pt: "podia",
-          en: "could",
-          de: "konnte",
-          ia: "poteva"
-        }, {
-          p: "1ª plur.",
-          it: "potevamo",
-          fr: "pouvions",
-          es: "podíamos",
-          pt: "podíamos/podiamos",
-          en: "could",
-          de: "konnten",
-          ia: "poteva"
-        }, {
-          p: "2ª plur.",
-          it: "potevate",
-          fr: "pouviez",
-          es: "podíais",
-          pt: "podíeis/podieis",
-          en: "could",
-          de: "konntet",
-          ia: "poteva"
-        }, {
-          p: "3ª plur.",
-          it: "potevano",
-          fr: "pouvaient",
-          es: "podían",
-          pt: "podiam",
-          en: "could",
-          de: "konnten",
-          ia: "poteva"
-        }]
-      },
-      futuro: {
-        nome: "Futuro",
-        forme: [{
-          p: "1ª sing.",
-          it: "potrò",
-          fr: "pourrai",
-          es: "podré",
-          pt: "poderei",
-          en: "will be able",
-          de: "werde können",
-          ia: "potera"
-        }, {
-          p: "2ª sing.",
-          it: "potrai",
-          fr: "pourras",
-          es: "podrás",
-          pt: "poderás/poderas",
-          en: "will be able",
-          de: "wirst können",
-          ia: "potera"
-        }, {
-          p: "3ª sing.",
-          it: "potrà",
-          fr: "pourra",
-          es: "podrá",
-          pt: "poderá/podera",
-          en: "will be able",
-          de: "wird können",
-          ia: "potera"
-        }, {
-          p: "1ª plur.",
-          it: "potremo",
-          fr: "pourrons",
-          es: "podremos",
-          pt: "poderemos",
-          en: "will be able",
-          de: "werden können",
-          ia: "potera"
-        }, {
-          p: "2ª plur.",
-          it: "potrete",
-          fr: "pourrez",
-          es: "podréis",
-          pt: "podereis",
-          en: "will be able",
-          de: "werdet können",
-          ia: "potera"
-        }, {
-          p: "3ª plur.",
-          it: "potranno",
-          fr: "pourront",
-          es: "podrán",
-          pt: "poderão/poderao",
-          en: "will be able",
-          de: "werden können",
-          ia: "potera"
-        }]
-      }
+    presente: {
+      nome: "Presente",
+      forme: [
+        { p: "1ª sing.", it: "posso", fr: "peux/puis", es: "puedo", pt: "posso", en: "can", de: "kann", ia: "pote", la: "possum", grc: "δύναμαι", ge: "pòsso" },
+        { p: "2ª sing.", it: "puoi", fr: "peux", es: "puedes", pt: "podes", en: "can", de: "kannst", ia: "pote", la: "potes", grc: "δύνασαι", ge: "ti peu" },
+        { p: "3ª sing.", it: "può", fr: "peut", es: "puede", pt: "pode", en: "can", de: "kann", ia: "pote", la: "potest", grc: "δύναται", ge: "o peu" },
+        { p: "3ª sing. f.", it: "può", ge: "a peu" },
+        { p: "1ª plur.", it: "possiamo", fr: "pouvons", es: "podemos", pt: "podemos", en: "can", de: "können", ia: "pote", la: "possumus", grc: "δυνάμεθα", ge: "poemmo|poemo" },
+        { p: "2ª plur.", it: "potete", fr: "pouvez", es: "podéis", pt: "podeis", en: "can", de: "könnt", ia: "pote", la: "potestis", grc: "δύνασθε", ge: "poei" },
+        { p: "3ª plur.", it: "possono", fr: "peuvent", es: "pueden", pt: "podem", en: "can", de: "können", ia: "pote", la: "possunt", grc: "δύνανται", ge: "peuan" }
+      ]
+    },
+    imperfetto: {
+      nome: "Imperfetto",
+      forme: [
+        { p: "1ª sing.", it: "potevo", fr: "pouvais", es: "podía", pt: "podia", en: "could", de: "konnte", ia: "poteva" },
+        { p: "2ª sing.", it: "potevi", fr: "pouvais", es: "podías", pt: "podias", en: "could", de: "konntest", ia: "poteva" },
+        { p: "3ª sing.", it: "poteva", fr: "pouvait", es: "podía", pt: "podia", en: "could", de: "konnte", ia: "poteva" },
+        { p: "1ª plur.", it: "potevamo", fr: "pouvions", es: "podíamos", pt: "podíamos/podiamos", en: "could", de: "konnten", ia: "poteva" },
+        { p: "2ª plur.", it: "potevate", fr: "pouviez", es: "podíais", pt: "podíeis/podieis", en: "could", de: "konntet", ia: "poteva" },
+        { p: "3ª plur.", it: "potevano", fr: "pouvaient", es: "podían", pt: "podiam", en: "could", de: "konnten", ia: "poteva" }
+      ]
+    },
+    futuro: {
+      nome: "Futuro",
+      forme: [
+        { p: "1ª sing.", it: "potrò", fr: "pourrai", es: "podré", pt: "poderei", en: "will be able", de: "werde können", ia: "potera" },
+        { p: "2ª sing.", it: "potrai", fr: "pourras", es: "podrás", pt: "poderás/poderas", en: "will be able", de: "wirst können", ia: "potera" },
+        { p: "3ª sing.", it: "potrà", fr: "pourra", es: "podrá", pt: "poderá/podera", en: "will be able", de: "wird können", ia: "potera" },
+        { p: "1ª plur.", it: "potremo", fr: "pourrons", es: "podremos", pt: "poderemos", en: "will be able", de: "werden können", ia: "potera" },
+        { p: "2ª plur.", it: "potrete", fr: "pourrez", es: "podréis", pt: "podereis", en: "will be able", de: "werdet können", ia: "potera" },
+        { p: "3ª plur.", it: "potranno", fr: "pourront", es: "podrán", pt: "poderão/poderao", en: "will be able", de: "werden können", ia: "potera" }
+      ]
+    }
     }
   },
   venire: {
@@ -6477,254 +6133,48 @@ const CONIUGAZIONI = {
   andare: {
     nome: "andare",
     tempi: {
-      presente: {
-        nome: "Presente",
-        forme: [{
-          p: "1ª sing.",
-          it: "vado",
-          fr: "vais",
-          es: "voy",
-          pt: "vou",
-          en: "go",
-          de: "gehe",
-          ia: "vade",
-
-          la: "eo",
-          sp: "a vago",
-          ge: "mi vaggu/mi vaggo|vaddo"
-        }, {
-          p: "2ª sing.",
-          it: "vai",
-          fr: "vas",
-          es: "vas",
-          pt: "vais",
-          en: "go",
-          de: "gehst",
-          ia: "vade",
-
-          la: "is",
-          sp: "te vè",
-          ge: "ti ti vè/ti ti væ"
-        }, {
-          p: "3ª sing.",
-          it: "va",
-          fr: "va",
-          es: "va",
-          pt: "vai",
-          en: "goes",
-          de: "geht",
-          ia: "vade",
-
-          la: "it",
-          sp: "i va",
-          ge: "lé u va/lê o va"
-        }, {
-          p: "3ª sing. f.",
-          it: "va",
-          ge: "a va"
-        }, {
-          p: "1ª plur.",
-          it: "andiamo",
-          fr: "allons",
-          es: "vamos",
-          pt: "vamos",
-          en: "go",
-          de: "gehen",
-          ia: "vade",
-
-          la: "imus",
-          sp: "a andémo",
-          ge: "niatri anémmu/niatri anemmo"
-        }, {
-          p: "2ª plur.",
-          it: "andate",
-          fr: "allez",
-          es: "vais",
-          pt: "ides",
-          en: "go",
-          de: "geht",
-          ia: "vade",
-
-          la: "itis",
-          sp: "a andè",
-          ge: "viatri anè/viatri anæ"
-        }, {
-          p: "3ª plur.",
-          it: "vanno",
-          fr: "vont",
-          es: "van",
-          pt: "vão",
-          en: "go",
-          de: "gehen",
-          ia: "vade",
-
-          la: "eunt",
-          sp: "i van",
-          ge: "liatri van"
-        }]
-      },
-      imperfetto: {
-        nome: "Imperfetto",
-        forme: [{
-          p: "1ª sing.",
-          it: "andavo",
-          fr: "allais",
-          es: "iba",
-          pt: "ia",
-          en: "went",
-          de: "ging",
-          ia: "vadeva",
-          ge: "mi anava"
-        }, {
-          p: "2ª sing.",
-          it: "andavi",
-          fr: "allais",
-          es: "ibas",
-          pt: "ias",
-          en: "went",
-          de: "gingst",
-          ia: "vadeva",
-          ge: "ti t'anavi"
-        }, {
-          p: "3ª sing.",
-          it: "andava",
-          fr: "allait",
-          es: "iba",
-          pt: "ia",
-          en: "went",
-          de: "ging",
-          ia: "vadeva",
-          ge: "lé u l'anava/lê o l'anava"
-        }, {
-          p: "1ª plur.",
-          it: "andavamo",
-          fr: "allions",
-          es: "íbamos",
-          pt: "íamos/iamos",
-          en: "went",
-          de: "gingen",
-          ia: "vadeva",
-          ge: "niatri anavimu/niatri anavimo"
-        }, {
-          p: "2ª plur.",
-          it: "andavate",
-          fr: "alliez",
-          es: "ibais",
-          pt: "íeis/ieis",
-          en: "went",
-          de: "gingt",
-          ia: "vadeva",
-          ge: "viatri anavi"
-        }, {
-          p: "3ª plur.",
-          it: "andavano",
-          fr: "allaient",
-          es: "iban",
-          pt: "iam",
-          en: "went",
-          de: "gingen",
-          ia: "vadeva",
-          ge: "liatri anavan"
-        }]
-      },
-      futuro: {
-        nome: "Futuro",
-        forme: [{
-          p: "1ª sing.",
-          it: "andrò",
-          fr: "irai",
-          es: "iré",
-          pt: "irei",
-          en: "will go",
-          de: "werde gehen",
-          ia: "vadera",
-          ge: "mi aniò"
-        }, {
-          p: "2ª sing.",
-          it: "andrai",
-          fr: "iras",
-          es: "irás",
-          pt: "irás/iras",
-          en: "will go",
-          de: "wirst gehen",
-          ia: "vadera",
-          ge: "ti t'aniè/ti t'aniæ"
-        }, {
-          p: "3ª sing.",
-          it: "andrà",
-          fr: "ira",
-          es: "irá",
-          pt: "irá/ira",
-          en: "will go",
-          de: "wird gehen",
-          ia: "vadera",
-          ge: "lé u l'anià/lê o l'anià"
-        }, {
-          p: "1ª plur.",
-          it: "andremo",
-          fr: "irons",
-          es: "iremos",
-          pt: "iremos",
-          en: "will go",
-          de: "werden gehen",
-          ia: "vadera",
-          ge: "niatri aniemu/niatri aniemo"
-        }, {
-          p: "2ª plur.",
-          it: "andrete",
-          fr: "irez",
-          es: "iréis",
-          pt: "ireis",
-          en: "will go",
-          de: "werdet gehen",
-          ia: "vadera",
-          ge: "viatri aniéi/viatri aniei"
-        }, {
-          p: "3ª plur.",
-          it: "andranno",
-          fr: "iront",
-          es: "irán",
-          pt: "irão/irao",
-          en: "will go",
-          de: "werden gehen",
-          ia: "vadera",
-          ge: "liatri anian"
-        }]
-      },
-      imperativo: {
-        nome: "Imperativo",
-        forme: [{
-          p: "2ª sing.",
-          it: "vai!/va'!",
-          fr: "va!",
-          es: "¡ve!",
-          pt: "vai!",
-          en: "go!",
-          de: "geh!",
-          ia: "vade!",
-          ge: "vanni ti!"
-        }, {
-          p: "1ª plur.",
-          it: "andiamo!",
-          fr: "allons!",
-          es: "¡vamos!",
-          pt: "vamos!",
-          en: "let's go!",
-          de: "gehen wir!",
-          ia: "vade!",
-          ge: "anemmu niatri!/anemmo niatri!"
-        }, {
-          p: "2ª plur.",
-          it: "andate!",
-          fr: "allez!",
-          es: "¡id!",
-          pt: "ide!",
-          en: "go!",
-          de: "geht!",
-          ia: "vade!",
-          ge: "anè viatri!/anæ viatri!"
-        }]
-      }
+    presente: {
+      nome: "Presente",
+      forme: [
+        { p: "1ª sing.", it: "vado", fr: "vais", es: "voy", pt: "vou", en: "go", de: "gehe", ia: "vade", la: "eo", sp: "a vago", ge: "mi vaggu/mi vaggo|vaddo" },
+        { p: "2ª sing.", it: "vai", fr: "vas", es: "vas", pt: "vais", en: "go", de: "gehst", ia: "vade", la: "is", sp: "te vè", ge: "ti ti vè/ti ti væ" },
+        { p: "3ª sing.", it: "va", fr: "va", es: "va", pt: "vai", en: "goes", de: "geht", ia: "vade", la: "it", sp: "i va", ge: "lé u va/lê o va" },
+        { p: "3ª sing. f.", it: "va", ge: "a va" },
+        { p: "1ª plur.", it: "andiamo", fr: "allons", es: "vamos", pt: "vamos", en: "go", de: "gehen", ia: "vade", la: "imus", sp: "a andémo", ge: "niatri anémmu/niatri anemmo" },
+        { p: "2ª plur.", it: "andate", fr: "allez", es: "vais", pt: "ides", en: "go", de: "geht", ia: "vade", la: "itis", sp: "a andè", ge: "viatri anè/viatri anæ" },
+        { p: "3ª plur.", it: "vanno", fr: "vont", es: "van", pt: "vão", en: "go", de: "gehen", ia: "vade", la: "eunt", sp: "i van", ge: "liatri van" }
+      ]
+    },
+    imperfetto: {
+      nome: "Imperfetto",
+      forme: [
+        { p: "1ª sing.", it: "andavo", fr: "allais", es: "iba", pt: "ia", en: "went", de: "ging", ia: "vadeva", ge: "mi anava" },
+        { p: "2ª sing.", it: "andavi", fr: "allais", es: "ibas", pt: "ias", en: "went", de: "gingst", ia: "vadeva", ge: "ti t'anavi" },
+        { p: "3ª sing.", it: "andava", fr: "allait", es: "iba", pt: "ia", en: "went", de: "ging", ia: "vadeva", ge: "lé u l'anava/lê o l'anava" },
+        { p: "1ª plur.", it: "andavamo", fr: "allions", es: "íbamos", pt: "íamos/iamos", en: "went", de: "gingen", ia: "vadeva", ge: "niatri anavimu/niatri anavimo" },
+        { p: "2ª plur.", it: "andavate", fr: "alliez", es: "ibais", pt: "íeis/ieis", en: "went", de: "gingt", ia: "vadeva", ge: "viatri anavi" },
+        { p: "3ª plur.", it: "andavano", fr: "allaient", es: "iban", pt: "iam", en: "went", de: "gingen", ia: "vadeva", ge: "liatri anavan" }
+      ]
+    },
+    futuro: {
+      nome: "Futuro",
+      forme: [
+        { p: "1ª sing.", it: "andrò", fr: "irai", es: "iré", pt: "irei", en: "will go", de: "werde gehen", ia: "vadera", ge: "mi aniò" },
+        { p: "2ª sing.", it: "andrai", fr: "iras", es: "irás", pt: "irás/iras", en: "will go", de: "wirst gehen", ia: "vadera", ge: "ti t'aniè/ti t'aniæ" },
+        { p: "3ª sing.", it: "andrà", fr: "ira", es: "irá", pt: "irá/ira", en: "will go", de: "wird gehen", ia: "vadera", ge: "lé u l'anià/lê o l'anià" },
+        { p: "1ª plur.", it: "andremo", fr: "irons", es: "iremos", pt: "iremos", en: "will go", de: "werden gehen", ia: "vadera", ge: "niatri aniemu/niatri aniemo" },
+        { p: "2ª plur.", it: "andrete", fr: "irez", es: "iréis", pt: "ireis", en: "will go", de: "werdet gehen", ia: "vadera", ge: "viatri aniéi/viatri aniei" },
+        { p: "3ª plur.", it: "andranno", fr: "iront", es: "irán", pt: "irão/irao", en: "will go", de: "werden gehen", ia: "vadera", ge: "liatri anian" }
+      ]
+    },
+    imperativo: {
+      nome: "Imperativo",
+      forme: [
+        { p: "2ª sing.", it: "vai!/va'!", fr: "va!", es: "¡ve!", pt: "vai!", en: "go!", de: "geh!", ia: "vade!", ge: "vanni ti!" },
+        { p: "1ª plur.", it: "andiamo!", fr: "allons!", es: "¡vamos!", pt: "vamos!", en: "let's go!", de: "gehen wir!", ia: "vade!", ge: "anemmu niatri!/anemmo niatri!" },
+        { p: "2ª plur.", it: "andate!", fr: "allez!", es: "¡id!", pt: "ide!", en: "go!", de: "geht!", ia: "vade!", ge: "anè viatri!/anæ viatri!" }
+      ]
+    }
     }
   },
   dare: {
@@ -6781,220 +6231,40 @@ const CONIUGAZIONI = {
   volere: {
     nome: "volere",
     tempi: {
-      presente: {
-        nome: "Presente",
-        forme: [{
-          p: "1ª sing.",
-          it: "voglio",
-          fr: "veux",
-          es: "quiero",
-          pt: "quero",
-          en: "want",
-          de: "will",
-          ia: "vole",
-
-          la: "volo",
-
-          grc: "βούλομαι",
-
-          ge: "veuggio"
-        }, {
-          p: "2ª sing.",
-          it: "vuoi",
-          fr: "veux",
-          es: "quieres",
-          pt: "queres",
-          en: "want",
-          de: "willst",
-          ia: "vole",
-
-          la: "vis",
-
-          grc: "βούλει",
-
-          ge: "ti veu|ti eu"
-        }, {
-          p: "3ª sing.",
-          it: "vuole",
-          fr: "veut",
-          es: "quiere",
-          pt: "quer",
-          en: "wants",
-          de: "will",
-          ia: "vole",
-
-          la: "vult",
-
-          grc: "βούλεται",
-
-          ge: "o veu|o eu"
-        }, {
-          p: "3ª sing. f.",
-          it: "vuole",
-          ge: "a veu|a eu"
-        }, {
-          p: "1ª plur.",
-          it: "vogliamo",
-          fr: "voulons",
-          es: "queremos",
-          pt: "queremos",
-          en: "want",
-          de: "wollen",
-          ia: "vole",
-
-          la: "volumus",
-
-          grc: "βουλόμεθα",
-
-          ge: "voemmo|voemo"
-        }, {
-          p: "2ª plur.",
-          it: "volete",
-          fr: "voulez",
-          es: "queréis",
-          pt: "quereis",
-          en: "want",
-          de: "wollt",
-          ia: "vole",
-
-          la: "vultis",
-
-          grc: "βούλεσθε",
-
-          ge: "voei"
-        }, {
-          p: "3ª plur.",
-          it: "vogliono",
-          fr: "veulent",
-          es: "quieren",
-          pt: "querem",
-          en: "want",
-          de: "wollen",
-          ia: "vole",
-
-          la: "volunt",
-
-          grc: "βούλονται",
-
-          ge: "veuan"
-        }]
-      },
-      imperfetto: {
-        nome: "Imperfetto",
-        forme: [{
-          p: "1ª sing.",
-          it: "volevo",
-          fr: "voulais",
-          es: "quería",
-          pt: "queria",
-          en: "wanted",
-          de: "wollte",
-          ia: "voleva"
-        }, {
-          p: "2ª sing.",
-          it: "volevi",
-          fr: "voulais",
-          es: "querías",
-          pt: "querias",
-          en: "wanted",
-          de: "wolltest",
-          ia: "voleva"
-        }, {
-          p: "3ª sing.",
-          it: "voleva",
-          fr: "voulait",
-          es: "quería",
-          pt: "queria",
-          en: "wanted",
-          de: "wollte",
-          ia: "voleva"
-        }, {
-          p: "1ª plur.",
-          it: "volevamo",
-          fr: "voulions",
-          es: "queríamos",
-          pt: "queríamos/queriamos",
-          en: "wanted",
-          de: "wollten",
-          ia: "voleva"
-        }, {
-          p: "2ª plur.",
-          it: "volevate",
-          fr: "vouliez",
-          es: "queríais",
-          pt: "queríeis/querieis",
-          en: "wanted",
-          de: "wolltet",
-          ia: "voleva"
-        }, {
-          p: "3ª plur.",
-          it: "volevano",
-          fr: "voulaient",
-          es: "querían",
-          pt: "queriam",
-          en: "wanted",
-          de: "wollten",
-          ia: "voleva"
-        }]
-      },
-      futuro: {
-        nome: "Futuro",
-        forme: [{
-          p: "1ª sing.",
-          it: "vorrò",
-          fr: "voudrai",
-          es: "querré",
-          pt: "quererei",
-          en: "will want",
-          de: "werde wollen",
-          ia: "volera"
-        }, {
-          p: "2ª sing.",
-          it: "vorrai",
-          fr: "voudras",
-          es: "querrás",
-          pt: "quererás/quereras",
-          en: "will want",
-          de: "wirst wollen",
-          ia: "volera"
-        }, {
-          p: "3ª sing.",
-          it: "vorrà",
-          fr: "voudra",
-          es: "querrá",
-          pt: "quererá/querera",
-          en: "will want",
-          de: "wird wollen",
-          ia: "volera"
-        }, {
-          p: "1ª plur.",
-          it: "vorremo",
-          fr: "voudrons",
-          es: "querremos",
-          pt: "quereremos",
-          en: "will want",
-          de: "werden wollen",
-          ia: "volera"
-        }, {
-          p: "2ª plur.",
-          it: "vorrete",
-          fr: "voudrez",
-          es: "querréis",
-          pt: "querereis",
-          en: "will want",
-          de: "werdet wollen",
-          ia: "volera"
-        }, {
-          p: "3ª plur.",
-          it: "vorranno",
-          fr: "voudront",
-          es: "querrán",
-          pt: "quererão/quererao",
-          en: "will want",
-          de: "werden wollen",
-          ia: "volera"
-        }]
-      }
+    presente: {
+      nome: "Presente",
+      forme: [
+        { p: "1ª sing.", it: "voglio", fr: "veux", es: "quiero", pt: "quero", en: "want", de: "will", ia: "vole", la: "volo", grc: "βούλομαι", ge: "veuggio" },
+        { p: "2ª sing.", it: "vuoi", fr: "veux", es: "quieres", pt: "queres", en: "want", de: "willst", ia: "vole", la: "vis", grc: "βούλει", ge: "ti veu|ti eu" },
+        { p: "3ª sing.", it: "vuole", fr: "veut", es: "quiere", pt: "quer", en: "wants", de: "will", ia: "vole", la: "vult", grc: "βούλεται", ge: "o veu|o eu" },
+        { p: "3ª sing. f.", it: "vuole", ge: "a veu|a eu" },
+        { p: "1ª plur.", it: "vogliamo", fr: "voulons", es: "queremos", pt: "queremos", en: "want", de: "wollen", ia: "vole", la: "volumus", grc: "βουλόμεθα", ge: "voemmo|voemo" },
+        { p: "2ª plur.", it: "volete", fr: "voulez", es: "queréis", pt: "quereis", en: "want", de: "wollt", ia: "vole", la: "vultis", grc: "βούλεσθε", ge: "voei" },
+        { p: "3ª plur.", it: "vogliono", fr: "veulent", es: "quieren", pt: "querem", en: "want", de: "wollen", ia: "vole", la: "volunt", grc: "βούλονται", ge: "veuan" }
+      ]
+    },
+    imperfetto: {
+      nome: "Imperfetto",
+      forme: [
+        { p: "1ª sing.", it: "volevo", fr: "voulais", es: "quería", pt: "queria", en: "wanted", de: "wollte", ia: "voleva" },
+        { p: "2ª sing.", it: "volevi", fr: "voulais", es: "querías", pt: "querias", en: "wanted", de: "wolltest", ia: "voleva" },
+        { p: "3ª sing.", it: "voleva", fr: "voulait", es: "quería", pt: "queria", en: "wanted", de: "wollte", ia: "voleva" },
+        { p: "1ª plur.", it: "volevamo", fr: "voulions", es: "queríamos", pt: "queríamos/queriamos", en: "wanted", de: "wollten", ia: "voleva" },
+        { p: "2ª plur.", it: "volevate", fr: "vouliez", es: "queríais", pt: "queríeis/querieis", en: "wanted", de: "wolltet", ia: "voleva" },
+        { p: "3ª plur.", it: "volevano", fr: "voulaient", es: "querían", pt: "queriam", en: "wanted", de: "wollten", ia: "voleva" }
+      ]
+    },
+    futuro: {
+      nome: "Futuro",
+      forme: [
+        { p: "1ª sing.", it: "vorrò", fr: "voudrai", es: "querré", pt: "quererei", en: "will want", de: "werde wollen", ia: "volera" },
+        { p: "2ª sing.", it: "vorrai", fr: "voudras", es: "querrás", pt: "quererás/quereras", en: "will want", de: "wirst wollen", ia: "volera" },
+        { p: "3ª sing.", it: "vorrà", fr: "voudra", es: "querrá", pt: "quererá/querera", en: "will want", de: "wird wollen", ia: "volera" },
+        { p: "1ª plur.", it: "vorremo", fr: "voudrons", es: "querremos", pt: "quereremos", en: "will want", de: "werden wollen", ia: "volera" },
+        { p: "2ª plur.", it: "vorrete", fr: "voudrez", es: "querréis", pt: "querereis", en: "will want", de: "werdet wollen", ia: "volera" },
+        { p: "3ª plur.", it: "vorranno", fr: "voudront", es: "querrán", pt: "quererão/quererao", en: "will want", de: "werden wollen", ia: "volera" }
+      ]
+    }
     }
   },
   sapere: {
@@ -7017,325 +6287,80 @@ const CONIUGAZIONI = {
   parlare: {
     nome: "parlare",
     tempi: {
-      presente: {
-        nome: "Presente",
-        forme: [{
-          p: "1ª sing.",
-          it: "parlo",
-          fr: "parle",
-          es: "hablo",
-          pt: "falo",
-          en: "speak",
-          de: "spreche",
-          ia: "parla",
-          sp: "a pàrlo",
-          ge: "mi parlu/mi parlo"
-        }, {
-          p: "2ª sing.",
-          it: "parli",
-          fr: "parles",
-          es: "hablas",
-          pt: "falas",
-          en: "speak",
-          de: "sprichst",
-          ia: "parla",
-          sp: "te pàrli",
-          ge: "ti ti parli"
-        }, {
-          p: "3ª sing.",
-          it: "parla",
-          fr: "parle",
-          es: "habla",
-          pt: "fala",
-          en: "speaks",
-          de: "spricht",
-          ia: "parla",
-          sp: "i pàrla",
-          ge: "lé u parla/lê o parla"
-        }, {
-          p: "1ª plur.",
-          it: "parliamo",
-          fr: "parlons",
-          es: "hablamos",
-          pt: "falamos",
-          en: "speak",
-          de: "sprechen",
-          ia: "parla",
-          sp: "a parlémo",
-          ge: "niatri parlémmu/niatri parlemmo"
-        }, {
-          p: "2ª plur.",
-          it: "parlate",
-          fr: "parlez",
-          es: "habláis",
-          pt: "falais",
-          en: "speak",
-          de: "sprecht",
-          ia: "parla",
-          sp: "a parlè",
-          ge: "viatri parlè/viatri parlæ"
-        }, {
-          p: "3ª plur.",
-          it: "parlano",
-          fr: "parlent",
-          es: "hablan",
-          pt: "falam",
-          en: "speak",
-          de: "sprechen",
-          ia: "parla",
-          sp: "i pàrlo",
-          ge: "liatri parlan"
-        }]
-      },
-      imperfetto: {
-        nome: "Imperfetto",
-        forme: [{
-          p: "1ª sing.",
-          it: "parlavo",
-          fr: "parlais",
-          es: "hablaba",
-          pt: "falava",
-          en: "spoke",
-          de: "sprach",
-          ia: "parlava",
-          ge: "mi parlava"
-        }, {
-          p: "2ª sing.",
-          it: "parlavi",
-          fr: "parlais",
-          es: "hablabas",
-          pt: "falavas",
-          en: "spoke",
-          de: "sprachst",
-          ia: "parlava",
-          ge: "ti ti parlavi"
-        }, {
-          p: "3ª sing.",
-          it: "parlava",
-          fr: "parlait",
-          es: "hablaba",
-          pt: "falava",
-          en: "spoke",
-          de: "sprach",
-          ia: "parlava",
-          ge: "lé u parlava/lê o parlava"
-        }, {
-          p: "1ª plur.",
-          it: "parlavamo",
-          fr: "parlions",
-          es: "hablábamos",
-          pt: "falávamos/falavamos",
-          en: "spoke",
-          de: "sprachen",
-          ia: "parlava",
-          ge: "niatri parlavimu/niatri parlavimo"
-        }, {
-          p: "2ª plur.",
-          it: "parlavate",
-          fr: "parliez",
-          es: "hablabais",
-          pt: "faláveis/falaveis",
-          en: "spoke",
-          de: "spracht",
-          ia: "parlava",
-          ge: "viatri parlavi"
-        }, {
-          p: "3ª plur.",
-          it: "parlavano",
-          fr: "parlaient",
-          es: "hablaban",
-          pt: "falavam",
-          en: "spoke",
-          de: "sprachen",
-          ia: "parlava",
-          ge: "liatri parlavan"
-        }]
-      },
-      futuro: {
-        nome: "Futuro",
-        forme: [{
-          p: "1ª sing.",
-          it: "parlerò",
-          fr: "parlerai",
-          es: "hablaré",
-          pt: "falarei",
-          en: "will speak",
-          de: "werde sprechen",
-          ia: "parlera",
-          ge: "mi parliò"
-        }, {
-          p: "2ª sing.",
-          it: "parlerai",
-          fr: "parleras",
-          es: "hablarás",
-          pt: "falarás/falaras",
-          en: "will speak",
-          de: "wirst sprechen",
-          ia: "parlera",
-          ge: "ti ti parliè/ti ti parliæ"
-        }, {
-          p: "3ª sing.",
-          it: "parlerà",
-          fr: "parlera",
-          es: "hablará",
-          pt: "falará/falara",
-          en: "will speak",
-          de: "wird sprechen",
-          ia: "parlera",
-          ge: "lé u parlià/lê o parlià"
-        }, {
-          p: "1ª plur.",
-          it: "parleremo",
-          fr: "parlerons",
-          es: "hablaremos",
-          pt: "falaremos",
-          en: "will speak",
-          de: "werden sprechen",
-          ia: "parlera",
-          ge: "niatri parliemu/niatri parliemo"
-        }, {
-          p: "2ª plur.",
-          it: "parlerete",
-          fr: "parlerez",
-          es: "hablaréis",
-          pt: "falareis",
-          en: "will speak",
-          de: "werdet sprechen",
-          ia: "parlera",
-          ge: "viatri parliéi/viatri parliei"
-        }, {
-          p: "3ª plur.",
-          it: "parleranno",
-          fr: "parleront",
-          es: "hablarán",
-          pt: "falarão/falarao",
-          en: "will speak",
-          de: "werden sprechen",
-          ia: "parlera",
-          ge: "liatri parlian"
-        }]
-      },
-      imperativo: {
-        nome: "Imperativo",
-        forme: [{
-          p: "2ª sing.",
-          it: "parla!",
-          fr: "parle!",
-          es: "¡habla!",
-          pt: "fala!",
-          en: "speak!",
-          de: "sprich!",
-          ia: "parla!",
-          ge: "parla ti!"
-        }, {
-          p: "1ª plur.",
-          it: "parliamo!",
-          fr: "parlons!",
-          es: "¡hablemos!",
-          pt: "falemos!",
-          en: "let's speak!",
-          de: "sprechen wir!",
-          ia: "parla!",
-          ge: "parlemmu niatri!/parlemmo niatri!"
-        }, {
-          p: "2ª plur.",
-          it: "parlate!",
-          fr: "parlez!",
-          es: "¡hablad!",
-          pt: "falai!",
-          en: "speak!",
-          de: "sprecht!",
-          ia: "parla!",
-          ge: "parlè viatri!/parlæ viatri!"
-        }]
-      }
+    presente: {
+      nome: "Presente",
+      forme: [
+        { p: "1ª sing.", it: "parlo", fr: "parle", es: "hablo", pt: "falo", en: "speak", de: "spreche", ia: "parla", sp: "a pàrlo", ge: "mi parlu/mi parlo" },
+        { p: "2ª sing.", it: "parli", fr: "parles", es: "hablas", pt: "falas", en: "speak", de: "sprichst", ia: "parla", sp: "te pàrli", ge: "ti ti parli" },
+        { p: "3ª sing.", it: "parla", fr: "parle", es: "habla", pt: "fala", en: "speaks", de: "spricht", ia: "parla", sp: "i pàrla", ge: "lé u parla/lê o parla" },
+        { p: "1ª plur.", it: "parliamo", fr: "parlons", es: "hablamos", pt: "falamos", en: "speak", de: "sprechen", ia: "parla", sp: "a parlémo", ge: "niatri parlémmu/niatri parlemmo" },
+        { p: "2ª plur.", it: "parlate", fr: "parlez", es: "habláis", pt: "falais", en: "speak", de: "sprecht", ia: "parla", sp: "a parlè", ge: "viatri parlè/viatri parlæ" },
+        { p: "3ª plur.", it: "parlano", fr: "parlent", es: "hablan", pt: "falam", en: "speak", de: "sprechen", ia: "parla", sp: "i pàrlo", ge: "liatri parlan" }
+      ]
+    },
+    imperfetto: {
+      nome: "Imperfetto",
+      forme: [
+        { p: "1ª sing.", it: "parlavo", fr: "parlais", es: "hablaba", pt: "falava", en: "spoke", de: "sprach", ia: "parlava", ge: "mi parlava" },
+        { p: "2ª sing.", it: "parlavi", fr: "parlais", es: "hablabas", pt: "falavas", en: "spoke", de: "sprachst", ia: "parlava", ge: "ti ti parlavi" },
+        { p: "3ª sing.", it: "parlava", fr: "parlait", es: "hablaba", pt: "falava", en: "spoke", de: "sprach", ia: "parlava", ge: "lé u parlava/lê o parlava" },
+        { p: "1ª plur.", it: "parlavamo", fr: "parlions", es: "hablábamos", pt: "falávamos/falavamos", en: "spoke", de: "sprachen", ia: "parlava", ge: "niatri parlavimu/niatri parlavimo" },
+        { p: "2ª plur.", it: "parlavate", fr: "parliez", es: "hablabais", pt: "faláveis/falaveis", en: "spoke", de: "spracht", ia: "parlava", ge: "viatri parlavi" },
+        { p: "3ª plur.", it: "parlavano", fr: "parlaient", es: "hablaban", pt: "falavam", en: "spoke", de: "sprachen", ia: "parlava", ge: "liatri parlavan" }
+      ]
+    },
+    futuro: {
+      nome: "Futuro",
+      forme: [
+        { p: "1ª sing.", it: "parlerò", fr: "parlerai", es: "hablaré", pt: "falarei", en: "will speak", de: "werde sprechen", ia: "parlera", ge: "mi parliò" },
+        { p: "2ª sing.", it: "parlerai", fr: "parleras", es: "hablarás", pt: "falarás/falaras", en: "will speak", de: "wirst sprechen", ia: "parlera", ge: "ti ti parliè/ti ti parliæ" },
+        { p: "3ª sing.", it: "parlerà", fr: "parlera", es: "hablará", pt: "falará/falara", en: "will speak", de: "wird sprechen", ia: "parlera", ge: "lé u parlià/lê o parlià" },
+        { p: "1ª plur.", it: "parleremo", fr: "parlerons", es: "hablaremos", pt: "falaremos", en: "will speak", de: "werden sprechen", ia: "parlera", ge: "niatri parliemu/niatri parliemo" },
+        { p: "2ª plur.", it: "parlerete", fr: "parlerez", es: "hablaréis", pt: "falareis", en: "will speak", de: "werdet sprechen", ia: "parlera", ge: "viatri parliéi/viatri parliei" },
+        { p: "3ª plur.", it: "parleranno", fr: "parleront", es: "hablarán", pt: "falarão/falarao", en: "will speak", de: "werden sprechen", ia: "parlera", ge: "liatri parlian" }
+      ]
+    },
+    imperativo: {
+      nome: "Imperativo",
+      forme: [
+        { p: "2ª sing.", it: "parla!", fr: "parle!", es: "¡habla!", pt: "fala!", en: "speak!", de: "sprich!", ia: "parla!", ge: "parla ti!" },
+        { p: "1ª plur.", it: "parliamo!", fr: "parlons!", es: "¡hablemos!", pt: "falemos!", en: "let's speak!", de: "sprechen wir!", ia: "parla!", ge: "parlemmu niatri!/parlemmo niatri!" },
+        { p: "2ª plur.", it: "parlate!", fr: "parlez!", es: "¡hablad!", pt: "falai!", en: "speak!", de: "sprecht!", ia: "parla!", ge: "parlè viatri!/parlæ viatri!" }
+      ]
+    }
     }
   },
   dire: {
     nome: "dire",
     tempi: {
-      presente: {
-        nome: "Presente",
-        forme: [{
-          p: "1ª sing. (io/I/je...)",
-          it: "dico",
-          fr: "dis",
-          es: "digo",
-          pt: "digo",
-          la: "dico",
-          grc: "λέγω",
-          en: "say",
-          de: "sage",
-          ia: "dice",
-          sp: "a digo",
-          ge: "mi diggu/mi diggo"
-        }, {
-          p: "2ª sing. (tu/you/tu...)",
-          it: "dici",
-          fr: "dis",
-          es: "dices",
-          pt: "dizes",
-          la: "dicis",
-          grc: "λέγεις",
-          en: "say",
-          de: "sagst",
-          ia: "dice",
-          sp: "te disi",
-          ge: "ti ti diji/ti ti dixi"
-        }, {
-          p: "3ª sing. (lui/il/él...)",
-          it: "dice",
-          fr: "dit",
-          es: "dice",
-          pt: "diz",
-          la: "dicit",
-          grc: "λέγει",
-          en: "says",
-          de: "sagt",
-          ia: "dice",
-          sp: "i disa",
-          ge: "le u dije/le o dixe"
-        }, {
-          p: "1ª plur. (noi/we/nous...)",
-          it: "diciamo",
-          fr: "disons",
-          es: "decimos",
-          pt: "dizemos",
-          la: "dicimus",
-          grc: "λέγομεν",
-          en: "say",
-          de: "sagen",
-          ia: "dice",
-          sp: "a disémo",
-          ge: "niatri dimmu/niatri dimmo"
-        }, {
-          p: "2ª plur. (voi/vous/vos.)",
-          it: "dite",
-          fr: "dites",
-          es: "decís",
-          pt: "dizeis",
-          la: "dicitis",
-          grc: "λέγετε",
-          en: "say",
-          de: "sagt",
-          ia: "dice",
-          sp: "a disé",
-          ge: "viatri dî"
-        }, {
-          p: "3ª plur. (loro/ils/they)",
-          it: "dicono",
-          fr: "disent",
-          es: "dicen",
-          pt: "dizem",
-          la: "dicunt",
-          grc: "λέγουσι",
-          en: "say",
-          de: "sagen",
-          ia: "dice",
-          sp: "i diso",
-          ge: "liatri dijan/liatri dixan"
-        }]
-      }
+    presente: {
+      nome: "Presente",
+      forme: [
+        { p: "1ª sing. (io/I/je...)", it: "dico", fr: "dis", es: "digo", pt: "digo", la: "dico", grc: "λέγω", en: "say", de: "sage", ia: "dice", sp: "a digo", ge: "mi diggu/mi diggo" },
+        { p: "2ª sing. (tu/you/tu...)", it: "dici", fr: "dis", es: "dices", pt: "dizes", la: "dicis", grc: "λέγεις", en: "say", de: "sagst", ia: "dice", sp: "te disi", ge: "ti ti diji/ti ti dixi" },
+        { p: "3ª sing. (lui/il/él...)", it: "dice", fr: "dit", es: "dice", pt: "diz", la: "dicit", grc: "λέγει", en: "says", de: "sagt", ia: "dice", sp: "i disa", ge: "le u dije/le o dixe" },
+        { p: "1ª plur. (noi/we/nous...)", it: "diciamo", fr: "disons", es: "decimos", pt: "dizemos", la: "dicimus", grc: "λέγομεν", en: "say", de: "sagen", ia: "dice", sp: "a disémo", ge: "niatri dimmu/niatri dimmo" },
+        { p: "2ª plur. (voi/vous/vos.)", it: "dite", fr: "dites", es: "decís", pt: "dizeis", la: "dicitis", grc: "λέγετε", en: "say", de: "sagt", ia: "dice", sp: "a disé", ge: "viatri dî" },
+        { p: "3ª plur. (loro/ils/they)", it: "dicono", fr: "disent", es: "dicen", pt: "dizem", la: "dicunt", grc: "λέγουσι", en: "say", de: "sagen", ia: "dice", sp: "i diso", ge: "liatri dijan/liatri dixan" }
+      ]
+    }
+    }
+  },
+  ridere: {
+    nome: "ridere",
+    tempi: {
+    presente: {
+      nome: "presente",
+      forme: [
+        { p: "1ª sing.", it: "rido", en: "laugh", fr: "ris", es: "río", pt: "rio", de: "lache", la: "rideo", grc: "γελῶ", ia: "ride", ge: "rio" },
+        { p: "2ª sing.", it: "ridi", en: "laugh", fr: "ris", es: "ríes", pt: "ris", de: "lachst", la: "rides", grc: "γελᾷς", ia: "rides", ge: "ti rii" },
+        { p: "3ª sing.", it: "ride", en: "laughs", fr: "rit", es: "ríe", pt: "ri", de: "lacht", la: "ridet", grc: "γελᾷ", ia: "ride", ge: " o rie" },
+        { p: "3ª sing. f.", ge: "a rie" },
+        { p: "1ª plur.", it: "ridiamo", en: "laugh", fr: "rions", es: "reímos", pt: "rimos", de: "lachen", la: "ridemus", grc: "γελῶμεν", ia: "ridemos", ge: "riemo |riemmo" },
+        { p: "2ª plur.", it: "ridete", en: "laugh", fr: "riez", es: "reís", pt: "rides", de: "lacht", la: "ridetis", grc: "γελᾶτε", ia: "ridetis", ge: "riei" },
+        { p: "3ª plur.", it: "ridono", en: "laugh", fr: "rient", es: "ríen", pt: "riem", de: "lachen", la: "rident", grc: "γελῶσι", ia: "riden", ge: "rian" }
+      ]
+    }
     }
   }
 };
