@@ -2254,6 +2254,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"verbi", livello:"A1", it:"usare", en:"to use", fr:"utiliser", es:"usar" },
       { tema:"tempo", livello:"A1", it:"pomeriggio", en:"afternoon", sp:"dopodisnà", ge:"poidisnâ, doppodisnâ" },
       { tema:"corpo", livello:"A1", it:"destra", en:"right", sp:"drita", verif:"sp:g" },
       { tema:"natura", livello:"A2", it:"valle", en:"valley", ge:"vallâ" },
@@ -2794,8 +2795,8 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"oggetti", livello:"A1", it:"cosa", en:"thing", sp:"cose", cr:"cos", ge:"cösa", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"saluti", livello:"A1", it:"cosa c'è oggi?", en:"what's up", fr:"qu'est-ce qu'il y a", es:"¿qué hay", de:"was gibt's", pt:"o que há", ca:"què hi ha", sp:"cös'i gh'è anché", mn:"kuse ghe anchè/cuse gh'é anchè", ge:"cöse gh'é ancheu", ia:"què hay", la:"quid est", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"ce este" },
       { tema:"saluti", livello:"A1", it:"cosa fai|cosa stai facendo", en:"what do you do|what are you doing", fr:"qu'est-ce que tu fais", es:"¿qué haces", de:"was machst du", pt:"o que você faz", ca:"què fas", sp:"costefé", ge:"cösa ti fæ", la:"quid agis", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g", ro:"ce faci" },
-      { tema:"saluti", livello:"A1", it:"cosa vuoi", en:"what do you want", fr:"qu'est-ce que vous voulez", es:"¿qué quieres", de:"was willst du", pt:"o que você quer", ru:"что ты хочешь", ca:"què vols", sp:"coss'te vé| costevé", mn:"cus te ve", ge:"cöse ti veu", ko:"뭐가 필요해?", ar:"ماذا تريد", zh:"你想要什么", ja:"何が欲しい", ia:"què vules", la:"quid vis", grc:"τί θέλεις", src:{"mn":"🤖doni"}, verif:"mn:g", ro:"ce vrei" },
-      { tema:"citazioni", livello:"B1", it:"cosa vuoi che io ne sappia", en:"what do you expect me to know", fr:"qu'est-ce que vous voulez que je sache", es:"¿qué quieres que sepa", de:"was willst du, dass ich weiß", pt:"o que você quer que eu saiba", ru:"что я знаю", ca:"què vols que sàpiga", sp:"coss'te vè ch'an sacio| costevè can sacio", mn:"custe ve kan saciu /cus te ve ch'an saciu| costevè can saciu", ko:"내가 뭘 알겠어", ar:"ماذا أعرف", zh:"我知道什么", ja:"私が何を知っている", ia:"què vuole que io sappia", la:"quid sciam", grc:"τί οἶδα", verif:"mn:g", ro:"ce vrei să știu" },
+      { tema:"saluti", livello:"A1", it:"cosa vuoi", en:"what do you want", fr:"Que veux-tu ?", es:"¿qué quieres", de:"was willst du", pt:"o que você quer", ru:"что ты хочешь", ca:"què vols", sp:"coss'te vé| costevé", mn:"cus te ve", ge:"cöse ti veu", ko:"뭐가 필요해?", ar:"ماذا تريد", zh:"你想要什么", ja:"何が欲しい", ia:"què vules", la:"quid vis", grc:"τί θέλεις", src:{"mn":"🤖doni"}, verif:"mn:g", ro:"ce vrei" },
+      { tema:"citazioni", livello:"B1", it:"cosa vuoi che io ne sappia", en:"what do you expect me to know", fr:"Qu'est-ce que tu veux que j'en sache ?", es:"¿qué quieres que sepa", de:"was willst du, dass ich weiß", pt:"o que você quer que eu saiba", ru:"что я знаю", ca:"què vols que sàpiga", sp:"coss'te vè ch'an sacio| costevè can sacio", mn:"custe ve kan saciu /cus te ve ch'an saciu| costevè can saciu", ko:"내가 뭘 알겠어", ar:"ماذا أعرف", zh:"我知道什么", ja:"私が何を知っている", ia:"què vuole que io sappia", la:"quid sciam", grc:"τί οἶδα", verif:"mn:g", ro:"ce vrei să știu" },
       { tema:"astratti", livello:"B2", it:"coscienza", en:"conscience", fr:"conscience", es:"conciencia", de:"Gewissen", pt:"consciência|consciencia", sp:"cossensia, consiensia", mn:"cüscensa", cr:"cos'enz'ia", ge:"consciensa", ko:"양심", ar:"ضمير", zh:"良心", ja:"良心", ia:"conscientia", la:"conscientia", grc:"συνείδησις", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
       { tema:"grammatica", livello:"A2", it:"così", en:"so", sp:"cossì", mn:"kuussì/cussì", cr:"cus'ì, acus'ì", ge:"coscì, coscie", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
       { tema:"natura", livello:"A2", it:"costa", en:"coast", sp:"costa", mn:"costa", cr:"costa", ge:"costa", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
@@ -3904,7 +3905,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"urlare| sbraitare", en:"to shout", sp:"sbragiàae/sbragiae", mn:"sbragiàa/sbragiaa", verif:"mn:g" },
       { tema:"corpo", livello:"A1", it:"urlo", en:"shout", mn:"sbragiu/zbràgiu", cr:"url", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"dialogo", livello:"A2", it:"rimprovero", en:"shout", fr:"cri", es:"grito", de:"Schrei", pt:"grito", ca:"crit", sp:"ürlo|sbragio", mn:"zbragiu", ge:"ürlo", ia:"clamo", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"strigăt" },
-      { tema:"verbi", livello:"A1", it:"usare", en:"use it", fr:"l'utiliser", es:"usarlo", de:"es benutzen", pt:"usá-lo|usa-lo", ru:"использовать", ca:"usar|fer servir", sp:"üsaà'e/üsae", mn:"iüsaàh/üzaa", verif:"sp:g,mn:g" },
       { tema:"verbi", livello:"A2", it:"uscire", en:"exit", sp:"sortì e, nessì e, renessi'e/sortie,nessie, renessie", mn:"surtii/sùrtii", verif:"sp:g,mn:g" },
       { tema:"casa", livello:"B1", it:"uscita", en:"exit", fr:"sortie", es:"salida", de:"Ausgang", pt:"saída|saida", sp:"sortida", mn:"surtìda", ia:"exito", verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"utile", en:"useful", fr:"utile", es:"útil", de:"nützlich", pt:"útil", ru:"полезный", ca:"útil" },
@@ -4086,7 +4086,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 579;
+const VOC_VERSION = 580;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
