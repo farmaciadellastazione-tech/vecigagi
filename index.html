@@ -2678,7 +2678,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A2", it:"cecio", en:"chickpea", fr:"pois chiche", es:"garbanzo", de:"Kichererbse", pt:"grão-de-bico", sp:"sésoo", cr:"cec'", ge:"çeixao", verif:"sp:g", nt:["mn"] },
       { tema:"persone", livello:"A2", it:"celibe|nubile", en:"single", fr:"célibataire", es:"soltero", de:"ledig|Single", pt:"solteiro", ru:"холостой", ca:"solter", sp:"zitellòn,zóve/zitelón,zóve", mn:"zitelun", cr:"zitel", ge:"fantin", verif:"sp:g,mn:g" },
       { tema:"cibo", livello:"A1", it:"cena", en:"dinner", fr:"dîner", es:"cena", de:"Abendessen", pt:"jantar", sp:"sena", mn:"sena", cr:"z'ena", ge:"senn-a", ko:"저녁", ar:"عشاء", zh:"晚餐", ja:"夕食", ia:"cena", la:"cena", grc:"δεῖπνον", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
-      { tema:"verbi", livello:"A1", it:"cenare", en:"to dine", fr:"dîner", es:"cenar", pt:"jantar", sp:"senae", mn:"senaà/sénàà", cr:"z'enar", ge:"senaà/senâ", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
+      { tema:"verbi", livello:"A1", it:"cenare", en:"to dine", fr:"dîner", es:"cenar", pt:"jantar", sp:"senaàe/senae", mn:"senaà/sénàà", cr:"z'enar", ge:"senaà/senâ", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
       { tema:"numeri", livello:"A1", it:"cento|100", en:"one hundred|hundred", fr:"cent", es:"cien", de:"hundert", pt:"cem", ru:"сто", ca:"cent", sp:"séntoh/sento", mn:"sëntu", cr:"z'ent", ge:"çénto", ko:"백", ar:"مئة", zh:"一百|百", ja:"百", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"o sută" },
       { tema:"numeri", livello:"B1", it:"centomila", en:"hundred thousand", ru:"сто тысяч", sp:"sentomila", mn:"sëntumila", ge:"çentomia", verif:"mn:g" },
       { tema:"natura", livello:"A2", it:"ceppo", en:"stump", sp:"sòco, sépo", cr:"z'oca, c'oc", ge:"seppo", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
@@ -3883,9 +3883,9 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"umido", en:"humid", fr:"humide", es:"húmedo", de:"feucht", pt:"úmido|umido", ru:"влажный", ca:"humit", sp:"üùmeo/ümeo", mn:"ümédu", ko:"습한", ar:"رطب", zh:"潮湿", ja:"湿気", ia:"humide", la:"umidus", grc:"ὑγρός", verif:"sp:g,mn:g" },
       { tema:"aggettivi", livello:"A2", it:"umile", en:"humble", sp:"ùmeo/ümeo", mn:"ümile/ümile", verif:"mn:g,sp:g" },
       { tema:"verbi", livello:"A2", it:"umiliare", en:"to humiliate", mn:"umigliaaa/ùmigliaa", verif:"mn:g" },
-      { tema:"cibo", livello:"A1", it:"un bicchier d'acqua", en:"glass of water", sp:"ün goto d'àigoa", mn:"ün gòtu d'aigua", ge:"ün gòto d'ægoa", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"pahar de apă" },
+      { tema:"cibo", livello:"A1", it:"un bicchier d'acqua", en:"a glass of water", fr:"un verre d'eau", es:"un vaso de agua", sp:"ün goto d'àigoa", mn:"ün gòtu d'aigua", ge:"ün gòto d'ægoa", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"pahar de apă" },
       { tema:"saluti", livello:"A1", it:"un caffé per piacere", en:"a coffee please", sp:"ün cafè pe' piasée", mn:"ün café per piasee/ün café per piazëë", ge:"ün caffè pe' piaxei", src:{"mn":"🤖 IA"}, verif:"mn:g" },
-      { tema:"cibo", livello:"A2", it:"un calice di vino bianco", en:"a glass of white wine", ru:"бокал белого вина", ca:"un got de vi blanc", sp:"ün goto de vin gianco", mn:"ün gotu de vin giancu", ge:"ün goto de vin gianco", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"un pahar de vin alb" },
+      { tema:"cibo", livello:"A2", it:"un calice di vino bianco", en:"a glass of white wine", fr:"un verre de vin blanc", es:"una copa de vino blanco", ru:"бокал белого вина", ca:"un got de vi blanc", sp:"ün goto de vin gianco", mn:"ün gotu de vin giancu", ge:"ün goto de vin gianco", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"un pahar de vin alb" },
       { tema:"cibo", livello:"A1", it:"un cappuccino", en:"cappuccino", ru:"капучино", ca:"un caputxino", ro:"un cappuccino" },
       { tema:"grammatica", livello:"A1", it:"un pochino", en:"a little", mn:"enpetin /en pétin", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"tempo", livello:"A2", it:"una volta", en:"once", fr:"une fois", es:"una vez", de:"einmal", pt:"uma vez", ru:"однажды|один раз", ca:"una vegada" },
@@ -4086,7 +4086,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 580;
+const VOC_VERSION = 581;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
