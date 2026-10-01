@@ -5120,6 +5120,9 @@ function isCorretta(atteso, dato, bcp47, codLingua, preciso = false) {
   if (!n) return false;
   // Split on / , ; and | to handle multiple synonyms (| = sinonimi nascosti)
   const rawOps = atteso.split(/[/,;|]/).map(s => s.trim()).filter(Boolean);
+  // Lettere facoltative attaccate alla parola (grc "ἴσασι(ν)"): vale anche la
+  // forma CON la lettera; quella senza la dà già la rimozione delle parentesi.
+  rawOps.push(...rawOps.filter(s => /[^\s(]\([^)\s]+\)/.test(s)).map(s => s.replace(/([^\s(])\(([^)\s]+)\)/g, "$1$2")));
   const ops = rawOps.map(s => {
     const base = normalizza(s.replace(/\(.*?\)/g, "").trim());
     return isEn ? base.startsWith("to ") ? base.slice(3) : base : base;
