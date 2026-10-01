@@ -2861,7 +2861,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"oggetti", livello:"B1", it:"diamante", en:"diamond", fr:"diamant", es:"diamante", de:"Diamant", pt:"diamante", ru:"бриллиант", ca:"diamant", sp:"diamante ", mn:"diamante ", cr:"diamant", ge:"diamante " },
       { tema:"sintomi", livello:"A2", it:"diarrea", en:"diarrhoea", fr:"diarrhée", es:"diarrea", de:"Durchfall", pt:"diarreia", sp:"caghéta|cagaròn|scorrentina", mn:"caghéta, cagaùn", cr:"cagaron, cagareda, cagaz, cagabuz", ge:"diarrea", ko:"설사", ar:"إسهال", zh:"腹泻", ja:"下痢", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"insulti", livello:"B1", it:"diavolo", en:"devil", sp:"dià'o/diao", mn:"dià'u/diàu", cr:"diavl", ge:"diao ", verif:"sp:g,mn:g" },
-      { tema:"mesi", livello:"A1", it:"dicembre", en:"December", fr:"décembre", es:"diciembre", de:"Dezember", pt:"dezembro", ru:"декабрь", ca:"desembre", sp:"dezenbre", mn:"desembre/dezembre", cr:"diz'embra", ge:"dexembre ", ko:"12월", ar:"ديسمبر", zh:"十二月", ja:"12月", ia:"decembre", la:"December", grc:"Δεκέμβριος", verif:"mn:g,cr:g" },
+      { tema:"mesi", livello:"A1", it:"dicembre", en:"December", fr:"décembre", es:"diciembre", de:"Dezember", pt:"dezembro", ru:"декабрь", ca:"desembre", sp:"dezenbre", mn:"desembre/dezembre", cr:"diz'enbra| diz’enbr", ge:"dexembre ", ko:"12월", ar:"ديسمبر", zh:"十二月", ja:"12月", ia:"decembre", la:"December", grc:"Δεκέμβριος", verif:"mn:g,cr:g" },
       { tema:"dialogo", livello:"A2", it:"diceria", en:"gossip", sp:"dita", cr:"digandula", ge:"dita", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"numeri", livello:"A1", it:"diciannove", en:"nineteen", ru:"девятнадцать", sp:"desaané ve", mn:"desaané ve/dézanévé", ge:"dixinêuve", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"numeri", livello:"A1", it:"diciassette|17", en:"seventeen", ru:"семнадцать", ca:"disset", sp:"dezasète|desete", mn:"dînsète", cr:"diz'iseta", ge:"dîsètte", src:{"mn":"🤖 IA"}, verif:"mn:g" },
@@ -4091,7 +4091,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 586;
+const VOC_VERSION = 587;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
