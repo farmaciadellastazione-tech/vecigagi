@@ -112,7 +112,7 @@ function normalizzaDialetto(str) {
 function formaBaseDialetto(str) {
   let t = str.trim();
   t = t.replace(/^che\s+/i, ""); // congiuntivo ge ("che mi agge")
-  t = t.replace(/^(mi|ti|lé|lê|niatri|viatri|liatri)\s+/i, ""); // soggetto pieno (ge)
+  t = t.replace(/^(mi|ti|lé|lê|niatri|viatri|liatri|no[aà]ltri|vo[aà]ltri)\s+/i, ""); // soggetto pieno (ge, cr)
   t = t.replace(/^(a|te|ti|i|o|u)['’]\s*/i, ""); // clitico + apostrofo isolato
   t = t.replace(/^(a|te|ti|i|o|u)\s+/i, ""); // clitico staccato (sp)
   t = t.replace(/^[tl]['’]/i, ""); // clitico eliso fuso alla radice (t'æ, l'agge)
