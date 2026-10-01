@@ -5102,7 +5102,11 @@ function rimuoviSoggetto(str, codLingua) {
   return n;
 }
 
-function isCorretta(atteso, dato, bcp47, codLingua) {
+// preciso: solo confronti esatti (dopo normalizzazione, soggetto, varianti
+// dialettali, omofoni), senza le tolleranze "contiene"/"inizia con" pensate
+// per il vocabolario. Per le coniugazioni, dove le persone si distinguono
+// dalla desinenza ("parla"/"parlano", ge "veu"/"veuan").
+function isCorretta(atteso, dato, bcp47, codLingua, preciso = false) {
   const datoConv = bcp47 ? convertiNumeri(dato, bcp47) : dato;
   // Per dialetti: converti cifre in parole dialettali
   const datoConvDial = DIALETTI_NUMERI.includes(codLingua) ? convertiNumeriDialetto(datoConv, codLingua) : datoConv;
@@ -5143,6 +5147,7 @@ function isCorretta(atteso, dato, bcp47, codLingua) {
     // Confronto con omofoni dell'atteso
     const omofoniOp = bcp47 ? getOmofoni(op, bcp47).map(w => normalizza(w)) : [op];
     if (omofoniOp.includes(n)) return true;
+    if (preciso) return false;
     // Per parole molto brevi (≤4 lettere) tolleranza extra: accetta se n è contenuto in op o viceversa
     if (op.length <= 4 && (op.includes(n) || n.includes(op))) return true;
     const paroleOp = op.split(/\s+/);
@@ -11829,7 +11834,7 @@ function App() {
       const basi = variantiBaseDialetto(atteso);
       if (basi.length) attesoConfronto = atteso + "|" + basi.join("|");
     }
-    let ok = isCorretta(attesoConfronto, risposta, lA?.bcp47, lA?.codice);
+    let ok = isCorretta(attesoConfronto, risposta, lA?.bcp47, lA?.codice, carta.tipo === "coniugazione");
     // Pronome pieno facoltativo scritto davanti (cr "me a son"): riprova senza.
     // rispostaConfronto serve anche all'aiutino ("me a sun" ≈ "a son").
     let rispostaConfronto = risposta;
@@ -11837,7 +11842,7 @@ function App() {
       const senzaPronome = togliPronomePienoDialetto(risposta, lA?.codice, carta.persona);
       if (senzaPronome !== risposta) {
         rispostaConfronto = senzaPronome;
-        ok = isCorretta(attesoConfronto, senzaPronome, lA?.bcp47, lA?.codice);
+        ok = isCorretta(attesoConfronto, senzaPronome, lA?.bcp47, lA?.codice, carta.tipo === "coniugazione");
       }
     }
     // Aiutino (Allenamento, Ascolta e scrivi, Dettato): se la risposta è
