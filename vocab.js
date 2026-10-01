@@ -125,7 +125,9 @@ function formaBaseDialetto(str) {
 // extra al confronto — una per ogni alternativa che ha davvero un prefisso
 // da togliere (altrimenti sarebbe un duplicato inutile).
 function variantiBaseDialetto(atteso) {
-  const parti = soloVisibile(atteso).split(/[/,;|]/).map(s => s.trim()).filter(Boolean);
+  // Anche le alternative nascoste (dopo "|"): "a vëgne|a ven" deve accettare
+  // "ven" oltre a "vëgne". Sono solo candidati per isCorretta, mai mostrati.
+  const parti = atteso.split(/[/,;|]/).map(s => s.trim()).filter(Boolean);
   const basi = parti.map(formaBaseDialetto).filter((b, idx) => b && b !== normalizza(parti[idx]));
   return [...new Set(basi)];
 }
