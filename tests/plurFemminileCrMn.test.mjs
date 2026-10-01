@@ -83,7 +83,7 @@ test('cr: il pronome pieno facoltativo davanti alla risposta viene tolto', () =>
 
 test('verificaRisposta riprova senza pronome pieno per le coniugazioni dialettali', () => {
   const v = HTML.slice(HTML.indexOf('function verificaRisposta('), HTML.indexOf('function salta()'));
-  assert.match(v, /togliPronomePienoDialetto\(risposta, lA\?\.codice\)/);
+  assert.match(v, /togliPronomePienoDialetto\(risposta, lA\?\.codice(, carta\.persona)?\)/);
 });
 
 test('cr: "voàltri siet" accetta anche la sola forma "siet"', () => {

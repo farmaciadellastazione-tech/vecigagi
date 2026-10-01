@@ -5818,15 +5818,28 @@ const SOGGETTI_ALTRI = {
 };
 // Pronomi soggetto pieni FACOLTATIVI nei dialetti (fonti tipo "(Me) a son"):
 // la cella ha la sola forma ("a son"), ma "me a son" è altrettanto giusta.
-// Scritti già normalizzati (senza accenti/apostrofi), come normalizza().
+// Per persona, così un pronome di persona sbagliata ("lór a son" alla 1ª
+// sing.) non viene tolto e la risposta resta sbagliata. Scritti già
+// normalizzati (senza accenti/apostrofi), come normalizza().
 const PRONOMI_PIENI_DIALETTO = {
-  cr: ["me", "te", "lu", "le", "noaltri", "voaltri", "lor"]
+  cr: {
+    "1ª sing.": "me",
+    "2ª sing.": "te",
+    "3ª sing.": "lu",
+    "3ª sing. f.": "le",
+    "1ª plur.": "noaltri",
+    "2ª plur.": "voaltri",
+    "3ª plur.": "lor",
+    "3ª plur. f.": "lor"
+  }
 };
-function togliPronomePienoDialetto(risposta, codLingua) {
+function togliPronomePienoDialetto(risposta, codLingua, persona) {
   const P = PRONOMI_PIENI_DIALETTO[codLingua];
   if (!P) return risposta;
+  const p = persona ? persona.replace(/ \(.*\)/, "").trim() : "";
+  const ammessi = p && P[p] ? [P[p]] : Object.values(P);
   const [primo, ...resto] = risposta.trim().split(/\s+/);
-  return resto.length && P.includes(normalizza(primo)) ? resto.join(" ") : risposta;
+  return resto.length && ammessi.includes(normalizza(primo)) ? resto.join(" ") : risposta;
 }
 // Lingue dove il soggetto è grammaticalmente necessario (o molto utile per audio)
 const LINGUE_CON_SOGGETTO = new Set(["fr", "en", "de", "pt", "ia"]);
@@ -11766,18 +11779,23 @@ function App() {
     }
     let ok = isCorretta(attesoConfronto, risposta, lA?.bcp47, lA?.codice);
     // Pronome pieno facoltativo scritto davanti (cr "me a son"): riprova senza.
+    // rispostaConfronto serve anche all'aiutino ("me a sun" ≈ "a son").
+    let rispostaConfronto = risposta;
     if (!ok && carta.tipo === "coniugazione") {
-      const senzaPronome = togliPronomePienoDialetto(risposta, lA?.codice);
-      if (senzaPronome !== risposta) ok = isCorretta(attesoConfronto, senzaPronome, lA?.bcp47, lA?.codice);
+      const senzaPronome = togliPronomePienoDialetto(risposta, lA?.codice, carta.persona);
+      if (senzaPronome !== risposta) {
+        rispostaConfronto = senzaPronome;
+        ok = isCorretta(attesoConfronto, senzaPronome, lA?.bcp47, lA?.codice);
+      }
     }
     // Aiutino (Allenamento, Ascolta e scrivi, Dettato): se la risposta è
     // sbagliata di 1-2 lettere, invece del ❌ mostra la parola con i buchi e
     // concede un secondo tentativo, una volta sola. Niente statistiche né
     // audio della soluzione finché non si risponde di nuovo.
     if (!ok && !aiutino && (modalita === "allenamento" || modalita === "ascolto" || modalita === "dettato")) {
-      const q = quasiGiusta(attesoConfronto, risposta, lA?.codice);
+      const q = quasiGiusta(attesoConfronto, rispostaConfronto, lA?.codice);
       if (q) {
-        setAiutino({ maschera: mascheraAiutino(q.forma, risposta) });
+        setAiutino({ maschera: mascheraAiutino(q.forma, rispostaConfronto) });
         setInput(risposta);
         return;
       }
