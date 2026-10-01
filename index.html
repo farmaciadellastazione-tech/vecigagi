@@ -5711,6 +5711,14 @@ const LINGUE_CONIUG = {
   ge: {
     nome: "Genovese",
     bandiera: "🏛️"
+  },
+  mn: {
+    nome: "Manarolese",
+    bandiera: "🏖️"
+  },
+  cr: {
+    nome: "Carrarino",
+    bandiera: "🪨"
   }
 };
 
@@ -5724,7 +5732,8 @@ const SOGGETTI = {
     "3ª sing. f.": "lei",
     "1ª plur.": "noi",
     "2ª plur.": "voi",
-    "3ª plur.": "loro"
+    "3ª plur.": "loro",
+    "3ª plur. f.": "loro"
   },
   fr: {
     "1ª sing.": "je",
@@ -5733,7 +5742,8 @@ const SOGGETTI = {
     "3ª sing. f.": "elle",
     "1ª plur.": "nous",
     "2ª plur.": "vous",
-    "3ª plur.": "ils"
+    "3ª plur.": "ils",
+    "3ª plur. f.": "elles"
   },
   es: {
     "1ª sing.": "yo",
@@ -5742,7 +5752,8 @@ const SOGGETTI = {
     "3ª sing. f.": "ella",
     "1ª plur.": "nosotros",
     "2ª plur.": "vosotros",
-    "3ª plur.": "ellos"
+    "3ª plur.": "ellos",
+    "3ª plur. f.": "ellas"
   },
   pt: {
     "1ª sing.": "eu",
@@ -5751,7 +5762,8 @@ const SOGGETTI = {
     "3ª sing. f.": "ela",
     "1ª plur.": "nós",
     "2ª plur.": "vós",
-    "3ª plur.": "eles"
+    "3ª plur.": "eles",
+    "3ª plur. f.": "elas"
   },
   en: {
     "1ª sing.": "I",
@@ -5760,7 +5772,8 @@ const SOGGETTI = {
     "3ª sing. f.": "she",
     "1ª plur.": "we",
     "2ª plur.": "you",
-    "3ª plur.": "they"
+    "3ª plur.": "they",
+    "3ª plur. f.": "they"
   },
   de: {
     "1ª sing.": "ich",
@@ -5769,7 +5782,8 @@ const SOGGETTI = {
     "3ª sing. f.": "sie",
     "1ª plur.": "wir",
     "2ª plur.": "ihr",
-    "3ª plur.": "sie"
+    "3ª plur.": "sie",
+    "3ª plur. f.": "sie"
   },
   ia: {
     "1ª sing.": "io",
@@ -5778,7 +5792,8 @@ const SOGGETTI = {
     "3ª sing. f.": "illa",
     "1ª plur.": "nos",
     "2ª plur.": "vos",
-    "3ª plur.": "illes"
+    "3ª plur.": "illes",
+    "3ª plur. f.": "illas"
   },
   sp: {
     "1ª sing.": "mì",
@@ -5801,6 +5816,18 @@ const SOGGETTI_ALTRI = {
   de: ["es"],
   ia: ["illa", "illas"]
 };
+// Pronomi soggetto pieni FACOLTATIVI nei dialetti (fonti tipo "(Me) a son"):
+// la cella ha la sola forma ("a son"), ma "me a son" è altrettanto giusta.
+// Scritti già normalizzati (senza accenti/apostrofi), come normalizza().
+const PRONOMI_PIENI_DIALETTO = {
+  cr: ["me", "te", "lu", "le", "noaltri", "voaltri", "lor"]
+};
+function togliPronomePienoDialetto(risposta, codLingua) {
+  const P = PRONOMI_PIENI_DIALETTO[codLingua];
+  if (!P) return risposta;
+  const [primo, ...resto] = risposta.trim().split(/\s+/);
+  return resto.length && P.includes(normalizza(primo)) ? resto.join(" ") : risposta;
+}
 // Lingue dove il soggetto è grammaticalmente necessario (o molto utile per audio)
 const LINGUE_CON_SOGGETTO = new Set(["fr", "en", "de", "pt", "ia"]);
 // Pronunce TTS di un soggetto (SOGGETTI) che differiscono dalla grafia corretta.
@@ -11737,7 +11764,12 @@ function App() {
       const basi = variantiBaseDialetto(atteso);
       if (basi.length) attesoConfronto = atteso + "|" + basi.join("|");
     }
-    const ok = isCorretta(attesoConfronto, risposta, lA?.bcp47, lA?.codice);
+    let ok = isCorretta(attesoConfronto, risposta, lA?.bcp47, lA?.codice);
+    // Pronome pieno facoltativo scritto davanti (cr "me a son"): riprova senza.
+    if (!ok && carta.tipo === "coniugazione") {
+      const senzaPronome = togliPronomePienoDialetto(risposta, lA?.codice);
+      if (senzaPronome !== risposta) ok = isCorretta(attesoConfronto, senzaPronome, lA?.bcp47, lA?.codice);
+    }
     // Aiutino (Allenamento, Ascolta e scrivi, Dettato): se la risposta è
     // sbagliata di 1-2 lettere, invece del ❌ mostra la parola con i buchi e
     // concede un secondo tentativo, una volta sola. Niente statistiche né
