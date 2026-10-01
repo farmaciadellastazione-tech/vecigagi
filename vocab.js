@@ -93,7 +93,10 @@ function normalizza(str) {
   // "\u00e6" (grafia genovese, es. "amm\u00e6") \u00e8 una legatura Unicode non scomponibile
   // da NFD: senza questa riga il filtro successivo la elimina silenziosamente
   // invece di convertirla (es. "amm\u00e6" -> "amm" invece di "amme").
-  return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\u00e6/g, "e").replace(/[-_]/g, " ").replace(/[^a-z\s]/g, "").replace(/\s+/g, " ").trim();
+  // Lettere greche (\u03b1-\u03c9) tenute: senza, una risposta in greco antico diventava
+  // vuota e risultava sempre sbagliata. Accenti/spiriti/iota sottoscritto
+  // sono segni combinanti e cadono con il filtro NFD; \u03c2 finale = \u03c3.
+  return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\u00e6/g, "e").replace(/\u03c2/g, "\u03c3").replace(/[-_]/g, " ").replace(/[^a-z\u03b1-\u03c9\s]/g, "").replace(/\s+/g, " ").trim();
 }
 
 // Normalizza per dialetti: rimuove prefissi fonetici comuni (gh', sc', etc.)
