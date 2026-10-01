@@ -8948,7 +8948,8 @@ function InputVocale({
   lingaNome,
   atteso,
   codLingua,
-  onVerifica
+  onVerifica,
+  preciso = false // coniugazioni: stesso controllo di verificaRisposta
 }) {
   const [trascritto, setTrascritto] = useState("");
   const [statoMic, setStatoMic] = useState("idle");
@@ -8960,11 +8961,11 @@ function InputVocale({
     // parole rare/poco comuni la trascrizione più probabile è spesso sbagliata mentre
     // una delle alternative successive è corretta. Usa la prima che risulta valida,
     // altrimenti ricadi sulla trascrizione principale (per mostrare comunque un errore sensato).
-    const scelta = atteso ? alternative.find(alt => isCorretta(atteso, alt, bcp47, codLingua)) : null;
+    const scelta = atteso ? alternative.find(alt => isCorretta(atteso, alt, bcp47, codLingua, preciso)) : null;
     const tConv = scelta || alternative[0] || "";
     setTrascritto(tConv);
     setTimeout(() => onVerifica(tConv), 300);
-  }, [onVerifica, bcp47, atteso, codLingua]);
+  }, [onVerifica, bcp47, atteso, codLingua, preciso]);
   const {
     ascolto,
     avviaAscolto
@@ -11118,6 +11119,7 @@ function SchermataQuiz({
     lingaNome: lA.nome,
     atteso: attesoCorrente,
     codLingua: lA.codice,
+    preciso: carta.tipo === "coniugazione",
     onVerifica: onVerifica
   }), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-3"
