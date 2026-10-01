@@ -127,8 +127,17 @@ function formaBaseDialetto(str) {
 function variantiBaseDialetto(atteso) {
   // Anche le alternative nascoste (dopo "|"): "a vëgne|a ven" deve accettare
   // "ven" oltre a "vëgne". Sono solo candidati per isCorretta, mai mostrati.
-  const parti = atteso.split(/[/,;|]/).map(s => s.trim()).filter(Boolean);
-  const basi = parti.map(formaBaseDialetto).filter((b, idx) => b && b !== normalizza(parti[idx]));
+  // Da quelle nascoste però niente basi sotto le 3 lettere: isCorretta accetta
+  // qualunque risposta che CONTENGA un'attesa di ≤4 lettere, e "o veu|o eu" →
+  // "eu" farebbe passare anche "veuan" (3ª plur.).
+  const visibili = soloVisibile(atteso).split(/[/,;|]/).map(s => s.trim()).filter(Boolean);
+  const iNascoste = atteso.indexOf("|");
+  const nascoste = iNascoste < 0 ? [] : atteso.slice(iNascoste + 1).split(/[/,;|]/).map(s => s.trim()).filter(Boolean);
+  const base = p => { const b = formaBaseDialetto(p); return b && b !== normalizza(p) ? b : null; };
+  const basi = [
+    ...visibili.map(base),
+    ...nascoste.map(base).filter(b => b && b.length >= 3),
+  ].filter(Boolean);
   return [...new Set(basi)];
 }
 
