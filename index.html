@@ -5810,6 +5810,38 @@ const SOGGETTI = {
     "1ª plur.": "noi",
     "2ª plur.": "voi",
     "3ª plur.": "loo"
+  },
+  // Soggetti pieni facoltativi: mostrati nella domanda (formaConSoggetto),
+  // nella risposta si possono omettere.
+  ge: {
+    "1ª sing.": "mi",
+    "2ª sing.": "ti",
+    "3ª sing.": "lê",
+    "3ª sing. f.": "lê",
+    "1ª plur.": "niatri",
+    "2ª plur.": "viatri",
+    "3ª plur.": "liatri",
+    "3ª plur. f.": "liatri"
+  },
+  cr: {
+    "1ª sing.": "me",
+    "2ª sing.": "te",
+    "3ª sing.": "lu'",
+    "3ª sing. f.": "le'",
+    "1ª plur.": "noàltri",
+    "2ª plur.": "voàltri",
+    "3ª plur.": "lór",
+    "3ª plur. f.": "lór"
+  },
+  la: {
+    "1ª sing.": "ego",
+    "2ª sing.": "tu",
+    "3ª sing.": "is",
+    "3ª sing. f.": "ea",
+    "1ª plur.": "nos",
+    "2ª plur.": "vos",
+    "3ª plur.": "ei",
+    "3ª plur. f.": "eae"
   }
 };
 // Altri pronomi soggetto (femminili/neutri) che rimuoviSoggetto toglie dalla
@@ -5858,23 +5890,30 @@ const LINGUE_CON_SOGGETTO = new Set(["fr", "en", "de", "pt", "ia"]);
 const PRONUNCIA_TTS_SOGGETTO = {
   sp: { loo: "loho" }
 };
-// Restituisce il testo da leggere ad alta voce per una forma coniugata
-function testoAudio(forma, persona, codLingua) {
-  // Solo la parte da leggere: pronuncia nei dialetti ("mi sun/mi son" → "mi
-  // sun"), primo sinonimo altrove, mai le alternative nascoste dopo "|".
-  forma = formaTTS(forma);
+// Forma coniugata con il soggetto davanti (domanda e audio). Non lo aggiunge
+// se la lingua non ha SOGGETTI, se la forma lo contiene già all'inizio (anche
+// dopo "che": ge "che mi amme") o se è un imperativo ("let's go", forme con
+// "!"). perAudio: usa la pronuncia TTS del soggetto (sp "loo" → "loho").
+function formaConSoggetto(forma, persona, codLingua, perAudio = false) {
   const p = persona ? persona.replace(/ \(.*\)/, "").trim() : ""; // rimuove "(io/I/je...)"
   const sogg = SOGGETTI[codLingua]?.[p];
-  if (!sogg) return forma;
-  const soggAudio = PRONUNCIA_TTS_SOGGETTO[codLingua]?.[sogg] || sogg;
-  // Imperativo: non aggiungere soggetto se la forma è già autosufficiente
-  // es. "let's go", "go!", forme che iniziano con "let's"
-  if (/^let'?s\b/i.test(forma)) return forma;
+  if (!sogg || !forma) return forma;
+  if (/^let'?s\b/i.test(forma) || /!\s*$/.test(forma)) return forma;
+  const parole = forma.trim().split(/\s+/).map(w => normalizza(w));
+  const s = normalizza(sogg);
+  if (parole[0] === s || (parole[0] === "che" && parole[1] === s)) return forma;
   // FR: elision per je + vocale
   if (codLingua === "fr" && sogg === "je" && /^[aeéèêëiouàâîïœùûh]/i.test(forma)) {
     return "j'" + forma;
   }
-  return soggAudio + " " + forma;
+  const soggUsato = perAudio ? PRONUNCIA_TTS_SOGGETTO[codLingua]?.[sogg] || sogg : sogg;
+  return soggUsato + " " + forma;
+}
+// Restituisce il testo da leggere ad alta voce per una forma coniugata
+function testoAudio(forma, persona, codLingua) {
+  // Solo la parte da leggere: pronuncia nei dialetti ("mi sun/mi son" → "mi
+  // sun"), primo sinonimo altrove, mai le alternative nascoste dopo "|".
+  return formaConSoggetto(formaTTS(forma), persona, codLingua, true);
 }
 const CONIUGAZIONI = {
   amare: {
@@ -10986,8 +11025,8 @@ function SchermataQuiz({
     className: "text-5xl font-extrabold text-white"
   }, (() => {
     const forma = formaDisplay(carta.entry[lDA?.codice] || "", lDA?.codice);
-    const sogg = LINGUE_CON_SOGGETTO.has(lDA?.codice) && SOGGETTI[lDA?.codice]?.[carta.persona?.replace(/ \(.*\)/, "").trim()];
-    return sogg ? `${sogg} ${forma}` : forma;
+    // Soggetto sempre nella domanda (richiesta di Dino), in tutte le lingue
+    return formaConSoggetto(forma, carta.persona, lDA?.codice);
   })()), lDA && /*#__PURE__*/React.createElement(BtnAudio, {
     testo: testoAudio(carta.entry[lDA.codice], carta.persona, lDA.codice),
     bcp47: lDA.bcp47,
