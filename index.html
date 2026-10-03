@@ -11836,7 +11836,7 @@ function App() {
     // soggetto/clitico obbligatorio (es. "agia" oltre a "i g'agia").
     let attesoConfronto = atteso;
     if (carta.tipo === "coniugazione" && atteso && DIALETTI_TTS_ITA.includes(lA?.codice)) {
-      const basi = variantiBaseDialetto(atteso);
+      const basi = [...new Set([...variantiBaseDialetto(atteso), ...variantiSenzaSoggettoDialetto(atteso)])];
       if (basi.length) attesoConfronto = atteso + "|" + basi.join("|");
     }
     let ok = isCorretta(attesoConfronto, risposta, lA?.bcp47, lA?.codice, carta.tipo === "coniugazione");

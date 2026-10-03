@@ -144,6 +144,25 @@ function variantiBaseDialetto(atteso) {
   return [...new Set(basi)];
 }
 
+// Varianti intermedie, tra la forma intera e quella nuda: senza "che"
+// (congiuntivo) e senza soggetto pieno, ma CON il clitico obbligatorio.
+// In genovese il soggetto pieno è facoltativo e il clitico no: "o l'amma",
+// "t'è", "mi amme" (cong.) sono le risposte più naturali. Come
+// variantiBaseDialetto: solo candidati per isCorretta, mai mostrati.
+function variantiSenzaSoggettoDialetto(atteso) {
+  const parti = atteso.split(/[/,;|]/).map(s => s.trim()).filter(Boolean);
+  const out = [];
+  for (const p of parti) {
+    const senzaChe = p.replace(/^che\s+/i, "");
+    const senzaSogg = senzaChe.replace(/^(mi|ti|lé|lê|le|niatri|viatri|liatri)\s+/i, "");
+    for (const v of [senzaChe, senzaSogg]) {
+      const n = normalizza(v);
+      if (n && n !== normalizza(p)) out.push(n);
+    }
+  }
+  return [...new Set(out)];
+}
+
 // Espande contrazioni inglesi comuni
 function espandiContrazioni(str) {
   return str.replace(/i'll/gi, "i will").replace(/i'm/gi, "i am").replace(/i've/gi, "i have").replace(/i'd/gi, "i would").replace(/you'll/gi, "you will").replace(/you're/gi, "you are").replace(/you've/gi, "you have").replace(/you'd/gi, "you would").replace(/he'll/gi, "he will").replace(/he's/gi, "he is").replace(/he'd/gi, "he would").replace(/she'll/gi, "she will").replace(/she's/gi, "she is").replace(/she'd/gi, "she would").replace(/we'll/gi, "we will").replace(/we're/gi, "we are").replace(/we've/gi, "we have").replace(/we'd/gi, "we would").replace(/they'll/gi, "they will").replace(/they're/gi, "they are").replace(/they've/gi, "they have").replace(/they'd/gi, "they would").replace(/won't/gi, "will not").replace(/can't/gi, "cannot").replace(/cannot/gi, "can not").replace(/don't/gi, "do not").replace(/doesn't/gi, "does not").replace(/didn't/gi, "did not").replace(/isn't/gi, "is not").replace(/aren't/gi, "are not").replace(/wasn't/gi, "was not").replace(/weren't/gi, "were not").replace(/hadn't/gi, "had not").replace(/hasn't/gi, "has not").replace(/haven't/gi, "have not").replace(/wouldn't/gi, "would not").replace(/couldn't/gi, "could not").replace(/shouldn't/gi, "should not").replace(/it's/gi, "it is").replace(/that's/gi, "that is").replace(/there's/gi, "there is").replace(/what's/gi, "what is");
@@ -263,7 +282,7 @@ const _exports = {
   soloVisibile, formaDisplay, formaTTS,
   normalizza, normalizzaDialetto, espandiContrazioni, normalizzaEn,
   convertiNumeriDialetto, wordKey, frasaFineSP,
-  formaBaseDialetto, variantiBaseDialetto,
+  formaBaseDialetto, variantiBaseDialetto, variantiSenzaSoggettoDialetto,
   distanzaOSA, quasiGiusta, mascheraAiutino,
 };
 Object.assign(globalThis, _exports);
