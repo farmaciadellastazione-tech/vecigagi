@@ -11861,7 +11861,14 @@ function App() {
     // concede un secondo tentativo, una volta sola. Niente statistiche né
     // audio della soluzione finché non si risponde di nuovo.
     if (!ok && !aiutino && (modalita === "allenamento" || modalita === "ascolto" || modalita === "dettato")) {
-      const q = quasiGiusta(attesoConfronto, rispostaConfronto, lA?.codice);
+      let q = quasiGiusta(attesoConfronto, rispostaConfronto, lA?.codice);
+      // Soggetto scritto davanti ("er wirdt können"): conta come lettere in
+      // più e supera la soglia. Il giudizio lo toglie già: anche l'aiutino.
+      if (!q && carta.tipo === "coniugazione") {
+        const senzaSogg = rimuoviSoggetto(rispostaConfronto, lA?.codice);
+        const q2 = senzaSogg !== normalizza(rispostaConfronto) ? quasiGiusta(attesoConfronto, senzaSogg, lA?.codice) : null;
+        if (q2) { q = q2; rispostaConfronto = senzaSogg; }
+      }
       if (q) {
         setAiutino({ maschera: mascheraAiutino(q.forma, rispostaConfronto) });
         setInput(risposta);
