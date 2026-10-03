@@ -5924,16 +5924,17 @@ function togliPronomePienoDialetto(risposta, codLingua, persona) {
   return resto.length && ammessi.includes(normalizza(primo)) ? resto.join(" ") : risposta;
 }
 // Soggetti ammessi per persona (normalizzati), maschili, femminili e neutri.
+// Cortesia (usted/você/Lei/Sie) solo alla 3ª persona: è lì che concorda il verbo.
 // rimuoviSoggetto toglie qualunque soggetto della lingua senza guardare la
 // persona: soggettoPersonaSbagliata serve a bocciare dopo il giudizio le
 // coniugazioni scritte col soggetto di un'altra persona ("du kann" per "er").
 const SOGGETTI_PER_PERSONA = {
   "1ª sing.": { it: ["io"], fr: ["je"], es: ["yo"], pt: ["eu"], en: ["i"], de: ["ich"], ia: ["io"] },
-  "2ª sing.": { it: ["tu"], fr: ["tu"], es: ["tu", "usted"], pt: ["tu", "voce"], en: ["you"], de: ["du"], ia: ["tu"] },
+  "2ª sing.": { it: ["tu"], fr: ["tu"], es: ["tu"], pt: ["tu"], en: ["you"], de: ["du"], ia: ["tu"] },
   "3ª sing.": { it: ["lui", "lei", "egli", "ella", "esso", "essa"], fr: ["il", "elle", "on"], es: ["el", "ella", "usted"], pt: ["ele", "ela", "voce"], en: ["he", "she", "it"], de: ["er", "sie", "es"], ia: ["ille", "illa", "il"] },
   "3ª sing. f.": { it: ["lei", "ella", "essa"], fr: ["elle"], es: ["ella"], pt: ["ela"], en: ["she"], de: ["sie"], ia: ["illa"] },
   "1ª plur.": { it: ["noi"], fr: ["nous", "on"], es: ["nosotros", "nosotras"], pt: ["nos"], en: ["we"], de: ["wir"], ia: ["nos"] },
-  "2ª plur.": { it: ["voi"], fr: ["vous"], es: ["vosotros", "vosotras", "ustedes"], pt: ["vos", "voces"], en: ["you"], de: ["ihr"], ia: ["vos"] },
+  "2ª plur.": { it: ["voi"], fr: ["vous"], es: ["vosotros", "vosotras"], pt: ["vos"], en: ["you"], de: ["ihr"], ia: ["vos"] },
   "3ª plur.": { it: ["loro", "essi", "esse"], fr: ["ils", "elles"], es: ["ellos", "ellas", "ustedes"], pt: ["eles", "elas", "voces"], en: ["they"], de: ["sie"], ia: ["illes", "illas"] },
   "3ª plur. f.": { it: ["loro", "esse"], fr: ["elles"], es: ["ellas"], pt: ["elas"], en: ["they"], de: ["sie"], ia: ["illas"] }
 };
@@ -9070,14 +9071,17 @@ function InputVocale({
   const onResult = useCallback(testi => {
     setStatoMic("elaborazione");
     // Pre-converte numeri in parole nella lingua corretta prima di verificare
-    const alternative = (testi.length ? testi : [""]).map(t => bcp47 ? convertiNumeri(t, bcp47) : t);
+    const tutte = (testi.length ? testi : [""]).map(t => bcp47 ? convertiNumeri(t, bcp47) : t);
+    // Coniugazioni: scarta le trascrizioni col soggetto di un'altra persona
+    // ("il peut" per una carta "3ª sing. f."), che verificaRisposta boccerebbe.
+    const alternative = preciso ? tutte.filter(alt => !soggettoPersonaSbagliata(alt, codLingua, persona)) : tutte;
     // Il riconoscimento vocale restituisce fino a 5 alternative (maxAlternatives): per
     // parole rare/poco comuni la trascrizione più probabile è spesso sbagliata mentre
     // una delle alternative successive è corretta. Usa la prima che risulta valida,
     // altrimenti ricadi sulla trascrizione principale (per mostrare comunque un errore sensato).
     // Coniugazioni: come verificaRisposta, si riprova togliendo il pronome pieno.
     const scelta = atteso ? alternative.find(alt => isCorretta(atteso, alt, bcp47, codLingua, preciso)) || preciso && alternative.find(alt => isCorretta(atteso, togliPronomePienoDialetto(alt, codLingua, persona), bcp47, codLingua, preciso)) : null;
-    const tConv = scelta || alternative[0] || "";
+    const tConv = scelta || alternative[0] || tutte[0] || "";
     setTrascritto(tConv);
     setTimeout(() => onVerifica(tConv), 300);
   }, [onVerifica, bcp47, atteso, codLingua, preciso, persona]);
