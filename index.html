@@ -5997,6 +5997,7 @@ const CONIUGAZIONI = {
         { p: "1ª sing. (io/I/je...)", it: "amo", fr: "aime", es: "amo", pt: "amo", la: "amo", grc: "φιλῶ", en: "love", de: "liebe", ia: "ama", sp: "a amo", ge: "mi ammu/mi ammo" },
         { p: "2ª sing. (tu/you/tu...)", it: "ami", fr: "aimes", es: "amas", pt: "amas", la: "amas", grc: "φιλεῖς", en: "love", de: "liebst", ia: "ama", sp: "te ami", ge: "ti t'ammi" },
         { p: "3ª sing. (lui/il/él...)", it: "ama", fr: "aime", es: "ama", pt: "ama", la: "amat", grc: "φιλεῖ", en: "loves", de: "liebt", ia: "ama", sp: "i ama", ge: "lé u l'amma/lê o l'amma" },
+        { p: "3ª sing. f.", it: "ama", sp: "l'ama" },
         { p: "1ª plur. (noi/we/nous...)", it: "amiamo", fr: "aimons", es: "amamos", pt: "amamos", la: "amamus", grc: "φιλοῦμεν", en: "love", de: "lieben", ia: "ama", sp: "a amémo", ge: "niatri ammémmu/niatri ammemmo" },
         { p: "2ª plur. (voi/vous/vos.)", it: "amate", fr: "aimez", es: "amáis", pt: "amais", la: "amatis", grc: "φιλεῖτε", en: "love", de: "liebt", ia: "ama", sp: "a amè", ge: "viatri ammè/viatri ammæ" },
         { p: "3ª plur. (loro/ils/they)", it: "amano", fr: "aiment", es: "aman", pt: "amam", la: "amant", grc: "φιλοῦσι", en: "love", de: "lieben", ia: "ama", sp: "i amo", ge: "liatri amman" }
@@ -6005,23 +6006,25 @@ const CONIUGAZIONI = {
     imperfetto: {
       nome: "Imperfetto",
       forme: [
-        { p: "1ª sing.", it: "amavo", fr: "aimais", es: "amaba", pt: "amava", la: "amabam", grc: "ἐφίλουν", en: "loved", de: "liebte", ia: "amava", sp: "amavo", ge: "mi ammava" },
-        { p: "2ª sing.", it: "amavi", fr: "aimais", es: "amabas", pt: "amavas", la: "amabas", grc: "ἐφίλεις", en: "loved", de: "liebtest", ia: "amava", sp: "amavi", ge: "ti t'ammavi" },
-        { p: "3ª sing.", it: "amava", fr: "aimait", es: "amaba", pt: "amava", la: "amabat", grc: "ἐφίλει", en: "loved", de: "liebte", ia: "amava", sp: "amava", ge: "lé u l'ammava/lê o l'ammava" },
-        { p: "1ª plur.", it: "amavamo", fr: "aimions", es: "amábamos", pt: "amávamos/amavamos", la: "amabamus", grc: "ἐφιλοῦμεν", en: "loved", de: "liebten", ia: "amava", sp: "amàvimo", ge: "niatri ammavimu/niatri ammavimo" },
-        { p: "2ª plur.", it: "amavate", fr: "aimiez", es: "amabais", pt: "amáveis/amaveis", la: "amabatis", grc: "ἐφιλεῖτε", en: "loved", de: "liebtet", ia: "amava", sp: "amàvi", ge: "viatri ammavi" },
-        { p: "3ª plur.", it: "amavano", fr: "aimaient", es: "amaban", pt: "amavam", la: "amabant", grc: "ἐφίλουν", en: "loved", de: "liebten", ia: "amava", sp: "amavo", ge: "liatri ammavan" }
+        { p: "1ª sing.", it: "amavo", fr: "aimais", es: "amaba", pt: "amava", la: "amabam", grc: "ἐφίλουν", en: "loved", de: "liebte", ia: "amava", sp: "a amavo", ge: "mi ammava" },
+        { p: "2ª sing.", it: "amavi", fr: "aimais", es: "amabas", pt: "amavas", la: "amabas", grc: "ἐφίλεις", en: "loved", de: "liebtest", ia: "amava", sp: "te amavi", ge: "ti t'ammavi" },
+        { p: "3ª sing.", it: "amava", fr: "aimait", es: "amaba", pt: "amava", la: "amabat", grc: "ἐφίλει", en: "loved", de: "liebte", ia: "amava", sp: "i amava", ge: "lé u l'ammava/lê o l'ammava" },
+        { p: "3ª sing. f.", it: "amava", sp: "l'amava" },
+        { p: "1ª plur.", it: "amavamo", fr: "aimions", es: "amábamos", pt: "amávamos/amavamos", la: "amabamus", grc: "ἐφιλοῦμεν", en: "loved", de: "liebten", ia: "amava", sp: "a amàvimo", ge: "niatri ammavimu/niatri ammavimo" },
+        { p: "2ª plur.", it: "amavate", fr: "aimiez", es: "amabais", pt: "amáveis/amaveis", la: "amabatis", grc: "ἐφιλεῖτε", en: "loved", de: "liebtet", ia: "amava", sp: "a amàvi", ge: "viatri ammavi" },
+        { p: "3ª plur.", it: "amavano", fr: "aimaient", es: "amaban", pt: "amavam", la: "amabant", grc: "ἐφίλουν", en: "loved", de: "liebten", ia: "amava", sp: "i amavo", ge: "liatri ammavan" }
       ]
     },
     futuro: {
       nome: "Futuro",
       forme: [
-        { p: "1ª sing.", it: "amerò", fr: "aimerai", es: "amaré", pt: "amarei", la: "amabo", grc: "φιλήσω", en: "will love", de: "werde lieben", ia: "amara", sp: "ameò", ge: "mi ammiò" },
-        { p: "2ª sing.", it: "amerai", fr: "aimeras", es: "amarás", pt: "amarás/amaras", la: "amabis", grc: "φιλήσεις", en: "will love", de: "wirst lieben", ia: "amara", sp: "ameè", ge: "ti t'ammiè/ti t'ammiæ" },
-        { p: "3ª sing.", it: "amerà", fr: "aimera", es: "amará", pt: "amará/amara", la: "amabit", grc: "φιλήσει", en: "will love", de: "wird lieben", ia: "amara", sp: "ameà", ge: "lé u l'ammià/lê o l'ammià" },
-        { p: "1ª plur.", it: "ameremo", fr: "aimerons", es: "amaremos", pt: "amaremos", la: "amabimus", grc: "φιλήσομεν", en: "will love", de: "werden lieben", ia: "amara", sp: "ameémo", ge: "niatri ammiemu/niatri ammiemo" },
-        { p: "2ª plur.", it: "amerete", fr: "aimerez", es: "amaréis", pt: "amareis", la: "amabitis", grc: "φιλήσετε", en: "will love", de: "werdet lieben", ia: "amara", sp: "ameé", ge: "viatri ammiéi/viatri ammiei" },
-        { p: "3ª plur.", it: "ameranno", fr: "aimeront", es: "amarán", pt: "amarão/amarao", la: "amabunt", grc: "φιλήσουσι", en: "will love", de: "werden lieben", ia: "amara", sp: "ameàn", ge: "liatri ammian" }
+        { p: "1ª sing.", it: "amerò", fr: "aimerai", es: "amaré", pt: "amarei", la: "amabo", grc: "φιλήσω", en: "will love", de: "werde lieben", ia: "amara", sp: "a ameò", ge: "mi ammiò" },
+        { p: "2ª sing.", it: "amerai", fr: "aimeras", es: "amarás", pt: "amarás/amaras", la: "amabis", grc: "φιλήσεις", en: "will love", de: "wirst lieben", ia: "amara", sp: "te ameè", ge: "ti t'ammiè/ti t'ammiæ" },
+        { p: "3ª sing.", it: "amerà", fr: "aimera", es: "amará", pt: "amará/amara", la: "amabit", grc: "φιλήσει", en: "will love", de: "wird lieben", ia: "amara", sp: "i ameà", ge: "lé u l'ammià/lê o l'ammià" },
+        { p: "3ª sing. f.", it: "amerà", sp: "l'ameà" },
+        { p: "1ª plur.", it: "ameremo", fr: "aimerons", es: "amaremos", pt: "amaremos", la: "amabimus", grc: "φιλήσομεν", en: "will love", de: "werden lieben", ia: "amara", sp: "a ameémo", ge: "niatri ammiemu/niatri ammiemo" },
+        { p: "2ª plur.", it: "amerete", fr: "aimerez", es: "amaréis", pt: "amareis", la: "amabitis", grc: "φιλήσετε", en: "will love", de: "werdet lieben", ia: "amara", sp: "a ameé", ge: "viatri ammiéi/viatri ammiei" },
+        { p: "3ª plur.", it: "ameranno", fr: "aimeront", es: "amarán", pt: "amarão/amarao", la: "amabunt", grc: "φιλήσουσι", en: "will love", de: "werden lieben", ia: "amara", sp: "i ameàn", ge: "liatri ammian" }
       ]
     },
     passato: {
