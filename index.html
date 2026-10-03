@@ -5810,9 +5810,13 @@ const SOGGETTI = {
     "1ª plur.": "noi",
     "2ª plur.": "voi",
     "3ª plur.": "loo"
-  },
-  // Soggetti pieni facoltativi: mostrati nella domanda (formaConSoggetto),
-  // nella risposta si possono omettere.
+  }
+};
+// Soggetti mostrati SOLO nella domanda (formaConSoggetto). Tenuti fuori da
+// SOGGETTI perché rimuoviSoggetto toglie qualunque pronome di SOGGETTI senza
+// guardare la persona ("ti son" passerebbe per "mi son"): nella risposta
+// questi si tolgono solo se della persona giusta (PRONOMI_PIENI_DIALETTO).
+const SOGGETTI_DOMANDA = {
   ge: {
     "1ª sing.": "mi",
     "2ª sing.": "ti",
@@ -5871,6 +5875,27 @@ const PRONOMI_PIENI_DIALETTO = {
     "2ª plur.": "voaltri",
     "3ª plur.": "lor",
     "3ª plur. f.": "lor"
+  },
+  // ge e la: i soggetti che la domanda mostra (SOGGETTI_DOMANDA)
+  ge: {
+    "1ª sing.": "mi",
+    "2ª sing.": "ti",
+    "3ª sing.": "le",
+    "3ª sing. f.": "le",
+    "1ª plur.": "niatri",
+    "2ª plur.": "viatri",
+    "3ª plur.": "liatri",
+    "3ª plur. f.": "liatri"
+  },
+  la: {
+    "1ª sing.": "ego",
+    "2ª sing.": "tu",
+    "3ª sing.": "is",
+    "3ª sing. f.": "ea",
+    "1ª plur.": "nos",
+    "2ª plur.": "vos",
+    "3ª plur.": "ei",
+    "3ª plur. f.": "eae"
   }
 };
 function togliPronomePienoDialetto(risposta, codLingua, persona) {
@@ -5896,7 +5921,7 @@ const PRONUNCIA_TTS_SOGGETTO = {
 // "!"). perAudio: usa la pronuncia TTS del soggetto (sp "loo" → "loho").
 function formaConSoggetto(forma, persona, codLingua, perAudio = false) {
   const p = persona ? persona.replace(/ \(.*\)/, "").trim() : ""; // rimuove "(io/I/je...)"
-  const sogg = SOGGETTI[codLingua]?.[p];
+  const sogg = SOGGETTI[codLingua]?.[p] || SOGGETTI_DOMANDA[codLingua]?.[p];
   if (!sogg || !forma) return forma;
   if (/^let'?s\b/i.test(forma) || /!\s*$/.test(forma)) return forma;
   const parole = forma.trim().split(/\s+/).map(w => normalizza(w));
