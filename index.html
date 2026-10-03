@@ -442,9 +442,25 @@ const PESO_CEFR_SCONOSCIUTO = 4; // STRETTAMENTE dopo B2 (peso 3): qui conta sol
 // applicarsi a loro (le penalizzerebbe come se fossero vocabolario senza
 // livello, cosa mai intesa) — restano al peso 0, come prima di questo fix.
 function pesoCEFRCarta(carta) {
-  if (carta.tipo === 'coniugazione') return 0;
+  // Coniugazioni: il livello è quello del tempo (LIVELLO_TEMPO); una carta
+  // senza livello resta a 0, come prima.
+  if (carta.tipo === 'coniugazione') return PESO_CEFR[carta.livello] ?? 0;
   return PESO_CEFR[carta.entry.livello] ?? PESO_CEFR_SCONOSCIUTO;
 }
+// Livello CEFR delle coniugazioni, per tempo, uguale per tutte le lingue
+// (tabella di Dino, 2026-10-03). Ordine delle carte nuove, filtro per livello
+// e soglia adattiva lo usano come il livello delle parole. Un tempo non in
+// tabella (creato dall'editor) vale B1.
+const LIVELLO_TEMPO = {
+  presente: "A1",
+  imperfetto: "A2",
+  futuro: "A2",
+  passato: "A2",
+  imperativo: "A2",
+  congiuntivo: "B1",
+  condizionale: "B1",
+  congiuntivoImperfetto: "B2"
+};
 
 // ── Traduzione interfaccia IT/EN ──────────────────────────────────────────
 const UI = {
@@ -4581,8 +4597,12 @@ function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAF
     esercizi.forEach(ez => {
       if (linguaDaFissa && ez.lDA.codice !== linguaDaFissa) return;
       if (linguaAFissa && ez.lA.codice !== linguaAFissa) return;
+      // Livello del tempo (LIVELLO_TEMPO): filtro per livello e soglia
+      // adattiva come per le parole
+      if (filtri.livelli.length > 0 && !filtri.livelli.includes(ez.livello)) return;
+      const adattaC = cefrOrdine.indexOf(ez.livello) <= cefrIdx;
       const c = getCoppia(stats, ez.key);
-      if (isScaduta(stats, ez.key) && c.livello > 0) sc.push(ez);else if (c.livello === 0 && livelloUtente >= 1) nu.push(ez); // coniugazioni dopo le prime parole
+      if (isScaduta(stats, ez.key) && c.livello > 0) sc.push(ez);else if (c.livello === 0 && livelloUtente >= 1 && adattaC) nu.push(ez); // coniugazioni dopo le prime parole
       else if (isAppresa(stats, ez.key) && Math.random() < 0.03) ap.push(ez);
     });
   }
@@ -7105,6 +7125,7 @@ function generaEserciziConiugazioni(lingueAttive) {
               lA,
               verbKey,
               tempoKey,
+              livello: LIVELLO_TEMPO[tempoKey] || "B1",
               persona: forma.p,
               entry: {
                 [lDA.codice]: forma[lDA.codice],
