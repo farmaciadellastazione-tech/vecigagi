@@ -4591,7 +4591,8 @@ function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAF
   });
 
   // ── Esercizi coniugazione ────────────────────────────────────────────
-  const includiConiug = filtri.temi.length === 0 || filtri.temi.includes("grammatica");
+  // Coniugazioni: senza filtro di tema, o coi temi "grammatica" e "verbi"
+  const includiConiug = filtri.temi.length === 0 || filtri.temi.includes("grammatica") || filtri.temi.includes("verbi");
   if (includiConiug) {
     const esercizi = generaEserciziConiugazioni(lingueAttive.filter(l => LINGUE_CONIUG[l.codice]));
     esercizi.forEach(ez => {
