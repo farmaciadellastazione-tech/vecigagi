@@ -7134,7 +7134,9 @@ function SchermataVerbi({
     futuro: "bg-purple-500",
     passato: "bg-orange-500",
     congiuntivo: "bg-pink-500",
-    imperativo: "bg-red-500"
+    imperativo: "bg-red-500",
+    congiuntivoImperfetto: "bg-amber-500",
+    condizionale: "bg-green-500"
   };
   return /*#__PURE__*/React.createElement("div", {
     className: "min-h-screen bg-gradient-to-br neutral-50 p-4"
@@ -7161,11 +7163,11 @@ function SchermataVerbi({
   }, Object.entries(verbo.tempi).map(([k, t]) => /*#__PURE__*/React.createElement("button", {
     key: k,
     onClick: () => setTempoSel(k),
-    className: `text-xs px-3 py-1.5 rounded-full font-medium text-white transition ${tempoSel === k ? coloriTempi[k] || "bg-black0" : "bg-neutral-300"}`
+    className: `text-xs px-3 py-1.5 rounded-full font-medium text-white transition ${tempoSel === k ? coloriTempi[k] || "bg-sky-500" : "bg-neutral-300"}`
   }, t.nome))), tempo && /*#__PURE__*/React.createElement("div", {
     className: "bg-zinc-900 rounded-2xl shadow overflow-hidden"
   }, /*#__PURE__*/React.createElement("div", {
-    className: `${coloriTempi[tempoSel] || "bg-black0"} px-4 py-2`
+    className: `${coloriTempi[tempoSel] || "bg-sky-500"} px-4 py-2`
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-white font-bold text-sm"
   }, verbo.nome), /*#__PURE__*/React.createElement("p", {
