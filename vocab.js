@@ -117,7 +117,7 @@ function formaBaseDialetto(str) {
   t = t.replace(/^che\s+/i, ""); // congiuntivo ge ("che mi agge")
   t = t.replace(/^(mi|ti|lé|lê|niatri|viatri|liatri|no[aà]ltri|vo[aà]ltri)\s+/i, ""); // soggetto pieno (ge, cr)
   t = t.replace(/^(a|te|ti|i|o|u)['’]\s*/i, ""); // clitico + apostrofo isolato
-  t = t.replace(/^(a|te|ti|i|o|u)\s+/i, ""); // clitico staccato (sp)
+  t = t.replace(/^(a|te|ti|i|o|u|la)\s+/i, ""); // clitico staccato (sp; "la" = 3ª sing. f.)
   t = t.replace(/^[tl]['’]/i, ""); // clitico eliso fuso alla radice (t'æ, l'agge)
   t = t.replace(/^g['’]?h?['’]?/i, ""); // infisso avere spezzino (g'/gh')
   return normalizza(t);
@@ -157,7 +157,7 @@ function variantiSenzaSoggettoDialetto(atteso) {
     const senzaSogg = senzaChe.replace(/^(mi|ti|lé|lê|le|niatri|viatri|liatri)\s+/i, "");
     // sp avere: anche senza clitico davanti a g'/gh' ("te g'avevi" → "g'avevi",
     // confermato da Dino)
-    const senzaCliticoG = senzaSogg.replace(/^(a|te|i)\s+(?=gh?['’])/i, "");
+    const senzaCliticoG = senzaSogg.replace(/^(a|te|i|la)\s+(?=gh?['’])/i, "");
     for (const v of [senzaChe, senzaSogg, senzaCliticoG]) {
       const n = normalizza(v);
       if (n && n !== normalizza(p)) out.push(n);
