@@ -5803,13 +5803,15 @@ const SOGGETTI = {
     "3ª plur.": "illes",
     "3ª plur. f.": "illas"
   },
+  // sp: tabella dei pronomi fornita da Dino (2026-10-03)
   sp: {
-    "1ª sing.": "mì",
-    "2ª sing.": "ti",
+    "1ª sing.": "me",
+    "2ª sing.": "te",
     "3ª sing.": "lü",
+    "3ª sing. f.": "lé",
     "1ª plur.": "noi",
     "2ª plur.": "voi",
-    "3ª plur.": "loo"
+    "3ª plur.": "lóo"
   }
 };
 // Soggetti mostrati SOLO nella domanda (formaConSoggetto). Tenuti fuori da
@@ -5911,9 +5913,9 @@ const LINGUE_CON_SOGGETTO = new Set(["fr", "en", "de", "pt", "ia"]);
 // Pronunce TTS di un soggetto (SOGGETTI) che differiscono dalla grafia corretta.
 // SOLO per l'audio: la grafia in SOGGETTI resta quella giusta (usata anche per
 // riconoscere/staccare il soggetto dalle risposte digitate, vedi rimuoviSoggetto).
-// sp "loo": la voce italiana legge il doppio "o" come "lu", va scritto "loho".
+// sp "lóo": la voce italiana legge il doppio "o" come "lu", va scritto "loho".
 const PRONUNCIA_TTS_SOGGETTO = {
-  sp: { loo: "loho" }
+  sp: { "lóo": "loho" }
 };
 // Forma coniugata con il soggetto davanti (domanda e audio). Non lo aggiunge
 // se la lingua non ha SOGGETTI, se la forma lo contiene già all'inizio (anche
@@ -5924,9 +5926,12 @@ function formaConSoggetto(forma, persona, codLingua, perAudio = false) {
   const sogg = SOGGETTI[codLingua]?.[p] || SOGGETTI_DOMANDA[codLingua]?.[p];
   if (!sogg || !forma) return forma;
   if (/^let'?s\b/i.test(forma) || /!\s*$/.test(forma)) return forma;
-  const parole = forma.trim().split(/\s+/).map(w => normalizza(w));
+  // l'apostrofo separa: sp "l'è" non deve sembrare il soggetto "lé"
+  const parole = forma.trim().split(/[\s'’]+/).map(w => normalizza(w));
   const s = normalizza(sogg);
-  if (parole[0] === s || (parole[0] === "che" && parole[1] === s)) return forma;
+  // sp: le forme nei dati iniziano sempre con la particella, mai col soggetto,
+  // e "te" è entrambi ("te te gh'è"): il soggetto si aggiunge sempre.
+  if (codLingua !== "sp" && (parole[0] === s || (parole[0] === "che" && parole[1] === s))) return forma;
   // FR: elision per je + vocale
   if (codLingua === "fr" && sogg === "je" && /^[aeéèêëiouàâîïœùûh]/i.test(forma)) {
     return "j'" + forma;
@@ -6018,8 +6023,8 @@ const CONIUGAZIONI = {
         { p: "1ª sing.", it: "sono", fr: "suis", es: "soy/estoy", pt: "sou/estou", la: "sum", grc: "εἰμί", en: "am", de: "bin", ia: "es", sp: "a son", ge: "mi sun/mi son", cr: "a son" },
         { p: "2ª sing.", it: "sei", fr: "es", es: "eres/estás", pt: "és/estás/es/e", la: "es", grc: "εἶ", en: "are", de: "bist", ia: "es", sp: "t'èi", ge: "ti t'é/ti t'ê", cr: "t'sen" },
         { p: "3ª sing.", it: "è", fr: "est", es: "es/está", pt: "é/está", la: "est", grc: "ἐστί", en: "is", de: "ist", ia: "es", sp: "i è", ge: "lé u l'é/lê o l'é", cr: "i è" },
-        { p: "3ª sing. f.", it: "è", cr: "a l'è" },
-        { p: "1ª plur.", it: "siamo", fr: "sommes", es: "somos/estamos", pt: "somos/estamos", la: "sumus", grc: "ἐσμέν", en: "are", de: "sind", ia: "es", sp: "a sémo", ge: "niatri sémmu/niatri semmo", cr: "a sian/a siań" },
+        { p: "3ª sing. f.", it: "è", sp: "l'è", cr: "a l'è" },
+        { p: "1ª plur.", it: "siamo", fr: "sommes", es: "somos/estamos", pt: "somos/estamos", la: "sumus", grc: "ἐσμέν", en: "are", de: "sind", ia: "es", sp: "a sémo|a semo", ge: "niatri sémmu/niatri semmo", cr: "a sian/a siań" },
         { p: "2ª plur.", it: "siete", fr: "êtes", es: "sois/estáis", pt: "sois/estais", la: "estis", grc: "ἐστέ", en: "are", de: "seid", ia: "es", sp: "a sé", ge: "viatri séi/viatri sei", cr: "voàltri siet" },
         { p: "3ª plur.", it: "sono", fr: "sont", es: "son/están", pt: "são/estão", la: "sunt", grc: "εἰσί", en: "are", de: "sind", ia: "es", sp: "i en", ge: "liatri en", cr: "i en" },
         { p: "3ª plur. f.", it: "sono", cr: "a l'en" }
@@ -6088,9 +6093,9 @@ const CONIUGAZIONI = {
         { p: "1ª sing.", it: "ho", fr: "ai", es: "he/tengo", pt: "hei/tenho", la: "habeo", grc: "ἔχω", en: "have", de: "habe", ia: "ha", sp: "a g'ho", ge: "mi ò", cr: "a i ò" },
         { p: "2ª sing.", it: "hai", fr: "as", es: "has/tienes", pt: "hás/tens", la: "habes", grc: "ἔχεις", en: "have", de: "hast", ia: "ha", sp: "te gh'è", ge: "ti t'è/ti t'æ", cr: "t'à" },
         { p: "3ª sing.", it: "ha", fr: "a", es: "ha/tiene", pt: "há/tem", la: "habet", grc: "ἔχει", en: "has", de: "hat", ia: "ha", sp: "i g'ha", ge: "lé u l'a/lê o l'à", cr: "i à" },
-        { p: "3ª sing. f.", it: "ha", cr: "a l'à" },
+        { p: "3ª sing. f.", it: "ha", sp: "la g'ha", cr: "a l'à" },
         { p: "1ª plur.", it: "abbiamo", fr: "avons", es: "hemos/tenemos", pt: "havemos/temos", la: "habemus", grc: "ἔχομεν", en: "have", de: "haben", ia: "ha", sp: "a g'avémo", ge: "niatri émmu/niatri emmo", cr: "noàltri avén/noàltri avéń|abian" },
-        { p: "2ª plur.", it: "avete", fr: "avez", es: "habéis/tenéis", pt: "haveis/tendes", la: "habetis", grc: "ἔχετε", en: "have", de: "habt", ia: "ha", sp: "a gh'avé", ge: "viatri éi/viatri ei", cr: "voàltri avet" },
+        { p: "2ª plur.", it: "avete", fr: "avez", es: "habéis/tenéis", pt: "haveis/tendes", la: "habetis", grc: "ἔχετε", en: "have", de: "habt", ia: "ha", sp: "a gh'avé|a g'avé", ge: "viatri éi/viatri ei", cr: "voàltri avet" },
         { p: "3ª plur.", it: "hanno", fr: "ont", es: "han/tienen", pt: "hão/têm", la: "habent", grc: "ἔχουσι", en: "have", de: "haben", ia: "ha", sp: "i g'han", ge: "liatri an", cr: "i àn" },
         { p: "3ª plur. f.", it: "hanno", cr: "a l'àn" }
       ]
