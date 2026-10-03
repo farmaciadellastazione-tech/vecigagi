@@ -8952,7 +8952,8 @@ function InputVocale({
   atteso,
   codLingua,
   onVerifica,
-  preciso = false // coniugazioni: stesso controllo di verificaRisposta
+  preciso = false, // coniugazioni: stesso controllo di verificaRisposta
+  persona = null // coniugazioni: per il pronome pieno facoltativo (cr "me a son")
 }) {
   const [trascritto, setTrascritto] = useState("");
   const [statoMic, setStatoMic] = useState("idle");
@@ -8964,11 +8965,12 @@ function InputVocale({
     // parole rare/poco comuni la trascrizione più probabile è spesso sbagliata mentre
     // una delle alternative successive è corretta. Usa la prima che risulta valida,
     // altrimenti ricadi sulla trascrizione principale (per mostrare comunque un errore sensato).
-    const scelta = atteso ? alternative.find(alt => isCorretta(atteso, alt, bcp47, codLingua, preciso)) : null;
+    // Coniugazioni: come verificaRisposta, si riprova togliendo il pronome pieno.
+    const scelta = atteso ? alternative.find(alt => isCorretta(atteso, alt, bcp47, codLingua, preciso)) || preciso && alternative.find(alt => isCorretta(atteso, togliPronomePienoDialetto(alt, codLingua, persona), bcp47, codLingua, preciso)) : null;
     const tConv = scelta || alternative[0] || "";
     setTrascritto(tConv);
     setTimeout(() => onVerifica(tConv), 300);
-  }, [onVerifica, bcp47, atteso, codLingua, preciso]);
+  }, [onVerifica, bcp47, atteso, codLingua, preciso, persona]);
   const {
     ascolto,
     avviaAscolto
@@ -11126,6 +11128,7 @@ function SchermataQuiz({
     atteso: attesoVoce,
     codLingua: lA.codice,
     preciso: carta.tipo === "coniugazione",
+    persona: carta.persona,
     onVerifica: onVerifica
   }), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-3"
