@@ -155,7 +155,10 @@ function variantiSenzaSoggettoDialetto(atteso) {
   for (const p of parti) {
     const senzaChe = p.replace(/^che\s+/i, "");
     const senzaSogg = senzaChe.replace(/^(mi|ti|lé|lê|le|niatri|viatri|liatri)\s+/i, "");
-    for (const v of [senzaChe, senzaSogg]) {
+    // sp avere: anche senza clitico davanti a g'/gh' ("te g'avevi" → "g'avevi",
+    // confermato da Dino)
+    const senzaCliticoG = senzaSogg.replace(/^(a|te|i)\s+(?=gh?['’])/i, "");
+    for (const v of [senzaChe, senzaSogg, senzaCliticoG]) {
       const n = normalizza(v);
       if (n && n !== normalizza(p)) out.push(n);
     }
