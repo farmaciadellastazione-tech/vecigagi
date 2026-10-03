@@ -18,7 +18,9 @@ test('InputVocale riceve l\'atteso con le varianti dialettali delle coniugazioni
   assert.match(uso, /atteso: attesoVoce,/);
   const a = HTML.indexOf('const attesoVoce =');
   assert.ok(a > 0, 'attesoVoce non definito');
-  const def = HTML.slice(a, HTML.indexOf(';\n', a) + 1);
+  // \r?\n: con core.autocrlf=true i file locali hanno a capo Windows
+  const fine = HTML.slice(a).search(/;\r?\n/);
+  const def = HTML.slice(a, a + fine + 1);
   assert.match(def, /variantiBaseDialetto\(attesoCorrente\)/);
   assert.match(def, /variantiSenzaSoggettoDialetto\(attesoCorrente\)/);
   assert.match(def, /DIALETTI_TTS_ITA\.includes\(lA\?\.codice\)/);
