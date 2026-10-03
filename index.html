@@ -10644,6 +10644,9 @@ function SchermataQuiz({
   const lDA = carta?.tipo === "coniugazione" ? carta.lDA : lingue.find(l => l.codice === carta?.da);
   const lA = carta?.tipo === "coniugazione" ? carta.lA : lingue.find(l => l.codice === carta?.a);
   const attesoCorrente = carta ? (carta.tipo === "coniugazione" ? carta.atteso : carta.entry[carta.a]) : null;
+  // Voce: per scegliere quale trascrizione inviare servono le stesse varianti
+  // dialettali che verificaRisposta accetta (forma nuda, senza soggetto/"che").
+  const attesoVoce = carta?.tipo === "coniugazione" && attesoCorrente && DIALETTI_TTS_ITA.includes(lA?.codice) ? [attesoCorrente, ...variantiBaseDialetto(attesoCorrente), ...variantiSenzaSoggettoDialetto(attesoCorrente)].join("|") : attesoCorrente;
   const livello = carta ? getCoppia(stats, carta.key).livello : 0;
   const isRipasso = carta ? isAppresa(stats, carta.key) : false;
   const lv = carta ? LIVELLI[carta.entry.livello || ""] : null; // "" -> undefined -> niente badge, come tm/TEMI
@@ -11120,7 +11123,7 @@ function SchermataQuiz({
   }, /*#__PURE__*/React.createElement(InputVocale, {
     bcp47: lA.bcp47,
     lingaNome: lA.nome,
-    atteso: attesoCorrente,
+    atteso: attesoVoce,
     codLingua: lA.codice,
     preciso: carta.tipo === "coniugazione",
     onVerifica: onVerifica
