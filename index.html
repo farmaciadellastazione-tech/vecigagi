@@ -5090,6 +5090,9 @@ function getOmofoni(parola, bcp47) {
 function rimuoviSoggetto(str, codLingua) {
   if (!SOGGETTI[codLingua]) return str;
   const n = normalizza(str);
+  // sp: "te"/"a"/"i" sono anche particelle obbligatorie e qui non si sa la
+  // persona: il soggetto si toglie solo per persona (PRONOMI_PIENI_DIALETTO).
+  if (codLingua === "sp") return n;
   // Prova tutti i soggetti di quella lingua
   const soggetti = [...Object.values(SOGGETTI[codLingua]), ...(SOGGETTI_ALTRI[codLingua] || [])].map(s => normalizza(s));
   for (const sogg of soggetti) {
@@ -5878,6 +5881,16 @@ const PRONOMI_PIENI_DIALETTO = {
     "3ª plur.": "lor",
     "3ª plur. f.": "lor"
   },
+  // sp: i soggetti di SOGGETTI.sp (rimuoviSoggetto non li toglie, vedi lì)
+  sp: {
+    "1ª sing.": "me",
+    "2ª sing.": "te",
+    "3ª sing.": "lu",
+    "3ª sing. f.": "le",
+    "1ª plur.": "noi",
+    "2ª plur.": "voi",
+    "3ª plur.": "loo"
+  },
   // ge e la: i soggetti che la domanda mostra (SOGGETTI_DOMANDA)
   ge: {
     "1ª sing.": "mi",
@@ -5904,7 +5917,9 @@ function togliPronomePienoDialetto(risposta, codLingua, persona) {
   const P = PRONOMI_PIENI_DIALETTO[codLingua];
   if (!P) return risposta;
   const p = persona ? persona.replace(/ \(.*\)/, "").trim() : "";
-  const ammessi = p && P[p] ? [P[p]] : Object.values(P);
+  // Persona ignota: tutti i pronomi, ma non per sp, dove "te"/"a"/"i" possono
+  // essere particelle obbligatorie e non soggetti.
+  const ammessi = p && P[p] ? [P[p]] : codLingua === "sp" ? [] : Object.values(P);
   const [primo, ...resto] = risposta.trim().split(/\s+/);
   return resto.length && ammessi.includes(normalizza(primo)) ? resto.join(" ") : risposta;
 }
