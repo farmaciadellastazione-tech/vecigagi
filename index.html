@@ -5158,7 +5158,12 @@ function isCorretta(atteso, dato, bcp47, codLingua, preciso = false) {
     return isEn ? base.startsWith("to ") ? base.slice(3) : base : base;
   });
   // Also generate ops without subject (so "tu sei" atteso accepts "sei" dato)
-  const opsNoSogg = codLingua ? ops.map(op => rimuoviSoggetto(op, codLingua)) : ops;
+  // Dalla forma originale (non normalizzata): rimuoviSoggetto riconosce "j'"
+  // solo se l'apostrofo c'è ancora ("j'ai faim" → "ai faim").
+  const opsNoSogg = codLingua ? rawOps.map((s, i) => {
+    const r = normalizza(rimuoviSoggetto(s.replace(/\(.*?\)/g, "").trim(), codLingua));
+    return isEn && r.startsWith("to ") ? r.slice(3) : r || ops[i];
+  }) : ops;
   const omofoniDato = bcp47 ? getOmofoni(datoConv.trim(), bcp47).map(w => normalizza(w)) : [n];
   // Per dialetti: aggiungi versione senza prefisso fonetico (gh', sc', etc.)
   const isDialetto = DIALETTI_TTS_ITA.includes(codLingua);
