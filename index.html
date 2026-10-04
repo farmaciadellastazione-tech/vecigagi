@@ -4529,7 +4529,9 @@ function paroleToccateTema(tema, vocabolario, stats, lingue) {
 // fallback per chi non lo specifica: prima era un tetto fisso che ignorava
 // del tutto la richiesta, quindi le sessioni non superavano mai 10 domande
 // anche scegliendone 15/20/30/50 (bug segnalato da Dino).
-function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAFissa, nonstop = false, nDomRichieste = QUIZ_LEN) {
+// escludiA: lingua in cui NON si deve rispondere (esercizi vocali: quella
+// dell'interfaccia, che l'utente conosce già).
+function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAFissa, nonstop = false, nDomRichieste = QUIZ_LEN, escludiA = null) {
   const lingueAttive = lingue.filter(l => l.attiva);
   const limite = nonstop ? 9999 : nDomRichieste;
   const modalitaNS = ["quiz", "allenamento", "ascolto"];
@@ -4572,7 +4574,7 @@ function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAF
     const ld = lingueAttiveEntry(e, lingue);
     if (ld.length < 2) return;
     const daList = linguaDaFissa ? ld.filter(c => c === linguaDaFissa) : ld;
-    const aList = linguaAFissa ? ld.filter(c => c === linguaAFissa) : ld;
+    const aList = (linguaAFissa ? ld.filter(c => c === linguaAFissa) : ld).filter(c => c !== escludiA);
     daList.forEach(da => aList.forEach(a => {
       if (da === a) return;
       const key = coppiaKey(e, da, a);
@@ -4598,6 +4600,7 @@ function estraiCarte(vocabolario, stats, lingue, filtri, linguaDaFissa, linguaAF
     esercizi.forEach(ez => {
       if (linguaDaFissa && ez.lDA.codice !== linguaDaFissa) return;
       if (linguaAFissa && ez.lA.codice !== linguaAFissa) return;
+      if (escludiA && ez.lA.codice === escludiA) return;
       // Livello del tempo (LIVELLO_TEMPO): filtro per livello e soglia
       // adattiva come per le parole
       if (filtri.livelli.length > 0 && !filtri.livelli.includes(ez.livello)) return;
@@ -7348,7 +7351,7 @@ function ConfigurazioneQuiz({
     onClick: () => setLinguaA("qualsiasi"),
     "aria-pressed": linguaA === "qualsiasi",
     className: `text-xs px-3 py-1.5 rounded-full font-medium transition ${linguaA === "qualsiasi" ? "bg-neutral-700 text-white" : "bg-zinc-900 text-slate-400"}`
-  }, t.qualsiasi), lingueAttive.map(l => /*#__PURE__*/React.createElement("button", {
+  }, t.qualsiasi), lingueAttive.filter(l => modalita !== "voce" || l.codice !== getUILang()).map(l => /*#__PURE__*/React.createElement("button", {
     key: l.codice,
     onClick: () => setLinguaA(l.codice),
     "aria-pressed": linguaA === l.codice,
@@ -12441,6 +12444,10 @@ function App() {
       f = fil || filtri;
     let da = linguaDa !== undefined ? linguaDa : linguaDaUsata;
     let a = linguaA !== undefined ? linguaA : linguaAUsata;
+    // Esercizi vocali: niente risposte nella lingua dell'interfaccia (quella
+    // che l'utente conosce già); se era la lingua di risposta scelta, qualsiasi.
+    const escludiA = m === "voce" ? getUILang() : null;
+    if (escludiA && a === escludiA) a = null;
     const isNonstop = m === "nonstop";
     statsInizioSessioneRef.current = s;
     // Per modalità con ripetizione: usa il valore adattivo da SK_NDOM (default 5).
@@ -12461,7 +12468,7 @@ function App() {
     } else {
       setLinguaDaUsata(da);
       setLinguaAUsata(a);
-      carteTutte = estraiCarte(v, s, lg, f, da, a, isNonstop, nDomEff || undefined);
+      carteTutte = estraiCarte(v, s, lg, f, da, a, isNonstop, nDomEff || undefined, escludiA);
     }
     // Limita il numero di domande se specificato (difesa in profondità: le
     // funzioni sopra già generano al più nDomEff carte)
