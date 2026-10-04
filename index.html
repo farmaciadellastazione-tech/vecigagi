@@ -5025,6 +5025,9 @@ function convertiNumeri(testo, bcp47) {
     la: "la",
     ia: "ia"
   };
+  // Lingue senza tabella dei numeri (ja, ko, zh, ru, ar...): le cifre restano
+  // cifre. Prima diventavano parole italiane ("8月" → "otto月", mai giusto).
+  if (bcp47 && !langMap[cod]) return testo;
   const lang = langMap[cod] || "it";
   return testo.replace(/\b(\d+)\b/g, match => {
     return NUMERI_PAROLE[match] && NUMERI_PAROLE[match][lang] || match;
@@ -5126,10 +5129,9 @@ function rimuoviSoggetto(str, codLingua) {
   return n;
 }
 
-// preciso: solo confronti esatti (dopo normalizzazione, soggetto, varianti
-// dialettali, omofoni), senza le tolleranze "contiene"/"inizia con" pensate
-// per il vocabolario. Per le coniugazioni, dove le persone si distinguono
-// dalla desinenza ("parla"/"parlano", ge "veu"/"veuan").
+// Solo confronti esatti (dopo normalizzazione, soggetto, varianti dialettali,
+// omofoni). `preciso` è rimasto per compatibilità: dal 2026-10-04 il
+// confronto è preciso sempre, anche per il vocabolario.
 function isCorretta(atteso, dato, bcp47, codLingua, preciso = false) {
   const datoConv = bcp47 ? convertiNumeri(dato, bcp47) : dato;
   // Per dialetti: converti cifre in parole dialettali
@@ -5147,6 +5149,9 @@ function isCorretta(atteso, dato, bcp47, codLingua, preciso = false) {
   // Lettere facoltative attaccate alla parola (grc "ἴσασι(ν)"): vale anche la
   // forma CON la lettera; quella senza la dà già la rimozione delle parentesi.
   rawOps.push(...rawOps.filter(s => /[^\s(]\([^)\s]+\)/.test(s)).map(s => s.replace(/([^\s(])\(([^)\s]+)\)/g, "$1$2")));
+  // Trattino: vale anche la forma tutta attaccata ("peutêtre" per "peut-être",
+  // "Email" per "E-Mail"); quella con lo spazio la dà già normalizza.
+  rawOps.push(...rawOps.filter(s => s.includes("-")).map(s => s.replace(/-/g, "")));
   const ops = rawOps.map(s => {
     const base = normalizza(s.replace(/\(.*?\)/g, "").trim());
     return isEn ? base.startsWith("to ") ? base.slice(3) : base : base;
@@ -5174,17 +5179,10 @@ function isCorretta(atteso, dato, bcp47, codLingua, preciso = false) {
     // Confronto con omofoni dell'atteso
     const omofoniOp = bcp47 ? getOmofoni(op, bcp47).map(w => normalizza(w)) : [op];
     if (omofoniOp.includes(n)) return true;
-    if (preciso) return false;
-    // Per parole molto brevi (≤4 lettere) tolleranza extra: accetta se n è contenuto in op o viceversa
-    if (op.length <= 4 && (op.includes(n) || n.includes(op))) return true;
-    const paroleOp = op.split(/\s+/);
-    const paroleN = n.split(/\s+/);
-    if (paroleOp.length === 1) {
-      return op.startsWith(n) || n.startsWith(op);
-    } else {
-      const corrette = paroleOp.filter((p, i) => paroleN[i] && (paroleN[i] === p || p.startsWith(paroleN[i]) || paroleN[i].startsWith(p))).length;
-      return corrette / paroleOp.length >= 0.8;
-    }
+    // Nessuna tolleranza "contiene"/"inizia con" (richiesta di Dino,
+    // 2026-10-04): "brief" passava per "Brieftasche". Ora vale per tutte le
+    // carte, non solo per le coniugazioni; ai piccoli errori pensa l'aiutino.
+    return false;
   });
 }
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;

@@ -51,8 +51,10 @@ test('preciso: le risposte giuste restano giuste', () => {
   assert.strictEqual(ok('will love', 'will love', 'en', 'en-US', true), true);
 });
 
-test('senza preciso il vocabolario resta tollerante come prima', () => {
-  assert.strictEqual(ok('parla', 'parlano', 'it', 'it-IT'), true);
+// 2026-10-04 (richiesta di Dino, ok a cambiare questo test): anche il
+// vocabolario è preciso, la tolleranza "inizia con" non c'è più.
+test('anche il vocabolario è preciso: parlano non vale per parla', () => {
+  assert.strictEqual(ok('parla', 'parlano', 'it', 'it-IT'), false);
 });
 
 test('verificaRisposta usa il controllo preciso per le carte coniugazione', () => {
