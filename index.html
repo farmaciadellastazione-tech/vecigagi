@@ -9605,7 +9605,8 @@ function InputVocale({
   codLingua,
   onVerifica,
   preciso = false, // coniugazioni: stesso controllo di verificaRisposta
-  persona = null // coniugazioni: per il pronome pieno facoltativo (cr "me a son")
+  persona = null, // coniugazioni: per il pronome pieno facoltativo (cr "me a son")
+  onNonRiconosciuto = null // se nessuna trascrizione è giusta: testo da far correggere
 }) {
   const [trascritto, setTrascritto] = useState("");
   // Invio ritardato della trascrizione: annullato se la schermata sparisce
@@ -9628,8 +9629,15 @@ function InputVocale({
     const scelta = atteso ? alternative.find(alt => isCorretta(atteso, alt, bcp47, codLingua, preciso)) || preciso && alternative.find(alt => isCorretta(atteso, togliPronomePienoDialetto(alt, codLingua, persona), bcp47, codLingua, preciso)) : null;
     const tConv = scelta || alternative[0] || tutte[0] || "";
     setTrascritto(tConv);
+    // Nessuna trascrizione giusta: forse il microfono ha capito male. Niente
+    // giudizio: il testo va nella casella "oppure scrivi" per correggerlo.
+    if (!scelta && onNonRiconosciuto) {
+      setStatoMic("idle");
+      onNonRiconosciuto(tConv);
+      return;
+    }
     timerInvio.current = setTimeout(() => onVerifica(tConv), 300);
-  }, [onVerifica, bcp47, atteso, codLingua, preciso, persona]);
+  }, [onVerifica, onNonRiconosciuto, bcp47, atteso, codLingua, preciso, persona]);
   const {
     ascolto,
     avviaAscolto
@@ -11288,6 +11296,10 @@ function SchermataQuiz({
 }) {
   const t = useUI();
   const inputRef = useRef(null);
+  // Esercizi vocali: ciò che il riconoscimento ha capito quando non era giusto
+  // (null = niente da correggere). Si azzera a ogni carta.
+  const [percepito, setPercepito] = useState(null);
+  useEffect(() => setPercepito(null), [indice]);
   // Frase di fine sessione: scelta una sola volta all'ingresso in "fine" e riprodotta in autoplay.
   const [fraseFine, setFraseFine] = useState(null);
   useEffect(() => {
@@ -11791,13 +11803,26 @@ function SchermataQuiz({
     codLingua: lA.codice,
     preciso: carta.tipo === "coniugazione",
     persona: carta.persona,
-    onVerifica: onVerifica
+    onVerifica: onVerifica,
+    // Voce non giusta: ciò che ha capito va nella casella, da correggere e
+    // confermare (giudicata come risposta scritta, giusta piena se corretta).
+    onNonRiconosciuto: t => {
+      setInput(t);
+      setPercepito(t);
+    }
   }), /*#__PURE__*/React.createElement("div", {
     // Alternativa scritta: il riconoscimento vocale spesso non funziona
     // (richiesta di Dino). Stessa verifica della voce; niente autofocus, così
     // sul telefono la tastiera non copre il microfono.
     className: "pt-2"
+  }, percepito !== null ? /*#__PURE__*/React.createElement("div", {
+    className: "p-4 bg-amber-950 border-2 border-amber-700 rounded-2xl text-center mb-4",
+    role: "status"
   }, /*#__PURE__*/React.createElement("p", {
+    className: "text-amber-300 font-bold mb-1"
+  }, percepito.trim() ? `🎤 Ho capito: «${percepito}»` : "🎤 Non ho capito"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-slate-400"
+  }, percepito.trim() ? "Se non è quello che volevi dire, correggilo qui sotto e conferma (o riprova col microfono)." : "Riprova col microfono o scrivi la risposta qui sotto.")) : /*#__PURE__*/React.createElement("p", {
     className: "text-center text-sm text-slate-500 mb-2"
   }, "✍️ oppure scrivi la risposta"), /*#__PURE__*/React.createElement("input", {
     type: "text",
