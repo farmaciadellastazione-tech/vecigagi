@@ -11777,6 +11777,34 @@ function SchermataQuiz({
     persona: carta.persona,
     onVerifica: onVerifica
   }), /*#__PURE__*/React.createElement("div", {
+    // Alternativa scritta: il riconoscimento vocale spesso non funziona
+    // (richiesta di Dino). Stessa verifica della voce; niente autofocus, così
+    // sul telefono la tastiera non copre il microfono.
+    className: "pt-2"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-center text-sm text-slate-500 mb-2"
+  }, "✍️ oppure scrivi la risposta"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    value: input,
+    onChange: e => setInput(e.target.value),
+    onKeyDown: e => {
+      if (e.key === "Enter") {
+        if (!input.trim()) {
+          e.preventDefault();
+          return;
+        }
+        onVerifica(input);
+      }
+    },
+    placeholder: `${t.scrivi} ${lA?.nome}…`,
+    className: "w-full border-2 border-zinc-600 bg-zinc-800 rounded-2xl px-5 py-3 text-xl font-medium text-white placeholder-zinc-500 focus:outline-none focus:border-sky-400 mb-2 transition"
+  }), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      if (!input.trim()) return;
+      onVerifica(input);
+    },
+    className: `w-full font-extrabold py-3 rounded-2xl transition text-lg mb-1 ${input.trim() ? "bg-sky-500 hover:bg-sky-600 text-white btn-shadow" : "bg-zinc-800 text-zinc-600 cursor-not-allowed"}`
+  }, t.conferma)), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-3"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: onSalta,
