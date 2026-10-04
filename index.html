@@ -5218,6 +5218,15 @@ function useSpeechRecognition(bcp47, onResult) {
     srRef.current = sr;
     sr.start();
   }, [bcp47, ascolto, onResult]);
+  // Quando la schermata sparisce (es. risposta data per iscritto) il
+  // riconoscimento si interrompe: un risultato tardivo risponderebbe di nuovo.
+  useEffect(() => () => {
+    const sr = srRef.current;
+    if (sr) {
+      sr.onresult = null;
+      try { sr.abort(); } catch (_) {}
+    }
+  }, []);
   return {
     ascolto,
     avviaAscolto
@@ -12219,6 +12228,10 @@ function App() {
   const [indice, setIndice] = useState(0);
   const [input, setInput] = useState("");
   const [stato, setStato] = useState("domanda");
+  // Stato corrente anche per i callback "vecchi" (es. un risultato vocale che
+  // arriva dopo aver già risposto per iscritto): vedi verificaRisposta.
+  const statoRef = useRef(stato);
+  statoRef.current = stato;
   const [punteggio, setPunteggio] = useState({
     giusti: 0,
     sbagliati: 0
@@ -12508,6 +12521,9 @@ function App() {
     setVocabolario(v => v.map((e, i) => i === idx ? nuova : e));
   }
   function verificaRisposta(risposta) {
+    // Una risposta che arriva quando la carta non è più in domanda (risultato
+    // vocale tardivo) non deve contare di nuovo né toccare la carta successiva.
+    if (statoRef.current !== "domanda") return;
     const carta = carte[indice];
     const atteso = carta.tipo === "coniugazione" ? carta.atteso : carta.entry[carta.a];
     // Passa il bcp47 della lingua risposta per convertire numeri→parole
