@@ -7295,14 +7295,19 @@ function ConfigurazioneQuiz({
   // Calcola quante carte disponibili con i filtri attuali
   const carteDisp = (() => {
     const pool = vocabolario.filter(e => passaFiltri(e, filtri));
+    // Stessa regola di avvia/estraiCarte: in modalità voce niente risposte
+    // nella lingua dell'interfaccia (se scelta come risposta, vale qualsiasi).
+    const escludiA = modalita === "voce" ? getUILang() : null;
+    const linguaAEff = escludiA && linguaA === escludiA ? "qualsiasi" : linguaA;
     let n = 0;
     pool.forEach(e => {
       const ld = lingueAttiveEntry(e, lingue);
       if (ld.length < 2) return;
       ld.forEach(da => ld.forEach(a => {
         if (da === a) return;
+        if (a === escludiA) return;
         if (linguaDa !== "qualsiasi" && da !== linguaDa) return;
-        if (linguaA !== "qualsiasi" && a !== linguaA) return;
+        if (linguaAEff !== "qualsiasi" && a !== linguaAEff) return;
         n++;
       }));
     });
