@@ -11300,6 +11300,11 @@ function SchermataQuiz({
   // (null = niente da correggere). Si azzera a ogni carta.
   const [percepito, setPercepito] = useState(null);
   useEffect(() => setPercepito(null), [indice]);
+  // ...e appena la risposta è giudicata: ricominciando da indice 0 ("Ancora")
+  // l'effetto sopra non scatterebbe e resterebbe il messaggio vecchio.
+  useEffect(() => {
+    if (stato !== "domanda") setPercepito(null);
+  }, [stato]);
   // Frase di fine sessione: scelta una sola volta all'ingresso in "fine" e riprodotta in autoplay.
   const [fraseFine, setFraseFine] = useState(null);
   useEffect(() => {
