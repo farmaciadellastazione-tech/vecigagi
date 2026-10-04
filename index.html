@@ -9608,6 +9608,10 @@ function InputVocale({
   persona = null // coniugazioni: per il pronome pieno facoltativo (cr "me a son")
 }) {
   const [trascritto, setTrascritto] = useState("");
+  // Invio ritardato della trascrizione: annullato se la schermata sparisce
+  // (carta cambiata, risposta già data per iscritto).
+  const timerInvio = useRef(null);
+  useEffect(() => () => clearTimeout(timerInvio.current), []);
   const [statoMic, setStatoMic] = useState("idle");
   const onResult = useCallback(testi => {
     setStatoMic("elaborazione");
@@ -9624,7 +9628,7 @@ function InputVocale({
     const scelta = atteso ? alternative.find(alt => isCorretta(atteso, alt, bcp47, codLingua, preciso)) || preciso && alternative.find(alt => isCorretta(atteso, togliPronomePienoDialetto(alt, codLingua, persona), bcp47, codLingua, preciso)) : null;
     const tConv = scelta || alternative[0] || tutte[0] || "";
     setTrascritto(tConv);
-    setTimeout(() => onVerifica(tConv), 300);
+    timerInvio.current = setTimeout(() => onVerifica(tConv), 300);
   }, [onVerifica, bcp47, atteso, codLingua, preciso, persona]);
   const {
     ascolto,
@@ -11778,6 +11782,9 @@ function SchermataQuiz({
   }, "\uD83D\uDCA1 Non lo so"))), stato === "domanda" && modalitaEffettiva === "voce" && lA && /*#__PURE__*/React.createElement("div", {
     className: "space-y-3"
   }, /*#__PURE__*/React.createElement(InputVocale, {
+    // Una per carta: cambiando carta (es. "Salta") si rimonta e il
+    // riconoscimento ancora in corso viene interrotto.
+    key: carta.key + "_" + indice,
     bcp47: lA.bcp47,
     lingaNome: lA.nome,
     atteso: attesoVoce,
