@@ -5124,7 +5124,8 @@ function rimuoviSoggetto(str, codLingua) {
     // "you loved" -> rimuove "you "
     if (n.startsWith(sogg + " ")) return n.slice(sogg.length + 1).trim();
     // FR: "jaime" (elision j') -> rimuove "j"
-    if (codLingua === "fr" && n.startsWith("j") && !n.startsWith("je ")) return n.slice(1).trim();
+    // (solo se c'è davvero "j'": prima toglieva la j anche a "jardin", "jour")
+    if (codLingua === "fr" && /^\s*j['’]/i.test(str)) return n.slice(1).trim();
   }
   return n;
 }

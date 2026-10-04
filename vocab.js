@@ -94,11 +94,17 @@ function normalizza(str) {
   // da NFD: senza questa riga il filtro successivo la elimina silenziosamente
   // invece di convertirla (es. "amm\u00e6" -> "amm" invece di "amme").
   // Si tengono lettere di QUALUNQUE alfabeto (\p{L}) e cifre (\p{N}, così
-  // "8月" non vale "9月"): prima solo a-z, e una
-  // risposta in greco, russo, cinese, giapponese, coreano o arabo diventava
-  // vuota e risultava sempre sbagliata. Accenti/spiriti/iota sottoscritto
-  // sono segni combinanti e cadono con il filtro NFD; \u03c2 finale = \u03c3.
-  return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\u00e6/g, "e").replace(/\u03c2/g, "\u03c3").replace(/[-_]/g, " ").replace(/[^\p{L}\p{N}\s]/gu, "").replace(/\s+/g, " ").trim();
+  // "8月" non vale "9月"): prima solo a-z, e una risposta in greco, russo,
+  // cinese, giapponese, coreano o arabo diventava vuota e sempre sbagliata.
+  // Accenti/spiriti/iota sottoscritto si tolgono SOLO a lettere latine e
+  // greche (poi NFC ricompone il resto): il dakuten giapponese (が ≠ か) e la
+  // й russa (≠ и) distinguono parole. ё = е, ς finale = σ, e le legature
+  // che NFD non scompone: æ = e, œ = oe, ß = ss (tastiera italiana: "weiss").
+  return str.toLowerCase().normalize("NFD")
+    .replace(/([a-z\u03b1-\u03c9])[\u0300-\u036f]+/g, "$1").normalize("NFC")
+    .replace(/\u00e6/g, "e").replace(/\u0153/g, "oe").replace(/\u00df/g, "ss")
+    .replace(/\u03c2/g, "\u03c3").replace(/\u0451/g, "\u0435")
+    .replace(/[-_]/g, " ").replace(/[^\p{L}\p{N}\s]/gu, "").replace(/\s+/g, " ").trim();
 }
 
 // Normalizza per dialetti: rimuove prefissi fonetici comuni (gh', sc', etc.)
@@ -233,6 +239,9 @@ function distanzaOSA(a, b) {
 // accenti e maiuscole non contano, in inglese il "to" iniziale è facoltativo.
 function quasiGiusta(atteso, dato, codLingua) {
   if (!atteso || !dato) return null;
+  // Cinese/giapponese/coreano: con 1-2 caratteri ogni risposta sbagliata
+  // risulterebbe "quasi giusta" (soglia pensata per le lettere latine).
+  if (["zh", "ja", "ko"].includes(codLingua)) return null;
   const isEn = codLingua === "en";
   const senzaTo = s => s.startsWith("to ") ? s.slice(3) : s;
   const nDato = isEn ? normalizzaEn(dato) : normalizza(dato);
