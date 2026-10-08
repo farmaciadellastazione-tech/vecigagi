@@ -11348,7 +11348,8 @@ function SchermataQuiz({
     if (carta && stato === "domanda" && lDA) {
       const testoRaw = carta.tipo === "coniugazione" ? carta.entry[lDA.codice] : formaTTS(carta.entry[carta.da]);
       const testo = carta.tipo === "coniugazione" ? testoAudio(testoRaw, carta.persona, lDA.codice) : testoRaw;
-      if (testo) setTimeout(() => parla(testo, lDA.bcp47), 400);
+      // Registrazione vera se c'è (entry.audio), come l'altoparlante
+      if (testo) setTimeout(() => parla(testo, lDA.bcp47, false, carta.tipo === "coniugazione" ? null : audioVoce(carta.entry, carta.da)), 400);
     }
   }, [carta?.key, stato]);
   useEffect(() => {
@@ -12648,7 +12649,7 @@ function App() {
         sbagliati: p.sbagliati + 1
       }));
       const lA2 = carta.tipo === "coniugazione" ? carta.lA : lingue.find(l => l.codice === carta.a);
-      if (lA2 && atteso) setTimeout(() => parla(carta.tipo === "coniugazione" ? testoAudio(atteso, carta.persona, lA2.codice) : formaTTS(atteso), lA2.bcp47), 300);
+      if (lA2 && atteso) setTimeout(() => parla(carta.tipo === "coniugazione" ? testoAudio(atteso, carta.persona, lA2.codice) : formaTTS(atteso), lA2.bcp47, false, carta.tipo === "coniugazione" ? null : audioVoce(carta.entry, lA2.codice)), 300);
       return;
     }
     if (!ok) setCarteErrate(p => p.some(e => e.carta.key === carta.key) ? p : [...p, {
@@ -12666,7 +12667,9 @@ function App() {
       sbagliati: p.sbagliati + (!ok && !giaContata ? 1 : 0)
     }));
     // Pronuncia automatica della risposta corretta (riusa lA già definita sopra)
-    if (lA && atteso) setTimeout(() => parla(carta.tipo === "coniugazione" ? testoAudio(atteso, carta.persona, lA.codice) : formaTTS(atteso), lA.bcp47), 300);
+    // Registrazione vera se c'è (entry.audio), come l'altoparlante: prima la
+    // voce sintetica leggeva la "pronuncia" (es. "air conto per piazze").
+    if (lA && atteso) setTimeout(() => parla(carta.tipo === "coniugazione" ? testoAudio(atteso, carta.persona, lA.codice) : formaTTS(atteso), lA.bcp47, false, carta.tipo === "coniugazione" ? null : audioVoce(carta.entry, lA.codice)), 300);
   }
   function salta() {
     const carta = carte[indice];
