@@ -4689,6 +4689,10 @@ let _parlaTimer = null;
 function parla(testo, bcp47, lento = false, audioFile = null) {
   if (_audioCorrente) { _audioCorrente.pause(); _audioCorrente = null; }
   if (audioFile) {
+    // L'ultimo vince anche qui: ferma la voce sintetica in corso o in coda,
+    // sennò si sovrappone alla registrazione (letture automatiche ravvicinate).
+    if (_parlaTimer) { clearTimeout(_parlaTimer); _parlaTimer = null; }
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
     const a = new Audio("audio/" + audioFile);
     a.playbackRate = lento ? 0.7 : 1; // preservesPitch è il default: rallenta senza alterare il tono
     _audioCorrente = a;
