@@ -4697,7 +4697,13 @@ function parla(testo, bcp47, lento = false, audioFile = null) {
     a.playbackRate = lento ? 0.7 : 1; // preservesPitch è il default: rallenta senza alterare il tono
     _audioCorrente = a;
     // File mancante, formato non supportato o autoplay bloccato → fallback TTS.
-    a.play().catch(() => { _audioCorrente = null; parlaTTS(testo, bcp47, lento); });
+    // Solo se è ancora la corrente: se un parla() successivo l'ha fermata con
+    // pause(), la play() fallisce (AbortError) e non va letta col TTS.
+    a.play().catch(() => {
+      if (_audioCorrente !== a) return;
+      _audioCorrente = null;
+      parlaTTS(testo, bcp47, lento);
+    });
     return;
   }
   parlaTTS(testo, bcp47, lento);
