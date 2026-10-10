@@ -33,6 +33,18 @@ npm run build:storie
 
 e committa i file generati. Sono **derivati**: non editarli a mano. Aggiungi manualmente eventuali nuove opere lunghe allo script (raggruppamento, sitemap.xml) quando servono pagine dedicate.
 
+### Pagine per dialetto
+
+`tools/build_dialetti_pages.mjs` genera `dialetto-spezzino.html`, `dialetto-carrarino.html`, `dialetto-manarolese.html`, `dialetto-genovese.html`: tutte le voci di `VOCABOLARIO_DEFAULT` (verificate o no, scelta di Dino) nella grafia, divise per tema, con title/meta/canonical propri. Aggiorna anche il `<lastmod>` di queste pagine in `sitemap.xml`.
+
+**Obbligo**: dopo le modifiche al vocabolario (anche quelle salvate da `edit.html`, che scrive su `main`: prima fai pull), rilancia:
+
+```
+npm run build:dialetti
+```
+
+e committa i file generati. Sono **derivati**: non editarli a mano.
+
 ## Vocabolario
 
 Il vocabolario è l'array `VOCABOLARIO_DEFAULT` definito dentro `index.html` (cerca `const VOCABOLARIO_DEFAULT = [`). Ogni voce è un oggetto con `tema`, `livello` e i codici lingua come chiavi (`it`, `en`, `fr`, `sp`, `mn`, `ge`, `cr`, ecc.).

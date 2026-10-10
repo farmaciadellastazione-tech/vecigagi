@@ -32,24 +32,27 @@ const { formaDisplay, soloVisibile } = require(path.join(ROOT, 'vocab.js'));
 const INDEX = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 
 // Letterale JS che inizia dopo `marcatore` (array o oggetto), bilanciando le
-// parentesi e saltando le stringhe.
-function letterale(marcatore) {
-  const i = INDEX.indexOf(marcatore);
+// parentesi e saltando stringhe e commenti (un apostrofo in "// voci dell'IA"
+// non deve aprire una stringa).
+export function letterale(src, marcatore) {
+  const i = src.indexOf(marcatore);
   if (i < 0) throw new Error('non trovato: ' + marcatore);
   let j = i + marcatore.length - 1, d = 0, q = null;
   const start = j;
-  for (; j < INDEX.length; j++) {
-    const c = INDEX[j];
+  for (; j < src.length; j++) {
+    const c = src[j];
     if (q) { if (c === '\\') { j++; continue; } if (c === q) q = null; continue; }
+    if (c === '/' && src[j + 1] === '/') { const k = src.indexOf('\n', j); j = k < 0 ? src.length : k; continue; }
+    if (c === '/' && src[j + 1] === '*') { const k = src.indexOf('*/', j + 2); j = k < 0 ? src.length : k + 1; continue; }
     if (c === '"' || c === "'" || c === '`') { q = c; continue; }
     if (c === '[' || c === '{') d++;
     else if (c === ']' || c === '}') { d--; if (d === 0) break; }
   }
-  return new Function('return ' + INDEX.slice(start, j + 1))();
+  return new Function('return ' + src.slice(start, j + 1))();
 }
 
-export const VOCABOLARIO = letterale('const VOCABOLARIO_DEFAULT = [');
-export const TEMI = letterale('const TEMI = {');
+export const VOCABOLARIO = letterale(INDEX, 'const VOCABOLARIO_DEFAULT = [');
+export const TEMI = letterale(INDEX, 'const TEMI = {');
 
 export const DIALETTI = [
   {
@@ -75,6 +78,13 @@ function esc(s) {
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+// Uniforma spazi e virgole: "sbassae,abassae," → "sbassae, abassae", così le
+// voci che differiscono solo per la punteggiatura non escono due volte.
+export function ripulisci(s) {
+  return String(s || '')
+    .split(',').map(p => p.trim().replace(/\s+/g, ' ')).filter(Boolean).join(', ');
+}
+
 // Voci del dialetto: [{tema, it, dial}], senza doppioni (stessa coppia it/dial)
 // e senza celle vuote o "?". Ordinate per tema (ordine di TEMI) e per italiano.
 export function vociDialetto(cod) {
@@ -83,8 +93,8 @@ export function vociDialetto(cod) {
   for (const e of VOCABOLARIO) {
     const v = e[cod];
     if (typeof v !== 'string' || !v.trim() || v.trim() === '?') continue;
-    const dial = (formaDisplay(v, cod) || '').trim();
-    const it = (soloVisibile(e.it || '') || '').trim();
+    const dial = ripulisci(formaDisplay(v, cod));
+    const it = ripulisci(soloVisibile(e.it || ''));
     if (!dial || !it || dial === '?') continue;
     const chiave = it.toLowerCase() + '\u0000' + dial.toLowerCase();
     if (viste.has(chiave)) continue;
@@ -94,6 +104,27 @@ export function vociDialetto(cod) {
   const ordineTemi = Object.keys(TEMI);
   const pos = t => { const k = ordineTemi.indexOf(t); return k < 0 ? ordineTemi.length : k; };
   return out.sort((a, b) => pos(a.tema) - pos(b.tema) || a.it.localeCompare(b.it, 'it'));
+}
+
+// Dati strutturati: italiano + codice del dialetto quando esiste (lij per i
+// liguri; il carrarino non ne ha uno adatto).
+export function schemaPagina(d, description) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTermSet',
+    name: `Dizionario italiano–${d.nome}`,
+    url: `${SITE}/${d.slug}`,
+    inLanguage: d.lang ? ['it', d.lang] : ['it'],
+    description,
+    isPartOf: { '@type': 'WebSite', name: 'LinguaeQuiz', url: `${SITE}/` },
+  };
+}
+
+// Aggiorna <lastmod> delle pagine dei dialetti nella sitemap (le altre no).
+export function aggiornaSitemap(xml, data) {
+  return xml.replace(
+    /(<loc>https:\/\/linguaequiz\.com\/dialetto-[a-z]+\.html<\/loc>\s*<lastmod>)[^<]*(<\/lastmod>)/g,
+    `$1${data}$2`);
 }
 
 function pagina(d, voci) {
@@ -127,15 +158,7 @@ ${righe}
     </section>`;
   }).join('\n');
 
-  const schema = {
-    '@context': 'https://schema.org',
-    '@type': 'DefinedTermSet',
-    name: `Dizionario italiano–${d.nome}`,
-    url: canonical,
-    inLanguage: ['it'],
-    description,
-    isPartOf: { '@type': 'WebSite', name: 'LinguaeQuiz', url: `${SITE}/` },
-  };
+  const schema = schemaPagina(d, description);
 
   return `<!DOCTYPE html>
 <html lang="it">
@@ -248,5 +271,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     fs.writeFileSync(path.join(ROOT, d.slug), pagina(d, voci), 'utf8');
     console.log(`  scritto ${d.slug} (${voci.length} voci)`);
   }
+  const fileSitemap = path.join(ROOT, 'sitemap.xml');
+  const xml = fs.readFileSync(fileSitemap, 'utf8');
+  const nuovo = aggiornaSitemap(xml, new Date().toISOString().slice(0, 10));
+  if (nuovo !== xml) { fs.writeFileSync(fileSitemap, nuovo, 'utf8'); console.log('  sitemap.xml: lastmod aggiornato'); }
   console.log('Fatto.');
 }
