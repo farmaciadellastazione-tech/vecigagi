@@ -46,7 +46,7 @@ test('essere in manarolese, come nel libro', () => {
     '1ª plur.': 'a sömu stà', '2ª plur.': 'a sö stà', '3ª plur.': 'i lèn stà|i lèn a stà',
   });
   assert.deepStrictEqual(forme('congiuntivo', 'mn'), {
-    '1ª sing.': 'siu', '2ª sing.': 'te siu', '3ª sing.': 'i sia', '3ª sing. f.': 'a sia',
+    '1ª sing.': 'siu|a siu', '2ª sing.': 'te siu', '3ª sing.': 'i sia', '3ª sing. f.': 'a sia',
     '1ª plur.': 'a siéun|a siun', '2ª plur.': 'a sii', '3ª plur.': 'i sian',
   });
   assert.deepStrictEqual(forme('congiuntivoImperfetto', 'mn'), {
