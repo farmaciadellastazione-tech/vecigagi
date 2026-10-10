@@ -114,4 +114,40 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/storia-mazzini-nfra-tute-e-sita-de-l-universo.html"/>
   </url>
 
+  <url>
+    <loc>https://linguaequiz.com/dialetto-spezzino.html</loc>
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/dialetto-spezzino.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/dialetto-spezzino.html"/>
+  </url>
+
+  <url>
+    <loc>https://linguaequiz.com/dialetto-carrarino.html</loc>
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/dialetto-carrarino.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/dialetto-carrarino.html"/>
+  </url>
+
+  <url>
+    <loc>https://linguaequiz.com/dialetto-manarolese.html</loc>
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/dialetto-manarolese.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/dialetto-manarolese.html"/>
+  </url>
+
+  <url>
+    <loc>https://linguaequiz.com/dialetto-genovese.html</loc>
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="it" href="https://linguaequiz.com/dialetto-genovese.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://linguaequiz.com/dialetto-genovese.html"/>
+  </url>
+
 </urlset>
