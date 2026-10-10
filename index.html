@@ -5889,6 +5889,17 @@ const SOGGETTI_DOMANDA = {
     "3ª plur.": "lór",
     "3ª plur. f.": "lór"
   },
+  // mn: Abbecedario del dialetto manarolese (pronomi soggetto delle tabelle)
+  mn: {
+    "1ª sing.": "mö",
+    "2ª sing.": "tö",
+    "3ª sing.": "lü",
+    "3ª sing. f.": "glié",
+    "1ª plur.": "nui",
+    "2ª plur.": "vàutri",
+    "3ª plur.": "lù",
+    "3ª plur. f.": "lù"
+  },
   la: {
     "1ª sing.": "ego",
     "2ª sing.": "tu",
@@ -5938,7 +5949,17 @@ const PRONOMI_PIENI_DIALETTO = {
     "2ª plur.": "voi",
     "3ª plur.": "loo"
   },
-  // ge e la: i soggetti che la domanda mostra (SOGGETTI_DOMANDA)
+  // ge, mn e la: i soggetti che la domanda mostra (SOGGETTI_DOMANDA)
+  mn: {
+    "1ª sing.": "mo",
+    "2ª sing.": "to",
+    "3ª sing.": "lu",
+    "3ª sing. f.": "glie",
+    "1ª plur.": "nui",
+    "2ª plur.": "vautri",
+    "3ª plur.": "lu",
+    "3ª plur. f.": "lu"
+  },
   ge: {
     "1ª sing.": "mi",
     "2ª sing.": "ti",
@@ -6112,67 +6133,67 @@ const CONIUGAZIONI = {
     presente: {
       nome: "Presente",
       forme: [
-        { p: "1ª sing.", it: "sono", fr: "suis", es: "soy/estoy", pt: "sou/estou", la: "sum", grc: "εἰμί", en: "am", de: "bin", ia: "es", sp: "a son", ge: "mi sun/mi son", cr: "a son" },
-        { p: "2ª sing.", it: "sei", fr: "es", es: "eres/estás", pt: "és/estás/es/e", la: "es", grc: "εἶ", en: "are", de: "bist", ia: "es", sp: "t'èi", ge: "ti t'é/ti t'ê", cr: "t'sen" },
-        { p: "3ª sing.", it: "è", fr: "est", es: "es/está", pt: "é/está", la: "est", grc: "ἐστί", en: "is", de: "ist", ia: "es", sp: "i è", ge: "lé u l'é/lê o l'é", cr: "i è" },
-        { p: "3ª sing. f.", it: "è", sp: "l'è", cr: "a l'è" },
-        { p: "1ª plur.", it: "siamo", fr: "sommes", es: "somos/estamos", pt: "somos/estamos", la: "sumus", grc: "ἐσμέν", en: "are", de: "sind", ia: "es", sp: "a sémo|a semo", ge: "niatri sémmu/niatri semmo", cr: "a sian/a siań" },
-        { p: "2ª plur.", it: "siete", fr: "êtes", es: "sois/estáis", pt: "sois/estais", la: "estis", grc: "ἐστέ", en: "are", de: "seid", ia: "es", sp: "a sé", ge: "viatri séi/viatri sei", cr: "voàltri siet" },
-        { p: "3ª plur.", it: "sono", fr: "sont", es: "son/están", pt: "são/estão", la: "sunt", grc: "εἰσί", en: "are", de: "sind", ia: "es", sp: "i en", ge: "liatri en", cr: "i en" },
-        { p: "3ª plur. f.", it: "sono", cr: "a l'en" }
+        { p: "1ª sing.", it: "sono", fr: "suis", es: "soy/estoy", pt: "sou/estou", la: "sum", grc: "εἰμί", en: "am", de: "bin", ia: "es", sp: "a son", ge: "mi sun/mi son", cr: "a son", mn: "a sun" },
+        { p: "2ª sing.", it: "sei", fr: "es", es: "eres/estás", pt: "és/estás/es/e", la: "es", grc: "εἶ", en: "are", de: "bist", ia: "es", sp: "t'èi", ge: "ti t'é/ti t'ê", cr: "t'sen", mn: "ti è|tie|ti t'è" },
+        { p: "3ª sing.", it: "è", fr: "est", es: "es/está", pt: "é/está", la: "est", grc: "ἐστί", en: "is", de: "ist", ia: "es", sp: "i è", ge: "lé u l'é/lê o l'é", cr: "i è", mn: "i lé" },
+        { p: "3ª sing. f.", it: "è", sp: "l'è", cr: "a l'è", mn: "a lé" },
+        { p: "1ª plur.", it: "siamo", fr: "sommes", es: "somos/estamos", pt: "somos/estamos", la: "sumus", grc: "ἐσμέν", en: "are", de: "sind", ia: "es", sp: "a sémo|a semo", ge: "niatri sémmu/niatri semmo", cr: "a sian/a siań", mn: "a sömu" },
+        { p: "2ª plur.", it: "siete", fr: "êtes", es: "sois/estáis", pt: "sois/estais", la: "estis", grc: "ἐστέ", en: "are", de: "seid", ia: "es", sp: "a sé", ge: "viatri séi/viatri sei", cr: "voàltri siet", mn: "a sö" },
+        { p: "3ª plur.", it: "sono", fr: "sont", es: "son/están", pt: "são/estão", la: "sunt", grc: "εἰσί", en: "are", de: "sind", ia: "es", sp: "i en", ge: "liatri en", cr: "i en", mn: "i lèn" },
+        { p: "3ª plur. f.", it: "sono", cr: "a l'en", mn: "a lèn" }
       ]
     },
     imperfetto: {
       nome: "Imperfetto",
       forme: [
-        { p: "1ª sing.", it: "ero", fr: "étais", es: "era/estaba", pt: "era/estava", la: "eram", grc: "ἦν", en: "was", de: "war", ia: "esseva", sp: "a éo", ge: "mi ea" },
-        { p: "2ª sing.", it: "eri", fr: "étais", es: "eras/estabas", pt: "eras/estavas", la: "eras", grc: "ἦσθα", en: "were", de: "warst", ia: "esseva", sp: "t'éi", ge: "ti t'éi/ti t'ëi" },
-        { p: "3ª sing.", it: "era", fr: "était", es: "era/estaba", pt: "era/estava", la: "erat", grc: "ἦν", en: "was", de: "war", ia: "esseva", sp: "i éa", ge: "lé u l'ea/lê o l'ea" },
-        { p: "3ª sing. f.", it: "era", sp: "l'éa" },
-        { p: "1ª plur.", it: "eravamo", fr: "étions", es: "éramos", pt: "éramos/eramos", la: "eramus", grc: "ἦμεν", en: "were", de: "waren", ia: "esseva", sp: "a évimo|a éimo", ge: "niatri éimu/niatri eimo" },
-        { p: "2ª plur.", it: "eravate", fr: "étiez", es: "erais", pt: "éreis/ereis", la: "eratis", grc: "ἦτε", en: "were", de: "wart", ia: "esseva", sp: "a évi|a éi", ge: "viatri éi/viatri ëi" },
-        { p: "3ª plur.", it: "erano", fr: "étaient", es: "eran/estaban", pt: "eram/estavam", la: "erant", grc: "ἦσαν", en: "were", de: "waren", ia: "esseva", sp: "i éo", ge: "liatri ean" }
+        { p: "1ª sing.", it: "ero", fr: "étais", es: "era/estaba", pt: "era/estava", la: "eram", grc: "ἦν", en: "was", de: "war", ia: "esseva", sp: "a éo", ge: "mi ea", mn: "a gliéu" },
+        { p: "2ª sing.", it: "eri", fr: "étais", es: "eras/estabas", pt: "eras/estavas", la: "eras", grc: "ἦσθα", en: "were", de: "warst", ia: "esseva", sp: "t'éi", ge: "ti t'éi/ti t'ëi", mn: "ti éi" },
+        { p: "3ª sing.", it: "era", fr: "était", es: "era/estaba", pt: "era/estava", la: "erat", grc: "ἦν", en: "was", de: "war", ia: "esseva", sp: "i éa", ge: "lé u l'ea/lê o l'ea", mn: "i gliéa" },
+        { p: "3ª sing. f.", it: "era", sp: "l'éa", mn: "a gliéa" },
+        { p: "1ª plur.", it: "eravamo", fr: "étions", es: "éramos", pt: "éramos/eramos", la: "eramus", grc: "ἦμεν", en: "were", de: "waren", ia: "esseva", sp: "a évimo|a éimo", ge: "niatri éimu/niatri eimo", mn: "a gliéun" },
+        { p: "2ª plur.", it: "eravate", fr: "étiez", es: "erais", pt: "éreis/ereis", la: "eratis", grc: "ἦτε", en: "were", de: "wart", ia: "esseva", sp: "a évi|a éi", ge: "viatri éi/viatri ëi", mn: "a gliéi" },
+        { p: "3ª plur.", it: "erano", fr: "étaient", es: "eran/estaban", pt: "eram/estavam", la: "erant", grc: "ἦσαν", en: "were", de: "waren", ia: "esseva", sp: "i éo", ge: "liatri ean", mn: "i gliéan" }
       ]
     },
     futuro: {
       nome: "Futuro",
       forme: [
-        { p: "1ª sing.", it: "sarò", fr: "serai", es: "seré/estaré", pt: "serei/estarei", la: "ero", grc: "ἔσομαι", en: "will be", de: "werde sein", ia: "essera", sp: "a saiò|a saò", ge: "mi saiò" },
-        { p: "2ª sing.", it: "sarai", fr: "seras", es: "serás/estarás", pt: "serás/estarás", la: "eris", grc: "ἔσει", en: "will be", de: "wirst sein", ia: "essera", sp: "te saiè|te saè", ge: "ti ti saiè/ti ti saiæ" },
-        { p: "3ª sing.", it: "sarà", fr: "sera", es: "será/estará", pt: "será/estará", la: "erit", grc: "ἔσται", en: "will be", de: "wird sein", ia: "essera", sp: "i saà", ge: "lé u saià/lê o saià" },
-        { p: "3ª sing. f.", it: "sarà", sp: "la saà" },
-        { p: "1ª plur.", it: "saremo", fr: "serons", es: "seremos", pt: "seremos", la: "erimus", grc: "ἐσόμεθα", en: "will be", de: "werden sein", ia: "essera", sp: "a saiémo|a saémo", ge: "niatri saiemu/niatri saiemo" },
-        { p: "2ª plur.", it: "sarete", fr: "serez", es: "seréis", pt: "sereis", la: "eritis", grc: "ἔσεσθε", en: "will be", de: "werdet sein", ia: "essera", sp: "a saié|a saé", ge: "viatri saiéi/viatri saiei" },
-        { p: "3ª plur.", it: "saranno", fr: "seront", es: "serán/estarán", pt: "serão/estarão", la: "erunt", grc: "ἔσονται", en: "will be", de: "werden sein", ia: "essera", sp: "i saàn", ge: "liatri saian" }
+        { p: "1ª sing.", it: "sarò", fr: "serai", es: "seré/estaré", pt: "serei/estarei", la: "ero", grc: "ἔσομαι", en: "will be", de: "werde sein", ia: "essera", sp: "a saiò|a saò", ge: "mi saiò", mn: "a saò" },
+        { p: "2ª sing.", it: "sarai", fr: "seras", es: "serás/estarás", pt: "serás/estarás", la: "eris", grc: "ἔσει", en: "will be", de: "wirst sein", ia: "essera", sp: "te saiè|te saè", ge: "ti ti saiè/ti ti saiæ", mn: "te saà" },
+        { p: "3ª sing.", it: "sarà", fr: "sera", es: "será/estará", pt: "será/estará", la: "erit", grc: "ἔσται", en: "will be", de: "wird sein", ia: "essera", sp: "i saà", ge: "lé u saià/lê o saià", mn: "i saà" },
+        { p: "3ª sing. f.", it: "sarà", sp: "la saà", mn: "a saà" },
+        { p: "1ª plur.", it: "saremo", fr: "serons", es: "seremos", pt: "seremos", la: "erimus", grc: "ἐσόμεθα", en: "will be", de: "werden sein", ia: "essera", sp: "a saiémo|a saémo", ge: "niatri saiemu/niatri saiemo", mn: "a saomu" },
+        { p: "2ª plur.", it: "sarete", fr: "serez", es: "seréis", pt: "sereis", la: "eritis", grc: "ἔσεσθε", en: "will be", de: "werdet sein", ia: "essera", sp: "a saié|a saé", ge: "viatri saiéi/viatri saiei", mn: "a sao" },
+        { p: "3ª plur.", it: "saranno", fr: "seront", es: "serán/estarán", pt: "serão/estarão", la: "erunt", grc: "ἔσονται", en: "will be", de: "werden sein", ia: "essera", sp: "i saàn", ge: "liatri saian", mn: "i saàn" }
       ]
     },
     passato: {
       nome: "Passato",
       forme: [
-        { p: "1ª sing.", it: "sono stato", fr: "ai été", es: "fui/estuve", pt: "fui/estive", la: "fui", grc: "ἦν", en: "was", de: "war", ia: "esseva", ge: "mi sun stètu/mi son stæto" },
-        { p: "2ª sing.", it: "sei stato", fr: "as été", es: "fuiste", pt: "foste", la: "fuisti", grc: "ἦσθα", en: "were", de: "warst", ia: "esseva", ge: "ti t'é stètu/ti t'ê stæto" },
-        { p: "3ª sing.", it: "è stato", fr: "a été", es: "fue/estuvo", pt: "foi/esteve", la: "fuit", grc: "ἦν", en: "was", de: "war", ia: "esseva", ge: "lé u l'é stètu/lê o l'é stæto" },
-        { p: "1ª plur.", it: "siamo stati", fr: "avons été", es: "fuimos", pt: "fomos", la: "fuimus", grc: "ἦμεν", en: "were", de: "waren", ia: "esseva", ge: "niatri sémmu stèti/niatri semmo stæti" },
-        { p: "2ª plur.", it: "siete stati", fr: "avez été", es: "fuisteis", pt: "fostes", la: "fuistis", grc: "ἦτε", en: "were", de: "wart", ia: "esseva", ge: "viatri séi stèti/viatri sei stæti" },
-        { p: "3ª plur.", it: "sono stati", fr: "ont été", es: "fueron", pt: "foram", la: "fuerunt", grc: "ἦσαν", en: "were", de: "waren", ia: "esseva", ge: "liatri en stèti" }
+        { p: "1ª sing.", it: "sono stato", fr: "ai été", es: "fui/estuve", pt: "fui/estive", la: "fui", grc: "ἦν", en: "was", de: "war", ia: "esseva", ge: "mi sun stètu/mi son stæto", mn: "a sun stà|a sun a stà" },
+        { p: "2ª sing.", it: "sei stato", fr: "as été", es: "fuiste", pt: "foste", la: "fuisti", grc: "ἦσθα", en: "were", de: "warst", ia: "esseva", ge: "ti t'é stètu/ti t'ê stæto", mn: "ti è stà" },
+        { p: "3ª sing.", it: "è stato", fr: "a été", es: "fue/estuvo", pt: "foi/esteve", la: "fuit", grc: "ἦν", en: "was", de: "war", ia: "esseva", ge: "lé u l'é stètu/lê o l'é stæto", mn: "i lè stà" },
+        { p: "1ª plur.", it: "siamo stati", fr: "avons été", es: "fuimos", pt: "fomos", la: "fuimus", grc: "ἦμεν", en: "were", de: "waren", ia: "esseva", ge: "niatri sémmu stèti/niatri semmo stæti", mn: "a sömu stà" },
+        { p: "2ª plur.", it: "siete stati", fr: "avez été", es: "fuisteis", pt: "fostes", la: "fuistis", grc: "ἦτε", en: "were", de: "wart", ia: "esseva", ge: "viatri séi stèti/viatri sei stæti", mn: "a sö stà" },
+        { p: "3ª plur.", it: "sono stati", fr: "ont été", es: "fueron", pt: "foram", la: "fuerunt", grc: "ἦσαν", en: "were", de: "waren", ia: "esseva", ge: "liatri en stèti", mn: "i lèn stà|i lèn a stà" }
       ]
     },
     congiuntivo: {
       nome: "Congiuntivo",
       forme: [
-        { p: "1ª sing.", it: "sia", fr: "sois", es: "sea/esté", pt: "seja/esteja", la: "sim", grc: "ὦ", en: "be", de: "sei", ia: "sia", sp: "a sìo", ge: "che mi segge" },
-        { p: "2ª sing.", it: "sia", fr: "sois", es: "seas/estés", pt: "sejas/estejas", la: "sis", grc: "ᾖς", en: "be", de: "seiest", ia: "sia", sp: "te sìi", ge: "che ti ti seggi" },
-        { p: "3ª sing.", it: "sia", fr: "soit", es: "sea/esté", pt: "seja/esteja", la: "sit", grc: "ᾖ", en: "be", de: "sei", ia: "sia", sp: "i sìa|i sìgia", ge: "che lé u segge/che lê o segge" },
-        { p: "3ª sing. f.", it: "sia", sp: "la sìa|la sìgia" },
-        { p: "1ª plur.", it: "siamo", fr: "soyons", es: "seamos", pt: "sejamos", la: "simus", grc: "ὦμεν", en: "be", de: "seien", ia: "sia", sp: "a siìmo", ge: "che niatri seggimu/che niatri seggimo" },
-        { p: "2ª plur.", it: "siate", fr: "soyez", es: "seáis", pt: "sejais", la: "sitis", grc: "ἦτε", en: "be", de: "seiet", ia: "sia", sp: "a sìi", ge: "che viatri seggiè/che viatri seggiæ" },
-        { p: "3ª plur.", it: "siano", fr: "soient", es: "sean/estén", pt: "sejam/estejam", la: "sint", grc: "ὦσι", en: "be", de: "seien", ia: "sia", sp: "i sìo", ge: "che liatri seggian" }
+        { p: "1ª sing.", it: "sia", fr: "sois", es: "sea/esté", pt: "seja/esteja", la: "sim", grc: "ὦ", en: "be", de: "sei", ia: "sia", sp: "a sìo", ge: "che mi segge", mn: "siu" },
+        { p: "2ª sing.", it: "sia", fr: "sois", es: "seas/estés", pt: "sejas/estejas", la: "sis", grc: "ᾖς", en: "be", de: "seiest", ia: "sia", sp: "te sìi", ge: "che ti ti seggi", mn: "te siu" },
+        { p: "3ª sing.", it: "sia", fr: "soit", es: "sea/esté", pt: "seja/esteja", la: "sit", grc: "ᾖ", en: "be", de: "sei", ia: "sia", sp: "i sìa|i sìgia", ge: "che lé u segge/che lê o segge", mn: "i sia" },
+        { p: "3ª sing. f.", it: "sia", sp: "la sìa|la sìgia", mn: "a sia" },
+        { p: "1ª plur.", it: "siamo", fr: "soyons", es: "seamos", pt: "sejamos", la: "simus", grc: "ὦμεν", en: "be", de: "seien", ia: "sia", sp: "a siìmo", ge: "che niatri seggimu/che niatri seggimo", mn: "a siéun|a siun" },
+        { p: "2ª plur.", it: "siate", fr: "soyez", es: "seáis", pt: "sejais", la: "sitis", grc: "ἦτε", en: "be", de: "seiet", ia: "sia", sp: "a sìi", ge: "che viatri seggiè/che viatri seggiæ", mn: "a sii" },
+        { p: "3ª plur.", it: "siano", fr: "soient", es: "sean/estén", pt: "sejam/estejam", la: "sint", grc: "ὦσι", en: "be", de: "seien", ia: "sia", sp: "i sìo", ge: "che liatri seggian", mn: "i sian" }
       ]
     },
     imperativo: {
       nome: "Imperativo",
       forme: [
-        { p: "2ª sing.", it: "sii!", fr: "sois!", es: "¡sé/está!", pt: "sê/está!", la: "es!", grc: "ἴσθι!", en: "be!", de: "sei!", ia: "es!", ge: "seggi ti!" },
+        { p: "2ª sing.", it: "sii!", fr: "sois!", es: "¡sé/está!", pt: "sê/está!", la: "es!", grc: "ἴσθι!", en: "be!", de: "sei!", ia: "es!", ge: "seggi ti!", mn: "sii!" },
         { p: "1ª plur.", it: "siamo!", fr: "soyons!", es: "¡seamos!", pt: "sejamos!", la: "simus!", grc: "ὦμεν!", en: "let's be!", de: "seien wir!", ia: "sia!", ge: "seggimu niatri!/seggimo niatri!" },
         { p: "2ª plur.", it: "siate!", fr: "soyez!", es: "¡sed/estad!", pt: "sede/estai!", la: "este!", grc: "ἔστε!", en: "be!", de: "seid!", ia: "sia!", ge: "seggiè viatri!/seggiæ viatri!" }
       ]
@@ -6180,25 +6201,25 @@ const CONIUGAZIONI = {
     congiuntivoImperfetto: {
       nome: "Congiuntivo imperfetto",
       forme: [
-        { p: "1ª sing.", it: "fossi", sp: "a füsse" },
-        { p: "2ª sing.", it: "fossi", sp: "te füssi" },
-        { p: "3ª sing.", it: "fosse", sp: "i füsse" },
-        { p: "3ª sing. f.", it: "fosse", sp: "la füsse" },
-        { p: "1ª plur.", it: "fossimo", sp: "a füssimo" },
-        { p: "2ª plur.", it: "foste", sp: "a füssi" },
-        { p: "3ª plur.", it: "fossero", sp: "i füsso" }
+        { p: "1ª sing.", it: "fossi", sp: "a füsse", mn: "a fusu" },
+        { p: "2ª sing.", it: "fossi", sp: "te füssi", mn: "te fusi" },
+        { p: "3ª sing.", it: "fosse", sp: "i füsse", mn: "i fusa" },
+        { p: "3ª sing. f.", it: "fosse", sp: "la füsse", mn: "a fusa" },
+        { p: "1ª plur.", it: "fossimo", sp: "a füssimo", mn: "a fusun" },
+        { p: "2ª plur.", it: "foste", sp: "a füssi", mn: "a fusi" },
+        { p: "3ª plur.", it: "fossero", sp: "i füsso", mn: "i fusan" }
       ]
     },
     condizionale: {
       nome: "Condizionale",
       forme: [
-        { p: "1ª sing.", it: "sarei", sp: "a saài" },
-        { p: "2ª sing.", it: "saresti", sp: "te saéssi" },
-        { p: "3ª sing.", it: "sarebbe", sp: "i saài|i saésse" },
-        { p: "3ª sing. f.", it: "sarebbe", sp: "la saài|la saésse" },
-        { p: "1ª plur.", it: "saremmo", sp: "a saéssimo" },
-        { p: "2ª plur.", it: "sareste", sp: "a saéssi" },
-        { p: "3ª plur.", it: "sarebbero", sp: "i saésso" }
+        { p: "1ª sing.", it: "sarei", sp: "a saài", mn: "a saā", ge: "mi saieiva|mi saiæ" },
+        { p: "2ª sing.", it: "saresti", sp: "te saéssi", mn: "te saàvi", ge: "ti ti saiésci/ti ti saiësci" },
+        { p: "3ª sing.", it: "sarebbe", sp: "i saài|i saésse", mn: "i saàva", ge: "lé u saieiva/lê o saieiva|lê o saiæ" },
+        { p: "3ª sing. f.", it: "sarebbe", sp: "la saài|la saésse", ge: "a saieiva|a saiæ" },
+        { p: "1ª plur.", it: "saremmo", sp: "a saéssimo", ge: "niatri saiéscimu/niatri saiëscimo" },
+        { p: "2ª plur.", it: "sareste", sp: "a saéssi", mn: "a saàvi", ge: "viatri saiésci/viatri saiësci" },
+        { p: "3ª plur.", it: "sarebbero", sp: "i saésso", mn: "i saàvan", ge: "liatri saieivan|liatri saiæn" }
       ]
     }
     }

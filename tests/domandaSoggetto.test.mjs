@@ -47,7 +47,7 @@ test('niente soggetto negli imperativi e nelle lingue senza soggetti', () => {
   assert.strictEqual(f('ama!', '2ª sing.', 'it'), 'ama!');
   assert.strictEqual(f('vanni ti!', '2ª sing.', 'ge'), 'vanni ti!');
   assert.strictEqual(f('φιλεῖ', '3ª sing.', 'grc'), 'φιλεῖ');
-  assert.strictEqual(f('a vagu', '1ª sing.', 'mn'), 'a vagu');
+  assert.strictEqual(f('a vagu', '1ª sing.', 'mn'), 'mö a vagu');
 });
 
 test('francese: elisione di je', () => {
