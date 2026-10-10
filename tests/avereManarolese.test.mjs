@@ -43,3 +43,21 @@ test('avere in manarolese: presente, futuro, passato come nel libro', () => {
 test('essere, congiuntivo 1ª sing.: "siu" come stampato, accettato anche "a siu"', () => {
   assert.strictEqual(forme('essere', 'congiuntivo')['1ª sing.'], 'siu|a siu');
 });
+
+// p. 75 (screenshot di Dino): congiuntivo presente e imperfetto, condizionale.
+// Il segno su "ō" è un trattino (Dino); "a losi" stampato senza, uniformato
+// alle altre persone su indicazione di Dino. Femminile non dato.
+test('avere in manarolese: congiuntivi e condizionale come a p. 75', () => {
+  assert.deepStrictEqual(forme('avere', 'congiuntivo'), {
+    '1ª sing.': 'a làgiu', '2ª sing.': "t'àgi", '3ª sing.': 'i làgia',
+    '1ª plur.': 'a làgiun', '2ª plur.': 'a làgi', '3ª plur.': 'i lagian',
+  });
+  assert.deepStrictEqual(forme('avere', 'congiuntivoImperfetto'), {
+    '1ª sing.': 'a lōsu', '2ª sing.': "t'ōsi", '3ª sing.': 'i lōsa',
+    '1ª plur.': 'a lōsun', '2ª plur.': 'a lōsi', '3ª plur.': 'i lōsan',
+  });
+  assert.deepStrictEqual(forme('avere', 'condizionale'), {
+    '1ª sing.': 'a laveà', '2ª sing.': "t'aveàvi", '3ª sing.': 'i laveàva',
+    '1ª plur.': 'a laveàun', '2ª plur.': 'a laveàvi', '3ª plur.': 'i laveàvan',
+  });
+});
