@@ -2,7 +2,8 @@
 // screenshot di Dino): presente, futuro, passato prossimo. L'imperfetto nel
 // libro non c'è (dopo il presente viene il passato remoto, "manca"); il
 // femminile non è dato. Varianti stampate tra parentesi, "(l'ò)", accettate
-// con "|". Congiuntivo e condizionale in attesa dello screenshot di p. 75.
+// con "|". Congiuntivi e condizionale da p. 75 (test in fondo); "a laveà"
+// (cond. 1ª sing.), "a laveàun" e "i lagian" senza accento sono stampati così.
 //   eseguire con:  node --test
 import { test } from 'node:test';
 import assert from 'node:assert';
