@@ -9,7 +9,7 @@ import assert from 'node:assert';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { DIALETTI, vociDialetto } from '../tools/build_dialetti_pages.mjs';
+import { DIALETTI, vociDialetto, VOCABOLARIO, ripulisci } from '../tools/build_dialetti_pages.mjs';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url)) + '/..';
 const leggi = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
@@ -18,9 +18,18 @@ test('le voci mostrano la grafia, non la pronuncia per la voce sintetica', () =>
   const sp = vociDialetto('sp');
   assert.ok(sp.length > 1000);
   for (const v of sp) assert.ok(!/[|]/.test(v.dial), v.dial);
-  const conto = sp.find(v => v.it === 'il conto per favore');
-  assert.ok(conto, 'voce "il conto per favore" presente');
-  assert.strictEqual(conto.dial, "er conto pe' piasée", 'grafia, non "air conto per piazze"');
+  // regola generale (non legata a una voce che Dino può correggere da edit.html):
+  // per ogni cella "pronuncia/grafia" la pagina mostra la parte dopo la "/"
+  for (const d of DIALETTI) {
+    const pubblicate = new Set(vociDialetto(d.cod).map(v => v.dial));
+    for (const e of VOCABOLARIO) {
+      const v = e[d.cod];
+      if (typeof v !== 'string' || !v.includes('/')) continue;
+      const grafia = ripulisci(v.split('|')[0].split('/').pop());
+      if (!grafia || grafia === '?') continue;
+      assert.ok(pubblicate.has(grafia), `${d.cod}: "${v}" → atteso "${grafia}"`);
+    }
+  }
 });
 
 test('niente doppioni né celle vuote o "?"', () => {
