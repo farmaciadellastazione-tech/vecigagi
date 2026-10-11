@@ -2270,6 +2270,15 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"verbi", livello:"B1", it:"concordare", en:"to agree", fr:"concorder", es:"concordar", de:"übereinstimmen", pt:"concordar" },
+      { tema:"natura", livello:"B1", it:"sementi", en:"seeds", fr:"graines", es:"semillas", de:"Samen", pt:"sementes" },
+      { tema:"verbi", livello:"B1", it:"affogare", en:"to drown", fr:"noyer", es:"ahogar", de:"ertrinken", pt:"afogar" },
+      { tema:"emotivi", livello:"B1", it:"dolcezza", en:"sweetness, gentleness", fr:"douceur", es:"dulzura, ternura", de:"Süße, Sanftheit", pt:"doçura, ternura" },
+      { tema:"natura", livello:"A2", it:"pozzanghera", en:"puddle", fr:"flaque d'eau", es:"charco", de:"Pfütze", pt:"poça" },
+      { tema:"emotivi", livello:"A1", it:"gioia", en:"joy, happiness", fr:"joie", es:"alegría", de:"Freude", pt:"alegria" },
+      { tema:"natura", livello:"B1", it:"germogliare", en:"to sprout, to bud, to germinate", fr:"germer, bourgeonner", es:"brotar, germinar", de:"keimen, sprießen", pt:"brotar, germinar", cr:"sboc'ar", ge:"brottâ" },
+      { tema:"verbi", livello:"A1", it:"saltare", en:"to jump, to skip", fr:"sauter", es:"saltar", de:"springen", pt:"saltar" },
+      { tema:"scuola", livello:"B1", it:"ripassare", en:"to review, to revise", fr:"réviser, revoir", es:"repasar, revisar", de:"wiederholen, durchgehen", pt:"revisar, repassar" },
       { tema:"luoghi", livello:"A2", it:"presso", en:"at, near, by", fr:"chez, près de, à", es:"en, cerca de, junto a", de:"bei, in der Nähe von, an", pt:"em, perto de, junto a" },
       { tema:"astratti", livello:"B2", it:"superstizione", en:"superstition", fr:"superstition", es:"superstición", de:"Aberglaube", pt:"superstição" },
       { tema:"emotivi", livello:"B1", it:"temere", en:"to fear, to be afraid", fr:"craindre, avoir peur", es:"temer, tener miedo", de:"fürchten, Angst haben", pt:"temer, ter medo" },
@@ -2304,7 +2313,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"B1", it:"sbugiardare", en:"to expose as a liar", mn:"sbusardaà/zbùzardaa" },
       { tema:"verbi", livello:"A1", it:"tremare", en:"to tremble", es:"temblar" },
       { tema:"oggetti", livello:"A1", it:"scrivania", en:"desk", es:"escritorio" },
-      { tema:"vestiti", livello:"A2", it:"stirare", en:"to iron", es:"planchar" },
+      { tema:"vestiti", livello:"A2", it:"stirare", en:"to iron", fr:"repasser", es:"planchar", de:"bügeln", pt:"passar a ferro" },
       { tema:"casa", livello:"A1", it:"vasca", en:"bathtub", es:"bañera" },
       { tema:"cibo", livello:"A1", it:"dessert | dolce", en:"dessert", es:"postre" },
       { tema:"persone", livello:"A1", it:"chi", en:"who", es:"quién" },
@@ -3062,7 +3071,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"B1", it:"foschia|nebbiolina", en:"mist", es:"niebla", sp:"garbin, calìgo", mn:"garbìn, caligu", cr:"fuschia", ge:"fummegheha, caligu/fummeghea, calìgo", verif:"mn:g,sp:g" },
       { tema:"tecnologia", livello:"B1", it:"fotocamera", en:"camera", fr:"appareil photo", es:"cámara", de:"Kamera", pt:"câmera|camera", ru:"камера", ca:"càmera", ko:"카메라", ar:"كاميرا", zh:"相机", ja:"カメラ", ia:"camera", nt:["mn"] },
       { tema:"arte", livello:"A2", it:"fotografia", en:"photo", fr:"photo", es:"foto", de:"Foto", pt:"fotografia", ko:"사진", ar:"صورة", zh:"照片", ja:"写真", ia:"photo", la:"imago", grc:"φωτογραφία", nt:["mn"] },
-      { tema:"aggettivi", livello:"B1", it:"fradicio |zuppo", en:"soaked", sp:"s'go o, süpo/sgoo,süpo", cr:"zup, golent, tors'", verif:"sp:g" },
+      { tema:"aggettivi", livello:"B1", it:"fradicio |zuppo| inzuppato", en:"soaked", fr:"trempé", es:"empapado", de:"durchnässt", pt:"ensopado", sp:"s'go o, süpo/sgoo,süpo", cr:"zup, golent, tors'", verif:"sp:g" },
       { tema:"cibo", livello:"A2", it:"fragola", en:"strawberry", fr:"fraise", es:"fresa", de:"Erdbeere", pt:"morango", ru:"клубника", ca:"maduixa", sp:"moèo|morèo/moèo| morèo", mn:"meéhe/mééé", cr:"frola", ge:"mòroa", ko:"딸기", ar:"فراولة", zh:"草莓", ja:"いちご", ia:"fraga", la:"fragum", grc:"φράουλα", src:{"mn":"📘 Altro dizionario"}, verif:"mn:g", ro:"căpșună" },
       { tema:"natura", livello:"A2", it:"frana", en:"landslide", fr:"glissement", es:"alud", de:"Erdrutsch", pt:"deslizamento", sp:"lama", mn:"lama", cr:"frana", ge:"lamma", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"oggetti", livello:"B1", it:"francobollo", en:"stamp", fr:"timbre", es:"sello", de:"Briefmarke", pt:"selo", ru:"марка", ca:"segell", sp:"franchibólo", mn:"franchibulu", verif:"sp:g,mn:g" },
@@ -3098,7 +3107,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"mesi", livello:"A1", it:"gennaio", en:"January", fr:"janvier", es:"enero", de:"Januar", pt:"janeiro", ru:"январь", ca:"gener", sp:"zenà'o/zanào", mn:"zenàa/zénàà", cr:"znar", ge:"zenâ", ko:"1월", ar:"يناير", zh:"一月", ja:"1月", ia:"januario", la:"Ianuarius", grc:"Ἰανουάριος", src:{"mn":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
       { tema:"luoghi", livello:"A1", it:"Genova", en:"Genoa", sp:"d'zena/Zena", mn:"jiéna/Jiéna", cr:"Genova", ge:"d'zena/Zena", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g" },
       { tema:"aggettivi", livello:"A2", it:"genovese", en:"Genoese", sp:"zenese", mn:"zénèsé/zénëzé", cr:"genoves", ge:"zeneize", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"natura", livello:"A2", it:"germoglio", en:"sprout", sp:"bèto, büto", cr:"b'detr", ge:"brotto", verif:"sp:g" },
+      { tema:"natura", livello:"A2", it:"germoglio", en:"sprout", fr:"pousse, bourgeon", es:"brote, retoño", de:"Spross, Trieb", pt:"broto, rebento", sp:"bèto, büto", cr:"b'detr", ge:"brotto", verif:"sp:g" },
       { tema:"verbi", livello:"A2", it:"gettare|lanciare", en:"throw", fr:"jeter|lancer", es:"lanzar|tirar", de:"werfen", pt:"jogar|atirar", ru:"бросать", ca:"llançar", sp:"zeta'e/zetae", cr:"tirar", verif:"sp:g" },
       { tema:"natura", livello:"A1", it:"ghiaccio", en:"ice", fr:"glace", es:"hielo", de:"Eis", pt:"gelo", sp:"giasso", mn:"giassu", cr:"g'az'", verif:"mn:g" },
       { tema:"aggettivi", livello:"A2", it:"ghiotto", en:"greedy", fr:"gourmand", es:"goloso", de:"naschhaft", pt:"guloso", sp:"giòto, goòn, lecardòn, gióto, goón, lecardón", mn:"giùtu, ludru, ", cr:"golos", ge:"leccaeso", ia:"glutte", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
@@ -4138,7 +4147,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 594;
+const VOC_VERSION = 595;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
