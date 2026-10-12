@@ -3552,7 +3552,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"B1", it:"prevedere", en:"expect", sp:"prevéde", cr:"prvder", ge:"prevedde", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g" },
       { tema:"natura", livello:"A2", it:"previsioni", en:"forecast", fr:"prévisions", es:"pronóstico", de:"Vorhersage", pt:"previsão|previsao", ru:"прогноз", ca:"previsió", sp:"previsioni", cr:"prevision", ge:"previxoin", ko:"예보", ar:"توقعات", zh:"预报", ja:"予報", ia:"prevision", la:"praenuntium", grc:"πρόγνωση" },
       { tema:"valute", livello:"A2", it:"prezzo", en:"price", fr:"prix", es:"precio", de:"Preis", pt:"preço|preco", sp:"prèssio", mn:"priju", cr:"prez'", ge:"prejhio/prexo", ko:"가격", ar:"سعر", zh:"价格", ja:"値段", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
-      { tema:"tempo", livello:"A1", it:"prima", en:"first", de:"früher", sp:"prima,avante", mn:"prima", cr:"prima", ge:"primma", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"tempo", livello:"A1", it:"prima", en:"before", fr:"avant", de:"früher", sp:"prima,avante", mn:"prima", cr:"prima", ge:"primma", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"istruzioni", livello:"A2", it:"prima dei pasti", en:"before meals", fr:"avant les repas", es:"antes de las comidas", de:"vor den Mahlzeiten", pt:"antes das refeições|antes das refeicoes", ko:"식사 전", ar:"قبل الوجبات", zh:"饭前", ja:"食前" },
       { tema:"natura", livello:"A1", it:"primavera", en:"spring", fr:"printemps", es:"primavera", de:"Frühling", pt:"primavera", ru:"весна", ca:"primavera", sp:"primavea", mn:"primavea", cr:"primavera", ge:"primavêia", ko:"봄", ar:"ربيع", zh:"春天", ja:"春", ia:"primavera", la:"ver", grc:"ἔαρ", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"numeri", livello:"A1", it:"primo", en:"first", fr:"premier", es:"primero", de:"erste", pt:"primeiro", sp:"primo|priméo", mn:"primu", cr:"prim", ge:"primmo", ia:"prime", la:"primus", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"primul" },
@@ -3726,7 +3726,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A1", it:"scusa", en:"sorry", fr:"pardon", es:"perdón", de:"Entschuldigung", pt:"desculpa", ru:"извини", ca:"perdona", sp:"scüsa", mn:"skusa/scüza", cr:"scusa", ge:"scüsa", ko:"미안해요", ar:"آسف", zh:"对不起", ja:"ごめんなさい", ia:"pardono", la:"ignosce", grc:"συγγνώμη", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"scuză-mă, scuze" },
       { tema:"verbi", livello:"A1", it:"scusare", en:"excuse", fr:"excuser", es:"disculpar", de:"entschuldigen", pt:"desculpar", ru:"извинять", ca:"excusar", sp:"skiùsaahe/scüsae", mn:"skiùsaàh/scüsaa", verif:"sp:g,mn:g" },
       { tema:"grammatica", livello:"B1", it:"se", en:"whether", fr:"si", es:"si", de:"ob", pt:"se", ru:"ли", ca:"si", sp:"se", verif:"sp:g" },
-      { tema:"citazioni", livello:"A2", it:"se non ce ne sono non si spendono", en:"no money no spend", fr:"pas d'argent pas de dépense", es:"sin dinero no se gasta", de:"kein Geld keine Ausgabe", pt:"sem dinheiro não se gasta", ca:"sense diners no es gasta", sp:"Se ne ghenè ne se'n spenda/Se ne ghe n'è ne se'n spenda", mn:"Se nughenè nussen spenda/Se nu ghe n'è nu se'n spenda", la:"sine pecunia non expeditur", verif:"sp:g,mn:g", ro:"fără bani nu se cheltuie" },
       { tema:"casa", livello:"B1", it:"secchio", en:"bucket", fr:"seau", es:"cubo", de:"Eimer", pt:"balde", ru:"ведро", ca:"galleda", sp:"stagnòn| sécia| possadòa", mn:"stagnùn, sécia, bùgéé", cr:"setch/sec", verif:"sp:g,mn:g,cr:g" },
       { tema:"natura", livello:"A2", it:"secco", en:"dry", fr:"sec", es:"seco", de:"trocken", pt:"seco", ru:"сухой", ca:"sec", sp:"seco", ko:"건조한", ar:"جاف", zh:"干燥", ja:"乾燥", ia:"sic", la:"siccus", grc:"ξηρός", verif:"sp:g" },
       { tema:"numeri", livello:"A2", it:"secondo", en:"second", fr:"deuxième", es:"segundo", de:"zweite", pt:"segundo", sp:"segondo", mn:"secundu", cr:"sgond", ge:"segóndo", ko:"두 번째", ar:"الثاني", zh:"第二", ja:"二番目", ia:"secunde", la:"secundus", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"al doilea" },
@@ -4144,7 +4143,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 599;
+const VOC_VERSION = 600;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
