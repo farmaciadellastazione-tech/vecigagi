@@ -10906,7 +10906,7 @@ Reply in ${userLangName}.`;
 // recente viene quindi serializzata a testo dentro lo userPrompt ad ogni chiamata (stesso
 // approccio "prompt libero" già usato da Frase Libera/Lettura Guidata).
 // ── Aiuti Conversazione ──────────────────────────────────────────────────
-// Gli stessi aiuti di Frase libera dentro la Conversazione (Dino, 2026-10-16:
+// Gli stessi aiuti di Frase libera dentro la Conversazione (Dino, 2026-10-15:
 // con "Continua a parlarne" sparivano): "🌐 Traduci" sotto ogni battuta
 // dell'IA, "💡 Aiutami" e "💭 Dammi un'idea" sotto la casella. Il risultato
 // si mostra soltanto: la risposta si riscrive a mano. Riusano le funzioni di
@@ -10916,6 +10916,18 @@ function promptTraduciBattuta(langName, userLangName, testo) {
   return {
     system: `Translate this ${langName} sentence into ${userLangName}. Reply with the translation only, no quotes, no comments.`,
     user: testo
+  };
+}
+function promptAiutoRisposta(langName, userLangName, ultimaBattuta, testo) {
+  return {
+    system: `You help a beginner who is learning ${langName}; their native language is ${userLangName}. They are chatting and want to say something.
+Translate the student's sentence from ${userLangName} into simple, natural ${langName}. Keep it short (max 12 words).
+Reply with ONE JSON object only (no markdown, no extra text):
+{"sentence": string, "words": [{"w": string, "t": string}]}
+- sentence: the translation in ${langName}.
+- words: the words (or short word groups) of the translation, in order, each with its meaning "t" in ${userLangName}.`,
+    user: `Last message from the other person: "${ultimaBattuta || ""}"
+Sentence in ${userLangName}: "${testo}"`
   };
 }
 function promptIdeeRisposta(langName, userLangName, ultimaBattuta) {
@@ -10938,6 +10950,12 @@ function TraduciBattuta({
   const [stato, setStato] = useState("idle"); // idle | loading | ok | errore
   const [trad, setTrad] = useState("");
   const [aperta, setAperta] = useState(false);
+  // Battuta corretta con ✏️: la traduzione di prima non vale più
+  useEffect(() => {
+    setStato("idle");
+    setTrad("");
+    setAperta(false);
+  }, [testo]);
   async function traduci() {
     if (stato === "ok") {
       setAperta(a => !a);
@@ -10948,7 +10966,12 @@ function TraduciBattuta({
     setAperta(true);
     const userLangName = linguaAiutoNome(linguaUI, lingua.codice);
     const p = promptTraduciBattuta(lingua.nome, userLangName, testo);
-    const raw = await callAI(p.system + istruzioniDialetto(lingua.codice, lingua.nome, vocabolario, ""), p.user, aiSettings);
+    let raw;
+    try {
+      raw = await callAI(p.system + istruzioniDialetto(lingua.codice, lingua.nome, vocabolario, ""), p.user, aiSettings);
+    } catch (e) {
+      raw = "Errore: " + e.message;
+    }
     const t = String(raw || "").trim();
     if (!t || /^Errore/.test(t)) {
       setTrad(messaggioErroreAiuto(t));
@@ -10969,10 +10992,14 @@ function TraduciBattuta({
     className: "text-sm text-zinc-400 italic mt-1"
   }, trad));
 }
+// occupato: l'IA sta ancora scrivendo la sua battuta (niente richieste su
+// un messaggio che non c'è ancora). Il chiamante la rimonta (key) a ogni
+// nuova battuta dell'IA, anche se identica alla precedente.
 function AiutiConversazione({
   lingua,
   linguaUI,
   ultimaBattuta,
+  occupato,
   vocabolario,
   aiSettings
 }) {
@@ -10991,7 +11018,7 @@ function AiutiConversazione({
     setStato("idle");
   }, [ultimaBattuta]);
   async function chiedi(tipo) {
-    if (stato === "loading") return;
+    if (occupato || stato === "loading") return;
     if (tipo === "idee" && aiuto === "idee") {
       richiesta.current++;
       setAiuto(null);
@@ -11003,18 +11030,16 @@ function AiutiConversazione({
     setStato("loading");
     setRis(null);
     const n = ++richiesta.current;
-    let p;
-    if (tipo === "idee") p = promptIdeeRisposta(lingua.nome, userLangName, ultimaBattuta);else p = {
-      system: `You help a beginner who is learning ${lingua.nome}; their native language is ${userLangName}. They are chatting and want to say something.
-Translate the student's sentence from ${userLangName} into simple, natural ${lingua.nome}. Keep it short (max 12 words).
-Reply with ONE JSON object only (no markdown, no extra text):
-{"sentence": string, "words": [{"w": string, "t": string}]}
-- sentence: the translation in ${lingua.nome}.
-- words: the words (or short word groups) of the translation, in order, each with its meaning "t" in ${userLangName}.`,
-      user: `Last message from the other person: "${ultimaBattuta || ""}"
-Sentence in ${userLangName}: "${testoAiuto.trim()}"`
-    };
-    const raw = await callAI(p.system + istruzioniDialetto(dial, lingua.nome, vocabolario, ""), p.user, aiSettings);
+    const p = tipo === "idee" ? promptIdeeRisposta(lingua.nome, userLangName, ultimaBattuta) : promptAiutoRisposta(lingua.nome, userLangName, ultimaBattuta, testoAiuto.trim());
+    // La colonna del foglio è "Parola Italiana": l'italiano solo se lo è
+    // davvero, e quello mandato ORA (la casella può cambiare dopo).
+    const italianoChiesto = userLangName === "Italiano" ? testoAiuto.trim() : "";
+    let raw;
+    try {
+      raw = await callAI(p.system + istruzioniDialetto(dial, lingua.nome, vocabolario, ""), p.user, aiSettings);
+    } catch (e) {
+      raw = "Errore: " + e.message;
+    }
     if (n !== richiesta.current) return;
     if (tipo === "idee") {
       const idee = estraiIdeeFrase(raw);
@@ -11040,7 +11065,8 @@ Sentence in ${userLangName}: "${testoAiuto.trim()}"`
       }
       setRis({
         tipo,
-        ...r
+        ...r,
+        italiano: italianoChiesto
       });
     }
     setStato("ok");
@@ -11059,7 +11085,7 @@ Sentence in ${userLangName}: "${testoAiuto.trim()}"`
     className: `flex-1 bg-zinc-900 border text-amber-400 font-bold py-2.5 rounded-xl text-sm transition ${aiuto === "traduci" ? "border-amber-600" : "border-zinc-700 hover:border-amber-600"}`
   }, "💡 Aiutami"), /*#__PURE__*/React.createElement("button", {
     onClick: () => chiedi("idee"),
-    disabled: stato === "loading",
+    disabled: occupato || stato === "loading",
     className: `flex-1 bg-zinc-900 border text-amber-400 font-bold py-2.5 rounded-xl text-sm transition ${aiuto === "idee" ? "border-amber-600" : "border-zinc-700 hover:border-amber-600"}`
   }, "💭 Dammi un'idea")), aiuto && /*#__PURE__*/React.createElement("div", {
     className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-4 mt-3"
@@ -11077,7 +11103,7 @@ Sentence in ${userLangName}: "${testoAiuto.trim()}"`
     className: "flex-1 min-w-0 bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-amber-600"
   }), /*#__PURE__*/React.createElement("button", {
     onClick: () => chiedi("traduci"),
-    disabled: !testoAiuto.trim() || stato === "loading",
+    disabled: !testoAiuto.trim() || occupato || stato === "loading",
     className: `px-4 rounded-xl text-sm font-bold transition ${testoAiuto.trim() ? "bg-amber-500 hover:bg-amber-400 text-white" : "bg-zinc-800 text-zinc-600 cursor-not-allowed"}`
   }, "Traduci"))), stato === "loading" && /*#__PURE__*/React.createElement("p", {
     className: "text-zinc-500 animate-pulse text-sm mt-3"
@@ -11089,7 +11115,7 @@ Sentence in ${userLangName}: "${testoAiuto.trim()}"`
     className: "text-lg text-white select-none"
   }, ris.frase), /*#__PURE__*/React.createElement(CorreggiDialetto, {
     testo: ris.frase,
-    italiano: testoAiuto,
+    italiano: ris.italiano,
     origine: "Conversazione",
     cod: dial
   }), ris.parole.length > 0 && /*#__PURE__*/React.createElement("p", {
@@ -11106,7 +11132,7 @@ Sentence in ${userLangName}: "${testoAiuto.trim()}"`
     className: "text-sm text-zinc-400 italic select-none"
   }, idea.traduzione), /*#__PURE__*/React.createElement(CorreggiDialetto, {
     testo: idea.frase,
-    italiano: idea.traduzione,
+    italiano: userLangName === "Italiano" ? idea.traduzione : "",
     origine: "Conversazione",
     cod: dial
   }))), /*#__PURE__*/React.createElement("p", {
@@ -11210,6 +11236,7 @@ Rispondi con il JSON.`;
   }
   const nTurniUtente = turni.filter(x => x.ruolo === "utente").length;
   const ultimaBattutaIA = [...turni].reverse().find(x => x.ruolo === "ia")?.testo || "";
+  const nBattuteIA = turni.filter(x => x.ruolo === "ia").length;
   if (lingueCandidate.length === 0) {
     return /*#__PURE__*/React.createElement("div", {
       className: "min-h-screen bg-black flex flex-col items-center justify-center p-4 text-center"
@@ -11319,6 +11346,8 @@ Rispondi con il JSON.`;
   }, "🤖 Sta scrivendo…"), /*#__PURE__*/React.createElement("div", {
     className: "mt-auto"
   }, lingua && /*#__PURE__*/React.createElement(AiutiConversazione, {
+    key: "aiuti-" + nBattuteIA,
+    occupato: stato === "generando" || stato === "elaborando",
     lingua: lingua,
     linguaUI: linguaUI,
     ultimaBattuta: ultimaBattutaIA,
