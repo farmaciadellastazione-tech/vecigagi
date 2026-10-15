@@ -10234,6 +10234,54 @@ function SchermataSceltaMultipla({
     }, "\u2190 Home"));
   })());
 }
+// ── Aiuto Frase libera ───────────────────────────────────────────────────
+// Per chi parte da zero (richiesta di Dino, 2026-10-15): "💡 Aiutami" traduce
+// una frase scritta nella lingua dei menu, "Dammi un'idea" propone 2-3 frasi.
+// Il risultato si MOSTRA soltanto: la frase si riscrive a mano nella casella.
+function jsonDaRisposta(raw) {
+  const m = String(raw || "").replace(/```json|```/g, "").match(/\{[\s\S]*\}/);
+  if (!m) return null;
+  try {
+    return JSON.parse(m[0]);
+  } catch (e) {
+    return null;
+  }
+}
+function estraiAiutoTraduzione(raw) {
+  const o = jsonDaRisposta(raw);
+  const frase = typeof o?.sentence === "string" ? o.sentence.trim() : "";
+  if (!frase) return null;
+  const parole = Array.isArray(o.words) ? o.words.filter(p => p && p.w && p.t).map(p => ({
+    w: String(p.w),
+    t: String(p.t)
+  })) : [];
+  return {
+    frase,
+    parole
+  };
+}
+function estraiIdeeFrase(raw) {
+  const o = jsonDaRisposta(raw);
+  if (!Array.isArray(o?.ideas)) return [];
+  return o.ideas.filter(i => i && typeof i.sentence === "string" && i.sentence.trim()).slice(0, 3).map(i => ({
+    frase: i.sentence.trim(),
+    traduzione: String(i.translation || "").trim()
+  }));
+}
+// Spezza la frase in pezzi, segnando le occorrenze della parola della carta
+// (o di un suo sinonimo dopo "/"), senza badare a maiuscole.
+function evidenziaParola(frase, parola) {
+  const forme = String(parola || "").split(/[/,]/).map(s => s.trim()).filter(Boolean).sort((a, b) => b.length - a.length);
+  if (!forme.length) return [{
+    t: frase,
+    hit: false
+  }];
+  const re = new RegExp("(" + forme.map(f => f.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")", "gi");
+  return frase.split(re).filter(t => t !== "").map(t => ({
+    t,
+    hit: forme.some(f => f.toLowerCase() === t.toLowerCase())
+  }));
+}
 function SchermataFraseLibera({
   vocabolario,
   lingue,
@@ -10250,6 +10298,21 @@ function SchermataFraseLibera({
   const [feedback, setFeedback] = useState(null);
   const [traduzione, setTraduzione] = useState("");
   const [showTrad, setShowTrad] = useState(false);
+  // Aiuto per chi parte da zero: null | "traduci" | "idee"
+  const [aiuto, setAiuto] = useState(null);
+  const [testoAiuto, setTestoAiuto] = useState("");
+  const [aiutoRis, setAiutoRis] = useState(null);
+  const [aiutoStato, setAiutoStato] = useState("idle"); // idle | loading | ok | errore
+  // Ogni richiesta ha un numero: una risposta arrivata dopo un cambio di
+  // carta o di aiuto (numero superato) viene ignorata.
+  const richiestaAiuto = useRef(0);
+  function azzeraAiuto() {
+    richiestaAiuto.current++;
+    setAiuto(null);
+    setTestoAiuto("");
+    setAiutoRis(null);
+    setAiutoStato("idle");
+  }
   const lingueAttive = lingue.filter(l => l.attiva && !DIALETTI_TTS_ITA.includes(l.codice));
   function nuovaCarta() {
     const cand = vocabolario.filter(e => lingueAttive.some(l => l.codice !== "it" && e[l.codice]));
@@ -10266,6 +10329,7 @@ function SchermataFraseLibera({
     setFeedback(null);
     setShowTrad(false);
     setTraduzione("");
+    azzeraAiuto();
   }
   // Mount-only: lingue/vocabolario cambiano solo dalla Home (componente smontato).
   // Carte successive vengono richieste da bottoni dell'utente, non da effetti.
@@ -10324,6 +10388,66 @@ Reply with JSON only, all text in ${langName}.`;
   // una seconda correzione/spiegazione nella lingua "madre" dell'utente.
   // La lingua UI è già nota: la cerchiamo in `lingue` (stesso pattern di PannelloBilingue).
   const linguaUI = lingue.find(l => l.codice === getUILang());
+  const userLangName = linguaUI?.nome || "Italiano";
+  // "💡 Aiutami": traduce la frase che lo studente scrive nella sua lingua.
+  // Frasi brevi: callAI ha un tetto di token e la spiegazione parola per
+  // parola allunga la risposta.
+  async function chiediTraduzione() {
+    if (!carta || !testoAiuto.trim() || aiutoStato === "loading") return;
+    setAiutoStato("loading");
+    setAiutoRis(null);
+    const n = ++richiestaAiuto.current;
+    const parola = soloVisibile(carta.entry[carta.lingua.codice]);
+    const langName = carta.lingua.nome;
+    const system = `You help a beginner who is learning ${langName}; their native language is ${userLangName}.
+Translate the student's sentence from ${userLangName} into simple, natural ${langName}. If it fits the meaning, use the target word. Keep it short (max 12 words).
+Reply with ONE JSON object only (no markdown, no extra text):
+{"sentence": string, "words": [{"w": string, "t": string}]}
+- sentence: the translation in ${langName}.
+- words: the words (or short word groups) of the translation, in order, each with its meaning "t" in ${userLangName}.`;
+    const user = `Target word: "${parola}" (Italian meaning: "${soloVisibile(carta.entry.it)}")
+Sentence in ${userLangName}: "${testoAiuto.trim()}"`;
+    try {
+      const r = estraiAiutoTraduzione(await callAI(system, user, aiSettings));
+      if (n !== richiestaAiuto.current) return;
+      if (!r) throw new Error("risposta");
+      setAiutoRis({
+        tipo: "traduzione",
+        ...r
+      });
+      setAiutoStato("ok");
+    } catch (e) {
+      if (n === richiestaAiuto.current) setAiutoStato("errore");
+    }
+  }
+  // "💭 Dammi un'idea": 3 frasi semplici con la parola, con traduzione.
+  async function chiediIdee() {
+    if (!carta || aiutoStato === "loading") return;
+    setAiuto("idee");
+    setAiutoStato("loading");
+    setAiutoRis(null);
+    const n = ++richiestaAiuto.current;
+    const parola = soloVisibile(carta.entry[carta.lingua.codice]);
+    const langName = carta.lingua.nome;
+    const system = `You help a beginner who is learning ${langName}; their native language is ${userLangName}.
+Suggest 3 different, very simple everyday sentences (level A1-A2, max 8 words each) in ${langName} that use the target word.
+Reply with ONE JSON object only (no markdown, no extra text):
+{"ideas": [{"sentence": string, "translation": string}]}
+- sentence: in ${langName}; translation: in ${userLangName}.`;
+    const user = `Target word: "${parola}" (Italian meaning: "${soloVisibile(carta.entry.it)}")`;
+    try {
+      const idee = estraiIdeeFrase(await callAI(system, user, aiSettings));
+      if (n !== richiestaAiuto.current) return;
+      if (!idee.length) throw new Error("risposta");
+      setAiutoRis({
+        tipo: "idee",
+        idee
+      });
+      setAiutoStato("ok");
+    } catch (e) {
+      if (n === richiestaAiuto.current) setAiutoStato("errore");
+    }
+  }
   async function traduci() {
     if (!carta || !frase.trim()) return;
     setStato("loading");
@@ -10403,7 +10527,70 @@ Reply in ${userLangName}.`;
     onClick: verificaFrase,
     disabled: !frase.trim(),
     className: `w-full font-bold py-3.5 rounded-xl transition text-white ${frase.trim() ? "bg-cyan-600 hover:bg-cyan-500 btn-shadow" : "bg-zinc-800 text-zinc-600 cursor-not-allowed"}`
-  }, "Invia \u2192")), stato === "loading" && /*#__PURE__*/React.createElement("div", {
+  }, "Invia \u2192"), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2 mt-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      const apri = aiuto !== "traduci";
+      azzeraAiuto();
+      if (apri) setAiuto("traduci");
+    },
+    className: `flex-1 bg-zinc-900 border text-amber-400 font-bold py-2.5 rounded-xl text-sm transition ${aiuto === "traduci" ? "border-amber-600" : "border-zinc-700 hover:border-amber-600"}`
+  }, "\ud83d\udca1 Aiutami"), /*#__PURE__*/React.createElement("button", {
+    onClick: chiediIdee,
+    disabled: aiutoStato === "loading",
+    className: `flex-1 bg-zinc-900 border text-amber-400 font-bold py-2.5 rounded-xl text-sm transition ${aiuto === "idee" ? "border-amber-600" : "border-zinc-700 hover:border-amber-600"}`
+  }, "\ud83d\udcad Dammi un'idea")), aiuto && /*#__PURE__*/React.createElement("div", {
+    className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-4 mt-3"
+  }, aiuto === "traduci" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-400 mb-2"
+  }, "Scrivi in ", userLangName.toLowerCase(), " cosa vuoi dire: te lo traduco in ", carta.lingua.nome.toLowerCase(), ", poi lo riscrivi tu qui sopra."), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, /*#__PURE__*/React.createElement("input", {
+    value: testoAiuto,
+    onChange: e => setTestoAiuto(e.target.value),
+    onKeyDown: e => {
+      if (e.key === "Enter") chiediTraduzione();
+    },
+    placeholder: "es. la mia casa \u00e8 vicino al mare",
+    className: "flex-1 min-w-0 bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-amber-600"
+  }), /*#__PURE__*/React.createElement("button", {
+    onClick: chiediTraduzione,
+    disabled: !testoAiuto.trim() || aiutoStato === "loading",
+    className: `px-4 rounded-xl text-sm font-bold transition ${testoAiuto.trim() ? "bg-amber-500 hover:bg-amber-400 text-white" : "bg-zinc-800 text-zinc-600 cursor-not-allowed"}`
+  }, "Traduci"))), aiutoStato === "loading" && /*#__PURE__*/React.createElement("p", {
+    className: "text-zinc-500 animate-pulse text-sm mt-3"
+  }, "\ud83e\udd16 ..."), aiutoStato === "errore" && /*#__PURE__*/React.createElement("p", {
+    className: "text-red-400 text-sm mt-3"
+  }, "Non ho capito la risposta dell'IA. Riprova."), aiutoStato === "ok" && aiutoRis?.tipo === "traduzione" && /*#__PURE__*/React.createElement("div", {
+    className: "mt-3 select-none"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-lg text-white"
+  }, evidenziaParola(aiutoRis.frase, soloVisibile(carta.entry[carta.lingua.codice])).map((p, i) => p.hit ? /*#__PURE__*/React.createElement("strong", {
+    key: i,
+    className: "text-cyan-400"
+  }, p.t) : /*#__PURE__*/React.createElement("span", {
+    key: i
+  }, p.t))), aiutoRis.parole.length > 0 && /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-400 mt-2 leading-relaxed"
+  }, aiutoRis.parole.map(p => p.w + " = " + p.t).join(" \xB7 ")), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mt-2 italic"
+  }, "\u270d\ufe0f Ora riscrivila tu nella casella e premi Invia.")), aiutoStato === "ok" && aiutoRis?.tipo === "idee" && /*#__PURE__*/React.createElement("div", {
+    className: "select-none flex flex-col gap-3"
+  }, aiutoRis.idee.map((idea, i) => /*#__PURE__*/React.createElement("div", {
+    key: i
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-base text-white"
+  }, evidenziaParola(idea.frase, soloVisibile(carta.entry[carta.lingua.codice])).map((p, k) => p.hit ? /*#__PURE__*/React.createElement("strong", {
+    key: k,
+    className: "text-cyan-400"
+  }, p.t) : /*#__PURE__*/React.createElement("span", {
+    key: k
+  }, p.t))), idea.traduzione && /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-400 italic"
+  }, idea.traduzione))), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 italic"
+  }, "\u270d\ufe0f Scegline una, cambiala come vuoi e riscrivila tu nella casella.")))), stato === "loading" && /*#__PURE__*/React.createElement("div", {
     className: "flex-1 flex items-center justify-center"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-zinc-500 animate-pulse"
