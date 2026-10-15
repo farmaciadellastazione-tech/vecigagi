@@ -8834,13 +8834,24 @@ const SCRIPT_DIALETTI = "https://script.google.com/macros/s/AKfycbz7-5mdEcxx7yiV
 // {"status":"ok"}). true SOLO se lo script conferma: prima un errore veniva
 // contato come successo e i contributi si perdevano da mesi senza che
 // nessuno se ne accorgesse (lo script era rotto, riparato il 2026-10-15).
+// Tempo massimo 20 s: con la rete bloccata la richiesta non resta appesa.
+// La causa di un fallimento va in console, per capire perché non arriva.
 async function inviaAlFoglio(params) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 20000);
   try {
-    const r = await fetch(`${SCRIPT_DIALETTI}?${new URLSearchParams(params)}`);
+    const r = await fetch(`${SCRIPT_DIALETTI}?${new URLSearchParams(params)}`, {
+      signal: ctrl.signal
+    });
     const d = await r.json();
-    return !!d && d.status === "ok";
-  } catch (e) {
+    if (d && d.status === "ok") return true;
+    console.warn("Invio al foglio non riuscito:", d);
     return false;
+  } catch (e) {
+    console.warn("Invio al foglio non riuscito:", e);
+    return false;
+  } finally {
+    clearTimeout(timer);
   }
 }
 
@@ -8969,15 +8980,14 @@ function ContribuisciDialetto({
   function invia() {
     if (!dialetto.trim() || !traduzione.trim()) return;
     setStato("sending");
-    // Use URL params (GET) to avoid CORS issues with Apps Script
-    const params = ({
+    const params = {
       parola,
       dialetto,
       traduzione,
       localita,
       note,
       nickname
-    });
+    };
     inviaAlFoglio(params).then(ok => {
       if (!ok) {
         setStato("error");
@@ -10403,6 +10413,19 @@ function CorreggiDialetto({
   const [salvato, setSalvato] = useState(false);
   const [errore, setErrore] = useState("");
   const [invioFallito, setInvioFallito] = useState(false);
+  // Frase già mandata al foglio: riprovando "Salva" non si rimanda
+  const inviataRef = useRef(null);
+  // Stesso riquadro, frase nuova (es. un altro "Aiutami"): si riparte da zero.
+  // Non se la frase nuova è la correzione appena salvata (onSalvato la mette
+  // al posto di quella sbagliata, es. in Conversazione).
+  useEffect(() => {
+    if (testo === inviataRef.current) return;
+    setAperto(false);
+    setSalvato(false);
+    setErrore("");
+    setInvioFallito(false);
+    inviataRef.current = null;
+  }, [testo]);
   if (!testo || !DIALETTI_TTS_ITA.includes(cod)) return null;
   const avvisoInvio = invioFallito && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-amber-500 mt-1"
@@ -10439,11 +10462,15 @@ function CorreggiDialetto({
         return;
       }
       // Prima l'invio: arriva a LinguaeQuiz anche se il browser non la salva.
-      inviaCorrezioneIA(cod, testo, n, origine, italiano).then(ok => {
-        if (!ok) setInvioFallito(true);
-      });
+      if (inviataRef.current !== n) {
+        inviataRef.current = n;
+        setInvioFallito(false);
+        inviaCorrezioneIA(cod, testo, n, origine, italiano).then(ok => {
+          if (!ok) setInvioFallito(true);
+        });
+      }
       if (!salvaCorrezioneIA(cod, testo, n)) {
-        setErrore("Inviata a LinguaeQuiz, ma questo browser non riesce a ricordarla (navigazione privata o memoria piena).");
+        setErrore("Questo browser non riesce a ricordarla (navigazione privata o memoria piena).");
         return;
       }
       setSalvato(true);

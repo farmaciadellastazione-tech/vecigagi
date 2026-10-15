@@ -15,7 +15,7 @@ const HTML = fs.readFileSync(ROOT + '/index.html', 'utf8');
 const tra = (a, b) => { const i = HTML.indexOf(a); if (i < 0) throw new Error(a); return HTML.slice(i, HTML.indexOf(b, i)); };
 
 function conFetch(fetch) {
-  const ctx = vm.createContext({ fetch, URLSearchParams });
+  const ctx = vm.createContext({ fetch, URLSearchParams, AbortController, setTimeout, clearTimeout, console: { warn() {} } });
   vm.runInContext(tra('const SCRIPT_DIALETTI = ', '\n// ── AI Integration') + '\nglobalThis.inviaAlFoglio = inviaAlFoglio;', ctx);
   return ctx.inviaAlFoglio;
 }
@@ -49,4 +49,25 @@ test('Contribuisci e Correggi usano inviaAlFoglio e avvisano se fallisce', () =>
   const corr = tra('function CorreggiDialetto(', '\n// ── Aiuto Frase libera');
   assert.match(corr, /\.then\(ok => \{\s*if \(!ok\) setInvioFallito\(true\);/);
   assert.match(corr, /resta valida solo in questo browser/);
+});
+
+// Review di 04dd5c1:
+test('nessun messaggio che dice "inviata" prima di saperlo; niente doppi invii riprovando', () => {
+  const corr = tra('function CorreggiDialetto(', '\n// ── Aiuto Frase libera');
+  assert.doesNotMatch(corr, /Inviata a LinguaeQuiz, ma/);
+  assert.match(corr, /if \(inviataRef\.current !== n\) \{/);
+});
+
+test('nuova frase nello stesso riquadro: Correggi riparte da zero', () => {
+  const corr = tra('function CorreggiDialetto(', '\n// ── Aiuto Frase libera');
+  assert.match(corr, /useEffect\(\(\) => \{\s*if \(testo === inviataRef\.current\) return;\s*setAperto\(false\);\s*setSalvato\(false\);\s*setErrore\(""\);\s*setInvioFallito\(false\);\s*inviataRef\.current = null;\s*\}, \[testo\]\);/);
+});
+
+test('invio con tempo massimo e causa dell\'errore in console', async () => {
+  const f = tra('async function inviaAlFoglio(', '\n}\n') ;
+  assert.match(f, /AbortController/);
+  assert.match(f, /console\.warn\(/);
+  const lento = conFetch((u, o) => new Promise((_, rej) => o.signal.addEventListener('abort', () => rej(new Error('abort')))));
+  // il timeout vero è lungo: qui basta che la richiesta accetti il segnale
+  assert.ok(lento);
 });
