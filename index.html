@@ -10269,7 +10269,10 @@ function salvaCorrezioneIA(cod, errata, corretta) {
     c = String(corretta || "").trim();
   if (!cod || !e || !c || e === c) return false;
   const tutte = caricaCorrezioniIA();
-  const lista = (tutte[cod] || []).filter(x => normalizza(x.errata) !== normalizza(e));
+  // Confronto senza maiuscole/spazi ma CON gli accenti: nei dialetti
+  // "andà" e "anda" sono errori diversi (normalizza li confonderebbe).
+  const chiave = x => String(x).trim().replace(/\s+/g, " ").toLowerCase();
+  const lista = (tutte[cod] || []).filter(x => chiave(x.errata) !== chiave(e));
   lista.push({
     errata: e,
     corretta: c
@@ -10293,10 +10296,13 @@ function esempiDialetto(vocabolario, cod, parolaIt, n) {
     if (typeof v !== "string" || !v.trim() || v.trim() === "?") return false;
     return String(e.verif || "").split(",").some(p => p.trim() === cod + ":g");
   });
-  const p = normalizza(parolaIt || "");
-  const legata = e => p && normalizza(soloVisibile(e.it || "")).split(" ").some(w => p.split(" ").includes(w));
+  // "Legata" = ha in comune una parola vera (≥3 lettere): articoli e
+  // preposizioni ("a", "di") non contano.
+  const parole = normalizza(parolaIt || "").split(" ").filter(w => w.length >= 3);
+  const legata = e => parole.length > 0 && normalizza(soloVisibile(e.it || "")).split(" ").some(w => parole.includes(w));
   const ordinate = [...verificate.filter(legata), ...verificate.filter(e => !legata(e))];
-  return ordinate.slice(0, n).map(e => soloVisibile(e.it || "") + " = " + (formaDisplay(e[cod], cod) || soloVisibile(e[cod])));
+  const righe = ordinate.map(e => soloVisibile(e.it || "") + " = " + (formaDisplay(e[cod], cod) || soloVisibile(e[cod])));
+  return [...new Set(righe)].slice(0, n);
 }
 // Da aggiungere al prompt di sistema quando l'IA scrive in un dialetto.
 // Vuoto per le lingue "vere".
@@ -10327,7 +10333,13 @@ function SezioneCorrezioniIA() {
   }, /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       const t = testoCorrezioniDaCopiare();
-      navigator.clipboard?.writeText(t).then(() => alert(`Copiate ${n} correzioni negli appunti.`)).catch(() => alert(t));
+      // Senza API appunti (contesto non sicuro, alcuni browser interni):
+      // si mostra il testo, da copiare a mano.
+      if (!navigator.clipboard) {
+        alert(t);
+        return;
+      }
+      navigator.clipboard.writeText(t).then(() => alert(`Copiate ${n} correzioni negli appunti.`)).catch(() => alert(t));
     },
     className: "flex-1 bg-zinc-800 hover:bg-zinc-700 text-slate-300 font-semibold py-2.5 rounded-xl transition text-sm"
   }, "📋 Copia"), /*#__PURE__*/React.createElement("button", {
@@ -10340,13 +10352,17 @@ function SezioneCorrezioniIA() {
   }, "🗑️ Svuota")));
 }
 // "✏️ Correggi" accanto a una frase dialettale scritta dall'IA.
+// onSalvato(nuovo): facoltativo, per sostituire la frase sbagliata dove è
+// mostrata (Conversazione: anche nello storico rimandato all'IA).
 function CorreggiDialetto({
   testo,
-  cod
+  cod,
+  onSalvato
 }) {
   const [aperto, setAperto] = useState(false);
   const [nuovo, setNuovo] = useState(testo || "");
   const [salvato, setSalvato] = useState(false);
+  const [errore, setErrore] = useState("");
   if (!testo || !DIALETTI_TTS_ITA.includes(cod)) return null;
   if (salvato) return /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-green-400 mt-1"
@@ -10372,10 +10388,22 @@ function CorreggiDialetto({
     className: "flex-1 bg-zinc-800 hover:bg-zinc-700 text-slate-300 font-semibold py-2 rounded-xl transition text-xs"
   }, "Annulla"), /*#__PURE__*/React.createElement("button", {
     onClick: () => {
-      if (salvaCorrezioneIA(cod, testo, nuovo)) setSalvato(true);else setAperto(false);
+      const n = nuovo.trim();
+      if (!n || n === testo.trim()) {
+        setErrore("Scrivi la versione corretta.");
+        return;
+      }
+      if (!salvaCorrezioneIA(cod, testo, n)) {
+        setErrore("Non riesco a salvarla in questo browser (navigazione privata o memoria piena).");
+        return;
+      }
+      setSalvato(true);
+      if (onSalvato) onSalvato(n);
     },
     className: "flex-1 bg-amber-500 hover:bg-amber-400 text-white font-bold py-2 rounded-xl transition text-xs"
-  }, "Salva correzione")));
+  }, "Salva correzione")), errore && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-red-400"
+  }, errore));
 }
 // ── Aiuto Frase libera ───────────────────────────────────────────────────
 // Per chi parte da zero (richiesta di Dino, 2026-10-15): "💡 Aiutami" traduce
@@ -10894,11 +10922,14 @@ function SchermataConversazione({
     setBozza("");
     setStato("elaborando");
     const langName = lingua.nome;
+    // Nei dialetti la spiegazione dell'errore in italiano: in dialetto l'IA
+    // la inventerebbe e lo studente non la capirebbe.
+    const linguaNota = dialetto ? "italiano" : langName;
     // Solo gli ultimi turni (escluso quello appena inviato, passato a parte) per
     // contenere il costo: mostriamo per intero la cronologia in UI, ma inviamo
     // all'IA solo un estratto recente.
     const storico = turniConUtente.slice(0, -1).slice(-6).map(x => `${x.ruolo === "ia" ? "IA" : "Studente"}: ${x.testo}`).join("\n") || "(inizio conversazione)";
-    const system = `Sei un amico madrelingua che chiacchiera con uno studente di ${langName} (livello base-intermedio) in una conversazione informale e naturale. Continua il dialogo con UNA sola battuta breve (una o due frasi), in ${langName}. Se la frase dello studente ha un errore importante, mettilo in "correction" (frase corretta in ${langName}) e "note" (spiegazione brevissima in ${langName}); lascia "correction" e "note" vuoti ("") se non serve correggere nulla o l'errore è minore.
+    const system = `Sei un amico madrelingua che chiacchiera con uno studente di ${langName} (livello base-intermedio) in una conversazione informale e naturale. Continua il dialogo con UNA sola battuta breve (una o due frasi), in ${langName}. Se la frase dello studente ha un errore importante, mettilo in "correction" (frase corretta in ${langName}) e "note" (spiegazione brevissima in ${linguaNota}); lascia "correction" e "note" vuoti ("") se non serve correggere nulla o l'errore è minore.
 Rispondi con UN oggetto JSON, senza markdown: {"reply": string, "correction": string, "note": string}`;
     const user = `Cronologia recente:
 ${storico}
@@ -11004,14 +11035,16 @@ Rispondi con il JSON.`;
     className: "text-zinc-500 hover:text-pink-400 text-sm flex-shrink-0"
   }, "🔊")), t.ruolo === "ia" && /*#__PURE__*/React.createElement(CorreggiDialetto, {
     testo: t.testo,
-    cod: lingua?.codice
+    cod: lingua?.codice,
+    onSalvato: nuovo => setTurni(prev => prev.map((x, k) => k === i ? { ...x, testo: nuovo } : x))
   }), t.correzione && /*#__PURE__*/React.createElement("div", {
     className: "mt-2 pt-2 border-t border-pink-800 text-sm"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-amber-400"
   }, "✏️ ", t.correzione), /*#__PURE__*/React.createElement(CorreggiDialetto, {
     testo: t.correzione,
-    cod: lingua?.codice
+    cod: lingua?.codice,
+    onSalvato: nuovo => setTurni(prev => prev.map((x, k) => k === i ? { ...x, correzione: nuovo } : x))
   }), t.nota && /*#__PURE__*/React.createElement("p", {
     className: "text-zinc-500 text-xs mt-1"
   }, t.nota)))))), dialetto && /*#__PURE__*/React.createElement("p", {

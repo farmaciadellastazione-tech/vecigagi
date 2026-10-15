@@ -122,3 +122,38 @@ test('Home: la Conversazione si sblocca anche con un solo dialetto attivo', () =
   assert.doesNotMatch(HTML, /Serve almeno una lingua non dialettale attiva/);
   assert.match(HTML, /const lingueConversazione = lingueAttive\.filter\(l => l\.codice !== "it"\);/);
 });
+
+// Review di 6f3363b:
+test('frasi errate diverse solo per gli accenti restano due correzioni distinte', () => {
+  ctx.svuota();
+  ctx.salva('sp', 'a son andà', 'X');
+  ctx.salva('sp', 'a son anda', 'Y');
+  assert.strictEqual(ctx.carica().sp.length, 2);
+  ctx.salva('sp', 'A son anda ', 'Z');
+  assert.strictEqual(ctx.carica().sp.length, 2, 'maiuscole e spazi non contano');
+});
+
+test('esempi legati alla parola: non per articoli e preposizioni, e senza doppioni', () => {
+  const voc = [
+    { it: 'a presto', sp: 'a prèsto', verif: 'sp:g' },
+    { it: 'mercato', sp: 'mercà', verif: 'sp:g' },
+    { it: 'mercato', sp: 'mercà', verif: 'sp:g' },
+  ];
+  assert.deepStrictEqual(j(ctx.esempi(voc, 'sp', 'a buon mercato', 10)), ['mercato = mercà', 'a presto = a prèsto']);
+});
+
+test('Conversazione: la correzione sostituisce la battuta sbagliata (anche nello storico per l\'IA)', () => {
+  const conv = tra('function SchermataConversazione(', '\n// Modalità "Lettura guidata"');
+  assert.match(conv, /onSalvato: nuovo => setTurni\(/);
+  assert.match(HTML, /function CorreggiDialetto\(\{\s*testo,\s*cod,\s*onSalvato\s*\}\)/);
+});
+
+test('Conversazione in dialetto: la nota sull\'errore in italiano, non nel dialetto', () => {
+  const conv = tra('function SchermataConversazione(', '\n// Modalità "Lettura guidata"');
+  assert.match(conv, /const linguaNota = dialetto \? "italiano" : langName;/);
+});
+
+test('Copia funziona anche senza navigator.clipboard', () => {
+  const sez = tra('function SezioneCorrezioniIA(', '\n// "✏️ Correggi"');
+  assert.match(sez, /if \(!navigator\.clipboard\) \{\s*alert\(t\);/);
+});
