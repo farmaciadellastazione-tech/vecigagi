@@ -4579,7 +4579,7 @@ async function copyAndOpen() {
     if (!traduzione) continue;
     try {
       const params = new URLSearchParams({ parola, dialetto: dialect, traduzione });
-      await fetch(SCRIPT_URL + '?' + params.toString());
+      if (!(await inviaRigaFoglio(SCRIPT_URL + '?' + params.toString()))) throw new Error('foglio');
       sent++;
     } catch(e) { errors++; }
   }
@@ -4592,7 +4592,7 @@ async function copyAndOpen() {
         await inviaContributoConAudio(e.it, dialect, e.tr, e.audio);
       } else {
         const params = new URLSearchParams({ parola: e.it, dialetto: dialect, traduzione: e.tr });
-        await fetch(SCRIPT_URL + '?' + params.toString());
+        if (!(await inviaRigaFoglio(SCRIPT_URL + '?' + params.toString()))) throw new Error('foglio');
       }
       sent++;
     } catch(e2) { errors++; }
@@ -4623,12 +4623,35 @@ function blobToBase64(blob) {
 async function inviaContributoConAudio(parola, dialetto, traduzione, blob) {
   const audioBase64 = await blobToBase64(blob);
   const payload = { parola, dialetto, traduzione, audioBase64, mimeType: blob.type || 'audio/webm' };
-  await fetch(SCRIPT_URL, {
+  const ok = await inviaRigaFoglio(SCRIPT_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(payload)
   });
+  if (!ok) throw new Error('foglio');
 }
+
+// Invio di una riga al foglio dei contributi: true SOLO se lo script risponde
+// {"status":"ok"} (2026-10-15, Dino). Prima qualunque risposta, anche una
+// pagina d'errore di Google, contava come "inviato" e un guasto passava
+// inosservato. Tempo massimo 30 s (l'audio è più pesante); causa in console.
+async function inviaRigaFoglio(url, opzioni) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 30000);
+  try {
+    const r = await fetch(url, { ...(opzioni || {}), signal: ctrl.signal });
+    const d = await r.json();
+    if (d && d.status === 'ok') return true;
+    console.warn('Invio al foglio non riuscito:', d);
+    return false;
+  } catch (e) {
+    console.warn('Invio al foglio non riuscito:', e);
+    return false;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+// ── fine invio foglio
 
 // ── Parole extra aggiunte dall'utente ──────────────────────────────────────
 // Schema {it, en, tr, audio}: stessa forma minima dei contributi del lotto
