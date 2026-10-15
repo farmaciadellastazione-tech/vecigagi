@@ -8830,6 +8830,19 @@ function FormAggiunta({
 // ── Vocabolario ───────────────────────────────────────────────────────────
 // ── Glossario alfabetico ──────────────────────────────────────────────────
 const SCRIPT_DIALETTI = "https://script.google.com/macros/s/AKfycbz7-5mdEcxx7yiV3kGw6T4tYQBjeVgBMYrMr1bjyeD7045Pcecn2YF1KduYMZ_xBhnk/exec";
+// Invia una riga al foglio "Contributi" (script: doGet/doPost, risponde
+// {"status":"ok"}). true SOLO se lo script conferma: prima un errore veniva
+// contato come successo e i contributi si perdevano da mesi senza che
+// nessuno se ne accorgesse (lo script era rotto, riparato il 2026-10-15).
+async function inviaAlFoglio(params) {
+  try {
+    const r = await fetch(`${SCRIPT_DIALETTI}?${new URLSearchParams(params)}`);
+    const d = await r.json();
+    return !!d && d.status === "ok";
+  } catch (e) {
+    return false;
+  }
+}
 
 // ── AI Integration ───────────────────────────────────────────────────────
 const GROQ_MODELS = {
@@ -8957,7 +8970,7 @@ function ContribuisciDialetto({
     if (!dialetto.trim() || !traduzione.trim()) return;
     setStato("sending");
     // Use URL params (GET) to avoid CORS issues with Apps Script
-    const params = new URLSearchParams({
+    const params = ({
       parola,
       dialetto,
       traduzione,
@@ -8965,18 +8978,11 @@ function ContribuisciDialetto({
       note,
       nickname
     });
-    fetch(`${SCRIPT_DIALETTI}?${params}`).then(r => r.json()).then(d => {
-      if (d.status === "ok") {
-        setStato("ok");
-        setTimeout(() => {
-          setAperto(false);
-          setStato("idle");
-          setDialetto("");
-          setTraduzione("");
-        }, 2000);
-      } else setStato("error");
-    }).catch(() => {
-      // no-cors fallback: assume success
+    inviaAlFoglio(params).then(ok => {
+      if (!ok) {
+        setStato("error");
+        return;
+      }
       setStato("ok");
       setTimeout(() => {
         setAperto(false);
@@ -10310,13 +10316,10 @@ function parametriCorrezioneIA(cod, errata, corretta, origine, italiano = "") {
     nickname: ""
   };
 }
-// Invio "spara e dimentica": se fallisce, la correzione resta comunque nel
-// browser e vale per l'IA di chi l'ha fatta.
+// Restituisce una Promise<boolean>: se l'invio fallisce la correzione resta
+// comunque nel browser (vale per l'IA di chi l'ha fatta) e lo si dice.
 function inviaCorrezioneIA(cod, errata, corretta, origine, italiano) {
-  try {
-    const params = new URLSearchParams(parametriCorrezioneIA(cod, errata, corretta, origine, italiano));
-    fetch(`${SCRIPT_DIALETTI}?${params}`).catch(() => {});
-  } catch (e) {}
+  return inviaAlFoglio(parametriCorrezioneIA(cod, errata, corretta, origine, italiano));
 }
 function testoCorrezioniDaCopiare() {
   return JSON.stringify(caricaCorrezioniIA(), null, 2);
@@ -10399,10 +10402,14 @@ function CorreggiDialetto({
   const [nuovo, setNuovo] = useState(testo || "");
   const [salvato, setSalvato] = useState(false);
   const [errore, setErrore] = useState("");
+  const [invioFallito, setInvioFallito] = useState(false);
   if (!testo || !DIALETTI_TTS_ITA.includes(cod)) return null;
-  if (salvato) return /*#__PURE__*/React.createElement("p", {
+  const avvisoInvio = invioFallito && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-amber-500 mt-1"
+  }, "\u26A0\uFE0F Non sono riuscito a inviarla a LinguaeQuiz: resta valida solo in questo browser.");
+  if (salvato) return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-green-400 mt-1"
-  }, "✓ Grazie: l'IA non ripeter\xE0 questo errore.");
+  }, "✓ Grazie: l'IA non ripeter\xE0 questo errore."), avvisoInvio);
   if (!aperto) return /*#__PURE__*/React.createElement("button", {
     onClick: () => {
       setNuovo(testo);
@@ -10432,7 +10439,9 @@ function CorreggiDialetto({
         return;
       }
       // Prima l'invio: arriva a LinguaeQuiz anche se il browser non la salva.
-      inviaCorrezioneIA(cod, testo, n, origine, italiano);
+      inviaCorrezioneIA(cod, testo, n, origine, italiano).then(ok => {
+        if (!ok) setInvioFallito(true);
+      });
       if (!salvaCorrezioneIA(cod, testo, n)) {
         setErrore("Inviata a LinguaeQuiz, ma questo browser non riesce a ricordarla (navigazione privata o memoria piena).");
         return;
@@ -10443,7 +10452,7 @@ function CorreggiDialetto({
     className: "flex-1 bg-amber-500 hover:bg-amber-400 text-white font-bold py-2 rounded-xl transition text-xs"
   }, "Salva correzione")), errore && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-red-400"
-  }, errore));
+  }, errore), avvisoInvio);
 }
 // ── Aiuto Frase libera ───────────────────────────────────────────────────
 // Per chi parte da zero (richiesta di Dino, 2026-10-15): "💡 Aiutami" traduce
