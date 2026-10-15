@@ -10955,10 +10955,14 @@ const SK_MEMORIA_IA = "qml_v1_memoria_ia";
 const MAX_CONVERSAZIONI = 20;
 const MAX_TURNI_SALVATI = 100;
 const MAX_MEMORIA_IA = 600;
+// Ordine per ultima attività: una conversazione vecchia ripresa oggi è recente.
+const attivitaConversazione = c => String(c.aggiornata || c.data || "");
 function caricaConversazioni() {
   try {
     const l = JSON.parse(localStorage.getItem(SK_CONVERSAZIONI) || "[]");
-    return Array.isArray(l) ? l.sort((a, b) => String(b.data).localeCompare(String(a.data))) : [];
+    if (!Array.isArray(l)) return [];
+    // Voci rovinate (a mano o da versioni future) non devono rompere l'archivio
+    return l.filter(c => c && c.id && Array.isArray(c.turni)).sort((a, b) => attivitaConversazione(b).localeCompare(attivitaConversazione(a)));
   } catch (e) {
     return [];
   }
@@ -10968,24 +10972,38 @@ function scriviConversazioni(lista) {
     localStorage.setItem(SK_CONVERSAZIONI, JSON.stringify(lista));
   } catch (e) {}
 }
-// Aggiorna (stesso id) o aggiunge; tiene le 20 più recenti (per data d'inizio).
+// Aggiorna (stesso id) o aggiunge; tiene le 20 usate più di recente.
 function salvaConversazione(c) {
   if (!c || !c.id || !Array.isArray(c.turni) || !c.turni.length) return;
   const lista = caricaConversazioni().filter(x => x.id !== c.id);
   lista.push({
     ...c,
+    aggiornata: c.aggiornata || new Date().toISOString(),
     turni: c.turni.slice(-MAX_TURNI_SALVATI)
   });
-  lista.sort((a, b) => String(b.data).localeCompare(String(a.data)));
+  lista.sort((a, b) => attivitaConversazione(b).localeCompare(attivitaConversazione(a)));
   scriviConversazioni(lista.slice(0, MAX_CONVERSAZIONI));
 }
 function eliminaConversazione(id) {
   scriviConversazioni(caricaConversazioni().filter(x => x.id !== id));
 }
+// Filtro unico per elenco ed esportazione. tema "__senza" = senza tema.
+function passaFiltroConversazione(c, f) {
+  const filtro = f || {};
+  if (filtro.lingua && c.lingua !== filtro.lingua) return false;
+  if (filtro.tema === "__senza") return !c.tema;
+  return !filtro.tema || c.tema === filtro.tema;
+}
+// Data AAAA-MM-GG nel fuso di chi usa l'app (non UTC: a mezzanotte sbaglia giorno)
+function dataLocale(iso) {
+  const d = new Date(iso);
+  if (isNaN(d)) return String(iso || "").slice(0, 10);
+  const due = n => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${due(d.getMonth() + 1)}-${due(d.getDate())}`;
+}
 // Testo esportato: "# Lingua", "## Tema", "### data", poi le battute.
 function testoEsportazioneConversazioni(lista, filtro, temi) {
-  const f = filtro || {};
-  const scelte = lista.filter(c => (!f.lingua || c.lingua === f.lingua) && (!f.tema || c.tema === f.tema));
+  const scelte = lista.filter(c => passaFiltroConversazione(c, filtro));
   const ordineTemi = Object.keys(temi || {});
   const posTema = t => {
     const k = ordineTemi.indexOf(t);
@@ -11001,7 +11019,7 @@ function testoEsportazioneConversazioni(lista, filtro, temi) {
       const info = temi && temi[t];
       out += `## ${info ? info.emoji + " " + info.label : "Senza tema"}\n\n`;
       for (const c of diLingua.filter(x => (x.tema || "") === t)) {
-        out += `### ${String(c.data).slice(0, 10)}\n`;
+        out += `### ${dataLocale(c.data)}\n`;
         for (const x of c.turni) {
           out += `${x.ruolo === "ia" ? "IA" : "Io"}: ${x.testo}\n`;
           if (x.correzione) out += `   ✏️ ${x.correzione}${x.nota ? " — " + x.nota : ""}\n`;
@@ -11080,6 +11098,7 @@ function ArchivioConversazioni({
   vocabolario,
   aiSettings,
   onContinua,
+  onEliminata,
   onIndietro
 }) {
   const [lista, setLista] = useState(() => caricaConversazioni());
@@ -11088,7 +11107,11 @@ function ArchivioConversazioni({
   const [filtroTema, setFiltroTema] = useState("");
   const [aperta, setAperta] = useState(null);
   const linguaUI = lingue.find(l => l.codice === getUILang());
-  const filtrate = lista.filter(c => (!filtroLingua || c.lingua === filtroLingua) && (!filtroTema || c.tema === filtroTema));
+  const filtro = {
+    lingua: filtroLingua,
+    tema: filtroTema
+  };
+  const filtrate = lista.filter(c => passaFiltroConversazione(c, filtro));
   const lingueUsate = [...new Map(lista.map(c => [c.lingua, c.linguaNome || c.lingua])).entries()];
   const temiUsati = [...new Set(lista.map(c => c.tema).filter(Boolean))];
   const linguaDi = c => lingue.find(l => l.codice === c.lingua) || {
@@ -11144,8 +11167,10 @@ function ArchivioConversazioni({
   }, "Tutti i temi"), temiUsati.map(t => /*#__PURE__*/React.createElement("option", {
     key: t,
     value: t
-  }, etichettaTema(t))))), /*#__PURE__*/React.createElement("button", {
-    onClick: () => scaricaTesto("conversazioni-linguaequiz.txt", testoEsportazioneConversazioni(filtrate, {}, TEMI)),
+  }, etichettaTema(t))), lista.some(c => !c.tema) && /*#__PURE__*/React.createElement("option", {
+    value: "__senza"
+  }, "Senza tema"))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => scaricaTesto("conversazioni-linguaequiz.txt", testoEsportazioneConversazioni(lista, filtro, TEMI)),
     disabled: !filtrate.length,
     className: "w-full bg-zinc-900 border border-zinc-700 text-amber-400 font-bold py-2.5 rounded-xl text-sm hover:border-amber-600 transition mb-4"
   }, "⬇️ Esporta ", filtrate.length, " conversazion", filtrate.length === 1 ? "e" : "i", " (.txt)"), /*#__PURE__*/React.createElement("div", {
@@ -11155,7 +11180,7 @@ function ArchivioConversazioni({
     className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-4"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mb-1"
-  }, String(c.data).slice(0, 10), " \xB7 ", c.linguaNome || c.lingua, " \xB7 ", etichettaTema(c.tema), " \xB7 ", c.turni.length, " battute"), /*#__PURE__*/React.createElement("p", {
+  }, dataLocale(c.data), " \xB7 ", c.linguaNome || c.lingua, " \xB7 ", etichettaTema(c.tema), " \xB7 ", c.turni.length, " battute"), /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-white mb-3"
   }, (c.turni[0]?.testo || "").slice(0, 120)), aperta === c.id && /*#__PURE__*/React.createElement("div", {
     className: "flex flex-col gap-2 mb-3"
@@ -11190,6 +11215,7 @@ function ArchivioConversazioni({
       if (!confirm("Eliminare questa conversazione?")) return;
       eliminaConversazione(c.id);
       setLista(caricaConversazioni());
+      if (onEliminata) onEliminata(c.id);
     },
     title: "Elimina",
     className: "px-3 bg-zinc-800 hover:bg-zinc-700 text-slate-500 rounded-xl transition text-sm"
@@ -11474,6 +11500,9 @@ function SchermataConversazione({
   });
   const [statoPrima, setStatoPrima] = useState(null); // per tornare dall'archivio
   const [memoAggiornato, setMemoAggiornato] = useState(false);
+  // Mentre l'IA risponde niente archivio né Termina: la risposta in arrivo
+  // finirebbe in un'altra conversazione (o riporterebbe in chat).
+  const occupata = stato === "generando" || stato === "elaborando";
   async function iniziaConversazione(l, argomento) {
     setLingua(l);
     setStato("generando");
@@ -11511,20 +11540,23 @@ function SchermataConversazione({
   }, [turni]);
   // "Termina": l'IA aggiorna il promemoria su di te e, se manca, sceglie il tema
   function termina() {
+    if (occupata) return;
     setStato("fine");
     const turniFine = turni;
     const l = lingua;
+    // Istantanea: intanto si può già ricominciare o riprenderne un'altra
+    const fine = { ...convRef.current };
     chiudiConversazioneIA(turniFine, aiSettings).then(r => {
       if (!r) return;
       if (r.memo) {
         salvaMemoriaIA(r.memo);
         setMemoAggiornato(true);
       }
-      if (r.tema && !convRef.current.tema && convRef.current.id && l) {
-        convRef.current.tema = r.tema;
+      if (r.tema && !fine.tema && fine.id && l) {
+        if (convRef.current.id === fine.id) convRef.current.tema = r.tema;
         salvaConversazione({
-          id: convRef.current.id,
-          data: convRef.current.data,
+          id: fine.id,
+          data: fine.data,
           lingua: l.codice,
           linguaNome: l.nome,
           tema: r.tema,
@@ -11552,6 +11584,7 @@ function SchermataConversazione({
     setStato("pronto");
   }
   function apriArchivio() {
+    if (occupata) return;
     setStatoPrima(stato);
     setStato("archivio");
   }
@@ -11604,6 +11637,14 @@ Rispondi con il JSON.`;
     vocabolario: vocabolario,
     aiSettings: aiSettings,
     onContinua: continua,
+    onEliminata: id => {
+      // Eliminata quella in corso: non va risalvata alla prossima battuta
+      if (id === convRef.current.id) convRef.current = {
+        id: null,
+        data: null,
+        tema: ""
+      };
+    },
     onIndietro: () => setStato(statoPrima && statoPrima !== "archivio" ? statoPrima : lingua ? "pronto" : "scegliLingua")
   });
   const ultimaBattutaIA = [...turni].reverse().find(x => x.ruolo === "ia")?.testo || "";
@@ -11681,10 +11722,12 @@ Rispondi con il JSON.`;
     className: "text-zinc-600 text-xs"
   }, "🎙️ Conversazione \xB7 ", lingua?.bandiera, " ", lingua?.nome), /*#__PURE__*/React.createElement("button", {
     onClick: apriArchivio,
+    disabled: occupata,
     title: "Conversazioni salvate",
     className: "text-zinc-500 hover:text-white transition text-sm"
   }, "📜"), /*#__PURE__*/React.createElement("button", {
     onClick: termina,
+    disabled: occupata,
     className: "text-zinc-500 hover:text-white transition text-sm"
   }, "Termina")), /*#__PURE__*/React.createElement("div", {
     className: "flex-1 space-y-3 mb-4"

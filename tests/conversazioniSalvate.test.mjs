@@ -21,19 +21,20 @@ vm.runInContext(tra('// ── Conversazioni salvate', '\n// ── fine convers
 globalThis.salvaConversazione = salvaConversazione; globalThis.caricaConversazioni = caricaConversazioni;
 globalThis.eliminaConversazione = eliminaConversazione; globalThis.testoEsportazioneConversazioni = testoEsportazioneConversazioni;
 globalThis.estraiFineConversazione = estraiFineConversazione; globalThis.caricaMemoriaIA = caricaMemoriaIA;
-globalThis.salvaMemoriaIA = salvaMemoriaIA; globalThis.istruzioniMemoria = istruzioniMemoria;`, ctx);
+globalThis.salvaMemoriaIA = salvaMemoriaIA; globalThis.istruzioniMemoria = istruzioniMemoria; globalThis.passaFiltroConversazione = passaFiltroConversazione; globalThis.dataLocale = dataLocale;`, ctx);
 const j = x => JSON.parse(JSON.stringify(x));
 const conv = (id, data, lingua, tema, testi) => ({ id, data, lingua, linguaNome: lingua.toUpperCase(), tema, turni: testi.map((t, i) => ({ ruolo: i % 2 ? 'utente' : 'ia', testo: t })) });
 
 test('salva e aggiorna per id; le più recenti per prime; al massimo 20', () => {
   for (const k of Object.keys(memoria)) delete memoria[k];
-  ctx.salvaConversazione(conv('a', '2026-10-01T10:00:00Z', 'fr', 'cibo', ['Salut', 'Bonjour']));
-  ctx.salvaConversazione(conv('b', '2026-10-02T10:00:00Z', 'sp', '', ['Ciao']));
-  ctx.salvaConversazione(conv('a', '2026-10-01T10:00:00Z', 'fr', 'cibo', ['Salut', 'Bonjour', 'Ça va ?']));
+  // ordine per ultima attività (review di 8a70166): 'a' ripresa dopo 'b' viene prima
+  ctx.salvaConversazione({ ...conv('a', '2026-10-01T10:00:00Z', 'fr', 'cibo', ['Salut', 'Bonjour']), aggiornata: '2026-10-01T10:00:00Z' });
+  ctx.salvaConversazione({ ...conv('b', '2026-10-02T10:00:00Z', 'sp', '', ['Ciao']), aggiornata: '2026-10-02T10:00:00Z' });
+  ctx.salvaConversazione({ ...conv('a', '2026-10-01T10:00:00Z', 'fr', 'cibo', ['Salut', 'Bonjour', 'Ça va ?']), aggiornata: '2026-10-03T10:00:00Z' });
   const l = ctx.caricaConversazioni();
-  assert.deepStrictEqual(Array.from(l, c => c.id), ['b', 'a']);
-  assert.strictEqual(l[1].turni.length, 3, 'aggiornata, non duplicata');
-  for (let i = 0; i < 25; i++) ctx.salvaConversazione(conv('x' + i, `2026-11-${String(i + 1).padStart(2, '0')}T10:00:00Z`, 'en', '', ['Hi']));
+  assert.deepStrictEqual(Array.from(l, c => c.id), ['a', 'b']);
+  assert.strictEqual(l[0].turni.length, 3, 'aggiornata, non duplicata');
+  for (let i = 0; i < 25; i++) { const d = `2026-11-${String(i + 1).padStart(2, '0')}T10:00:00Z`; ctx.salvaConversazione({ ...conv('x' + i, d, 'en', '', ['Hi']), aggiornata: d }); }
   const l2 = ctx.caricaConversazioni();
   assert.strictEqual(l2.length, 20);
   assert.strictEqual(l2[0].id, 'x24');
@@ -92,4 +93,45 @@ test('la Conversazione salva, riprende, usa la memoria e si chiude con il promem
   assert.match(c, /React\.createElement\(ArchivioConversazioni, \{/);
   assert.match(c, /onContinua: /);
   assert.match(HTML, /tema: carta\.entry\.tema/, 'il tema arriva da Frase libera');
+});
+
+// Review di 8a70166:
+test('ordine e tetto per ultima attività, non per data d\'inizio', () => {
+  for (const k of Object.keys(memoria)) delete memoria[k];
+  for (let i = 0; i < 20; i++) ctx.salvaConversazione({ ...conv('n' + i, `2026-11-${String(i + 1).padStart(2, '0')}T10:00:00Z`, 'en', '', ['Hi']), aggiornata: `2026-11-${String(i + 1).padStart(2, '0')}T10:00:00Z` });
+  // la più vecchia ripresa oggi resta, anche quando ne arriva una nuova
+  ctx.salvaConversazione({ ...conv('n0', '2026-11-01T10:00:00Z', 'en', '', ['Hi', 'again']), aggiornata: '2026-12-01T10:00:00Z' });
+  ctx.salvaConversazione({ ...conv('nuova', '2026-12-02T10:00:00Z', 'en', '', ['Hi']), aggiornata: '2026-12-02T10:00:00Z' });
+  const ids = Array.from(ctx.caricaConversazioni(), c => c.id);
+  assert.ok(ids.includes('n0'), 'ripresa = recente');
+  assert.ok(!ids.includes('n1'));
+});
+
+test('voci rovinate nel browser vengono ignorate', () => {
+  memoria.qml_v1_conversazioni = JSON.stringify([{ id: 'ok', data: '2026-10-01', turni: [{ ruolo: 'ia', testo: 'x' }] }, { id: 'rotta' }, null]);
+  assert.deepStrictEqual(Array.from(ctx.caricaConversazioni(), c => c.id), ['ok']);
+});
+
+test('filtro "Senza tema" anche nell\'esportazione; un solo filtro per lista ed esportazione', () => {
+  const lista = [conv('a', '2026-10-01T10:00:00Z', 'fr', 'cibo', ['A']), conv('b', '2026-10-02T10:00:00Z', 'fr', '', ['B'])];
+  const t = ctx.testoEsportazioneConversazioni(lista, { tema: '__senza' }, {});
+  assert.match(t, /IA: B/);
+  assert.doesNotMatch(t, /IA: A/);
+  assert.strictEqual(ctx.passaFiltroConversazione(lista[1], { tema: '__senza' }), true);
+  const arch = tra('function ArchivioConversazioni(', '\n// ── fine conversazioni salvate');
+  assert.match(arch, /passaFiltroConversazione\(c, filtro\)/);
+  assert.match(arch, /testoEsportazioneConversazioni\(lista, filtro, TEMI\)/);
+});
+
+test('data nel fuso del telefono, non in UTC', () => {
+  assert.match(ctx.dataLocale('2026-10-15T10:00:00Z'), /^2026-10-15$/);
+});
+
+test('niente archivio né Termina mentre l\'IA sta rispondendo; Termina salva la conversazione giusta', () => {
+  const c = tra('function SchermataConversazione(', '\n// Modalità "Lettura guidata"');
+  assert.match(c, /const occupata = stato === "generando" \|\| stato === "elaborando";/);
+  assert.strictEqual((c.match(/disabled: occupata/g) || []).length, 2, '📜 e Termina');
+  assert.match(c, /const fine = \{ \.\.\.convRef\.current \};/);
+  assert.match(c, /if \(convRef\.current\.id === fine\.id\) convRef\.current\.tema = r\.tema;/);
+  assert.match(c, /onEliminata: id => \{/);
 });
