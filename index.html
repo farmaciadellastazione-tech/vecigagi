@@ -8003,7 +8003,7 @@ function Home({
   }, {
     key: "conversazione",
     title: "Conversazione",
-    desc: "🎙️ Chiacchiera a voce con l'IA",
+    desc: "💬 Chiacchiera con l'IA, scrivendo o a voce",
     lv: "Lv 6",
     pastelbg: "bg-pink-950",
     pastelborder: "border-pink-800",
@@ -8454,14 +8454,13 @@ function Home({
         motivoBlocco = "Servono almeno 2 lingue attive";
       }
     }
-    // Conversazione: l'IA non conosce a sufficienza i dialetti (né il riconoscimento
-    // vocale del browser li supporta), quindi richiede almeno una lingua "vera" attiva
-    // oltre l'italiano — stesso filtro già usato da Frase Libera.
+    // Conversazione: serve una lingua attiva oltre l'italiano. I dialetti valgono
+    // dal 2026-10-15 (solo scritti, con "✏️ Correggi", vedi SchermataConversazione).
     if (sbloccata && m.key === "conversazione") {
-      const lingueConversazione = lingueAttive.filter(l => l.codice !== "it" && !DIALETTI_TTS_ITA.includes(l.codice));
+      const lingueConversazione = lingueAttive.filter(l => l.codice !== "it");
       if (lingueConversazione.length === 0) {
         sbloccata = false;
-        motivoBlocco = "Serve almeno una lingua non dialettale attiva oltre l'italiano";
+        motivoBlocco = "Serve almeno una lingua attiva oltre l'italiano";
       }
     }
     const EMOJI_MODI = {
@@ -9165,7 +9164,7 @@ function ImpostazioniAI({
       onIndietro();
     },
     className: "flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-xl text-sm transition btn-shadow"
-  }, "Salva")));
+  }, "Salva")), /*#__PURE__*/React.createElement(SezioneCorrezioniIA, null));
 }
 function Glossario({
   vocabolario,
@@ -10234,6 +10233,150 @@ function SchermataSceltaMultipla({
     }, "\u2190 Home"));
   })());
 }
+// ── Correzioni IA dialetti ───────────────────────────────────────────────
+// L'IA conosce poco i dialetti (mn/sp/ge/cr) e sbaglia. Chiunque può correggere
+// una frase dialettale scritta dall'IA (✏️ Correggi, richiesta di Dino
+// 2026-10-15): la correzione resta in questo browser e, a ogni richiesta in
+// quel dialetto, l'IA la riceve per non ripetere l'errore, insieme alle
+// correzioni comuni qui sotto e ad alcune voci verificate 🟢 come modello.
+// Nessun server: per farle valere per tutti, Dino copia le sue (Impostazioni
+// IA → Copia correzioni) e le si aggiunge, controllate, a CORREZIONI_IA_COMUNI.
+const SK_CORREZIONI_IA = "qml_v1_correzioni_ia";
+const CORREZIONI_IA_COMUNI = {
+  sp: [],
+  mn: [],
+  ge: [],
+  cr: []
+};
+const MAX_CORREZIONI_SALVATE = 100; // per dialetto, in localStorage
+const MAX_CORREZIONI_PROMPT = 30; // per dialetto, mandate all'IA (costo/lunghezza)
+function caricaCorrezioniIA() {
+  try {
+    const o = JSON.parse(localStorage.getItem(SK_CORREZIONI_IA) || "{}");
+    return o && typeof o === "object" ? o : {};
+  } catch (e) {
+    return {};
+  }
+}
+function svuotaCorrezioniIA() {
+  try {
+    localStorage.removeItem(SK_CORREZIONI_IA);
+  } catch (e) {}
+}
+// Stessa frase errata già corretta: la nuova correzione sostituisce la vecchia.
+function salvaCorrezioneIA(cod, errata, corretta) {
+  const e = String(errata || "").trim(),
+    c = String(corretta || "").trim();
+  if (!cod || !e || !c || e === c) return false;
+  const tutte = caricaCorrezioniIA();
+  const lista = (tutte[cod] || []).filter(x => normalizza(x.errata) !== normalizza(e));
+  lista.push({
+    errata: e,
+    corretta: c
+  });
+  tutte[cod] = lista.slice(-MAX_CORREZIONI_SALVATE);
+  try {
+    localStorage.setItem(SK_CORREZIONI_IA, JSON.stringify(tutte));
+  } catch (err) {
+    return false;
+  }
+  return true;
+}
+function testoCorrezioniDaCopiare() {
+  return JSON.stringify(caricaCorrezioniIA(), null, 2);
+}
+// Voci verificate 🟢 del dialetto, nella grafia: "casa = cà". Prima quelle
+// della parola su cui si lavora, poi le altre nell'ordine del vocabolario.
+function esempiDialetto(vocabolario, cod, parolaIt, n) {
+  const verificate = vocabolario.filter(e => {
+    const v = e[cod];
+    if (typeof v !== "string" || !v.trim() || v.trim() === "?") return false;
+    return String(e.verif || "").split(",").some(p => p.trim() === cod + ":g");
+  });
+  const p = normalizza(parolaIt || "");
+  const legata = e => p && normalizza(soloVisibile(e.it || "")).split(" ").some(w => p.split(" ").includes(w));
+  const ordinate = [...verificate.filter(legata), ...verificate.filter(e => !legata(e))];
+  return ordinate.slice(0, n).map(e => soloVisibile(e.it || "") + " = " + (formaDisplay(e[cod], cod) || soloVisibile(e[cod])));
+}
+// Da aggiungere al prompt di sistema quando l'IA scrive in un dialetto.
+// Vuoto per le lingue "vere".
+function istruzioniDialetto(cod, nome, vocabolario, parolaIt) {
+  if (!DIALETTI_TTS_ITA.includes(cod)) return "";
+  const locali = (caricaCorrezioniIA()[cod] || []).slice(-MAX_CORREZIONI_PROMPT);
+  const correzioni = [...(CORREZIONI_IA_COMUNI[cod] || []), ...locali];
+  const esempi = esempiDialetto(vocabolario || [], cod, parolaIt, 25);
+  let t = `\n\nIMPORTANT: ${nome} is a local dialect you know poorly. Do not invent words: prefer the verified forms below, and keep sentences very simple.`;
+  if (correzioni.length) t += `\nCorrections from native speakers (NEVER repeat the wrong form, always use the corrected one):\n` + correzioni.map(c => `- "${c.errata}" → "${c.corretta}"`).join("\n");
+  if (esempi.length) t += `\nVerified vocabulary (Italian = ${nome}):\n` + esempi.map(x => "- " + x).join("\n");
+  return t;
+}
+// Impostazioni IA: quante correzioni ha questo browser, e "Copia" per
+// mandarle a Dino (che le controlla e le mette in CORREZIONI_IA_COMUNI).
+function SezioneCorrezioniIA() {
+  const [tutte, setTutte] = useState(() => caricaCorrezioniIA());
+  const n = Object.values(tutte).reduce((a, l) => a + (Array.isArray(l) ? l.length : 0), 0);
+  if (!n) return null;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-4 mt-6"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-slate-200 font-bold mb-1"
+  }, "✏️ Correzioni di dialetto insegnate all'IA: ", n), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mb-3"
+  }, "Valgono in questo browser. Copiale e mandale a LinguaeQuiz per farle valere per tutti."), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      const t = testoCorrezioniDaCopiare();
+      navigator.clipboard?.writeText(t).then(() => alert(`Copiate ${n} correzioni negli appunti.`)).catch(() => alert(t));
+    },
+    className: "flex-1 bg-zinc-800 hover:bg-zinc-700 text-slate-300 font-semibold py-2.5 rounded-xl transition text-sm"
+  }, "📋 Copia"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      if (!confirm(`Cancellare le ${n} correzioni salvate in questo browser? L'IA potr\xE0 rifare quegli errori.`)) return;
+      svuotaCorrezioniIA();
+      setTutte({});
+    },
+    className: "flex-1 bg-zinc-800 hover:bg-zinc-700 text-slate-500 font-semibold py-2.5 rounded-xl transition text-sm"
+  }, "🗑️ Svuota")));
+}
+// "✏️ Correggi" accanto a una frase dialettale scritta dall'IA.
+function CorreggiDialetto({
+  testo,
+  cod
+}) {
+  const [aperto, setAperto] = useState(false);
+  const [nuovo, setNuovo] = useState(testo || "");
+  const [salvato, setSalvato] = useState(false);
+  if (!testo || !DIALETTI_TTS_ITA.includes(cod)) return null;
+  if (salvato) return /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-green-400 mt-1"
+  }, "✓ Grazie: l'IA non ripeter\xE0 questo errore.");
+  if (!aperto) return /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setNuovo(testo);
+      setAperto(true);
+    },
+    className: "text-xs text-zinc-500 hover:text-amber-400 transition mt-1"
+  }, "✏️ Correggi");
+  return /*#__PURE__*/React.createElement("div", {
+    className: "mt-2 flex flex-col gap-2"
+  }, /*#__PURE__*/React.createElement("textarea", {
+    value: nuovo,
+    onChange: e => setNuovo(e.target.value),
+    rows: 2,
+    className: "w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-white text-sm resize-none focus:outline-none focus:border-amber-600"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setAperto(false),
+    className: "flex-1 bg-zinc-800 hover:bg-zinc-700 text-slate-300 font-semibold py-2 rounded-xl transition text-xs"
+  }, "Annulla"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      if (salvaCorrezioneIA(cod, testo, nuovo)) setSalvato(true);else setAperto(false);
+    },
+    className: "flex-1 bg-amber-500 hover:bg-amber-400 text-white font-bold py-2 rounded-xl transition text-xs"
+  }, "Salva correzione")));
+}
 // ── Aiuto Frase libera ───────────────────────────────────────────────────
 // Per chi parte da zero (richiesta di Dino, 2026-10-15): "💡 Aiutami" traduce
 // una frase scritta nella lingua dei menu, "Dammi un'idea" propone 2-3 frasi.
@@ -10381,7 +10524,7 @@ Shape: {"correct": boolean, "correction": string, "grammar": string, "example": 
 
 Format reference (Italian examples for illustration — YOUR output must be in ${langName}):
 "Io vado a casa" → {"correct":true,"correction":"","grammar":"Presente indicativo corretto.","example":"La mia casa è grande."}
-"Io andare casa" → {"correct":false,"correction":"Io vado a casa.","grammar":"Manca 'a' e il verbo va coniugato.","example":"Vado a casa ogni sera."}`;
+"Io andare casa" → {"correct":false,"correction":"Io vado a casa.","grammar":"Manca 'a' e il verbo va coniugato.","example":"Vado a casa ogni sera."}` + istruzioniDialetto(carta.lingua.codice, langName, vocabolario, soloVisibile(carta.entry.it));
     const user = `Target word: "${parola}" (Italian meaning: "${itParola}")
 Student sentence: "${frase}"
 Reply with JSON only, all text in ${langName}.`;
@@ -10424,7 +10567,7 @@ Translate the student's sentence from ${userLangName} into simple, natural ${lan
 Reply with ONE JSON object only (no markdown, no extra text):
 {"sentence": string, "words": [{"w": string, "t": string}]}
 - sentence: the translation in ${langName}.
-- words: the words (or short word groups) of the translation, in order, each with its meaning "t" in ${userLangName}.`;
+- words: the words (or short word groups) of the translation, in order, each with its meaning "t" in ${userLangName}.` + istruzioniDialetto(carta.lingua.codice, langName, vocabolario, soloVisibile(carta.entry.it));
     const user = `Target word: "${parola}" (Italian meaning: "${soloVisibile(carta.entry.it)}")
 Sentence in ${userLangName}: "${testoAiuto.trim()}"`;
     try {
@@ -10465,7 +10608,7 @@ Sentence in ${userLangName}: "${testoAiuto.trim()}"`;
 Suggest 3 different, very simple everyday sentences (level A1-A2, max 8 words each) in ${langName} that use the target word.
 Reply with ONE JSON object only (no markdown, no extra text):
 {"ideas": [{"sentence": string, "translation": string}]}
-- sentence: in ${langName}; translation: in ${userLangName}.`;
+- sentence: in ${langName}; translation: in ${userLangName}.` + istruzioniDialetto(carta.lingua.codice, langName, vocabolario, soloVisibile(carta.entry.it));
     const user = `Target word: "${parola}" (Italian meaning: "${soloVisibile(carta.entry.it)}")`;
     try {
       const raw = await callAI(system, user, aiSettings);
@@ -10499,7 +10642,7 @@ Include, in this order, separated by line breaks (plain text, no markdown):
 1. A one-line verdict (correct, or what's wrong) in ${userLangName}.
 2. The corrected sentence in ${langName} (skip this line if already correct).
 3. A short grammar/usage note in ${userLangName} (≤25 words).
-4. A new example sentence in ${langName} using the target word, followed by its ${userLangName} translation in parentheses.`;
+4. A new example sentence in ${langName} using the target word, followed by its ${userLangName} translation in parentheses.` + istruzioniDialetto(carta.lingua.codice, langName, vocabolario, soloVisibile(carta.entry.it));
     const user = `Target word: "${parola}" (Italian meaning: "${itParola}")
 Student sentence: "${frase}"
 Reply in ${userLangName}.`;
@@ -10600,32 +10743,38 @@ Reply in ${userLangName}.`;
   }, "\ud83e\udd16 ..."), aiutoStato === "errore" && /*#__PURE__*/React.createElement("p", {
     className: "text-red-400 text-sm mt-3"
   }, aiutoRis?.msg || messaggioErroreAiuto("")), aiutoStato === "ok" && aiutoRis?.tipo === "traduzione" && /*#__PURE__*/React.createElement("div", {
-    className: "mt-3 select-none"
+    className: "mt-3"
   }, /*#__PURE__*/React.createElement("p", {
-    className: "text-lg text-white"
+    className: "text-lg text-white select-none"
   }, evidenziaParola(aiutoRis.frase, parolaCarta).map((p, i) => p.hit ? /*#__PURE__*/React.createElement("strong", {
     key: i,
     className: "text-cyan-400"
   }, p.t) : /*#__PURE__*/React.createElement("span", {
     key: i
-  }, p.t))), aiutoRis.parole.length > 0 && /*#__PURE__*/React.createElement("p", {
-    className: "text-sm text-zinc-400 mt-2 leading-relaxed"
+  }, p.t))), /*#__PURE__*/React.createElement(CorreggiDialetto, {
+    testo: aiutoRis.frase,
+    cod: carta.lingua.codice
+  }), aiutoRis.parole.length > 0 && /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-400 mt-2 leading-relaxed select-none"
   }, aiutoRis.parole.map(p => p.w + " = " + p.t).join(" \xB7 ")), /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mt-2 italic"
   }, "\u270d\ufe0f Ora riscrivila tu nella casella e premi Invia.")), aiutoStato === "ok" && aiutoRis?.tipo === "idee" && /*#__PURE__*/React.createElement("div", {
-    className: "select-none flex flex-col gap-3"
+    className: "flex flex-col gap-3"
   }, aiutoRis.idee.map((idea, i) => /*#__PURE__*/React.createElement("div", {
     key: i
   }, /*#__PURE__*/React.createElement("p", {
-    className: "text-base text-white"
+    className: "text-base text-white select-none"
   }, evidenziaParola(idea.frase, parolaCarta).map((p, k) => p.hit ? /*#__PURE__*/React.createElement("strong", {
     key: k,
     className: "text-cyan-400"
   }, p.t) : /*#__PURE__*/React.createElement("span", {
     key: k
   }, p.t))), idea.traduzione && /*#__PURE__*/React.createElement("p", {
-    className: "text-sm text-zinc-400 italic"
-  }, idea.traduzione))), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-400 italic select-none"
+  }, idea.traduzione), /*#__PURE__*/React.createElement(CorreggiDialetto, {
+    testo: idea.frase,
+    cod: carta.lingua.codice
+  }))), /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 italic"
   }, "\u270d\ufe0f Scegline una, cambiala come vuoi e riscrivila tu nella casella.")))), stato === "loading" && /*#__PURE__*/React.createElement("div", {
     className: "flex-1 flex items-center justify-center"
@@ -10643,11 +10792,17 @@ Reply in ${userLangName}.`;
     className: "text-white font-semibold"
   }, frase), "\""), feedback.correction && /*#__PURE__*/React.createElement("p", {
     className: "text-base text-green-400 mb-2"
-  }, "\u270F\uFE0F ", feedback.correction), !showTrad && /*#__PURE__*/React.createElement(React.Fragment, null, feedback.grammar && !["no", "none", "n/a", "na", "N/A", "-", ""].includes((feedback.grammar || "").trim().toLowerCase()) && /*#__PURE__*/React.createElement("p", {
+  }, "\u270F\uFE0F ", feedback.correction), feedback.correction && /*#__PURE__*/React.createElement(CorreggiDialetto, {
+    testo: feedback.correction,
+    cod: carta.lingua.codice
+  }), !showTrad && /*#__PURE__*/React.createElement(React.Fragment, null, feedback.grammar && !["no", "none", "n/a", "na", "N/A", "-", ""].includes((feedback.grammar || "").trim().toLowerCase()) && /*#__PURE__*/React.createElement("p", {
     className: "text-base text-zinc-400 mb-2"
   }, "\uD83D\uDCDA ", feedback.grammar), feedback.example && /*#__PURE__*/React.createElement("p", {
     className: "text-base text-cyan-400"
-  }, "\uD83D\uDCAC ", feedback.example)), showTrad && /*#__PURE__*/React.createElement("p", {
+  }, "\uD83D\uDCAC ", feedback.example), feedback.example && /*#__PURE__*/React.createElement(CorreggiDialetto, {
+    testo: feedback.example,
+    cod: carta.lingua.codice
+  })), showTrad && /*#__PURE__*/React.createElement("p", {
     className: "text-base text-amber-300 leading-relaxed whitespace-pre-wrap"
   }, traduzione)), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-2 mb-3"
@@ -10657,22 +10812,22 @@ Reply in ${userLangName}.`;
   }, (linguaUI?.bandiera || "\uD83C\uDF10") + " Traduci"), /*#__PURE__*/React.createElement("button", {
     onClick: nuovaCarta,
     className: "flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2.5 rounded-xl text-sm transition btn-shadow"
-  }, "Nuova \u2192")), onDiscutine && !DIALETTI_TTS_ITA.includes(carta.lingua.codice) && /*#__PURE__*/React.createElement("button", {
+  }, "Nuova \u2192")), onDiscutine && /*#__PURE__*/React.createElement("button", {
     onClick: () => onDiscutine(carta.lingua, {
       parola: soloVisibile(carta.entry[carta.lingua.codice]),
       frase: (feedback.correction || frase).trim()
     }),
     className: "w-full mt-1 bg-zinc-900 border border-zinc-700 text-slate-200 font-bold py-2.5 rounded-xl text-sm hover:border-pink-500 hover:text-pink-400 transition"
-  }, "\ud83c\udf99\ufe0f Discutine a voce")));
+  }, "\uD83D\uDCAC Continua a parlarne")));
 }
 // Modalità "Conversazione": dialogo a turni, a voce, con l'IA nella lingua che si sta
 // studiando. A differenza di Frase Libera (una frase isolata, corretta subito e bloccante)
 // qui il dialogo scorre libero: le correzioni compaiono come nota non invasiva sotto il
 // turno dello studente, senza interrompere la conversazione.
-// Esclusi i dialetti (mn/sp/ge/cr, vedi DIALETTI_TTS_ITA): il riconoscimento vocale del
-// browser non li supporta (userebbe it-IT) e l'IA non li conosce a sufficienza per
-// generare battute credibili (stesso limite già segnalato in Frase Libera con l'avviso
-// "AI alcolizzata").
+// Dialetti (mn/sp/ge/cr, vedi DIALETTI_TTS_ITA): ammessi dal 2026-10-15 (Dino), ma
+// solo SCRITTI: il riconoscimento vocale del browser non li capisce. L'IA li conosce
+// poco: avviso "AI alcolizzata", istruzioniDialetto nel prompt (correzioni + voci
+// verificate) e "✏️ Correggi" su ogni sua battuta, così non ripete gli errori.
 // callAI non mantiene uno storico multi-turno nativo per tutti i provider: la cronologia
 // recente viene quindi serializzata a testo dentro lo userPrompt ad ogni chiamata (stesso
 // approccio "prompt libero" già usato da Frase Libera/Lettura Guidata).
@@ -10693,13 +10848,14 @@ function estraiRispostaConversazione(clean) {
 }
 function SchermataConversazione({
   lingue,
+  vocabolario,
   aiSettings,
   onHome,
   iniziale
 }) {
-  const lingueCandidate = lingue.filter(l => l.attiva && l.codice !== "it" && !DIALETTI_TTS_ITA.includes(l.codice));
-  // Se si arriva da Frase Libera con "Discutine a voce", si parte subito nella stessa
-  // lingua (se ancora attiva e non dialettale) con un argomento di apertura mirato,
+  const lingueCandidate = lingue.filter(l => l.attiva && l.codice !== "it");
+  // Se si arriva da Frase Libera con "Continua a parlarne", si parte subito nella stessa
+  // lingua (se ancora attiva) con un argomento di apertura mirato,
   // invece che con un topic casuale o la schermata di scelta lingua.
   const linguaSeed = iniziale && lingueCandidate.some(l => l.codice === iniziale.lingua?.codice) ? iniziale.lingua : null;
   const linguaAuto = linguaSeed || (lingueCandidate.length === 1 ? lingueCandidate[0] : null);
@@ -10707,13 +10863,14 @@ function SchermataConversazione({
   const [turni, setTurni] = useState([]);
   const [bozza, setBozza] = useState("");
   const [stato, setStato] = useState(linguaAuto ? "generando" : "scegliLingua");
+  const dialetto = !!lingua && DIALETTI_TTS_ITA.includes(lingua.codice);
   async function iniziaConversazione(l, argomento) {
     setLingua(l);
     setStato("generando");
     setTurni([]);
     const langName = l.nome;
     const system = argomento ? `Sei un amico madrelingua che chiacchiera con uno studente di ${langName} di livello base-intermedio. Lo studente ha appena scritto questa frase in un esercizio: "${argomento.frase}" (parola chiave: "${argomento.parola}"). Reagisci in modo naturale a quello che ha scritto e fai una domanda di follow-up per continuare a parlarne. UNA sola battuta breve (una o due frasi), in ${langName}, senza virgolette e senza premesse.` : `Sei un amico madrelingua che chiacchiera con uno studente di ${langName} di livello base-intermedio. Apri tu la conversazione con UNA sola battuta breve e naturale (una o due frasi) su un argomento quotidiano semplice (saluti, tempo libero, cibo, giornata). Rispondi SOLO con la battuta in ${langName}, senza virgolette e senza premesse.`;
-    const raw = await callAI(system, argomento ? "Reagisci e continua la conversazione." : "Apri tu la conversazione.", aiSettings);
+    const raw = await callAI(system + istruzioniDialetto(l.codice, langName, vocabolario, ""), argomento ? "Reagisci e continua la conversazione." : "Apri tu la conversazione.", aiSettings);
     const testo = raw.trim();
     setTurni([{ ruolo: "ia", testo }]);
     parla(testo, l.bcp47);
@@ -10749,7 +10906,7 @@ ${storico}
 Nuovo turno dello studente: "${testo}"
 
 Rispondi con il JSON.`;
-    const raw = await callAI(system, user, aiSettings);
+    const raw = await callAI(system + istruzioniDialetto(lingua.codice, langName, vocabolario, ""), user, aiSettings);
     const clean = raw.replace(/```json|```/g, "").replace(/\n/g, " ").trim();
     const { reply, correction, note } = estraiRispostaConversazione(clean);
     setTurni(prev => {
@@ -10770,7 +10927,7 @@ Rispondi con il JSON.`;
       className: "min-h-screen bg-black flex flex-col items-center justify-center p-4 text-center"
     }, /*#__PURE__*/React.createElement("p", {
       className: "text-zinc-400 mb-4"
-    }, "Serve almeno una lingua non dialettale attiva oltre l'italiano."), /*#__PURE__*/React.createElement("button", {
+    }, "Serve almeno una lingua attiva oltre l'italiano."), /*#__PURE__*/React.createElement("button", {
       onClick: onHome,
       className: "text-zinc-500 hover:text-white transition text-sm"
     }, "← Home"));
@@ -10845,13 +11002,21 @@ Rispondi con il JSON.`;
   }, t.testo), t.ruolo === "ia" && /*#__PURE__*/React.createElement("button", {
     onClick: () => parla(t.testo, lingua?.bcp47),
     className: "text-zinc-500 hover:text-pink-400 text-sm flex-shrink-0"
-  }, "🔊")), t.correzione && /*#__PURE__*/React.createElement("div", {
+  }, "🔊")), t.ruolo === "ia" && /*#__PURE__*/React.createElement(CorreggiDialetto, {
+    testo: t.testo,
+    cod: lingua?.codice
+  }), t.correzione && /*#__PURE__*/React.createElement("div", {
     className: "mt-2 pt-2 border-t border-pink-800 text-sm"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-amber-400"
-  }, "✏️ ", t.correzione), t.nota && /*#__PURE__*/React.createElement("p", {
+  }, "✏️ ", t.correzione), /*#__PURE__*/React.createElement(CorreggiDialetto, {
+    testo: t.correzione,
+    cod: lingua?.codice
+  }), t.nota && /*#__PURE__*/React.createElement("p", {
     className: "text-zinc-500 text-xs mt-1"
-  }, t.nota)))))), stato === "generando" && /*#__PURE__*/React.createElement("p", {
+  }, t.nota)))))), dialetto && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-amber-500 mb-3 text-center italic"
+  }, "\uD83C\uDF77 AI alcolizzata: coi dialetti d\u00E0 i numeri. Se sbaglia, correggila con \u270F\uFE0F e non ripeter\u00E0 l'errore."), stato === "generando" && /*#__PURE__*/React.createElement("p", {
     className: "text-center text-zinc-500 text-sm italic mb-4"
   }, "🤖 Sta scrivendo…"), /*#__PURE__*/React.createElement("div", {
     className: "mt-auto"
@@ -10870,13 +11035,13 @@ Rispondi con il JSON.`;
         inviaTurno();
       }
     }
-  }), /*#__PURE__*/React.createElement("button", {
+  }), !dialetto && /*#__PURE__*/React.createElement("button", {
     onClick: avviaAscolto,
     disabled: stato === "elaborando",
     "aria-pressed": ascolto,
     title: ascolto ? "Ferma registrazione" : "Detta la risposta",
     className: `w-14 flex-shrink-0 rounded-xl text-2xl flex items-center justify-center transition ${ascolto ? "bg-red-500 text-white animate-pulse" : "bg-zinc-800 hover:bg-zinc-700 text-white"}`
-  }, ascolto ? "⏹" : "🎤")), !SR && /*#__PURE__*/React.createElement("p", {
+  }, ascolto ? "⏹" : "🎤")), !SR && !dialetto && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-red-500 mb-2 text-center"
   }, "⚠️ Riconoscimento vocale solo su Chrome (puoi comunque scrivere)"), /*#__PURE__*/React.createElement("button", {
     onClick: inviaTurno,
@@ -13227,6 +13392,7 @@ function App() {
   });
   if (schermata === "conversazione") return /*#__PURE__*/React.createElement(SchermataConversazione, {
     lingue: lingue,
+    vocabolario: vocabolario,
     aiSettings: aiSettings,
     onHome: () => setSchermata("home"),
     iniziale: conversazioneIniziale
