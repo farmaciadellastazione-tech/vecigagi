@@ -145,7 +145,7 @@ test('esempi legati alla parola: non per articoli e preposizioni, e senza doppio
 test('Conversazione: la correzione sostituisce la battuta sbagliata (anche nello storico per l\'IA)', () => {
   const conv = tra('function SchermataConversazione(', '\n// Modalità "Lettura guidata"');
   assert.match(conv, /onSalvato: nuovo => setTurni\(/);
-  assert.match(HTML, /function CorreggiDialetto\(\{\s*testo,\s*cod,\s*origine,\s*onSalvato\s*\}\)/);
+  assert.match(HTML, /function CorreggiDialetto\(\{\s*testo,\s*cod,\s*origine,\s*italiano,\s*onSalvato\s*\}\)/);
 });
 
 test('Conversazione in dialetto: la nota sull\'errore in italiano, non nel dialetto', () => {
@@ -161,16 +161,32 @@ test('Copia funziona anche senza navigator.clipboard', () => {
 // Le correzioni arrivano anche a Dino: stesso foglio Google dei contributi
 // ("Contribuisci con il tuo dialetto", SCRIPT_DIALETTI), stessi campi.
 test('dati inviati al foglio dei contributi', () => {
+  // "parola" nel foglio è l'ITALIANO (come in Contribuisci): la frase errata
+  // va nella nota (review di fd07e78).
   assert.deepStrictEqual(j(ctx.parametriCorrezioneIA('sp', 'a son andao', 'a son andà', 'Conversazione')), {
-    parola: 'a son andao', dialetto: 'Spezzino', traduzione: 'a son andà',
-    localita: '', note: 'Correzione IA (Conversazione)', nickname: '',
+    parola: '', dialetto: 'Spezzino', traduzione: 'a son andà',
+    localita: '', note: 'Correzione IA (Conversazione) — prima: «a son andao»', nickname: '',
   });
+  assert.strictEqual(ctx.parametriCorrezioneIA('mn', 'x', 'y', 'Frase libera', 'sono andato').parola, 'sono andato');
   assert.strictEqual(ctx.parametriCorrezioneIA('mn', 'x', 'y', 'Frase libera').dialetto, 'Manarolese');
+});
+
+test('testi lunghi tagliati a 300 caratteri (l\'invio va in un indirizzo web)', () => {
+  const p = ctx.parametriCorrezioneIA('sp', 'e'.repeat(500), 'c'.repeat(500), 'Conversazione', 'i'.repeat(500));
+  assert.strictEqual(p.traduzione.length, 300);
+  assert.strictEqual(p.parola.length, 300);
+  assert.ok(p.note.length < 360);
+});
+
+test('l\'invio parte anche se il salvataggio nel browser fallisce; avviso sopra Salva', () => {
+  const corr = tra('function CorreggiDialetto(', '\n// ── Aiuto Frase libera');
+  assert.ok(corr.indexOf('inviaCorrezioneIA(') < corr.indexOf('if (!salvaCorrezioneIA('));
+  assert.ok(corr.indexOf('viene inviata anche a LinguaeQuiz') < corr.indexOf('"Salva correzione"'));
 });
 
 test('il pulsante Correggi invia la correzione e lo dice all\'utente', () => {
   const corr = tra('function CorreggiDialetto(', '\n// ── Aiuto Frase libera');
-  assert.match(corr, /inviaCorrezioneIA\(cod, testo, n, origine\)/);
+  assert.match(corr, /inviaCorrezioneIA\(cod, testo, n, origine, italiano\)/);
   assert.match(corr, /viene inviata anche a LinguaeQuiz/);
   const fl = tra('function SchermataFraseLibera(', '\n// Modalità "Conversazione"');
   const conv = tra('function SchermataConversazione(', '\n// Modalità "Lettura guidata"');

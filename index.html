@@ -10294,21 +10294,27 @@ const NOMI_DIALETTI = {
   ge: "Genovese",
   cr: "Carrarino"
 };
-function parametriCorrezioneIA(cod, errata, corretta, origine) {
+// Colonne come in Contribuisci: "parola" = l'ITALIANO (se noto: la frase
+// scritta in "Aiutami", la traduzione di un'idea), "traduzione" = il dialetto
+// corretto; la frase sbagliata dell'IA va nella nota. Testi tagliati: l'invio
+// è un indirizzo web (GET), che non può essere lunghissimo.
+const MAX_CAR_INVIO = 300;
+function parametriCorrezioneIA(cod, errata, corretta, origine, italiano = "") {
+  const taglia = t => String(t || "").trim().slice(0, MAX_CAR_INVIO);
   return {
-    parola: errata,
+    parola: taglia(italiano),
     dialetto: NOMI_DIALETTI[cod] || cod,
-    traduzione: corretta,
+    traduzione: taglia(corretta),
     localita: "",
-    note: `Correzione IA (${origine || "?"})`,
+    note: `Correzione IA (${origine}) — prima: «${taglia(errata)}»`,
     nickname: ""
   };
 }
 // Invio "spara e dimentica": se fallisce, la correzione resta comunque nel
 // browser e vale per l'IA di chi l'ha fatta.
-function inviaCorrezioneIA(cod, errata, corretta, origine) {
+function inviaCorrezioneIA(cod, errata, corretta, origine, italiano) {
   try {
-    const params = new URLSearchParams(parametriCorrezioneIA(cod, errata, corretta, origine));
+    const params = new URLSearchParams(parametriCorrezioneIA(cod, errata, corretta, origine, italiano));
     fetch(`${SCRIPT_DIALETTI}?${params}`).catch(() => {});
   } catch (e) {}
 }
@@ -10381,10 +10387,12 @@ function SezioneCorrezioniIA() {
 // "✏️ Correggi" accanto a una frase dialettale scritta dall'IA.
 // onSalvato(nuovo): facoltativo, per sostituire la frase sbagliata dove è
 // mostrata (Conversazione: anche nello storico rimandato all'IA).
+// italiano: facoltativo, il significato della frase se noto (va al foglio).
 function CorreggiDialetto({
   testo,
   cod,
   origine,
+  italiano,
   onSalvato
 }) {
   const [aperto, setAperto] = useState(false);
@@ -10409,7 +10417,9 @@ function CorreggiDialetto({
     onChange: e => setNuovo(e.target.value),
     rows: 2,
     className: "w-full bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-white text-sm resize-none focus:outline-none focus:border-amber-600"
-  }), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 italic"
+  }, "La correzione viene inviata anche a LinguaeQuiz per migliorare il dialetto."), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-2"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: () => setAperto(false),
@@ -10421,20 +10431,19 @@ function CorreggiDialetto({
         setErrore("Scrivi la versione corretta.");
         return;
       }
+      // Prima l'invio: arriva a LinguaeQuiz anche se il browser non la salva.
+      inviaCorrezioneIA(cod, testo, n, origine, italiano);
       if (!salvaCorrezioneIA(cod, testo, n)) {
-        setErrore("Non riesco a salvarla in questo browser (navigazione privata o memoria piena).");
+        setErrore("Inviata a LinguaeQuiz, ma questo browser non riesce a ricordarla (navigazione privata o memoria piena).");
         return;
       }
-      inviaCorrezioneIA(cod, testo, n, origine);
       setSalvato(true);
       if (onSalvato) onSalvato(n);
     },
     className: "flex-1 bg-amber-500 hover:bg-amber-400 text-white font-bold py-2 rounded-xl transition text-xs"
   }, "Salva correzione")), errore && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-red-400"
-  }, errore), /*#__PURE__*/React.createElement("p", {
-    className: "text-xs text-zinc-500 italic"
-  }, "La correzione viene inviata anche a LinguaeQuiz per migliorare il dialetto."));
+  }, errore));
 }
 // ── Aiuto Frase libera ───────────────────────────────────────────────────
 // Per chi parte da zero (richiesta di Dino, 2026-10-15): "💡 Aiutami" traduce
@@ -10813,6 +10822,7 @@ Reply in ${userLangName}.`;
   }, p.t))), /*#__PURE__*/React.createElement(CorreggiDialetto, {
     origine: "Frase libera",
     testo: aiutoRis.frase,
+    italiano: testoAiuto,
     cod: carta.lingua.codice
   }), aiutoRis.parole.length > 0 && /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-400 mt-2 leading-relaxed select-none"
@@ -10834,6 +10844,7 @@ Reply in ${userLangName}.`;
   }, idea.traduzione), /*#__PURE__*/React.createElement(CorreggiDialetto, {
     origine: "Frase libera",
     testo: idea.frase,
+    italiano: idea.traduzione,
     cod: carta.lingua.codice
   }))), /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 italic"
