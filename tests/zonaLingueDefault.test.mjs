@@ -56,3 +56,21 @@ test('App: la domanda viene prima della home e del tour', () => {
   assert.match(HTML, /if \(chiediZona\) return \/\*#__PURE__\*\/React\.createElement\(SceltaZona,/);
   assert.match(HTML, /const SK_ZONA = "qml_v1_zona";/);
 });
+
+// Review di eb2fc0b:
+test('i link senza lingua (#quiz, #letturaguidata, #ricerca nudo) non saltano la domanda', () => {
+  const base = { lingueSalvate: false, zonaSalvata: false, uiLang: 'it' };
+  assert.strictEqual(ctx.deveChiedereZona({ ...base, hash: '#quiz' }), true, 'dialetti.html → "Gioca al quiz"');
+  assert.strictEqual(ctx.deveChiedereZona({ ...base, hash: '#letturaguidata' }), true);
+  assert.strictEqual(ctx.deveChiedereZona({ ...base, hash: '#ricerca' }), true);
+  assert.strictEqual(ctx.deveChiedereZona({ ...base, hash: '#glossario/cr' }), false);
+  assert.strictEqual(ctx.deveChiedereZona({ ...base, hash: '#storia/de-a1-ein-tag-im-park' }), false);
+});
+
+test('ricaricando prima di rispondere la domanda torna: le lingue non si salvano finché è a schermo', () => {
+  assert.match(HTML, /useEffect\(\(\) => \{[^}]*if \(chiediZona\) return;\s*saveJSON\(SK_LINGUE, lingue\);\s*\}, \[lingue, chiediZona\]\);/);
+});
+
+test('il reset di emergenza dimentica anche la zona, così la domanda torna', () => {
+  assert.match(HTML, /const SK_RESET_RECOVERY = \[[^\]]*SK_ZONA/);
+});

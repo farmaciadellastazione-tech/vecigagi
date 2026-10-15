@@ -2282,9 +2282,12 @@ function lingueDaZona(lingue, zona) {
   return lingue.map(l => ({ ...l, attiva: l.codice === "it" || l.codice === d }));
 }
 // Solo al primo accesso (nessuna lingua salvata), una volta sola, col browser
-// in italiano, e non se si arriva da un link con hash (#ricerca/sp...).
+// in italiano, e non se si arriva da un link che sceglie già la lingua
+// (#ricerca/sp, #glossario/cr, #storia/<id>). #quiz, #letturaguidata e
+// #ricerca senza codice invece sì: dialetti.html manda lì i liguri.
 function deveChiedereZona({ lingueSalvate, zonaSalvata, uiLang, hash }) {
-  return !lingueSalvate && !zonaSalvata && uiLang === "it" && !(hash || "").replace(/^#/, "");
+  const h = (hash || "").replace(/^#/, "");
+  return !lingueSalvate && !zonaSalvata && uiLang === "it" && !/^(ricerca|glossario|storia)\/./.test(h);
 }
 // ── Fine zone ────────────────────────────────────────────────────────────
 const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "🇵🇹", "🇷🇺", "🇯🇵", "🇨🇳", "🇰🇷", "🇸🇦", "🇧🇷", "🇺🇸", "🇦🇺", "🇳🇱", "🇸🇪", "🇳🇴", "🇩🇰", "🇵🇱", "🇹🇷", "🇬🇷", "🇷🇴", "🇦🇱", "⚓", "🪨", "🌐"];
@@ -4352,7 +4355,7 @@ function saveJSON(key, val) {
 // API IA, tema e lingua UI. Qui rimuoviamo solo lo stato dell'app che può impedire
 // il boot. Whitelist esplicita: mai toccare chiavi sconosciute, perché
 // edit.html/dialetti.html condividono la stessa origin e salvano le loro.
-const SK_RESET_RECOVERY = [SK_VOC, SK_VOC_VER, SK_STATS, SK_LINGUE, SK_FILTRI, SK_RECORD, SK_RECORD_PERC, SK_STREAK, SK_NDOM, SK_FASE_TEMI, "qml_v11_sm_global" /* SK_SM, definita dentro SchermataSceltaMultipla */];
+const SK_RESET_RECOVERY = [SK_VOC, SK_VOC_VER, SK_STATS, SK_LINGUE, SK_ZONA, SK_FILTRI, SK_RECORD, SK_RECORD_PERC, SK_STREAK, SK_NDOM, SK_FASE_TEMI, "qml_v11_sm_global" /* SK_SM, definita dentro SchermataSceltaMultipla */];
 function resetStorageRecovery() {
   SK_RESET_RECOVERY.forEach(k => {
     try {
@@ -12444,8 +12447,11 @@ function App() {
     } catch (e) {}
   }, [stats, vocabolario, lingue]);
   useEffect(() => {
+    // Finché la domanda "Dove abiti?" è a schermo non si salva: ricaricando
+    // prima di rispondere, "lingue non salvate" = primo accesso, e torna.
+    if (chiediZona) return;
     saveJSON(SK_LINGUE, lingue);
-  }, [lingue]);
+  }, [lingue, chiediZona]);
   useEffect(() => {
     saveJSON(SK_FILTRI, filtri);
   }, [filtri]);
