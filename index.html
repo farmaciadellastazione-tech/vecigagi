@@ -10924,6 +10924,7 @@ Reply in ${userLangName}.`;
     className: "flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2.5 rounded-xl text-sm transition btn-shadow"
   }, "Nuova \u2192")), onDiscutine && /*#__PURE__*/React.createElement("button", {
     onClick: () => onDiscutine(carta.lingua, {
+      tema: carta.entry.tema,
       parola: soloVisibile(carta.entry[carta.lingua.codice]),
       frase: (feedback.correction || frase).trim()
     }),
@@ -10941,6 +10942,260 @@ Reply in ${userLangName}.`;
 // callAI non mantiene uno storico multi-turno nativo per tutti i provider: la cronologia
 // recente viene quindi serializzata a testo dentro lo userPrompt ad ogni chiamata (stesso
 // approccio "prompt libero" già usato da Frase Libera/Lettura Guidata).
+// ── Conversazioni salvate ────────────────────────────────────────────────
+// Richiesta di Dino (2026-10-15): 1) ogni conversazione si salva da sola nel
+// browser e si rilegge da "📜 Conversazioni salvate"; 2) "Continua" la riprende
+// da dove si era rimasti; 3) l'IA ricorda lo studente tra una conversazione e
+// l'altra con un promemoria breve (fatti stabili: città, famiglia, gusti),
+// visibile e cancellabile; più l'esportazione in testo divisa per lingua e
+// tema (il tema arriva da Frase libera o lo sceglie l'IA alla fine).
+// Tutto resta in questo browser, come le correzioni.
+const SK_CONVERSAZIONI = "qml_v1_conversazioni";
+const SK_MEMORIA_IA = "qml_v1_memoria_ia";
+const MAX_CONVERSAZIONI = 20;
+const MAX_TURNI_SALVATI = 100;
+const MAX_MEMORIA_IA = 600;
+function caricaConversazioni() {
+  try {
+    const l = JSON.parse(localStorage.getItem(SK_CONVERSAZIONI) || "[]");
+    return Array.isArray(l) ? l.sort((a, b) => String(b.data).localeCompare(String(a.data))) : [];
+  } catch (e) {
+    return [];
+  }
+}
+function scriviConversazioni(lista) {
+  try {
+    localStorage.setItem(SK_CONVERSAZIONI, JSON.stringify(lista));
+  } catch (e) {}
+}
+// Aggiorna (stesso id) o aggiunge; tiene le 20 più recenti (per data d'inizio).
+function salvaConversazione(c) {
+  if (!c || !c.id || !Array.isArray(c.turni) || !c.turni.length) return;
+  const lista = caricaConversazioni().filter(x => x.id !== c.id);
+  lista.push({
+    ...c,
+    turni: c.turni.slice(-MAX_TURNI_SALVATI)
+  });
+  lista.sort((a, b) => String(b.data).localeCompare(String(a.data)));
+  scriviConversazioni(lista.slice(0, MAX_CONVERSAZIONI));
+}
+function eliminaConversazione(id) {
+  scriviConversazioni(caricaConversazioni().filter(x => x.id !== id));
+}
+// Testo esportato: "# Lingua", "## Tema", "### data", poi le battute.
+function testoEsportazioneConversazioni(lista, filtro, temi) {
+  const f = filtro || {};
+  const scelte = lista.filter(c => (!f.lingua || c.lingua === f.lingua) && (!f.tema || c.tema === f.tema));
+  const ordineTemi = Object.keys(temi || {});
+  const posTema = t => {
+    const k = ordineTemi.indexOf(t);
+    return k < 0 ? ordineTemi.length : k;
+  };
+  const lingueOrdine = [...new Set(scelte.map(c => c.lingua))];
+  let out = "";
+  for (const cod of lingueOrdine) {
+    const diLingua = scelte.filter(c => c.lingua === cod);
+    out += `# ${diLingua[0].linguaNome || cod}\n\n`;
+    const temiLingua = [...new Set(diLingua.map(c => c.tema || ""))].sort((a, b) => posTema(a) - posTema(b));
+    for (const t of temiLingua) {
+      const info = temi && temi[t];
+      out += `## ${info ? info.emoji + " " + info.label : "Senza tema"}\n\n`;
+      for (const c of diLingua.filter(x => (x.tema || "") === t)) {
+        out += `### ${String(c.data).slice(0, 10)}\n`;
+        for (const x of c.turni) {
+          out += `${x.ruolo === "ia" ? "IA" : "Io"}: ${x.testo}\n`;
+          if (x.correzione) out += `   ✏️ ${x.correzione}${x.nota ? " — " + x.nota : ""}\n`;
+        }
+        out += "\n";
+      }
+    }
+  }
+  return out.trim() + "\n";
+}
+// Risposta dell'IA a fine conversazione: {"memo": ..., "tema": ...}
+function estraiFineConversazione(raw, temiValidi) {
+  const m = String(raw || "").replace(/```json|```/g, "").match(/\{[\s\S]*\}/);
+  if (!m) return null;
+  try {
+    const o = JSON.parse(m[0]);
+    const memo = typeof o.memo === "string" ? o.memo.trim().slice(0, MAX_MEMORIA_IA) : "";
+    const tema = (temiValidi || []).includes(o.tema) ? o.tema : "";
+    return memo || tema ? {
+      memo,
+      tema
+    } : null;
+  } catch (e) {
+    return null;
+  }
+}
+function caricaMemoriaIA() {
+  try {
+    return localStorage.getItem(SK_MEMORIA_IA) || "";
+  } catch (e) {
+    return "";
+  }
+}
+function salvaMemoriaIA(testo) {
+  const t = String(testo || "").trim().slice(0, MAX_MEMORIA_IA);
+  try {
+    if (t) localStorage.setItem(SK_MEMORIA_IA, t);else localStorage.removeItem(SK_MEMORIA_IA);
+  } catch (e) {}
+}
+// Da aggiungere ai prompt della Conversazione
+function istruzioniMemoria() {
+  const m = caricaMemoriaIA();
+  return m ? `\n\nCiò che ricordi di questo studente dalle conversazioni passate (usalo con naturalezza, senza elencarlo): ${m}` : "";
+}
+// Fine conversazione: l'IA aggiorna il promemoria e sceglie il tema.
+async function chiudiConversazioneIA(turni, aiSettings) {
+  if (!turni.some(x => x.ruolo === "utente")) return null;
+  const temi = Object.keys(TEMI);
+  const system = `You keep a short memo about a language student, built from their chats. Previous memo: "${caricaMemoriaIA()}".
+From the conversation below, write an updated memo in Italian (max 400 characters) with only stable facts the student said about themselves (city, family, pets, work, tastes, plans). If there is nothing new, return the previous memo unchanged.
+Also choose the topic of the conversation among: ${temi.join(", ")} (use "" if none fits).
+Reply with ONE JSON object only: {"memo": string, "tema": string}`;
+  const user = turni.slice(-30).map(x => `${x.ruolo === "ia" ? "IA" : "Studente"}: ${x.testo}`).join("\n");
+  try {
+    return estraiFineConversazione(await callAI(system, user, aiSettings), temi);
+  } catch (e) {
+    return null;
+  }
+}
+function scaricaTesto(nomeFile, testo) {
+  const url = URL.createObjectURL(new Blob([testo], {
+    type: "text/plain;charset=utf-8"
+  }));
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = nomeFile;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+// "📜 Conversazioni salvate": promemoria dell'IA, filtri, esportazione, elenco
+// con Leggi / Continua / Elimina.
+function ArchivioConversazioni({
+  lingue,
+  vocabolario,
+  aiSettings,
+  onContinua,
+  onIndietro
+}) {
+  const [lista, setLista] = useState(() => caricaConversazioni());
+  const [memo, setMemo] = useState(() => caricaMemoriaIA());
+  const [filtroLingua, setFiltroLingua] = useState("");
+  const [filtroTema, setFiltroTema] = useState("");
+  const [aperta, setAperta] = useState(null);
+  const linguaUI = lingue.find(l => l.codice === getUILang());
+  const filtrate = lista.filter(c => (!filtroLingua || c.lingua === filtroLingua) && (!filtroTema || c.tema === filtroTema));
+  const lingueUsate = [...new Map(lista.map(c => [c.lingua, c.linguaNome || c.lingua])).entries()];
+  const temiUsati = [...new Set(lista.map(c => c.tema).filter(Boolean))];
+  const linguaDi = c => lingue.find(l => l.codice === c.lingua) || {
+    codice: c.lingua,
+    nome: c.linguaNome || c.lingua,
+    bcp47: "it-IT"
+  };
+  const etichettaTema = t => TEMI[t] ? TEMI[t].emoji + " " + TEMI[t].label : "Senza tema";
+  return /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen bg-black flex flex-col p-4",
+    style: {
+      paddingBottom: "80px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between mb-4"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onIndietro,
+    className: "text-zinc-500 hover:text-white transition text-sm"
+  }, "← Indietro"), /*#__PURE__*/React.createElement("span", {
+    className: "text-zinc-600 text-xs"
+  }, "📜 Conversazioni salvate"), /*#__PURE__*/React.createElement("span", null)), /*#__PURE__*/React.createElement("div", {
+    className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-4 mb-4"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-slate-200 font-bold mb-1"
+  }, "🧠 Cosa ricorda l'IA di te"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-400 mb-2"
+  }, memo || "Ancora niente: lo scrive alla fine di ogni conversazione."), memo && /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      if (!confirm("Cancellare ciò che l'IA ricorda di te?")) return;
+      salvaMemoriaIA("");
+      setMemo("");
+    },
+    className: "text-xs text-zinc-500 hover:text-red-400 transition"
+  }, "🗑️ Cancella promemoria")), lista.length === 0 ? /*#__PURE__*/React.createElement("p", {
+    className: "text-zinc-500 text-sm text-center mt-6"
+  }, "Nessuna conversazione salvata.") : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2 mb-3"
+  }, /*#__PURE__*/React.createElement("select", {
+    value: filtroLingua,
+    onChange: e => setFiltroLingua(e.target.value),
+    className: "flex-1 min-w-0 bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-white text-sm"
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "Tutte le lingue"), lingueUsate.map(([cod, nome]) => /*#__PURE__*/React.createElement("option", {
+    key: cod,
+    value: cod
+  }, nome))), /*#__PURE__*/React.createElement("select", {
+    value: filtroTema,
+    onChange: e => setFiltroTema(e.target.value),
+    className: "flex-1 min-w-0 bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-white text-sm"
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "Tutti i temi"), temiUsati.map(t => /*#__PURE__*/React.createElement("option", {
+    key: t,
+    value: t
+  }, etichettaTema(t))))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => scaricaTesto("conversazioni-linguaequiz.txt", testoEsportazioneConversazioni(filtrate, {}, TEMI)),
+    disabled: !filtrate.length,
+    className: "w-full bg-zinc-900 border border-zinc-700 text-amber-400 font-bold py-2.5 rounded-xl text-sm hover:border-amber-600 transition mb-4"
+  }, "⬇️ Esporta ", filtrate.length, " conversazion", filtrate.length === 1 ? "e" : "i", " (.txt)"), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-3"
+  }, filtrate.map(c => /*#__PURE__*/React.createElement("div", {
+    key: c.id,
+    className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-4"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mb-1"
+  }, String(c.data).slice(0, 10), " \xB7 ", c.linguaNome || c.lingua, " \xB7 ", etichettaTema(c.tema), " \xB7 ", c.turni.length, " battute"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-white mb-3"
+  }, (c.turni[0]?.testo || "").slice(0, 120)), aperta === c.id && /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-2 mb-3"
+  }, c.turni.map((t, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: `rounded-xl px-3 py-2 ${t.ruolo === "ia" ? "bg-zinc-800" : "bg-pink-950 border border-pink-800 self-end"}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-start gap-2"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-white text-sm flex-1"
+  }, t.testo), t.ruolo === "ia" && /*#__PURE__*/React.createElement("button", {
+    onClick: () => parla(t.testo, linguaDi(c).bcp47),
+    className: "text-zinc-500 hover:text-pink-400 text-sm flex-shrink-0"
+  }, "🔊")), t.ruolo === "ia" && /*#__PURE__*/React.createElement(TraduciBattuta, {
+    testo: t.testo,
+    lingua: linguaDi(c),
+    linguaUI: linguaUI,
+    vocabolario: vocabolario,
+    aiSettings: aiSettings
+  }), t.correzione && /*#__PURE__*/React.createElement("p", {
+    className: "text-amber-400 text-xs mt-1"
+  }, "✏️ ", t.correzione, t.nota ? " — " + t.nota : "")))), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setAperta(aperta === c.id ? null : c.id),
+    className: "flex-1 bg-zinc-800 hover:bg-zinc-700 text-slate-300 font-semibold py-2 rounded-xl transition text-sm"
+  }, aperta === c.id ? "Chiudi" : "Leggi"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => onContinua(c),
+    className: "flex-1 bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 rounded-xl transition text-sm"
+  }, "Continua"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      if (!confirm("Eliminare questa conversazione?")) return;
+      eliminaConversazione(c.id);
+      setLista(caricaConversazioni());
+    },
+    title: "Elimina",
+    className: "px-3 bg-zinc-800 hover:bg-zinc-700 text-slate-500 rounded-xl transition text-sm"
+  }, "🗑️")))))));
+}
+// ── fine conversazioni salvate
 // ── Aiuti Conversazione ──────────────────────────────────────────────────
 // Gli stessi aiuti di Frase libera dentro la Conversazione (Dino, 2026-10-15:
 // con "Continua a parlarne" sparivano): "🌐 Traduci" sotto ogni battuta
@@ -11210,13 +11465,28 @@ function SchermataConversazione({
   const dialetto = !!lingua && DIALETTI_TTS_ITA.includes(lingua.codice);
   // Lingua dei menu, per "Traduci" e per gli aiuti (vedi AiutiConversazione)
   const linguaUI = lingue.find(l => l.codice === getUILang());
+  // Conversazione salvata (vedi "Conversazioni salvate"): id e data d'inizio,
+  // tema da Frase libera o scelto dall'IA a fine conversazione.
+  const convRef = useRef({
+    id: null,
+    data: null,
+    tema: ""
+  });
+  const [statoPrima, setStatoPrima] = useState(null); // per tornare dall'archivio
+  const [memoAggiornato, setMemoAggiornato] = useState(false);
   async function iniziaConversazione(l, argomento) {
     setLingua(l);
     setStato("generando");
     setTurni([]);
+    convRef.current = {
+      id: String(Date.now()),
+      data: new Date().toISOString(),
+      tema: argomento?.tema || ""
+    };
+    setMemoAggiornato(false);
     const langName = l.nome;
     const system = argomento ? `Sei un amico madrelingua che chiacchiera con uno studente di ${langName} di livello base-intermedio. Lo studente ha appena scritto questa frase in un esercizio: "${argomento.frase}" (parola chiave: "${argomento.parola}"). Reagisci in modo naturale a quello che ha scritto e fai una domanda di follow-up per continuare a parlarne. UNA sola battuta breve (una o due frasi), in ${langName}, senza virgolette e senza premesse.` : `Sei un amico madrelingua che chiacchiera con uno studente di ${langName} di livello base-intermedio. Apri tu la conversazione con UNA sola battuta breve e naturale (una o due frasi) su un argomento quotidiano semplice (saluti, tempo libero, cibo, giornata). Rispondi SOLO con la battuta in ${langName}, senza virgolette e senza premesse.`;
-    const raw = await callAI(system + istruzioniDialetto(l.codice, langName, vocabolario, ""), argomento ? "Reagisci e continua la conversazione." : "Apri tu la conversazione.", aiSettings);
+    const raw = await callAI(system + istruzioniDialetto(l.codice, langName, vocabolario, "") + istruzioniMemoria(), argomento ? "Reagisci e continua la conversazione." : "Apri tu la conversazione.", aiSettings);
     const testo = raw.trim();
     setTurni([{ ruolo: "ia", testo }]);
     parla(testo, l.bcp47);
@@ -11227,6 +11497,64 @@ function SchermataConversazione({
   useEffect(() => {
     if (linguaAuto) iniziaConversazione(linguaAuto, linguaSeed ? iniziale.argomento : null);
   }, []);
+  // Salvataggio automatico a ogni battuta
+  useEffect(() => {
+    if (!lingua || !convRef.current.id || !turni.length) return;
+    salvaConversazione({
+      id: convRef.current.id,
+      data: convRef.current.data,
+      lingua: lingua.codice,
+      linguaNome: lingua.nome,
+      tema: convRef.current.tema,
+      turni
+    });
+  }, [turni]);
+  // "Termina": l'IA aggiorna il promemoria su di te e, se manca, sceglie il tema
+  function termina() {
+    setStato("fine");
+    const turniFine = turni;
+    const l = lingua;
+    chiudiConversazioneIA(turniFine, aiSettings).then(r => {
+      if (!r) return;
+      if (r.memo) {
+        salvaMemoriaIA(r.memo);
+        setMemoAggiornato(true);
+      }
+      if (r.tema && !convRef.current.tema && convRef.current.id && l) {
+        convRef.current.tema = r.tema;
+        salvaConversazione({
+          id: convRef.current.id,
+          data: convRef.current.data,
+          lingua: l.codice,
+          linguaNome: l.nome,
+          tema: r.tema,
+          turni: turniFine
+        });
+      }
+    });
+  }
+  // "Continua" dall'archivio: si riparte con lo stesso dialogo (e lo stesso id)
+  function continua(c) {
+    const l = lingue.find(x => x.codice === c.lingua) || {
+      codice: c.lingua,
+      nome: c.linguaNome || c.lingua,
+      bcp47: "it-IT"
+    };
+    convRef.current = {
+      id: c.id,
+      data: c.data,
+      tema: c.tema || ""
+    };
+    setLingua(l);
+    setTurni(c.turni);
+    setBozza("");
+    setMemoAggiornato(false);
+    setStato("pronto");
+  }
+  function apriArchivio() {
+    setStatoPrima(stato);
+    setStato("archivio");
+  }
   const onMicResult = useCallback(testi => {
     const t = (testi && testi[0]) || "";
     if (t) setBozza(prev => (prev ? prev + " " : "") + t);
@@ -11255,7 +11583,7 @@ ${storico}
 Nuovo turno dello studente: "${testo}"
 
 Rispondi con il JSON.`;
-    const raw = await callAI(system + istruzioniDialetto(lingua.codice, langName, vocabolario, ""), user, aiSettings);
+    const raw = await callAI(system + istruzioniDialetto(lingua.codice, langName, vocabolario, "") + istruzioniMemoria(), user, aiSettings);
     const clean = raw.replace(/```json|```/g, "").replace(/\n/g, " ").trim();
     const { reply, correction, note } = estraiRispostaConversazione(clean);
     setTurni(prev => {
@@ -11271,6 +11599,13 @@ Rispondi con il JSON.`;
     setStato("pronto");
   }
   const nTurniUtente = turni.filter(x => x.ruolo === "utente").length;
+  if (stato === "archivio") return /*#__PURE__*/React.createElement(ArchivioConversazioni, {
+    lingue: lingue,
+    vocabolario: vocabolario,
+    aiSettings: aiSettings,
+    onContinua: continua,
+    onIndietro: () => setStato(statoPrima && statoPrima !== "archivio" ? statoPrima : lingua ? "pronto" : "scegliLingua")
+  });
   const ultimaBattutaIA = [...turni].reverse().find(x => x.ruolo === "ia")?.testo || "";
   const nBattuteIA = turni.filter(x => x.ruolo === "ia").length;
   if (lingueCandidate.length === 0) {
@@ -11301,6 +11636,9 @@ Rispondi con il JSON.`;
       onClick: () => iniziaConversazione(l),
       className: "px-4 py-2 rounded-full bg-zinc-900 border border-zinc-700 text-slate-200 font-semibold hover:border-pink-500 hover:text-pink-400 transition"
     }, l.bandiera, " ", l.nome))), /*#__PURE__*/React.createElement("button", {
+      onClick: apriArchivio,
+      className: "w-full bg-zinc-900 border border-zinc-700 text-slate-200 font-semibold py-2.5 rounded-xl text-sm hover:border-pink-500 transition mb-3"
+    }, "📜 Conversazioni salvate"), /*#__PURE__*/React.createElement("button", {
       onClick: onHome,
       className: "text-zinc-500 hover:text-white transition text-sm"
     }, "← Home")));
@@ -11316,7 +11654,12 @@ Rispondi con il JSON.`;
       className: "text-lg font-extrabold text-white mb-1"
     }, "Ottima conversazione!"), /*#__PURE__*/React.createElement("p", {
       className: "text-sm text-zinc-500 mb-5"
-    }, nTurniUtente, " battut", nTurniUtente === 1 ? "a" : "e", " in ", lingua?.nome), /*#__PURE__*/React.createElement("div", {
+    }, nTurniUtente, " battut", nTurniUtente === 1 ? "a" : "e", " in ", lingua?.nome), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-zinc-500 mb-4"
+    }, "💾 Salvata in 📜 Conversazioni salvate", memoAggiornato ? " · 🧠 l'IA si ricorderà di quello che le hai raccontato" : ""), /*#__PURE__*/React.createElement("button", {
+      onClick: apriArchivio,
+      className: "w-full bg-zinc-900 border border-zinc-700 text-slate-200 font-semibold py-2.5 rounded-xl text-sm hover:border-pink-500 transition mb-3"
+    }, "📜 Conversazioni salvate"), /*#__PURE__*/React.createElement("div", {
       className: "flex gap-2"
     }, /*#__PURE__*/React.createElement("button", {
       onClick: onHome,
@@ -11337,7 +11680,11 @@ Rispondi con il JSON.`;
   }, "← Home"), /*#__PURE__*/React.createElement("span", {
     className: "text-zinc-600 text-xs"
   }, "🎙️ Conversazione \xB7 ", lingua?.bandiera, " ", lingua?.nome), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setStato("fine"),
+    onClick: apriArchivio,
+    title: "Conversazioni salvate",
+    className: "text-zinc-500 hover:text-white transition text-sm"
+  }, "📜"), /*#__PURE__*/React.createElement("button", {
+    onClick: termina,
     className: "text-zinc-500 hover:text-white transition text-sm"
   }, "Termina")), /*#__PURE__*/React.createElement("div", {
     className: "flex-1 space-y-3 mb-4"
