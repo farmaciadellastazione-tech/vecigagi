@@ -10249,9 +10249,11 @@ function jsonDaRisposta(raw) {
 }
 function estraiAiutoTraduzione(raw) {
   const o = jsonDaRisposta(raw);
-  const frase = typeof o?.sentence === "string" ? o.sentence.trim() : "";
+  // JSON troncato (la spiegazione parola per parola allunga la risposta):
+  // la frase, che viene per prima, si recupera lo stesso.
+  const frase = (typeof o?.sentence === "string" ? o.sentence : estraiCampoStringaJSON(String(raw || ""), "sentence") || "").trim();
   if (!frase) return null;
-  const parole = Array.isArray(o.words) ? o.words.filter(p => p && p.w && p.t).map(p => ({
+  const parole = Array.isArray(o?.words) ? o.words.filter(p => p && p.w && p.t).map(p => ({
     w: String(p.w),
     t: String(p.t)
   })) : [];
@@ -10268,15 +10270,28 @@ function estraiIdeeFrase(raw) {
     traduzione: String(i.translation || "").trim()
   }));
 }
+// callAI non lancia eccezioni: in caso di chiave mancante, quota o rete
+// restituisce "Errore ...". Quel messaggio va mostrato così com'è.
+function messaggioErroreAiuto(raw) {
+  const t = String(raw || "").trim();
+  return /^Errore/.test(t) ? t : "Non ho capito la risposta dell'IA. Riprova.";
+}
+// Lingua in cui spiegare: quella dei menu, ma se coincide con la lingua
+// della carta (menu in inglese, carta in inglese) l'aiuto non servirebbe:
+// si usa l'italiano.
+function linguaAiutoNome(linguaUI, codiceCarta) {
+  return linguaUI && linguaUI.codice !== codiceCarta ? linguaUI.nome : "Italiano";
+}
 // Spezza la frase in pezzi, segnando le occorrenze della parola della carta
-// (o di un suo sinonimo dopo "/"), senza badare a maiuscole.
+// (o di un suo sinonimo dopo "/"), solo a parola intera, senza badare a
+// maiuscole: "cat" non si accende dentro "category".
 function evidenziaParola(frase, parola) {
   const forme = String(parola || "").split(/[/,]/).map(s => s.trim()).filter(Boolean).sort((a, b) => b.length - a.length);
   if (!forme.length) return [{
     t: frase,
     hit: false
   }];
-  const re = new RegExp("(" + forme.map(f => f.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")", "gi");
+  const re = new RegExp("(?<![\\p{L}\\p{N}])(" + forme.map(f => f.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")(?![\\p{L}\\p{N}])", "giu");
   return frase.split(re).filter(t => t !== "").map(t => ({
     t,
     hit: forme.some(f => f.toLowerCase() === t.toLowerCase())
@@ -10389,6 +10404,10 @@ Reply with JSON only, all text in ${langName}.`;
   // La lingua UI è già nota: la cerchiamo in `lingue` (stesso pattern di PannelloBilingue).
   const linguaUI = lingue.find(l => l.codice === getUILang());
   const userLangName = linguaUI?.nome || "Italiano";
+  // Parola della carta come la si scrive: nei dialetti la grafia, non la
+  // pronuncia per la voce sintetica (sp "d'zena/Zena" → "Zena"). Gli aiuti
+  // valgono anche per i dialetti (scelta di Dino), con l'avviso "AI alcolizzata".
+  const parolaCarta = carta ? formaDisplay(carta.entry[carta.lingua.codice], carta.lingua.codice) ?? soloVisibile(carta.entry[carta.lingua.codice]) : "";
   // "💡 Aiutami": traduce la frase che lo studente scrive nella sua lingua.
   // Frasi brevi: callAI ha un tetto di token e la spiegazione parola per
   // parola allunga la risposta.
@@ -10397,8 +10416,9 @@ Reply with JSON only, all text in ${langName}.`;
     setAiutoStato("loading");
     setAiutoRis(null);
     const n = ++richiestaAiuto.current;
-    const parola = soloVisibile(carta.entry[carta.lingua.codice]);
+    const parola = parolaCarta;
     const langName = carta.lingua.nome;
+    const userLangName = linguaAiutoNome(linguaUI, carta.lingua.codice);
     const system = `You help a beginner who is learning ${langName}; their native language is ${userLangName}.
 Translate the student's sentence from ${userLangName} into simple, natural ${langName}. If it fits the meaning, use the target word. Keep it short (max 12 words).
 Reply with ONE JSON object only (no markdown, no extra text):
@@ -10408,27 +10428,39 @@ Reply with ONE JSON object only (no markdown, no extra text):
     const user = `Target word: "${parola}" (Italian meaning: "${soloVisibile(carta.entry.it)}")
 Sentence in ${userLangName}: "${testoAiuto.trim()}"`;
     try {
-      const r = estraiAiutoTraduzione(await callAI(system, user, aiSettings));
+      const raw = await callAI(system, user, aiSettings);
       if (n !== richiestaAiuto.current) return;
-      if (!r) throw new Error("risposta");
+      const r = estraiAiutoTraduzione(raw);
+      if (!r) throw new Error(messaggioErroreAiuto(raw));
       setAiutoRis({
         tipo: "traduzione",
         ...r
       });
       setAiutoStato("ok");
     } catch (e) {
-      if (n === richiestaAiuto.current) setAiutoStato("errore");
+      if (n !== richiestaAiuto.current) return;
+      setAiutoRis({
+        tipo: "errore",
+        msg: e.message
+      });
+      setAiutoStato("errore");
     }
   }
   // "💭 Dammi un'idea": 3 frasi semplici con la parola, con traduzione.
   async function chiediIdee() {
     if (!carta || aiutoStato === "loading") return;
+    // Secondo clic con le idee già aperte: le chiude (niente richiesta in più)
+    if (aiuto === "idee") {
+      azzeraAiuto();
+      return;
+    }
     setAiuto("idee");
     setAiutoStato("loading");
     setAiutoRis(null);
     const n = ++richiestaAiuto.current;
-    const parola = soloVisibile(carta.entry[carta.lingua.codice]);
+    const parola = parolaCarta;
     const langName = carta.lingua.nome;
+    const userLangName = linguaAiutoNome(linguaUI, carta.lingua.codice);
     const system = `You help a beginner who is learning ${langName}; their native language is ${userLangName}.
 Suggest 3 different, very simple everyday sentences (level A1-A2, max 8 words each) in ${langName} that use the target word.
 Reply with ONE JSON object only (no markdown, no extra text):
@@ -10436,16 +10468,22 @@ Reply with ONE JSON object only (no markdown, no extra text):
 - sentence: in ${langName}; translation: in ${userLangName}.`;
     const user = `Target word: "${parola}" (Italian meaning: "${soloVisibile(carta.entry.it)}")`;
     try {
-      const idee = estraiIdeeFrase(await callAI(system, user, aiSettings));
+      const raw = await callAI(system, user, aiSettings);
       if (n !== richiestaAiuto.current) return;
-      if (!idee.length) throw new Error("risposta");
+      const idee = estraiIdeeFrase(raw);
+      if (!idee.length) throw new Error(messaggioErroreAiuto(raw));
       setAiutoRis({
         tipo: "idee",
         idee
       });
       setAiutoStato("ok");
     } catch (e) {
-      if (n === richiestaAiuto.current) setAiutoStato("errore");
+      if (n !== richiestaAiuto.current) return;
+      setAiutoRis({
+        tipo: "errore",
+        msg: e.message
+      });
+      setAiutoStato("errore");
     }
   }
   async function traduci() {
@@ -10454,7 +10492,6 @@ Reply with ONE JSON object only (no markdown, no extra text):
     const parola = soloVisibile(carta.entry[carta.lingua.codice]);
     const itParola = soloVisibile(carta.entry.it);
     const langName = carta.lingua.nome;
-    const userLangName = linguaUI?.nome || "Italiano";
     const system = `You are a language teacher. The student is learning ${langName}; their native language is ${userLangName}.
 Re-analyze the student's sentence and reply ENTIRELY in ${userLangName} (except: keep the corrected sentence and the example sentence in ${langName}).
 
@@ -10544,13 +10581,13 @@ Reply in ${userLangName}.`;
     className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-4 mt-3"
   }, aiuto === "traduci" && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-400 mb-2"
-  }, "Scrivi in ", userLangName.toLowerCase(), " cosa vuoi dire: te lo traduco in ", carta.lingua.nome.toLowerCase(), ", poi lo riscrivi tu qui sopra."), /*#__PURE__*/React.createElement("div", {
+  }, "Scrivi in ", linguaAiutoNome(linguaUI, carta.lingua.codice).toLowerCase(), " cosa vuoi dire: te lo traduco in ", carta.lingua.nome.toLowerCase(), ", poi lo riscrivi tu qui sopra."), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-2"
   }, /*#__PURE__*/React.createElement("input", {
     value: testoAiuto,
     onChange: e => setTestoAiuto(e.target.value),
     onKeyDown: e => {
-      if (e.key === "Enter") chiediTraduzione();
+      if (e.key === "Enter" && !e.nativeEvent.isComposing) chiediTraduzione();
     },
     placeholder: "es. la mia casa \u00e8 vicino al mare",
     className: "flex-1 min-w-0 bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-white text-sm focus:outline-none focus:border-amber-600"
@@ -10562,11 +10599,11 @@ Reply in ${userLangName}.`;
     className: "text-zinc-500 animate-pulse text-sm mt-3"
   }, "\ud83e\udd16 ..."), aiutoStato === "errore" && /*#__PURE__*/React.createElement("p", {
     className: "text-red-400 text-sm mt-3"
-  }, "Non ho capito la risposta dell'IA. Riprova."), aiutoStato === "ok" && aiutoRis?.tipo === "traduzione" && /*#__PURE__*/React.createElement("div", {
+  }, aiutoRis?.msg || messaggioErroreAiuto("")), aiutoStato === "ok" && aiutoRis?.tipo === "traduzione" && /*#__PURE__*/React.createElement("div", {
     className: "mt-3 select-none"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-lg text-white"
-  }, evidenziaParola(aiutoRis.frase, soloVisibile(carta.entry[carta.lingua.codice])).map((p, i) => p.hit ? /*#__PURE__*/React.createElement("strong", {
+  }, evidenziaParola(aiutoRis.frase, parolaCarta).map((p, i) => p.hit ? /*#__PURE__*/React.createElement("strong", {
     key: i,
     className: "text-cyan-400"
   }, p.t) : /*#__PURE__*/React.createElement("span", {
@@ -10581,7 +10618,7 @@ Reply in ${userLangName}.`;
     key: i
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-base text-white"
-  }, evidenziaParola(idea.frase, soloVisibile(carta.entry[carta.lingua.codice])).map((p, k) => p.hit ? /*#__PURE__*/React.createElement("strong", {
+  }, evidenziaParola(idea.frase, parolaCarta).map((p, k) => p.hit ? /*#__PURE__*/React.createElement("strong", {
     key: k,
     className: "text-cyan-400"
   }, p.t) : /*#__PURE__*/React.createElement("span", {

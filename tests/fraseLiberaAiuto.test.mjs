@@ -18,9 +18,11 @@ const ctx = vm.createContext({});
 vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx);
 vm.runInContext([
   tra('// ── Aiuto Frase libera', '\nfunction SchermataFraseLibera('),
-  'globalThis.estraiAiutoTraduzione = estraiAiutoTraduzione; globalThis.estraiIdeeFrase = estraiIdeeFrase; globalThis.evidenziaParola = evidenziaParola;',
+  tra('function estraiCampoStringaJSON(', '\n// Estrae un valore booleano'),
+  'globalThis.estraiAiutoTraduzione = estraiAiutoTraduzione; globalThis.estraiIdeeFrase = estraiIdeeFrase; globalThis.evidenziaParola = evidenziaParola; globalThis.messaggioErroreAiuto = messaggioErroreAiuto; globalThis.linguaAiutoNome = linguaAiutoNome;',
 ].join('\n'), ctx);
 const j = x => JSON.parse(JSON.stringify(x)); // via gli oggetti della sandbox
+const COMP = tra('function SchermataFraseLibera(', '\n// Modalità "Conversazione"');
 
 test('traduttore: frase e spiegazione parola per parola', () => {
   const raw = '```json\n{"sentence":"Ma maison est près de la mer.","words":[{"w":"ma","t":"mia"},{"w":"maison","t":"casa"}]}\n```';
@@ -60,8 +62,45 @@ test('evidenzia la parola della carta, senza badare a maiuscole', () => {
 });
 
 test('la traduzione non finisce nella casella: niente setFrase con il risultato dell\'aiuto', () => {
-  const comp = tra('function SchermataFraseLibera(', '\n// Modalità "Conversazione"');
-  assert.match(comp, /Aiutami/);
-  assert.match(comp, /Dammi un'idea/);
-  assert.doesNotMatch(comp, /setFrase\((aiuto|idea|risultato)/);
+  assert.match(COMP, /Aiutami/);
+  assert.match(COMP, /Dammi un'idea/);
+  assert.doesNotMatch(COMP, /setFrase\((aiuto|idea|risultato)/);
+});
+
+// Review di 327c7b2:
+test('evidenzia solo parole intere: "cat" non dentro "category"', () => {
+  assert.deepStrictEqual(j(ctx.evidenziaParola('The category: a cat.', 'cat')), [
+    { t: 'The category: a ', hit: false }, { t: 'cat', hit: true }, { t: '.', hit: false },
+  ]);
+  assert.deepStrictEqual(j(ctx.evidenziaParola('Ça va, ça', 'ça')), [
+    { t: 'Ça', hit: true }, { t: ' va, ', hit: false }, { t: 'ça', hit: true },
+  ], 'lettere accentate ai bordi');
+});
+
+test('traduttore: JSON troncato, la frase si recupera lo stesso', () => {
+  assert.deepStrictEqual(j(ctx.estraiAiutoTraduzione('{"sentence":"Ma maison est près de la mer.","words":[{"w":"ma","t":')), {
+    frase: 'Ma maison est près de la mer.', parole: [],
+  });
+});
+
+test('errori dell\'IA (chiave mancante, quota, rete) mostrati come sono', () => {
+  assert.strictEqual(ctx.messaggioErroreAiuto('Errore AI (HTTP 401): invalid key'), 'Errore AI (HTTP 401): invalid key');
+  assert.strictEqual(ctx.messaggioErroreAiuto('Errore connessione: failed'), 'Errore connessione: failed');
+  assert.strictEqual(ctx.messaggioErroreAiuto('boh {'), "Non ho capito la risposta dell'IA. Riprova.");
+});
+
+test('lingua della spiegazione: quella dei menu, ma italiano se coincide con la lingua della carta', () => {
+  assert.strictEqual(ctx.linguaAiutoNome({ codice: 'en', nome: 'Inglese' }, 'fr'), 'Inglese');
+  assert.strictEqual(ctx.linguaAiutoNome({ codice: 'en', nome: 'Inglese' }, 'en'), 'Italiano');
+  assert.strictEqual(ctx.linguaAiutoNome(undefined, 'en'), 'Italiano');
+});
+
+// Dino: l'aiuto IA resta anche sui dialetti (con l'avviso "AI alcolizzata").
+// Alla IA e all'evidenziazione va la GRAFIA, non la pronuncia per la TTS.
+test('dialetti: aiuto disponibile, con la parola nella grafia (formaDisplay)', () => {
+  assert.doesNotMatch(COMP, /aiutoPossibile/);
+  assert.match(COMP, /const parolaCarta = carta \? formaDisplay\(carta\.entry\[carta\.lingua\.codice\], carta\.lingua\.codice\)/);
+  assert.match(COMP, /evidenziaParola\(aiutoRis\.frase, parolaCarta\)/);
+  assert.match(COMP, /evidenziaParola\(idea\.frase, parolaCarta\)/);
+  assert.strictEqual(ctx.formaDisplay("d'zena/Zena", 'sp'), 'Zena');
 });
