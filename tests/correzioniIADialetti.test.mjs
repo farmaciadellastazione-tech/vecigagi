@@ -27,7 +27,7 @@ ctx.globalThis = ctx;
 vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx);
 vm.runInContext([
   tra('// ── Correzioni IA dialetti', '\n// ── Aiuto Frase libera'),
-  'globalThis.salva = salvaCorrezioneIA; globalThis.carica = caricaCorrezioniIA; globalThis.istruzioni = istruzioniDialetto; globalThis.esempi = esempiDialetto; globalThis.testoDaCopiare = testoCorrezioniDaCopiare; globalThis.svuota = svuotaCorrezioniIA; globalThis.COMUNI = CORREZIONI_IA_COMUNI;',
+  'globalThis.salva = salvaCorrezioneIA; globalThis.carica = caricaCorrezioniIA; globalThis.istruzioni = istruzioniDialetto; globalThis.esempi = esempiDialetto; globalThis.testoDaCopiare = testoCorrezioniDaCopiare; globalThis.svuota = svuotaCorrezioniIA; globalThis.COMUNI = CORREZIONI_IA_COMUNI; globalThis.parametriCorrezioneIA = parametriCorrezioneIA;',
 ].join('\n'), ctx);
 const j = x => JSON.parse(JSON.stringify(x));
 
@@ -145,7 +145,7 @@ test('esempi legati alla parola: non per articoli e preposizioni, e senza doppio
 test('Conversazione: la correzione sostituisce la battuta sbagliata (anche nello storico per l\'IA)', () => {
   const conv = tra('function SchermataConversazione(', '\n// Modalità "Lettura guidata"');
   assert.match(conv, /onSalvato: nuovo => setTurni\(/);
-  assert.match(HTML, /function CorreggiDialetto\(\{\s*testo,\s*cod,\s*onSalvato\s*\}\)/);
+  assert.match(HTML, /function CorreggiDialetto\(\{\s*testo,\s*cod,\s*origine,\s*onSalvato\s*\}\)/);
 });
 
 test('Conversazione in dialetto: la nota sull\'errore in italiano, non nel dialetto', () => {
@@ -156,4 +156,24 @@ test('Conversazione in dialetto: la nota sull\'errore in italiano, non nel diale
 test('Copia funziona anche senza navigator.clipboard', () => {
   const sez = tra('function SezioneCorrezioniIA(', '\n// "✏️ Correggi"');
   assert.match(sez, /if \(!navigator\.clipboard\) \{\s*alert\(t\);/);
+});
+
+// Le correzioni arrivano anche a Dino: stesso foglio Google dei contributi
+// ("Contribuisci con il tuo dialetto", SCRIPT_DIALETTI), stessi campi.
+test('dati inviati al foglio dei contributi', () => {
+  assert.deepStrictEqual(j(ctx.parametriCorrezioneIA('sp', 'a son andao', 'a son andà', 'Conversazione')), {
+    parola: 'a son andao', dialetto: 'Spezzino', traduzione: 'a son andà',
+    localita: '', note: 'Correzione IA (Conversazione)', nickname: '',
+  });
+  assert.strictEqual(ctx.parametriCorrezioneIA('mn', 'x', 'y', 'Frase libera').dialetto, 'Manarolese');
+});
+
+test('il pulsante Correggi invia la correzione e lo dice all\'utente', () => {
+  const corr = tra('function CorreggiDialetto(', '\n// ── Aiuto Frase libera');
+  assert.match(corr, /inviaCorrezioneIA\(cod, testo, n, origine\)/);
+  assert.match(corr, /viene inviata anche a LinguaeQuiz/);
+  const fl = tra('function SchermataFraseLibera(', '\n// Modalità "Conversazione"');
+  const conv = tra('function SchermataConversazione(', '\n// Modalità "Lettura guidata"');
+  assert.strictEqual((fl.match(/origine: "Frase libera"/g) || []).length, 4);
+  assert.strictEqual((conv.match(/origine: "Conversazione"/g) || []).length, 2);
 });

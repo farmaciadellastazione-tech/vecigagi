@@ -10285,6 +10285,33 @@ function salvaCorrezioneIA(cod, errata, corretta) {
   }
   return true;
 }
+// Ogni correzione arriva anche a Dino (richiesta del 2026-10-15): stesso foglio
+// Google e stessi campi di "Contribuisci con il tuo dialetto" (SCRIPT_DIALETTI),
+// con la nota "Correzione IA" per distinguerle dai contributi.
+const NOMI_DIALETTI = {
+  sp: "Spezzino",
+  mn: "Manarolese",
+  ge: "Genovese",
+  cr: "Carrarino"
+};
+function parametriCorrezioneIA(cod, errata, corretta, origine) {
+  return {
+    parola: errata,
+    dialetto: NOMI_DIALETTI[cod] || cod,
+    traduzione: corretta,
+    localita: "",
+    note: `Correzione IA (${origine || "?"})`,
+    nickname: ""
+  };
+}
+// Invio "spara e dimentica": se fallisce, la correzione resta comunque nel
+// browser e vale per l'IA di chi l'ha fatta.
+function inviaCorrezioneIA(cod, errata, corretta, origine) {
+  try {
+    const params = new URLSearchParams(parametriCorrezioneIA(cod, errata, corretta, origine));
+    fetch(`${SCRIPT_DIALETTI}?${params}`).catch(() => {});
+  } catch (e) {}
+}
 function testoCorrezioniDaCopiare() {
   return JSON.stringify(caricaCorrezioniIA(), null, 2);
 }
@@ -10357,6 +10384,7 @@ function SezioneCorrezioniIA() {
 function CorreggiDialetto({
   testo,
   cod,
+  origine,
   onSalvato
 }) {
   const [aperto, setAperto] = useState(false);
@@ -10397,13 +10425,16 @@ function CorreggiDialetto({
         setErrore("Non riesco a salvarla in questo browser (navigazione privata o memoria piena).");
         return;
       }
+      inviaCorrezioneIA(cod, testo, n, origine);
       setSalvato(true);
       if (onSalvato) onSalvato(n);
     },
     className: "flex-1 bg-amber-500 hover:bg-amber-400 text-white font-bold py-2 rounded-xl transition text-xs"
   }, "Salva correzione")), errore && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-red-400"
-  }, errore));
+  }, errore), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 italic"
+  }, "La correzione viene inviata anche a LinguaeQuiz per migliorare il dialetto."));
 }
 // ── Aiuto Frase libera ───────────────────────────────────────────────────
 // Per chi parte da zero (richiesta di Dino, 2026-10-15): "💡 Aiutami" traduce
@@ -10780,6 +10811,7 @@ Reply in ${userLangName}.`;
   }, p.t) : /*#__PURE__*/React.createElement("span", {
     key: i
   }, p.t))), /*#__PURE__*/React.createElement(CorreggiDialetto, {
+    origine: "Frase libera",
     testo: aiutoRis.frase,
     cod: carta.lingua.codice
   }), aiutoRis.parole.length > 0 && /*#__PURE__*/React.createElement("p", {
@@ -10800,6 +10832,7 @@ Reply in ${userLangName}.`;
   }, p.t))), idea.traduzione && /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-400 italic select-none"
   }, idea.traduzione), /*#__PURE__*/React.createElement(CorreggiDialetto, {
+    origine: "Frase libera",
     testo: idea.frase,
     cod: carta.lingua.codice
   }))), /*#__PURE__*/React.createElement("p", {
@@ -10821,6 +10854,7 @@ Reply in ${userLangName}.`;
   }, frase), "\""), feedback.correction && /*#__PURE__*/React.createElement("p", {
     className: "text-base text-green-400 mb-2"
   }, "\u270F\uFE0F ", feedback.correction), feedback.correction && /*#__PURE__*/React.createElement(CorreggiDialetto, {
+    origine: "Frase libera",
     testo: feedback.correction,
     cod: carta.lingua.codice
   }), !showTrad && /*#__PURE__*/React.createElement(React.Fragment, null, feedback.grammar && !["no", "none", "n/a", "na", "N/A", "-", ""].includes((feedback.grammar || "").trim().toLowerCase()) && /*#__PURE__*/React.createElement("p", {
@@ -10828,6 +10862,7 @@ Reply in ${userLangName}.`;
   }, "\uD83D\uDCDA ", feedback.grammar), feedback.example && /*#__PURE__*/React.createElement("p", {
     className: "text-base text-cyan-400"
   }, "\uD83D\uDCAC ", feedback.example), feedback.example && /*#__PURE__*/React.createElement(CorreggiDialetto, {
+    origine: "Frase libera",
     testo: feedback.example,
     cod: carta.lingua.codice
   })), showTrad && /*#__PURE__*/React.createElement("p", {
@@ -11034,6 +11069,7 @@ Rispondi con il JSON.`;
     onClick: () => parla(t.testo, lingua?.bcp47),
     className: "text-zinc-500 hover:text-pink-400 text-sm flex-shrink-0"
   }, "🔊")), t.ruolo === "ia" && /*#__PURE__*/React.createElement(CorreggiDialetto, {
+    origine: "Conversazione",
     testo: t.testo,
     cod: lingua?.codice,
     onSalvato: nuovo => setTurni(prev => prev.map((x, k) => k === i ? { ...x, testo: nuovo } : x))
@@ -11042,6 +11078,7 @@ Rispondi con il JSON.`;
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-amber-400"
   }, "✏️ ", t.correzione), /*#__PURE__*/React.createElement(CorreggiDialetto, {
+    origine: "Conversazione",
     testo: t.correzione,
     cod: lingua?.codice,
     onSalvato: nuovo => setTurni(prev => prev.map((x, k) => k === i ? { ...x, correzione: nuovo } : x))
