@@ -2264,6 +2264,29 @@ const LINGUE_DEFAULT = [
   bcp47: "it-IT",
   attiva: false
 }];
+// ── Zone: lingue di partenza per chi abita in Liguria o a Massa-Carrara ──
+// Al primo accesso, a chi ha il browser in italiano si chiede "Dove abiti?"
+// (SceltaZona) e si attivano italiano + il dialetto della zona (richiesta di
+// Dino, 2026-10-15). "altrove" o "Salta" lasciano LINGUE_DEFAULT (it + en).
+const SK_ZONA = "qml_v1_zona";
+const ZONE = [
+  { id: "5terre", label: "Cinque Terre", dialetto: "mn" },
+  { id: "sp", label: "Provincia della Spezia", dialetto: "sp" },
+  { id: "liguria", label: "Resto della Liguria", dialetto: "ge" },
+  { id: "ms", label: "Provincia di Massa-Carrara", dialetto: "cr" },
+  { id: "altrove", label: "Altrove", dialetto: null }
+];
+function lingueDaZona(lingue, zona) {
+  const d = ZONE.find(z => z.id === zona)?.dialetto;
+  if (!d) return lingue;
+  return lingue.map(l => ({ ...l, attiva: l.codice === "it" || l.codice === d }));
+}
+// Solo al primo accesso (nessuna lingua salvata), una volta sola, col browser
+// in italiano, e non se si arriva da un link con hash (#ricerca/sp...).
+function deveChiedereZona({ lingueSalvate, zonaSalvata, uiLang, hash }) {
+  return !lingueSalvate && !zonaSalvata && uiLang === "it" && !(hash || "").replace(/^#/, "");
+}
+// ── Fine zone ────────────────────────────────────────────────────────────
 const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "🇵🇹", "🇷🇺", "🇯🇵", "🇨🇳", "🇰🇷", "🇸🇦", "🇧🇷", "🇺🇸", "🇦🇺", "🇳🇱", "🇸🇪", "🇳🇴", "🇩🇰", "🇵🇱", "🇹🇷", "🇬🇷", "🇷🇴", "🇦🇱", "⚓", "🪨", "🌐"];
 
 // ── Vocabolario con temi e livelli ────────────────────────────────────────
@@ -7679,6 +7702,34 @@ const TOUR_STEPS_I18N = {
     body: "• Adicione suas próprias palavras com ➕\n• Use o 📖 Glossário para navegar pelo vocabulário alfabeticamente\n• Salve seu progresso com 💾 e restaure em outro dispositivo\n• O app funciona offline após o primeiro carregamento"
   }]
 };
+// Primo accesso, browser in italiano: "Dove abiti?" → lingue di partenza
+// (vedi ZONE / lingueDaZona). "Salta" vale come "altrove".
+function SceltaZona({
+  onScegli
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-zinc-900 border border-zinc-700 rounded-3xl p-6 max-w-sm w-full shadow-2xl max-h-[calc(100svh-2rem)] overflow-y-auto"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-center mb-5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-5xl mb-4"
+  }, "📍"), /*#__PURE__*/React.createElement("h2", {
+    className: "text-xl font-extrabold text-white mb-3"
+  }, "Dove abiti?"), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 text-sm leading-relaxed"
+  }, "Attiviamo l'italiano e il dialetto della tua zona. Puoi cambiare le lingue quando vuoi con 🌎.")), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-3"
+  }, ZONE.map(z => /*#__PURE__*/React.createElement("button", {
+    key: z.id,
+    onClick: () => onScegli(z.id),
+    className: z.dialetto ? "w-full bg-sky-500 hover:bg-sky-400 text-white font-extrabold py-3 rounded-xl transition text-sm" : "w-full bg-zinc-800 hover:bg-zinc-700 text-slate-300 font-semibold py-3 rounded-xl transition text-sm"
+  }, z.label))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => onScegli("altrove"),
+    className: "w-full text-xs text-slate-500 hover:text-slate-300 transition py-2 mt-2"
+  }, "Salta")));
+}
 function TourGuidato({
   onClose
 }) {
@@ -12230,6 +12281,20 @@ function SplashOnboarding({
 
 // ── App ───────────────────────────────────────────────────────────────────
 function App() {
+  // Letto PRIMA che l'effetto salvi SK_LINGUE: lingue non ancora salvate =
+  // primo accesso (vedi deveChiedereZona).
+  const [chiediZona, setChiediZona] = useState(() => {
+    try {
+      return deveChiedereZona({
+        lingueSalvate: localStorage.getItem(SK_LINGUE) !== null,
+        zonaSalvata: localStorage.getItem(SK_ZONA) !== null,
+        uiLang: getUILang(),
+        hash: window.location.hash
+      });
+    } catch (e) {
+      return false;
+    }
+  });
   const [vocabolario, setVocabolario] = useState(() => {
     try {
       return caricaVocabolario();
@@ -12864,6 +12929,16 @@ function App() {
       alert(UI[getUILang()].progressiuniti);
     });
   }
+  // Primo accesso: "Dove abiti?" prima della home (e del tour, che sta in Home)
+  if (chiediZona) return /*#__PURE__*/React.createElement(SceltaZona, {
+    onScegli: zona => {
+      try {
+        localStorage.setItem(SK_ZONA, zona);
+      } catch (e) {}
+      setLingue(prev => lingueDaZona(prev, zona));
+      setChiediZona(false);
+    }
+  });
   if (schermata === "sceltamultipla") return /*#__PURE__*/React.createElement(SchermataSceltaMultipla, {
     vocabolario: vocabolario,
     lingue: lingue,
