@@ -4573,39 +4573,59 @@ async function copyAndOpen() {
   const entries = Object.entries(contributions);
   const extra = extraWords || [];
   let sent = 0, errors = 0;
-  
-  // Send each word as a separate row
-  for (const [parola, traduzione] of entries) {
-    if (!traduzione) continue;
-    try {
-      const params = new URLSearchParams({ parola, dialetto: dialect, traduzione });
-      if (!(await inviaRigaFoglio(SCRIPT_URL + '?' + params.toString()))) throw new Error('foglio');
-      sent++;
-    } catch(e) { errors++; }
-  }
-  
-  // Send extra words too (con audio, se registrato, via POST)
-  for (const e of extra) {
-    if (!e.it || !e.tr) continue;
-    try {
-      if (e.audio) {
-        await inviaContributoConAudio(e.it, dialect, e.tr, e.audio);
-      } else {
-        const params = new URLSearchParams({ parola: e.it, dialetto: dialect, traduzione: e.tr });
+  // Parole confermate dallo script: escono dalla lista dopo l'invio, così
+  // riprovando (o premendo di nuovo Invia) non finiscono doppie nel foglio.
+  const inviate = new Set();
+  const inviateExtra = new Set();
+  try {
+    // Send each word as a separate row
+    for (const [parola, traduzione] of entries) {
+      if (!traduzione) continue;
+      try {
+        const params = new URLSearchParams({ parola, dialetto: dialect, traduzione });
         if (!(await inviaRigaFoglio(SCRIPT_URL + '?' + params.toString()))) throw new Error('foglio');
+        sent++;
+        inviate.add(parola);
+      } catch(e) { errors++; }
+    }
+
+    // Send extra words too (con audio, se registrato, via POST)
+    for (const e of extra) {
+      if (!e.it || !e.tr) continue;
+      try {
+        if (e.audio) {
+          await inviaContributoConAudio(e.it, dialect, e.tr, e.audio);
+        } else {
+          const params = new URLSearchParams({ parola: e.it, dialetto: dialect, traduzione: e.tr });
+          if (!(await inviaRigaFoglio(SCRIPT_URL + '?' + params.toString()))) throw new Error('foglio');
+        }
+        sent++;
+        inviateExtra.add(e);
+      } catch(e2) { errors++; }
+    }
+
+    for (const parola of inviate) delete contributions[parola];
+    extraWords = extraWords.filter(x => !inviateExtra.has(x));
+    document.querySelectorAll('.td-input').forEach(i => {
+      if (inviate.has(i.dataset.it)) {
+        i.value = '';
+        i.classList.remove('filled');
       }
-      sent++;
-    } catch(e2) { errors++; }
+    });
+    renderExtraWords();
+    updateProgress();
+    updateSubmit();
+
+    closeModal();
+    if (errors === 0) {
+      alert(`✅ Inviati ${sent} contributi al foglio! Grazie.`);
+    } else {
+      alert(`Inviati ${sent} contributi. ${errors} non inviati: sono rimasti nella lista, riprova più tardi.`);
+    }
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📤 Invia al foglio →';
   }
-  
-  closeModal();
-  if (errors === 0) {
-    alert(`✅ Inviati ${sent} contributi al foglio! Grazie.`);
-  } else {
-    alert(`Inviati ${sent} contributi. ${errors} errori - riprova più tardi.`);
-  }
-  btn.disabled = false;
-  btn.textContent = '📤 Invia al foglio →';
 }
 
 function blobToBase64(blob) {

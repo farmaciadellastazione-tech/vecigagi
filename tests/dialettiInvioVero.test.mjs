@@ -31,3 +31,13 @@ test('tutti gli invii (parole, parole nuove, audio) passano dal controllo', () =
   assert.doesNotMatch(HTML, /await fetch\(SCRIPT_URL/);
   assert.strictEqual((HTML.match(/inviaRigaFoglio\(SCRIPT_URL/g) || []).length, 3);
 });
+
+// Review di 7733f8d: niente doppioni nel foglio riprovando dopo un errore
+// parziale (o premendo di nuovo Invia dopo un invio riuscito).
+test('le parole confermate escono dalla lista; restano solo quelle fallite', () => {
+  const f = tra('async function copyAndOpen(', '\nfunction blobToBase64(');
+  assert.match(f, /delete contributions\[parola\];/);
+  assert.match(f, /extraWords = extraWords\.filter\(x => !inviateExtra\.has\(x\)\);/);
+  assert.match(f, /renderExtraWords\(\);\s*updateProgress\(\);\s*updateSubmit\(\);/);
+  assert.match(f, /\} finally \{\s*btn\.disabled = false;/);
+});
