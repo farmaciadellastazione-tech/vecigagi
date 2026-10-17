@@ -2296,6 +2296,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"aggettivi", livello:"A2", it:"divertente", en:"funny", de:"lustig" },
       { tema:"verbi", livello:"B1", it:"concordare", en:"to agree", fr:"concorder", es:"concordar", de:"übereinstimmen", pt:"concordar" },
       { tema:"natura", livello:"B1", it:"sementi", en:"seeds", fr:"graines", es:"semillas", de:"Samen", pt:"sementes" },
       { tema:"verbi", livello:"B1", it:"affogare", en:"to drown", fr:"noyer", es:"ahogar", de:"ertrinken", pt:"afogar" },
@@ -2352,7 +2353,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A2", it:"corte", en:"courtyard", ge:"corte" },
       { tema:"mestieri", livello:"A2", it:"capitano", en:"captain", ge:"capitanio" },
       { tema:"famiglia", livello:"A1", it:"famiglia", en:"family", sp:"famigia", ge:"famiggia" },
-      { tema:"emotivi", livello:"A2", it:"coraggio", en:"courage", sp:"coragio", ge:"coraggio" },
+      { tema:"emotivi", livello:"A2", it:"coraggio", en:"courage", de:"Mut", sp:"coragio", ge:"coraggio" },
       { tema:"astratti", livello:"A1", it:"segno", en:"sign", ge:"segno" },
       { tema:"natura", livello:"A1", it:"fumo", en:"smoke", ge:"fumme" },
       { tema:"astratti", livello:"B1", it:"condizione", en:"condition", ge:"condiçion" },
@@ -2955,14 +2956,14 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"B1", it:"digiuno", en:"fast", sp:"dezün", mn:"desùn/dezün", cr:"d'sun", ge:"zazzun", verif:"mn:g" },
       { tema:"salute", livello:"A2", it:"dimagrire", en:"lose weight", mn:"smagrì/zmàgrii", cr:"smagrir", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"verbi", livello:"B1", it:"dimenticare", en:"forget", fr:"oublier", es:"olvidar", de:"vergessen", pt:"esquecer", ru:"забывать", ca:"oblidar", sp:"scordae, desmentegàa'e, descordasse/scordae, desmentegae, descordasse", mn:"scurda'a/scurdaa", cr:"scordar", ge:"scordâse", ko:"잊다", ar:"ينسى", zh:"忘记", ja:"忘れる", ia:"oblidar", la:"oblivisci", grc:"ἐπιλανθάνειν", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g", ro:"a uita" },
-      { tema:"verbi", livello:"A2", it:"dimezzare", en:"to halve", fr:"couper en deux", es:"dividir por la mitad", de:"teilen", pt:"dividir ao meio", ca:"partir", sp:"fae a mezo", mn:"smesaaa/zmèzaa", cr:"smzar", ia:"divider in duo partes", la:"dividere", grc:"διαιρεῖν", verif:"mn:g" },
+      { tema:"verbi", livello:"A2", it:"dimezzare", en:"to halve", fr:"couper en deux", es:"dividir por la mitad", de:"teilen", pt:"dividir ao meio", ca:"partir", sp:"fae a mezo", mn:"smesaaa/zmèzaa|smesa", cr:"smzar", ia:"divider in duo partes", la:"dividere", grc:"διαιρεῖν", verif:"mn:g" },
       { tema:"verbi", livello:"B1", it:"pitturare| verniciare", en:"to paint", sp:"envernisae, petüae", mn:"petuaa/pétuaa", cr:"'nbiancar", ge:"invernixâ ", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"scuola", livello:"B1", it:"diploma", en:"diploma", fr:"diplôme", es:"diploma", de:"Diplom", pt:"diploma", sp:"diploma", mn:"diploma", ge:"diplöma", ko:"졸업장", ar:"شهادة", zh:"文凭", ja:"卒業証書", ia:"diploma", la:"diploma", grc:"δίπλωμα" },
       { tema:"verbi", livello:"A1", it:"dire", en:"say", fr:"dire", es:"decir", de:"sagen", pt:"dizer", ru:"говорить|сказать", ca:"dir", sp:"die", mn:"di'i/dii", cr:"dì", ge:"dii/di", ko:"말하다", ar:"يقول", zh:"说", ja:"言う", ia:"dicer", la:"dicere", grc:"λέγειν", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"dialogo", livello:"B1", it:"discorso", en:"speech", fr:"discours", es:"discurso", de:"Rede", pt:"discurso", sp:"descorso", mn:"descursu/déscùrsu", cr:"dscors'", ge:"descorso", verif:"mn:g" },
-      { tema:"aggettivi", livello:"B1", it:"disordinato", en:"messy", sp:"rebelon,sbrodacion, sbolinà, savaton, ravaton", mn:"s'bu linà/zbulinà", cr:"barufon", ge:"desordinou", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"aggettivi", livello:"B1", it:"disordinato", en:"messy", de:"unordentlich", sp:"rebelon,sbrodacion, sbolinà, savaton, ravaton", mn:"s'bu linà/zbulinà", cr:"barufon", ge:"desordinou", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"salute", livello:"B1", it:"dissenteria", en:"dysentery", fr:"dysenterie", es:"disentería", de:"Ruhr", pt:"disenteria", sp:"cagaròn|caghéta", mn:"cagaùn|caghéta", cr:"cagaron, cagareda", ge:"fruscio, caghetta", verif:"mn:g" },
-      { tema:"salute", livello:"B1", it:"disturbo", en:"disorder", sp:"destàsso", cr:"dsturb", ge:"destascio", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
+      { tema:"salute", livello:"B1", it:"disturbo", en:"disorder", de:"Störung", sp:"destàsso", cr:"dsturb", ge:"destascio", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g" },
       { tema:"farmaci", livello:"A1", it:"dito|dita", en:"finger", fr:"doigt", es:"dedo", de:"Finger", pt:"dedo", ru:"палец", ca:"dit", sp:"dido|didi| dida| dite| dide", mn:"dìdu|dida", cr:"dit", ge:"dîo|die", ko:"손가락", ar:"إصبع", zh:"手指", ja:"指", ia:"digito", la:"digitus", grc:"δάκτυλος", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"lavoro", livello:"A2", it:"azienda", en:"company", sp:"enpresa, dita, asienda", mn:"àsiënda/àziënda", cr:"'npresa, dita", ge:"açienda, impresa, ditta, ", verif:"mn:g" },
       { tema:"aggettivi", livello:"B2", it:"divino", en:"divine", fr:"divin", es:"divino", de:"göttlich", pt:"divino", ca:"diví", ko:"신성한", ar:"إلهي", zh:"神圣", ja:"神聖", ia:"divin", la:"divinus", grc:"θεῖος", nt:["mn"] },
@@ -3016,7 +3017,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"sintomi", livello:"B1", it:"eruzione cutanea", en:"skin rash", fr:"éruption cutanée", es:"sarpullido", de:"Hautausschlag", pt:"erupção cutânea|erupcao cutanea", ko:"피부 발진", ar:"طفح جلدي", zh:"皮疹", ja:"発疹", nt:["mn"] },
       { tema:"grammatica", livello:"A2", it:"esattamente", en:"exactly", fr:"exactement", es:"exactamente", de:"genau", pt:"exatamente", ru:"именно|точно", ca:"exactament", sp:"esatamente ", ge:"esattamente ", nt:["mn"], verif:"ge:g" },
       { tema:"natura", livello:"A2", it:"esca", en:"bait", mn:"ësca", cr:"esca", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g,cr:g" },
-      { tema:"sintomi", livello:"B1", it:"escoriazione", en:"graze", fr:"éraflure", es:"excoriación", de:"Schürfwunde", pt:"escoriação", sp:"sgarbeladüa", mn:"sgarbeladùa/zgàrbéladüa", cr:"sgrinfiata", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
+      { tema:"sintomi", livello:"B1", it:"escoriazione", en:"excoriation, abrasion", fr:"éraflure", es:"excoriación", de:"Schürfwunde", pt:"escoriação", sp:"sgarbeladüa", mn:"sgarbeladùa/zgàrbéladüa", cr:"sgrinfiata", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"verbi", livello:"B1", it:"esercitarsi", en:"practise", fr:"pratiquer|s'exercer", es:"practicar", de:"üben", pt:"praticar", ru:"практиковаться|тренироваться", ca:"practicar", sp:"fae esercissio", cr:"esercitars", nt:["mn"] },
       { tema:"astratti", livello:"B1", it:"esperienza", en:"experience", sp:"esperiensa", mn:"esperiénsa/éspériënsa", cr:"sperienza", ge:"esperiensa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"esprimere", en:"to express", sp:"esprime", mn:"esprìme/ésprimé", cr:"sprimr", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
@@ -3229,7 +3230,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"salute", livello:"B2", it:"infarto", en:"heart attack", fr:"infarctus", es:"infarto", de:"Herzinfarkt", pt:"infarto", ru:"инфаркт", ca:"infart", sp:"corpo, es-ciopòn/corpo, s'ciopon", mn:"curpu", cr:"'nfart", ge:"corpo", ko:"심근경색", ar:"سكتة قلبية", zh:"心脏病发作", ja:"心臓発作", ia:"thrombosis coronari", la:"apoplexia", grc:"ἔμφραγμα", verif:"mn:g" },
       { tema:"mestieri", livello:"A1", it:"infermiere", en:"nurse", fr:"infirmier", es:"enfermero", de:"Krankenpfleger", pt:"enfermeiro", ru:"медбрат|медсестра", ca:"infermer", sp:"infermeo", mn:"infermié", cr:"'nfermier", ge:"infermê", ko:"간호사", ar:"ممرض", zh:"护士", ja:"看護師", ia:"infirmero", la:"valetudinarius", grc:"νοσοκόμος", verif:"mn:g" },
       { tema:"patologie", livello:"B1", it:"infezione", en:"infection", sp:"enfession", mn:"in fashion/infesciùn", cr:"nfezion", ge:"infeçion", verif:"mn:g" },
-      { tema:"salute", livello:"B1", it:"influenza", en:"influenza", fr:"grippe", es:"gripe", de:"Influenza", pt:"gripe", ru:"грипп", ca:"grip", sp:"influensa", mn:"influënsa", cr:"'nfluenza", ge:"influensa", ko:"인플루엔자", ar:"إنفلونزا", zh:"流感", ja:"インフルエンザ", ia:"influenza", la:"influentia", grc:"γρίππη", verif:"mn:g" },
+      { tema:"salute", livello:"B1", it:"influenza", en:"flu | influenza", fr:"grippe", es:"gripe", de:"Grippe | influenza", pt:"gripe", ru:"грипп", ca:"grip", sp:"influensa", mn:"influënsa", cr:"'nfluenza", ge:"influensa", ko:"인플루엔자", ar:"إنفلونزا", zh:"流感", ja:"インフルエンザ", ia:"influenza", la:"influentia", grc:"γρίππη", verif:"mn:g" },
       { tema:"mestieri", livello:"A2", it:"ingegnere", en:"engineer", fr:"ingénieur", es:"ingeniero", de:"Ingenieur", pt:"engenheiro", sp:"anzegnéo/anzegnéo, enzento, anżegnéo, enżenéo", cr:"'nzegner", ge:"ind'zegneé/inzegnê", ko:"엔지니어", ar:"مهندس", zh:"工程师", ja:"エンジニア", ia:"ingeniero", la:"artifex", grc:"μηχανικός", verif:"sp:g,ge:g" },
       { tema:"cibo", livello:"A1", it:"ingrediente", en:"ingredient", fr:"ingrédient", es:"ingrediente", de:"Zutat", pt:"ingrediente", ru:"ингредиент", ca:"ingredient", sp:"engrediente", cr:"'ngredient", ge:"ingrediente", ko:"재료", ar:"مكون", zh:"成分", ja:"材料", ia:"ingrediente", la:"elementum", grc:"συστατικόν", verif:"sp:g,ge:g", ro:"ingredient" },
       { tema:"verbi", livello:"A1", it:"iniziare ora", en:"begin now", fr:"commencer maintenant", es:"empezar ahora", de:"jetzt beginnen", pt:"começar agora|comecar agora", ca:"començar ara", nt:["sp"] },
@@ -3627,7 +3628,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"astratti", livello:"B1", it:"rapina", en:"robbery", fr:"vol|braquage", es:"robo|atraco", de:"Raub", pt:"assalto|roubo", ru:"ограбление", ca:"robatori", sp:"rapina ", cr:"furt, rapina ", ge:"rapiña " },
       { tema:"verbi", livello:"B1", it:"rapinare|derubare", en:"rob", fr:"voler|dévaliser", es:"robar", de:"berauben", pt:"roubar", ru:"грабить", ca:"robar" },
       { tema:"persone", livello:"B1", it:"rapinatore", en:"robber", fr:"voleur|braqueur", es:"ladrón|atracador", de:"Räuber", pt:"ladrão", ru:"грабитель", ca:"lladre", ia:"rapinatore" },
-      { tema:"tempo", livello:"B1", it:"raramente", en:"rarely", fr:"rarement", es:"raramente", de:"selten", pt:"raramente", ru:"редко", ca:"rarament", sp:"de rèo", ge:"de ræo" },
+      { tema:"tempo", livello:"B1", it:"raramente", en:"rarely, seldom", fr:"rarement", es:"raramente", de:"selten", pt:"raramente", ru:"редко", ca:"rarament", sp:"de rèo", ge:"de ræo" },
       { tema:"vestiti", livello:"A2", it:"rattoppo", en:"patch", sp:"tapólo", verif:"sp:g" },
       { tema:"persone", livello:"A2", it:"re", en:"king", fr:"roi", es:"rey", de:"König", pt:"rei", sp:"rè ", cr:"re", ge:"re ", ko:"왕", ar:"ملك", zh:"国王", ja:"王", ia:"rege", la:"rex", grc:"βασιλεύς" },
       { tema:"casa", livello:"A1", it:"recinzione", en:"fence", fr:"clôture|barrière", es:"valla|cerca", de:"Zaun", pt:"cerca|vedação", ru:"забор", ca:"tanca", sp:"ciodénda", mn:"tchudenda/ciudënda", cr:"stabiol, recint", ge:"ciuenda/cioenda", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
@@ -3994,14 +3995,14 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"persone", livello:"B1", it:"vagabondo", en:"vagabond", cr:"vàgabond" },
       { tema:"patologie", livello:"B1", it:"vaiolo", en:"smallpox", sp:"vaè'o/vaèo", verif:"sp:g" },
       { tema:"citazioni", livello:"B2", it:"vale più l'undici che il dodici", en:"eleven is better than twelve", fr:"onze vaut mieux que douze", es:"once es mejor que doce", de:"elf ist besser als zwölf", pt:"onze é melhor do que doze", ca:"onze és millor que dotze", sp:"la vaa ciu lunse codose/La vaa ciü l'ünze ch’o doze", mn:"avaciül'ühnze che u duse/a vaa ciü l'ünze ch'u dùze", ia:"undece es melior que dece-duo", verif:"mn:g,sp:g", ro:"unsprezece este mai bun decât doisprezece" },
-      { tema:"verbi", livello:"B1", it:"valere", en:"to be worth", sp:"vahéee/vaée", mn:"vaëë", ge:"vaei, vai", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
+      { tema:"verbi", livello:"B1", it:"valere", en:"to be worth |count", de:"gelten |wert sein", sp:"vahéee/vaée", mn:"vaëë", ge:"vaei, vai", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"verbi", livello:"A2", it:"vaneggiare", en:"to rave", sp:"bacilà e,ciocae/bacilae,ciocae", mn:"svariàa/zvàriaa", verif:"mn:g" },
       { tema:"salute", livello:"A2", it:"varicella", en:"chickenpox", sp:"voatìn", verif:"sp:g" },
       { tema:"casa", livello:"B1", it:"vasetto|barattolo", en:"jar", fr:"bocal|pot", es:"tarro|frasco", de:"Glas|Krug", pt:"pote|frasco", ru:"банка", ca:"pot|tarro", sp:"arbanela| bolaco", mn:"arbanèla", ge:"arbanèlla", ko:"소병", la:"vasculum", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"casa", livello:"A2", it:"vassoio", en:"tray", sp:"cabarè, güantéa", mn:"cabarè", ge:"cabaree/cabarê", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"aggettivi", livello:"A1", it:"vecchio", en:"old", fr:"vieux", es:"viejo", de:"alt", pt:"velho", ru:"старый", ca:"vell", sp:"vècio", mn:"vètchu/vèciu", cr:"vetch/vec", ge:"végiu/végio", ko:"오래된", ar:"قديم", zh:"旧", ja:"古い", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g,cr:g", ro:"vechi" },
       { tema:"verbi", livello:"A1", it:"vedere", en:"see", fr:"voir", es:"ver", de:"sehen", pt:"ver", ru:"видеть", ca:"veure", sp:"vede", mn:"vede", cr:"vder", ge:"veddee/vedde", ko:"보다", ar:"يرى", zh:"看", ja:"見る", ia:"vider", la:"videre", grc:"ὁρᾶν", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g", ro:"a vedea" },
-      { tema:"sport", livello:"B1", it:"vela", en:"sailing", fr:"voile", es:"vela", de:"Segeln", pt:"vela", ru:"парусный спорт", ca:"vela", sp:"véa", mn:"véa", cr:"vela", ge:"veéia/véia", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
+      { tema:"sport", livello:"B1", it:"vela", en:"sail |sailing", fr:"voile", es:"vela", de:"Segeln", pt:"vela", ru:"парусный спорт", ca:"vela", sp:"véa", mn:"véa", cr:"vela", ge:"veéia/véia", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"salute", livello:"A2", it:"veleno", en:"poison", sp:"venìn| toossego/venin|tóssego", mn:"velén/vélën", ge:"venin", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"corpo", livello:"A2", it:"vena", en:"vein", sp:"avéna", mn:"vena", ge:"ven-na", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"verbi", livello:"A2", it:"vendere", en:"sell", fr:"vendre", es:"vender", de:"verkaufen", pt:"vender", ru:"продавать", ca:"vendre", sp:"vende", mn:"vënde", cr:"vend", ge:"vénde", ko:"팔다", ar:"يبيع", zh:"卖", ja:"売る", ia:"vender", la:"vendere", grc:"πωλεῖν", verif:"sp:g,mn:g" },
@@ -4059,7 +4060,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"grammatica", livello:"A1", it:"voi partite", en:"you leave", mn:"vautri a partii", verif:"mn:g" },
       { tema:"verbi", livello:"A1", it:"volare", en:"fly", sp:"svoaae/svoae", mn:"vuaa/vùaa", ge:"vêuâ", verif:"mn:g", src:{"mn":"🔗 dialetti.html"} },
       { tema:"grammatica", livello:"A2", it:"volentieri", en:"willingly", mn:"véntiéa", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"verbi", livello:"A1", it:"volere", en:"to want", sp:"vorée", mn:"vree/vrëë", cr:"voler", ge:"voei", verif:"mn:g", ro:"a vrea" },
+      { tema:"verbi", livello:"A1", it:"volere", en:"to want", de:"wollen", sp:"vorée", mn:"vree/vrëë", cr:"voler", ge:"voei", verif:"mn:g", ro:"a vrea" },
       { tema:"verbi", livello:"A1", it:"volerlo", en:"want it", fr:"le vouloir", es:"quererlo", de:"es wollen", pt:"querer isso" },
       { tema:"viaggi", livello:"A2", it:"volo", en:"flight", fr:"vol", es:"vuelo", de:"Flug", pt:"voo|vôo", ru:"рейс|полёт", ca:"vol", sp:"svolo", mn:"svéuhu/zvéu", verif:"sp:g,mn:g" },
       { tema:"emotivi", livello:"B1", it:"volontà", en:"will", mn:"vuloon tà/vuluntà", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
@@ -4168,7 +4169,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 602;
+const VOC_VERSION = 605;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
