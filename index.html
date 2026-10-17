@@ -10628,7 +10628,7 @@ function ritornoDaConversazione(coda, pos, tornaA) {
   if (n < coda.length) return {
     tipo: "frase",
     indice: n,
-    etichetta: `← Prossima sbagliata (${n + 1} di ${coda.length})`
+    etichetta: `Prossima sbagliata (${n + 1} di ${coda.length}) →`
   };
   return tornaA ? {
     tipo: "risultati",
@@ -10637,6 +10637,20 @@ function ritornoDaConversazione(coda, pos, tornaA) {
   } : null;
 }
 // ── fine ritorno coda
+// Pulsante "Prossima sbagliata →" / "← Torna ai risultati" della Conversazione
+// aperta dalla coda (accanto a "← Home", che resta).
+function PulsanteRitorno({
+  ritorno,
+  onRitorno,
+  disabled
+}) {
+  if (!ritorno) return null;
+  return /*#__PURE__*/React.createElement("button", {
+    onClick: onRitorno,
+    disabled: disabled,
+    className: `w-full font-bold py-2.5 rounded-xl text-sm transition mb-3 ${disabled ? "bg-zinc-800 text-zinc-600 cursor-not-allowed" : "bg-cyan-600 hover:bg-cyan-500 text-white btn-shadow"}`
+  }, ritorno.etichetta);
+}
 // ── fine coda frase
 function SchermataFraseLibera({
   vocabolario,
@@ -11844,7 +11858,10 @@ Rispondi con il JSON.`;
     }, l.bandiera, " ", l.nome))), /*#__PURE__*/React.createElement("button", {
       onClick: apriArchivio,
       className: "w-full bg-zinc-900 border border-zinc-700 text-slate-200 font-semibold py-2.5 rounded-xl text-sm hover:border-pink-500 transition mb-3"
-    }, "📜 Conversazioni salvate"), /*#__PURE__*/React.createElement("button", {
+    }, "📜 Conversazioni salvate"), /*#__PURE__*/React.createElement(PulsanteRitorno, {
+      ritorno: ritorno,
+      onRitorno: onRitorno
+    }), /*#__PURE__*/React.createElement("button", {
       onClick: onHome,
       className: "text-zinc-500 hover:text-white transition text-sm"
     }, "← Home")));
@@ -11865,10 +11882,10 @@ Rispondi con il JSON.`;
     }, "💾 Salvata in 📜 Conversazioni salvate", memoAggiornato ? " · 🧠 l'IA si ricorderà di quello che le hai raccontato" : ""), /*#__PURE__*/React.createElement("button", {
       onClick: apriArchivio,
       className: "w-full bg-zinc-900 border border-zinc-700 text-slate-200 font-semibold py-2.5 rounded-xl text-sm hover:border-pink-500 transition mb-3"
-    }, "📜 Conversazioni salvate"), ritorno && /*#__PURE__*/React.createElement("button", {
-      onClick: onRitorno,
-      className: "w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-xl transition btn-shadow mb-3"
-    }, ritorno.etichetta), /*#__PURE__*/React.createElement("div", {
+    }, "📜 Conversazioni salvate"), /*#__PURE__*/React.createElement(PulsanteRitorno, {
+      ritorno: ritorno,
+      onRitorno: onRitorno
+    }), /*#__PURE__*/React.createElement("div", {
       className: "flex gap-2"
     }, /*#__PURE__*/React.createElement("button", {
       onClick: onHome,
@@ -11884,9 +11901,9 @@ Rispondi con il JSON.`;
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-between mb-4"
   }, /*#__PURE__*/React.createElement("button", {
-    onClick: ritorno ? onRitorno : onHome,
+    onClick: onHome,
     className: "text-zinc-500 hover:text-white transition text-sm"
-  }, ritorno ? ritorno.etichetta : "← Home"), /*#__PURE__*/React.createElement("span", {
+  }, "← Home"), /*#__PURE__*/React.createElement("span", {
     className: "text-zinc-600 text-xs"
   }, "🎙️ Conversazione \xB7 ", lingua?.bandiera, " ", lingua?.nome), /*#__PURE__*/React.createElement("button", {
     onClick: apriArchivio,
@@ -11897,7 +11914,11 @@ Rispondi con il JSON.`;
     onClick: termina,
     disabled: occupata,
     className: "text-zinc-500 hover:text-white transition text-sm"
-  }, "Termina")), /*#__PURE__*/React.createElement("div", {
+  }, "Termina")), /*#__PURE__*/React.createElement(PulsanteRitorno, {
+    ritorno: ritorno,
+    onRitorno: onRitorno,
+    disabled: !!occupata
+  }), /*#__PURE__*/React.createElement("div", {
     className: "flex-1 space-y-3 mb-4"
   }, turni.map((t, i) => /*#__PURE__*/React.createElement("div", {
     key: i,
@@ -13982,6 +14003,7 @@ function App() {
     }
     if (mod === "conversazione") {
       setConversazioneIniziale(null); // apertura da Home: nessun argomento preselezionato
+      setConvPosCoda(null); // e nessuna coda di parole sbagliate
       setSchermata("conversazione");
       return;
     }
@@ -14332,12 +14354,16 @@ function App() {
     onHome: () => setSchermata("home"),
     onDiscutine: apriConversazioneCon
   });
+  if (schermata === "conversazione") {
   const ritornoConv = convPosCoda !== null ? ritornoDaConversazione(fraseCoda, convPosCoda, fraseTornaA) : null;
-  if (schermata === "conversazione") return /*#__PURE__*/React.createElement(SchermataConversazione, {
+  return /*#__PURE__*/React.createElement(SchermataConversazione, {
     lingue: lingue,
     vocabolario: vocabolario,
     aiSettings: aiSettings,
-    onHome: () => setSchermata("home"),
+    onHome: () => {
+      setConvPosCoda(null);
+      setSchermata("home");
+    },
     iniziale: conversazioneIniziale,
     ritorno: ritornoConv,
     onRitorno: () => {
@@ -14350,6 +14376,7 @@ function App() {
       } else setSchermata(ritornoConv.schermata);
     }
   });
+  }
   if (schermata === "letturaGuidata") return /*#__PURE__*/React.createElement(SchermataLetturaGuidata, {
     lingue: lingue,
     setLingue: setLingue,
