@@ -10619,6 +10619,24 @@ function codaFraseDaErrate(carteErrate, converti) {
     return true;
   });
 }
+// Dalla Conversazione aperta con "Continua a parlarne" sulla parola numero
+// pos della coda: dove tornare (Dino, 2026-10-17: la seconda parola
+// sbagliata non era più raggiungibile). null = nessuna coda, si resta su Home.
+function ritornoDaConversazione(coda, pos, tornaA) {
+  if (!coda || !coda.length || pos == null) return null;
+  const n = pos + 1;
+  if (n < coda.length) return {
+    tipo: "frase",
+    indice: n,
+    etichetta: `← Prossima sbagliata (${n + 1} di ${coda.length})`
+  };
+  return tornaA ? {
+    tipo: "risultati",
+    schermata: tornaA,
+    etichetta: "← Torna ai risultati"
+  } : null;
+}
+// ── fine ritorno coda
 // ── fine coda frase
 function SchermataFraseLibera({
   vocabolario,
@@ -11070,7 +11088,7 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
       tema: carta.entry.tema,
       parola: soloVisibile(carta.entry[carta.lingua.codice]),
       frase: (feedback.correction || frase).trim()
-    }),
+    }, usaCoda ? posCoda : null),
     className: "w-full mt-1 bg-zinc-900 border border-zinc-700 text-slate-200 font-bold py-2.5 rounded-xl text-sm hover:border-pink-500 hover:text-pink-400 transition"
   }, "\uD83D\uDCAC Continua a parlarne")));
 }
@@ -11614,12 +11632,16 @@ function estraiRispostaConversazione(clean) {
   const note = estraiCampoStringaJSON(clean, "note") || "";
   return { reply, correction, note };
 }
+// ritorno/onRitorno: se si arriva dalla coda delle parole sbagliate di Frase
+// libera, "← Prossima sbagliata" al posto di "← Home" (vedi ritornoDaConversazione).
 function SchermataConversazione({
   lingue,
   vocabolario,
   aiSettings,
   onHome,
-  iniziale
+  iniziale,
+  ritorno,
+  onRitorno
 }) {
   const lingueCandidate = lingue.filter(l => l.attiva && l.codice !== "it");
   // Se si arriva da Frase Libera con "Continua a parlarne", si parte subito nella stessa
@@ -11843,7 +11865,10 @@ Rispondi con il JSON.`;
     }, "💾 Salvata in 📜 Conversazioni salvate", memoAggiornato ? " · 🧠 l'IA si ricorderà di quello che le hai raccontato" : ""), /*#__PURE__*/React.createElement("button", {
       onClick: apriArchivio,
       className: "w-full bg-zinc-900 border border-zinc-700 text-slate-200 font-semibold py-2.5 rounded-xl text-sm hover:border-pink-500 transition mb-3"
-    }, "📜 Conversazioni salvate"), /*#__PURE__*/React.createElement("div", {
+    }, "📜 Conversazioni salvate"), ritorno && /*#__PURE__*/React.createElement("button", {
+      onClick: onRitorno,
+      className: "w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-xl transition btn-shadow mb-3"
+    }, ritorno.etichetta), /*#__PURE__*/React.createElement("div", {
       className: "flex gap-2"
     }, /*#__PURE__*/React.createElement("button", {
       onClick: onHome,
@@ -11859,9 +11884,9 @@ Rispondi con il JSON.`;
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-between mb-4"
   }, /*#__PURE__*/React.createElement("button", {
-    onClick: onHome,
+    onClick: ritorno ? onRitorno : onHome,
     className: "text-zinc-500 hover:text-white transition text-sm"
-  }, "← Home"), /*#__PURE__*/React.createElement("span", {
+  }, ritorno ? ritorno.etichetta : "← Home"), /*#__PURE__*/React.createElement("span", {
     className: "text-zinc-600 text-xs"
   }, "🎙️ Conversazione \xB7 ", lingua?.bandiera, " ", lingua?.nome), /*#__PURE__*/React.createElement("button", {
     onClick: apriArchivio,
@@ -13692,6 +13717,7 @@ function App() {
   const [fraseTornaA, setFraseTornaA] = useState(null); // schermata a cui tornare da Frase Libera ("quiz" se aperta da lì, altrimenti null)
   const [fraseCoda, setFraseCoda] = useState(null); // parole sbagliate da praticare in fila (vedi codaFraseDaErrate)
   const [fraseIndice, setFraseIndice] = useState(0); // posizione della parola scelta nella coda
+  const [convPosCoda, setConvPosCoda] = useState(null); // da quale parola della coda si è aperta la Conversazione
   const [aiSettings, setAiSettings] = useState(() => loadJSON(SK_AI, null) || {
     provider: "gemini",
     apiKey: ""
@@ -13994,7 +14020,9 @@ function App() {
     setFraseIniziale({ entry, lingua });
     setSchermata("fraseLibera");
   }
-  function apriConversazioneCon(lingua, argomento) {
+  function apriConversazioneCon(lingua, argomento, posCoda) {
+    // posCoda: posizione nella coda delle parole sbagliate (null se non c'è)
+    setConvPosCoda(posCoda ?? null);
     setConversazioneIniziale({ lingua, argomento });
     setSchermata("conversazione");
   }
@@ -14304,12 +14332,23 @@ function App() {
     onHome: () => setSchermata("home"),
     onDiscutine: apriConversazioneCon
   });
+  const ritornoConv = convPosCoda !== null ? ritornoDaConversazione(fraseCoda, convPosCoda, fraseTornaA) : null;
   if (schermata === "conversazione") return /*#__PURE__*/React.createElement(SchermataConversazione, {
     lingue: lingue,
     vocabolario: vocabolario,
     aiSettings: aiSettings,
     onHome: () => setSchermata("home"),
-    iniziale: conversazioneIniziale
+    iniziale: conversazioneIniziale,
+    ritorno: ritornoConv,
+    onRitorno: () => {
+      if (!ritornoConv) return;
+      setConvPosCoda(null);
+      if (ritornoConv.tipo === "frase") {
+        setFraseIndice(ritornoConv.indice);
+        setFraseIniziale(fraseCoda[ritornoConv.indice]);
+        setSchermata("fraseLibera");
+      } else setSchermata(ritornoConv.schermata);
+    }
   });
   if (schermata === "letturaGuidata") return /*#__PURE__*/React.createElement(SchermataLetturaGuidata, {
     lingue: lingue,
