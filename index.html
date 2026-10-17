@@ -10544,6 +10544,16 @@ function evidenziaParola(frase, parola) {
     hit: forme.some(f => f.toLowerCase() === t.toLowerCase())
   }));
 }
+// Parole sbagliate di un esercizio su cui si può fare una frase (stesse
+// condizioni del pulsante "Fai una frase con" nei risultati): Frase libera le
+// propone una dopo l'altra (Dino, 2026-10-17).
+function codaFraseDaErrate(carteErrate) {
+  return (carteErrate || []).filter(e => e && e.carta && e.carta.tipo !== "coniugazione" && e.lA && e.lA.codice !== "it").map(e => ({
+    entry: e.carta.entry,
+    lingua: e.lA
+  }));
+}
+// ── fine coda frase
 function SchermataFraseLibera({
   vocabolario,
   lingue,
@@ -10551,10 +10561,17 @@ function SchermataFraseLibera({
   aiSettings,
   onHome,
   cartaIniziale,
+  coda,
+  indiceCoda,
   onTornaRisultati,
   onDiscutine
 }) {
   const [carta, setCarta] = useState(null);
+  // Coda delle parole sbagliate (da "Fai una frase con" nei risultati)
+  const [posCoda, setPosCoda] = useState(indiceCoda || 0);
+  const [codaFinita, setCodaFinita] = useState(false);
+  const [codaAttiva, setCodaAttiva] = useState(!!(coda && coda.length));
+  const usaCoda = codaAttiva && !!(coda && coda.length);
   const [frase, setFrase] = useState("");
   const [stato, setStato] = useState("domanda");
   const [feedback, setFeedback] = useState(null);
@@ -10609,6 +10626,28 @@ function SchermataFraseLibera({
       nuovaCarta();
     }
   }, []);
+  function mostraCarta(c) {
+    setCarta(c);
+    setFrase("");
+    setStato("domanda");
+    setFeedback(null);
+    setShowTrad(false);
+    setTraduzione("");
+    azzeraAiuto();
+  }
+  // "Salta" e "Nuova"/"Prossima": la parola sbagliata successiva se si arriva
+  // dai risultati di un esercizio, altrimenti una a caso.
+  function prossima() {
+    if (!usaCoda) {
+      nuovaCarta();
+      return;
+    }
+    const n = posCoda + 1;
+    if (n < coda.length) {
+      setPosCoda(n);
+      mostraCarta(coda[n]);
+    } else setCodaFinita(true);
+  }
   async function verificaFrase() {
     if (!frase.trim() || !carta) return;
     setStato("loading");
@@ -10765,6 +10804,28 @@ Reply in ${userLangName}.`;
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-zinc-500"
   }, "Caricamento..."));
+  if (codaFinita) return /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen bg-black flex items-center justify-center p-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card p-6 max-w-sm w-full text-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-4xl mb-2"
+  }, "\uD83C\uDF89"), /*#__PURE__*/React.createElement("h2", {
+    className: "text-lg font-extrabold text-white mb-4"
+  }, "Hai praticato tutte le parole sbagliate"), onTornaRisultati && /*#__PURE__*/React.createElement("button", {
+    onClick: onTornaRisultati,
+    className: "w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-xl transition btn-shadow mb-3"
+  }, "\u2190 Torna ai risultati"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => {
+      setCodaFinita(false);
+      setCodaAttiva(false);
+      nuovaCarta();
+    },
+    className: "w-full bg-zinc-900 border border-zinc-700 text-slate-200 font-bold py-3 rounded-xl transition mb-3"
+  }, "Continua con parole a caso"), /*#__PURE__*/React.createElement("button", {
+    onClick: onHome,
+    className: "text-zinc-500 hover:text-white transition text-sm"
+  }, "\u2190 Home")));
   return /*#__PURE__*/React.createElement("div", {
     className: "min-h-screen bg-black flex flex-col p-4",
     style: {
@@ -10777,8 +10838,8 @@ Reply in ${userLangName}.`;
     className: "text-zinc-500 hover:text-white transition text-sm"
   }, onTornaRisultati ? "\u2190 Risultati" : "\u2190 Home"), /*#__PURE__*/React.createElement("span", {
     className: "text-zinc-600 text-xs"
-  }, "\uD83E\uDD16 Frase libera"), /*#__PURE__*/React.createElement("button", {
-    onClick: nuovaCarta,
+  }, "\uD83E\uDD16 Frase libera", usaCoda && posCoda < coda.length ? ` \xB7 ${posCoda + 1} di ${coda.length}` : ""), /*#__PURE__*/React.createElement("button", {
+    onClick: prossima,
     className: "text-zinc-500 hover:text-white transition text-sm"
   }, "Salta \u2192")), /*#__PURE__*/React.createElement("div", {
     className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 mb-4 text-center"
@@ -10920,9 +10981,12 @@ Reply in ${userLangName}.`;
     onClick: traduci,
     className: "flex-1 bg-zinc-900 border border-zinc-700 text-amber-400 font-bold py-2.5 rounded-xl text-sm hover:border-amber-600 transition"
   }, (linguaUI?.bandiera || "\uD83C\uDF10") + " Traduci"), /*#__PURE__*/React.createElement("button", {
-    onClick: nuovaCarta,
+    onClick: prossima,
     className: "flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2.5 rounded-xl text-sm transition btn-shadow"
-  }, "Nuova \u2192")), onDiscutine && /*#__PURE__*/React.createElement("button", {
+  }, usaCoda && posCoda < coda.length ? posCoda + 1 < coda.length ? `Prossima sbagliata \u2192 (${posCoda + 2} di ${coda.length})` : "Fine \u2192" : "Nuova \u2192")), onTornaRisultati && /*#__PURE__*/React.createElement("button", {
+    onClick: onTornaRisultati,
+    className: "w-full mb-2 bg-zinc-900 border border-zinc-700 text-slate-200 font-bold py-2.5 rounded-xl text-sm hover:border-cyan-500 transition"
+  }, "\u2190 Torna ai risultati"), onDiscutine && /*#__PURE__*/React.createElement("button", {
     onClick: () => onDiscutine(carta.lingua, {
       tema: carta.entry.tema,
       parola: soloVisibile(carta.entry[carta.lingua.codice]),
@@ -13546,7 +13610,9 @@ function App() {
   const [storiaIniziale, setStoriaIniziale] = useState(null); // id storia preselezionata dal deep-link #storia/<id>
   const [fraseIniziale, setFraseIniziale] = useState(null); // {entry, lingua} preselezionati da "Fai una frase con" sui risultati
   const [conversazioneIniziale, setConversazioneIniziale] = useState(null); // {lingua, argomento:{parola,frase}} da "Discutine a voce" su Frase Libera
-  const [fraseTornaA, setFraseTornaA] = useState(null); // schermata a cui tornare da Frase Libera ("quiz" se aperta da lì, altrimenti null)
+  const [fraseTornaA, setFraseTornaA] = useState(null);
+  const [fraseCoda, setFraseCoda] = useState(null); // parole sbagliate da praticare in fila (vedi codaFraseDaErrate)
+  const [fraseIndice, setFraseIndice] = useState(0); // schermata a cui tornare da Frase Libera ("quiz" se aperta da lì, altrimenti null)
   const [aiSettings, setAiSettings] = useState(() => loadJSON(SK_AI, null) || {
     provider: "gemini",
     apiKey: ""
@@ -13838,6 +13904,11 @@ function App() {
     // sopravvive al cambio schermata. Scelta Multipla tiene i risultati in uno stato
     // interno al componente che si perderebbe smontandolo, quindi lì non si torna indietro.
     setFraseTornaA(schermata === "quiz" ? "quiz" : null);
+    // Dai risultati di un esercizio: tutte le parole sbagliate, a partire da questa
+    const coda = schermata === "quiz" ? codaFraseDaErrate(carteErrate) : [];
+    const i = coda.findIndex(c => c.entry === entry && c.lingua?.codice === lingua?.codice);
+    setFraseCoda(i >= 0 ? coda : null);
+    setFraseIndice(i >= 0 ? i : 0);
     setFraseIniziale({ entry, lingua });
     setSchermata("fraseLibera");
   }
@@ -14145,6 +14216,8 @@ function App() {
     filtri: filtri,
     aiSettings: aiSettings,
     cartaIniziale: fraseIniziale,
+    coda: fraseCoda,
+    indiceCoda: fraseIndice,
     onTornaRisultati: fraseTornaA ? () => setSchermata(fraseTornaA) : null,
     onHome: () => setSchermata("home"),
     onDiscutine: apriConversazioneCon
