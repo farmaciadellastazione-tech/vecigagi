@@ -10544,22 +10544,52 @@ function evidenziaParola(frase, parola) {
     hit: forme.some(f => f.toLowerCase() === t.toLowerCase())
   }));
 }
+// Verbo sbagliato → voce per Frase libera (Dino, 2026-10-17): forma coniugata
+// con il soggetto ("je parle"), significato italiano ("io parlo"), e verbo /
+// tempo / persona in "coniugazione", che Frase libera mostra e passa all'IA.
+function entryFraseDaConiugazione(carta) {
+  const verbo = CONIUGAZIONI[carta.verbKey];
+  const tempo = verbo?.tempi?.[carta.tempoKey];
+  const p = carta.persona;
+  const persona = String(p || "").replace(/ \(.*\)/, "").trim();
+  // la persona può essere "1ª sing." o "1ª sing. (io/I/je...)": si confronta senza la parentesi
+  const riga = tempo?.forme?.find(f => String(f.p).replace(/ \(.*\)/, "").trim() === persona) || {};
+  const cod = carta.lA.codice;
+  const forma = formaDisplay(carta.atteso, cod) ?? soloVisibile(carta.atteso);
+  return {
+    tema: "verbi",
+    it: formaConSoggetto(soloVisibile(riga.it || ""), p, "it"),
+    [cod]: formaConSoggetto(forma, p, cod),
+    coniugazione: {
+      chiave: `${carta.verbKey}__${carta.tempoKey}__${persona}`,
+      verbo: verbo?.nome || carta.verbKey,
+      tempo: tempo?.nome || carta.tempoKey,
+      persona
+    }
+  };
+}
+// Da aggiungere alle richieste all'IA quando la "parola" è un verbo coniugato
+function notaConiugazione(entry) {
+  const c = entry && entry.coniugazione;
+  return c ? `\nThe target is a conjugated verb form (verb "${c.verbo}", ${c.tempo}, ${c.persona}): the sentence must use exactly this form.` : "";
+}
+// ── fine verbi frase
 // Parole sbagliate di un esercizio su cui si può fare una frase (stesse
 // condizioni del pulsante "Fai una frase con" nei risultati): Frase libera le
-// propone una dopo l'altra (Dino, 2026-10-17).
-// Stessa parola nella stessa lingua una volta sola (sbagliata da due lingue
-// di partenza diverse compare due volte nei risultati).
-function codaFraseDaErrate(carteErrate) {
+// propone una dopo l'altra (Dino, 2026-10-17). converti: carta → voce (per i
+// verbi entryFraseDaConiugazione). Stessa voce nella stessa lingua una volta sola.
+function codaFraseDaErrate(carteErrate, converti) {
+  const voce = converti || (e => e.carta.entry);
   const viste = new Set();
-  return (carteErrate || []).filter(e => e && e.carta && e.carta.tipo !== "coniugazione" && e.lA && e.lA.codice !== "it").filter(e => {
-    const k = (e.carta.entry?.it || "") + "\u0000" + e.lA.codice;
+  return (carteErrate || []).filter(e => e && e.carta && e.lA && e.lA.codice !== "it").map(e => ({
+    entry: voce(e),
+    lingua: e.lA
+  })).filter(c => {
+    const k = (c.entry?.coniugazione?.chiave || c.entry?.it || "") + "\u0000" + c.lingua.codice;
     if (viste.has(k)) return false;
     viste.add(k);
     return true;
-  }).map(e => ({
-    entry: e.carta.entry,
-    lingua: e.lA
-  }));
+  });
 }
 // ── fine coda frase
 function SchermataFraseLibera({
@@ -10683,7 +10713,7 @@ Format reference (Italian examples for illustration — YOUR output must be in $
 "Io andare casa" → {"correct":false,"correction":"Io vado a casa.","grammar":"Manca 'a' e il verbo va coniugato.","example":"Vado a casa ogni sera."}` + istruzioniDialetto(carta.lingua.codice, langName, vocabolario, soloVisibile(carta.entry.it));
     const user = `Target word: "${parola}" (Italian meaning: "${itParola}")
 Student sentence: "${frase}"
-Reply with JSON only, all text in ${langName}.`;
+Reply with JSON only, all text in ${langName}.` + notaConiugazione(carta.entry);
     const n = ++richiestaFrase.current;
     try {
       const raw = await callAI(system, user, aiSettings);
@@ -10728,7 +10758,7 @@ Reply with ONE JSON object only (no markdown, no extra text):
 - sentence: the translation in ${langName}.
 - words: the words (or short word groups) of the translation, in order, each with its meaning "t" in ${userLangName}.` + istruzioniDialetto(carta.lingua.codice, langName, vocabolario, soloVisibile(carta.entry.it));
     const user = `Target word: "${parola}" (Italian meaning: "${soloVisibile(carta.entry.it)}")
-Sentence in ${userLangName}: "${testoAiuto.trim()}"`;
+Sentence in ${userLangName}: "${testoAiuto.trim()}"` + notaConiugazione(carta.entry);
     try {
       const raw = await callAI(system, user, aiSettings);
       if (n !== richiestaAiuto.current) return;
@@ -10768,7 +10798,7 @@ Suggest 3 different, very simple everyday sentences (level A1-A2, max 8 words ea
 Reply with ONE JSON object only (no markdown, no extra text):
 {"ideas": [{"sentence": string, "translation": string}]}
 - sentence: in ${langName}; translation: in ${userLangName}.` + istruzioniDialetto(carta.lingua.codice, langName, vocabolario, soloVisibile(carta.entry.it));
-    const user = `Target word: "${parola}" (Italian meaning: "${soloVisibile(carta.entry.it)}")`;
+    const user = `Target word: "${parola}" (Italian meaning: "${soloVisibile(carta.entry.it)}")` + notaConiugazione(carta.entry);
     try {
       const raw = await callAI(system, user, aiSettings);
       if (n !== richiestaAiuto.current) return;
@@ -10804,7 +10834,7 @@ Include, in this order, separated by line breaks (plain text, no markdown):
 4. A new example sentence in ${langName} using the target word, followed by its ${userLangName} translation in parentheses.` + istruzioniDialetto(carta.lingua.codice, langName, vocabolario, soloVisibile(carta.entry.it));
     const user = `Target word: "${parola}" (Italian meaning: "${itParola}")
 Student sentence: "${frase}"
-Reply in ${userLangName}.`;
+Reply in ${userLangName}.` + notaConiugazione(carta.entry);
     const n = ++richiestaFrase.current;
     try {
       const t = await callAI(system, user, aiSettings);
@@ -10868,7 +10898,9 @@ Reply in ${userLangName}.`;
     className: "text-5xl font-extrabold text-white mb-1 tracking-tight"
   }, soloVisibile(carta.entry[carta.lingua.codice])), /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-500 italic"
-  }, "\uD83C\uDDEE\uD83C\uDDF9 ", soloVisibile(carta.entry.it))), stato === "domanda" && /*#__PURE__*/React.createElement("div", {
+  }, "\uD83C\uDDEE\uD83C\uDDF9 ", soloVisibile(carta.entry.it)), carta.entry.coniugazione && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mt-2"
+  }, "\uD83D\uDD24 Verbo ", carta.entry.coniugazione.verbo, " \xB7 ", carta.entry.coniugazione.tempo, " \xB7 ", carta.entry.coniugazione.persona)), stato === "domanda" && /*#__PURE__*/React.createElement("div", {
     className: "flex-1"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-400 mb-2 text-center"
@@ -12912,8 +12944,8 @@ function SchermataQuiz({
         className: "text-slate-300 text-lg italic"
       }, tradUI)), e.input && e.input !== "—" && /*#__PURE__*/React.createElement("p", {
         className: "text-zinc-300 text-lg mt-2"
-      }, "You wrote: ", e.input), onFaiFrase && e.carta.tipo !== "coniugazione" && lA && lA.codice !== "it" && /*#__PURE__*/React.createElement("button", {
-        onClick: () => onFaiFrase(e.carta.entry, lA),
+      }, "You wrote: ", e.input), onFaiFrase && lA && lA.codice !== "it" && /*#__PURE__*/React.createElement("button", {
+        onClick: () => onFaiFrase(e.carta.tipo === "coniugazione" ? entryFraseDaConiugazione(e.carta) : e.carta.entry, lA),
         className: "text-cyan-500 hover:text-cyan-400 text-sm mt-2"
       }, "✍️ Fai una frase con questa parola")));
     }))), (() => {
@@ -13926,8 +13958,9 @@ function App() {
     // interno al componente che si perderebbe smontandolo, quindi lì non si torna indietro.
     setFraseTornaA(schermata === "quiz" ? "quiz" : null);
     // Dai risultati di un esercizio: tutte le parole sbagliate, a partire da questa
-    const coda = schermata === "quiz" ? codaFraseDaErrate(carteErrate) : [];
-    const i = coda.findIndex(c => c.entry === entry && c.lingua?.codice === lingua?.codice);
+    const coda = schermata === "quiz" ? codaFraseDaErrate(carteErrate, e => e.carta.tipo === "coniugazione" ? entryFraseDaConiugazione(e.carta) : e.carta.entry) : [];
+    const stessa = c => c.entry === entry || !!entry?.coniugazione && c.entry?.coniugazione?.chiave === entry.coniugazione.chiave;
+    const i = coda.findIndex(c => stessa(c) && c.lingua?.codice === lingua?.codice);
     setFraseCoda(i >= 0 ? coda : null);
     setFraseIndice(i >= 0 ? i : 0);
     setFraseIniziale({ entry, lingua });

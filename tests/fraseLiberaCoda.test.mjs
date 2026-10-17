@@ -37,7 +37,7 @@ test('in coda solo le parole su cui si può fare una frase, come il pulsante dei
 
 test('App: la coda parte dalla parola scelta, solo se si arriva da un esercizio con i risultati', () => {
   const app = tra('  function apriFraseLiberaCon(', '\n  function apriConversazioneCon(');
-  assert.match(app, /codaFraseDaErrate\(carteErrate\)/);
+  assert.match(app, /codaFraseDaErrate\(carteErrate[,)]/);
   assert.match(app, /schermata === "quiz"/);
   assert.match(HTML, /coda: fraseCoda,/);
 });
