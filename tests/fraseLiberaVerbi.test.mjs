@@ -23,6 +23,7 @@ vm.runInContext([
   tra('function entryFraseDaConiugazione(', '\n// ── fine verbi frase'),
   tra('function codaFraseDaErrate(', '\n// ── fine coda frase'),
   'globalThis.conv = entryFraseDaConiugazione; globalThis.nota = notaConiugazione; globalThis.coda = codaFraseDaErrate;',
+  'globalThis.DIALETTI_TTS_ITA = DIALETTI_TTS_ITA;',
 ].join('\n'), ctx);
 const j = x => JSON.parse(JSON.stringify(x));
 const fr = { codice: 'fr', nome: 'Francese' };
@@ -37,7 +38,7 @@ test('il verbo diventa forma con soggetto, significato italiano, verbo/tempo/per
 });
 
 test('nota per l\'IA solo per i verbi', () => {
-  assert.match(ctx.nota(ctx.conv(carta)), /conjugated verb form .*parlare.*Presente.*1ª sing\..*exactly this form/);
+  assert.match(ctx.nota(ctx.conv(carta)), /conjugated verb form .*parlare.*Presente.*1ª sing\..*this verb in this tense and person/);
   assert.strictEqual(ctx.nota({ it: 'casa', fr: 'maison' }), '');
 });
 
@@ -54,8 +55,40 @@ test('in coda anche i verbi, una volta sola per forma', () => {
 
 test('il pulsante compare anche sui verbi e Frase libera mostra verbo e tempo', () => {
   assert.doesNotMatch(HTML, /onFaiFrase && e\.carta\.tipo !== "coniugazione"/);
-  assert.match(HTML, /onFaiFrase\(e\.carta\.tipo === "coniugazione" \? entryFraseDaConiugazione\(e\.carta\) : e\.carta\.entry, lA\)/);
+  assert.match(HTML, /onFaiFrase\(voceFraseDaCarta\(e\.carta\), lA\)/);
   const fl = tra('function SchermataFraseLibera(', '\n// Modalità "Conversazione"');
   assert.match(fl, /carta\.entry\.coniugazione && /);
   assert.ok((fl.match(/notaConiugazione\(carta\.entry\)/g) || []).length >= 2);
+});
+
+// Review di 8582747:
+test('conta la forma del verbo, non il soggetto scelto', () => {
+  const t = ctx.nota(ctx.conv(carta));
+  assert.match(t, /any subject that fits/);
+  assert.doesNotMatch(t, /exactly this form/);
+});
+
+test('dialetti: la forma resta "pronuncia/grafia" com\'è nei dati', () => {
+  const sp = { codice: 'sp', nome: 'Spezzino' };
+  const e = ctx.conv({ ...carta, lA: sp, atteso: "a pàrlo/a parlo" });
+  assert.strictEqual(e.sp, 'a pàrlo/a parlo');
+});
+
+test('significato italiano anche se la riga del verbo non si trova', () => {
+  const e = ctx.conv({ ...carta, verbKey: 'inesistente', entry: { it: 'parlo', fr: 'parle' } });
+  assert.match(e.it, /parlo/);
+});
+
+test('due parole diverse con lo stesso italiano restano entrambe; i verbi senza conversione restano fuori', () => {
+  const a = { it: 'pesca', fr: 'pêche' }, b = { it: 'pesca', fr: 'pêche (sport)' };
+  const errate = [{ carta: { entry: a, tipo: 'normale' }, lA: fr }, { carta: { entry: b, tipo: 'normale' }, lA: fr }, { carta, lA: fr }];
+  const c = ctx.coda(errate);
+  assert.strictEqual(c.length, 2, 'la coniugazione senza conversione non entra');
+  assert.ok(c[1].entry === b);
+});
+
+test('un solo convertitore carta → voce, usato dal pulsante e dalla coda', () => {
+  assert.match(HTML, /function voceFraseDaCarta\(carta\)/);
+  assert.match(HTML, /onFaiFrase\(voceFraseDaCarta\(e\.carta\), lA\)/);
+  assert.match(HTML, /codaFraseDaErrate\(carteErrate, e => voceFraseDaCarta\(e\.carta\)\)/);
 });
