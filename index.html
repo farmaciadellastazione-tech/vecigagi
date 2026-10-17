@@ -11240,7 +11240,19 @@ function istruzioniMemoria() {
   return m ? `\n\nCiò che ricordi di questo studente dalle conversazioni passate (usalo con naturalezza, senza elencarlo): ${m}` : "";
 }
 // Fine conversazione: l'IA aggiorna il promemoria e sceglie il tema.
-async function chiudiConversazioneIA(turni, aiSettings) {
+// In fila: passando veloci tra le parole della coda due chiusure potrebbero
+// leggere lo stesso promemoria vecchio e l'ultima cancellerebbe la prima.
+// Ognuna parte quando la precedente ha salvato il suo promemoria.
+let codaMemoriaIA = Promise.resolve();
+function chiudiConversazioneIA(turni, aiSettings) {
+  const r = codaMemoriaIA.then(() => chiudiConversazioneIAOra(turni, aiSettings)).then(esito => {
+    if (esito && esito.memo) salvaMemoriaIA(esito.memo);
+    return esito;
+  });
+  codaMemoriaIA = r.catch(() => null);
+  return r;
+}
+async function chiudiConversazioneIAOra(turni, aiSettings) {
   if (!turni.some(x => x.ruolo === "utente")) return null;
   const temi = Object.keys(TEMI);
   const system = `You keep a short memo about a language student, built from their chats. Previous memo: "${caricaMemoriaIA()}".
@@ -11728,6 +11740,10 @@ function SchermataConversazione({
   // e tema), poi si passa alla parola successiva.
   function avanti() {
     if (occupata) return;
+    // la battuta dell'IA letta ad alta voce non deve continuare su Frase libera
+    try {
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+    } catch (e) {}
     chiudiInSottofondo();
     onRitorno();
   }
@@ -11758,8 +11774,8 @@ function SchermataConversazione({
   }
   // "Continua" dall'archivio: si riparte con lo stesso dialogo (e lo stesso id)
   function continua(c) {
-    // Ripresa una conversazione vecchia: il pulsante della coda non c'entra più
-    setRitornoAttivo(false);
+    // Ripresa un'altra conversazione: il pulsante della coda non c'entra più
+    if (c.id !== convRef.current.id) setRitornoAttivo(false);
     const l = lingue.find(x => x.codice === c.lingua) || {
       codice: c.lingua,
       nome: c.linguaNome || c.lingua,

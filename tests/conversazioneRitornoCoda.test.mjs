@@ -57,3 +57,16 @@ test('ripresa una conversazione vecchia dall\'archivio, il pulsante della coda s
   assert.match(conv, /setRitornoAttivo\(false\);/);
   assert.ok((conv.match(/ritorno: ritornoAttivo \? ritorno : null/g) || []).length >= 3);
 });
+
+// Review di 1e278f6:
+test('aggiornamenti del promemoria in fila (niente sovrascritture passando veloci tra le parole)', () => {
+  assert.match(HTML, /let codaMemoriaIA = Promise\.resolve\(\);/);
+  assert.match(HTML, /codaMemoriaIA\.then\(\(\) => chiudiConversazioneIAOra\(/);
+  assert.match(HTML, /codaMemoriaIA = r\.catch\(/);
+});
+
+test('"Prossima sbagliata" ferma la voce; il pulsante resta se si riprende la stessa conversazione', () => {
+  const conv = tra('function SchermataConversazione(', '\n// Modalità "Lettura guidata"');
+  assert.match(conv, /function avanti\(\) \{[\s\S]*?speechSynthesis[\s\S]*?\.cancel\(\)/);
+  assert.match(conv, /if \(c\.id !== convRef\.current\.id\) setRitornoAttivo\(false\);/);
+});
