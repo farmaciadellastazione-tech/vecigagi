@@ -50,3 +50,23 @@ test('Frase libera: Prossima sbagliata, Salta sulla coda, ritorno ai risultati, 
   assert.match(fl, /Hai praticato tutte le parole sbagliate/);
   assert.doesNotMatch(fl, /onClick: nuovaCarta,/, 'Salta e Nuova passano da prossima()');
 });
+
+// Review di 572e1df:
+test('stessa parola e stessa lingua una volta sola', () => {
+  const errate = [
+    { carta: { entry: e1, tipo: 'normale' }, lA: fr },
+    { carta: { entry: e1, tipo: 'normale' }, lA: { codice: 'fr', nome: 'Francese' } },
+  ];
+  assert.strictEqual(ctx.coda(errate).length, 1);
+});
+
+test('Frase libera dal menu non eredita la lista di un esercizio precedente', () => {
+  const ramo = tra('if (mod === "fraseLibera") {', '\n      return;');
+  assert.match(ramo, /setFraseCoda\(null\);/);
+});
+
+test('una correzione in arrivo dopo Salta non finisce sulla parola nuova', () => {
+  const fl = tra('function SchermataFraseLibera(', '\n// Modalità "Conversazione"');
+  assert.match(fl, /const richiestaFrase = useRef\(0\);/);
+  assert.ok((fl.match(/if \(n !== richiestaFrase\.current\) return;/g) || []).length >= 2, 'verifica e traduci');
+});

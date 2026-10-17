@@ -10547,8 +10547,16 @@ function evidenziaParola(frase, parola) {
 // Parole sbagliate di un esercizio su cui si può fare una frase (stesse
 // condizioni del pulsante "Fai una frase con" nei risultati): Frase libera le
 // propone una dopo l'altra (Dino, 2026-10-17).
+// Stessa parola nella stessa lingua una volta sola (sbagliata da due lingue
+// di partenza diverse compare due volte nei risultati).
 function codaFraseDaErrate(carteErrate) {
-  return (carteErrate || []).filter(e => e && e.carta && e.carta.tipo !== "coniugazione" && e.lA && e.lA.codice !== "it").map(e => ({
+  const viste = new Set();
+  return (carteErrate || []).filter(e => e && e.carta && e.carta.tipo !== "coniugazione" && e.lA && e.lA.codice !== "it").filter(e => {
+    const k = (e.carta.entry?.it || "") + "\u0000" + e.lA.codice;
+    if (viste.has(k)) return false;
+    viste.add(k);
+    return true;
+  }).map(e => ({
     entry: e.carta.entry,
     lingua: e.lA
   }));
@@ -10572,6 +10580,9 @@ function SchermataFraseLibera({
   const [codaFinita, setCodaFinita] = useState(false);
   const [codaAttiva, setCodaAttiva] = useState(!!(coda && coda.length));
   const usaCoda = codaAttiva && !!(coda && coda.length);
+  // Ogni verifica/traduzione ha un numero: cambiata la parola (Salta), una
+  // risposta in ritardo dell'IA non deve comparire su quella nuova.
+  const richiestaFrase = useRef(0);
   const [frase, setFrase] = useState("");
   const [stato, setStato] = useState("domanda");
   const [feedback, setFeedback] = useState(null);
@@ -10594,6 +10605,7 @@ function SchermataFraseLibera({
   }
   const lingueAttive = lingue.filter(l => l.attiva && !DIALETTI_TTS_ITA.includes(l.codice));
   function nuovaCarta() {
+    richiestaFrase.current++;
     const cand = vocabolario.filter(e => lingueAttive.some(l => l.codice !== "it" && e[l.codice]));
     if (!cand.length) return;
     const e = cand[Math.floor(Math.random() * cand.length)];
@@ -10627,6 +10639,7 @@ function SchermataFraseLibera({
     }
   }, []);
   function mostraCarta(c) {
+    richiestaFrase.current++;
     setCarta(c);
     setFrase("");
     setStato("domanda");
@@ -10671,11 +10684,14 @@ Format reference (Italian examples for illustration — YOUR output must be in $
     const user = `Target word: "${parola}" (Italian meaning: "${itParola}")
 Student sentence: "${frase}"
 Reply with JSON only, all text in ${langName}.`;
+    const n = ++richiestaFrase.current;
     try {
       const raw = await callAI(system, user, aiSettings);
+      if (n !== richiestaFrase.current) return;
       const clean = raw.replace(/```json|```/g, "").replace(/\n/g, " ").trim();
       setFeedback(estraiFeedbackFrase(clean));
     } catch (e) {
+      if (n !== richiestaFrase.current) return;
       setFeedback({
         correct: null,
         correction: "",
@@ -10789,11 +10805,14 @@ Include, in this order, separated by line breaks (plain text, no markdown):
     const user = `Target word: "${parola}" (Italian meaning: "${itParola}")
 Student sentence: "${frase}"
 Reply in ${userLangName}.`;
+    const n = ++richiestaFrase.current;
     try {
       const t = await callAI(system, user, aiSettings);
+      if (n !== richiestaFrase.current) return;
       setTraduzione(t);
       setShowTrad(true);
     } catch (e) {
+      if (n !== richiestaFrase.current) return;
       setTraduzione("Errore. Riprova.");
       setShowTrad(true);
     }
@@ -13610,9 +13629,9 @@ function App() {
   const [storiaIniziale, setStoriaIniziale] = useState(null); // id storia preselezionata dal deep-link #storia/<id>
   const [fraseIniziale, setFraseIniziale] = useState(null); // {entry, lingua} preselezionati da "Fai una frase con" sui risultati
   const [conversazioneIniziale, setConversazioneIniziale] = useState(null); // {lingua, argomento:{parola,frase}} da "Discutine a voce" su Frase Libera
-  const [fraseTornaA, setFraseTornaA] = useState(null);
+  const [fraseTornaA, setFraseTornaA] = useState(null); // schermata a cui tornare da Frase Libera ("quiz" se aperta da lì, altrimenti null)
   const [fraseCoda, setFraseCoda] = useState(null); // parole sbagliate da praticare in fila (vedi codaFraseDaErrate)
-  const [fraseIndice, setFraseIndice] = useState(0); // schermata a cui tornare da Frase Libera ("quiz" se aperta da lì, altrimenti null)
+  const [fraseIndice, setFraseIndice] = useState(0); // posizione della parola scelta nella coda
   const [aiSettings, setAiSettings] = useState(() => loadJSON(SK_AI, null) || {
     provider: "gemini",
     apiKey: ""
@@ -13870,6 +13889,8 @@ function App() {
     if (mod === "fraseLibera") {
       setFraseIniziale(null); // apertura da Home: nessuna parola preselezionata
       setFraseTornaA(null);
+      setFraseCoda(null); // niente lista di parole sbagliate di un esercizio precedente
+      setFraseIndice(0);
       setSchermata("fraseLibera");
       return;
     }
