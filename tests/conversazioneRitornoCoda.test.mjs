@@ -43,3 +43,17 @@ test('la coda della Conversazione si dimentica tornando alla Home o aprendola da
   const ramo = tra('if (mod === "conversazione") {', '\n      return;');
   assert.match(ramo, /setConvPosCoda\(null\);/);
 });
+
+// Review di 73ff0c9:
+test('"Prossima sbagliata" chiude la conversazione come Termina (promemoria e tema)', () => {
+  const conv = tra('function SchermataConversazione(', '\n// Modalità "Lettura guidata"');
+  assert.match(conv, /function chiudiInSottofondo\(\)/);
+  assert.match(conv, /function termina\(\) \{\s*if \(occupata\) return;\s*setStato\("fine"\);\s*chiudiInSottofondo\(\);/);
+  assert.match(conv, /function avanti\(\) \{[\s\S]*?chiudiInSottofondo\(\);\s*onRitorno\(\);/);
+});
+
+test('ripresa una conversazione vecchia dall\'archivio, il pulsante della coda sparisce', () => {
+  const conv = tra('function SchermataConversazione(', '\n// Modalità "Lettura guidata"');
+  assert.match(conv, /setRitornoAttivo\(false\);/);
+  assert.ok((conv.match(/ritorno: ritornoAttivo \? ritorno : null/g) || []).length >= 3);
+});

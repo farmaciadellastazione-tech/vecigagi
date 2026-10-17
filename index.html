@@ -11679,6 +11679,7 @@ function SchermataConversazione({
   });
   const [statoPrima, setStatoPrima] = useState(null); // per tornare dall'archivio
   const [memoAggiornato, setMemoAggiornato] = useState(false);
+  const [ritornoAttivo, setRitornoAttivo] = useState(true); // falso dopo "Continua" dall'archivio
   // Mentre l'IA risponde niente archivio né Termina: la risposta in arrivo
   // finirebbe in un'altra conversazione (o riporterebbe in chat).
   const occupata = stato === "generando" || stato === "elaborando";
@@ -11721,6 +11722,17 @@ function SchermataConversazione({
   function termina() {
     if (occupata) return;
     setStato("fine");
+    chiudiInSottofondo();
+  }
+  // "Prossima sbagliata →" dalla chat: si chiude come con Termina (promemoria
+  // e tema), poi si passa alla parola successiva.
+  function avanti() {
+    if (occupata) return;
+    chiudiInSottofondo();
+    onRitorno();
+  }
+  // Promemoria su di te e tema, in sottofondo (Termina e "Prossima sbagliata")
+  function chiudiInSottofondo() {
     const turniFine = turni;
     const l = lingua;
     // Istantanea: intanto si può già ricominciare o riprenderne un'altra
@@ -11746,6 +11758,8 @@ function SchermataConversazione({
   }
   // "Continua" dall'archivio: si riparte con lo stesso dialogo (e lo stesso id)
   function continua(c) {
+    // Ripresa una conversazione vecchia: il pulsante della coda non c'entra più
+    setRitornoAttivo(false);
     const l = lingue.find(x => x.codice === c.lingua) || {
       codice: c.lingua,
       nome: c.linguaNome || c.lingua,
@@ -11859,7 +11873,7 @@ Rispondi con il JSON.`;
       onClick: apriArchivio,
       className: "w-full bg-zinc-900 border border-zinc-700 text-slate-200 font-semibold py-2.5 rounded-xl text-sm hover:border-pink-500 transition mb-3"
     }, "📜 Conversazioni salvate"), /*#__PURE__*/React.createElement(PulsanteRitorno, {
-      ritorno: ritorno,
+      ritorno: ritornoAttivo ? ritorno : null,
       onRitorno: onRitorno
     }), /*#__PURE__*/React.createElement("button", {
       onClick: onHome,
@@ -11883,7 +11897,7 @@ Rispondi con il JSON.`;
       onClick: apriArchivio,
       className: "w-full bg-zinc-900 border border-zinc-700 text-slate-200 font-semibold py-2.5 rounded-xl text-sm hover:border-pink-500 transition mb-3"
     }, "📜 Conversazioni salvate"), /*#__PURE__*/React.createElement(PulsanteRitorno, {
-      ritorno: ritorno,
+      ritorno: ritornoAttivo ? ritorno : null,
       onRitorno: onRitorno
     }), /*#__PURE__*/React.createElement("div", {
       className: "flex gap-2"
@@ -11915,8 +11929,8 @@ Rispondi con il JSON.`;
     disabled: occupata,
     className: "text-zinc-500 hover:text-white transition text-sm"
   }, "Termina")), /*#__PURE__*/React.createElement(PulsanteRitorno, {
-    ritorno: ritorno,
-    onRitorno: onRitorno,
+    ritorno: ritornoAttivo ? ritorno : null,
+    onRitorno: avanti,
     disabled: !!occupata
   }), /*#__PURE__*/React.createElement("div", {
     className: "flex-1 space-y-3 mb-4"
