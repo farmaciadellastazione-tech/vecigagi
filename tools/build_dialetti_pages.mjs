@@ -56,7 +56,7 @@ export const TEMI = letterale(INDEX, 'const TEMI = {');
 
 export const DIALETTI = [
   {
-    cod: 'sp', nome: 'spezzino', slug: 'dialetto-spezzino.html', lang: 'lij',
+    cod: 'sp', nome: 'spezzino', art: 'lo', slug: 'dialetto-spezzino.html', lang: 'lij',
     intro: 'Il dialetto spezzino è la parlata della Spezia e del suo golfo, nel levante ligure.',
   },
   {
@@ -237,9 +237,9 @@ ${JSON.stringify(schema, null, 2)}
 <main>
   <p class="crumbs"><a href="dialetti.html">Dialetti</a> › Dialetto ${esc(d.nome)}</p>
   <h1>Dialetto ${esc(d.nome)} — dizionario italiano-${esc(d.nome)}</h1>
-  <p class="intro">${esc(d.intro)} In questa pagina trovi ${n} parole e frasi italiane con la traduzione in ${esc(d.nome)}, divise per temi. Le voci sono raccolte su LinguaeQuiz, il quiz gratuito per imparare i dialetti: se conosci il ${esc(d.nome)} puoi aiutarci a correggerle e arricchirle.</p>
+  <p class="intro">${esc(d.intro)} In questa pagina trovi ${n} parole e frasi italiane con la traduzione in ${esc(d.nome)}, divise per temi. Le voci sono raccolte su LinguaeQuiz, il quiz gratuito per imparare i dialetti: se conosci ${d.art || 'il'} ${esc(d.nome)} puoi aiutarci a correggerle e arricchirle.</p>
   <div class="cta-row">
-    <a class="cta" href="${SITE}/#quiz">🎮 Impara il ${esc(d.nome)} col quiz</a>
+    <a class="cta" href="${SITE}/#quiz">🎮 Impara ${d.art || 'il'} ${esc(d.nome)} col quiz</a>
     <a class="cta-secondary" href="dialetti.html">✍️ Contribuisci con il tuo dialetto</a>
   </div>
   <nav class="temi" aria-label="Temi">
