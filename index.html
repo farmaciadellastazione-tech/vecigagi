@@ -9845,7 +9845,9 @@ function SpiegaAI({
     const daParola = carta.entry?.[lDA?.codice];
     // callAI è a turno singolo: lo storico va nel prompt utente.
     const storico = domande.map(x => `Domanda: ${x.d}\nRisposta: ${x.r}`).join("\n\n");
-    const system = `You are a concise, friendly language teacher helping a student who just got a quiz question wrong. Answer the student's question in the same language the question is written in. Max 4 short sentences. Plain text, no Markdown.`;
+    const system = `You are a concise, friendly language teacher helping a student who just got a quiz question wrong. Answer the student's question in the same language the question is written in. Max 4 short sentences. Plain text, no Markdown.
+Answer exactly what the student asks. Do not correct spelling or capitalization of the student's question: it is typed quickly, it is not an exercise.
+Be accurate: Never invent words, meanings or rules. If you are not sure, say so. When you state a grammar rule, also mention its main exception (e.g. a preposition that takes two cases).`;
     const user = `Quiz: "${daParola}" (${lDA?.nome}) = "${parola}" (${lA?.nome}).${carta.tipo === "coniugazione" ? ` Persona: ${carta.persona}.` : ""}\n\nSpiegazione già data:\n${testo}${storico ? `\n\n${storico}` : ""}\n\nNuova domanda dello studente: ${q}`;
     setDomanda("");
     setDomande(ds => [...ds, { d: q, r: null }]);
@@ -9864,7 +9866,7 @@ function SpiegaAI({
     const lDA = lingue.find(l => l.codice === (carta.da || carta.lDA?.codice));
     const parola = carta.tipo === "coniugazione" ? carta.atteso : carta.entry?.[lA?.codice];
     const daParola = carta.entry?.[lDA?.codice];
-    const system = `You are a concise language teacher. Respond ONLY in ${lA?.nome || "the target language"}. Max 3 sentences. Plain text, no Markdown.`;
+    const system = `You are a concise language teacher. Respond ONLY in ${lA?.nome || "the target language"}. Max 3 sentences. Plain text, no Markdown. The example sentence MUST contain the exact word "${parola}" being taught, not a related word.`;
     const user = carta.tipo === "coniugazione" ? `"${daParola}" (${lDA?.nome}) = "${parola}" (${lA?.nome}). Persona: ${carta.persona}. Give: 1) grammar note 2) usage example.` : `"${daParola}" (${lDA?.nome}) = "${parola}" (${lA?.nome}). Give: 1) grammar note 2) usage example in ${lA?.nome}.`;
     const r = await callAI(system, user, aiSettings);
     setTesto(r);

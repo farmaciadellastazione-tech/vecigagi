@@ -38,3 +38,16 @@ test('SpiegaAI: domande dopo la spiegazione, testo semplice, azzerate cambiando 
   assert.match(s, /conGrassetto\(x\.r\)/);
   assert.match(s, /\}, \[carta\]\);/);
 });
+
+// Risposte di Groq (gpt-oss-20b) del 2026-10-25 su daneben/neben: esempio senza
+// la parola del quiz, sostantivo inventato, regola senza eccezioni, maiuscola
+// della domanda corretta come se fosse un errore.
+test('istruzioni all\'IA contro gli errori visti', () => {
+  const spiega = tra('  async function spiega()', '  async function traduci()');
+  assert.match(spiega, /example sentence MUST contain the exact word/);
+  const chiedi = tra('  async function chiedi()', '  function chiudi()');
+  assert.match(chiedi, /Do not correct spelling or capitalization of the student's question/);
+  assert.match(chiedi, /Never invent words, meanings or rules/);
+  assert.match(chiedi, /not sure/);
+  assert.match(chiedi, /main exception/);
+});
