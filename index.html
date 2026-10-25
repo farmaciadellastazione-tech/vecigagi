@@ -9809,6 +9809,13 @@ function InputVocale({
 }
 
 // ── Schermata Quiz ────────────────────────────────────────────────────────
+// L'IA a volte scrive **grassetto** anche se le si chiede testo semplice:
+// lo si mostra in grassetto vero invece degli asterischi.
+function conGrassetto(s) {
+  return String(s || "").split(/\*\*([^*]+)\*\*/g).map((p, i) => i % 2 ? /*#__PURE__*/React.createElement("strong", {
+    key: i
+  }, p) : p.replace(/\*\*/g, ""));
+}
 function SpiegaAI({
   carta,
   aiSettings,
@@ -9838,7 +9845,7 @@ function SpiegaAI({
     const daParola = carta.entry?.[lDA?.codice];
     // callAI è a turno singolo: lo storico va nel prompt utente.
     const storico = domande.map(x => `Domanda: ${x.d}\nRisposta: ${x.r}`).join("\n\n");
-    const system = `You are a concise, friendly language teacher helping a student who just got a quiz question wrong. Answer the student's question in the same language the question is written in. Max 4 short sentences.`;
+    const system = `You are a concise, friendly language teacher helping a student who just got a quiz question wrong. Answer the student's question in the same language the question is written in. Max 4 short sentences. Plain text, no Markdown.`;
     const user = `Quiz: "${daParola}" (${lDA?.nome}) = "${parola}" (${lA?.nome}).${carta.tipo === "coniugazione" ? ` Persona: ${carta.persona}.` : ""}\n\nSpiegazione già data:\n${testo}${storico ? `\n\n${storico}` : ""}\n\nNuova domanda dello studente: ${q}`;
     setDomanda("");
     setDomande(ds => [...ds, { d: q, r: null }]);
@@ -9857,7 +9864,7 @@ function SpiegaAI({
     const lDA = lingue.find(l => l.codice === (carta.da || carta.lDA?.codice));
     const parola = carta.tipo === "coniugazione" ? carta.atteso : carta.entry?.[lA?.codice];
     const daParola = carta.entry?.[lDA?.codice];
-    const system = `You are a concise language teacher. Respond ONLY in ${lA?.nome || "the target language"}. Max 3 sentences.`;
+    const system = `You are a concise language teacher. Respond ONLY in ${lA?.nome || "the target language"}. Max 3 sentences. Plain text, no Markdown.`;
     const user = carta.tipo === "coniugazione" ? `"${daParola}" (${lDA?.nome}) = "${parola}" (${lA?.nome}). Persona: ${carta.persona}. Give: 1) grammar note 2) usage example.` : `"${daParola}" (${lDA?.nome}) = "${parola}" (${lA?.nome}). Give: 1) grammar note 2) usage example in ${lA?.nome}.`;
     const r = await callAI(system, user, aiSettings);
     setTesto(r);
@@ -9884,7 +9891,7 @@ function SpiegaAI({
     className: "bg-zinc-900 border border-zinc-700 rounded-xl p-3 mt-2 text-left"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-slate-300 leading-relaxed whitespace-pre-wrap"
-  }, stato === "traduzione" ? traduzione : testo), domande.map((x, i) => /*#__PURE__*/React.createElement("div", {
+  }, conGrassetto(stato === "traduzione" ? traduzione : testo)), domande.map((x, i) => /*#__PURE__*/React.createElement("div", {
     key: i,
     className: "mt-2 pt-2 border-t border-zinc-700"
   }, /*#__PURE__*/React.createElement("p", {
@@ -9893,7 +9900,7 @@ function SpiegaAI({
     className: "text-xs text-zinc-500 mt-1 animate-pulse"
   }, "\uD83E\uDD16 Un momento...") : /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-slate-300 leading-relaxed whitespace-pre-wrap mt-1"
-  }, x.r))), dialetto && domande.length > 0 && /*#__PURE__*/React.createElement("p", {
+  }, conGrassetto(x.r)))), dialetto && domande.length > 0 && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-amber-400 mt-2"
   }, "\u26A0\uFE0F L'IA non conosce bene i dialetti: le risposte possono essere imprecise o inventate."), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-2 mt-2"
