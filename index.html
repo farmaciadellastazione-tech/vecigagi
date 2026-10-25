@@ -497,6 +497,8 @@ const UI = {
     nonproprio: "Non proprio…",
     riproveremo: "Riproveremo!",
     quasiriprova: "🟡 Quasi! Riprova:",
+    linguasbagliata: "🌐 Giusta, ma in",
+    riprovain: "Riprova in",
     giustaaiutino: "Giusta, con aiutino",
     sessione: "Sessione completata",
     corrette: "Corrette",
@@ -639,6 +641,8 @@ const UI = {
     nonproprio: "Not quite…",
     riproveremo: "We'll try again!",
     quasiriprova: "🟡 Almost! Try again:",
+    linguasbagliata: "🌐 Right, but in",
+    riprovain: "Try again in",
     giustaaiutino: "Correct, with a hint",
     sessione: "Session completed",
     corrette: "Correct",
@@ -781,6 +785,8 @@ const UI = {
     nonproprio: "Pas tout à fait…",
     riproveremo: "On réessaiera!",
     quasiriprova: "🟡 Presque ! Réessaie :",
+    linguasbagliata: "🌐 Juste, mais en",
+    riprovain: "Réessaie en",
     giustaaiutino: "Juste, avec un indice",
     sessione: "Session terminée",
     corrette: "Correctes",
@@ -923,6 +929,8 @@ const UI = {
     nonproprio: "No exactamente…",
     riproveremo: "¡Lo intentaremos de nuevo!",
     quasiriprova: "🟡 ¡Casi! Inténtalo de nuevo:",
+    linguasbagliata: "🌐 Correcto, pero en",
+    riprovain: "Inténtalo en",
     giustaaiutino: "Correcta, con una pista",
     sessione: "Sesión completada",
     corrette: "Correctas",
@@ -1065,6 +1073,8 @@ const UI = {
     nonproprio: "Nicht ganz…",
     riproveremo: "Wir versuchen es nochmal!",
     quasiriprova: "🟡 Fast! Versuch es nochmal:",
+    linguasbagliata: "🌐 Richtig, aber auf",
+    riprovain: "Versuch es auf",
     giustaaiutino: "Richtig, mit Hinweis",
     sessione: "Sitzung abgeschlossen",
     corrette: "Richtig",
@@ -1207,6 +1217,8 @@ const UI = {
     nonproprio: "Não exatamente…",
     riproveremo: "Vamos tentar de novo!",
     quasiriprova: "🟡 Quase! Tente de novo:",
+    linguasbagliata: "🌐 Certo, mas em",
+    riprovain: "Tente em",
     giustaaiutino: "Certa, com uma dica",
     sessione: "Sessão concluída",
     corrette: "Corretas",
@@ -1349,6 +1361,8 @@ const UI = {
     nonproprio: "Не совсем…",
     riproveremo: "Попробуем ещё раз!",
     quasiriprova: "🟡 Почти! Попробуй ещё раз:",
+    linguasbagliata: "🌐 Верно, но на языке:",
+    riprovain: "Попробуй на языке:",
     giustaaiutino: "Верно, с подсказкой",
     sessione: "Сессия завершена",
     corrette: "Правильно",
@@ -1491,6 +1505,8 @@ const UI = {
     nonproprio: "不太对…",
     riproveremo: "再试一次！",
     quasiriprova: "🟡 差一点！再试一次：",
+    linguasbagliata: "🌐 答对了，但用的是",
+    riprovain: "请用这种语言再试：",
     giustaaiutino: "正确（用了提示）",
     sessione: "本次结束",
     corrette: "正确",
@@ -1633,6 +1649,8 @@ const UI = {
     nonproprio: "정확하지 않아요…",
     riproveremo: "다시 해봐요！",
     quasiriprova: "🟡 거의 맞았어요! 다시 해 보세요:",
+    linguasbagliata: "🌐 맞았지만 다른 언어예요:",
+    riprovain: "다시 해 보세요:",
     giustaaiutino: "정답 (힌트 사용)",
     sessione: "세션 완료",
     corrette: "맞음",
@@ -1775,6 +1793,8 @@ const UI = {
     nonproprio: "No exactament…",
     riproveremo: "Ho tornarem a intentar!",
     quasiriprova: "🟡 Gairebé! Torna-ho a provar:",
+    linguasbagliata: "🌐 Correcte, però en",
+    riprovain: "Torna-ho a provar en",
     giustaaiutino: "Correcta, amb una pista",
     sessione: "Sessió completada",
     corrette: "Correctes",
@@ -9809,6 +9829,17 @@ function InputVocale({
 }
 
 // ── Schermata Quiz ────────────────────────────────────────────────────────
+// Risposta giusta ma in un'altra lingua dell'app (richiesta di Dino,
+// 2026-10-25): restituisce quella lingua, oppure null. Chi ricopia la parola
+// della domanda prende un errore normale, anche se coincide con un'altra
+// lingua (it "casa" = es "casa"): altrimenti ricopiare eviterebbe il ❌.
+function linguaDellaRisposta(entry, risposta, lingue, codA, codDA, preciso) {
+  if (!entry || !String(risposta || "").trim()) return null;
+  const daL = lingue.find(l => l.codice === codDA);
+  if (daL && entry[codDA] && isCorretta(entry[codDA], risposta, daL.bcp47, codDA, preciso)) return null;
+  return lingue.find(l => l.codice !== codA && l.codice !== codDA && entry[l.codice] && isCorretta(entry[l.codice], risposta, l.bcp47, l.codice, preciso)) || null;
+}
+// ── fine lingua della risposta
 // L'IA a volte scrive **grassetto** anche se le si chiede testo semplice:
 // lo si mostra in grassetto vero invece degli asterischi.
 function conGrassetto(s) {
@@ -12867,6 +12898,7 @@ function SchermataQuiz({
   nDomandeUsate,
   aiSettings,
   aiutino,
+  linguaSbagliata,
   onVerifica,
   onAvanti,
   onSalta,
@@ -13353,7 +13385,12 @@ function SchermataQuiz({
     className: "text-amber-300 font-bold mb-1"
   }, t.quasiriprova), /*#__PURE__*/React.createElement("p", {
     className: "text-2xl font-bold text-white tracking-widest"
-  }, aiutino.maschera)), /*#__PURE__*/React.createElement("input", {
+  }, aiutino.maschera)), linguaSbagliata && /*#__PURE__*/React.createElement("div", {
+    className: "p-4 bg-amber-950 border-2 border-amber-700 rounded-2xl text-center mb-4",
+    role: "status"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-amber-300 font-bold"
+  }, t.linguasbagliata, " ", linguaSbagliata.bandiera, " ", linguaSbagliata.nome, ". ", t.riprovain, " ", lA?.bandiera, " ", lA?.nome, ":")), /*#__PURE__*/React.createElement("input", {
     ref: inputRef,
     type: "text",
     value: input,
@@ -13886,6 +13923,7 @@ function App() {
   const [carteErrate, setCarteErrate] = useState([]); // carte sbagliate nella sessione
   const [cardErrori, setCardErrori] = useState({}); // n. errori per chiave carta
   const [aiutino, setAiutino] = useState(null); // { maschera } dopo una risposta "quasi giusta" (vedi verificaRisposta)
+  const [linguaSbagliata, setLinguaSbagliata] = useState(null); // lingua di una risposta giusta ma in un'altra lingua (vedi verificaRisposta)
   const [segnalando, setSegnalando] = useState(false);
   const [pronunciaAperta, setPronunciaAperta] = useState(null); // codice lingua dialettale, o null
   const [configurando, setConfigurando] = useState(false);
@@ -14096,6 +14134,7 @@ function App() {
     setInput("");
     setStato("domanda");
     setAiutino(null);
+    setLinguaSbagliata(null);
     setPunteggio({
       giusti: 0,
       sbagliati: 0
@@ -14210,6 +14249,19 @@ function App() {
     // Soggetto di un'altra persona ("du kann" per la 3ª sing.): sbagliata, anche
     // se isCorretta, togliendo qualunque soggetto, l'aveva accettata.
     if (ok && carta.tipo === "coniugazione" && soggettoPersonaSbagliata(risposta, lA?.codice, carta.persona)) ok = false;
+    // Giusta ma in un'altra lingua: si segnala e si riprova sulla stessa carta,
+    // senza punti, statistiche né elenco delle sbagliate (Non-stop non finisce).
+    // Pronuncia esclusa: il microfono ascolta solo nella lingua richiesta.
+    const modoCarta = modalita === "nonstop" ? carta.sottomodalita || "quiz" : modalita;
+    if (!ok && modoCarta !== "pronuncia") {
+      const altra = linguaDellaRisposta(carta.entry, risposta, lingue, lA?.codice, carta.da || carta.lDA?.codice, carta.tipo === "coniugazione");
+      if (altra) {
+        setLinguaSbagliata(altra);
+        setInput("");
+        return;
+      }
+    }
+    setLinguaSbagliata(null);
     // Aiutino (Allenamento, Ascolta e scrivi, Dettato): se la risposta è
     // sbagliata di 1-2 lettere, invece del ❌ mostra la parola con i buchi e
     // concede un secondo tentativo, una volta sola. Niente statistiche né
@@ -14298,6 +14350,7 @@ function App() {
       setInput("");
       setStato("domanda");
       setAiutino(null);
+      setLinguaSbagliata(null);
     }
   }
   function nonLoSo() {
@@ -14348,6 +14401,7 @@ function App() {
         setInput("");
         setStato("domanda");
         setAiutino(null);
+        setLinguaSbagliata(null);
         return;
       }
     }
@@ -14407,6 +14461,7 @@ function App() {
       setInput("");
       setStato("domanda");
       setAiutino(null);
+      setLinguaSbagliata(null);
     }
   }
   function handleEsporta() {
@@ -14628,6 +14683,7 @@ function App() {
     nDomandeUsate: nDomandeUsate,
     aiSettings: aiSettings,
     aiutino: aiutino,
+    linguaSbagliata: linguaSbagliata,
     onVerifica: verificaRisposta,
     onAvanti: avanti,
     onSalta: salta,
