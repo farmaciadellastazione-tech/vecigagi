@@ -2579,7 +2579,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"valute", livello:"B1", it:"assicurazione", en:"insurance", fr:"assurance", es:"seguro", de:"Versicherung", pt:"seguro", sp:"assegùa siòn/assegüassión", mn:"assegùa sciùn/aseguasciùn", cr:"sicurazion", ge:"asseguaçion ", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
       { tema:"verbi", livello:"B1", it:"sorbire", en:"to sip", sp:"sürbiie", mn:"surbìi/sürbii", ge:"sciurbìi/sciorbî", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"aggettivi", livello:"B1", it:"astuto", en:"clever", sp:"entevisto", mn:"astudu/astüdu", cr:"astut", ge:"asperto ", src:{"sp":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"sp:g,cr:g,mn:g" },
-      { tema:"sport", livello:"B1", it:"atletica", en:"athletics", fr:"athlétisme", es:"atletismo", de:"Leichtathletik", pt:"atletismo", ko:"육상", ar:"ألعاب القوى", zh:"田径", ja:"陸上競技", ia:"athletismo", nt:["sp","mn","ge"] },
+      { tema:"sport", livello:"B1", it:"atletica | atletica leggera", en:"athletics", fr:"athlétisme", es:"atletismo", de:"Leichtathletik", pt:"atletismo", ko:"육상", ar:"ألعاب القوى", zh:"田径", ja:"陸上競技", ia:"athletismo", nt:["sp","mn","ge"] },
       { tema:"verbi", livello:"B1", it:"attecchire", en:"take root", es:"arraigar", sp:"aferae, techie", mn:"aferaà/aféraa", cr:"afrar, atchir", ge:"afferraà/afferrâ", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g,sp:g" },
       { tema:"aggettivi", livello:"A2", it:"attento", en:"careful", fr:"prudent|attentif", es:"cuidadoso", de:"vorsichtig", pt:"cuidadoso", ru:"осторожный", ca:"curós", sp:"atento", mn:"atëntu", cr:"atent", ge:"attento", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
       { tema:"astratti", livello:"A2", it:"attesa", en:"waiting", sp:"atendensa", cr:"atesa", ge:"atteisa", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g,ge:g,cr:g", nt:["mn"] },
@@ -2891,7 +2891,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"casa", livello:"A1", it:"coperta", en:"blanket", fr:"couverture", es:"cobija", de:"Decke", pt:"cobertor", sp:"coerta", cr:"coltròn", ge:"coverta", src:{"sp":"🔗 dialetti.html","cr":"🔗 dialetti.html"}, verif:"sp:g,cr:g" },
       { tema:"verbi", livello:"A2", it:"coprire", en:"to cover", sp:"crovie", mn:"cruii", cr:"cuprir", ge:"crovî", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,mn:g" },
       { tema:"aggettivi", livello:"B1", it:"coraggioso", en:"brave, courageous", fr:"courageux", es:"valiente", de:"mutig", pt:"corajoso", ru:"храбрый", ca:"valent", sp:"coragioso", mn:"cuagiusu", cr:"coraz'os", ge:"coraggioso ", verif:"mn:g" },
-      { tema:"aggettivi", livello:"A2", it:"cordiale|socievole|amichevole", en:"friendly", fr:"aimable|sociable", es:"simpático", de:"freundlich", pt:"simpático", ru:"дружелюбный", ca:"amable", sp:"cortese", cr:"afabil, amichevl", ge:"corteise", nt:["mn"] },
+      { tema:"aggettivi", livello:"A2", it:"cordiale|socievole|amichevole", en:"friendly", fr:"cordial|aimable|sociable", es:"simpático", de:"freundlich", pt:"simpático", ru:"дружелюбный", ca:"amable", sp:"cortese", cr:"afabil, amichevl", ge:"corteise", nt:["mn"] },
       { tema:"arte", livello:"A2", it:"coro", en:"choir", fr:"chœur", es:"coro", de:"Chor", pt:"coro", sp:"còo", mn:"còu", cr:"cor", ge:"cöo", verif:"mn:g" },
       { tema:"corpo", livello:"A2", it:"corpo", en:"body", fr:"corps", es:"cuerpo", de:"Körper", pt:"corpo", ca:"cos", sp:"còrpo", mn:"còrpu", cr:"corp", ge:"corpo", src:{"mn":"📘 Altro dizionario"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"verbi", livello:"B1", it:"correre", en:"run", fr:"courir", es:"correr", de:"laufen", pt:"correr", ru:"бежать", ca:"córrer", sp:"tapelaàhe|corihe| kóre|tachinahe/tapelae| corie| córe|tachinae", mn:"cure", cr:"cor'r", ge:"corri", ko:"달리다", ar:"يجري", zh:"跑", ja:"走る", ia:"currer", la:"currere", grc:"τρέχειν", src:{"mn":"🤖 IA"}, verif:"mn:g" },
@@ -4189,7 +4189,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 609;
+const VOC_VERSION = 611;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
