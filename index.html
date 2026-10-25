@@ -10749,6 +10749,7 @@ function SchermataFraseLibera({
   // Ogni richiesta ha un numero: una risposta arrivata dopo un cambio di
   // carta o di aiuto (numero superato) viene ignorata.
   const richiestaAiuto = useRef(0);
+  const fraseRef = useRef(null);
   function azzeraAiuto() {
     richiestaAiuto.current++;
     setAiuto(null);
@@ -10800,6 +10801,18 @@ function SchermataFraseLibera({
     setShowTrad(false);
     setTraduzione("");
     azzeraAiuto();
+  }
+  // "✍️ Riscrivi" dopo una frase sbagliata: stessa parola, casella vuota (Dino:
+  // riscriverla da zero dopo aver letto la correzione insegna di più), stessa
+  // posizione nella fila delle sbagliate; gli aiuti chiesti restano.
+  function riscrivi() {
+    richiestaFrase.current++;
+    setFrase("");
+    setStato("domanda");
+    setFeedback(null);
+    setShowTrad(false);
+    setTraduzione("");
+    setTimeout(() => fraseRef.current?.focus(), 0);
   }
   // "Salta" e "Nuova"/"Prossima": la parola sbagliata successiva se si arriva
   // dai risultati di un esercizio, altrimenti una a caso.
@@ -11034,6 +11047,7 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
     className: "text-xs text-amber-500 mb-3 text-center italic",
     title: "L'IA non conosce bene i dialetti: pu\u00F2 dare risposte bizzarre"
   }, "\uD83C\uDF77 AI alcolizzata: coi dialetti d\u00E0 i numeri, abbi pazienza"), /*#__PURE__*/React.createElement("textarea", {
+    ref: fraseRef,
     value: frase,
     onChange: e => setFrase(e.target.value),
     placeholder: `Frase con "${soloVisibile(carta.entry[carta.lingua.codice])}"...`,
@@ -11160,7 +11174,10 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
     cod: carta.lingua.codice
   })), showTrad && /*#__PURE__*/React.createElement("p", {
     className: "text-base text-amber-300 leading-relaxed whitespace-pre-wrap"
-  }, traduzione)), /*#__PURE__*/React.createElement("div", {
+  }, traduzione)), feedback.correct !== true && /*#__PURE__*/React.createElement("button", {
+    onClick: riscrivi,
+    className: "w-full mb-2 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-xl text-base transition btn-shadow"
+  }, "✍️ Riscrivi"), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-2 mb-3"
   }, !showTrad && /*#__PURE__*/React.createElement("button", {
     onClick: traduci,
