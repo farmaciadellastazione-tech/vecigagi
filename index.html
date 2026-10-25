@@ -10863,7 +10863,7 @@ function SchermataFraseLibera({
   async function verificaFrase() {
     if (!frase.trim() || !carta) return;
     setStato("loading");
-    const parola = soloVisibile(carta.entry[carta.lingua.codice]);
+    const parola = parolaCarta;
     const itParola = soloVisibile(carta.entry.it);
     const langName = carta.lingua.nome;
     const system = `You are a language teacher. Evaluate the student's sentence in ${langName}.
@@ -10993,7 +10993,7 @@ Reply with ONE JSON object only (no markdown, no extra text):
   async function traduci() {
     if (!carta || !frase.trim()) return;
     setStato("loading");
-    const parola = soloVisibile(carta.entry[carta.lingua.codice]);
+    const parola = parolaCarta;
     const itParola = soloVisibile(carta.entry.it);
     const langName = carta.lingua.nome;
     const system = `You are a language teacher. The student is learning ${langName}; their native language is ${userLangName}.
@@ -11068,7 +11068,7 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
     className: "text-xs text-zinc-500 mb-1"
   }, carta.lingua.bandiera, " ", carta.lingua.nome), /*#__PURE__*/React.createElement("p", {
     className: "text-5xl font-extrabold text-white mb-1 tracking-tight"
-  }, soloVisibile(carta.entry[carta.lingua.codice])), /*#__PURE__*/React.createElement("p", {
+  }, parolaCarta), /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-500 italic"
   }, "\uD83C\uDDEE\uD83C\uDDF9 ", soloVisibile(carta.entry.it)), carta.entry.coniugazione && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mt-2"
@@ -11083,7 +11083,7 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
     ref: fraseRef,
     value: frase,
     onChange: e => setFrase(e.target.value),
-    placeholder: `Frase con "${soloVisibile(carta.entry[carta.lingua.codice])}"...`,
+    placeholder: `Frase con "${parolaCarta}"...`,
     className: "w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white text-lg resize-none focus:outline-none focus:border-cyan-500 mb-3",
     rows: 3,
     onKeyDown: e => {
@@ -11224,7 +11224,7 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
   }, "\u2190 Torna ai risultati"), onDiscutine && /*#__PURE__*/React.createElement("button", {
     onClick: () => onDiscutine(carta.lingua, {
       tema: carta.entry.tema,
-      parola: soloVisibile(carta.entry[carta.lingua.codice]),
+      parola: parolaCarta,
       frase: (feedback.correction || frase).trim()
     }, usaCoda ? posCoda : null),
     className: "w-full mt-1 bg-zinc-900 border border-zinc-700 text-slate-200 font-bold py-2.5 rounded-xl text-sm hover:border-pink-500 hover:text-pink-400 transition"
