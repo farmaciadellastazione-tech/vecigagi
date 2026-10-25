@@ -3275,7 +3275,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A1", it:"luna", en:"moon", fr:"lune", es:"luna", de:"Mond", pt:"lua", ru:"луна", ca:"lluna", sp:"lüna", mn:"lüna", cr:"luna", ge:"lünn-a", ko:"달", ar:"قمر", zh:"月亮", ja:"月", ia:"luna", la:"luna", grc:"σελήνη", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g,cr:g" },
       { tema:"giorni", livello:"A1", it:"lunedì", en:"Monday", fr:"lundi", es:"lunes", de:"Montag", pt:"segunda-feira", ru:"понедельник", ca:"dilluns", sp:"lünedì", mn:"lünedì", cr:"lun'dì", ge:"lunesdì", ko:"월요일", ar:"الاثنين", zh:"星期一", ja:"月曜日", ia:"lunedi", la:"dies Lunae", grc:"Δευτέρα", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"luni" },
       { tema:"aggettivi", livello:"A1", it:"lungo", en:"long", fr:"long", es:"largo", de:"lang", pt:"longo", ru:"длинный", ca:"llarg", sp:"lüngo", cr:"longh", ko:"긴", ar:"طويل", zh:"长", ja:"長い", ia:"longe", la:"longus", grc:"μακρός", verif:"sp:g" },
-      { tema:"luoghi", livello:"A1", it:"luogo", en:"place", fr:"lieu", es:"lugar", de:"Ort", pt:"lugar", sp:"lego, posto", mn:"legu/légu", cr:"post", ge:"posto, leugo", verif:"sp:g,mn:g" },
+      { tema:"luoghi", livello:"A1", it:"luogo| posto", en:"place", fr:"lieu", es:"lugar", de:"Ort", pt:"lugar", sp:"lego, posto", mn:"legu/légu", cr:"post", ge:"posto, leugo", verif:"sp:g,mn:g" },
       { tema:"animali", livello:"B1", it:"lupo", en:"wolf", fr:"loup", es:"lobo", de:"Wolf", pt:"lobo", ru:"волк", ca:"llop", sp:"lovo, Ioo, lòpa, lóvo, lóo, f. lópa", mn:"Iuu", cr:"lup", ge:"lêuvo", ko:"늑대", ar:"ذئب", zh:"狼", ja:"オオカミ", ia:"lupo", verif:"mn:g" },
       { tema:"citazioni", livello:"B2", it:"Ma tu chi sei, il mostro di Pitelli?", en:"but who are you, the monster of Pitelli?", fr:"mais qui es-tu, le monstre de Pitelli?", es:"pero ¿quién eres, el monstruo de Pitelli?", de:"aber wer bist du, das Monster von Pitelli?", pt:"mas quem és, o monstro de Pitelli?", ca:"però qui ets, el monstre de Pitelli?", sp:"Ma te chi tei, er mostro de pitei?", ge:"ma ti chi ti, u mostro de Pitelli?", la:"sed quis es, mons Pitellorum?", src:{"mn":"🤖 IA"}, verif:"mn:r,sp:g", ro:"dar cine eşti, monstrul din Pitelli?" },
       { tema:"viaggi", livello:"A1", it:"macchina", en:"car", fr:"voiture", es:"coche", de:"Auto", pt:"carro", ru:"машина", ca:"cotxe", sp:"machina", cr:"machina", ge:"machina", ko:"자동차", ar:"سيارة", zh:"汽车", ja:"車", ia:"auto", la:"vehiculum", grc:"ὄχημα", verif:"sp:g" },
@@ -4169,7 +4169,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 608;
+const VOC_VERSION = 609;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
