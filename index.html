@@ -9817,8 +9817,40 @@ function SpiegaAI({
   const [stato, setStato] = useState("idle");
   const [testo, setTesto] = useState("");
   const [traduzione, setTraduzione] = useState("");
+  // Domande di approfondimento dopo la spiegazione: [{ d, r }]; r null = in attesa.
+  const [domande, setDomande] = useState([]);
+  const [domanda, setDomanda] = useState("");
+  // Carta nuova: si riparte dal pulsante, senza la conversazione precedente.
+  useEffect(() => {
+    setStato("idle");
+    setDomande([]);
+    setDomanda("");
+  }, [carta]);
   if (!carta) return null;
   const hasKey = (aiSettings?.apiKey || "").length > 10;
+  const inAttesa = domande.some(x => x.r === null);
+  async function chiedi() {
+    const q = domanda.trim();
+    if (!q || inAttesa) return;
+    const lA = lingue.find(l => l.codice === (carta.a || carta.lA?.codice));
+    const lDA = lingue.find(l => l.codice === (carta.da || carta.lDA?.codice));
+    const parola = carta.tipo === "coniugazione" ? carta.atteso : carta.entry?.[lA?.codice];
+    const daParola = carta.entry?.[lDA?.codice];
+    // callAI è a turno singolo: lo storico va nel prompt utente.
+    const storico = domande.map(x => `Domanda: ${x.d}\nRisposta: ${x.r}`).join("\n\n");
+    const system = `You are a concise, friendly language teacher helping a student who just got a quiz question wrong. Answer the student's question in the same language the question is written in. Max 4 short sentences.`;
+    const user = `Quiz: "${daParola}" (${lDA?.nome}) = "${parola}" (${lA?.nome}).${carta.tipo === "coniugazione" ? ` Persona: ${carta.persona}.` : ""}\n\nSpiegazione già data:\n${testo}${storico ? `\n\n${storico}` : ""}\n\nNuova domanda dello studente: ${q}`;
+    setDomanda("");
+    setDomande(ds => [...ds, { d: q, r: null }]);
+    const r = await callAI(system, user, aiSettings);
+    setDomande(ds => ds.map((x, i) => i === ds.length - 1 && x.r === null ? { ...x, r } : x));
+  }
+  function chiudi() {
+    setStato("idle");
+    setDomande([]);
+    setDomanda("");
+  }
+  const dialetto = [carta.a || carta.lA?.codice, carta.da || carta.lDA?.codice].some(c => DIALETTI_TTS_ITA.includes(c));
   async function spiega() {
     setStato("loading");
     const lA = lingue.find(l => l.codice === (carta.a || carta.lA?.codice));
@@ -9852,13 +9884,37 @@ function SpiegaAI({
     className: "bg-zinc-900 border border-zinc-700 rounded-xl p-3 mt-2 text-left"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-slate-300 leading-relaxed whitespace-pre-wrap"
-  }, stato === "traduzione" ? traduzione : testo), /*#__PURE__*/React.createElement("div", {
+  }, stato === "traduzione" ? traduzione : testo), domande.map((x, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "mt-2 pt-2 border-t border-zinc-700"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-sky-400 font-bold"
+  }, "\u2753 ", x.d), x.r === null ? /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mt-1 animate-pulse"
+  }, "\uD83E\uDD16 Un momento...") : /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-slate-300 leading-relaxed whitespace-pre-wrap mt-1"
+  }, x.r))), dialetto && domande.length > 0 && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-amber-400 mt-2"
+  }, "\u26A0\uFE0F L'IA non conosce bene i dialetti: le risposte possono essere imprecise o inventate."), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2 mt-2"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    value: domanda,
+    onChange: e => setDomanda(e.target.value),
+    onKeyDown: e => e.key === "Enter" && chiedi(),
+    placeholder: "Fai una domanda\u2026",
+    className: "flex-1 bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm text-white placeholder-zinc-600 focus:outline-none focus:border-sky-400"
+  }), /*#__PURE__*/React.createElement("button", {
+    onClick: chiedi,
+    disabled: inAttesa || !domanda.trim(),
+    className: "text-xs font-bold text-sky-400 hover:text-sky-300 disabled:opacity-40 transition px-2"
+  }, "Chiedi")), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-3 mt-2"
   }, stato === "risposta" && /*#__PURE__*/React.createElement("button", {
     onClick: traduci,
     className: "text-xs text-amber-400 hover:text-amber-300 transition"
   }, "\uD83C\uDDEE\uD83C\uDDF9 Traduci"), /*#__PURE__*/React.createElement("button", {
-    onClick: () => setStato("idle"),
+    onClick: chiudi,
     className: "text-xs text-zinc-500 hover:text-zinc-400 transition"
   }, "\u2715 Chiudi")));
 }
