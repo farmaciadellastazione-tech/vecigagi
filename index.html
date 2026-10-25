@@ -10835,7 +10835,10 @@ Reply with JSON only, all text in ${langName}.` + notaConiugazione(carta.entry);
       const raw = await callAI(system, user, aiSettings);
       if (n !== richiestaFrase.current) return;
       const clean = raw.replace(/```json|```/g, "").replace(/\n/g, " ").trim();
-      setFeedback(estraiFeedbackFrase(clean));
+      const fb = estraiFeedbackFrase(clean);
+      setFeedback(fb);
+      // Frase giusta: si sente subito com'è detta (ripetibile con 🔊/🐢).
+      if (fb.correct === true) parla(frase.trim(), carta.lingua.bcp47);
     } catch (e) {
       if (n !== richiestaFrase.current) return;
       setFeedback({
@@ -11126,7 +11129,15 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
     className: "text-base text-zinc-300 mb-2"
   }, "\"", /*#__PURE__*/React.createElement("span", {
     className: "text-white font-semibold"
-  }, frase), "\""), feedback.correction && /*#__PURE__*/React.createElement("p", {
+  }, frase), "\"", feedback.correct === true && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+    onClick: () => parla(frase.trim(), carta.lingua.bcp47),
+    title: "Ascolta", "aria-label": "Ascolta",
+    className: "text-zinc-500 hover:text-pink-400 text-sm ml-2"
+  }, "🔊"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => parla(frase.trim(), carta.lingua.bcp47, true),
+    title: "Ascolta lentamente", "aria-label": "Ascolta lentamente",
+    className: "text-zinc-500 hover:text-pink-400 text-sm ml-1"
+  }, "🐢"))), feedback.correction && /*#__PURE__*/React.createElement("p", {
     className: "text-base text-green-400 mb-2"
   }, "\u270F\uFE0F ", feedback.correction), feedback.correction && /*#__PURE__*/React.createElement(CorreggiDialetto, {
     origine: "Frase libera",
