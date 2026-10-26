@@ -175,3 +175,14 @@ test('la schermata usa testo letto e accenti facoltativi per i dialetti nel dett
   const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
   assert.match(S, /confrontaRipasso\(testoDettatoRipasso\(item\.testo\), r, DIALETTI_TTS_ITA\.includes\(item\.cod\)\)/);
 });
+
+// Code review 2026-10-27: le frasi che l'IA non è riuscita a controllare "non
+// contano", quindi non vanno nemmeno nel totale (9 giuste su 9 = 🏆, non 9/10).
+test('punteggio finale sulle sole frasi controllate', () => {
+  const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
+  assert.match(S, /const \[controllate, setControllate\] = useState\(0\)/);
+  assert.match(S, /if \(giusta !== null\) \{\s*registraEsitoRipasso\(item\.chiave, giusta\);\s*setControllate\(c => c \+ 1\);/);
+  assert.match(S, /punti, " \/ ", controllate/);
+  assert.match(S, /controllate > 0 && punti === controllate \? "\uD83C\uDFC6"/);
+  assert.doesNotMatch(S, /punti, " \/ ", items\.length/);
+});

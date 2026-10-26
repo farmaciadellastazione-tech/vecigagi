@@ -10871,6 +10871,8 @@ function SchermataRipassoFrasi({
   const [risposta, setRisposta] = useState("");
   const [esito, setEsito] = useState(null); // {giusta: true|false|null, giustaTesto, correction, note}
   const [punti, setPunti] = useState(0);
+  // Solo le frasi davvero controllate (senza il 🤔 dell'IA irraggiungibile)
+  const [controllate, setControllate] = useState(0);
   // Uscendo o ricominciando, una risposta dell'IA in ritardo va ignorata
   const richiesta = useRef(0);
   const rispostaRef = useRef(null);
@@ -10885,6 +10887,7 @@ function SchermataRipassoFrasi({
     setFase("prepara");
     setI(0);
     setPunti(0);
+    setControllate(0);
     setRisposta("");
     setEsito(null);
     const attive = lingue.filter(l => l.attiva).map(l => l.codice);
@@ -10929,7 +10932,10 @@ function SchermataRipassoFrasi({
     if (fase === "domanda") rispostaRef.current?.focus();
   }, [fase, i]);
   function chiudi(giusta, giustaTesto, correction, note) {
-    if (giusta !== null) registraEsitoRipasso(item.chiave, giusta);
+    if (giusta !== null) {
+      registraEsitoRipasso(item.chiave, giusta);
+      setControllate(c => c + 1);
+    }
     if (giusta) setPunti(p => p + 1);
     setEsito({
       giusta,
@@ -11004,9 +11010,11 @@ function SchermataRipassoFrasi({
     className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 text-center mb-4"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-4xl mb-3"
-  }, punti === items.length ? "🏆" : "💪"), /*#__PURE__*/React.createElement("p", {
+  }, controllate > 0 && punti === controllate ? "🏆" : "💪"), /*#__PURE__*/React.createElement("p", {
     className: "text-2xl font-extrabold text-white mb-1"
-  }, punti, " / ", items.length), /*#__PURE__*/React.createElement("p", {
+  }, punti, " / ", controllate), controllate < items.length && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mb-1"
+  }, "🤔 ", items.length - controllate, " non controllate: non contano"), /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-500"
   }, "Le frasi sbagliate torneranno più spesso.")), /*#__PURE__*/React.createElement("button", {
     onClick: avvia,
