@@ -12282,7 +12282,7 @@ function estraiRispostaConversazione(clean) {
   const reply = estraiCampoStringaJSON(clean, "reply") || clean.slice(0, 300);
   const correction = estraiCampoStringaJSON(clean, "correction") || "";
   const note = estraiCampoStringaJSON(clean, "note") || "";
-  return { reply, correction, note };
+  return { reply, correction, note, clean: estraiCampoStringaJSON(clean, "clean") || "" };
 }
 // ritorno/onRitorno: se si arriva dalla coda delle parole sbagliate di Frase
 // libera, "← Prossima sbagliata" al posto di "← Home" (vedi ritornoDaConversazione).
@@ -12443,8 +12443,12 @@ function SchermataConversazione({
     // contenere il costo: mostriamo per intero la cronologia in UI, ma inviamo
     // all'IA solo un estratto recente.
     const storico = turniConUtente.slice(0, -1).slice(-6).map(x => `${x.ruolo === "ia" ? "IA" : "Studente"}: ${x.testo}`).join("\n") || "(inizio conversazione)";
-    const system = `Sei un amico madrelingua che chiacchiera con uno studente di ${langName} (livello base-intermedio) in una conversazione informale e naturale. Continua il dialogo con UNA sola battuta breve (una o due frasi), in ${langName}. Se la frase dello studente ha un errore importante, mettilo in "correction" (frase corretta in ${langName}) e "note" (spiegazione brevissima in ${linguaNota}); lascia "correction" e "note" vuoti ("") se non serve correggere nulla o l'errore è minore.
-Rispondi con UN oggetto JSON, senza markdown: {"reply": string, "correction": string, "note": string}`;
+    // Per il Ripasso frasi (Dino, 2026-10-27): la frase dello studente con TUTTI
+    // gli errori corretti, anche i minori che "correction" lascia passare. Non si
+    // mostra; nei dialetti non si chiede (lì il ripasso vuole testi corretti a mano).
+    const richiestaPulita = dialetto ? "" : ` In "clean" metti SEMPRE la frase dello studente con tutti gli errori corretti, anche quelli minori (identica se è già perfetta), in ${langName}.`;
+    const system = `Sei un amico madrelingua che chiacchiera con uno studente di ${langName} (livello base-intermedio) in una conversazione informale e naturale. Continua il dialogo con UNA sola battuta breve (una o due frasi), in ${langName}. Se la frase dello studente ha un errore importante, mettilo in "correction" (frase corretta in ${langName}) e "note" (spiegazione brevissima in ${linguaNota}); lascia "correction" e "note" vuoti ("") se non serve correggere nulla o l'errore è minore.${richiestaPulita}
+Rispondi con UN oggetto JSON, senza markdown: {"reply": string, "correction": string, "note": string${dialetto ? "" : ", \"clean\": string"}}`;
     const user = `Cronologia recente:
 ${storico}
 
@@ -12453,12 +12457,12 @@ Nuovo turno dello studente: "${testo}"
 Rispondi con il JSON.`;
     const raw = await callAI(system + istruzioniDialetto(lingua.codice, langName, vocabolario, "") + istruzioniMemoria(), user, aiSettings);
     const clean = raw.replace(/```json|```/g, "").replace(/\n/g, " ").trim();
-    const { reply, correction, note } = estraiRispostaConversazione(clean);
+    const { reply, correction, note, clean: pulitaIA } = estraiRispostaConversazione(clean);
     setTurni(prev => {
       const next = [...prev];
       const idx = next.length - 1;
       if (idx >= 0 && next[idx].ruolo === "utente") {
-        next[idx] = { ...next[idx], correzione: correction || null, nota: note || null };
+        next[idx] = { ...next[idx], correzione: correction || null, nota: note || null, pulita: dialetto ? null : pulitaIA || null };
       }
       if (reply) next.push({ ruolo: "ia", testo: reply });
       return next;
