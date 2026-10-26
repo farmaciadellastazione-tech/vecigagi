@@ -146,3 +146,10 @@ test('giudizio IA: prompt con originale, riferimento e risposta; esito letto in 
   assert.equal(ctx.estraiGiudizioRipasso('{"correct":true}').correct, true);
   assert.equal(ctx.estraiGiudizioRipasso('boh').correct, null);
 });
+
+// Code review 2026-10-27: le IA scrivono spesso l'id come testo ("0"); scartarlo
+// faceva sparire in silenzio tutte le traduzioni (tutto a dettato).
+test('traduzioni: id anche come testo ("0"), ma non id inventati', () => {
+  assert.deepEqual(j(ctx.estraiTraduzioniRipasso('{"traduzioni":[{"id":"0","testo":"Je rentre."},{"id":" 1 ","testo":"Vado."},{"id":"x","testo":"no"},{"id":1.5,"testo":"no"}]}')),
+    { 0: 'Je rentre.', 1: 'Vado.' });
+});

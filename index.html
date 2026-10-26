@@ -10814,7 +10814,9 @@ function estraiTraduzioniRipasso(raw) {
     const o = JSON.parse(m ? m[0] : "");
     const out = {};
     (o.traduzioni || []).forEach(x => {
-      if (x && Number.isInteger(x.id) && String(x.testo || "").trim()) out[x.id] = String(x.testo).trim();
+      // L'id arriva spesso come testo ("0"): va accettato, sennò spariscono tutte
+      const id = x && String(x.id ?? "").trim() !== "" ? Number(x.id) : NaN;
+      if (Number.isInteger(id) && String(x.testo || "").trim()) out[id] = String(x.testo).trim();
     });
     return out;
   } catch (e) {
