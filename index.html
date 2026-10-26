@@ -10578,6 +10578,64 @@ function CorreggiDialetto({
     className: "text-xs text-red-400"
   }, errore), avvisoInvio);
 }
+// ── Archivio frasi da ripassare ──────────────────────────────────────────
+// Richiesta di Dino (2026-10-26): le frasi di Frase libera riconosciute giuste
+// dall'IA (quelle che la voce rilegge) restano nel browser per il futuro
+// esercizio "Ripasso frasi". Delle frasi sbagliate si tiene la correzione,
+// ma non nei dialetti: l'IA li conosce poco e si ripasserebbero i suoi errori.
+const SK_FRASI_RIPASSO = "qml_v1_frasi_ripasso";
+const MAX_FRASI_RIPASSO = 200;
+// Come per le correzioni IA: senza maiuscole/spazi ma CON gli accenti.
+const chiaveFraseRipasso = x => String(x).trim().replace(/\s+/g, " ").toLowerCase();
+function caricaFrasiRipasso() {
+  try {
+    const l = JSON.parse(localStorage.getItem(SK_FRASI_RIPASSO) || "[]");
+    return Array.isArray(l) ? l.filter(f => f && f.testo && f.cod) : [];
+  } catch (e) {
+    return [];
+  }
+}
+// Stessa frase nella stessa lingua: si aggiorna (torna la più recente).
+function salvaFraseRipasso({
+  testo,
+  cod,
+  origine,
+  tema
+}) {
+  const t = String(testo || "").trim();
+  if (!t || !cod) return false;
+  const lista = caricaFrasiRipasso().filter(f => !(f.cod === cod && chiaveFraseRipasso(f.testo) === chiaveFraseRipasso(t)));
+  lista.push({
+    testo: t,
+    cod,
+    origine: origine || "",
+    tema: tema || "",
+    data: new Date().toISOString()
+  });
+  try {
+    localStorage.setItem(SK_FRASI_RIPASSO, JSON.stringify(lista.slice(-MAX_FRASI_RIPASSO)));
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+// Esito della verifica di Frase libera → cosa archiviare (niente se incerto).
+function salvaFraseDaFeedback(fb, frase, cod, tema) {
+  if (!fb) return false;
+  if (fb.correct === true) return salvaFraseRipasso({
+    testo: frase,
+    cod,
+    origine: "Frase libera",
+    tema
+  });
+  if (fb.correct === false && fb.correction && !DIALETTI_TTS_ITA.includes(cod)) return salvaFraseRipasso({
+    testo: fb.correction,
+    cod,
+    origine: "Frase libera",
+    tema
+  });
+  return false;
+}
 // ── Aiuto Frase libera ───────────────────────────────────────────────────
 // Per chi parte da zero (richiesta di Dino, 2026-10-15): "💡 Aiutami" traduce
 // una frase scritta nella lingua dei menu, "Dammi un'idea" propone 2-3 frasi.
@@ -10892,6 +10950,7 @@ Reply with JSON only, all text in ${langName}.` + notaConiugazione(carta.entry);
       setFeedback(fb);
       // Frase giusta: si sente subito com'è detta (ripetibile con 🔊/🐢).
       if (fb.correct === true) parla(frase.trim(), carta.lingua.bcp47);
+      salvaFraseDaFeedback(fb, frase.trim(), carta.lingua.codice, carta.entry?.tema);
     } catch (e) {
       if (n !== richiestaFrase.current) return;
       setFeedback({
