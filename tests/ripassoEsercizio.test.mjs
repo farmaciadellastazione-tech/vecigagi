@@ -267,3 +267,16 @@ test('chiudendo la schermata la voce si ferma', () => {
   assert.match(pulizia, /clearTimeout\(_parlaTimer\)/);
   assert.match(pulizia, /window\.speechSynthesis\.cancel\(\)/);
 });
+
+// Seconda code review (2026-10-27), scelta di Dino: nel dettato dei dialetti
+// la voce italiana non fa sentire nemmeno apostrofi e spazi ("gh'è" = "ghè",
+// "a l'è" = "a lè" = "alè"): non si pretendono. Le lettere sì.
+test('dettato nei dialetti: apostrofi e spazi facoltativi, lettere no', () => {
+  assert.equal(ctx.confrontaRipasso("Gh'è o sô.", 'ghe o so', true), true);
+  assert.equal(ctx.confrontaRipasso("A l'è bela.", 'a lè bela', true), true);
+  assert.equal(ctx.confrontaRipasso("A l'è bela.", 'alè bela', true), true);
+  assert.equal(ctx.confrontaRipasso("A l'è bela.", 'a le bella', true), false);
+  // fuori dai dialetti tutto come prima
+  assert.equal(ctx.confrontaRipasso("L'acqua è fresca", 'lacqua è fresca'), false);
+  assert.equal(ctx.confrontaRipasso('Good morning', 'goodmorning'), false);
+});
