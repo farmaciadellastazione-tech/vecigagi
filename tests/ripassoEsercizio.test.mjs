@@ -29,7 +29,7 @@ const ctx = vm.createContext({
 ctx.globalThis = ctx;
 vm.runInContext([
   tra('// ── Archivio frasi da ripassare', '\n// ── Aiuto Frase libera'),
-  `Object.assign(globalThis, { confrontaRipasso, caricaStatsRipasso, registraEsitoRipasso, salvaTradRipasso,
+  `Object.assign(globalThis, { confrontaRipasso, caricaStatsRipasso, registraEsitoRipasso, potaStatsRipasso, salvaTradRipasso,
      pesoRipasso, scegliFrasiRipasso, testoDettatoRipasso, pianoRipasso, promptTraduzioniRipasso, estraiTraduzioniRipasso,
      promptGiudizioRipasso, estraiGiudizioRipasso, N_FRASI_RIPASSO });`,
 ].join('\n'), ctx);
@@ -185,4 +185,44 @@ test('punteggio finale sulle sole frasi controllate', () => {
   assert.match(S, /punti, " \/ ", controllate/);
   assert.match(S, /controllate > 0 && punti === controllate \? "\uD83C\uDFC6"/);
   assert.doesNotMatch(S, /punti, " \/ ", items\.length/);
+});
+
+// Code review 2026-10-27: le statistiche (con le traduzioni salvate) non
+// devono crescere per sempre con frasi uscite dall'archivio o da conversazioni
+// cancellate. Si potano sulle frasi esistenti in TUTTE le lingue (non solo le
+// attive: spegnere una lingua non deve cancellarne i progressi).
+test('statistiche: restano solo quelle delle frasi ancora esistenti', () => {
+  azzera();
+  ctx.registraEsitoRipasso('en|vecchia.', true);
+  ctx.registraEsitoRipasso('en|ancora qui.', false);
+  ctx.registraEsitoRipasso('sp|lingua spenta.', true);
+  ctx.potaStatsRipasso(['en|ancora qui.', 'sp|lingua spenta.']);
+  assert.deepEqual(Object.keys(j(ctx.caricaStatsRipasso())).sort(), ['en|ancora qui.', 'sp|lingua spenta.']);
+});
+
+test('statistiche: niente da potare = niente da riscrivere', () => {
+  azzera();
+  ctx.registraEsitoRipasso('en|a.', true);
+  const prima = memoria.qml_v1_ripasso_stats;
+  let scritture = 0;
+  const vero = ctx.localStorage.setItem;
+  ctx.localStorage.setItem = (k, v) => { scritture++; vero(k, v); };
+  ctx.potaStatsRipasso(['en|a.']);
+  ctx.localStorage.setItem = vero;
+  assert.equal(scritture, 0);
+  assert.equal(memoria.qml_v1_ripasso_stats, prima);
+});
+
+test('la schermata pota su tutte le lingue e filtra le attive dopo', () => {
+  const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
+  assert.match(S, /const tutte = frasiDaRipassare\(caricaFrasiRipasso\(\), caricaConversazioni\(\)\);\s*potaStatsRipasso\(tutte\.map\(f => f\.chiave\)\);/);
+  assert.match(S, /const frasi = tutte\.filter\(f => attive\.includes\(f\.cod\)\);/);
+});
+
+// Code review 2026-10-27: dal dialetto l'IA traduce male; un riferimento
+// sbagliato salvato resterebbe per sempre. Dal dialetto si richiede ogni volta.
+test('traduzione dal dialetto: il riferimento non si salva né si riusa', () => {
+  const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
+  assert.match(S, /rif: x\.modo === "traduzione" && !DIALETTI_TTS_ITA\.includes\(x\.cod\) \? stats\[x\.chiave\]\?\.trad\?\.\[x\.a\] \|\| "" : ""/);
+  assert.match(S, /if \(!DIALETTI_TTS_ITA\.includes\(x\.cod\)\) salvaTradRipasso\(x\.chiave, x\.a, trad\[k\]\);/);
 });

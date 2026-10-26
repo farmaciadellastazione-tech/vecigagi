@@ -10758,6 +10758,19 @@ function aggiornaStatsRipasso(chiave, fn) {
     localStorage.setItem(SK_RIPASSO_STATS, JSON.stringify(tutte));
   } catch (e) {}
 }
+// Via le statistiche delle frasi non più esistenti (uscite dall'archivio o da
+// conversazioni cancellate). chiaviValide: frasi di TUTTE le lingue, così
+// spegnere una lingua non ne cancella i progressi. Riscrive solo se serve.
+function potaStatsRipasso(chiaviValide) {
+  const valide = new Set(chiaviValide);
+  const tutte = caricaStatsRipasso();
+  const vecchie = Object.keys(tutte).filter(k => !valide.has(k));
+  if (!vecchie.length) return;
+  vecchie.forEach(k => delete tutte[k]);
+  try {
+    localStorage.setItem(SK_RIPASSO_STATS, JSON.stringify(tutte));
+  } catch (e) {}
+}
 function registraEsitoRipasso(chiave, giusta) {
   aggiornaStatsRipasso(chiave, st => ({
     ...st,
@@ -10891,7 +10904,9 @@ function SchermataRipassoFrasi({
     setRisposta("");
     setEsito(null);
     const attive = lingue.filter(l => l.attiva).map(l => l.codice);
-    const frasi = frasiDaRipassare(caricaFrasiRipasso(), caricaConversazioni(), attive);
+    const tutte = frasiDaRipassare(caricaFrasiRipasso(), caricaConversazioni());
+    potaStatsRipasso(tutte.map(f => f.chiave));
+    const frasi = tutte.filter(f => attive.includes(f.cod));
     if (frasi.length < 3) {
       setFase("vuoto");
       return;
@@ -10899,7 +10914,9 @@ function SchermataRipassoFrasi({
     const stats = caricaStatsRipasso();
     const piano = pianoRipasso(scegliFrasiRipasso(frasi, stats, N_FRASI_RIPASSO, Math.random), lingue, conIA, Math.random).map(x => ({
       ...x,
-      rif: x.modo === "traduzione" ? stats[x.chiave]?.trad?.[x.a] || "" : ""
+      // Dal dialetto l'IA traduce male: il riferimento si richiede ogni volta,
+      // così uno sbagliato non resta per sempre
+      rif: x.modo === "traduzione" && !DIALETTI_TTS_ITA.includes(x.cod) ? stats[x.chiave]?.trad?.[x.a] || "" : ""
     }));
     const mancanti = piano.filter(x => x.modo === "traduzione" && !x.rif);
     if (mancanti.length) {
@@ -10912,7 +10929,7 @@ function SchermataRipassoFrasi({
       mancanti.forEach((x, k) => {
         if (trad[k]) {
           x.rif = trad[k];
-          salvaTradRipasso(x.chiave, x.a, trad[k]);
+          if (!DIALETTI_TTS_ITA.includes(x.cod)) salvaTradRipasso(x.chiave, x.a, trad[k]);
         } else x.modo = "dettato"; // IA non raggiungibile: la frase si fa a dettato
       });
     }
