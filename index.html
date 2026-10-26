@@ -10687,6 +10687,362 @@ function frasiDaRipassare(archivio, conversazioni, codiciAttivi) {
   });
   return out;
 }
+// ── Ripasso frasi: l'esercizio ───────────────────────────────────────────
+// 10 frasi a sessione, ognuna con dettato o traduzione scelti a caso. La
+// traduzione va verso un'altra lingua attiva, mai verso un dialetto (l'IA li
+// inventerebbe). I riferimenti si chiedono all'IA tutti insieme a inizio
+// sessione e restano salvati; se la risposta non coincide giudica l'IA.
+// Statistiche per frase a parte: niente SM-2 né "parole apprese".
+const SK_RIPASSO_STATS = "qml_v1_ripasso_stats"; // {chiave: {g, s, ultima, trad: {cod: testo}}}
+const N_FRASI_RIPASSO = 10;
+// Senza punteggiatura, maiuscole e spazi doppi, ma CON gli accenti (nei
+// dialetti "ca" e "cà" sono parole diverse). L'apostrofo resta, in una forma sola.
+function confrontaRipasso(atteso, dato) {
+  const n = x => String(x || "").normalize("NFC").toLowerCase().replace(/[’‘`´]/g, "'").replace(/[^\p{L}\p{N}'\s]/gu, " ").replace(/\s+/g, " ").trim();
+  return !!n(dato) && n(atteso) === n(dato);
+}
+function caricaStatsRipasso() {
+  try {
+    const o = JSON.parse(localStorage.getItem(SK_RIPASSO_STATS) || "{}");
+    return o && typeof o === "object" && !Array.isArray(o) ? o : {};
+  } catch (e) {
+    return {};
+  }
+}
+function aggiornaStatsRipasso(chiave, fn) {
+  const tutte = caricaStatsRipasso();
+  tutte[chiave] = fn({
+    g: 0,
+    s: 0,
+    ...(tutte[chiave] || {})
+  });
+  try {
+    localStorage.setItem(SK_RIPASSO_STATS, JSON.stringify(tutte));
+  } catch (e) {}
+}
+function registraEsitoRipasso(chiave, giusta) {
+  aggiornaStatsRipasso(chiave, st => ({
+    ...st,
+    g: st.g + (giusta ? 1 : 0),
+    s: st.s + (giusta ? 0 : 1),
+    ultima: new Date().toISOString()
+  }));
+}
+function salvaTradRipasso(chiave, cod, testo) {
+  aggiornaStatsRipasso(chiave, st => ({
+    ...st,
+    trad: {
+      ...(st.trad || {}),
+      [cod]: testo
+    }
+  }));
+}
+// Mai vista = 1; ogni errore pesa, ogni risposta giusta alleggerisce.
+const pesoRipasso = st => (1 + 2 * (st?.s || 0)) / (1 + (st?.g || 0));
+// Estrazione pesata senza ripetizioni.
+function scegliFrasiRipasso(frasi, stats, n, rnd) {
+  const pool = frasi.map(f => ({
+    f,
+    p: pesoRipasso(stats[f.chiave])
+  }));
+  const out = [];
+  while (out.length < n && pool.length) {
+    let r = rnd() * pool.reduce((t, x) => t + x.p, 0);
+    let k = 0;
+    while (k < pool.length - 1 && (r -= pool[k].p) >= 0) k++;
+    out.push(pool.splice(k, 1)[0].f);
+  }
+  return out;
+}
+// Per ogni frase: dettato, o traduzione verso una lingua attiva non dialettale
+// diversa dalla sua. Senza IA o senza lingua d'arrivo: dettato.
+function pianoRipasso(frasi, lingue, conIA, rnd) {
+  const nome = cod => lingue.find(l => l.codice === cod)?.nome || cod;
+  return frasi.map(f => {
+    const arrivi = lingue.filter(l => l.attiva && l.codice !== f.cod && !DIALETTI_TTS_ITA.includes(l.codice));
+    const traduci = conIA && arrivi.length > 0 && rnd() >= 0.5;
+    const a = traduci ? arrivi[Math.min(arrivi.length - 1, Math.floor(rnd() * arrivi.length))] : null;
+    return {
+      ...f,
+      nomeDa: nome(f.cod),
+      modo: traduci ? "traduzione" : "dettato",
+      a: a ? a.codice : null,
+      nomeA: a ? a.nome : ""
+    };
+  });
+}
+function promptTraduzioniRipasso(items) {
+  return {
+    system: `Sei un traduttore. Traduci ogni frase nella lingua indicata, in modo naturale e corretto, mantenendo il significato e il registro.
+Rispondi con UN oggetto JSON, senza markdown: {"traduzioni": [{"id": number, "testo": string}]}`,
+    user: items.map((x, i) => `${i}. Da ${x.nomeDa} a ${x.nomeA}: "${x.testo}"`).join("\n") + "\n\nRispondi con il JSON."
+  };
+}
+function estraiTraduzioniRipasso(raw) {
+  try {
+    const m = String(raw || "").match(/\{[\s\S]*\}/);
+    const o = JSON.parse(m ? m[0] : "");
+    const out = {};
+    (o.traduzioni || []).forEach(x => {
+      if (x && Number.isInteger(x.id) && String(x.testo || "").trim()) out[x.id] = String(x.testo).trim();
+    });
+    return out;
+  } catch (e) {
+    return {};
+  }
+}
+function promptGiudizioRipasso(item, risposta, riferimento) {
+  return {
+    system: `Sei un insegnante di lingue. Lo studente ha tradotto una frase da ${item.nomeDa} a ${item.nomeA}. Valuta se la sua traduzione è corretta e ha lo stesso significato: altre parole o un ordine diverso vanno bene, contano solo errori veri di grammatica, ortografia o significato. Se è sbagliata, in "correction" metti la sua traduzione corretta cambiando il meno possibile, e in "note" una spiegazione brevissima in italiano.
+Rispondi con UN oggetto JSON, senza markdown: {"correct": boolean, "correction": string, "note": string}`,
+    user: `Frase originale (${item.nomeDa}): "${item.testo}"
+Traduzione di riferimento (${item.nomeA}): "${riferimento}"
+Traduzione dello studente: "${risposta}"
+
+Rispondi con il JSON.`
+  };
+}
+function estraiGiudizioRipasso(raw) {
+  try {
+    const m = String(raw || "").match(/\{[\s\S]*\}/);
+    const o = JSON.parse(m ? m[0] : "");
+    return {
+      correct: typeof o.correct === "boolean" ? o.correct : null,
+      correction: String(o.correction || "").trim(),
+      note: String(o.note || "").trim()
+    };
+  } catch (e) {
+    return {
+      correct: null,
+      correction: "",
+      note: ""
+    };
+  }
+}
+function SchermataRipassoFrasi({
+  lingue,
+  aiSettings,
+  onHome
+}) {
+  const conIA = (aiSettings?.apiKey || "").length > 10;
+  const [fase, setFase] = useState("prepara"); // prepara | domanda | verifica | esito | fine | vuoto
+  const [items, setItems] = useState([]);
+  const [i, setI] = useState(0);
+  const [risposta, setRisposta] = useState("");
+  const [esito, setEsito] = useState(null); // {giusta: true|false|null, giustaTesto, correction, note}
+  const [punti, setPunti] = useState(0);
+  // Uscendo o ricominciando, una risposta dell'IA in ritardo va ignorata
+  const richiesta = useRef(0);
+  const rispostaRef = useRef(null);
+  const lingua = cod => lingue.find(l => l.codice === cod) || {
+    codice: cod,
+    nome: cod,
+    bandiera: "",
+    bcp47: "it-IT"
+  };
+  async function avvia() {
+    const n = ++richiesta.current;
+    setFase("prepara");
+    setI(0);
+    setPunti(0);
+    setRisposta("");
+    setEsito(null);
+    const attive = lingue.filter(l => l.attiva).map(l => l.codice);
+    const frasi = frasiDaRipassare(caricaFrasiRipasso(), caricaConversazioni(), attive);
+    if (frasi.length < 3) {
+      setFase("vuoto");
+      return;
+    }
+    const stats = caricaStatsRipasso();
+    const piano = pianoRipasso(scegliFrasiRipasso(frasi, stats, N_FRASI_RIPASSO, Math.random), lingue, conIA, Math.random).map(x => ({
+      ...x,
+      rif: x.modo === "traduzione" ? stats[x.chiave]?.trad?.[x.a] || "" : ""
+    }));
+    const mancanti = piano.filter(x => x.modo === "traduzione" && !x.rif);
+    if (mancanti.length) {
+      let trad = {};
+      try {
+        const p = promptTraduzioniRipasso(mancanti);
+        trad = estraiTraduzioniRipasso(await callAI(p.system, p.user, aiSettings));
+      } catch (e) {}
+      if (n !== richiesta.current) return;
+      mancanti.forEach((x, k) => {
+        if (trad[k]) {
+          x.rif = trad[k];
+          salvaTradRipasso(x.chiave, x.a, trad[k]);
+        } else x.modo = "dettato"; // IA non raggiungibile: la frase si fa a dettato
+      });
+    }
+    setItems(piano);
+    setFase("domanda");
+  }
+  useEffect(() => {
+    avvia();
+    return () => {
+      richiesta.current++;
+    };
+  }, []);
+  const item = items[i];
+  // Il dettato parte da solo a ogni frase nuova
+  useEffect(() => {
+    if (fase === "domanda" && item?.modo === "dettato") parla(item.testo, lingua(item.cod).bcp47);
+    if (fase === "domanda") rispostaRef.current?.focus();
+  }, [fase, i]);
+  function chiudi(giusta, giustaTesto, correction, note) {
+    if (giusta !== null) registraEsitoRipasso(item.chiave, giusta);
+    if (giusta) setPunti(p => p + 1);
+    setEsito({
+      giusta,
+      giustaTesto,
+      correction,
+      note
+    });
+    setFase("esito");
+    const testoDaLeggere = item.modo === "dettato" ? item.testo : giusta ? risposta.trim() : correction || giustaTesto;
+    parla(testoDaLeggere, lingua(item.modo === "dettato" ? item.cod : item.a).bcp47);
+  }
+  async function controlla() {
+    const r = risposta.trim();
+    if (!r || !item || fase !== "domanda") return;
+    if (item.modo === "dettato") return chiudi(confrontaRipasso(item.testo, r), item.testo, "", "");
+    if (confrontaRipasso(item.rif, r)) return chiudi(true, item.rif, "", "");
+    const n = ++richiesta.current;
+    setFase("verifica");
+    let g = {
+      correct: null,
+      correction: "",
+      note: ""
+    };
+    try {
+      const p = promptGiudizioRipasso(item, r, item.rif);
+      g = estraiGiudizioRipasso(await callAI(p.system, p.user, aiSettings));
+    } catch (e) {}
+    if (n !== richiesta.current) return;
+    chiudi(g.correct, item.rif, g.correct === false ? g.correction : "", g.note);
+  }
+  function avanti() {
+    if (i + 1 >= items.length) {
+      setFase("fine");
+      return;
+    }
+    setI(i + 1);
+    setRisposta("");
+    setEsito(null);
+    setFase("domanda");
+  }
+  const testata = /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between mb-4"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onHome,
+    className: "text-zinc-500 hover:text-white transition text-sm"
+  }, "← Home"), /*#__PURE__*/React.createElement("span", {
+    className: "text-zinc-600 text-xs"
+  }, "🔁 Ripasso frasi", items.length && fase !== "fine" && fase !== "vuoto" && fase !== "prepara" ? ` \xB7 ${i + 1} di ${items.length}` : ""), /*#__PURE__*/React.createElement("span", {
+    className: "text-zinc-600 text-xs"
+  }, fase !== "vuoto" && fase !== "prepara" ? `✅ ${punti}` : ""));
+  const contenitore = (...figli) => /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen bg-black flex flex-col p-4",
+    style: {
+      paddingBottom: "80px"
+    }
+  }, testata, ...figli);
+  if (fase === "prepara") return contenitore(/*#__PURE__*/React.createElement("div", {
+    className: "flex-1 flex items-center justify-center"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-zinc-500 animate-pulse"
+  }, "🤖 Preparo le frasi...")));
+  if (fase === "vuoto") return contenitore(/*#__PURE__*/React.createElement("div", {
+    className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 text-center"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-4xl mb-3"
+  }, "📭"), /*#__PURE__*/React.createElement("p", {
+    className: "text-base text-zinc-300 mb-2"
+  }, "Ancora poche frasi da ripassare."), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-500"
+  }, "Qui tornano le frasi giuste (o corrette) di Frase libera e Conversazione, nelle lingue attive. Scrivine qualcuna e ritorna!")));
+  if (fase === "fine") return contenitore(/*#__PURE__*/React.createElement("div", {
+    className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 text-center mb-4"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-4xl mb-3"
+  }, punti === items.length ? "🏆" : "💪"), /*#__PURE__*/React.createElement("p", {
+    className: "text-2xl font-extrabold text-white mb-1"
+  }, punti, " / ", items.length), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-500"
+  }, "Le frasi sbagliate torneranno più spesso.")), /*#__PURE__*/React.createElement("button", {
+    onClick: avvia,
+    className: "w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3.5 rounded-xl transition btn-shadow mb-3"
+  }, "🔁 Ancora"), /*#__PURE__*/React.createElement("button", {
+    onClick: onHome,
+    className: "text-zinc-500 text-sm"
+  }, "← Home"));
+  const da = lingua(item.cod);
+  const dettato = item.modo === "dettato";
+  return contenitore(/*#__PURE__*/React.createElement("div", {
+    className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 mb-4 text-center"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mb-2"
+  }, dettato ? `✍️ Dettato \xB7 ${da.bandiera || ""} ${da.nome}` : `🌐 Traduci in ${item.nomeA}`), dettato ? /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-center gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => parla(item.testo, da.bcp47),
+    title: "Ascolta", "aria-label": "Ascolta",
+    className: "text-3xl"
+  }, "🔊"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => parla(item.testo, da.bcp47, true),
+    title: "Ascolta lentamente", "aria-label": "Ascolta lentamente",
+    className: "text-3xl"
+  }, "🐢")) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mb-1"
+  }, da.bandiera, " ", da.nome), /*#__PURE__*/React.createElement("p", {
+    className: "text-2xl font-bold text-white"
+  }, item.testo), DIALETTI_TTS_ITA.includes(item.cod) && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-amber-500 mt-2 italic"
+  }, "🍷 L'IA conosce poco i dialetti: la traduzione di riferimento può sbagliare"))), fase === "domanda" && /*#__PURE__*/React.createElement("div", {
+    className: "flex-1"
+  }, /*#__PURE__*/React.createElement("textarea", {
+    ref: rispostaRef,
+    value: risposta,
+    onChange: e => setRisposta(e.target.value),
+    placeholder: dettato ? "Scrivi quello che senti..." : `In ${item.nomeA}...`,
+    className: "w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white text-lg resize-none focus:outline-none focus:border-cyan-500 mb-3",
+    rows: 3,
+    onKeyDown: e => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        controlla();
+      }
+    }
+  }), /*#__PURE__*/React.createElement("button", {
+    onClick: controlla,
+    disabled: !risposta.trim(),
+    className: `w-full font-bold py-3.5 rounded-xl transition text-white ${risposta.trim() ? "bg-cyan-600 hover:bg-cyan-500 btn-shadow" : "bg-zinc-800 text-zinc-600 cursor-not-allowed"}`
+  }, "Controlla →")), fase === "verifica" && /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 flex items-center justify-center"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-zinc-500 animate-pulse"
+  }, "🤖 Controllo...")), fase === "esito" && esito && /*#__PURE__*/React.createElement("div", {
+    className: "flex-1"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `rounded-2xl p-4 mb-3 border ${esito.giusta === true ? "bg-green-950 border-green-800" : esito.giusta === false ? "bg-red-950 border-red-800" : "bg-zinc-900 border-zinc-700"}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-2xl mb-2 text-center"
+  }, esito.giusta === true ? "✅" : esito.giusta === false ? "❌" : "🤔"), /*#__PURE__*/React.createElement("p", {
+    className: "text-base text-zinc-300 mb-2"
+  }, "\"", /*#__PURE__*/React.createElement("span", {
+    className: "text-white font-semibold"
+  }, risposta.trim()), "\""), esito.correction && /*#__PURE__*/React.createElement("p", {
+    className: "text-base text-green-400 mb-2"
+  }, "✏️ ", esito.correction), esito.note && /*#__PURE__*/React.createElement("p", {
+    className: "text-base text-zinc-400 mb-2"
+  }, "📚 ", esito.note), (esito.giusta !== true || !dettato) && /*#__PURE__*/React.createElement("p", {
+    className: "text-base text-cyan-400"
+  }, dettato ? "💬 " : "💬 Riferimento: ", esito.giustaTesto), esito.giusta === null && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mt-2"
+  }, "Non sono riuscito a controllare: questa frase non conta.")), /*#__PURE__*/React.createElement("button", {
+    onClick: avanti,
+    className: "w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-xl text-base transition btn-shadow"
+  }, i + 1 >= items.length ? "Risultato →" : "Avanti →")));
+}
 // ── Aiuto Frase libera ───────────────────────────────────────────────────
 // Per chi parte da zero (richiesta di Dino, 2026-10-15): "💡 Aiutami" traduce
 // una frase scritta nella lingua dei menu, "Dammi un'idea" propone 2-3 frasi.
