@@ -12155,7 +12155,8 @@ Rispondi con il JSON.`;
     origine: "Conversazione",
     testo: t.testo,
     cod: lingua?.codice,
-    onSalvato: nuovo => setTurni(prev => prev.map((x, k) => k === i ? { ...x, testo: nuovo } : x))
+    // Il segno dice al Ripasso frasi che la battuta dialettale l'ha controllata una persona
+    onSalvato: nuovo => setTurni(prev => prev.map((x, k) => k === i ? { ...x, testo: nuovo, corretta: true } : x))
   }), t.correzione && /*#__PURE__*/React.createElement("div", {
     className: "mt-2 pt-2 border-t border-pink-800 text-sm"
   }, /*#__PURE__*/React.createElement("p", {
@@ -12164,7 +12165,7 @@ Rispondi con il JSON.`;
     origine: "Conversazione",
     testo: t.correzione,
     cod: lingua?.codice,
-    onSalvato: nuovo => setTurni(prev => prev.map((x, k) => k === i ? { ...x, correzione: nuovo } : x))
+    onSalvato: nuovo => setTurni(prev => prev.map((x, k) => k === i ? { ...x, correzione: nuovo, correzioneCorretta: true } : x))
   }), t.nota && /*#__PURE__*/React.createElement("p", {
     className: "text-zinc-500 text-xs mt-1"
   }, t.nota)))))), dialetto && /*#__PURE__*/React.createElement("p", {
