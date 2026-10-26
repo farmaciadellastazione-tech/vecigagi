@@ -263,6 +263,8 @@
     html.light .home-modi .border-orange-800 { border-color:#fdba74 !important; }
     html.light .home-modi .bg-cyan-950     { background-color:#cffafe !important; }
     html.light .home-modi .border-cyan-800 { border-color:#67e8f9 !important; }
+    html.light .home-modi .bg-indigo-950   { background-color:#e0e7ff !important; }
+    html.light .home-modi .border-indigo-800 { border-color:#a5b4fc !important; }
     html.light .home-modi .bg-emerald-950  { background-color:#d1fae5 !important; }
     html.light .home-modi .border-emerald-800 { border-color:#6ee7b7 !important; }
     html.light .home-modi .bg-red-950      { background-color:#fee2e2 !important; }
@@ -7942,6 +7944,7 @@ function Home({
     sceltamultipla: null,
     dettato: null,
     letturaGuidata: null,
+    ripassoFrasi: null, // se mancano frasi lo spiega la schermata
     allenamento: { tipo: "viste", soglia: 1 },
     voce: { tipo: "viste", soglia: 1 },
     ascolto: { tipo: "viste", soglia: 1 },
@@ -8030,6 +8033,15 @@ function Home({
     pastelborder: "border-pink-800",
     pastelbadge: "bg-pink-900",
     pasteltext: "text-pink-300"
+  }, {
+    key: "ripassoFrasi",
+    title: "Ripasso frasi",
+    desc: "🔁 Le tue frasi di Frase libera e Conversazione: dettato e traduzione",
+    lv: "",
+    pastelbg: "bg-indigo-950",
+    pastelborder: "border-indigo-800",
+    pastelbadge: "bg-indigo-900",
+    pasteltext: "text-indigo-300"
   }, {
     key: "letturaGuidata",
     title: "Lettura guidata",
@@ -8491,6 +8503,7 @@ function Home({
       ascolto: "🎧",
       fraseLibera: "🤖",
       conversazione: "🎙️",
+      ripassoFrasi: "🔁",
       letturaGuidata: "📖",
       sceltamultipla: "🎯",
       nonstop: "⚡",
@@ -14640,6 +14653,10 @@ function App() {
       setSchermata("sceltamultipla");
       return;
     }
+    if (mod === "ripassoFrasi") {
+      setSchermata("ripassoFrasi");
+      return;
+    }
     if (mod === "letturaGuidata") {
       setStoriaIniziale(null); // apertura da Home: nessuna storia preselezionata
       setCaricandoStorie(true);
@@ -15022,6 +15039,11 @@ function App() {
     }
   });
   }
+  if (schermata === "ripassoFrasi") return /*#__PURE__*/React.createElement(SchermataRipassoFrasi, {
+    lingue: lingue,
+    aiSettings: aiSettings,
+    onHome: () => setSchermata("home")
+  });
   if (schermata === "letturaGuidata") return /*#__PURE__*/React.createElement(SchermataLetturaGuidata, {
     lingue: lingue,
     setLingue: setLingue,
