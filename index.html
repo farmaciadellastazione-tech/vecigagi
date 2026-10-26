@@ -10955,6 +10955,14 @@ function SchermataRipassoFrasi({
     avvia();
     return () => {
       richiesta.current++;
+      // Uscendo, la frase letta (o in coda in parla) non continua sopra la Home
+      if (_parlaTimer) {
+        clearTimeout(_parlaTimer);
+        _parlaTimer = null;
+      }
+      try {
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+      } catch (e) {}
     };
   }, []);
   const item = items[i];

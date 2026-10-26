@@ -256,3 +256,14 @@ test('con un archivio rovinato la potatura non cancella nulla', () => {
   ctx.potaStatsRipasso([]); // le raccolte risultano vuote per l'errore di lettura
   assert.deepEqual(Object.keys(j(ctx.caricaStatsRipasso())).sort(), ['en|a.', 'en|b.']);
 });
+
+// Seconda code review (2026-10-27): uscendo dal ripasso la frase letta
+// continuava sopra la Home. Chiudendo la schermata si ferma la voce, anche
+// quella ancora in coda in parla() (_parlaTimer).
+test('chiudendo la schermata la voce si ferma', () => {
+  const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
+  const pulizia = S.slice(S.indexOf('return () => {'), S.indexOf('}, []);', S.indexOf('return () => {')));
+  assert.match(pulizia, /richiesta\.current\+\+/);
+  assert.match(pulizia, /clearTimeout\(_parlaTimer\)/);
+  assert.match(pulizia, /window\.speechSynthesis\.cancel\(\)/);
+});
