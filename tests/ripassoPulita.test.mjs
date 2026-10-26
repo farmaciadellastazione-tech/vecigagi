@@ -29,9 +29,19 @@ test('la versione pulita si legge dal JSON', () => {
   assert.equal(r.reply, 'Nice!');
 });
 
-test('anche da un JSON rotto', () => {
-  const r = ctx.estrai('{"reply":"Nice!","correction":"","note":"","clean":"I am going home."');
-  assert.equal(r.clean, 'I am going home.');
+// Seconda code review (2026-10-27): da un JSON rotto i campi recuperati possono
+// essere monchi ("I went to the sto"): la frase pulita non si prende e la
+// risposta è segnata tollerante (la battuta dell'IA diventa `parziale`).
+test('da un JSON rotto niente frase pulita, risposta segnata tollerante', () => {
+  const r = ctx.estrai('{"reply":"Nice!","correction":"","note":"","clean":"I am going ho');
+  assert.equal(r.clean, '');
+  assert.equal(r.tollerante, true);
+  assert.equal(r.reply, 'Nice!');
+  assert.ok(!ctx.estrai('{"reply":"Nice!","correction":"","note":"","clean":"Ok."}').tollerante);
+});
+
+test('la battuta dell\'IA da risposta tollerante si salva come parziale', () => {
+  assert.match(CONV, /if \(reply\) next\.push\(\{ ruolo: "ia", testo: reply, \.\.\.\(tollerante \? \{ parziale: true \} : \{\}\) \}\);/);
 });
 
 test('il prompt chiede "clean" solo fuori dai dialetti', () => {
@@ -41,6 +51,6 @@ test('il prompt chiede "clean" solo fuori dai dialetti', () => {
 
 test('il turno dello studente salva la versione pulita', () => {
   // `clean` in inviaTurno è il testo grezzo dell'IA: il campo nuovo si chiama pulitaIA
-  assert.match(CONV, /clean: pulitaIA \} = estraiRispostaConversazione\(clean\)/);
+  assert.match(CONV, /clean: pulitaIA, tollerante \} = estraiRispostaConversazione\(clean\)/);
   assert.match(CONV, /correzione: correction \|\| null, nota: note \|\| null, pulita: dialetto \? null : pulitaIA \|\| null/);
 });

@@ -112,3 +112,17 @@ test('ogni frase ha la chiave per le statistiche (lingua + testo normalizzato)',
   const l = j(ctx.raccogli([{ testo: 'I  go Home.', cod: 'en' }], []));
   assert.equal(l[0].chiave, 'en|i go home.');
 });
+
+// Seconda code review (2026-10-27): battuta dell'IA recuperata da una risposta
+// troncata (`parziale`): può essere monca, fuori; e con lei la frase dello
+// studente prima (l'IA non ha risposto per intero).
+test('battute IA parziali: fuori, e anche la frase dello studente prima', () => {
+  const conv = {
+    id: 'p', lingua: 'en', turni: [
+      { ruolo: 'ia', testo: 'Hi! How are you?' },
+      { ruolo: 'utente', testo: 'I am fine', correzione: 'I am fine.' },
+      { ruolo: 'ia', testo: 'Why are you going ho', parziale: true },
+    ],
+  };
+  assert.deepEqual(testi(ctx.daConv([conv])), ['Hi! How are you?']);
+});

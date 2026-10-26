@@ -10643,7 +10643,8 @@ function salvaFraseDaFeedback(fb, frase, cod, tema) {
     origine: "Frase libera",
     tema
   });
-  if (fb.correct === false && fb.correction) return salvaFraseRipasso({
+  // Correzione da risposta troncata: forse monca, non è una frase esatta
+  if (fb.correct === false && fb.correction && !fb.tollerante) return salvaFraseRipasso({
     testo: fb.correction,
     cod,
     origine: "Frase libera",
@@ -10668,7 +10669,7 @@ function salvaFraseLiberaCorretta(testo, carta) {
 // testi corretti a mano (`corretta`, `correzioneCorretta`). La frase dello
 // studente conta solo se l'IA ha risposto davvero (turno dopo valido).
 // callAI segnala i guasti con testi "Errore..."; JSON rotto = risposta grezza.
-const battutaIAValida = x => !!x && x.ruolo === "ia" && !!String(x.testo || "").trim() && !/^\s*(Errore|[{[])/.test(x.testo);
+const battutaIAValida = x => !!x && x.ruolo === "ia" && !x.parziale && !!String(x.testo || "").trim() && !/^\s*(Errore|[{[])/.test(x.testo);
 function frasiDaConversazioni(conversazioni) {
   const out = [];
   (Array.isArray(conversazioni) ? conversazioni : []).forEach(c => {
@@ -12317,7 +12318,9 @@ function estraiRispostaConversazione(clean) {
   const reply = estraiCampoStringaJSON(clean, "reply") || clean.slice(0, 300);
   const correction = estraiCampoStringaJSON(clean, "correction") || "";
   const note = estraiCampoStringaJSON(clean, "note") || "";
-  return { reply, correction, note, clean: estraiCampoStringaJSON(clean, "clean") || "" };
+  // Recupero da JSON rotto: i campi possono essere monchi. La frase pulita del
+  // Ripasso frasi vuole frasi esatte, quindi qui non si prende (code review).
+  return { reply, correction, note, clean: "", tollerante: true };
 }
 // ritorno/onRitorno: se si arriva dalla coda delle parole sbagliate di Frase
 // libera, "← Prossima sbagliata" al posto di "← Home" (vedi ritornoDaConversazione).
@@ -12492,14 +12495,15 @@ Nuovo turno dello studente: "${testo}"
 Rispondi con il JSON.`;
     const raw = await callAI(system + istruzioniDialetto(lingua.codice, langName, vocabolario, "") + istruzioniMemoria(), user, aiSettings);
     const clean = raw.replace(/```json|```/g, "").replace(/\n/g, " ").trim();
-    const { reply, correction, note, clean: pulitaIA } = estraiRispostaConversazione(clean);
+    const { reply, correction, note, clean: pulitaIA, tollerante } = estraiRispostaConversazione(clean);
     setTurni(prev => {
       const next = [...prev];
       const idx = next.length - 1;
       if (idx >= 0 && next[idx].ruolo === "utente") {
         next[idx] = { ...next[idx], correzione: correction || null, nota: note || null, pulita: dialetto ? null : pulitaIA || null };
       }
-      if (reply) next.push({ ruolo: "ia", testo: reply });
+      // Battuta da risposta troncata: può essere monca, il Ripasso frasi la salta
+      if (reply) next.push({ ruolo: "ia", testo: reply, ...(tollerante ? { parziale: true } : {}) });
       return next;
     });
     if (reply) parla(reply, lingua.bcp47);
@@ -12770,7 +12774,8 @@ function estraiFeedbackFrase(clean) {
   const grammar = estraiCampoStringaJSON(clean, "grammar") || "";
   const example = estraiCampoStringaJSON(clean, "example") || "";
   if (correct !== null || correction || grammar || example) {
-    return { correct, correction, grammar, example };
+    // tollerante: campi da JSON rotto, forse monchi (il Ripasso frasi non ne prende la correzione)
+    return { correct, correction, grammar, example, tollerante: true };
   }
   return { correct: null, correction: "", grammar: clean.slice(0, 200), example: "" };
 }

@@ -133,3 +133,19 @@ test('Frase libera salva dopo la verifica dell\'IA', () => {
   const FL = tra('function SchermataFraseLibera(', '\nfunction SchermataConversazione(');
   assert.match(FL, /salvaFraseDaFeedback\(fb, frase\.trim\(\), carta\.lingua\.codice/);
 });
+
+// Seconda code review (2026-10-27): correzione recuperata da un JSON troncato
+// (estraiFeedbackFrase tollerante) = forse monca: non entra. La frase giusta
+// dello studente invece è sua e intera: entra lo stesso.
+test('risposta tollerante: niente correzione, sì la frase giusta', () => {
+  azzera();
+  ctx.daFeedback({ correct: false, correction: 'I went to the sto', tollerante: true }, 'I go to store', 'en');
+  assert.equal(ctx.carica().length, 0);
+  ctx.daFeedback({ correct: true, correction: '', tollerante: true }, 'I went to the store.', 'en');
+  assert.deepEqual(j(ctx.carica()).map(x => x.testo), ['I went to the store.']);
+});
+
+test('estraiFeedbackFrase segna le risposte recuperate da JSON rotto', () => {
+  const F = tra('function estraiFeedbackFrase(', '\n}') + '\n}';
+  assert.match(F, /return \{ correct, correction, grammar, example, tollerante: true \};/);
+});
