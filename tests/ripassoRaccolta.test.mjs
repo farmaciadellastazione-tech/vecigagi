@@ -1,12 +1,16 @@
 // Ripasso frasi, passo 3 (2026-10-26): quali frasi si ripassano. Fonti:
 // l'archivio di Frase libera (già filtrato al salvataggio) e le conversazioni
-// salvate. Regola concordata con Dino:
-//  - lingue normali: battute dell'IA; frasi dello studente valutate dall'IA
-//    (la correzione se c'è, altrimenti il testo);
-//  - dialetti (mn/sp/ge/cr): MAI testo dell'IA non controllato da una persona.
-//    Battute dell'IA solo con `corretta`; frasi dello studente giudicate giuste
-//    o con la correzione sistemata a mano (`correzioneCorretta`).
-// Frasi non valutate (chiamata IA fallita: niente campo `correzione`) escluse.
+// salvate. Regola aggiornata dopo la code review (Dino, 2026-10-27): si
+// ripassano solo frasi ESATTE.
+//  - lingue normali: battute dell'IA valide (quelle che la voce legge: niente
+//    "Errore..." né JSON rotto); della frase dello studente la versione
+//    pulita dell'IA (`pulita`, tutti gli errori corretti, anche i piccoli) o,
+//    nelle conversazioni vecchie senza `pulita`, la correzione. Una frase
+//    "senza correzione" può avere errori piccoli: fuori.
+//  - la frase dello studente conta solo se l'IA ha risposto davvero (turno
+//    dopo = battuta IA valida); altrimenti non è stata valutata.
+//  - dialetti (mn/sp/ge/cr): solo testi corretti a mano con ✏️ Correggi
+//    (`corretta`, `correzioneCorretta`); il giudizio dell'IA non basta.
 //   eseguire con:  node --test
 import { test } from 'node:test';
 import assert from 'node:assert';
@@ -30,16 +34,19 @@ const testi = l => j(l).map(f => f.testo);
 const convFr = {
   id: 'a', lingua: 'fr', tema: 'viaggi', turni: [
     { ruolo: 'ia', testo: 'Salut ! Tu pars où cet été ?' },
-    { ruolo: 'utente', testo: 'Je vais à la mer.', correzione: null, nota: null },
+    { ruolo: 'utente', testo: 'Je vais a la mer', correzione: null, nota: null, pulita: 'Je vais à la mer.' },
     { ruolo: 'ia', testo: 'Super, quelle mer ?' },
-    { ruolo: 'utente', testo: 'Je aller en Sicile', correzione: 'Je vais en Sicile.', nota: '...' },
-    { ruolo: 'utente', testo: 'frase mai valutata' },
+    { ruolo: 'utente', testo: 'Je aller en Sicile', correzione: 'Je vais en Sicile.', nota: '...' }, // vecchia: senza pulita
+    { ruolo: 'ia', testo: 'La Sicile est belle !' },
+    { ruolo: 'utente', testo: 'Oui c\'est tres beau', correzione: null }, // vecchia, "senza correzione": può avere errori
+    { ruolo: 'ia', testo: 'Tu y vas en avion ?' },
   ],
 };
 
-test('lingue normali: battute IA, frasi giuste e correzioni; niente frasi non valutate', () => {
+test('lingue normali: battute IA, versione pulita o correzione; mai "senza correzione"', () => {
   assert.deepEqual(testi(ctx.daConv([convFr])), [
     'Salut ! Tu pars où cet été ?', 'Je vais à la mer.', 'Super, quelle mer ?', 'Je vais en Sicile.',
+    'La Sicile est belle !', 'Tu y vas en avion ?',
   ]);
   const f = j(ctx.daConv([convFr]))[0];
   assert.equal(f.cod, 'fr');
@@ -47,18 +54,35 @@ test('lingue normali: battute IA, frasi giuste e correzioni; niente frasi non va
   assert.equal(f.tema, 'viaggi');
 });
 
+test('risposte dell\'IA fallite o rotte: fuori, e anche la frase dello studente non valutata', () => {
+  const conv = {
+    id: 'e', lingua: 'en', turni: [
+      { ruolo: 'ia', testo: 'Hi! How are you?' },
+      { ruolo: 'utente', testo: 'I am fine', correzione: null, pulita: 'I am fine.' },
+      { ruolo: 'ia', testo: 'Errore connessione: Failed to fetch' },
+      { ruolo: 'utente', testo: 'I go home', correzione: null, pulita: 'I am going home.' },
+      { ruolo: 'ia', testo: '{"reply":"Why are you going ho' },
+      { ruolo: 'utente', testo: 'Because late', correzione: 'Because it is late.', pulita: 'Because it is late.' },
+      // ultima frase: l'IA non ha risposto (nessun turno dopo)
+    ],
+  };
+  assert.deepEqual(testi(ctx.daConv([conv])), ['Hi! How are you?']);
+});
+
 const convSp = {
   id: 'b', lingua: 'sp', turni: [
-    { ruolo: 'ia', testo: 'Ciao, cosa ti fai?' },                       // IA non controllata: fuori
-    { ruolo: 'ia', testo: 'Ciao, cos te fe?', corretta: true },          // corretta a mano: dentro
-    { ruolo: 'utente', testo: 'A vago a ca.', correzione: null },        // giusta: dentro
-    { ruolo: 'utente', testo: 'A vado a ca', correzione: 'A vago a cà.' }, // correzione IA: fuori del tutto
-    { ruolo: 'utente', testo: 'A magno', correzione: 'A mangio', correzioneCorretta: true }, // sistemata: dentro
+    { ruolo: 'ia', testo: 'Ciao, cosa ti fai?' },                         // IA non controllata: fuori
+    { ruolo: 'utente', testo: 'A vago a ca.', correzione: null, pulita: 'A vago a cà.' }, // giudizio IA: non basta
+    { ruolo: 'ia', testo: 'Ciao, cos te fe?', corretta: true },            // corretta a mano: dentro
+    { ruolo: 'utente', testo: 'A vado a ca', correzione: 'A vago a cà.' }, // correzione IA: fuori
+    { ruolo: 'ia', testo: 'E po?' },
+    { ruolo: 'utente', testo: 'A magno', correzione: 'A mangio', correzioneCorretta: true }, // sistemata a mano: dentro
+    { ruolo: 'ia', testo: 'Ben!' },
   ],
 };
 
-test('dialetti: solo testi controllati da una persona', () => {
-  assert.deepEqual(testi(ctx.daConv([convSp])), ['Ciao, cos te fe?', 'A vago a ca.', 'A mangio']);
+test('dialetti: solo testi corretti a mano', () => {
+  assert.deepEqual(testi(ctx.daConv([convSp])), ['Ciao, cos te fe?', 'A mangio']);
 });
 
 test('conversazioni rovinate o vuote non rompono nulla', () => {
@@ -74,13 +98,13 @@ test('raccolta: archivio + conversazioni, senza doppioni nella stessa lingua', (
   const l = j(ctx.raccogli(archivio, [convFr]));
   assert.equal(l.filter(f => f.testo.toLowerCase() === 'je vais à la mer.').length, 1);
   assert.ok(l.some(f => f.testo === 'I go home.'));
-  assert.equal(l.length, 5);
+  assert.equal(l.length, 7);
 });
 
 test('raccolta: solo le lingue attive, se indicate', () => {
   const archivio = [{ testo: 'I go home.', cod: 'en' }];
   assert.deepEqual(testi(ctx.raccogli(archivio, [convFr, convSp], ['en', 'sp'])), [
-    'I go home.', 'Ciao, cos te fe?', 'A vago a ca.', 'A mangio',
+    'I go home.', 'Ciao, cos te fe?', 'A mangio',
   ]);
 });
 

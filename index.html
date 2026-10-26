@@ -10633,15 +10633,17 @@ function salvaFraseRipasso({
   return true;
 }
 // Esito della verifica di Frase libera → cosa archiviare (niente se incerto).
+// Nei dialetti nemmeno il "giusto" dell'IA basta (Dino, 2026-10-27): entrano
+// solo le frasi corrette a mano con ✏️ Correggi (salvaCorretta in Frase libera).
 function salvaFraseDaFeedback(fb, frase, cod, tema) {
-  if (!fb) return false;
+  if (!fb || DIALETTI_TTS_ITA.includes(cod)) return false;
   if (fb.correct === true) return salvaFraseRipasso({
     testo: frase,
     cod,
     origine: "Frase libera",
     tema
   });
-  if (fb.correct === false && fb.correction && !DIALETTI_TTS_ITA.includes(cod)) return salvaFraseRipasso({
+  if (fb.correct === false && fb.correction) return salvaFraseRipasso({
     testo: fb.correction,
     cod,
     origine: "Frase libera",
@@ -10649,11 +10651,24 @@ function salvaFraseDaFeedback(fb, frase, cod, tema) {
   });
   return false;
 }
-// Frasi ripassabili dalle conversazioni salvate (formato invariato). Nei
-// dialetti mai testo dell'IA non controllato da una persona: battute dell'IA
-// solo se corrette a mano (`corretta`), correzioni solo se sistemate a mano
-// (`correzioneCorretta`). Senza il campo `correzione` la frase dello studente
-// non è mai stata valutata (chiamata IA fallita): fuori.
+// ✏️ Correggi salvato in Frase libera: la frase l'ha controllata una persona.
+function salvaFraseLiberaCorretta(testo, carta) {
+  return salvaFraseRipasso({
+    testo,
+    cod: carta?.lingua?.codice,
+    origine: "Frase libera",
+    tema: carta?.entry?.tema
+  });
+}
+// Frasi ripassabili dalle conversazioni salvate: solo frasi ESATTE (Dino,
+// 2026-10-27). Lingue normali: battute dell'IA valide (quelle che la voce
+// legge) e, dello studente, la versione pulita dell'IA (`pulita`, anche gli
+// errori piccoli corretti) o, nelle conversazioni vecchie, la correzione; una
+// frase "senza correzione" può avere errori piccoli: fuori. Dialetti: solo
+// testi corretti a mano (`corretta`, `correzioneCorretta`). La frase dello
+// studente conta solo se l'IA ha risposto davvero (turno dopo valido).
+// callAI segnala i guasti con testi "Errore..."; JSON rotto = risposta grezza.
+const battutaIAValida = x => !!x && x.ruolo === "ia" && !!String(x.testo || "").trim() && !/^\s*(Errore|[{[])/.test(x.testo);
 function frasiDaConversazioni(conversazioni) {
   const out = [];
   (Array.isArray(conversazioni) ? conversazioni : []).forEach(c => {
@@ -10668,12 +10683,14 @@ function frasiDaConversazioni(conversazioni) {
         tema: c.tema || ""
       });
     };
-    c.turni.forEach(x => {
+    c.turni.forEach((x, k) => {
       if (!x) return;
       if (x.ruolo === "ia") {
-        if (!dial || x.corretta) aggiungi(x.testo);
-      } else if (x.ruolo === "utente") {
-        if (x.correzione === null) aggiungi(x.testo);else if (x.correzione && (!dial || x.correzioneCorretta)) aggiungi(x.correzione);
+        if (battutaIAValida(x) && (!dial || x.corretta)) aggiungi(x.testo);
+      } else if (x.ruolo === "utente" && battutaIAValida(c.turni[k + 1])) {
+        if (dial) {
+          if (x.correzioneCorretta) aggiungi(x.correzione);
+        } else aggiungi(x.pulita || x.correzione);
       }
     });
   });
@@ -11269,6 +11286,8 @@ function SchermataFraseLibera({
     setAiutoStato("idle");
   }
   const lingueAttive = lingue.filter(l => l.attiva && !DIALETTI_TTS_ITA.includes(l.codice));
+  // Frase dialettale corretta a mano: è esatta, va al Ripasso frasi (Dino, 2026-10-27)
+  const salvaCorretta = n => salvaFraseLiberaCorretta(n, carta);
   function nuovaCarta() {
     richiestaFrase.current++;
     const cand = vocabolario.filter(e => lingueAttive.some(l => l.codice !== "it" && e[l.codice]));
@@ -11623,7 +11642,8 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
     origine: "Frase libera",
     testo: aiutoRis.frase,
     italiano: testoAiuto,
-    cod: carta.lingua.codice
+    cod: carta.lingua.codice,
+    onSalvato: salvaCorretta
   }), aiutoRis.parole.length > 0 && /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-400 mt-2 leading-relaxed select-none"
   }, aiutoRis.parole.map(p => p.w + " = " + p.t).join(" \xB7 ")), /*#__PURE__*/React.createElement("p", {
@@ -11645,7 +11665,8 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
     origine: "Frase libera",
     testo: idea.frase,
     italiano: idea.traduzione,
-    cod: carta.lingua.codice
+    cod: carta.lingua.codice,
+    onSalvato: salvaCorretta
   }))), /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 italic"
   }, "\u270d\ufe0f Scegline una, cambiala come vuoi e riscrivila tu nella casella.")))), stato === "loading" && /*#__PURE__*/React.createElement("div", {
@@ -11675,7 +11696,8 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
   }, "\u270F\uFE0F ", feedback.correction), feedback.correction && /*#__PURE__*/React.createElement(CorreggiDialetto, {
     origine: "Frase libera",
     testo: feedback.correction,
-    cod: carta.lingua.codice
+    cod: carta.lingua.codice,
+    onSalvato: salvaCorretta
   }), !showTrad && /*#__PURE__*/React.createElement(React.Fragment, null, feedback.grammar && !["no", "none", "n/a", "na", "N/A", "-", ""].includes((feedback.grammar || "").trim().toLowerCase()) && /*#__PURE__*/React.createElement("p", {
     className: "text-base text-zinc-400 mb-2"
   }, "\uD83D\uDCDA ", feedback.grammar), feedback.example && /*#__PURE__*/React.createElement("p", {
@@ -11683,7 +11705,8 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
   }, "\uD83D\uDCAC ", feedback.example), feedback.example && /*#__PURE__*/React.createElement(CorreggiDialetto, {
     origine: "Frase libera",
     testo: feedback.example,
-    cod: carta.lingua.codice
+    cod: carta.lingua.codice,
+    onSalvato: salvaCorretta
   })), showTrad && /*#__PURE__*/React.createElement("p", {
     className: "text-base text-amber-300 leading-relaxed whitespace-pre-wrap"
   }, traduzione)), feedback.correct !== true && /*#__PURE__*/React.createElement("button", {
