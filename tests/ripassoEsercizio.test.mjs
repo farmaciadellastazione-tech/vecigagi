@@ -30,7 +30,7 @@ ctx.globalThis = ctx;
 vm.runInContext([
   tra('// ── Archivio frasi da ripassare', '\n// ── Aiuto Frase libera'),
   `Object.assign(globalThis, { confrontaRipasso, caricaStatsRipasso, registraEsitoRipasso, salvaTradRipasso,
-     pesoRipasso, scegliFrasiRipasso, pianoRipasso, promptTraduzioniRipasso, estraiTraduzioniRipasso,
+     pesoRipasso, scegliFrasiRipasso, testoDettatoRipasso, pianoRipasso, promptTraduzioniRipasso, estraiTraduzioniRipasso,
      promptGiudizioRipasso, estraiGiudizioRipasso, N_FRASI_RIPASSO });`,
 ].join('\n'), ctx);
 const j = x => JSON.parse(JSON.stringify(x));
@@ -152,4 +152,26 @@ test('giudizio IA: prompt con originale, riferimento e risposta; esito letto in 
 test('traduzioni: id anche come testo ("0"), ma non id inventati', () => {
   assert.deepEqual(j(ctx.estraiTraduzioniRipasso('{"traduzioni":[{"id":"0","testo":"Je rentre."},{"id":" 1 ","testo":"Vado."},{"id":"x","testo":"no"},{"id":1.5,"testo":"no"}]}')),
     { 0: 'Je rentre.', 1: 'Vado.' });
+});
+
+// Code review 2026-10-27: la voce (parla) salta le parentesi e si ferma al
+// primo "/", quindi il dettato va confrontato con ciò che si sente davvero.
+test('dettato: si confronta con il testo che la voce legge', () => {
+  assert.equal(ctx.testoDettatoRipasso('Vengo lunedì/martedì.'), 'Vengo lunedì');
+  assert.equal(ctx.testoDettatoRipasso('Ho un cane (bassotto) nero.'), 'Ho un cane  nero.');
+  assert.equal(ctx.confrontaRipasso(ctx.testoDettatoRipasso('Ho un cane (bassotto) nero.'), 'ho un cane nero'), true);
+});
+
+// Code review 2026-10-27: nei dialetti la voce italiana non fa sentire gli
+// accenti della grafia ("ca"/"cà"): nel dettato non si pretendono.
+test('dettato nei dialetti: accenti facoltativi; altrove no', () => {
+  assert.equal(ctx.confrontaRipasso('A vago a cà.', 'a vago a ca', true), true);
+  assert.equal(ctx.confrontaRipasso('A vago a ca.', 'à vàgo a cà', true), true);
+  assert.equal(ctx.confrontaRipasso('A vago a cà.', 'a vago a ca'), false);
+  assert.equal(ctx.confrontaRipasso('A vago a cà.', 'a vago a ca casa', true), false);
+});
+
+test('la schermata usa testo letto e accenti facoltativi per i dialetti nel dettato', () => {
+  const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
+  assert.match(S, /confrontaRipasso\(testoDettatoRipasso\(item\.testo\), r, DIALETTI_TTS_ITA\.includes\(item\.cod\)\)/);
 });
