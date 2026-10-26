@@ -25,11 +25,12 @@ const ctx = vm.createContext({
     removeItem: k => { delete memoria[k]; },
   },
   DIALETTI_TTS_ITA: ['mn', 'sp', 'ge', 'cr'],
+  SK_CONVERSAZIONI: 'qml_v1_conversazioni',
 });
 ctx.globalThis = ctx;
 vm.runInContext([
   tra('// ── Archivio frasi da ripassare', '\n// ── Aiuto Frase libera'),
-  `Object.assign(globalThis, { confrontaRipasso, caricaStatsRipasso, registraEsitoRipasso, potaStatsRipasso, salvaTradRipasso,
+  `Object.assign(globalThis, { confrontaRipasso, caricaStatsRipasso, registraEsitoRipasso, potaStatsRipasso, archiviRipassoLeggibili, salvaTradRipasso,
      pesoRipasso, scegliFrasiRipasso, testoDettatoRipasso, pianoRipasso, promptTraduzioniRipasso, estraiTraduzioniRipasso,
      promptGiudizioRipasso, estraiGiudizioRipasso, N_FRASI_RIPASSO });`,
 ].join('\n'), ctx);
@@ -225,4 +226,33 @@ test('traduzione dal dialetto: il riferimento non si salva né si riusa', () => 
   const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
   assert.match(S, /rif: x\.modo === "traduzione" && !DIALETTI_TTS_ITA\.includes\(x\.cod\) \? stats\[x\.chiave\]\?\.trad\?\.\[x\.a\] \|\| "" : ""/);
   assert.match(S, /if \(!DIALETTI_TTS_ITA\.includes\(x\.cod\)\) salvaTradRipasso\(x\.chiave, x\.a, trad\[k\]\);/);
+});
+
+// Seconda code review (2026-10-27): se un archivio non si legge (JSON rovinato,
+// localStorage che dà errore) le raccolte risultano vuote e la potatura
+// cancellerebbe tutte le statistiche. Si pota solo se entrambi si leggono.
+test('archivi leggibili: assenti o validi sì, rovinati o in errore no', () => {
+  azzera();
+  assert.equal(ctx.archiviRipassoLeggibili(), true);
+  memoria.qml_v1_frasi_ripasso = '[]';
+  memoria.qml_v1_conversazioni = '[{"id":"a","turni":[]}]';
+  assert.equal(ctx.archiviRipassoLeggibili(), true);
+  memoria.qml_v1_conversazioni = '{rotto';
+  assert.equal(ctx.archiviRipassoLeggibili(), false);
+  memoria.qml_v1_conversazioni = '{"non":"lista"}';
+  assert.equal(ctx.archiviRipassoLeggibili(), false);
+  memoria.qml_v1_conversazioni = '[]';
+  const vero = ctx.localStorage.getItem;
+  ctx.localStorage.getItem = () => { throw new Error('bloccato'); };
+  assert.equal(ctx.archiviRipassoLeggibili(), false);
+  ctx.localStorage.getItem = vero;
+});
+
+test('con un archivio rovinato la potatura non cancella nulla', () => {
+  azzera();
+  ctx.registraEsitoRipasso('en|a.', true);
+  ctx.registraEsitoRipasso('en|b.', false);
+  memoria.qml_v1_frasi_ripasso = '{rotto';
+  ctx.potaStatsRipasso([]); // le raccolte risultano vuote per l'errore di lettura
+  assert.deepEqual(Object.keys(j(ctx.caricaStatsRipasso())).sort(), ['en|a.', 'en|b.']);
 });

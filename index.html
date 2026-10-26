@@ -10759,10 +10759,24 @@ function aggiornaStatsRipasso(chiave, fn) {
     localStorage.setItem(SK_RIPASSO_STATS, JSON.stringify(tutte));
   } catch (e) {}
 }
+// I due archivi da cui vengono le frasi si leggono davvero? Assente = vuoto, va
+// bene; rovinato o localStorage in errore = no. Le funzioni di caricamento in
+// quel caso restituiscono [] e la potatura cancellerebbe tutto (code review).
+function archiviRipassoLeggibili() {
+  try {
+    return [SK_FRASI_RIPASSO, SK_CONVERSAZIONI].every(k => {
+      const v = localStorage.getItem(k);
+      return v === null || Array.isArray(JSON.parse(v));
+    });
+  } catch (e) {
+    return false;
+  }
+}
 // Via le statistiche delle frasi non più esistenti (uscite dall'archivio o da
 // conversazioni cancellate). chiaviValide: frasi di TUTTE le lingue, così
 // spegnere una lingua non ne cancella i progressi. Riscrive solo se serve.
 function potaStatsRipasso(chiaviValide) {
+  if (!archiviRipassoLeggibili()) return;
   const valide = new Set(chiaviValide);
   const tutte = caricaStatsRipasso();
   const vecchie = Object.keys(tutte).filter(k => !valide.has(k));
