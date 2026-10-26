@@ -10636,6 +10636,57 @@ function salvaFraseDaFeedback(fb, frase, cod, tema) {
   });
   return false;
 }
+// Frasi ripassabili dalle conversazioni salvate (formato invariato). Nei
+// dialetti mai testo dell'IA non controllato da una persona: battute dell'IA
+// solo se corrette a mano (`corretta`), correzioni solo se sistemate a mano
+// (`correzioneCorretta`). Senza il campo `correzione` la frase dello studente
+// non è mai stata valutata (chiamata IA fallita): fuori.
+function frasiDaConversazioni(conversazioni) {
+  const out = [];
+  (Array.isArray(conversazioni) ? conversazioni : []).forEach(c => {
+    if (!c || !c.lingua || !Array.isArray(c.turni)) return;
+    const dial = DIALETTI_TTS_ITA.includes(c.lingua);
+    const aggiungi = testo => {
+      const t = String(testo || "").trim();
+      if (t) out.push({
+        testo: t,
+        cod: c.lingua,
+        origine: "Conversazione",
+        tema: c.tema || ""
+      });
+    };
+    c.turni.forEach(x => {
+      if (!x) return;
+      if (x.ruolo === "ia") {
+        if (!dial || x.corretta) aggiungi(x.testo);
+      } else if (x.ruolo === "utente") {
+        if (x.correzione === null) aggiungi(x.testo);else if (x.correzione && (!dial || x.correzioneCorretta)) aggiungi(x.correzione);
+      }
+    });
+  });
+  return out;
+}
+// Tutte le frasi da ripassare, senza doppioni per lingua; `chiave` identifica
+// la frase nelle statistiche del ripasso. codiciAttivi: se dato, filtra.
+function frasiDaRipassare(archivio, conversazioni, codiciAttivi) {
+  const viste = new Set();
+  const out = [];
+  [...(archivio || []), ...frasiDaConversazioni(conversazioni)].forEach(f => {
+    if (!f || !f.testo || !f.cod) return;
+    if (codiciAttivi && !codiciAttivi.includes(f.cod)) return;
+    const chiave = f.cod + "|" + chiaveFraseRipasso(f.testo);
+    if (viste.has(chiave)) return;
+    viste.add(chiave);
+    out.push({
+      testo: String(f.testo).trim(),
+      cod: f.cod,
+      origine: f.origine || "",
+      tema: f.tema || "",
+      chiave
+    });
+  });
+  return out;
+}
 // ── Aiuto Frase libera ───────────────────────────────────────────────────
 // Per chi parte da zero (richiesta di Dino, 2026-10-15): "💡 Aiutami" traduce
 // una frase scritta nella lingua dei menu, "Dammi un'idea" propone 2-3 frasi.
