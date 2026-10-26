@@ -280,3 +280,16 @@ test('dettato nei dialetti: apostrofi e spazi facoltativi, lettere no', () => {
   assert.equal(ctx.confrontaRipasso("L'acqua è fresca", 'lacqua è fresca'), false);
   assert.equal(ctx.confrontaRipasso('Good morning', 'goodmorning'), false);
 });
+
+// Seconda code review (2026-10-27): un solo JSON per tutta la sessione; se
+// arriva troncato o rovinato si perdevano tutte le traduzioni. Ora si
+// recuperano le voci COMPLETE (chiuse da virgolette e graffa), mai quelle monche.
+test('traduzioni da JSON troncato: le voci complete sì, quella tagliata no', () => {
+  const raw = '{"traduzioni":[{"id":0,"testo":"Je rentre."},{"id":"1","testo":"Il dit \\"oui\\"."},{"testo":"Vado.","id":2},{"id":3,"testo":"Vado a ca';
+  assert.deepEqual(j(ctx.estraiTraduzioniRipasso(raw)), { 0: 'Je rentre.', 1: 'Il dit "oui".', 2: 'Vado.' });
+});
+
+test('traduzioni da JSON rovinato a metà (non troncato)', () => {
+  const raw = '{"traduzioni":[{"id":0,"testo":"Uno."},{"id":1,"testo":"Due."} {"id":2,"testo":"Tre."}]}';
+  assert.deepEqual(j(ctx.estraiTraduzioniRipasso(raw)), { 0: 'Uno.', 1: 'Due.', 2: 'Tre.' });
+});

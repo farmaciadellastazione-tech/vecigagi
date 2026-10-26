@@ -10847,18 +10847,33 @@ Rispondi con UN oggetto JSON, senza markdown: {"traduzioni": [{"id": number, "te
   };
 }
 function estraiTraduzioniRipasso(raw) {
+  const out = {};
+  const aggiungi = (idGrezzo, testo) => {
+    // L'id arriva spesso come testo ("0"): va accettato, sennò spariscono tutte
+    const id = String(idGrezzo ?? "").trim() !== "" ? Number(idGrezzo) : NaN;
+    if (Number.isInteger(id) && String(testo || "").trim()) out[id] = String(testo).trim();
+  };
   try {
     const m = String(raw || "").match(/\{[\s\S]*\}/);
     const o = JSON.parse(m ? m[0] : "");
-    const out = {};
-    (o.traduzioni || []).forEach(x => {
-      // L'id arriva spesso come testo ("0"): va accettato, sennò spariscono tutte
-      const id = x && String(x.id ?? "").trim() !== "" ? Number(x.id) : NaN;
-      if (Number.isInteger(id) && String(x.testo || "").trim()) out[id] = String(x.testo).trim();
-    });
+    (o.traduzioni || []).forEach(x => x && aggiungi(x.id, x.testo));
     return out;
   } catch (e) {
-    return {};
+    // JSON troncato o rovinato (seconda code review): si recuperano le voci
+    // complete, chiuse da virgolette e graffa; quella tagliata resta fuori.
+    const stringa = '"((?:[^"\\\\]|\\\\.)*)"';
+    const idRe = '"id"\\s*:\\s*"?\\s*(-?\\d+(?:\\.\\d+)?)\\s*"?';
+    const testoRe = '"testo"\\s*:\\s*' + stringa;
+    const leggi = s => {
+      try {
+        return JSON.parse('"' + s + '"');
+      } catch (err) {
+        return "";
+      }
+    };
+    for (const v of String(raw || "").matchAll(new RegExp("\\{\\s*" + idRe + "\\s*,\\s*" + testoRe + "\\s*\\}", "g"))) aggiungi(v[1], leggi(v[2]));
+    for (const v of String(raw || "").matchAll(new RegExp("\\{\\s*" + testoRe + "\\s*,\\s*" + idRe + "\\s*\\}", "g"))) aggiungi(v[2], leggi(v[1]));
+    return out;
   }
 }
 function promptGiudizioRipasso(item, risposta, riferimento) {
