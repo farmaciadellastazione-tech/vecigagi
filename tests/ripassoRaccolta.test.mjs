@@ -24,6 +24,7 @@ const HTML = fs.readFileSync(ROOT + '/index.html', 'utf8');
 const tra = (a, b) => { const i = HTML.indexOf(a); if (i < 0) throw new Error(a); return HTML.slice(i, HTML.indexOf(b, i)); };
 const ctx = vm.createContext({ localStorage: { getItem: () => null, setItem: () => {} }, DIALETTI_TTS_ITA: ['mn', 'sp', 'ge', 'cr'] });
 ctx.globalThis = ctx;
+vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx); // normalizza
 vm.runInContext([
   tra('// ── Archivio frasi da ripassare', '\n// ── Aiuto Frase libera'),
   'globalThis.daConv = frasiDaConversazioni; globalThis.raccogli = frasiDaRipassare;',
@@ -110,7 +111,8 @@ test('raccolta: solo le lingue attive, se indicate', () => {
 
 test('ogni frase ha la chiave per le statistiche (lingua + testo normalizzato)', () => {
   const l = j(ctx.raccogli([{ testo: 'I  go Home.', cod: 'en' }], []));
-  assert.equal(l[0].chiave, 'en|i go home.');
+  // terza code review: la chiave usa normalizza come il confronto (senza punteggiatura)
+  assert.equal(l[0].chiave, 'en|i go home');
 });
 
 // Seconda code review (2026-10-27): battuta dell'IA recuperata da una risposta
@@ -147,4 +149,16 @@ test('pulita che non è testo (dati vecchi o strani): si usa la correzione', () 
     { ruolo: 'ia', testo: 'Where?' },
   ] };
   assert.deepEqual(testi(ctx.daConv([conv])), ['I go.', 'Where?']);
+});
+
+// Terza code review (2026-10-27): "Ciao, come stai?" e "Ciao come stai" erano
+// due frasi con statistiche separate, mentre il confronto le considera uguali.
+test('stessa frase con punteggiatura o accenti diversi: una sola', () => {
+  const l = j(ctx.raccogli([
+    { testo: 'Ciao, come stai?', cod: 'it' },
+    { testo: 'ciao come stai', cod: 'it' },
+    { testo: 'Ciào come stai!', cod: 'it' },
+  ], []));
+  assert.equal(l.length, 1);
+  assert.equal(l[0].testo, 'Ciao, come stai?'); // vince la prima
 });

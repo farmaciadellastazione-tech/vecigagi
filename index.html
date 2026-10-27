@@ -10706,7 +10706,8 @@ function frasiDaRipassare(archivio, conversazioni, codiciAttivi) {
   [...(archivio || []), ...frasiDaConversazioni(conversazioni)].forEach(f => {
     if (!f || !f.testo || !f.cod) return;
     if (codiciAttivi && !codiciAttivi.includes(f.cod)) return;
-    const chiave = f.cod + "|" + chiaveFraseRipasso(f.testo);
+    // Stessa normalizzazione del confronto: "Ciao, come stai?" = "ciao come stai"
+    const chiave = f.cod + "|" + normalizza(String(f.testo));
     if (viste.has(chiave)) return;
     viste.add(chiave);
     out.push({
