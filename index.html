@@ -10970,12 +10970,12 @@ function salvaFraseLiberaCorretta(testo, carta) {
     tema: carta?.entry?.tema
   });
 }
-// Frasi ripassabili dalle conversazioni salvate: solo frasi ESATTE (Dino,
-// 2026-10-27). Lingue normali: battute dell'IA valide (quelle che la voce
-// legge) e, dello studente, la versione pulita dell'IA (`pulita`, anche gli
-// errori piccoli corretti) o, nelle conversazioni vecchie, la correzione; una
-// frase "senza correzione" può avere errori piccoli: fuori. Dialetti: solo
-// testi corretti a mano (`corretta`, `correzioneCorretta`). La frase dello
+// Frasi ripassabili dalle conversazioni salvate: solo frasi ESATTE e solo dello
+// studente (Dino, 2026-10-27: le battute dell'IA sono spesso lunghe o
+// spiegazioni grammaticali). Lingue normali: la versione pulita dell'IA
+// (`pulita`, anche gli errori piccoli corretti) o, nelle conversazioni vecchie,
+// la correzione; una frase "senza correzione" può avere errori piccoli: fuori.
+// Dialetti: solo testi corretti a mano (`correzioneCorretta`). La frase dello
 // studente conta solo se l'IA ha risposto davvero (turno dopo valido).
 // callAI segnala i guasti con testi "Errore..."; JSON rotto = risposta grezza.
 // Una battuta troncata (`parziale`) corretta a mano (`corretta`) vale: l'ha controllata una persona.
@@ -10997,10 +10997,7 @@ function frasiDaConversazioni(conversazioni) {
       });
     };
     c.turni.forEach((x, k) => {
-      if (!x) return;
-      if (x.ruolo === "ia") {
-        if (battutaIAValida(x) && (!dial || x.corretta)) aggiungi(x.testo);
-      } else if (x.ruolo === "utente" && battutaIAValida(c.turni[k + 1])) {
+      if (x && x.ruolo === "utente" && battutaIAValida(c.turni[k + 1])) {
         if (dial) {
           if (x.correzioneCorretta) aggiungi(x.correzione);
         } else aggiungi(typeof x.pulita === "string" && x.pulita.trim() ? x.pulita : x.correzione);
