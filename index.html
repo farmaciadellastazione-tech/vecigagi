@@ -9903,7 +9903,8 @@ function EraGiusta({
     };
     try {
       const p = promptSinonimo({
-        parola: soloVisibile(carta.entry?.[carta.da] || ""),
+        // Da un dialetto solo la grafia, senza la pronuncia per la voce ("d'zena/Zena" → "Zena")
+        parola: formaDisplay(carta.entry?.[carta.da] || "", carta.da),
         nomeDa: lDA?.nome || carta.da,
         nomeA: lA.nome,
         atteso,

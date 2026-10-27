@@ -100,3 +100,10 @@ test('Invio sul pulsante non fa passare alla carta dopo', () => {
   const pulsante = C.slice(C.indexOf('const pulsante ='), C.indexOf('if (stato === "loading")'));
   assert.match(pulsante, /onKeyDown: e => \{\s*if \(e\.key === "Enter"\) e\.stopPropagation\(\);\s*\}/);
 });
+
+// Code review (2026-10-27): da una lingua dialettale all'IA arrivava la forma
+// "pronuncia/grafia" con i trucchi TTS ("d'zena/Zena"); ora solo la grafia.
+test('la parola di partenza va all\'IA nella grafia (formaDisplay)', () => {
+  const C = tra('function EraGiusta(', '\nfunction SpiegaAI(');
+  assert.match(C, /parola: formaDisplay\(carta\.entry\?\.\[carta\.da\] \|\| "", carta\.da\),/);
+});
