@@ -11137,9 +11137,18 @@ function scegliFrasiRipasso(frasi, stats, n, rnd) {
 }
 // Per ogni frase: dettato, o traduzione verso una lingua attiva non dialettale
 // diversa dalla sua. Senza IA o senza lingua d'arrivo: dettato.
-function pianoRipasso(frasi, lingue, conIA, rnd) {
+// conVoce (c'è il riconoscimento vocale): circa un terzo delle frasi si ripete a
+// voce, mai nei dialetti (il riconoscimento non li capisce).
+function pianoRipasso(frasi, lingue, conIA, rnd, conVoce = false) {
   const nome = cod => lingue.find(l => l.codice === cod)?.nome || cod;
   return frasi.map(f => {
+    if (conVoce && !DIALETTI_TTS_ITA.includes(f.cod) && rnd() < 1 / 3) return {
+      ...f,
+      nomeDa: nome(f.cod),
+      modo: "voce",
+      a: null,
+      nomeA: ""
+    };
     const arrivi = lingue.filter(l => l.attiva && l.codice !== f.cod && !DIALETTI_TTS_ITA.includes(l.codice));
     const traduci = conIA && arrivi.length > 0 && rnd() >= 0.5;
     const a = traduci ? arrivi[Math.min(arrivi.length - 1, Math.floor(rnd() * arrivi.length))] : null;
@@ -11151,6 +11160,11 @@ function pianoRipasso(frasi, lingue, conIA, rnd) {
       nomeA: a ? a.nome : ""
     };
   });
+}
+// Ripeti a voce: vale la prima interpretazione del riconoscimento che coincide
+// con la frase letta (regole del dettato); null se nessuna.
+function esitoVoceRipasso(item, testi, bcp47) {
+  return (Array.isArray(testi) ? testi : []).find(t => String(t || "").trim() && confrontaRipasso(testoDettatoRipasso(item.testo), t, false, bcp47)) || null;
 }
 function promptTraduzioniRipasso(items) {
   return {
@@ -11259,7 +11273,7 @@ function SchermataRipassoFrasi({
       return;
     }
     const stats = caricaStatsRipasso();
-    const piano = pianoRipasso(scegliFrasiRipasso(frasi, stats, N_FRASI_RIPASSO, Math.random), lingue, conIA, Math.random).map(x => ({
+    const piano = pianoRipasso(scegliFrasiRipasso(frasi, stats, N_FRASI_RIPASSO, Math.random), lingue, conIA, Math.random, !!SR).map(x => ({
       ...x,
       // Dal dialetto l'IA traduce male: il riferimento si richiede ogni volta,
       // così uno sbagliato non resta per sempre
@@ -11298,9 +11312,9 @@ function SchermataRipassoFrasi({
     };
   }, []);
   const item = items[i];
-  // Il dettato parte da solo a ogni frase nuova
+  // Dettato e voce: la frase si sente da sola a ogni frase nuova
   useEffect(() => {
-    if (fase === "domanda" && item?.modo === "dettato") parla(item.testo, lingua(item.cod).bcp47);
+    if (fase === "domanda" && item?.modo !== "traduzione") parla(item.testo, lingua(item.cod).bcp47);
     if (fase === "domanda") rispostaRef.current?.focus();
   }, [fase, i]);
   function chiudi(giusta, giustaTesto, correction, note) {
@@ -11316,13 +11330,14 @@ function SchermataRipassoFrasi({
       note
     });
     setFase("esito");
-    const testoDaLeggere = item.modo === "dettato" ? item.testo : giusta ? risposta.trim() : correction || giustaTesto;
-    parla(testoDaLeggere, lingua(item.modo === "dettato" ? item.cod : item.a).bcp47);
+    const testoDaLeggere = item.modo !== "traduzione" ? item.testo : giusta ? risposta.trim() : correction || giustaTesto;
+    parla(testoDaLeggere, lingua(item.modo !== "traduzione" ? item.cod : item.a).bcp47);
   }
   async function controlla() {
     const r = risposta.trim();
     if (!r || !item || fase !== "domanda") return;
-    if (item.modo === "dettato") return chiudi(confrontaRipasso(testoDettatoRipasso(item.testo), r, DIALETTI_TTS_ITA.includes(item.cod), lingua(item.cod).bcp47), testoDettatoRipasso(item.testo), "", "");
+    // Dettato, o voce con la frase scritta a mano (microfono che capisce male)
+    if (item.modo !== "traduzione") return chiudi(confrontaRipasso(testoDettatoRipasso(item.testo), r, DIALETTI_TTS_ITA.includes(item.cod), lingua(item.cod).bcp47), testoDettatoRipasso(item.testo), "", "");
     if (confrontaRipasso(item.rif, r, false, lingua(item.a).bcp47)) return chiudi(true, item.rif, "", "");
     const n = ++richiesta.current;
     setFase("verifica");
@@ -11348,7 +11363,19 @@ function SchermataRipassoFrasi({
     setEsito(null);
     setFase("domanda");
   }
-  const testata = /*#__PURE__*/React.createElement("div", {
+  // Ripeti a voce: il microfono risponde al posto della casella; nell'esito si
+  // vede ciò che ha capito (la prima interpretazione, se nessuna coincide)
+  const onVoce = useCallback(testi => {
+    if (fase !== "domanda" || item?.modo !== "voce") return;
+    const giusta = esitoVoceRipasso(item, testi, lingua(item.cod).bcp47);
+    setRisposta(giusta || testi?.[0] || "");
+    chiudi(!!giusta, testoDettatoRipasso(item.testo), "", "");
+  }, [fase, item]);
+  const {
+    ascolto,
+    avviaAscolto
+  } = useSpeechRecognition(item ? lingua(item.cod).bcp47 : "it-IT", onVoce);
+  const testata =/*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-between mb-4"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: onHome,
@@ -11396,14 +11423,20 @@ function SchermataRipassoFrasi({
     className: "text-zinc-500 text-sm"
   }, "← Home"));
   const da = lingua(item.cod);
-  const dettato = item.modo === "dettato";
+  // "dettato" = si ascolta la frase (dettato o voce), non si traduce
+  const voce = item.modo === "voce";
+  const dettato = item.modo === "dettato" || voce;
   return contenitore(/*#__PURE__*/React.createElement("div", {
     className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 mb-4 text-center"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mb-2"
-  }, dettato ? `✍️ Dettato \xB7 ${da.bandiera || ""} ${da.nome}` : `🌐 Traduci in ${item.nomeA}`), dettato ? /*#__PURE__*/React.createElement("div", {
+  }, voce ? `🎙️ Ripeti a voce \xB7 ${da.bandiera || ""} ${da.nome}` : dettato ? `✍️ Dettato \xB7 ${da.bandiera || ""} ${da.nome}` : `🌐 Traduci in ${item.nomeA}`), dettato ? /*#__PURE__*/React.createElement("div", {
     className: "flex justify-center gap-3"
-  }, /*#__PURE__*/React.createElement("button", {
+  }, voce && fase === "domanda" && /*#__PURE__*/React.createElement("button", {
+    onClick: avviaAscolto,
+    title: ascolto ? "Ferma" : "Parla", "aria-label": ascolto ? "Ferma" : "Parla",
+    className: `text-3xl ${ascolto ? "animate-pulse" : ""}`
+  }, ascolto ? "⏹️" : "🎙️"), /*#__PURE__*/React.createElement("button", {
     onClick: () => parla(item.testo, da.bcp47),
     title: "Ascolta", "aria-label": "Ascolta",
     className: "text-3xl"
@@ -11419,7 +11452,7 @@ function SchermataRipassoFrasi({
     className: "text-xs text-amber-500 mt-2 italic"
   }, "🍷 L'IA conosce poco i dialetti: la traduzione di riferimento può sbagliare"))), !conIA && i === 0 && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mb-3 text-center"
-  }, "🔑 Senza IA solo dettato: con una chiave IA (Gemini è gratuito) anche le traduzioni. ", /*#__PURE__*/React.createElement("button", {
+  }, "🔑 Senza IA solo dettato e voce: con una chiave IA (Gemini è gratuito) anche le traduzioni. ", /*#__PURE__*/React.createElement("button", {
     onClick: onConfiguraIA,
     className: "text-sky-400 hover:text-sky-300 underline"
   }, "Configura IA")), fase === "domanda" && /*#__PURE__*/React.createElement("div", {
@@ -11428,7 +11461,7 @@ function SchermataRipassoFrasi({
     ref: rispostaRef,
     value: risposta,
     onChange: e => setRisposta(e.target.value),
-    placeholder: dettato ? "Scrivi quello che senti..." : `In ${item.nomeA}...`,
+    placeholder: voce ? "Premi 🎙️ e ripeti la frase (o scrivila)..." : dettato ? "Scrivi quello che senti..." : `In ${item.nomeA}...`,
     className: "w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white text-lg resize-none focus:outline-none focus:border-cyan-500 mb-3",
     rows: 3,
     onKeyDown: e => {
