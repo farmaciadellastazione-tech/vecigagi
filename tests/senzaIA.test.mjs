@@ -60,3 +60,52 @@ test('callAI con la chiave: la chiamata parte come prima', async () => {
 test('i controlli sparsi della chiave usano iaConfigurata', () => {
   assert.equal(HTML.split('(aiSettings?.apiKey || "").length > 10').length - 1, 0);
 });
+
+// Passo 2: un solo avviso (AvvisoIA, e la schermata intera SchermataSenzaIA)
+// con il pulsante che apre le Impostazioni IA; App torna poi dov'era.
+// Frase libera e Conversazione senza chiave mostrano l'avviso al posto
+// dell'esercizio; in Home restano cliccabili con la riga "Serve una chiave IA".
+const SEZ = tra('// ── Senza IA', '\nasync function callAI(');
+test('AvvisoIA: spiega cosa serve e porta alle Impostazioni IA', () => {
+  const A = tra('function AvvisoIA(', '\nfunction SchermataSenzaIA(');
+  assert.match(A, /chiave IA/);
+  assert.match(A, /Gemini/);
+  assert.match(A, /gratuit/);
+  assert.match(A, /ai\.google\.dev/);
+  assert.match(A, /onClick: onConfigura/);
+  assert.match(A, /Configura IA/);
+  assert.match(SEZ, /function SchermataSenzaIA\(\{\s*titolo,\s*onHome,\s*onConfigura\s*\}\)/);
+});
+
+test('Frase libera senza chiave: avviso al posto dell\'esercizio', () => {
+  const FL = tra('function SchermataFraseLibera(', '\n// ── Conversazioni salvate');
+  const i = FL.indexOf('if (!iaConfigurata(aiSettings)) return /*#__PURE__*/React.createElement(SchermataSenzaIA, {');
+  assert.ok(i > 0);
+  assert.ok(i < FL.indexOf('if (!carta) return'));
+  assert.match(FL, /onConfiguraIA\s*\}\) \{/);
+});
+
+test('Conversazione senza chiave: avviso, e nessuna partenza automatica', () => {
+  const C = tra('function SchermataConversazione(', '\n// Modalità "Lettura guidata"');
+  const i = C.indexOf('if (!iaConfigurata(aiSettings)) return /*#__PURE__*/React.createElement(SchermataSenzaIA, {');
+  assert.ok(i > 0);
+  assert.ok(i < C.indexOf('if (stato === "archivio") return'));
+  assert.match(C, /if \(linguaAuto && iaConfigurata\(aiSettings\)\) iniziaConversazione\(/);
+  assert.match(C, /async function iniziaConversazione\(l, argomento\) \{\s*if \(!iaConfigurata\(aiSettings\)\) return;/);
+});
+
+test('App apre le Impostazioni IA dalla funzione e poi ci torna', () => {
+  assert.match(HTML, /function apriImpostazioniAI\(\) \{\s*setRitornoIA\(schermata\);\s*setSchermata\("impostazioniAI"\);\s*\}/);
+  assert.match(HTML, /onIndietro: \(\) => \{\s*setSchermata\(ritornoIA \|\| "home"\);\s*setRitornoIA\(null\);\s*\}/);
+  assert.match(tra('createElement(SchermataFraseLibera, {', '});'), /onConfiguraIA: apriImpostazioniAI/);
+  assert.match(tra('createElement(SchermataConversazione, {', '});'), /onConfiguraIA: apriImpostazioniAI/);
+});
+
+test('Home: Frase libera e Conversazione cliccabili, con la riga "Serve una chiave IA"', () => {
+  const H = tra('function Home(', '\n// ── Modifica parola');
+  assert.match(H, /const serveIA = \(m\.key === "fraseLibera" \|\| m\.key === "conversazione"\) && !iaConfigurata\(aiSettings\);/);
+  assert.match(H, /(🔑|\\uD83D\\uDD11) Serve una chiave IA \(gratuita\)/); // emoji letterale o in escape
+  assert.match(tra('createElement(Home, {', '});'), /aiSettings: aiSettings,/);
+  // non le blocca: niente motivoBlocco per la chiave
+  assert.doesNotMatch(H, /motivoBlocco = "[^"]*chiave/);
+});

@@ -7879,7 +7879,8 @@ function Home({
   onImporta,
   onCambiaLingue,
   onCambiaFiltri,
-  onImpostazioniAI
+  onImpostazioniAI,
+  aiSettings
 }) {
   const t = useUI();
   const fileRef = useRef();
@@ -8478,6 +8479,9 @@ function Home({
     let sbloccata = isSbloccata(m.key);
     const prog = progSblocco(m.key);
     const rec = getRecordModalita(m.key);
+    // Senza chiave IA restano cliccabili (scelta di Dino): dentro c'è l'avviso
+    // con "Configura IA"; qui solo una riga che lo dice prima di entrare.
+    const serveIA = (m.key === "fraseLibera" || m.key === "conversazione") && !iaConfigurata(aiSettings);
     // Verifica requisiti linguistici per modalità specifiche.
     // Scelta multipla richiede almeno 2 lingue attive (qualsiasi coppia, dialetti inclusi).
     let motivoBlocco = null;
@@ -8533,7 +8537,9 @@ function Home({
       className: `text-sm ${sbloccata ? "text-slate-400" : "text-zinc-600"}`
     }, m.desc), motivoBlocco && /*#__PURE__*/React.createElement("div", {
       className: "text-xs text-amber-500 mt-1 font-medium"
-    }, "\u26A0 ", motivoBlocco), sbloccata && rec && /*#__PURE__*/React.createElement("div", {
+    }, "\u26A0 ", motivoBlocco), sbloccata && serveIA && /*#__PURE__*/React.createElement("div", {
+      className: "text-xs text-amber-500 mt-1 font-medium"
+    }, "\uD83D\uDD11 Serve una chiave IA (gratuita)"), sbloccata && rec && /*#__PURE__*/React.createElement("div", {
       className: "text-xs text-slate-500 mt-1 font-medium"
     }, rec, " \xB7 ", nLingueAttive, "\uD83C\uDF10"), !sbloccata && prog && /*#__PURE__*/React.createElement("div", {
       className: "mt-2"
@@ -8929,6 +8935,44 @@ const AI_MAX_TOKENS = 1000;
 // nessuna chiamata a vuoto, e un messaggio comprensibile invece di un HTTP 400.
 const iaConfigurata = aiCfg => String(aiCfg?.apiKey || "").trim().length > 10;
 const MSG_SENZA_IA = "Errore: manca la chiave IA. Configurala da 🤖 in Home (Gemini è gratuito).";
+// Avviso unico per tutte le funzioni con l'IA: cosa serve e pulsante per
+// configurarla (App apre le Impostazioni IA e poi torna dov'era).
+function AvvisoIA({
+  onConfigura
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 text-center"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-4xl mb-3"
+  }, "🔑"), /*#__PURE__*/React.createElement("p", {
+    className: "text-base text-zinc-300 mb-2"
+  }, "Questa funzione usa l'IA"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-500 mb-4"
+  }, "Serve una chiave IA. Quella di Google Gemini è gratuita e si crea in 2 minuti: ai.google.dev → Get API key, poi incollala nelle impostazioni."), /*#__PURE__*/React.createElement("button", {
+    onClick: onConfigura,
+    className: "w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3.5 rounded-xl transition btn-shadow"
+  }, "🤖 Configura IA"));
+}
+// Schermata intera per gli esercizi che senza IA non funzionano (Frase
+// libera, Conversazione): al posto dell'esercizio, niente chiamate a vuoto.
+function SchermataSenzaIA({
+  titolo,
+  onHome,
+  onConfigura
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen bg-black flex flex-col p-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between mb-4"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onHome,
+    className: "text-zinc-500 hover:text-white transition text-sm"
+  }, "← Home"), /*#__PURE__*/React.createElement("span", {
+    className: "text-zinc-600 text-xs"
+  }, titolo), /*#__PURE__*/React.createElement("span", null)), /*#__PURE__*/React.createElement(AvvisoIA, {
+    onConfigura: onConfigura
+  }));
+}
 async function callAI(systemPrompt, userPrompt, aiCfg) {
   // Solo la chiave vuota: la soglia di iaConfigurata vale per l'interfaccia
   if (!String(aiCfg?.apiKey || "").trim()) return MSG_SENZA_IA;
@@ -11593,7 +11637,8 @@ function SchermataFraseLibera({
   coda,
   indiceCoda,
   onTornaRisultati,
-  onDiscutine
+  onDiscutine,
+  onConfiguraIA
 }) {
   const [carta, setCarta] = useState(null);
   // Coda delle parole sbagliate (da "Fai una frase con" nei risultati)
@@ -11858,6 +11903,12 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
     }
     setStato("feedback");
   }
+  // Senza chiave IA l'esercizio non può funzionare: l'avviso al suo posto
+  if (!iaConfigurata(aiSettings)) return /*#__PURE__*/React.createElement(SchermataSenzaIA, {
+    titolo: "🤖 Frase libera",
+    onHome: onTornaRisultati || onHome,
+    onConfigura: onConfiguraIA
+  });
   if (!carta) return /*#__PURE__*/React.createElement("div", {
     className: "min-h-screen bg-black flex items-center justify-center"
   }, /*#__PURE__*/React.createElement("p", {
@@ -12636,7 +12687,8 @@ function SchermataConversazione({
   onHome,
   iniziale,
   ritorno,
-  onRitorno
+  onRitorno,
+  onConfiguraIA
 }) {
   const lingueCandidate = lingue.filter(l => l.attiva && l.codice !== "it");
   // Se si arriva da Frase Libera con "Continua a parlarne", si parte subito nella stessa
@@ -12665,6 +12717,7 @@ function SchermataConversazione({
   // finirebbe in un'altra conversazione (o riporterebbe in chat).
   const occupata = stato === "generando" || stato === "elaborando";
   async function iniziaConversazione(l, argomento) {
+    if (!iaConfigurata(aiSettings)) return; // senza chiave: c'è l'avviso, nessuna chiamata
     setLingua(l);
     setStato("generando");
     setTurni([]);
@@ -12685,7 +12738,7 @@ function SchermataConversazione({
   // Mount-only: parte subito se c'è una lingua "seed" da Frase Libera o se è l'unica
   // lingua candidata attiva; altrimenti passa dalla schermata di scelta lingua.
   useEffect(() => {
-    if (linguaAuto) iniziaConversazione(linguaAuto, linguaSeed ? iniziale.argomento : null);
+    if (linguaAuto && iaConfigurata(aiSettings)) iniziaConversazione(linguaAuto, linguaSeed ? iniziale.argomento : null);
   }, []);
   // Salvataggio automatico a ogni battuta
   useEffect(() => {
@@ -12815,6 +12868,12 @@ Rispondi con il JSON.`;
     setStato("pronto");
   }
   const nTurniUtente = turni.filter(x => x.ruolo === "utente").length;
+  // Senza chiave IA la conversazione non può partire: l'avviso al suo posto
+  if (!iaConfigurata(aiSettings)) return /*#__PURE__*/React.createElement(SchermataSenzaIA, {
+    titolo: "🎙️ Conversazione",
+    onHome: onHome,
+    onConfigura: onConfiguraIA
+  });
   if (stato === "archivio") return /*#__PURE__*/React.createElement(ArchivioConversazioni, {
     lingue: lingue,
     vocabolario: vocabolario,
@@ -14750,6 +14809,13 @@ function App() {
     return { ordine: ordinaTemiPerDimensione(vocabolario), indice: 0, completata: false };
   });
   const [schermata, setSchermata] = useState("home"); // splash disabilitata
+  // Da dove si sono aperte le Impostazioni IA ("Configura IA" in una funzione):
+  // tornando indietro si riprende lì invece che in Home
+  const [ritornoIA, setRitornoIA] = useState(null);
+  function apriImpostazioniAI() {
+    setRitornoIA(schermata);
+    setSchermata("impostazioniAI");
+  }
   const [glossarioLang, setGlossarioLang] = useState(null); // dialetto preselezionato dal deep-link #glossario/<codice>
   const [caricandoStorie, setCaricandoStorie] = useState(false); // true mentre storie.js viene iniettato lazy
   const [storiaIniziale, setStoriaIniziale] = useState(null); // id storia preselezionata dal deep-link #storia/<id>
@@ -15446,7 +15512,8 @@ function App() {
     indiceCoda: fraseIndice,
     onTornaRisultati: fraseTornaA ? () => setSchermata(fraseTornaA) : null,
     onHome: () => setSchermata("home"),
-    onDiscutine: apriConversazioneCon
+    onDiscutine: apriConversazioneCon,
+    onConfiguraIA: apriImpostazioniAI
   });
   if (schermata === "conversazione") {
   const ritornoConv = convPosCoda !== null ? ritornoDaConversazione(fraseCoda, convPosCoda, fraseTornaA) : null;
@@ -15454,6 +15521,7 @@ function App() {
     lingue: lingue,
     vocabolario: vocabolario,
     aiSettings: aiSettings,
+    onConfiguraIA: apriImpostazioniAI,
     onHome: () => {
       setConvPosCoda(null);
       setSchermata("home");
@@ -15488,7 +15556,10 @@ function App() {
   if (schermata === "impostazioniAI") return /*#__PURE__*/React.createElement(ImpostazioniAI, {
     aiSettings: aiSettings,
     setAiSettings: setAiSettings,
-    onIndietro: () => setSchermata("home")
+    onIndietro: () => {
+      setSchermata(ritornoIA || "home");
+      setRitornoIA(null);
+    }
   });
   if (configurando) return /*#__PURE__*/React.createElement(ConfigurazioneQuiz, {
     modalita: modalitaInAttesa,
@@ -15516,6 +15587,7 @@ function App() {
     onVerbi: () => setSchermata("verbi"),
     onAggiungi: () => setSchermata("aggiungi"),
     onImpostazioniAI: () => setSchermata("impostazioniAI"),
+    aiSettings: aiSettings,
     onStatistiche: () => setSchermata("statistiche"),
     onRicerca: () => setSchermata("ricerca"),
     onGlossario: () => setSchermata("glossario"),
