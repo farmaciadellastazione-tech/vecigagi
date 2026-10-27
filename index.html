@@ -9925,6 +9925,7 @@ function EraGiusta({
   aiSettings,
   onAccettata
 }) {
+  const onConfigura = React.useContext(ContestoConfiguraIA);
   const [stato, setStato] = useState("idle"); // idle | loading | no | incerto | inviato | invioFallito
   const [nota, setNota] = useState("");
   // Carta o risposta nuova: si riparte dal pulsante; una risposta in ritardo si ignora
@@ -9960,7 +9961,10 @@ function EraGiusta({
   const italiano = soloVisibile(carta.entry?.it || "");
   const dialetto = DIALETTI_TTS_ITA.includes(lA.codice);
   const hasKey = iaConfigurata(aiSettings);
-  if (!dialetto && !hasKey) return null;
+  if (!dialetto && !hasKey) return /*#__PURE__*/React.createElement("button", {
+    onClick: onConfigura,
+    className: "text-xs text-zinc-600 flex items-center gap-1 mt-1"
+  }, "🤖 Era giusta? (configura IA)");
   async function chiedi() {
     const n = ++richiesta.current;
     setStato("loading");
@@ -10033,6 +10037,7 @@ function SpiegaAI({
   aiSettings,
   lingue
 }) {
+  const onConfigura = React.useContext(ContestoConfiguraIA);
   const [stato, setStato] = useState("idle");
   const [testo, setTesto] = useState("");
   const [traduzione, setTraduzione] = useState("");
@@ -10091,7 +10096,7 @@ Be accurate: Never invent words, meanings or rules. If you are not sure, say so.
     setStato("traduzione");
   }
   if (!hasKey) return /*#__PURE__*/React.createElement("button", {
-    onClick: () => alert("Inserisci una chiave API nelle impostazioni 🤖\nGemini è gratuito: ai.google.dev"),
+    onClick: onConfigura,
     className: "text-xs text-zinc-600 flex items-center gap-1 mt-1"
   }, "\uD83E\uDD16 Spiega (configura IA)");
   if (stato === "idle") return /*#__PURE__*/React.createElement("button", {
@@ -11216,7 +11221,8 @@ function estraiGiudizioRipasso(raw) {
 function SchermataRipassoFrasi({
   lingue,
   aiSettings,
-  onHome
+  onHome,
+  onConfiguraIA
 }) {
   const conIA = iaConfigurata(aiSettings);
   const [fase, setFase] = useState("prepara"); // prepara | domanda | verifica | esito | fine | vuoto
@@ -11411,7 +11417,12 @@ function SchermataRipassoFrasi({
     className: "text-2xl font-bold text-white"
   }, item.testo), DIALETTI_TTS_ITA.includes(item.cod) && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-amber-500 mt-2 italic"
-  }, "🍷 L'IA conosce poco i dialetti: la traduzione di riferimento può sbagliare"))), fase === "domanda" && /*#__PURE__*/React.createElement("div", {
+  }, "🍷 L'IA conosce poco i dialetti: la traduzione di riferimento può sbagliare"))), !conIA && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mb-3 text-center"
+  }, "🔑 Senza IA solo dettato: con una chiave IA (Gemini è gratuito) anche le traduzioni. ", /*#__PURE__*/React.createElement("button", {
+    onClick: onConfiguraIA,
+    className: "text-sky-400 hover:text-sky-300 underline"
+  }, "Configura IA")), fase === "domanda" && /*#__PURE__*/React.createElement("div", {
     className: "flex-1"
   }, /*#__PURE__*/React.createElement("textarea", {
     ref: rispostaRef,
@@ -13150,13 +13161,14 @@ function SchermataLetturaGuidata({
   aiSettings,
   storiaIniziale,
   onStreak,
-  onHome
+  onHome,
+  onConfiguraIA
 }) {
   const [storiaSel, setStoriaSel] = useState(null);
   const [idxFrase, setIdxFrase] = useState(0);
   const [showTrad, setShowTrad] = useState(false);
   const [parolaSel, setParolaSel] = useState(null);
-  const [statoSpiega, setStatoSpiega] = useState("idle"); // idle | loading | risposta
+  const [statoSpiega, setStatoSpiega] = useState("idle"); // idle | loading | risposta | senzaIA
   const [fonteSpiega, setFonteSpiega] = useState("ai"); // "vocabolario" | "ai"
   const [spiegazione, setSpiegazione] = useState("");
   const [candidatiLG, setCandidatiLG] = useState(() => loadJSON(SK_CANDIDATI_LG, []));
@@ -13172,6 +13184,8 @@ function SchermataLetturaGuidata({
   const [formTesto, setFormTesto] = useState("");
   const [formTraduzione, setFormTraduzione] = useState("");
   const [traducendo, setTraducendo] = useState(false);
+  // "Traduci tutto con AI" premuto senza chiave: avviso sotto i pulsanti
+  const [formSenzaIA, setFormSenzaIA] = useState(false);
   const [pubblicandoId, setPubblicandoId] = useState(null);
   const fileInputRef = useRef(null);
   // Streak: conta al massimo una volta per visita in questa schermata, alla
@@ -13264,7 +13278,7 @@ function SchermataLetturaGuidata({
     const righe = formTesto.split("\n").map(r => r.trim()).filter(Boolean);
     if (!righe.length) return;
     if (!hasKey) {
-      alert("Inserisci una chiave API nelle impostazioni 🤖\nGemini è gratuito: ai.google.dev");
+      setFormSenzaIA(true);
       return;
     }
     setTraducendo(true);
@@ -13573,7 +13587,9 @@ function SchermataLetturaGuidata({
     }, traducendo ? "\u23f3 Traduco..." : "\ud83e\udd16 Traduci tutto con AI"), React.createElement("button", {
       onClick: salvaStoriaPrivata,
       className: "flex-1 bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold py-2 rounded-lg transition"
-    }, "\ud83d\udcbe Salva"))));
+    }, "\ud83d\udcbe Salva")), formSenzaIA && React.createElement(AvvisoIA, {
+      onConfigura: onConfiguraIA
+    })));
   }
   if (!storiaSel) {
     return React.createElement("div", {
@@ -13671,7 +13687,8 @@ function SchermataLetturaGuidata({
       return;
     }
     if (!hasKey) {
-      alert("Inserisci una chiave API nelle impostazioni \ud83e\udd16\nGemini \u00e8 gratuito: ai.google.dev");
+      setParolaSel(parola);
+      setStatoSpiega("senzaIA");
       return;
     }
     setParolaSel(parola);
@@ -13759,7 +13776,9 @@ Forma: {"spiegazione": string, "traduzione": string}
     codice: lng.codice,
     size: "text-2xl",
     audioFile: frase.audio ? storiaSel.lingua + "/" + frase.audio : null
-  })), (statoSpiega === "loading" || statoSpiega === "risposta") && React.createElement("div", {
+  })), statoSpiega === "senzaIA" && React.createElement(AvvisoIA, {
+    onConfigura: onConfiguraIA
+  }), (statoSpiega === "loading" || statoSpiega === "risposta") && React.createElement("div", {
     onClick: e => e.stopPropagation(),
     className: "bg-zinc-900 border border-zinc-700 rounded-xl p-3 mt-3 text-left w-full"
   }, React.createElement("p", {
@@ -13791,6 +13810,9 @@ Forma: {"spiegazione": string, "traduzione": string}
     className: "flex-1 bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 rounded-xl text-sm transition btn-shadow"
   }, "Successiva \u2192")));
 }
+// Apre le Impostazioni IA dai pulsanti "(configura IA)" di Spiega ed Era giusta?
+// (EraGiusta, SpiegaAI): lo fornisce SchermataQuiz, così le loro chiamate restano com'erano
+const ContestoConfiguraIA = React.createContext(null);
 function SchermataQuiz({
   carta,
   indice,
@@ -13817,6 +13839,7 @@ function SchermataQuiz({
   onSegnalaErrore,
   onProponiPronuncia,
   onAccettaGiusta,
+  onConfiguraIA,
   onHome,
   nuoveApprese,
   paroleRegredite,
@@ -14588,7 +14611,9 @@ function SchermataQuiz({
   }, t.segnalabtn), dialettoCarta && /*#__PURE__*/React.createElement("button", {
     onClick: () => onProponiPronuncia(dialettoCarta),
     className: "w-full text-xs text-slate-600 hover:text-sky-500 transition py-1"
-  }, t.pronunciabtn), /*#__PURE__*/React.createElement(SpiegaAI, {
+  }, t.pronunciabtn), /*#__PURE__*/React.createElement(ContestoConfiguraIA.Provider, {
+    value: onConfiguraIA
+  }, /*#__PURE__*/React.createElement(SpiegaAI, {
     carta: carta,
     aiSettings: aiSettings,
     lingue: lingue
@@ -14599,7 +14624,7 @@ function SchermataQuiz({
     lingue: lingue,
     aiSettings: aiSettings,
     onAccettata: onAccettaGiusta
-  }))));
+  })))));
 }
 
 // ── Onboarding Splash ────────────────────────────────────────────────────
@@ -15542,7 +15567,8 @@ function App() {
   if (schermata === "ripassoFrasi") return /*#__PURE__*/React.createElement(SchermataRipassoFrasi, {
     lingue: lingue,
     aiSettings: aiSettings,
-    onHome: () => setSchermata("home")
+    onHome: () => setSchermata("home"),
+    onConfiguraIA: apriImpostazioniAI
   });
   if (schermata === "letturaGuidata") return /*#__PURE__*/React.createElement(SchermataLetturaGuidata, {
     lingue: lingue,
@@ -15551,7 +15577,8 @@ function App() {
     aiSettings: aiSettings,
     storiaIniziale: storiaIniziale,
     onStreak: aggiornaStreak,
-    onHome: () => setSchermata("home")
+    onHome: () => setSchermata("home"),
+    onConfiguraIA: apriImpostazioniAI
   });
   if (schermata === "impostazioniAI") return /*#__PURE__*/React.createElement(ImpostazioniAI, {
     aiSettings: aiSettings,
@@ -15684,6 +15711,7 @@ function App() {
     onSegnalaErrore: () => setSegnalando(true),
     onProponiPronuncia: lingua => setPronunciaAperta(lingua),
     onAccettaGiusta: accettaComeGiusta,
+    onConfiguraIA: apriImpostazioniAI,
     onHome: () => {
       // ← Home a metà esercizio: retrocessione valutata sulle risposte date
       // (vedi nDomDopoAbbandono). A fine sessione SK_NDOM è già salvato.

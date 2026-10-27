@@ -109,3 +109,42 @@ test('Home: Frase libera e Conversazione cliccabili, con la riga "Serve una chia
   // non le blocca: niente motivoBlocco per la chiave
   assert.doesNotMatch(H, /motivoBlocco = "[^"]*chiave/);
 });
+
+// Passo 3: niente alert() né pulsanti che spariscono. Spiega ed Era giusta?
+// mostrano "(configura IA)" che apre le Impostazioni; Ripasso frasi dice che
+// senza IA fa solo dettato; Lettura guidata mostra l'avviso al posto dell'alert.
+test('Spiega ed Era giusta? senza chiave: "(configura IA)" apre le Impostazioni', () => {
+  const S = tra('function SpiegaAI(', '\n// Scelta multipla, progressione globale');
+  assert.doesNotMatch(S, /alert\(/);
+  const E = tra('function EraGiusta(', '\nfunction SpiegaAI(');
+  assert.doesNotMatch(E, /if \(!dialetto && !hasKey\) return null;/);
+  // la funzione arriva da un contesto: la chiamata a EraGiusta resta quella
+  // fissata da eraGiusta.test
+  for (const X of [S, E]) {
+    assert.match(X, /\}\) \{\s*const onConfigura = React\.useContext\(ContestoConfiguraIA\);/);
+    assert.match(X, /onClick: onConfigura,[\s\S]{0,200}configura IA/);
+  }
+  assert.match(HTML, /createElement\(ContestoConfiguraIA\.Provider, \{\s*value: onConfiguraIA\s*\}, \/\*#__PURE__\*\/React\.createElement\(SpiegaAI, \{/);
+  assert.match(tra('function SchermataQuiz(', '}) {'), /onConfiguraIA/);
+  assert.match(tra('createElement(SchermataQuiz, {', '});'), /onConfiguraIA: apriImpostazioniAI/);
+});
+
+test('Ripasso frasi senza chiave: dice che fa solo dettato e porta alle Impostazioni', () => {
+  const R = tra('function SchermataRipassoFrasi(', '\n}\n');
+  assert.match(R, /onConfiguraIA\s*\}\) \{/);
+  assert.match(R, /!conIA && \/\*#__PURE__\*\/React\.createElement\(/);
+  assert.match(R, /Senza IA solo dettato/);
+  assert.match(R, /onClick: onConfiguraIA/);
+  assert.match(tra('createElement(SchermataRipassoFrasi, {', '});'), /onConfiguraIA: apriImpostazioniAI/);
+});
+
+test('Lettura guidata senza chiave: avviso al posto degli alert', () => {
+  const L = tra('function SchermataLetturaGuidata(', '\nfunction SchermataQuiz(');
+  assert.doesNotMatch(L, /alert\("Inserisci una chiave/);
+  assert.match(L, /onConfiguraIA\s*\}\) \{/);
+  assert.match(L, /setStatoSpiega\("senzaIA"\)/);
+  assert.match(L, /statoSpiega === "senzaIA" && React\.createElement\(AvvisoIA, \{\s*onConfigura: onConfiguraIA\s*\}\)/);
+  assert.match(L, /setFormSenzaIA\(true\)/);
+  assert.match(L, /formSenzaIA && React\.createElement\(AvvisoIA, \{\s*onConfigura: onConfiguraIA\s*\}\)/);
+  assert.match(tra('createElement(SchermataLetturaGuidata, {', '});'), /onConfiguraIA: apriImpostazioniAI/);
+});
