@@ -126,3 +126,17 @@ test('battute IA parziali: fuori, e anche la frase dello studente prima', () => 
   };
   assert.deepEqual(testi(ctx.daConv([conv])), ['Hi! How are you?']);
 });
+
+// Terza code review (2026-10-27): una battuta troncata (`parziale`) poi
+// corretta a mano con ✏️ Correggi (`corretta`) l'ha controllata una persona:
+// vale, e con lei la frase dello studente prima.
+test('battuta parziale corretta a mano: dentro, e la frase dello studente prima', () => {
+  const conv = {
+    id: 'q', lingua: 'sp', turni: [
+      { ruolo: 'ia', testo: 'Ciao!', corretta: true },
+      { ruolo: 'utente', testo: 'A magno', correzione: 'A mangio', correzioneCorretta: true },
+      { ruolo: 'ia', testo: 'E cosa te mangi?', parziale: true, corretta: true },
+    ],
+  };
+  assert.deepEqual(testi(ctx.daConv([conv])), ['Ciao!', 'A mangio', 'E cosa te mangi?']);
+});

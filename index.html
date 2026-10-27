@@ -10669,7 +10669,8 @@ function salvaFraseLiberaCorretta(testo, carta) {
 // testi corretti a mano (`corretta`, `correzioneCorretta`). La frase dello
 // studente conta solo se l'IA ha risposto davvero (turno dopo valido).
 // callAI segnala i guasti con testi "Errore..."; JSON rotto = risposta grezza.
-const battutaIAValida = x => !!x && x.ruolo === "ia" && !x.parziale && !!String(x.testo || "").trim() && !/^\s*(Errore|[{[])/.test(x.testo);
+// Una battuta troncata (`parziale`) corretta a mano (`corretta`) vale: l'ha controllata una persona.
+const battutaIAValida = x => !!x && x.ruolo === "ia" && (!x.parziale || !!x.corretta) && !!String(x.testo || "").trim() && !/^\s*(Errore|[{[])/.test(x.testo);
 function frasiDaConversazioni(conversazioni) {
   const out = [];
   (Array.isArray(conversazioni) ? conversazioni : []).forEach(c => {
