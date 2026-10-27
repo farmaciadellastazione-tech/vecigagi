@@ -4445,6 +4445,10 @@ function esportaProgressi(stats, vocabolario, lingue) {
   a.click();
   URL.revokeObjectURL(a.href);
 }
+// Lingue che l'app conosce (predefinite, salvate, e quelle del file caricato)
+function codiciLingueNote(daFile) {
+  return [...LINGUE_DEFAULT, ...loadJSON(SK_LINGUE, []), ...(Array.isArray(daFile) ? daFile : [])].map(l => l?.codice).filter(Boolean);
+}
 function importaProgressi(file, onDone) {
   const r = new FileReader();
   r.onload = e => {
@@ -4455,8 +4459,8 @@ function importaProgressi(file, onDone) {
       if (data.streak) saveJSON(SK_STREAK, data.streak);
       if (data.recordPerc) saveJSON(SK_RECORD_PERC, data.recordPerc);
       if (data.ndom) saveJSON(SK_NDOM, data.ndom);
-      if (data.sinonimi) unisciSinonimi(data.sinonimi);
-      onDone(data);
+      const sinonimiOk = !data.sinonimi || unisciSinonimi(data.sinonimi, codiciLingueNote(data.lingue));
+      onDone(data, !sinonimiOk);
     } catch {
       alert(UI[getUILang()].filenonvalido);
     }
@@ -8387,7 +8391,7 @@ function Home({
     onClick: onStatistiche,
     title: "Statistiche",
     className: "text-lg bg-zinc-900 hover:bg-zinc-800 p-2.5 rounded-xl transition"
-  }, "\uD83D\uDCCA"), Object.keys(caricaSinonimi()).length > 0 && /*#__PURE__*/React.createElement("button", {
+  }, "\uD83D\uDCCA"), contaSinonimi() > 0 &&/*#__PURE__*/React.createElement("button", {
     onClick: onSinonimi,
     title: "Sinonimi accettati",
     className: "text-lg bg-zinc-900 hover:bg-zinc-800 p-2.5 rounded-xl transition"
@@ -9935,18 +9939,18 @@ function SchermataSinonimi({
   lingue,
   onHome
 }) {
-  const [, aggiorna] = useState(0); // dopo una cancellazione si rilegge l'elenco
-  const righe = elencoSinonimi(vocabolario);
+  const [versione, aggiorna] = useState(0); // dopo una cancellazione si rilegge l'elenco
+  const righe = useMemo(() => elencoSinonimi(vocabolario), [vocabolario, versione]);
   const lingua = cod => lingue.find(l => l.codice === cod) || {
     nome: cod,
     bandiera: ""
   };
   const etichetta = cod => `${lingua(cod).bandiera || ""} ${lingua(cod).nome}`.trim();
+  // Righe già ordinate per lingue: un gruppo nuovo quando cambia la coppia
   const coppie = [];
   righe.forEach(r => {
     const c = r.da + "|" + r.a;
-    const g = coppie.find(x => x.c === c);
-    if (g) g.righe.push(r);
+    if (coppie.length && coppie[coppie.length - 1].c === c) coppie[coppie.length - 1].righe.push(r);
     else coppie.push({
       c,
       da: r.da,
@@ -9956,7 +9960,7 @@ function SchermataSinonimi({
   });
   function togliTutti() {
     if (!confirm("Togliere tutti i sinonimi accettati? Torneranno a essere errori.")) return;
-    togliTuttiSinonimi();
+    if (!togliTuttiSinonimi()) alert("Non sono riuscito a cancellarli: la memoria del browser è bloccata.");
     aggiorna(n => n + 1);
   }
   return /*#__PURE__*/React.createElement("div", {
@@ -10927,26 +10931,51 @@ function salvaSinonimo(voce, forma) {
 function elencoSinonimi(vocabolario) {
   const voc = Array.isArray(vocabolario) ? vocabolario : [];
   const tutti = caricaSinonimi();
+  const righe = righeSinonimi(tutti);
+  // Indice chiave → voce, una passata del vocabolario per coppia di lingue
+  // (non una ricerca per ogni sinonimo)
+  const indice = new Map();
+  new Set(righe.map(r => r.da + "|" + r.a)).forEach(c => {
+    const [da, a] = c.split("|");
+    voc.forEach(v => {
+      if (!v || !v[da] || !v[a]) return;
+      const k = chiaveSinonimo({
+        da,
+        parola: v[da],
+        a,
+        atteso: v[a]
+      });
+      if (!indice.has(k)) indice.set(k, v);
+    });
+  });
+  return righe.map(r => {
+    const e = indice.get(r.chiave);
+    return {
+      ...r,
+      parola: e ? formaDisplay(e[r.da], r.da) : r.parola,
+      atteso: e ? formaDisplay(e[r.a], r.a) : r.atteso
+    };
+  }).sort((x, y) => x.da.localeCompare(y.da) || x.a.localeCompare(y.a) || normalizza(x.parola).localeCompare(normalizza(y.parola)));
+}
+// Le voci valide (chiave in 4 parti, almeno un sinonimo), con le parole della chiave
+function righeSinonimi(tutti) {
   return Object.keys(tutti).map(chiave => {
     const parti = chiave.split("|");
     const sinonimi = Array.isArray(tutti[chiave]) ? tutti[chiave].filter(x => typeof x === "string" && x.trim()) : [];
-    if (parti.length !== 4 || !sinonimi.length) return null;
-    const [da, parolaChiave, a, attesoChiave] = parti;
-    const e = voc.find(v => v && v[da] && v[a] && chiaveSinonimo({
-      da,
-      parola: v[da],
-      a,
-      atteso: v[a]
-    }) === chiave);
+    if (parti.length !== 4 || parti.some(p => !p) || !sinonimi.length) return null;
     return {
       chiave,
-      da,
-      a,
-      parola: e ? formaDisplay(e[da], da) : parolaChiave,
-      atteso: e ? formaDisplay(e[a], a) : attesoChiave,
+      da: parti[0],
+      parola: parti[1],
+      a: parti[2],
+      atteso: parti[3],
       sinonimi
     };
-  }).filter(Boolean).sort((x, y) => x.da.localeCompare(y.da) || x.a.localeCompare(y.a) || normalizza(x.parola).localeCompare(normalizza(y.parola)));
+  }).filter(Boolean);
+}
+// Per l'icona 🤝 in Home: stesso conteggio della pagina (dati rovinati non contano)
+function contaSinonimi() {
+  return righeSinonimi(caricaSinonimi()).length;
 }
 function scriviSinonimi(tutti) {
   try {
@@ -10969,25 +10998,33 @@ function togliSinonimo(chiave, forma) {
 function togliTuttiSinonimi() {
   try {
     localStorage.removeItem(SK_SINONIMI);
-  } catch (e) {}
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 // Caricando un file di progressi: i sinonimi si uniscono a quelli del browser
-// (niente doppioni, solo forme salvabili, stesso tetto per voce).
-function unisciSinonimi(daFile) {
-  if (!daFile || typeof daFile !== "object" || Array.isArray(daFile)) return;
+// (niente doppioni, solo forme salvabili). Oltre il tetto per voce si scartano
+// quelli del file, mai quelli già qui. codici: se dati, solo queste lingue.
+// Un sinonimo uguale alla risposta prevista (ultima parte della chiave) non serve.
+// false se non si è potuto salvare (memoria piena o bloccata).
+function unisciSinonimi(daFile, codici) {
+  if (!daFile || typeof daFile !== "object" || Array.isArray(daFile)) return true;
   const tutti = caricaSinonimi();
   Object.keys(daFile).forEach(chiave => {
     const parti = chiave.split("|");
     if (parti.length !== 4 || parti.some(p => !p) || !Array.isArray(daFile[chiave])) return;
+    if (codici && !(codici.includes(parti[0]) && codici.includes(parti[2]))) return;
     const l = Array.isArray(tutti[chiave]) ? tutti[chiave].filter(x => typeof x === "string") : [];
     daFile[chiave].forEach(x => {
-      if (typeof x !== "string" || !sinonimoSalvabile(x)) return;
+      if (l.length >= MAX_SINONIMI_PER_VOCE || typeof x !== "string" || !sinonimoSalvabile(x)) return;
       const f = x.trim();
+      if (normalizza(f) === parti[3]) return;
       if (!l.some(y => normalizza(y) === normalizza(f))) l.push(f);
     });
-    if (l.length) tutti[chiave] = l.slice(-MAX_SINONIMI_PER_VOCE);
+    if (l.length) tutti[chiave] = l;
   });
-  scriviSinonimi(tutti);
+  return scriviSinonimi(tutti);
 }
 // Si manda all'IA solo una risposta da vocabolario: breve, su una riga, con
 // lettere. Una frase lunga non è un sinonimo e potrebbe contenere istruzioni
@@ -15704,7 +15741,7 @@ function App() {
     try { localStorage.setItem(SK_LAST_EXPORT, String(Date.now())); } catch (e) {}
   }
   function handleImporta(file) {
-    importaProgressi(file, data => {
+    importaProgressi(file, (data, sinonimiNonSalvati) => {
       if (data.stats) {
         const merged = {
           ...stats
@@ -15731,7 +15768,7 @@ function App() {
         setLingue(lu);
         saveJSON(SK_LINGUE, lu);
       }
-      alert(UI[getUILang()].progressiuniti);
+      alert(UI[getUILang()].progressiuniti + (sinonimiNonSalvati ? "\n⚠️ Sinonimi accettati non salvati: la memoria del browser è piena o bloccata." : ""));
     });
   }
   // La schermata; la finestra delle Impostazioni IA va sopra (vedi in fondo)

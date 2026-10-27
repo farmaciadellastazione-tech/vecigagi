@@ -26,7 +26,7 @@ ctx.globalThis = ctx;
 vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx);
 vm.runInContext([
   tra('// ── Sinonimi accettati', '\n// ── Archivio frasi da ripassare'),
-  'Object.assign(globalThis, { salvaSinonimo, sinonimiAccettati, elencoSinonimi, togliSinonimo, togliTuttiSinonimi, unisciSinonimi, SK_SINONIMI, MAX_SINONIMI_PER_VOCE });',
+  'Object.assign(globalThis, { salvaSinonimo, sinonimiAccettati, elencoSinonimi, togliSinonimo, togliTuttiSinonimi, unisciSinonimi, contaSinonimi, SK_SINONIMI, MAX_SINONIMI_PER_VOCE });',
 ].join('\n'), ctx);
 const j = x => JSON.parse(JSON.stringify(x));
 const azzera = () => { memoria = {}; };
@@ -104,7 +104,8 @@ test('la pagina: elenco per coppia di lingue, ✕ per uno, Cancella tutti con co
 test('Home: icona 🤝 solo con almeno un sinonimo; App apre la pagina', () => {
   const H = tra('function Home(', '\n// ── Modifica parola');
   assert.match(H, /onSinonimi\s*\}\) \{/);
-  assert.match(H, /Object\.keys\(caricaSinonimi\(\)\)\.length > 0 && \/\*#__PURE__\*\/React\.createElement\("button", \{\s*onClick: onSinonimi,/);
+  // code review: stesso conteggio della pagina (dati rovinati = niente icona)
+  assert.match(H, /contaSinonimi\(\) > 0 &&\/\*#__PURE__\*\/React\.createElement\("button", \{\s*onClick: onSinonimi,/);
   assert.match(tra('createElement(Home, {', '});'), /onSinonimi: \(\) => setSchermata\("sinonimi"\)/);
   assert.match(HTML, /if \(schermata === "sinonimi"\) return \/\*#__PURE__\*\/React\.createElement\(SchermataSinonimi, \{\s*vocabolario: vocabolario,\s*lingue: lingue,\s*onHome: \(\) => setSchermata\("home"\)\s*\}\);/);
 });
@@ -136,5 +137,52 @@ test('esportazione e importazione dei progressi portano i sinonimi', () => {
   const E = tra('function esportaProgressi(', '\nfunction importaProgressi(');
   assert.match(E, /sinonimi: caricaSinonimi\(\)/);
   const I = tra('function importaProgressi(', '\n// ── Ripetizione spaziata');
-  assert.match(I, /if \(data\.sinonimi\) unisciSinonimi\(data\.sinonimi\);/);
+  assert.match(I, /const sinonimiOk = !data\.sinonimi \|\| unisciSinonimi\(data\.sinonimi, codiciLingueNote\(data\.lingue\)\);/);
+  assert.match(I, /onDone\(data, !sinonimiOk\);/);
+});
+
+// Code review (2026-10-27)
+const kB = 'it|bello|en|beautiful';
+test('unire: oltre il tetto si scartano quelli del file, mai quelli del browser', () => {
+  azzera();
+  ctx.salvaSinonimo(BELLO, 'pretty');
+  ctx.salvaSinonimo(BELLO, 'lovely');
+  assert.equal(ctx.unisciSinonimi({ [kB]: Array.from({ length: 10 }, (_, i) => 'w' + i) }), true);
+  const l = j(ctx.sinonimiAccettati(BELLO));
+  assert.equal(l.length, ctx.MAX_SINONIMI_PER_VOCE);
+  assert.deepEqual(l.slice(0, 2), ['pretty', 'lovely']);
+});
+
+test('unire: lingue sconosciute e sinonimi uguali alla risposta prevista, fuori', () => {
+  azzera();
+  ctx.unisciSinonimi({ 'xx|foo|yy|bar': ['z'], [kB]: ['beautiful', 'Beautiful!', 'nice'] }, ['it', 'en']);
+  assert.deepEqual(Object.keys(JSON.parse(memoria[ctx.SK_SINONIMI])), [kB]);
+  assert.deepEqual(j(ctx.sinonimiAccettati(BELLO)), ['nice']);
+});
+
+test('memoria piena o bloccata: unire e cancellare tutti lo dicono', () => {
+  azzera();
+  const vero = ctx.localStorage;
+  ctx.localStorage = { getItem: () => null, setItem: () => { throw new Error('quota'); }, removeItem: () => { throw new Error('bloccato'); } };
+  try {
+    assert.equal(ctx.unisciSinonimi({ [kB]: ['nice'] }), false);
+    assert.equal(ctx.togliTuttiSinonimi(), false);
+  } finally { ctx.localStorage = vero; }
+  assert.equal(ctx.togliTuttiSinonimi(), true);
+});
+
+test('conteggio per l\'icona: come la pagina (dati rovinati non contano)', () => {
+  azzera();
+  memoria[ctx.SK_SINONIMI] = JSON.stringify({ 'it|bello|fr|beau': [], 'rotta': ['a'], 'it|x|en|y': 'no' });
+  assert.equal(ctx.contaSinonimi(), 0);
+  ctx.salvaSinonimo(BELLO, 'pretty');
+  assert.equal(ctx.contaSinonimi(), 1);
+});
+
+test('la pagina avvisa se "Cancella tutti" non riesce; App avvisa se i sinonimi non sono stati salvati', () => {
+  const P = tra('function SchermataSinonimi(', '\nfunction EraGiusta(');
+  assert.match(P, /if \(!togliTuttiSinonimi\(\)\) alert\(/);
+  assert.match(P, /useMemo\(\(\) => elencoSinonimi\(vocabolario\), \[vocabolario, versione\]\)/);
+  assert.match(HTML, /importaProgressi\(file, \(data, sinonimiNonSalvati\) => \{/);
+  assert.match(HTML, /alert\(UI\[getUILang\(\)\]\.progressiuniti \+ \(sinonimiNonSalvati \? /);
 });
