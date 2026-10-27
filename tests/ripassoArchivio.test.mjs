@@ -24,6 +24,7 @@ const ctx = vm.createContext({
   DIALETTI_TTS_ITA: ['mn', 'sp', 'ge', 'cr'],
 });
 ctx.globalThis = ctx;
+vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx); // normalizza
 vm.runInContext([
   tra('// ── Archivio frasi da ripassare', '\n// ── Aiuto Frase libera'),
   'globalThis.salva = salvaFraseRipasso; globalThis.carica = caricaFrasiRipasso; globalThis.daFeedback = salvaFraseDaFeedback; globalThis.corretta = salvaFraseLiberaCorretta;globalThis.MAX = MAX_FRASI_RIPASSO;',
@@ -43,16 +44,19 @@ test('una frase giusta si salva con lingua, origine e data', () => {
   assert.ok(l[0].data);
 });
 
-test('la stessa frase (maiuscole/spazi diversi) non si duplica, ma gli accenti contano', () => {
+// Quarta code review (2026-10-27): archivio e ripasso con la stessa regola,
+// normalizza (scelta di Dino): ora anche accenti e punteggiatura non contano.
+test('la stessa frase (maiuscole/spazi/accenti/punteggiatura diversi) non si duplica', () => {
   azzera();
   ctx.salva({ testo: 'Je vais à la mer.', cod: 'fr', origine: 'Frase libera' });
   ctx.salva({ testo: 'je  vais à LA mer.', cod: 'fr', origine: 'Frase libera' });
   assert.equal(ctx.carica().length, 1);
-  ctx.salva({ testo: 'Je vais a la mer.', cod: 'fr', origine: 'Frase libera' });
-  assert.equal(ctx.carica().length, 2);
+  ctx.salva({ testo: 'Je vais a la mer', cod: 'fr', origine: 'Frase libera' });
+  assert.equal(ctx.carica().length, 1);
+  assert.equal(ctx.carica()[0].testo, 'Je vais a la mer'); // resta la più recente
   // stessa frase in un'altra lingua: è un'altra voce
   ctx.salva({ testo: 'Je vais à la mer.', cod: 'ca', origine: 'Frase libera' });
-  assert.equal(ctx.carica().length, 3);
+  assert.equal(ctx.carica().length, 2);
 });
 
 test('frasi vuote o senza lingua non si salvano', () => {

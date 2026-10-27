@@ -162,3 +162,10 @@ test('stessa frase con punteggiatura o accenti diversi: una sola', () => {
   assert.equal(l.length, 1);
   assert.equal(l[0].testo, 'Ciao, come stai?'); // vince la prima
 });
+
+// Quarta code review (2026-10-27): archivio e ripasso usano la stessa funzione
+// per riconoscere la stessa frase (prima due regole diverse).
+test('una sola regola per "stessa frase": chiaveFraseRipasso con normalizza', () => {
+  assert.match(HTML, /const chiaveFraseRipasso = x => normalizza\(String\(x \|\| ""\)\);/);
+  assert.match(HTML, /const chiave = f\.cod \+ "\|" \+ chiaveFraseRipasso\(f\.testo\);/);
+});

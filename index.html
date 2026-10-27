@@ -10598,8 +10598,10 @@ function CorreggiDialetto({
 // ma non nei dialetti: l'IA li conosce poco e si ripasserebbero i suoi errori.
 const SK_FRASI_RIPASSO = "qml_v1_frasi_ripasso";
 const MAX_FRASI_RIPASSO = 200;
-// Come per le correzioni IA: senza maiuscole/spazi ma CON gli accenti.
-const chiaveFraseRipasso = x => String(x).trim().replace(/\s+/g, " ").toLowerCase();
+// "Stessa frase", unica regola per archivio, doppioni e statistiche: normalizza
+// come il confronto delle risposte (Dino, 2026-10-27), quindi maiuscole, spazi,
+// punteggiatura, accenti e apostrofi non contano.
+const chiaveFraseRipasso = x => normalizza(String(x || ""));
 function caricaFrasiRipasso() {
   try {
     const l = JSON.parse(localStorage.getItem(SK_FRASI_RIPASSO) || "[]");
@@ -10707,7 +10709,7 @@ function frasiDaRipassare(archivio, conversazioni, codiciAttivi) {
     if (!f || !f.testo || !f.cod) return;
     if (codiciAttivi && !codiciAttivi.includes(f.cod)) return;
     // Stessa normalizzazione del confronto: "Ciao, come stai?" = "ciao come stai"
-    const chiave = f.cod + "|" + normalizza(String(f.testo));
+    const chiave = f.cod + "|" + chiaveFraseRipasso(f.testo);
     if (viste.has(chiave)) return;
     viste.add(chiave);
     out.push({
