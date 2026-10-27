@@ -9933,6 +9933,11 @@ function EraGiusta({
   }
   const pulsante = /*#__PURE__*/React.createElement("button", {
     onClick: dialetto ? segnala : chiedi,
+    // Invio sul pulsante: lo preme e basta (il gestore globale della schermata
+    // passerebbe anche alla carta dopo, senza far vedere l'esito)
+    onKeyDown: e => {
+      if (e.key === "Enter") e.stopPropagation();
+    },
     className: "text-xs text-sky-400 hover:text-sky-300 flex items-center gap-1 transition mt-1"
   }, dialetto ? "📨 Segnala sinonimo" : "🤖 Era giusta?");
   if (stato === "loading") return /*#__PURE__*/React.createElement("div", {

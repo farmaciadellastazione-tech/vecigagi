@@ -92,3 +92,11 @@ test('risposta dell\'IA in ritardo: ignorata', () => {
   assert.match(A, /function accettaComeGiusta\(giudicata\)/);
   assert.match(A, /giudicata\?\.key !== e\.key \|\| giudicata\?\.risposta !== e\.risposta/);
 });
+
+// Code review (2026-10-27): Invio sul pulsante lo premeva E (gestore globale
+// della schermata) passava alla carta dopo, senza vedere l'esito.
+test('Invio sul pulsante non fa passare alla carta dopo', () => {
+  const C = tra('function EraGiusta(', '\nfunction SpiegaAI(');
+  const pulsante = C.slice(C.indexOf('const pulsante ='), C.indexOf('if (stato === "loading")'));
+  assert.match(pulsante, /onKeyDown: e => \{\s*if \(e\.key === "Enter"\) e\.stopPropagation\(\);\s*\}/);
+});
