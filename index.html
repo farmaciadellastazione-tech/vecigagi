@@ -15063,12 +15063,15 @@ function App() {
     // Sinonimi accettati con "🤖 Era giusta?" in questo browser: tra le risposte
     // previste, confrontati da isCorretta come le forme del vocabolario. Solo
     // dove vale il pulsante (non dove si trascrive ciò che si sente); in
-    // Non-stop secondo la carta, anche se lì il pulsante non c'è.
+    // Non-stop secondo la carta, anche se lì il pulsante non c'è. Solo per il
+    // giudizio: l'aiutino (attesoConfronto) mostra la parola del vocabolario,
+    // non un sinonimo che Dino non ha controllato.
+    let attesoConSinonimi = attesoConfronto;
     if (carta.tipo !== "coniugazione" && carta.tipo !== "dettato" && MODALITA_ERA_GIUSTA.includes(modoCarta)) {
       const sin = sinonimiAccettati(voceSinonimo(carta));
-      if (sin.length) attesoConfronto = [attesoConfronto, ...sin].join("|");
+      if (sin.length) attesoConSinonimi = [attesoConfronto, ...sin].join("|");
     }
-    let ok = isCorretta(attesoConfronto, risposta, lA?.bcp47, lA?.codice, carta.tipo === "coniugazione");
+    let ok = isCorretta(attesoConSinonimi, risposta, lA?.bcp47, lA?.codice, carta.tipo === "coniugazione");
     // Pronome pieno facoltativo scritto davanti (cr "me a son"): riprova senza.
     // rispostaConfronto serve anche all'aiutino ("me a sun" ≈ "a son").
     let rispostaConfronto = risposta;

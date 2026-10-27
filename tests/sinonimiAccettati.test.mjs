@@ -96,9 +96,10 @@ test('archivio rovinato o localStorage bloccato: nessun errore, nessun sinonimo'
 
 test('verificaRisposta: sinonimi tra le risposte previste, solo nelle modalità giuste', () => {
   const V = tra('function verificaRisposta(', '\n  function salta(');
-  assert.match(V, /if \(carta\.tipo !== "coniugazione" && carta\.tipo !== "dettato" && MODALITA_ERA_GIUSTA\.includes\(modoCarta\)\) \{\s*const sin = sinonimiAccettati\(voceSinonimo\(carta\)\);\s*if \(sin\.length\) attesoConfronto = \[attesoConfronto, \.\.\.sin\]\.join\("\|"\);\s*\}/);
+  assert.match(V, /if \(carta\.tipo !== "coniugazione" && carta\.tipo !== "dettato" && MODALITA_ERA_GIUSTA\.includes\(modoCarta\)\) \{\s*const sin = sinonimiAccettati\(voceSinonimo\(carta\)\);\s*if \(sin\.length\) attesoConSinonimi = \[attesoConfronto, \.\.\.sin\]\.join\("\|"\);\s*\}/);
   // prima di isCorretta: passano dallo stesso confronto delle forme del vocabolario
   assert.ok(V.indexOf('sinonimiAccettati(') < V.indexOf('let ok = isCorretta('));
+  assert.match(V, /let ok = isCorretta\(attesoConSinonimi, risposta,/);
   assert.doesNotMatch(V, /sinonimoAccettato\(/); // il vecchio controllo a parte non c'è più
 });
 
@@ -145,4 +146,16 @@ test('Non-stop: i sinonimi valgono secondo la modalità della carta', () => {
   assert.match(V, /const modoCarta = modalita === "nonstop" \? carta\.sottomodalita \|\| "quiz" : modalita;/);
   assert.ok(V.indexOf('const modoCarta =') < V.indexOf('sinonimiAccettati('));
   assert.equal(V.split('const modoCarta =').length - 1, 1); // definita una volta sola
+});
+
+// Code review (2026-10-27): l'aiutino (parola coi buchi) deve mostrare la
+// parola del vocabolario, non un sinonimo salvato che Dino non ha controllato.
+// attesoConfronto resta con le sole forme del vocabolario (e lo usa l'aiutino,
+// come vuole pronomePienoPersona.test.mjs); i sinonimi solo per isCorretta.
+test('l\'aiutino usa le forme del vocabolario, senza i sinonimi salvati', () => {
+  const V = tra('function verificaRisposta(', '\n  function salta(');
+  assert.match(V, /let attesoConSinonimi = attesoConfronto;/);
+  assert.doesNotMatch(V, /attesoConfronto = \[/); // attesoConfronto non riceve i sinonimi
+  assert.doesNotMatch(V, /quasiGiusta\(attesoConSinonimi/);
+  assert.equal(V.split('quasiGiusta(attesoConfronto').length - 1, 2);
 });
