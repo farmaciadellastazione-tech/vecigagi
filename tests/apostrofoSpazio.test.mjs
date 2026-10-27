@@ -42,3 +42,10 @@ test('non cambia ciò che valeva già, e una risposta sbagliata resta sbagliata'
   assert.strictEqual(ok(AVIA, "le o l' aveva", 'it-IT', 'ge', true), false);
   assert.strictEqual(ok("l'homme", "l' femme", 'fr-FR', 'fr'), false);
 });
+
+// Code review: il secondo tentativo attacca l'apostrofo da tutte e due le parti
+test('spazio dopo l\'apostrofo: anche nella soluzione, e misto nella stessa risposta', () => {
+  assert.strictEqual(ok("pe' piaxei", "pe'piaxei", 'it-IT', 'ge'), true);
+  assert.strictEqual(ok("l'avia un po' de", "l' avia un po' de", 'it-IT', 'ge'), true);
+  assert.strictEqual(ok("un po' di", "un po'di", 'it-IT', 'it'), true);
+});

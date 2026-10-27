@@ -1,8 +1,11 @@
 // Bug segnalato da Dino (2026-10-27): nelle coniugazioni, una risposta giusta
 // ma in un'altra lingua non dava "lingua sbagliata, riprova" come nel
-// vocabolario. Causa: la carta (generaEserciziConiugazioni) aveva in `entry`
-// solo le due lingue della domanda, e linguaDellaRisposta cerca nelle altre.
-// Ora `entry` ha le forme di tutte le lingue della stessa persona e tempo.
+// vocabolario: la carta (generaEserciziConiugazioni) ha in `entry` solo le
+// due lingue della domanda, e linguaDellaRisposta cerca nelle altre.
+// Dopo la code review: `entry` resta di due lingue (Segnala errore, doppioni
+// della sessione e lista delle sbagliate la usano); le forme di tutte le
+// lingue vanno in `forme`, usato solo da questo controllo, fra le lingue
+// attive, e non se il soggetto indica un'altra persona ("tu amo").
 //   eseguire con:  node --test
 import { test } from 'node:test';
 import assert from 'node:assert';
@@ -23,13 +26,19 @@ const ctx = vm.createContext({
 });
 ctx.globalThis = ctx;
 vm.runInContext(tra('function generaEserciziConiugazioni(', '\n// ── Schermata Verbi') + '\nglobalThis.genera = generaEserciziConiugazioni;', ctx);
-const j = x => JSON.parse(JSON.stringify(x));
 const L = c => ({ codice: c });
 
-test('la carta di coniugazione ha le forme di tutte le lingue (stessa persona e tempo)', () => {
-  const carte = j(ctx.genera([L('it'), L('en'), L('fr')]));
+test('carta di coniugazione: entry con le due lingue, forme con tutte (una copia sola)', () => {
+  const carte = ctx.genera([L('it'), L('en'), L('fr')]);
   const c = carte.find(x => x.lDA.codice === 'it' && x.lA.codice === 'en');
-  assert.deepEqual(c.entry, { it: 'amo', en: 'I love', fr: "j'aime", de: 'ich liebe' });
-  assert.equal(c.atteso, 'I love');
-  assert.ok(!('p' in c.entry)); // la persona non è una lingua
+  assert.deepEqual(JSON.parse(JSON.stringify(c.entry)), { it: 'amo', en: 'I love' });
+  assert.deepEqual(JSON.parse(JSON.stringify(c.forme)), { it: 'amo', en: 'I love', fr: "j'aime", de: 'ich liebe' });
+  assert.ok(carte.every(x => x.forme === c.forme), 'condivise fra le carte della stessa forma');
+});
+
+test('verificaRisposta: per le coniugazioni cerca in forme, fra le lingue attive, non col soggetto di un\'altra persona', () => {
+  const v = tra('  function verificaRisposta(', '  function nonLoSo()');
+  assert.match(v, /const soggettoSbagliato = carta\.tipo === "coniugazione" && soggettoPersonaSbagliata\(risposta, lA\?\.codice, carta\.persona\);/);
+  assert.match(v, /if \(!ok && modoCarta !== "pronuncia" && !soggettoSbagliato\) \{/);
+  assert.match(v, /linguaDellaRisposta\(carta\.tipo === "coniugazione" \? carta\.forme \|\| carta\.entry : carta\.entry, risposta, carta\.tipo === "coniugazione" \? lingue\.filter\(l => l\.attiva\) : lingue,/);
 });

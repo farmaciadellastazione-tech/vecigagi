@@ -5239,9 +5239,11 @@ function rimuoviSoggetto(str, codLingua) {
 // confronto è preciso sempre, anche per il vocabolario.
 function isCorretta(atteso, dato, bcp47, codLingua, preciso = false) {
   // Spazio dopo l'apostrofo facoltativo ("le o l' avia" = "lê o l'avià", Dino
-  // 2026-10-27): si riprova con l'apostrofo attaccato. Solo un secondo
-  // tentativo: in "un po' di" lo spazio fa parte della frase.
-  if (/['’]\s/.test(dato) && isCorretta(atteso, dato.replace(/(['’])\s+/g, "$1"), bcp47, codLingua, preciso)) return true;
+  // 2026-10-27): si riprova con l'apostrofo attaccato in risposta E soluzione
+  // ("pe'piaxei" = "pe' piaxei"). Solo un secondo tentativo: in "un po' di" lo
+  // spazio fa parte della frase, e "un po di" vale già al primo.
+  const attacca = s => String(s).replace(/(['’])\s+/g, "$1");
+  if (/['’]\s/.test(dato + " " + atteso) && isCorretta(attacca(atteso), attacca(dato), bcp47, codLingua, preciso)) return true;
   const datoConv =bcp47 ? convertiNumeri(dato, bcp47) : dato;
   // Per dialetti: converti cifre in parole dialettali
   const datoConvDial = DIALETTI_NUMERI.includes(codLingua) ? convertiNumeriDialetto(datoConv, codLingua) : datoConv;
@@ -7255,8 +7257,10 @@ function generaEserciziConiugazioni(lingueAttive) {
   Object.entries(CONIUGAZIONI).forEach(([verbKey, verbo]) => {
     Object.entries(verbo.tempi).forEach(([tempoKey, tempo]) => {
       tempo.forme.forEach(forma => {
-        // Forme di tutte le lingue (stessa persona e tempo): servono anche a
-        // linguaDellaRisposta, per "giusta ma in un'altra lingua, riprova"
+        // Forme di tutte le lingue (stessa persona e tempo), una copia per
+        // forma: solo per linguaDellaRisposta ("giusta ma in un'altra lingua,
+        // riprova"). `entry` resta delle due lingue della domanda: la usano
+        // Segnala errore, i doppioni della sessione e la lista delle sbagliate.
         const {
           p,
           ...formeLingue
@@ -7277,8 +7281,10 @@ function generaEserciziConiugazioni(lingueAttive) {
               livello: LIVELLO_TEMPO[tempoKey] || "B1",
               persona: forma.p,
               entry: {
-                ...formeLingue
-              }
+                [lDA.codice]: forma[lDA.codice],
+                [lA.codice]: forma[lA.codice]
+              },
+              forme: formeLingue
             });
           });
         });
@@ -15540,8 +15546,12 @@ function App() {
     // Giusta ma in un'altra lingua: si segnala e si riprova sulla stessa carta,
     // senza punti, statistiche né elenco delle sbagliate (Non-stop non finisce).
     // Pronuncia esclusa: il microfono ascolta solo nella lingua richiesta.
-    if (!ok && modoCarta !== "pronuncia") {
-      const altra = linguaDellaRisposta(carta.entry, risposta, lingue, lA?.codice, carta.da || carta.lDA?.codice, carta.tipo === "coniugazione");
+    // Coniugazioni: si cerca nelle forme di tutte le lingue (carta.forme), ma
+    // solo fra quelle attive, e non se il soggetto è di un'altra persona ("tu
+    // amo" resta un errore, anche se "amo" è spagnolo).
+    const soggettoSbagliato = carta.tipo === "coniugazione" && soggettoPersonaSbagliata(risposta, lA?.codice, carta.persona);
+    if (!ok && modoCarta !== "pronuncia" && !soggettoSbagliato) {
+      const altra = linguaDellaRisposta(carta.tipo === "coniugazione" ? carta.forme || carta.entry : carta.entry, risposta, carta.tipo === "coniugazione" ? lingue.filter(l => l.attiva) : lingue, lA?.codice, carta.da || carta.lDA?.codice, carta.tipo === "coniugazione");
       if (altra) {
         setLinguaSbagliata(altra);
         setInput("");
