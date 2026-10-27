@@ -15203,7 +15203,8 @@ function App() {
   function accettaComeGiusta(giudicata) {
     const e = erroreRef.current;
     if (!e || e.key !== carte[indice]?.key || statoRef.current !== "sbagliato") return;
-    if (giudicata?.key !== e.key || giudicata?.risposta !== e.risposta) return;
+    // Stessa risposta anche se nel frattempo è cambiato uno spazio o una maiuscola
+    if (giudicata?.key !== e.key || giudicata?.risposta !== e.risposta && normalizza(String(giudicata?.risposta || "")) !== normalizza(String(e.risposta || ""))) return;
     erroreRef.current = null;
     setStats(s => {
       const base = { ...s };

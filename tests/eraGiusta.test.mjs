@@ -149,3 +149,12 @@ test('durante l\'attesa Invio non fa passare alla carta dopo', () => {
   assert.ok(C.indexOf('const attesaRef = useRef(null);') < C.indexOf('if (!eraGiustaDisponibile('));
   assert.ok(C.indexOf('attesaRef.current?.focus()') < C.indexOf('if (!eraGiustaDisponibile('));
 });
+
+// Code review (2026-10-27): risposta giudicata e risposta dell'errore si
+// confrontano con normalizza (non ===): spazi o maiuscole cambiati nel
+// frattempo (input riscritto) non devono far perdere un'accettazione valida.
+test('accettaComeGiusta confronta le risposte con normalizza', () => {
+  const A = tra('function accettaComeGiusta(', '\n  }\n');
+  // diverse come testo E anche dopo normalizza: solo allora non è la stessa risposta
+  assert.match(A, /giudicata\?\.key !== e\.key \|\| giudicata\?\.risposta !== e\.risposta && normalizza\(String\(giudicata\?\.risposta \|\| ""\)\) !== normalizza\(String\(e\.risposta \|\| ""\)\)/);
+});
