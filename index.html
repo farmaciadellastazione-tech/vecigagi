@@ -11465,6 +11465,8 @@ function SchermataRipassoFrasi({
   const [punti, setPunti] = useState(0);
   // Solo le frasi davvero controllate (senza il 🤔 dell'IA irraggiungibile)
   const [controllate, setControllate] = useState(0);
+  // Allenamento: frasi sbagliate poi fatte giuste ripetendole
+  const [rifatte, setRifatte] = useState(0);
   // Uscendo o ricominciando, una risposta dell'IA in ritardo va ignorata
   const richiesta = useRef(0);
   const rispostaRef = useRef(null);
@@ -11480,6 +11482,7 @@ function SchermataRipassoFrasi({
     setI(0);
     setPunti(0);
     setControllate(0);
+    setRifatte(0);
     setRisposta("");
     setEsito(null);
     const attive = lingue.filter(l => l.attiva).map(l => l.codice);
@@ -11537,11 +11540,19 @@ function SchermataRipassoFrasi({
     if (fase === "domanda" && item?.modo !== "voce") rispostaRef.current?.focus();
   }, [fase, i]);
   function chiudi(giusta, giustaTesto, correction, note) {
-    if (giusta !== null) {
-      registraEsitoRipasso(item.chiave, giusta);
-      setControllate(c => c + 1);
+    // Allenamento: punteggio e statistiche solo al primo tentativo; una
+    // ripetizione giusta conta tra le "rifatte"
+    if (!primoTentativoRipasso(item)) {
+      if (giusta) setRifatte(n => n + 1);
+    } else {
+      if (giusta !== null) {
+        registraEsitoRipasso(item.chiave, giusta);
+        setControllate(c => c + 1);
+      }
+      if (giusta) setPunti(p => p + 1);
     }
-    if (giusta) setPunti(p => p + 1);
+    // Sbagliata: torna in fondo alla sessione (al massimo 3 tentativi)
+    setItems(l => codaDopoEsitoRipasso(l, i, giusta));
     setEsito({
       giusta,
       giustaTesto,
@@ -11603,6 +11614,10 @@ function SchermataRipassoFrasi({
       if (window.speechSynthesis) window.speechSynthesis.cancel();
     } catch (e) {}
   }
+  // Frasi della sessione senza ripetizioni (per le "non controllate"), e
+  // ripetizioni ancora da fare dopo questa
+  const nBase = items.filter(primoTentativoRipasso).length;
+  const daRifare = items.slice(i + 1).filter(x => !primoTentativoRipasso(x)).length;
   const testata = /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-between mb-4"
   }, /*#__PURE__*/React.createElement("button", {
@@ -11610,7 +11625,7 @@ function SchermataRipassoFrasi({
     className: "text-zinc-500 hover:text-white transition text-sm"
   }, "← Home"), /*#__PURE__*/React.createElement("span", {
     className: "text-zinc-600 text-xs"
-  }, "🔁 Ripasso frasi", items.length && fase !== "fine" && fase !== "vuoto" && fase !== "prepara" ? ` \xB7 ${i + 1} di ${items.length}` : ""), /*#__PURE__*/React.createElement("span", {
+  }, "🔁 Ripasso frasi", items.length && fase !== "fine" && fase !== "vuoto" && fase !== "prepara" ? ` \xB7 ${i + 1} di ${items.length}${daRifare ? ` \xB7 🔁 ${daRifare}` : ""}` : ""), /*#__PURE__*/React.createElement("span", {
     className: "text-zinc-600 text-xs"
   }, fase !== "vuoto" && fase !== "prepara" ? `✅ ${punti}` : ""));
   const contenitore = (...figli) => /*#__PURE__*/React.createElement("div", {
@@ -11639,9 +11654,11 @@ function SchermataRipassoFrasi({
     className: "text-4xl mb-3"
   }, controllate > 0 && punti === controllate ? "🏆" : "💪"), /*#__PURE__*/React.createElement("p", {
     className: "text-2xl font-extrabold text-white mb-1"
-  }, punti, " / ", controllate), controllate < items.length && /*#__PURE__*/React.createElement("p", {
+  }, punti, " / ", controllate), controllate < nBase && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mb-1"
-  }, "🤔 ", items.length - controllate, " non controllate: non contano"), /*#__PURE__*/React.createElement("p", {
+  }, "🤔 ", nBase - controllate, " non controllate: non contano"), rifatte > 0 && /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-cyan-400 mb-1"
+  }, "🔁 ", rifatte, rifatte === 1 ? " frase rifatta finché giusta" : " frasi rifatte finché giuste"), /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-500"
   }, "Le frasi sbagliate torneranno più spesso.")), /*#__PURE__*/React.createElement("button", {
     onClick: avvia,
@@ -11656,7 +11673,9 @@ function SchermataRipassoFrasi({
   const dettato = item.modo === "dettato" || voce;
   return contenitore(/*#__PURE__*/React.createElement("div", {
     className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 mb-4 text-center"
-  }, /*#__PURE__*/React.createElement("p", {
+  }, !primoTentativoRipasso(item) && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-cyan-400 font-bold mb-1"
+  }, "🔁 Di nuovo"), /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mb-2"
   }, voce ? `🎙️ Ripeti a voce \xB7 ${da.bandiera || ""} ${da.nome}` : dettato ? `✍️ Dettato \xB7 ${da.bandiera || ""} ${da.nome}` : `🌐 Traduci in ${item.nomeA}`), dettato ? /*#__PURE__*/React.createElement("div", {
     className: "flex justify-center gap-3"

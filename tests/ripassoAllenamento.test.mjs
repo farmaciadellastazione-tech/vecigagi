@@ -49,3 +49,21 @@ test('primo tentativo: senza segno o 1', () => {
   assert.equal(ctx.primoTentativoRipasso({ ...A, tentativo: 2 }), false);
   assert.equal(ctx.primoTentativoRipasso(undefined), false);
 });
+
+// Passo 2: la schermata
+test('schermata: statistiche e punteggio solo al primo tentativo, sbagliata in coda', () => {
+  const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
+  assert.match(S, /if \(!primoTentativoRipasso\(item\)\) \{\s*if \(giusta\) setRifatte\(n => n \+ 1\);\s*\} else \{/);
+  assert.match(S, /setItems\(l => codaDopoEsitoRipasso\(l, i, giusta\)\);/);
+  assert.match(S, /setRifatte\(0\);/);
+});
+
+test('schermata: contatore delle ripetizioni, "Di nuovo", riepilogo', () => {
+  const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
+  // le frasi della sessione (senza ripetizioni) per "non controllate"
+  assert.match(S, /const nBase = items\.filter\(primoTentativoRipasso\)\.length;/);
+  assert.match(S, /controllate < nBase && /);
+  assert.match(S, /const daRifare = items\.slice\(i \+ 1\)\.filter\(x => !primoTentativoRipasso\(x\)\)\.length;/);
+  assert.match(S, /🔁 Di nuovo/);
+  assert.match(S, /rifatte > 0 && /);
+});
