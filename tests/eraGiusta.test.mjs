@@ -46,7 +46,7 @@ test('riga per il foglio Contributi: accettato dall\'IA o segnalato', () => {
 
 const APP = tra('function verificaRisposta(', '\n  function avanti(');
 test('verificaRisposta si ricorda com\'era prima dell\'errore', () => {
-  assert.match(APP, /erroreRef\.current = ok \? null : \{\s*key: carta\.key,\s*prima: stats\[carta\.key\],\s*contata: \(cardErrori\[carta\.key\] \|\| 0\) < 2,\s*nuovaErrata: !carteErrate\.some\(e => e\.carta\.key === carta\.key\),\s*conAiutino: !!aiutino\s*\};/);
+  assert.match(APP, /erroreRef\.current = ok \? null : \{\s*key: carta\.key,\s*prima: stats\[carta\.key\],\s*contata: \(cardErrori\[carta\.key\] \|\| 0\) < 2,\s*nuovaErrata: !carteErrate\.some\(e => e\.carta\.key === carta\.key\),\s*risposta,\s*conAiutino: !!aiutino\s*\};/);
   // prima di aggiornare la statistica con l'errore
   assert.ok(APP.indexOf('erroreRef.current = ok ? null') < APP.indexOf('const ns = aggiornaStatsCoppia(stats, carta.key, ok && !aiutino)'));
 });
@@ -71,9 +71,24 @@ test('EraGiusta: dialetti solo segnalazione, altrimenti giudizio dell\'IA', () =
   assert.match(C, /📨 Segnala sinonimo/);
   assert.match(C, /🤖 Era giusta\?/);
   // accetta solo con true esplicito, salva, invia e poi avvisa App
-  assert.match(C, /if \(g\.accettabile === true\) \{\s*salvaSinonimo\(voceSinonimo\(carta\), risposta\);\s*inviaAlFoglio\(parametriSinonimo\(\{[^}]*accettato: true[^}]*\}\)\);\s*onAccettata\(\);/);
+  assert.match(C, /if \(g\.accettabile === true\) \{\s*salvaSinonimo\(voceSinonimo\(carta\), risposta\);\s*inviaAlFoglio\(parametriSinonimo\(\{[^}]*accettato: true[^}]*\}\)\);\s*onAccettata\(\{/);
   // la segnalazione dei dialetti non passa dall'IA
   const segnala = C.slice(C.indexOf('async function segnala('), C.indexOf('}', C.indexOf('setStato(ok ? "inviato"')));
   assert.doesNotMatch(segnala, /callAI/);
   assert.match(segnala, /accettato: false/);
+});
+
+// Code review (2026-10-27): un "sì" dell'IA arrivato dopo "Ho capito" poteva
+// rendere giusta una risposta successiva alla stessa carta, mai giudicata.
+test('risposta dell\'IA in ritardo: ignorata', () => {
+  const C = tra('function EraGiusta(', '\nfunction SpiegaAI(');
+  // uscendo dalla schermata d'errore la richiesta in corso non vale più
+  assert.match(C, /useEffect\(\(\) => \(\) => \{\s*richiesta\.current\+\+;\s*\}, \[\]\);/);
+  // App riceve carta e risposta giudicate
+  assert.match(C, /onAccettata\(\{\s*key: carta\.key,\s*risposta\s*\}\);/);
+  const V = tra('function verificaRisposta(', '\n  function salta(');
+  assert.match(V, /risposta,\s*\n\s*conAiutino: !!aiutino/);
+  const A = tra('function accettaComeGiusta(', '\n  }\n');
+  assert.match(A, /function accettaComeGiusta\(giudicata\)/);
+  assert.match(A, /giudicata\?\.key !== e\.key \|\| giudicata\?\.risposta !== e\.risposta/);
 });

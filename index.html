@@ -9881,6 +9881,10 @@ function EraGiusta({
     setStato("idle");
     setNota("");
   }, [carta?.key, risposta]);
+  // Uscendo dalla schermata d'errore ("Ho capito") la richiesta in corso non vale più
+  useEffect(() => () => {
+    richiesta.current++;
+  }, []);
   if (!eraGiustaDisponibile(carta, modalita, risposta)) return null;
   const lA = lingue.find(l => l.codice === carta.a);
   const lDA = lingue.find(l => l.codice === carta.da);
@@ -9911,7 +9915,10 @@ function EraGiusta({
     if (g.accettabile === true) {
       salvaSinonimo(voceSinonimo(carta), risposta);
       inviaAlFoglio(parametriSinonimo({ nomeLingua: lA.nome, italiano, atteso, sinonimo: risposta, accettato: true }));
-      onAccettata();
+      onAccettata({
+        key: carta.key,
+        risposta
+      });
       return;
     }
     setNota(g.nota);
@@ -15105,6 +15112,7 @@ function App() {
       prima: stats[carta.key],
       contata: (cardErrori[carta.key] || 0) < 2,
       nuovaErrata: !carteErrate.some(e => e.carta.key === carta.key),
+      risposta,
       conAiutino: !!aiutino
     };
     // Giusta con l'aiutino: conta nel punteggio, ma per il ripasso SM-2 vale
@@ -15164,9 +15172,12 @@ function App() {
   // SM-2 ricalcolata da com'era prima, come risposta giusta (con l'aiutino resta
   // errore, come sempre); punto restituito; fuori dalle sbagliate se ci era
   // entrata ora; stato "corretto", così "avanti" non la rimette in coda.
-  function accettaComeGiusta() {
+  // giudicata = {key, risposta} che l'IA ha visto: deve essere proprio l'ultimo
+  // errore, non una risposta successiva alla stessa carta rimessa in coda.
+  function accettaComeGiusta(giudicata) {
     const e = erroreRef.current;
     if (!e || e.key !== carte[indice]?.key || statoRef.current !== "sbagliato") return;
+    if (giudicata?.key !== e.key || giudicata?.risposta !== e.risposta) return;
     erroreRef.current = null;
     setStats(s => {
       const base = { ...s };
