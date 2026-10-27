@@ -14965,6 +14965,7 @@ function App() {
     setParoleRegredite([]);
     setCarteErrate([]);
     setCardErrori({});
+    erroreRef.current = null; // nessun errore da annullare con "Era giusta?"
     setSchermata("quiz");
   }
   function scegli(mod) {
@@ -15199,6 +15200,7 @@ function App() {
     setStato("corretto");
   }
   function salta() {
+    erroreRef.current = null;
     const carta = carte[indice];
     let nc = [...carte];
     if (!carta._saltata) nc.push({
@@ -15239,6 +15241,8 @@ function App() {
   }
   function avanti() {
     const ok = stato === "corretto";
+    // Carta dopo: l'errore di questa non si può più annullare con "Era giusta?"
+    erroreRef.current = null;
     let nc = [...carte];
     // Quiz e nonstop: NON rimettono in coda le sbagliate
     // Allenamento, voce, ascolto, dettato: rimettono in coda SEMPRE (anche con limite)

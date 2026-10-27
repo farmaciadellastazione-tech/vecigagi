@@ -107,3 +107,12 @@ test('la parola di partenza va all\'IA nella grafia (formaDisplay)', () => {
   const C = tra('function EraGiusta(', '\nfunction SpiegaAI(');
   assert.match(C, /parola: formaDisplay\(carta\.entry\?\.\[carta\.da\] \|\| "", carta\.da\),/);
 });
+
+// Code review (2026-10-27): il ricordo dell'ultimo errore si azzera passando
+// alla carta dopo, saltando o ricominciando (protezione in più, oltre ai
+// controlli in accettaComeGiusta).
+test('il ricordo dell\'ultimo errore si azzera in avanti, salta e avvia', () => {
+  for (const [da, a] of [['  function avanti() {', '\n  }\n'], ['  function salta() {', '\n  }\n'], ['  function avvia(voc, st, mod', '\n  }\n']]) {
+    assert.match(tra(da, a), /erroreRef\.current = null;/, da);
+  }
+});
