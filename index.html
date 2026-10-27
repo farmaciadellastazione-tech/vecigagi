@@ -7251,6 +7251,12 @@ function generaEserciziConiugazioni(lingueAttive) {
   Object.entries(CONIUGAZIONI).forEach(([verbKey, verbo]) => {
     Object.entries(verbo.tempi).forEach(([tempoKey, tempo]) => {
       tempo.forme.forEach(forma => {
+        // Forme di tutte le lingue (stessa persona e tempo): servono anche a
+        // linguaDellaRisposta, per "giusta ma in un'altra lingua, riprova"
+        const {
+          p,
+          ...formeLingue
+        } = forma;
         lingConiug.forEach(lDA => {
           if (!forma[lDA.codice]) return;
           lingConiug.forEach(lA => {
@@ -7267,8 +7273,7 @@ function generaEserciziConiugazioni(lingueAttive) {
               livello: LIVELLO_TEMPO[tempoKey] || "B1",
               persona: forma.p,
               entry: {
-                [lDA.codice]: forma[lDA.codice],
-                [lA.codice]: forma[lA.codice]
+                ...formeLingue
               }
             });
           });
