@@ -10848,50 +10848,41 @@ function pianoRipasso(frasi, lingue, conIA, rnd) {
 }
 function promptTraduzioniRipasso(items) {
   return {
-    system: `Sei un traduttore. Traduci ogni frase nella lingua indicata, in modo naturale e corretto, mantenendo il significato e il registro.
-Rispondi con UN oggetto JSON, senza markdown: {"traduzioni": [{"id": number, "testo": string}]}`,
+    system: `Sei un traduttore. Traduci ogni frase nella lingua indicata, in modo naturale e corretto, mantenendo il significato e il registro. In "originale" ricopia esattamente la frase da tradurre.
+Rispondi con UN oggetto JSON, senza markdown: {"traduzioni": [{"id": number, "originale": string, "testo": string}]}`,
     user: items.map((x, i) => `${i}. Da ${x.nomeDa} a ${x.nomeA}: "${x.testo}"`).join("\n") + "\n\nRispondi con il JSON."
   };
 }
-// n: quante traduzioni si aspettano (id 0..n-1). Un id fuori intervallo (l'IA
-// ha numerato da 1 o ne ha saltata una) sposterebbe ogni traduzione sulla
-// frase accanto, salvata per sempre: allora non ci si fida di nessuna.
-function estraiTraduzioniRipasso(raw, n) {
+// Traduzioni → {indice in items: testo}. Si abbinano per TESTO: l'IA ripete la
+// frase in "originale" (quarta code review). Abbinando per numero, un'IA che
+// numera da 1 o ne salta una spostava ogni traduzione sulla frase accanto,
+// salvata per sempre. L'id serve solo a scegliere tra frasi identiche (stesso
+// testo da due lingue). Senza originale, o con uno che non c'è: scartata.
+function estraiTraduzioniRipasso(raw, items) {
   const out = {};
-  let fuori = false;
-  const aggiungi = (idGrezzo, testo) => {
-    // L'id arriva spesso come testo ("0"): va accettato, sennò spariscono tutte
-    const id = String(idGrezzo ?? "").trim() !== "" ? Number(idGrezzo) : NaN;
-    if (!Number.isInteger(id)) return;
-    if (n !== undefined && (id < 0 || id >= n)) fuori = true;
-    if (String(testo || "").trim()) out[id] = String(testo).trim();
-  };
-  // Tutti gli id del testo, anche di voci troncate (scartate sotto): "id":2 in
-  // una voce tagliata dice comunque che la numerazione è sbagliata.
-  if (n !== undefined) for (const v of String(raw || "").matchAll(/"id"\s*:\s*"?\s*(-?\d+)/g)) if (Number(v[1]) < 0 || Number(v[1]) >= n) fuori = true;
-  const risultato = () => fuori ? {} : out;
+  const voci = [];
   try {
     const m = String(raw || "").match(/\{[\s\S]*\}/);
-    const o = JSON.parse(m ? m[0] : "");
-    (o.traduzioni || []).forEach(x => x && aggiungi(x.id, x.testo));
-    return risultato();
+    voci.push(...(JSON.parse(m ? m[0] : "").traduzioni || []));
   } catch (e) {
     // JSON troncato o rovinato (seconda code review): si recuperano le voci
-    // complete, chiuse da virgolette e graffa; quella tagliata resta fuori.
-    const stringa = '"((?:[^"\\\\]|\\\\.)*)"';
-    const idRe = '"id"\\s*:\\s*"?\\s*(-?\\d+(?:\\.\\d+)?)\\s*"?';
-    const testoRe = '"testo"\\s*:\\s*' + stringa;
-    const leggi = s => {
+    // complete, cioè gli oggetti chiusi dalla graffa; quella tagliata resta fuori.
+    for (const v of String(raw || "").matchAll(/\{[^{}]*\}/g)) {
       try {
-        return JSON.parse('"' + s + '"');
-      } catch (err) {
-        return "";
-      }
-    };
-    for (const v of String(raw || "").matchAll(new RegExp("\\{\\s*" + idRe + "\\s*,\\s*" + testoRe + "\\s*\\}", "g"))) aggiungi(v[1], leggi(v[2]));
-    for (const v of String(raw || "").matchAll(new RegExp("\\{\\s*" + testoRe + "\\s*,\\s*" + idRe + "\\s*\\}", "g"))) aggiungi(v[2], leggi(v[1]));
-    return risultato();
+        voci.push(JSON.parse(v[0]));
+      } catch (err) {}
+    }
   }
+  voci.forEach(x => {
+    if (!x || typeof x.originale !== "string" || typeof x.testo !== "string" || !x.testo.trim()) return;
+    const chiave = chiaveFraseRipasso(x.originale);
+    const libere = (items || []).map((it, k) => k).filter(k => !(k in out) && chiaveFraseRipasso(items[k].testo) === chiave);
+    if (!chiave || !libere.length) return;
+    // L'id arriva spesso come testo ("0"): conta solo come preferenza
+    const id = Number(String(x.id ?? "").trim() || NaN);
+    out[libere.includes(id) ? id : libere[0]] = x.testo.trim();
+  });
+  return out;
 }
 function promptGiudizioRipasso(item, risposta, riferimento) {
   return {
@@ -10972,7 +10963,7 @@ function SchermataRipassoFrasi({
       let trad = {};
       try {
         const p = promptTraduzioniRipasso(mancanti);
-        trad = estraiTraduzioniRipasso(await callAI(p.system, p.user, aiSettings), mancanti.length);
+        trad = estraiTraduzioniRipasso(await callAI(p.system, p.user, aiSettings), mancanti);
       } catch (e) {}
       if (n !== richiesta.current) return;
       mancanti.forEach((x, k) => {

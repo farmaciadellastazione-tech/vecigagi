@@ -129,19 +129,23 @@ test('piano: senza IA solo dettato; senza lingua d\'arrivo solo dettato', () => 
   assert.ok(Array.from({ length: 30 }, () => j(ctx.pianoRipasso(frasi, sole, true, Math.random))[0]).every(p => p.modo === 'dettato'));
 });
 
-test('prompt traduzioni: una sola richiesta con tutte le frasi, JSON con id', () => {
-  const items = [
-    { testo: 'I go home.', nomeDa: 'Inglese', nomeA: 'Francese' },
-    { testo: 'A vago a ca.', nomeDa: 'Spezzino', nomeA: 'Italiano' },
-  ];
-  const p = ctx.promptTraduzioniRipasso(items);
+// Quarta code review (2026-10-27): le traduzioni si abbinano alle frasi per
+// TESTO (l'IA ripete l'originale in "originale"), non per numero: una
+// numerazione sbagliata non sposta più le traduzioni sulla frase accanto.
+const ITEMS2 = [
+  { testo: 'I go home.', nomeDa: 'Inglese', nomeA: 'Francese' },
+  { testo: 'A vago a ca.', nomeDa: 'Spezzino', nomeA: 'Italiano' },
+];
+test('prompt traduzioni: una sola richiesta, l\'IA ripete l\'originale', () => {
+  const p = ctx.promptTraduzioniRipasso(ITEMS2);
   assert.match(p.user, /I go home\./);
   assert.match(p.user, /A vago a ca\./);
   assert.match(p.user, /Francese/);
   assert.match(p.system, /"traduzioni"/);
-  assert.deepEqual(j(ctx.estraiTraduzioniRipasso('```json {"traduzioni":[{"id":0,"testo":"Je rentre."},{"id":1,"testo":"Vado a casa."}]} ```')),
+  assert.match(p.system, /"originale"/);
+  assert.deepEqual(j(ctx.estraiTraduzioniRipasso('```json {"traduzioni":[{"id":0,"originale":"I go home.","testo":"Je rentre."},{"id":1,"originale":"A vago a ca.","testo":"Vado a casa."}]} ```', ITEMS2)),
     { 0: 'Je rentre.', 1: 'Vado a casa.' });
-  assert.deepEqual(j(ctx.estraiTraduzioniRipasso('niente json')), {});
+  assert.deepEqual(j(ctx.estraiTraduzioniRipasso('niente json', ITEMS2)), {});
 });
 
 test('giudizio IA: prompt con originale, riferimento e risposta; esito letto in modo robusto', () => {
@@ -156,11 +160,29 @@ test('giudizio IA: prompt con originale, riferimento e risposta; esito letto in 
   assert.equal(ctx.estraiGiudizioRipasso('boh').correct, null);
 });
 
-// Code review 2026-10-27: le IA scrivono spesso l'id come testo ("0"); scartarlo
-// faceva sparire in silenzio tutte le traduzioni (tutto a dettato).
-test('traduzioni: id anche come testo ("0"), ma non id inventati', () => {
-  assert.deepEqual(j(ctx.estraiTraduzioniRipasso('{"traduzioni":[{"id":"0","testo":"Je rentre."},{"id":" 1 ","testo":"Vado."},{"id":"x","testo":"no"},{"id":1.5,"testo":"no"}]}')),
-    { 0: 'Je rentre.', 1: 'Vado.' });
+// Code review 2026-10-27 (prima l'id come testo "0" faceva sparire tutto) e
+// quarta: con l'abbinamento per testo la numerazione non conta più.
+test('traduzioni: numerazione da 1, scambiata, saltata o come testo: abbinate giuste', () => {
+  const tre = [{ testo: 'Uno.' }, { testo: 'Due.' }, { testo: 'Tre.' }];
+  const voce = (id, o, t) => ({ id, originale: o, testo: t });
+  const r = arr => j(ctx.estraiTraduzioniRipasso(JSON.stringify({ traduzioni: arr }), tre));
+  assert.deepEqual(r([voce(1, 'Uno.', 'One'), voce(2, 'Due.', 'Two'), voce(3, 'Tre.', 'Three')]), { 0: 'One', 1: 'Two', 2: 'Three' });
+  assert.deepEqual(r([voce(0, 'Due.', 'Two'), voce(1, 'Uno.', 'One')]), { 0: 'One', 1: 'Two' });
+  // la seconda saltata e le altre numerate di seguito: la terza resta sulla terza
+  assert.deepEqual(r([voce(0, 'Uno.', 'One'), voce(1, 'Tre.', 'Three')]), { 0: 'One', 2: 'Three' });
+  assert.deepEqual(r([voce('0', 'uno', 'One')]), { 0: 'One' }); // originale con maiuscole/punteggiatura diverse
+});
+
+test('traduzioni: originale assente o che non corrisponde a nessuna frase = scartata', () => {
+  const r = arr => j(ctx.estraiTraduzioniRipasso(JSON.stringify({ traduzioni: arr }), ITEMS2));
+  assert.deepEqual(r([{ id: 0, testo: 'Je rentre.' }]), {});
+  assert.deepEqual(r([{ id: 0, originale: 'I went home.', testo: 'Je suis rentré.' }]), {});
+});
+
+test('traduzioni: stessa frase in due lingue di partenza, decide il numero', () => {
+  const doppie = [{ testo: 'Hola.', nomeDa: 'Spagnolo', nomeA: 'Inglese' }, { testo: 'Hola.', nomeDa: 'Catalano', nomeA: 'Francese' }];
+  const raw = JSON.stringify({ traduzioni: [{ id: 1, originale: 'Hola.', testo: 'Salut.' }, { id: 0, originale: 'Hola.', testo: 'Hello.' }] });
+  assert.deepEqual(j(ctx.estraiTraduzioniRipasso(raw, doppie)), { 0: 'Hello.', 1: 'Salut.' });
 });
 
 // Code review 2026-10-27: la voce (parla) salta le parentesi e si ferma al
@@ -293,32 +315,20 @@ test('dettato nei dialetti: apostrofi e spazi facoltativi, lettere no', () => {
 // Seconda code review (2026-10-27): un solo JSON per tutta la sessione; se
 // arriva troncato o rovinato si perdevano tutte le traduzioni. Ora si
 // recuperano le voci COMPLETE (chiuse da virgolette e graffa), mai quelle monche.
+const QUATTRO = [{ testo: 'Je rentre.' }, { testo: 'Il dit oui.' }, { testo: 'Vado.' }, { testo: 'Vado a casa.' }];
 test('traduzioni da JSON troncato: le voci complete sì, quella tagliata no', () => {
-  const raw = '{"traduzioni":[{"id":0,"testo":"Je rentre."},{"id":"1","testo":"Il dit \\"oui\\"."},{"testo":"Vado.","id":2},{"id":3,"testo":"Vado a ca';
-  assert.deepEqual(j(ctx.estraiTraduzioniRipasso(raw)), { 0: 'Je rentre.', 1: 'Il dit "oui".', 2: 'Vado.' });
+  const raw = '{"traduzioni":[{"id":0,"originale":"Je rentre.","testo":"I go home."},{"id":"1","originale":"Il dit oui.","testo":"He says \\"yes\\"."},{"testo":"I go.","originale":"Vado.","id":2},{"id":3,"originale":"Vado a casa.","testo":"I go ho';
+  assert.deepEqual(j(ctx.estraiTraduzioniRipasso(raw, QUATTRO)), { 0: 'I go home.', 1: 'He says "yes".', 2: 'I go.' });
 });
 
 test('traduzioni da JSON rovinato a metà (non troncato)', () => {
-  const raw = '{"traduzioni":[{"id":0,"testo":"Uno."},{"id":1,"testo":"Due."} {"id":2,"testo":"Tre."}]}';
-  assert.deepEqual(j(ctx.estraiTraduzioniRipasso(raw)), { 0: 'Uno.', 1: 'Due.', 2: 'Tre.' });
+  const raw = '{"traduzioni":[{"id":0,"originale":"Je rentre.","testo":"Uno."},{"id":1,"originale":"Il dit oui.","testo":"Due."} {"id":2,"originale":"Vado.","testo":"Tre."}]}';
+  assert.deepEqual(j(ctx.estraiTraduzioniRipasso(raw, QUATTRO)), { 0: 'Uno.', 1: 'Due.', 2: 'Tre.' });
 });
 
-// Terza code review (2026-10-27): se l'IA numera da 1 (o salta un numero) ogni
-// traduzione finisce sulla frase accanto e resta salvata per sempre. Con un id
-// fuori dall'intervallo atteso (0..n-1) non ci si fida di nessuna.
-test('traduzioni: id fuori intervallo = nessuna traduzione', () => {
-  const ok = '{"traduzioni":[{"id":0,"testo":"Uno."},{"id":1,"testo":"Due."}]}';
-  assert.deepEqual(j(ctx.estraiTraduzioniRipasso(ok, 2)), { 0: 'Uno.', 1: 'Due.' });
-  const da1 = '{"traduzioni":[{"id":1,"testo":"Uno."},{"id":2,"testo":"Due."}]}';
-  assert.deepEqual(j(ctx.estraiTraduzioniRipasso(da1, 2)), {});
-  assert.deepEqual(j(ctx.estraiTraduzioniRipasso('{"traduzioni":[{"id":0,"testo":"A"},{"id":-1,"testo":"B"}]}', 2)), {});
-  // anche dal recupero tollerante
-  assert.deepEqual(j(ctx.estraiTraduzioniRipasso('{"traduzioni":[{"id":1,"testo":"Uno."},{"id":2,"testo":"Du', 2)), {});
-});
-
-test('la schermata passa quante traduzioni si aspetta', () => {
+test('la schermata passa le frasi da abbinare', () => {
   const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
-  assert.match(S, /estraiTraduzioniRipasso\(await callAI\(p\.system, p\.user, aiSettings\), mancanti\.length\)/);
+  assert.match(S, /estraiTraduzioniRipasso\(await callAI\(p\.system, p\.user, aiSettings\), mancanti\)/);
 });
 
 // Terza code review (2026-10-27): la voce legge le cifre come parole ("Ho 3
