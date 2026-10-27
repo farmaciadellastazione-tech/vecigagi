@@ -5238,7 +5238,11 @@ function rimuoviSoggetto(str, codLingua) {
 // omofoni). `preciso` è rimasto per compatibilità: dal 2026-10-04 il
 // confronto è preciso sempre, anche per il vocabolario.
 function isCorretta(atteso, dato, bcp47, codLingua, preciso = false) {
-  const datoConv = bcp47 ? convertiNumeri(dato, bcp47) : dato;
+  // Spazio dopo l'apostrofo facoltativo ("le o l' avia" = "lê o l'avià", Dino
+  // 2026-10-27): si riprova con l'apostrofo attaccato. Solo un secondo
+  // tentativo: in "un po' di" lo spazio fa parte della frase.
+  if (/['’]\s/.test(dato) && isCorretta(atteso, dato.replace(/(['’])\s+/g, "$1"), bcp47, codLingua, preciso)) return true;
+  const datoConv =bcp47 ? convertiNumeri(dato, bcp47) : dato;
   // Per dialetti: converti cifre in parole dialettali
   const datoConvDial = DIALETTI_NUMERI.includes(codLingua) ? convertiNumeriDialetto(datoConv, codLingua) : datoConv;
   const datoFin = datoConvDial !== datoConv ? datoConvDial : datoConv;
