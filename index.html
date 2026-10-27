@@ -10727,19 +10727,18 @@ function frasiDaRipassare(archivio, conversazioni, codiciAttivi) {
 // Statistiche per frase a parte: niente SM-2 né "parole apprese".
 const SK_RIPASSO_STATS = "qml_v1_ripasso_stats"; // {chiave: {g, s, ultima, trad: {cod: testo}}}
 const N_FRASI_RIPASSO = 10;
-// Senza punteggiatura, maiuscole e spazi doppi, ma CON gli accenti (nei
-// dialetti "ca" e "cà" sono parole diverse). L'apostrofo resta, in una forma sola.
+// Come il resto dell'app (normalizza, Dino 2026-10-27): punteggiatura,
+// maiuscole, accenti latini e apostrofi non contano; il trattino vale come
+// spazio o come niente ("peut-être" = "peut etre" = "peutetre", come isCorretta).
 // soloSuono: per il dettato nei dialetti, dove la voce italiana non fa sentire
-// accenti, apostrofi e spazi della grafia ("gh'è" = "ghè", "a l'è" = "alè"):
-// contano solo le lettere (code review 2026-10-27, scelta di Dino).
+// nemmeno gli spazi della grafia ("a l'è" = "alè"): contano solo le lettere.
 function confrontaRipasso(atteso, dato, soloSuono = false) {
   const n = x => {
-    let s = String(x || "").normalize("NFC").toLowerCase();
-    if (soloSuono) s = s.normalize("NFD").replace(/\p{M}/gu, "").normalize("NFC");
-    s = s.replace(/[’‘`´]/g, "'").replace(/[^\p{L}\p{N}'\s]/gu, " ").replace(/\s+/g, " ").trim();
-    return soloSuono ? s.replace(/['\s]/g, "") : s;
+    const s = normalizza(String(x || ""));
+    return soloSuono ? s.replace(/\s/g, "") : s;
   };
-  return !!n(dato) && n(atteso) === n(dato);
+  const d = n(dato);
+  return !!d && (n(atteso) === d || n(String(atteso || "").replace(/-/g, "")) === d);
 }
 // Ciò che la voce legge davvero: parla() salta le parentesi e si ferma al primo "/".
 const testoDettatoRipasso = testo => String(testo || "").replace(/\(.*?\)/g, "").split("/")[0].trim();

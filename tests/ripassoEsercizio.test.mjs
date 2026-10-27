@@ -28,6 +28,7 @@ const ctx = vm.createContext({
   SK_CONVERSAZIONI: 'qml_v1_conversazioni',
 });
 ctx.globalThis = ctx;
+vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx);
 vm.runInContext([
   tra('// ── Archivio frasi da ripassare', '\n// ── Aiuto Frase libera'),
   `Object.assign(globalThis, { confrontaRipasso, caricaStatsRipasso, registraEsitoRipasso, potaStatsRipasso, archiviRipassoLeggibili, salvaTradRipasso,
@@ -47,12 +48,17 @@ const LINGUE = [
   { codice: 'sp', nome: 'Spezzino', attiva: true },
 ];
 
-test('dettato: punteggiatura, maiuscole e spazi non contano; gli accenti sì', () => {
+// Terza code review (2026-10-27), scelta di Dino: il confronto usa normalizza()
+// come il resto dell'app, quindi accenti latini, apostrofi e trattini non contano
+// (prima qui gli accenti contavano: regola cambiata, test aggiornato).
+test('confronto: punteggiatura, maiuscole, spazi, accenti e apostrofi non contano', () => {
   assert.equal(ctx.confrontaRipasso('Je vais à la mer.', 'je vais  à la mer'), true);
   assert.equal(ctx.confrontaRipasso('¿Dónde está?', 'dónde está'), true);
   assert.equal(ctx.confrontaRipasso("L'acqua è fresca!", 'l’acqua è fresca'), true);
-  assert.equal(ctx.confrontaRipasso('Je vais à la mer.', 'je vais a la mer'), false);
-  assert.equal(ctx.confrontaRipasso('A vago a cà.', 'a vago a ca'), false);
+  assert.equal(ctx.confrontaRipasso('Je vais à la mer.', 'je vais a la mer'), true);
+  assert.equal(ctx.confrontaRipasso('Il a été peut-être là', 'il a ete peutetre la'), true); // anche attaccato, come isCorretta
+  assert.equal(ctx.confrontaRipasso('Il a été peut-être là', 'il a ete peut etre la'), true);
+  assert.equal(ctx.confrontaRipasso('Je vais à la mer.', 'je vais a la plage'), false);
   assert.equal(ctx.confrontaRipasso('Hello', ''), false);
 });
 
@@ -165,10 +171,10 @@ test('dettato: si confronta con il testo che la voce legge', () => {
 
 // Code review 2026-10-27: nei dialetti la voce italiana non fa sentire gli
 // accenti della grafia ("ca"/"cà"): nel dettato non si pretendono.
-test('dettato nei dialetti: accenti facoltativi; altrove no', () => {
+test('dettato nei dialetti: accenti facoltativi (ora anche altrove, vedi sopra)', () => {
   assert.equal(ctx.confrontaRipasso('A vago a cà.', 'a vago a ca', true), true);
   assert.equal(ctx.confrontaRipasso('A vago a ca.', 'à vàgo a cà', true), true);
-  assert.equal(ctx.confrontaRipasso('A vago a cà.', 'a vago a ca'), false);
+  assert.equal(ctx.confrontaRipasso('A vago a cà.', 'a vago a ca'), true);
   assert.equal(ctx.confrontaRipasso('A vago a cà.', 'a vago a ca casa', true), false);
 });
 
@@ -276,8 +282,8 @@ test('dettato nei dialetti: apostrofi e spazi facoltativi, lettere no', () => {
   assert.equal(ctx.confrontaRipasso("A l'è bela.", 'a lè bela', true), true);
   assert.equal(ctx.confrontaRipasso("A l'è bela.", 'alè bela', true), true);
   assert.equal(ctx.confrontaRipasso("A l'è bela.", 'a le bella', true), false);
-  // fuori dai dialetti tutto come prima
-  assert.equal(ctx.confrontaRipasso("L'acqua è fresca", 'lacqua è fresca'), false);
+  // fuori dai dialetti: apostrofi non contano (normalizza), gli spazi sì
+  assert.equal(ctx.confrontaRipasso("L'acqua è fresca", 'lacqua è fresca'), true);
   assert.equal(ctx.confrontaRipasso('Good morning', 'goodmorning'), false);
 });
 
