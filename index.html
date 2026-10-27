@@ -8922,7 +8922,16 @@ function messaggioErroreHttpAI(res, d) {
 // frase. Gli estrattori tolleranti (estraiSpiegazioneDaTesto/estraiFeedbackFrase)
 // evitano il JSON grezzo a schermo, ma non possono recuperare testo mai generato.
 const AI_MAX_TOKENS = 1000;
+// ── Senza IA ─────────────────────────────────────────────────────────────
+// Richiesta di Dino (2026-10-27): molti usano l'app senza chiave IA. Ogni
+// funzione con l'IA lo controlla con iaConfigurata e mostra AvvisoIA (con il
+// pulsante "Configura IA"); callAI resta la rete di sicurezza: senza chiave
+// nessuna chiamata a vuoto, e un messaggio comprensibile invece di un HTTP 400.
+const iaConfigurata = aiCfg => String(aiCfg?.apiKey || "").trim().length > 10;
+const MSG_SENZA_IA = "Errore: manca la chiave IA. Configurala da 🤖 in Home (Gemini è gratuito).";
 async function callAI(systemPrompt, userPrompt, aiCfg) {
+  // Solo la chiave vuota: la soglia di iaConfigurata vale per l'interfaccia
+  if (!String(aiCfg?.apiKey || "").trim()) return MSG_SENZA_IA;
   const cfg = GROQ_MODELS[aiCfg?.provider] || GROQ_MODELS.gemini;
   const key = aiCfg?.apiKey || "";
   try {
@@ -9906,7 +9915,7 @@ function EraGiusta({
   const atteso = carta.entry?.[carta.a] || "";
   const italiano = soloVisibile(carta.entry?.it || "");
   const dialetto = DIALETTI_TTS_ITA.includes(lA.codice);
-  const hasKey = (aiSettings?.apiKey || "").length > 10;
+  const hasKey = iaConfigurata(aiSettings);
   if (!dialetto && !hasKey) return null;
   async function chiedi() {
     const n = ++richiesta.current;
@@ -9993,7 +10002,7 @@ function SpiegaAI({
     setDomanda("");
   }, [carta]);
   if (!carta) return null;
-  const hasKey = (aiSettings?.apiKey || "").length > 10;
+  const hasKey = iaConfigurata(aiSettings);
   const inAttesa = domande.some(x => x.r === null);
   async function chiedi() {
     const q = domanda.trim();
@@ -11165,7 +11174,7 @@ function SchermataRipassoFrasi({
   aiSettings,
   onHome
 }) {
-  const conIA = (aiSettings?.apiKey || "").length > 10;
+  const conIA = iaConfigurata(aiSettings);
   const [fase, setFase] = useState("prepara"); // prepara | domanda | verifica | esito | fine | vuoto
   const [items, setItems] = useState([]);
   const [i, setI] = useState(0);
@@ -13115,7 +13124,7 @@ function SchermataLetturaGuidata({
     streakContata.current = true;
     onStreak();
   }
-  const hasKey = (aiSettings?.apiKey || "").length > 10;
+  const hasKey = iaConfigurata(aiSettings);
   const hasAdminToken = !!localStorage.getItem(GH_TOKEN_KEY);
   const lingueAttive = lingue.filter(l => l.attiva);
   const storieDisponibili = [
