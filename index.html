@@ -4433,7 +4433,9 @@ function esportaProgressi(stats, vocabolario, lingue) {
     ai,
     streak,
     recordPerc,
-    ndom
+    ndom,
+    // Sinonimi accettati con "🤖 Era giusta?": altrimenti cambiando browser si perdono
+    sinonimi: caricaSinonimi()
   }, null, 2)], {
     type: "application/json"
   });
@@ -4442,6 +4444,10 @@ function esportaProgressi(stats, vocabolario, lingue) {
   a.download = "quiz_progressi.json";
   a.click();
   URL.revokeObjectURL(a.href);
+}
+// Lingue che l'app conosce (predefinite, salvate, e quelle del file caricato)
+function codiciLingueNote(daFile) {
+  return [...LINGUE_DEFAULT, ...loadJSON(SK_LINGUE, []), ...(Array.isArray(daFile) ? daFile : [])].map(l => l?.codice).filter(Boolean);
 }
 function importaProgressi(file, onDone) {
   const r = new FileReader();
@@ -4453,7 +4459,8 @@ function importaProgressi(file, onDone) {
       if (data.streak) saveJSON(SK_STREAK, data.streak);
       if (data.recordPerc) saveJSON(SK_RECORD_PERC, data.recordPerc);
       if (data.ndom) saveJSON(SK_NDOM, data.ndom);
-      onDone(data);
+      const sinonimiOk = !data.sinonimi || unisciSinonimi(data.sinonimi, codiciLingueNote(data.lingue));
+      onDone(data, !sinonimiOk);
     } catch {
       alert(UI[getUILang()].filenonvalido);
     }
@@ -7880,7 +7887,8 @@ function Home({
   onCambiaLingue,
   onCambiaFiltri,
   onImpostazioniAI,
-  aiSettings
+  aiSettings,
+  onSinonimi
 }) {
   const t = useUI();
   const fileRef = useRef();
@@ -8383,7 +8391,11 @@ function Home({
     onClick: onStatistiche,
     title: "Statistiche",
     className: "text-lg bg-zinc-900 hover:bg-zinc-800 p-2.5 rounded-xl transition"
-  }, "\uD83D\uDCCA"), /*#__PURE__*/React.createElement("button", {
+  }, "\uD83D\uDCCA"), contaSinonimi() > 0 &&/*#__PURE__*/React.createElement("button", {
+    onClick: onSinonimi,
+    title: "Sinonimi accettati",
+    className: "text-lg bg-zinc-900 hover:bg-zinc-800 p-2.5 rounded-xl transition"
+  }, "\uD83E\uDD1D"), /*#__PURE__*/React.createElement("button", {
     onClick: onEsporta,
     title: "Salva progressi",
     className: "text-lg bg-zinc-900 hover:bg-zinc-800 p-2.5 rounded-xl transition"
@@ -9920,6 +9932,86 @@ function conGrassetto(s) {
 // la risposta è un sinonimo valido; se sì App la conta giusta (onAccettata),
 // il sinonimo resta in questo browser e arriva a Dino sul foglio Contributi.
 // Nei dialetti l'IA non giudica: "📨 Segnala sinonimo" lo manda a Dino e basta.
+// Pagina "🤝 Sinonimi accettati" (Dino, 2026-10-27): quelli accettati con
+// "🤖 Era giusta?", per coppia di lingue; ✕ ne toglie uno (torna un errore).
+function SchermataSinonimi({
+  vocabolario,
+  lingue,
+  onHome
+}) {
+  const [versione, aggiorna] = useState(0); // dopo una cancellazione si rilegge l'elenco
+  const righe = useMemo(() => elencoSinonimi(vocabolario), [vocabolario, versione]);
+  const lingua = cod => lingue.find(l => l.codice === cod) || {
+    nome: cod,
+    bandiera: ""
+  };
+  const etichetta = cod => `${lingua(cod).bandiera || ""} ${lingua(cod).nome}`.trim();
+  // Righe già ordinate per lingue: un gruppo nuovo quando cambia la coppia
+  const coppie = [];
+  righe.forEach(r => {
+    const c = r.da + "|" + r.a;
+    if (coppie.length && coppie[coppie.length - 1].c === c) coppie[coppie.length - 1].righe.push(r);
+    else coppie.push({
+      c,
+      da: r.da,
+      a: r.a,
+      righe: [r]
+    });
+  });
+  function togliTutti() {
+    if (!confirm("Togliere tutti i sinonimi accettati? Torneranno a essere errori.")) return;
+    if (!togliTuttiSinonimi()) alert("Non sono riuscito a cancellarli: la memoria del browser è bloccata.");
+    aggiorna(n => n + 1);
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen bg-black p-4",
+    style: {
+      paddingBottom: "80px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-xl mx-auto"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between mb-4"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onHome,
+    className: "text-zinc-500 hover:text-white transition text-sm"
+  }, "← Home"), /*#__PURE__*/React.createElement("span", {
+    className: "text-zinc-600 text-xs"
+  }, "🤝 Sinonimi accettati"), /*#__PURE__*/React.createElement("span", null)), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-500 mb-4"
+  }, "Risposte che l'IA ha accettato con \"🤖 Era giusta?\": in questo browser valgono come giuste. Tocca ✕ per toglierne una: tornerà a essere un errore."), righe.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 text-center"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-4xl mb-3"
+  }, "🤝"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-500"
+  }, "Ancora nessuno. Quando il quiz segna errore una parola che secondo te è giusta, \"🤖 Era giusta?\" chiede all'IA se è un sinonimo valido.")), coppie.map(g => /*#__PURE__*/React.createElement("div", {
+    key: g.c,
+    className: "mb-4"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 font-bold mb-2"
+  }, etichetta(g.da), " → ", etichetta(g.a)), g.righe.map(r => /*#__PURE__*/React.createElement("div", {
+    key: r.chiave,
+    className: "bg-zinc-900 border border-zinc-700 rounded-xl p-3 mb-2"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-slate-200 mb-2"
+  }, r.parola, " → ", /*#__PURE__*/React.createElement("strong", null, r.atteso)), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2 flex-wrap"
+  }, r.sinonimi.map(s => /*#__PURE__*/React.createElement("button", {
+    key: s,
+    onClick: () => {
+      togliSinonimo(r.chiave, s);
+      aggiorna(n => n + 1);
+    },
+    title: "Togli", "aria-label": `Togli ${s}`,
+    className: "bg-zinc-800 hover:bg-zinc-700 text-slate-200 text-sm px-3 py-1 rounded-lg transition"
+  }, s, " ✕"))))))), righe.length > 0 && /*#__PURE__*/React.createElement("button", {
+    onClick: togliTutti,
+    className: "w-full text-xs text-zinc-500 hover:text-red-400 transition py-2 mt-2"
+  }, "🗑️ Cancella tutti"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-600 mt-4"
+  }, "Cancellarli li toglie solo da questo browser: quelli già inviati a LinguaeQuiz restano da valutare per il vocabolario.")));
+}
 function EraGiusta({
   carta,
   risposta,
@@ -10832,6 +10924,107 @@ function salvaSinonimo(voce, forma) {
     return false;
   }
   return true;
+}
+// Pagina "🤝 Sinonimi accettati" (Dino, 2026-10-27): rivederli e cancellarli.
+// La chiave ha le parole normalizzate (senza accenti): per mostrarle si ritrova
+// la voce del vocabolario; se non c'è più, la parola della chiave.
+function elencoSinonimi(vocabolario) {
+  const voc = Array.isArray(vocabolario) ? vocabolario : [];
+  const tutti = caricaSinonimi();
+  const righe = righeSinonimi(tutti);
+  // Indice chiave → voce, una passata del vocabolario per coppia di lingue
+  // (non una ricerca per ogni sinonimo)
+  const indice = new Map();
+  new Set(righe.map(r => r.da + "|" + r.a)).forEach(c => {
+    const [da, a] = c.split("|");
+    voc.forEach(v => {
+      if (!v || !v[da] || !v[a]) return;
+      const k = chiaveSinonimo({
+        da,
+        parola: v[da],
+        a,
+        atteso: v[a]
+      });
+      if (!indice.has(k)) indice.set(k, v);
+    });
+  });
+  return righe.map(r => {
+    const e = indice.get(r.chiave);
+    return {
+      ...r,
+      parola: e ? formaDisplay(e[r.da], r.da) : r.parola,
+      atteso: e ? formaDisplay(e[r.a], r.a) : r.atteso
+    };
+  }).sort((x, y) => x.da.localeCompare(y.da) || x.a.localeCompare(y.a) || normalizza(x.parola).localeCompare(normalizza(y.parola)));
+}
+// Le voci valide (chiave in 4 parti, almeno un sinonimo), con le parole della chiave
+function righeSinonimi(tutti) {
+  return Object.keys(tutti).map(chiave => {
+    const parti = chiave.split("|");
+    const sinonimi = Array.isArray(tutti[chiave]) ? tutti[chiave].filter(x => typeof x === "string" && x.trim()) : [];
+    if (parti.length !== 4 || parti.some(p => !p) || !sinonimi.length) return null;
+    return {
+      chiave,
+      da: parti[0],
+      parola: parti[1],
+      a: parti[2],
+      atteso: parti[3],
+      sinonimi
+    };
+  }).filter(Boolean);
+}
+// Per l'icona 🤝 in Home: stesso conteggio della pagina (dati rovinati non contano)
+function contaSinonimi() {
+  return righeSinonimi(caricaSinonimi()).length;
+}
+function scriviSinonimi(tutti) {
+  try {
+    localStorage.setItem(SK_SINONIMI, JSON.stringify(tutti));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+// Toglie un sinonimo (torna a essere un errore); la voce vuota sparisce.
+function togliSinonimo(chiave, forma) {
+  const tutti = caricaSinonimi();
+  const l = Array.isArray(tutti[chiave]) ? tutti[chiave] : [];
+  const resto = l.filter(x => normalizza(String(x)) !== normalizza(String(forma || "")));
+  if (resto.length === l.length) return false;
+  if (resto.length) tutti[chiave] = resto;
+  else delete tutti[chiave];
+  return scriviSinonimi(tutti);
+}
+function togliTuttiSinonimi() {
+  try {
+    localStorage.removeItem(SK_SINONIMI);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+// Caricando un file di progressi: i sinonimi si uniscono a quelli del browser
+// (niente doppioni, solo forme salvabili). Oltre il tetto per voce si scartano
+// quelli del file, mai quelli già qui. codici: se dati, solo queste lingue.
+// Un sinonimo uguale alla risposta prevista (ultima parte della chiave) non serve.
+// false se non si è potuto salvare (memoria piena o bloccata).
+function unisciSinonimi(daFile, codici) {
+  if (!daFile || typeof daFile !== "object" || Array.isArray(daFile)) return true;
+  const tutti = caricaSinonimi();
+  Object.keys(daFile).forEach(chiave => {
+    const parti = chiave.split("|");
+    if (parti.length !== 4 || parti.some(p => !p) || !Array.isArray(daFile[chiave])) return;
+    if (codici && !(codici.includes(parti[0]) && codici.includes(parti[2]))) return;
+    const l = Array.isArray(tutti[chiave]) ? tutti[chiave].filter(x => typeof x === "string") : [];
+    daFile[chiave].forEach(x => {
+      if (l.length >= MAX_SINONIMI_PER_VOCE || typeof x !== "string" || !sinonimoSalvabile(x)) return;
+      const f = x.trim();
+      if (normalizza(f) === parti[3]) return;
+      if (!l.some(y => normalizza(y) === normalizza(f))) l.push(f);
+    });
+    if (l.length) tutti[chiave] = l;
+  });
+  return scriviSinonimi(tutti);
 }
 // Si manda all'IA solo una risposta da vocabolario: breve, su una riga, con
 // lettere. Una frase lunga non è un sinonimo e potrebbe contenere istruzioni
@@ -15548,7 +15741,7 @@ function App() {
     try { localStorage.setItem(SK_LAST_EXPORT, String(Date.now())); } catch (e) {}
   }
   function handleImporta(file) {
-    importaProgressi(file, data => {
+    importaProgressi(file, (data, sinonimiNonSalvati) => {
       if (data.stats) {
         const merged = {
           ...stats
@@ -15575,7 +15768,7 @@ function App() {
         setLingue(lu);
         saveJSON(SK_LINGUE, lu);
       }
-      alert(UI[getUILang()].progressiuniti);
+      alert(UI[getUILang()].progressiuniti + (sinonimiNonSalvati ? "\n⚠️ Sinonimi accettati non salvati: la memoria del browser è piena o bloccata." : ""));
     });
   }
   // La schermata; la finestra delle Impostazioni IA va sopra (vedi in fondo)
@@ -15682,6 +15875,7 @@ function App() {
     onImpostazioniAI: apriImpostazioniAI,
     aiSettings: aiSettings,
     onStatistiche: () => setSchermata("statistiche"),
+    onSinonimi: () => setSchermata("sinonimi"),
     onRicerca: () => setSchermata("ricerca"),
     onGlossario: () => setSchermata("glossario"),
     onEsporta: handleEsporta,
@@ -15694,6 +15888,11 @@ function App() {
       setFiltri(f);
       saveJSON(SK_FILTRI, f);
     }
+  });
+  if (schermata === "sinonimi") return /*#__PURE__*/React.createElement(SchermataSinonimi, {
+    vocabolario: vocabolario,
+    lingue: lingue,
+    onHome: () => setSchermata("home")
   });
   if (schermata === "glossario") return /*#__PURE__*/React.createElement(Glossario, {
     vocabolario: vocabolario,
