@@ -11,6 +11,9 @@
 //    dopo = battuta IA valida); altrimenti non è stata valutata.
 //  - dialetti (mn/sp/ge/cr): solo testi corretti a mano con ✏️ Correggi
 //    (`corretta`, `correzioneCorretta`); il giudizio dell'IA non basta.
+// Regola cambiata da Dino il 2026-10-27 (dopo l'uso): le battute dell'IA NON
+// si ripassano più (spesso lunghe, o spiegazioni grammaticali): solo le frasi
+// dello studente. Aggiornati di conseguenza solo i risultati attesi.
 //   eseguire con:  node --test
 import { test } from 'node:test';
 import assert from 'node:assert';
@@ -44,11 +47,8 @@ const convFr = {
   ],
 };
 
-test('lingue normali: battute IA, versione pulita o correzione; mai "senza correzione"', () => {
-  assert.deepEqual(testi(ctx.daConv([convFr])), [
-    'Salut ! Tu pars où cet été ?', 'Je vais à la mer.', 'Super, quelle mer ?', 'Je vais en Sicile.',
-    'La Sicile est belle !', 'Tu y vas en avion ?',
-  ]);
+test('lingue normali: versione pulita o correzione; mai "senza correzione" né battute IA', () => {
+  assert.deepEqual(testi(ctx.daConv([convFr])), ['Je vais à la mer.', 'Je vais en Sicile.']);
   const f = j(ctx.daConv([convFr]))[0];
   assert.equal(f.cod, 'fr');
   assert.equal(f.origine, 'Conversazione');
@@ -67,14 +67,14 @@ test('risposte dell\'IA fallite o rotte: fuori, e anche la frase dello studente 
       // ultima frase: l'IA non ha risposto (nessun turno dopo)
     ],
   };
-  assert.deepEqual(testi(ctx.daConv([conv])), ['Hi! How are you?']);
+  assert.deepEqual(testi(ctx.daConv([conv])), []);
 });
 
 const convSp = {
   id: 'b', lingua: 'sp', turni: [
     { ruolo: 'ia', testo: 'Ciao, cosa ti fai?' },                         // IA non controllata: fuori
     { ruolo: 'utente', testo: 'A vago a ca.', correzione: null, pulita: 'A vago a cà.' }, // giudizio IA: non basta
-    { ruolo: 'ia', testo: 'Ciao, cos te fe?', corretta: true },            // corretta a mano: dentro
+    { ruolo: 'ia', testo: 'Ciao, cos te fe?', corretta: true },            // battuta IA: fuori anche corretta a mano
     { ruolo: 'utente', testo: 'A vado a ca', correzione: 'A vago a cà.' }, // correzione IA: fuori
     { ruolo: 'ia', testo: 'E po?' },
     { ruolo: 'utente', testo: 'A magno', correzione: 'A mangio', correzioneCorretta: true }, // sistemata a mano: dentro
@@ -83,7 +83,7 @@ const convSp = {
 };
 
 test('dialetti: solo testi corretti a mano', () => {
-  assert.deepEqual(testi(ctx.daConv([convSp])), ['Ciao, cos te fe?', 'A mangio']);
+  assert.deepEqual(testi(ctx.daConv([convSp])), ['A mangio']);
 });
 
 test('conversazioni rovinate o vuote non rompono nulla', () => {
@@ -99,13 +99,13 @@ test('raccolta: archivio + conversazioni, senza doppioni nella stessa lingua', (
   const l = j(ctx.raccogli(archivio, [convFr]));
   assert.equal(l.filter(f => f.testo.toLowerCase() === 'je vais à la mer.').length, 1);
   assert.ok(l.some(f => f.testo === 'I go home.'));
-  assert.equal(l.length, 7);
+  assert.equal(l.length, 3);
 });
 
 test('raccolta: solo le lingue attive, se indicate', () => {
   const archivio = [{ testo: 'I go home.', cod: 'en' }];
   assert.deepEqual(testi(ctx.raccogli(archivio, [convFr, convSp], ['en', 'sp'])), [
-    'I go home.', 'Ciao, cos te fe?', 'A mangio',
+    'I go home.', 'A mangio',
   ]);
 });
 
@@ -126,7 +126,7 @@ test('battute IA parziali: fuori, e anche la frase dello studente prima', () => 
       { ruolo: 'ia', testo: 'Why are you going ho', parziale: true },
     ],
   };
-  assert.deepEqual(testi(ctx.daConv([conv])), ['Hi! How are you?']);
+  assert.deepEqual(testi(ctx.daConv([conv])), []);
 });
 
 // Terza code review (2026-10-27): una battuta troncata (`parziale`) poi
@@ -140,7 +140,7 @@ test('battuta parziale corretta a mano: dentro, e la frase dello studente prima'
       { ruolo: 'ia', testo: 'E cosa te mangi?', parziale: true, corretta: true },
     ],
   };
-  assert.deepEqual(testi(ctx.daConv([conv])), ['Ciao!', 'A mangio', 'E cosa te mangi?']);
+  assert.deepEqual(testi(ctx.daConv([conv])), ['A mangio']);
 });
 
 test('pulita che non è testo (dati vecchi o strani): si usa la correzione', () => {
@@ -148,7 +148,7 @@ test('pulita che non è testo (dati vecchi o strani): si usa la correzione', () 
     { ruolo: 'utente', testo: 'I goes', correzione: 'I go.', pulita: { text: 'x' } },
     { ruolo: 'ia', testo: 'Where?' },
   ] };
-  assert.deepEqual(testi(ctx.daConv([conv])), ['I go.', 'Where?']);
+  assert.deepEqual(testi(ctx.daConv([conv])), ['I go.']);
 });
 
 // Terza code review (2026-10-27): "Ciao, come stai?" e "Ciao come stai" erano
@@ -179,10 +179,10 @@ test('correzione che non è testo: niente frase', () => {
     { ruolo: 'utente', testo: 'Home', correzione: 42 },
     { ruolo: 'ia', testo: 'Nice.' },
   ] };
-  assert.deepEqual(testi(ctx.daConv([conv])), ['Where?', 'Nice.']);
+  assert.deepEqual(testi(ctx.daConv([conv])), []);
   const sp = { id: 't', lingua: 'sp', turni: [
     { ruolo: 'utente', testo: 'A magno', correzione: { x: 1 }, correzioneCorretta: true },
     { ruolo: 'ia', testo: 'Ben!', corretta: true },
   ] };
-  assert.deepEqual(testi(ctx.daConv([sp])), ['Ben!']);
+  assert.deepEqual(testi(ctx.daConv([sp])), []);
 });
