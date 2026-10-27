@@ -54,3 +54,12 @@ test('il turno dello studente salva la versione pulita', () => {
   assert.match(CONV, /clean: pulitaIA, tollerante \} = estraiRispostaConversazione\(clean\)/);
   assert.match(CONV, /correzione: correction \|\| null, nota: note \|\| null, pulita: dialetto \? null : pulitaIA \|\| null/);
 });
+
+// Terza code review (2026-10-27): se l'IA mette in "clean" qualcosa che non è
+// testo (oggetto, true, numero) nel ripasso entrava "[object Object]".
+test('"clean" che non è testo: ignorato', () => {
+  assert.equal(ctx.estrai('{"reply":"Ok","correction":"","note":"","clean":{"text":"x"}}').clean, '');
+  assert.equal(ctx.estrai('{"reply":"Ok","correction":"","note":"","clean":true}').clean, '');
+  assert.equal(ctx.estrai('{"reply":"Ok","correction":"","note":""}').clean, '');
+  assert.equal(ctx.estrai('{"reply":"Ok","correction":"","note":"","clean":"Fine."}').clean, 'Fine.');
+});

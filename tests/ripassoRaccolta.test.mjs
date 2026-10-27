@@ -140,3 +140,11 @@ test('battuta parziale corretta a mano: dentro, e la frase dello studente prima'
   };
   assert.deepEqual(testi(ctx.daConv([conv])), ['Ciao!', 'A mangio', 'E cosa te mangi?']);
 });
+
+test('pulita che non è testo (dati vecchi o strani): si usa la correzione', () => {
+  const conv = { id: 'r', lingua: 'en', turni: [
+    { ruolo: 'utente', testo: 'I goes', correzione: 'I go.', pulita: { text: 'x' } },
+    { ruolo: 'ia', testo: 'Where?' },
+  ] };
+  assert.deepEqual(testi(ctx.daConv([conv])), ['I go.', 'Where?']);
+});

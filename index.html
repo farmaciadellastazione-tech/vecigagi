@@ -10692,7 +10692,7 @@ function frasiDaConversazioni(conversazioni) {
       } else if (x.ruolo === "utente" && battutaIAValida(c.turni[k + 1])) {
         if (dial) {
           if (x.correzioneCorretta) aggiungi(x.correzione);
-        } else aggiungi(x.pulita || x.correzione);
+        } else aggiungi(typeof x.pulita === "string" && x.pulita.trim() ? x.pulita : x.correzione);
       }
     });
   });
@@ -12360,7 +12360,8 @@ function estraiRispostaConversazione(clean) {
   if (jsonMatch) {
     try {
       const parsed = JSON.parse(jsonMatch[0]);
-      if (parsed && typeof parsed.reply !== "undefined") return parsed;
+      // "clean" solo se è testo: un oggetto entrerebbe nel ripasso come "[object Object]"
+      if (parsed && typeof parsed.reply !== "undefined") return { ...parsed, clean: typeof parsed.clean === "string" ? parsed.clean : "" };
     } catch (e) {
       // JSON malformato/troncato: prova l'estrazione tollerante sotto.
     }
