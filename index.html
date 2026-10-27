@@ -11363,6 +11363,22 @@ function pianoRipasso(frasi, lingue, conIA, rnd, conVoce = false) {
     };
   });
 }
+// Allenamento (Dino, 2026-10-27): una frase sbagliata torna in fondo alla
+// sessione, uguale (stessa modalità e riferimento), finché non è giusta; al
+// massimo MAX_TENTATIVI_RIPASSO volte (un riferimento dell'IA discutibile non
+// blocca la sessione). Le non controllate (giusta === null) non tornano.
+const MAX_TENTATIVI_RIPASSO = 3;
+function codaDopoEsitoRipasso(items, i, giusta) {
+  const it = items[i];
+  const n = it?.tentativo || 1;
+  if (giusta !== false || !it || n >= MAX_TENTATIVI_RIPASSO) return items;
+  return [...items, {
+    ...it,
+    tentativo: n + 1
+  }];
+}
+// Punteggio e statistiche contano solo il primo tentativo
+const primoTentativoRipasso = it => !!it && (it.tentativo || 1) === 1;
 // Ripeti a voce: vale la prima interpretazione del riconoscimento che coincide
 // con la frase letta (regole del dettato); null se nessuna.
 function esitoVoceRipasso(item, testi, bcp47) {
