@@ -10732,9 +10732,11 @@ const N_FRASI_RIPASSO = 10;
 // spazio o come niente ("peut-être" = "peut etre" = "peutetre", come isCorretta).
 // soloSuono: per il dettato nei dialetti, dove la voce italiana non fa sentire
 // nemmeno gli spazi della grafia ("a l'è" = "alè"): contano solo le lettere.
-function confrontaRipasso(atteso, dato, soloSuono = false) {
+// bcp47: lingua della frase; cifre e parole valgono uguale ("3" = "tre"), perché
+// la voce legge le cifre come parole (come isCorretta, con convertiNumeri).
+function confrontaRipasso(atteso, dato, soloSuono = false, bcp47 = "") {
   const n = x => {
-    const s = normalizza(String(x || ""));
+    const s = normalizza(bcp47 ? convertiNumeri(String(x || ""), bcp47) : String(x || ""));
     return soloSuono ? s.replace(/\s/g, "") : s;
   };
   const d = n(dato);
@@ -11017,8 +11019,8 @@ function SchermataRipassoFrasi({
   async function controlla() {
     const r = risposta.trim();
     if (!r || !item || fase !== "domanda") return;
-    if (item.modo === "dettato") return chiudi(confrontaRipasso(testoDettatoRipasso(item.testo), r, DIALETTI_TTS_ITA.includes(item.cod)), testoDettatoRipasso(item.testo), "", "");
-    if (confrontaRipasso(item.rif, r)) return chiudi(true, item.rif, "", "");
+    if (item.modo === "dettato") return chiudi(confrontaRipasso(testoDettatoRipasso(item.testo), r, DIALETTI_TTS_ITA.includes(item.cod), lingua(item.cod).bcp47), testoDettatoRipasso(item.testo), "", "");
+    if (confrontaRipasso(item.rif, r, false, lingua(item.a).bcp47)) return chiudi(true, item.rif, "", "");
     const n = ++richiesta.current;
     setFase("verifica");
     let g = {

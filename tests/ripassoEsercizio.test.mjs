@@ -29,6 +29,8 @@ const ctx = vm.createContext({
 });
 ctx.globalThis = ctx;
 vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx);
+// numeri in parole, come nel resto dell'app (convertiNumeri)
+vm.runInContext(tra('const NUMERI_PAROLE = {', '\nfunction convertiNumeri(') + '\n' + tra('function convertiNumeri(', '\n}') + '\n}\nglobalThis.convertiNumeri = convertiNumeri;', ctx);
 vm.runInContext([
   tra('// ── Archivio frasi da ripassare', '\n// ── Aiuto Frase libera'),
   `Object.assign(globalThis, { confrontaRipasso, caricaStatsRipasso, registraEsitoRipasso, potaStatsRipasso, archiviRipassoLeggibili, salvaTradRipasso,
@@ -180,7 +182,8 @@ test('dettato nei dialetti: accenti facoltativi (ora anche altrove, vedi sopra)'
 
 test('la schermata usa testo letto e accenti facoltativi per i dialetti nel dettato', () => {
   const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
-  assert.match(S, /confrontaRipasso\(testoDettatoRipasso\(item\.testo\), r, DIALETTI_TTS_ITA\.includes\(item\.cod\)\)/);
+  // (terza code review: dopo c'è anche la lingua, per i numeri)
+  assert.match(S, /confrontaRipasso\(testoDettatoRipasso\(item\.testo\), r, DIALETTI_TTS_ITA\.includes\(item\.cod\)[,)]/);
 });
 
 // Code review 2026-10-27: le frasi che l'IA non è riuscita a controllare "non
@@ -316,4 +319,22 @@ test('traduzioni: id fuori intervallo = nessuna traduzione', () => {
 test('la schermata passa quante traduzioni si aspetta', () => {
   const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
   assert.match(S, /estraiTraduzioniRipasso\(await callAI\(p\.system, p\.user, aiSettings\), mancanti\.length\)/);
+});
+
+// Terza code review (2026-10-27): la voce legge le cifre come parole ("Ho 3
+// gatti" → "ho tre gatti"): cifre e parole valgono uguale, nella lingua della
+// frase, come in isCorretta (convertiNumeri).
+test('numeri: cifre e parole valgono uguale nella lingua della frase', () => {
+  assert.equal(ctx.confrontaRipasso('Ho 3 gatti.', 'ho tre gatti', false, 'it-IT'), true);
+  assert.equal(ctx.confrontaRipasso('Ho tre gatti.', 'ho 3 gatti', false, 'it-IT'), true);
+  assert.equal(ctx.confrontaRipasso('I have 3 cats.', 'i have three cats', false, 'en-US'), true);
+  assert.equal(ctx.confrontaRipasso('Ho 3 gatti.', 'ho quattro gatti', false, 'it-IT'), false);
+  // senza lingua le cifre restano cifre
+  assert.equal(ctx.confrontaRipasso('Ho 3 gatti.', 'ho tre gatti'), false);
+});
+
+test('la schermata passa la lingua al confronto (dettato e traduzione)', () => {
+  const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
+  assert.match(S, /confrontaRipasso\(testoDettatoRipasso\(item\.testo\), r, DIALETTI_TTS_ITA\.includes\(item\.cod\), lingua\(item\.cod\)\.bcp47\)/);
+  assert.match(S, /confrontaRipasso\(item\.rif, r, false, lingua\(item\.a\)\.bcp47\)/);
 });
