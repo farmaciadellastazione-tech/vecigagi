@@ -10724,7 +10724,9 @@ function voceSinonimo(carta) {
     atteso
   } : null;
 }
-const chiaveSinonimo = v => [v.da, normalizza(String(v.parola)), v.a, normalizza(String(v.atteso))].join("|");
+// Forma visibile (formaDisplay): un sinonimo nascosto aggiunto con "|" o la
+// pronuncia di una voce dialettale corretta in edit.html non cambiano la chiave.
+const chiaveSinonimo = v => [v.da, normalizza(String(formaDisplay(v.parola, v.da))), v.a, normalizza(String(formaDisplay(v.atteso, v.a)))].join("|");
 function caricaSinonimi() {
   try {
     const o = JSON.parse(localStorage.getItem(SK_SINONIMI) || "{}");

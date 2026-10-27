@@ -159,3 +159,20 @@ test('l\'aiutino usa le forme del vocabolario, senza i sinonimi salvati', () => 
   assert.doesNotMatch(V, /quasiGiusta\(attesoConSinonimi/);
   assert.equal(V.split('quasiGiusta(attesoConfronto').length - 1, 2);
 });
+
+// Code review (2026-10-27): aggiungere un sinonimo nascosto (|...) o
+// correggere la pronuncia di una voce dialettale in edit.html cambiava la
+// chiave e faceva perdere i sinonimi salvati. La chiave usa la forma visibile.
+test('la chiave non cambia con parti nascoste o pronuncia dialettale', () => {
+  azzera();
+  ctx.salvaSinonimo(BELLO, 'pretty');
+  assert.deepEqual(j(ctx.sinonimiAccettati({ ...BELLO, parola: 'bello|carino' })), ['pretty']);
+  assert.deepEqual(j(ctx.sinonimiAccettati({ ...BELLO, atteso: 'beautiful|lovely' })), ['pretty']);
+  const sp = { da: 'it', parola: 'Genova', a: 'sp', atteso: "d'zena/Zena" };
+  ctx.salvaSinonimo(sp, 'Zêna');
+  assert.deepEqual(j(ctx.sinonimiAccettati({ ...sp, atteso: 'dzena/Zena' })), ['Zêna']);
+  // dalla parte di partenza dialettale vale lo stesso
+  const daSp = { da: 'sp', parola: "d'zena/Zena", a: 'it', atteso: 'Genova' };
+  ctx.salvaSinonimo(daSp, 'Zena città');
+  assert.deepEqual(j(ctx.sinonimiAccettati({ ...daSp, parola: 'zena/Zena' })), ['Zena città']);
+});
