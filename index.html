@@ -11138,11 +11138,12 @@ function scegliFrasiRipasso(frasi, stats, n, rnd) {
 // Per ogni frase: dettato, o traduzione verso una lingua attiva non dialettale
 // diversa dalla sua. Senza IA o senza lingua d'arrivo: dettato.
 // conVoce (c'è il riconoscimento vocale): circa un terzo delle frasi si ripete a
-// voce, mai nei dialetti (il riconoscimento non li capisce).
+// voce, mai nei dialetti (il riconoscimento non li capisce) né nelle lingue senza
+// audio (latino, greco antico, interlingua: né voce né riconoscimento).
 function pianoRipasso(frasi, lingue, conIA, rnd, conVoce = false) {
   const nome = cod => lingue.find(l => l.codice === cod)?.nome || cod;
   return frasi.map(f => {
-    if (conVoce && !DIALETTI_TTS_ITA.includes(f.cod) && rnd() < 1 / 3) return {
+    if (conVoce && !DIALETTI_TTS_ITA.includes(f.cod) && !LINGUE_SENZA_AUDIO.has(f.cod) && rnd() < 1 / 3) return {
       ...f,
       nomeDa: nome(f.cod),
       modo: "voce",
@@ -11315,7 +11316,8 @@ function SchermataRipassoFrasi({
   // Dettato e voce: la frase si sente da sola a ogni frase nuova
   useEffect(() => {
     if (fase === "domanda" && item?.modo !== "traduzione") parla(item.testo, lingua(item.cod).bcp47);
-    if (fase === "domanda") rispostaRef.current?.focus();
+    // A voce niente focus sulla casella: sul telefono la tastiera coprirebbe il microfono
+    if (fase === "domanda" && item?.modo !== "voce") rispostaRef.current?.focus();
   }, [fase, i]);
   function chiudi(giusta, giustaTesto, correction, note) {
     if (giusta !== null) {
@@ -11363,19 +11365,28 @@ function SchermataRipassoFrasi({
     setEsito(null);
     setFase("domanda");
   }
-  // Ripeti a voce: il microfono risponde al posto della casella; nell'esito si
-  // vede ciò che ha capito (la prima interpretazione, se nessuna coincide)
-  const onVoce = useCallback(testi => {
-    if (fase !== "domanda" || item?.modo !== "voce") return;
-    const giusta = esitoVoceRipasso(item, testi, lingua(item.cod).bcp47);
-    setRisposta(giusta || testi?.[0] || "");
-    chiudi(!!giusta, testoDettatoRipasso(item.testo), "", "");
-  }, [fase, item]);
-  const {
-    ascolto,
-    avviaAscolto
-  } = useSpeechRecognition(item ? lingua(item.cod).bcp47 : "it-IT", onVoce);
-  const testata =/*#__PURE__*/React.createElement("div", {
+  // Ripeti a voce: il microfono è InputVocale del quiz, uno per frase (si smonta
+  // cambiando frase o rispondendo, e un risultato in ritardo non arriva più).
+  // Sceglie l'interpretazione giusta; qui si conferma con le regole del dettato.
+  // Se ha capito male il testo va nella casella, senza giudizio: lo si corregge
+  // e si preme Controlla.
+  function rispostaVoce(t) {
+    if (fase !== "domanda") return;
+    setRisposta(t);
+    if (esitoVoceRipasso(item, [t], lingua(item.cod).bcp47)) chiudi(true, testoDettatoRipasso(item.testo), "", "");
+  }
+  // Premendo il microfono la lettura si ferma: il riconoscimento sentirebbe la
+  // voce dell'app e darebbe la frase per giusta da sola
+  function zittisci() {
+    if (_parlaTimer) {
+      clearTimeout(_parlaTimer);
+      _parlaTimer = null;
+    }
+    try {
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+    } catch (e) {}
+  }
+  const testata = /*#__PURE__*/React.createElement("div", {
     className: "flex items-center justify-between mb-4"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: onHome,
@@ -11432,11 +11443,7 @@ function SchermataRipassoFrasi({
     className: "text-xs text-zinc-500 mb-2"
   }, voce ? `🎙️ Ripeti a voce \xB7 ${da.bandiera || ""} ${da.nome}` : dettato ? `✍️ Dettato \xB7 ${da.bandiera || ""} ${da.nome}` : `🌐 Traduci in ${item.nomeA}`), dettato ? /*#__PURE__*/React.createElement("div", {
     className: "flex justify-center gap-3"
-  }, voce && fase === "domanda" && /*#__PURE__*/React.createElement("button", {
-    onClick: avviaAscolto,
-    title: ascolto ? "Ferma" : "Parla", "aria-label": ascolto ? "Ferma" : "Parla",
-    className: `text-3xl ${ascolto ? "animate-pulse" : ""}`
-  }, ascolto ? "⏹️" : "🎙️"), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("button", {
     onClick: () => parla(item.testo, da.bcp47),
     title: "Ascolta", "aria-label": "Ascolta",
     className: "text-3xl"
@@ -11452,16 +11459,28 @@ function SchermataRipassoFrasi({
     className: "text-xs text-amber-500 mt-2 italic"
   }, "🍷 L'IA conosce poco i dialetti: la traduzione di riferimento può sbagliare"))), !conIA && i === 0 && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mb-3 text-center"
-  }, "🔑 Senza IA solo dettato e voce: con una chiave IA (Gemini è gratuito) anche le traduzioni. ", /*#__PURE__*/React.createElement("button", {
+  }, "🔑 Senza IA solo dettato", SR ? " e voce" : "", ": con una chiave IA (Gemini è gratuito) anche le traduzioni. ", /*#__PURE__*/React.createElement("button", {
     onClick: onConfiguraIA,
     className: "text-sky-400 hover:text-sky-300 underline"
-  }, "Configura IA")), fase === "domanda" && /*#__PURE__*/React.createElement("div", {
+  }, "Configura IA")), voce && fase === "domanda" && /*#__PURE__*/React.createElement("div", {
+    onClickCapture: zittisci,
+    className: "mb-3"
+  }, /*#__PURE__*/React.createElement(InputVocale, {
+    key: i,
+    bcp47: da.bcp47,
+    lingaNome: da.nome,
+    // InputVocale mette in parole i numeri detti: anche la frase attesa ("3" = "three")
+    atteso: convertiNumeri(testoDettatoRipasso(item.testo), da.bcp47),
+    codLingua: item.cod,
+    onVerifica: rispostaVoce,
+    onNonRiconosciuto: t => setRisposta(t)
+  })), fase === "domanda" && /*#__PURE__*/React.createElement("div", {
     className: "flex-1"
   }, /*#__PURE__*/React.createElement("textarea", {
     ref: rispostaRef,
     value: risposta,
     onChange: e => setRisposta(e.target.value),
-    placeholder: voce ? "Premi 🎙️ e ripeti la frase (o scrivila)..." : dettato ? "Scrivi quello che senti..." : `In ${item.nomeA}...`,
+    placeholder: voce ? "...oppure scrivila qui" : dettato ? "Scrivi quello che senti..." : `In ${item.nomeA}...`,
     className: "w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white text-lg resize-none focus:outline-none focus:border-cyan-500 mb-3",
     rows: 3,
     onKeyDown: e => {
