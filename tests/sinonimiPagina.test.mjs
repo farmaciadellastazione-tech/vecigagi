@@ -186,3 +186,24 @@ test('la pagina avvisa se "Cancella tutti" non riesce; App avvisa se i sinonimi 
   assert.match(HTML, /importaProgressi\(file, \(data, sinonimiNonSalvati\) => \{/);
   assert.match(HTML, /alert\(UI\[getUILang\(\)\]\.progressiuniti \+ \(sinonimiNonSalvati \? /);
 });
+
+// Dino (2026-10-27): un sinonimo poi aggiunto al vocabolario (anche nascosto con
+// "|") vale per tutti: nella pagina "✓", senza ✕ (toglierlo non cambierebbe nulla).
+test('sinonimi già nel vocabolario (anche dopo "|"): segnati', () => {
+  azzera();
+  ctx.salvaSinonimo(BELLO, 'pretty');
+  ctx.salvaSinonimo(BELLO, 'lovely');
+  const voc = [{ it: 'bello', en: 'beautiful|Pretty' }];
+  const [r] = j(ctx.elencoSinonimi(voc));
+  assert.equal(r.atteso, 'beautiful'); // la parte nascosta non si mostra
+  assert.deepEqual(r.sinonimi, ['pretty', 'lovely']);
+  assert.deepEqual(r.nelVocabolario, ['pretty']);
+  // voce non trovata: nessuno segnato
+  assert.deepEqual(j(ctx.elencoSinonimi([]))[0].nelVocabolario, []);
+});
+
+test('la pagina: ✓ senza ✕ per quelli già nel vocabolario', () => {
+  const P = tra('function SchermataSinonimi(', '\nfunction EraGiusta(');
+  assert.match(P, /r\.nelVocabolario\.includes\(s\) \? \/\*#__PURE__\*\/React\.createElement\("span", \{/);
+  assert.match(P, /nel vocabolario/);
+});
