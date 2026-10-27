@@ -26,7 +26,7 @@ ctx.globalThis = ctx;
 vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx);
 vm.runInContext([
   tra('// ── Sinonimi accettati', '\n// ── Archivio frasi da ripassare'),
-  'Object.assign(globalThis, { salvaSinonimo, sinonimiAccettati, elencoSinonimi, togliSinonimo, togliTuttiSinonimi, SK_SINONIMI });',
+  'Object.assign(globalThis, { salvaSinonimo, sinonimiAccettati, elencoSinonimi, togliSinonimo, togliTuttiSinonimi, unisciSinonimi, SK_SINONIMI, MAX_SINONIMI_PER_VOCE });',
 ].join('\n'), ctx);
 const j = x => JSON.parse(JSON.stringify(x));
 const azzera = () => { memoria = {}; };
@@ -107,4 +107,34 @@ test('Home: icona 🤝 solo con almeno un sinonimo; App apre la pagina', () => {
   assert.match(H, /Object\.keys\(caricaSinonimi\(\)\)\.length > 0 && \/\*#__PURE__\*\/React\.createElement\("button", \{\s*onClick: onSinonimi,/);
   assert.match(tra('createElement(Home, {', '});'), /onSinonimi: \(\) => setSchermata\("sinonimi"\)/);
   assert.match(HTML, /if \(schermata === "sinonimi"\) return \/\*#__PURE__\*\/React\.createElement\(SchermataSinonimi, \{\s*vocabolario: vocabolario,\s*lingue: lingue,\s*onHome: \(\) => setSchermata\("home"\)\s*\}\);/);
+});
+
+// Passo 3: "Salva progressi" porta anche i sinonimi; caricando un file si
+// uniscono a quelli già nel browser (niente doppioni, niente dati strani).
+test('unire i sinonimi da un file di progressi', () => {
+  azzera();
+  ctx.salvaSinonimo(BELLO, 'pretty');
+  const kBello = j(ctx.elencoSinonimi(VOC))[0].chiave;
+  ctx.unisciSinonimi({
+    [kBello]: ['Pretty', 'lovely', 3, '', 'a/b'],
+    'it|perche|en|because': ['since'],
+    'rotta': ['x'],
+    'it|x|en|y': 'non una lista',
+  });
+  assert.deepEqual(j(ctx.sinonimiAccettati(BELLO)), ['pretty', 'lovely']);
+  assert.deepEqual(j(ctx.sinonimiAccettati(PERCHE)), ['since']);
+  assert.deepEqual(Object.keys(JSON.parse(memoria[ctx.SK_SINONIMI])).sort(), [kBello, 'it|perche|en|because'].sort());
+  // file strani: nessun errore, niente cambia
+  for (const x of [null, 'testo', ['a'], 42]) ctx.unisciSinonimi(x);
+  assert.deepEqual(j(ctx.sinonimiAccettati(BELLO)), ['pretty', 'lovely']);
+  // tetto per voce come al salvataggio
+  ctx.unisciSinonimi({ [kBello]: Array.from({ length: 20 }, (_, i) => 'w' + i) });
+  assert.equal(ctx.sinonimiAccettati(BELLO).length, ctx.MAX_SINONIMI_PER_VOCE);
+});
+
+test('esportazione e importazione dei progressi portano i sinonimi', () => {
+  const E = tra('function esportaProgressi(', '\nfunction importaProgressi(');
+  assert.match(E, /sinonimi: caricaSinonimi\(\)/);
+  const I = tra('function importaProgressi(', '\n// ── Ripetizione spaziata');
+  assert.match(I, /if \(data\.sinonimi\) unisciSinonimi\(data\.sinonimi\);/);
 });

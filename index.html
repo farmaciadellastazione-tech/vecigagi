@@ -4433,7 +4433,9 @@ function esportaProgressi(stats, vocabolario, lingue) {
     ai,
     streak,
     recordPerc,
-    ndom
+    ndom,
+    // Sinonimi accettati con "🤖 Era giusta?": altrimenti cambiando browser si perdono
+    sinonimi: caricaSinonimi()
   }, null, 2)], {
     type: "application/json"
   });
@@ -4453,6 +4455,7 @@ function importaProgressi(file, onDone) {
       if (data.streak) saveJSON(SK_STREAK, data.streak);
       if (data.recordPerc) saveJSON(SK_RECORD_PERC, data.recordPerc);
       if (data.ndom) saveJSON(SK_NDOM, data.ndom);
+      if (data.sinonimi) unisciSinonimi(data.sinonimi);
       onDone(data);
     } catch {
       alert(UI[getUILang()].filenonvalido);
@@ -10967,6 +10970,24 @@ function togliTuttiSinonimi() {
   try {
     localStorage.removeItem(SK_SINONIMI);
   } catch (e) {}
+}
+// Caricando un file di progressi: i sinonimi si uniscono a quelli del browser
+// (niente doppioni, solo forme salvabili, stesso tetto per voce).
+function unisciSinonimi(daFile) {
+  if (!daFile || typeof daFile !== "object" || Array.isArray(daFile)) return;
+  const tutti = caricaSinonimi();
+  Object.keys(daFile).forEach(chiave => {
+    const parti = chiave.split("|");
+    if (parti.length !== 4 || parti.some(p => !p) || !Array.isArray(daFile[chiave])) return;
+    const l = Array.isArray(tutti[chiave]) ? tutti[chiave].filter(x => typeof x === "string") : [];
+    daFile[chiave].forEach(x => {
+      if (typeof x !== "string" || !sinonimoSalvabile(x)) return;
+      const f = x.trim();
+      if (!l.some(y => normalizza(y) === normalizza(f))) l.push(f);
+    });
+    if (l.length) tutti[chiave] = l.slice(-MAX_SINONIMI_PER_VOCE);
+  });
+  scriviSinonimi(tutti);
 }
 // Si manda all'IA solo una risposta da vocabolario: breve, su una riga, con
 // lettere. Una frase lunga non è un sinonimo e potrebbe contenere istruzioni
