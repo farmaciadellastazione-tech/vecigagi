@@ -9885,6 +9885,13 @@ function EraGiusta({
   useEffect(() => () => {
     richiesta.current++;
   }, []);
+  // Durante l'attesa il focus resta qui (non sul body): un altro Invio non deve
+  // far passare alla carta dopo prima del verdetto
+  const attesaRef = useRef(null);
+  useEffect(() => {
+    if (stato !== "loading") return;
+    attesaRef.current?.focus();
+  }, [stato]);
   if (!eraGiustaDisponibile(carta, modalita, risposta)) return null;
   const lA = lingue.find(l => l.codice === carta.a);
   const lDA = lingue.find(l => l.codice === carta.da);
@@ -9942,7 +9949,12 @@ function EraGiusta({
     className: "text-xs text-sky-400 hover:text-sky-300 flex items-center gap-1 transition mt-1"
   }, dialetto ? "📨 Segnala sinonimo" : "🤖 Era giusta?");
   if (stato === "loading") return /*#__PURE__*/React.createElement("div", {
-    className: "text-xs text-zinc-500 mt-1 animate-pulse"
+    ref: attesaRef,
+    tabIndex: -1,
+    onKeyDown: e => {
+      if (e.key === "Enter") e.stopPropagation();
+    },
+    className: "text-xs text-zinc-500 mt-1 animate-pulse focus:outline-none"
   }, "🤖 Un momento...");
   if (stato === "no") return /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-slate-400 mt-1"

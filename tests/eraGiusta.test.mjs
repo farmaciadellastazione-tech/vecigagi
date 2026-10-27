@@ -134,3 +134,18 @@ test('niente pulsante per risposte con separatori / | , ;', () => {
   for (const r of ['nice, cute', 'nice/cute', 'nice|cute', 'nice; cute']) assert.equal(ctx.eraGiustaDisponibile(CARTA, 'quiz', r), false, r);
   assert.equal(ctx.eraGiustaDisponibile(CARTA, 'quiz', "it's nice"), true);
 });
+
+// Code review (2026-10-27): premuto il pulsante, al suo posto compare "Un
+// momento..." e il focus cadeva sul body: un secondo Invio passava alla carta
+// dopo e il verdetto si perdeva. Ora anche l'attesa tiene il focus e blocca Invio.
+test('durante l\'attesa Invio non fa passare alla carta dopo', () => {
+  const C = tra('function EraGiusta(', '\nfunction SpiegaAI(');
+  const attesa = C.slice(C.indexOf('if (stato === "loading")'), C.indexOf('if (stato === "no")'));
+  assert.match(attesa, /ref: attesaRef,/);
+  assert.match(attesa, /tabIndex: -1,/);
+  assert.match(attesa, /onKeyDown: e => \{\s*if \(e\.key === "Enter"\) e\.stopPropagation\(\);\s*\}/);
+  assert.match(C, /useEffect\(\(\) => \{\s*if \(stato !== "loading"\) return;\s*attesaRef\.current\?\.focus\(\);\s*\}, \[stato\]\);/);
+  // gli hook prima dei return anticipati
+  assert.ok(C.indexOf('const attesaRef = useRef(null);') < C.indexOf('if (!eraGiustaDisponibile('));
+  assert.ok(C.indexOf('attesaRef.current?.focus()') < C.indexOf('if (!eraGiustaDisponibile('));
+});
