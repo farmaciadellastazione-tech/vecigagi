@@ -9979,7 +9979,7 @@ function SchermataSinonimi({
     className: "text-zinc-600 text-xs"
   }, "🤝 Sinonimi accettati"), /*#__PURE__*/React.createElement("span", null)), /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-500 mb-4"
-  }, "Risposte che l'IA ha accettato con \"🤖 Era giusta?\": in questo browser valgono come giuste. Tocca ✕ per toglierne una: tornerà a essere un errore."), righe.length === 0 && /*#__PURE__*/React.createElement("div", {
+  }, "Risposte che l'IA ha accettato con \"🤖 Era giusta?\": in questo browser valgono come giuste. Tocca ✕ per toglierne una: tornerà a essere un errore. Con ✓ quelle ormai nel vocabolario: valgono per tutti."), righe.length === 0 && /*#__PURE__*/React.createElement("div", {
     className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 text-center"
   }, /*#__PURE__*/React.createElement("p", {
     className: "text-4xl mb-3"
@@ -9997,7 +9997,11 @@ function SchermataSinonimi({
     className: "text-sm text-slate-200 mb-2"
   }, r.parola, " → ", /*#__PURE__*/React.createElement("strong", null, r.atteso)), /*#__PURE__*/React.createElement("div", {
     className: "flex gap-2 flex-wrap"
-  }, r.sinonimi.map(s => /*#__PURE__*/React.createElement("button", {
+  }, r.sinonimi.map(s => r.nelVocabolario.includes(s) ? /*#__PURE__*/React.createElement("span", {
+    key: s,
+    title: "Ora nel vocabolario: vale per tutti",
+    className: "bg-zinc-800 text-green-400 text-sm px-3 py-1 rounded-lg"
+  }, s, " ✓") : /*#__PURE__*/React.createElement("button", {
     key: s,
     onClick: () => {
       togliSinonimo(r.chiave, s);
@@ -10950,10 +10954,14 @@ function elencoSinonimi(vocabolario) {
   });
   return righe.map(r => {
     const e = indice.get(r.chiave);
+    // Tutte le forme della voce, anche quelle nascoste dopo "|": un sinonimo
+    // poi aggiunto al vocabolario vale per tutti (nella pagina "✓", senza ✕)
+    const forme = e ? String(e[r.a]).split(SEPARATORI_ALTERNATIVE).map(x => normalizza(x)) : [];
     return {
       ...r,
       parola: e ? formaDisplay(e[r.da], r.da) : r.parola,
-      atteso: e ? formaDisplay(e[r.a], r.a) : r.atteso
+      atteso: e ? formaDisplay(e[r.a], r.a) : r.atteso,
+      nelVocabolario: r.sinonimi.filter(s => forme.includes(normalizza(s)))
     };
   }).sort((x, y) => x.da.localeCompare(y.da) || x.a.localeCompare(y.a) || normalizza(x.parola).localeCompare(normalizza(y.parola)));
 }
