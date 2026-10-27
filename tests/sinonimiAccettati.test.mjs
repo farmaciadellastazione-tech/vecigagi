@@ -32,7 +32,7 @@ ctx.globalThis = ctx;
 vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx); // normalizza
 vm.runInContext([
   tra('// ── Sinonimi accettati', '\n// ── Archivio frasi da ripassare'),
-  'Object.assign(globalThis, { caricaSinonimi, salvaSinonimo, sinonimiAccettati, voceSinonimo, MAX_SINONIMI_PER_VOCE, promptSinonimo, estraiGiudizioSinonimo, rispostaGiudicabile });',
+  'Object.assign(globalThis, { caricaSinonimi, salvaSinonimo, sinonimiAccettati, voceSinonimo, MAX_SINONIMI_PER_VOCE, sinonimoSalvabile, promptSinonimo, estraiGiudizioSinonimo, rispostaGiudicabile });',
 ].join('\n'), ctx);
 const j = x => JSON.parse(JSON.stringify(x));
 const azzera = () => { memoria = {}; };
@@ -169,10 +169,37 @@ test('la chiave non cambia con parti nascoste o pronuncia dialettale', () => {
   assert.deepEqual(j(ctx.sinonimiAccettati({ ...BELLO, parola: 'bello|carino' })), ['pretty']);
   assert.deepEqual(j(ctx.sinonimiAccettati({ ...BELLO, atteso: 'beautiful|lovely' })), ['pretty']);
   const sp = { da: 'it', parola: 'Genova', a: 'sp', atteso: "d'zena/Zena" };
-  ctx.salvaSinonimo(sp, 'Zêna');
-  assert.deepEqual(j(ctx.sinonimiAccettati({ ...sp, atteso: 'dzena/Zena' })), ['Zêna']);
+  ctx.salvaSinonimo(sp, 'Zenova'); // (era 'Zêna': normalizza lo rende uguale alla risposta prevista 'Zena')
+  assert.deepEqual(j(ctx.sinonimiAccettati({ ...sp, atteso: 'dzena/Zena' })), ['Zenova']);
   // dalla parte di partenza dialettale vale lo stesso
   const daSp = { da: 'sp', parola: "d'zena/Zena", a: 'it', atteso: 'Genova' };
   ctx.salvaSinonimo(daSp, 'Zena città');
   assert.deepEqual(j(ctx.sinonimiAccettati({ ...daSp, parola: 'zena/Zena' })), ['Zena città']);
+});
+
+// Review finale (2026-10-27): una sola regola per "si può salvare" (prima la
+// regex dei separatori era scritta due volte), e "uguale alla risposta
+// prevista" confrontato con ognuna delle forme visibili, come la chiave.
+test('sinonimoSalvabile: lettere sì, vuoti e separatori no', () => {
+  assert.equal(ctx.sinonimoSalvabile('pretty'), true);
+  assert.equal(ctx.sinonimoSalvabile("it's nice"), true);
+  for (const s of ['', '  ', '...', 'a/b', 'a|b', 'a, b', 'a;b']) assert.equal(ctx.sinonimoSalvabile(s), false, s);
+});
+
+test('non si salva un sinonimo uguale a una delle risposte previste visibili', () => {
+  azzera();
+  const v = { da: 'it', parola: 'bello', a: 'en', atteso: 'beautiful/handsome|lovely' };
+  assert.equal(ctx.salvaSinonimo(v, 'Beautiful'), false);
+  assert.equal(ctx.salvaSinonimo(v, 'handsome'), false);
+  assert.equal(ctx.salvaSinonimo(v, 'lovely'), true); // nascosta: per il giudizio vale già, ma salvarla non fa danni
+  const sp = { da: 'it', parola: 'Genova', a: 'sp', atteso: "d'zena/Zena" };
+  assert.equal(ctx.salvaSinonimo(sp, 'Zena'), false);  // la grafia
+  assert.equal(ctx.salvaSinonimo(sp, 'Zêna'), false); // accenti a parte è 'Zena'
+  assert.equal(ctx.salvaSinonimo(sp, 'Zenova'), true);
+});
+
+test('eraGiustaDisponibile e salvaSinonimo usano la stessa regola', () => {
+  assert.match(tra('function salvaSinonimo(', '\n}'), /sinonimoSalvabile\(f\)/);
+  assert.match(tra('function eraGiustaDisponibile(', '\n}'), /sinonimoSalvabile\(risposta\)/);
+  assert.equal(HTML.split('/[/|,;]/').length - 1, 1); // la regex compare una volta sola
 });

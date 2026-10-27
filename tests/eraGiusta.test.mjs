@@ -158,3 +158,21 @@ test('accettaComeGiusta confronta le risposte con normalizza', () => {
   // diverse come testo E anche dopo normalizza: solo allora non è la stessa risposta
   assert.match(A, /giudicata\?\.key !== e\.key \|\| giudicata\?\.risposta !== e\.risposta && normalizza\(String\(giudicata\?\.risposta \|\| ""\)\) !== normalizza\(String\(e\.risposta \|\| ""\)\)/);
 });
+
+// Review finale (2026-10-27): dopo "Non sono riuscito a controllare" o un invio
+// fallito il pulsante per riprovare riprende il focus (sennò Invio passava alla
+// carta dopo invece di riprovare).
+test('dopo un problema il pulsante per riprovare ha il focus', () => {
+  const C = tra('function EraGiusta(', '\nfunction SpiegaAI(');
+  assert.match(C, /const pulsanteRef = useRef\(null\);/);
+  assert.match(C, /useEffect\(\(\) => \{\s*if \(stato !== "incerto" && stato !== "invioFallito"\) return;\s*pulsanteRef\.current\?\.focus\(\);\s*\}, \[stato\]\);/);
+  assert.ok(C.indexOf('const pulsanteRef = useRef(null);') < C.indexOf('if (!eraGiustaDisponibile('));
+  const pulsante = C.slice(C.indexOf('const pulsante ='), C.indexOf('if (stato === "loading")'));
+  assert.match(pulsante, /ref: pulsanteRef,/);
+});
+
+test('il commento sulle modalità dice che in Non-stop valgono secondo la carta', () => {
+  const M = HTML.slice(HTML.indexOf('const MODALITA_ERA_GIUSTA') - 400, HTML.indexOf('const MODALITA_ERA_GIUSTA'));
+  assert.match(M, /Non-stop/);
+  assert.match(M, /secondo la carta/);
+});

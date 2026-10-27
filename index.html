@@ -9892,6 +9892,13 @@ function EraGiusta({
     if (stato !== "loading") return;
     attesaRef.current?.focus();
   }, [stato]);
+  // Dopo un problema il focus torna sul pulsante: Invio riprova, invece di
+  // passare (gestore globale) alla carta dopo
+  const pulsanteRef = useRef(null);
+  useEffect(() => {
+    if (stato !== "incerto" && stato !== "invioFallito") return;
+    pulsanteRef.current?.focus();
+  }, [stato]);
   if (!eraGiustaDisponibile(carta, modalita, risposta)) return null;
   const lA = lingue.find(l => l.codice === carta.a);
   const lDA = lingue.find(l => l.codice === carta.da);
@@ -9940,6 +9947,7 @@ function EraGiusta({
     setStato(ok ? "inviato" : "invioFallito");
   }
   const pulsante = /*#__PURE__*/React.createElement("button", {
+    ref: pulsanteRef,
     onClick: dialetto ? segnala : chiedi,
     // Invio sul pulsante: lo preme e basta (il gestore globale della schermata
     // passerebbe anche alla carta dopo, senza far vedere l'esito)
@@ -10741,10 +10749,19 @@ function sinonimiAccettati(voce) {
   return Array.isArray(l) ? l.filter(x => typeof x === "string" && x.trim()) : [];
 }
 // / | , ; separano le alternative in isCorretta: un sinonimo che li contiene
-// si spezzerebbe in pezzi accettati uno per uno.
+// si spezzerebbe in pezzi accettati uno per uno. Unica regola, usata anche
+// da eraGiustaDisponibile (niente pulsante per ciò che non si può salvare).
+const SEPARATORI_ALTERNATIVE = /[/|,;]/;
+function sinonimoSalvabile(forma) {
+  const f = String(forma || "").trim();
+  return !!normalizza(f) && !SEPARATORI_ALTERNATIVE.test(f);
+}
 function salvaSinonimo(voce, forma) {
   const f = String(forma || "").trim();
-  if (!voce || !voce.da || !voce.a || !normalizza(f) || /[/|,;]/.test(f) || normalizza(f) === normalizza(String(voce.atteso))) return false;
+  if (!voce || !voce.da || !voce.a || !sinonimoSalvabile(f)) return false;
+  // Già una delle risposte previste visibili (come la chiave: formaDisplay)
+  const previste = String(formaDisplay(voce.atteso, voce.a) || "").split(SEPARATORI_ALTERNATIVE).map(x => normalizza(x));
+  if (previste.includes(normalizza(f))) return false;
   const tutti = caricaSinonimi();
   const k = chiaveSinonimo(voce);
   tutti[k] = [...sinonimiAccettati(voce).filter(x => normalizza(x) !== normalizza(f)), f].slice(-MAX_SINONIMI_PER_VOCE);
@@ -10784,12 +10801,14 @@ Rispondi con il JSON.`
 }
 // "🤖 Era giusta?" solo dove i sinonimi hanno senso: traduzioni in Quiz,
 // Allenamento e Risposta vocale. No dettato/ascolto (si trascrive), scelta
-// multipla, coniugazioni (conta la forma esatta), Non-stop (l'errore chiude).
+// multipla, coniugazioni (conta la forma esatta). In Non-stop il pulsante non
+// c'è (l'errore chiude la partita), ma i sinonimi già accettati valgono
+// secondo la carta (sottomodalità), vedi verificaRisposta.
 const MODALITA_ERA_GIUSTA = ["quiz", "allenamento", "voce"];
-// Con / | , ; il sinonimo non si potrebbe salvare (vedi salvaSinonimo): l'IA
-// lo accetterebbe una volta e la volta dopo tornerebbe errore.
+// Niente pulsante per ciò che non si potrebbe salvare (sinonimoSalvabile):
+// l'IA lo accetterebbe una volta e la volta dopo tornerebbe errore.
 function eraGiustaDisponibile(carta, modalita, risposta) {
-  return !!carta && MODALITA_ERA_GIUSTA.includes(modalita) && carta.tipo !== "coniugazione" && carta.tipo !== "dettato" && rispostaGiudicabile(risposta) && !/[/|,;]/.test(risposta);
+  return !!carta && MODALITA_ERA_GIUSTA.includes(modalita) && carta.tipo !== "coniugazione" && carta.tipo !== "dettato" && rispostaGiudicabile(risposta) && sinonimoSalvabile(risposta);
 }
 // Riga per il foglio "Contributi" (stesse colonne delle correzioni dialetti):
 // accettato = giudicato dall'IA; altrimenti segnalato (dialetti, senza IA).
