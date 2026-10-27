@@ -15053,6 +15053,8 @@ function App() {
     const lA = carta.tipo === "coniugazione" ? carta.lA : lingue.find(l => l.codice === carta.a);
     // Coniugazioni sp/ge: accetta anche la sola radice verbale, senza
     // soggetto/clitico obbligatorio (es. "agia" oltre a "i g'agia").
+    // Non-stop: vale la sottomodalità della carta
+    const modoCarta = modalita === "nonstop" ? carta.sottomodalita || "quiz" : modalita;
     let attesoConfronto = atteso;
     if (carta.tipo === "coniugazione" && atteso && DIALETTI_TTS_ITA.includes(lA?.codice)) {
       const basi = [...new Set([...variantiBaseDialetto(atteso), ...variantiSenzaSoggettoDialetto(atteso)])];
@@ -15060,8 +15062,9 @@ function App() {
     }
     // Sinonimi accettati con "🤖 Era giusta?" in questo browser: tra le risposte
     // previste, confrontati da isCorretta come le forme del vocabolario. Solo
-    // dove vale il pulsante (non dove si trascrive ciò che si sente).
-    if (carta.tipo !== "coniugazione" && carta.tipo !== "dettato" && MODALITA_ERA_GIUSTA.includes(modalita)) {
+    // dove vale il pulsante (non dove si trascrive ciò che si sente); in
+    // Non-stop secondo la carta, anche se lì il pulsante non c'è.
+    if (carta.tipo !== "coniugazione" && carta.tipo !== "dettato" && MODALITA_ERA_GIUSTA.includes(modoCarta)) {
       const sin = sinonimiAccettati(voceSinonimo(carta));
       if (sin.length) attesoConfronto = [attesoConfronto, ...sin].join("|");
     }
@@ -15082,7 +15085,6 @@ function App() {
     // Giusta ma in un'altra lingua: si segnala e si riprova sulla stessa carta,
     // senza punti, statistiche né elenco delle sbagliate (Non-stop non finisce).
     // Pronuncia esclusa: il microfono ascolta solo nella lingua richiesta.
-    const modoCarta = modalita === "nonstop" ? carta.sottomodalita || "quiz" : modalita;
     if (!ok && modoCarta !== "pronuncia") {
       const altra = linguaDellaRisposta(carta.entry, risposta, lingue, lA?.codice, carta.da || carta.lDA?.codice, carta.tipo === "coniugazione");
       if (altra) {
