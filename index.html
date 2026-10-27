@@ -10772,8 +10772,10 @@ Rispondi con il JSON.`
 // Allenamento e Risposta vocale. No dettato/ascolto (si trascrive), scelta
 // multipla, coniugazioni (conta la forma esatta), Non-stop (l'errore chiude).
 const MODALITA_ERA_GIUSTA = ["quiz", "allenamento", "voce"];
+// Con / | , ; il sinonimo non si potrebbe salvare (vedi salvaSinonimo): l'IA
+// lo accetterebbe una volta e la volta dopo tornerebbe errore.
 function eraGiustaDisponibile(carta, modalita, risposta) {
-  return !!carta && MODALITA_ERA_GIUSTA.includes(modalita) && carta.tipo !== "coniugazione" && carta.tipo !== "dettato" && rispostaGiudicabile(risposta);
+  return !!carta && MODALITA_ERA_GIUSTA.includes(modalita) && carta.tipo !== "coniugazione" && carta.tipo !== "dettato" && rispostaGiudicabile(risposta) && !/[/|,;]/.test(risposta);
 }
 // Riga per il foglio "Contributi" (stesse colonne delle correzioni dialetti):
 // accettato = giudicato dall'IA; altrimenti segnalato (dialetti, senza IA).

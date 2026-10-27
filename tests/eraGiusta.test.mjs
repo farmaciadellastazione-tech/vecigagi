@@ -126,3 +126,11 @@ test('correzioni e sinonimi usano la stessa riga del foglio', () => {
   assert.match(tra('function parametriCorrezioneIA(', '\n}'), /return rigaContributi\(/);
   assert.match(tra('function parametriSinonimo(', '\n// Nel dubbio non si accetta'), /return rigaContributi\(/);
 });
+
+// Code review (2026-10-27): "nice, cute" poteva essere accettata dall'IA ma
+// non salvata (le virgole separano le alternative): carta verde, riga al
+// foglio, e la volta dopo di nuovo errore. Per queste risposte niente pulsante.
+test('niente pulsante per risposte con separatori / | , ;', () => {
+  for (const r of ['nice, cute', 'nice/cute', 'nice|cute', 'nice; cute']) assert.equal(ctx.eraGiustaDisponibile(CARTA, 'quiz', r), false, r);
+  assert.equal(ctx.eraGiustaDisponibile(CARTA, 'quiz', "it's nice"), true);
+});
