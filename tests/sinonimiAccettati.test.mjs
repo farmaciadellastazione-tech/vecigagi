@@ -1,8 +1,14 @@
 // "🤖 Era giusta?" (richiesta di Dino, 2026-10-27), passo 1: l'app segnava
 // errore per sinonimi assenti dal vocabolario. Un sinonimo accettato dall'IA
-// resta in questo browser e la volta dopo vale subito, senza IA. Chiave =
-// lingua + risposta attesa normalizzata (non wordKey: voci con lo stesso
-// italiano la condividono, bug noto dei doppioni).
+// resta in questo browser e la volta dopo vale subito, senza IA.
+// Rivisto dopo la code review (stesso giorno):
+//  - chiave = lingua e parola di partenza + lingua e risposta attesa: "giusto"
+//    e "destra" fanno entrambe "right" ma non condividono i sinonimi (prima
+//    bastavano lingua d'arrivo + risposta attesa);
+//  - i sinonimi si salvano come scritti e si aggiungono alle risposte previste
+//    (atteso|sinonimo): li confronta isCorretta come le forme del vocabolario
+//    (contrazioni inglesi, "to ", numeri...);
+//  - valgono solo in Quiz, Allenamento e Risposta vocale (non dove si trascrive).
 //   eseguire con:  node --test
 import { test } from 'node:test';
 import assert from 'node:assert';
@@ -26,56 +32,74 @@ ctx.globalThis = ctx;
 vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx); // normalizza
 vm.runInContext([
   tra('// ── Sinonimi accettati', '\n// ── Archivio frasi da ripassare'),
-  'Object.assign(globalThis, { caricaSinonimi, salvaSinonimo, sinonimoAccettato, MAX_SINONIMI_PER_VOCE, promptSinonimo, estraiGiudizioSinonimo, rispostaGiudicabile });',
+  'Object.assign(globalThis, { caricaSinonimi, salvaSinonimo, sinonimiAccettati, voceSinonimo, MAX_SINONIMI_PER_VOCE, promptSinonimo, estraiGiudizioSinonimo, rispostaGiudicabile });',
 ].join('\n'), ctx);
 const j = x => JSON.parse(JSON.stringify(x));
 const azzera = () => { memoria = {}; };
+const BELLO = { da: 'it', parola: 'bello', a: 'en', atteso: 'beautiful' };
 
-test('un sinonimo salvato vale per la stessa risposta attesa nella stessa lingua', () => {
-  azzera();
-  assert.equal(ctx.sinonimoAccettato('en', 'beautiful', 'pretty'), false);
-  assert.equal(ctx.salvaSinonimo('en', 'beautiful', 'pretty'), true);
-  assert.equal(ctx.sinonimoAccettato('en', 'beautiful', 'pretty'), true);
-  assert.equal(ctx.sinonimoAccettato('en', 'Beautiful!', ' Pretty '), true); // normalizza
-  assert.equal(ctx.sinonimoAccettato('fr', 'beautiful', 'pretty'), false);  // altra lingua
-  assert.equal(ctx.sinonimoAccettato('en', 'nice', 'pretty'), false);       // altra parola
+test('voce di una carta: lingua e parola di partenza, lingua e risposta attesa', () => {
+  assert.deepEqual(j(ctx.voceSinonimo({ da: 'it', a: 'en', entry: { it: 'bello', en: 'beautiful' } })), BELLO);
+  assert.equal(ctx.voceSinonimo({ da: 'it', a: 'en', entry: { it: 'bello' } }), null);
+  assert.equal(ctx.voceSinonimo(null), null);
 });
 
-test('niente doppioni, niente vuoti, niente sinonimo uguale all\'atteso', () => {
+test('un sinonimo salvato vale solo per la stessa voce, scritto com\'era', () => {
   azzera();
-  ctx.salvaSinonimo('en', 'beautiful', 'pretty');
-  ctx.salvaSinonimo('en', 'beautiful', 'Pretty.');
-  assert.equal(ctx.salvaSinonimo('en', 'beautiful', '   '), false);
-  assert.equal(ctx.salvaSinonimo('', 'beautiful', 'pretty'), false);
-  assert.equal(ctx.salvaSinonimo('en', 'beautiful', 'Beautiful'), false);
-  assert.deepEqual(Object.values(j(ctx.caricaSinonimi())).map(l => l.length), [1]);
+  assert.deepEqual(j(ctx.sinonimiAccettati(BELLO)), []);
+  assert.equal(ctx.salvaSinonimo(BELLO, ' pretty '), true);
+  assert.deepEqual(j(ctx.sinonimiAccettati(BELLO)), ['pretty']);
+  assert.deepEqual(j(ctx.sinonimiAccettati({ ...BELLO, atteso: 'Beautiful!' })), ['pretty']); // normalizza la chiave
+  assert.deepEqual(j(ctx.sinonimiAccettati({ ...BELLO, a: 'fr' })), []);
+  // stessa risposta attesa ma un'altra parola di partenza ("giusto"/"destra" = "right")
+  ctx.salvaSinonimo({ da: 'it', parola: 'giusto', a: 'en', atteso: 'right' }, 'correct');
+  assert.deepEqual(j(ctx.sinonimiAccettati({ da: 'it', parola: 'destra', a: 'en', atteso: 'right' })), []);
+  assert.deepEqual(j(ctx.sinonimiAccettati({ da: 'it', parola: 'giusto', a: 'en', atteso: 'right' })), ['correct']);
+});
+
+test('niente doppioni, vuoti, separatori o sinonimo uguale all\'atteso', () => {
+  azzera();
+  ctx.salvaSinonimo(BELLO, 'pretty');
+  ctx.salvaSinonimo(BELLO, 'Pretty.');
+  assert.equal(ctx.salvaSinonimo(BELLO, '   '), false);
+  assert.equal(ctx.salvaSinonimo({ ...BELLO, a: '' }, 'pretty'), false);
+  assert.equal(ctx.salvaSinonimo(null, 'pretty'), false);
+  assert.equal(ctx.salvaSinonimo(BELLO, 'Beautiful'), false);
+  // / | , ; separano le alternative in isCorretta
+  for (const s of ['pretty/cute', 'a|b', 'nice, cute', 'a;b']) assert.equal(ctx.salvaSinonimo(BELLO, s), false, s);
+  assert.deepEqual(j(ctx.sinonimiAccettati(BELLO)), ['Pretty.']); // resta l'ultima scrittura
 });
 
 test('per ogni voce si tengono gli ultimi sinonimi', () => {
   azzera();
-  for (let i = 0; i < ctx.MAX_SINONIMI_PER_VOCE + 3; i++) ctx.salvaSinonimo('en', 'beautiful', 'sin' + i);
-  assert.equal(ctx.sinonimoAccettato('en', 'beautiful', 'sin0'), false);
-  assert.equal(ctx.sinonimoAccettato('en', 'beautiful', 'sin' + (ctx.MAX_SINONIMI_PER_VOCE + 2)), true);
+  for (let i = 0; i < ctx.MAX_SINONIMI_PER_VOCE + 3; i++) ctx.salvaSinonimo(BELLO, 'sin' + i);
+  const l = j(ctx.sinonimiAccettati(BELLO));
+  assert.equal(l.length, ctx.MAX_SINONIMI_PER_VOCE);
+  assert.ok(!l.includes('sin0'));
+  assert.ok(l.includes('sin' + (ctx.MAX_SINONIMI_PER_VOCE + 2)));
 });
 
 test('archivio rovinato o localStorage bloccato: nessun errore, nessun sinonimo', () => {
   azzera();
   memoria.qml_v1_sinonimi_accettati = '{rotto';
   assert.deepEqual(j(ctx.caricaSinonimi()), {});
-  assert.equal(ctx.sinonimoAccettato('en', 'beautiful', 'pretty'), false);
+  assert.deepEqual(j(ctx.sinonimiAccettati(BELLO)), []);
   memoria.qml_v1_sinonimi_accettati = '[1,2]';
   assert.deepEqual(j(ctx.caricaSinonimi()), {});
+  memoria.qml_v1_sinonimi_accettati = JSON.stringify({ 'it|bello|en|beautiful': [1, null, 'ok'] });
+  assert.deepEqual(j(ctx.sinonimiAccettati(BELLO)), ['ok']);
   const vero = ctx.localStorage.getItem;
   ctx.localStorage.getItem = () => { throw new Error('bloccato'); };
-  assert.equal(ctx.sinonimoAccettato('en', 'beautiful', 'pretty'), false);
+  assert.deepEqual(j(ctx.sinonimiAccettati(BELLO)), []);
   ctx.localStorage.getItem = vero;
 });
 
-test('verificaRisposta accetta i sinonimi salvati, ma non nelle coniugazioni', () => {
+test('verificaRisposta: sinonimi tra le risposte previste, solo nelle modalità giuste', () => {
   const V = tra('function verificaRisposta(', '\n  function salta(');
-  assert.match(V, /if \(!ok && carta\.tipo !== "coniugazione" && sinonimoAccettato\(lA\?\.codice, atteso, risposta\)\) ok = true;/);
-  // prima della "lingua sbagliata" e dell'aiutino: un sinonimo accettato è giusto e basta
-  assert.ok(V.indexOf('sinonimoAccettato(') < V.indexOf('linguaDellaRisposta('));
+  assert.match(V, /if \(carta\.tipo !== "coniugazione" && carta\.tipo !== "dettato" && MODALITA_ERA_GIUSTA\.includes\(modalita\)\) \{\s*const sin = sinonimiAccettati\(voceSinonimo\(carta\)\);\s*if \(sin\.length\) attesoConfronto = \[attesoConfronto, \.\.\.sin\]\.join\("\|"\);\s*\}/);
+  // prima di isCorretta: passano dallo stesso confronto delle forme del vocabolario
+  assert.ok(V.indexOf('sinonimiAccettati(') < V.indexOf('let ok = isCorretta('));
+  assert.doesNotMatch(V, /sinonimoAccettato\(/); // il vecchio controllo a parte non c'è più
 });
 
 // Passo 2: il giudizio dell'IA. Severo: solo traduzioni corrette con lo stesso

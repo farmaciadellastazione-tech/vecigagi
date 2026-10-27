@@ -9909,7 +9909,7 @@ function EraGiusta({
     } catch (e) {}
     if (n !== richiesta.current) return;
     if (g.accettabile === true) {
-      salvaSinonimo(lA.codice, atteso, risposta);
+      salvaSinonimo(voceSinonimo(carta), risposta);
       inviaAlFoglio(parametriSinonimo({ nomeLingua: lA.nome, italiano, atteso, sinonimo: risposta, accettato: true }));
       onAccettata();
       return;
@@ -10677,11 +10677,24 @@ function CorreggiDialetto({
 // Richiesta di Dino (2026-10-27): l'app segnava errore per sinonimi assenti
 // dal vocabolario. Con "🤖 Era giusta?" l'IA può accettarli; il sinonimo resta
 // in questo browser e la volta dopo vale subito, senza IA (per tutti vale
-// quando Dino lo aggiunge al vocabolario). Chiave = lingua + risposta attesa
-// normalizzata, non wordKey: voci con lo stesso italiano la condividono.
-const SK_SINONIMI = "qml_v1_sinonimi_accettati"; // {"en|beautiful": ["pretty", ...]}
+// quando Dino lo aggiunge al vocabolario). La voce è lingua e parola di
+// partenza + lingua e risposta attesa (non wordKey, condiviso da voci con lo
+// stesso italiano): "giusto" e "destra" fanno entrambe "right" ma non devono
+// condividere i sinonimi. I sinonimi restano come scritti: verificaRisposta li
+// aggiunge alle risposte previste e li confronta isCorretta, come il vocabolario.
+const SK_SINONIMI = "qml_v1_sinonimi_accettati"; // {"it|bello|en|beautiful": ["pretty", ...]}
 const MAX_SINONIMI_PER_VOCE = 10;
-const chiaveSinonimo = (cod, atteso) => cod + "|" + normalizza(String(atteso || ""));
+function voceSinonimo(carta) {
+  const parola = carta?.entry?.[carta?.da];
+  const atteso = carta?.entry?.[carta?.a];
+  return carta && carta.da && carta.a && parola && atteso ? {
+    da: carta.da,
+    parola,
+    a: carta.a,
+    atteso
+  } : null;
+}
+const chiaveSinonimo = v => [v.da, normalizza(String(v.parola)), v.a, normalizza(String(v.atteso))].join("|");
 function caricaSinonimi() {
   try {
     const o = JSON.parse(localStorage.getItem(SK_SINONIMI) || "{}");
@@ -10690,23 +10703,25 @@ function caricaSinonimi() {
     return {};
   }
 }
-function salvaSinonimo(cod, atteso, forma) {
-  const f = normalizza(String(forma || ""));
-  if (!cod || !f || f === normalizza(String(atteso || ""))) return false;
+function sinonimiAccettati(voce) {
+  if (!voce) return [];
+  const l = caricaSinonimi()[chiaveSinonimo(voce)];
+  return Array.isArray(l) ? l.filter(x => typeof x === "string" && x.trim()) : [];
+}
+// / | , ; separano le alternative in isCorretta: un sinonimo che li contiene
+// si spezzerebbe in pezzi accettati uno per uno.
+function salvaSinonimo(voce, forma) {
+  const f = String(forma || "").trim();
+  if (!voce || !voce.da || !voce.a || !normalizza(f) || /[/|,;]/.test(f) || normalizza(f) === normalizza(String(voce.atteso))) return false;
   const tutti = caricaSinonimi();
-  const k = chiaveSinonimo(cod, atteso);
-  tutti[k] = [...(Array.isArray(tutti[k]) ? tutti[k] : []).filter(x => x !== f), f].slice(-MAX_SINONIMI_PER_VOCE);
+  const k = chiaveSinonimo(voce);
+  tutti[k] = [...sinonimiAccettati(voce).filter(x => normalizza(x) !== normalizza(f)), f].slice(-MAX_SINONIMI_PER_VOCE);
   try {
     localStorage.setItem(SK_SINONIMI, JSON.stringify(tutti));
   } catch (e) {
     return false;
   }
   return true;
-}
-function sinonimoAccettato(cod, atteso, risposta) {
-  const f = normalizza(String(risposta || ""));
-  const l = caricaSinonimi()[chiaveSinonimo(cod, atteso)];
-  return !!f && Array.isArray(l) && l.includes(f);
 }
 // Si manda all'IA solo una risposta da vocabolario: breve, su una riga, con
 // lettere. Una frase lunga non è un sinonimo e potrebbe contenere istruzioni
@@ -15032,6 +15047,13 @@ function App() {
       const basi = [...new Set([...variantiBaseDialetto(atteso), ...variantiSenzaSoggettoDialetto(atteso)])];
       if (basi.length) attesoConfronto = atteso + "|" + basi.join("|");
     }
+    // Sinonimi accettati con "🤖 Era giusta?" in questo browser: tra le risposte
+    // previste, confrontati da isCorretta come le forme del vocabolario. Solo
+    // dove vale il pulsante (non dove si trascrive ciò che si sente).
+    if (carta.tipo !== "coniugazione" && carta.tipo !== "dettato" && MODALITA_ERA_GIUSTA.includes(modalita)) {
+      const sin = sinonimiAccettati(voceSinonimo(carta));
+      if (sin.length) attesoConfronto = [attesoConfronto, ...sin].join("|");
+    }
     let ok = isCorretta(attesoConfronto, risposta, lA?.bcp47, lA?.codice, carta.tipo === "coniugazione");
     // Pronome pieno facoltativo scritto davanti (cr "me a son"): riprova senza.
     // rispostaConfronto serve anche all'aiutino ("me a sun" ≈ "a son").
@@ -15045,10 +15067,7 @@ function App() {
     }
     // Soggetto di un'altra persona ("du kann" per la 3ª sing.): sbagliata, anche
     // se isCorretta, togliendo qualunque soggetto, l'aveva accettata.
-    if (ok && carta.tipo === "coniugazione" && soggettoPersonaSbagliata(risposta, lA?.codice, carta.persona)) ok = false;
-    // Sinonimo già accettato dall'IA con "🤖 Era giusta?" in questo browser
-    if (!ok && carta.tipo !== "coniugazione" && sinonimoAccettato(lA?.codice, atteso, risposta)) ok = true;
-    // Giusta ma in un'altra lingua: si segnala e si riprova sulla stessa carta,
+    if (ok && carta.tipo === "coniugazione" && soggettoPersonaSbagliata(risposta, lA?.codice, carta.persona)) ok = false;    // Giusta ma in un'altra lingua: si segnala e si riprova sulla stessa carta,
     // senza punti, statistiche né elenco delle sbagliate (Non-stop non finisce).
     // Pronuncia esclusa: il microfono ascolta solo nella lingua richiesta.
     const modoCarta = modalita === "nonstop" ? carta.sottomodalita || "quiz" : modalita;

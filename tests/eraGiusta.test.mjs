@@ -71,7 +71,7 @@ test('EraGiusta: dialetti solo segnalazione, altrimenti giudizio dell\'IA', () =
   assert.match(C, /📨 Segnala sinonimo/);
   assert.match(C, /🤖 Era giusta\?/);
   // accetta solo con true esplicito, salva, invia e poi avvisa App
-  assert.match(C, /if \(g\.accettabile === true\) \{\s*salvaSinonimo\(lA\.codice, atteso, risposta\);\s*inviaAlFoglio\(parametriSinonimo\(\{[^}]*accettato: true[^}]*\}\)\);\s*onAccettata\(\);/);
+  assert.match(C, /if \(g\.accettabile === true\) \{\s*salvaSinonimo\(voceSinonimo\(carta\), risposta\);\s*inviaAlFoglio\(parametriSinonimo\(\{[^}]*accettato: true[^}]*\}\)\);\s*onAccettata\(\);/);
   // la segnalazione dei dialetti non passa dall'IA
   const segnala = C.slice(C.indexOf('async function segnala('), C.indexOf('}', C.indexOf('setStato(ok ? "inviato"')));
   assert.doesNotMatch(segnala, /callAI/);
