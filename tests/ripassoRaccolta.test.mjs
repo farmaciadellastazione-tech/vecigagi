@@ -169,3 +169,20 @@ test('una sola regola per "stessa frase": chiaveFraseRipasso con normalizza', ()
   assert.match(HTML, /const chiaveFraseRipasso = x => normalizza\(String\(x \|\| ""\)\);/);
   assert.match(HTML, /const chiave = f\.cod \+ "\|" \+ chiaveFraseRipasso\(f\.testo\);/);
 });
+
+// Quarta code review (2026-10-27): come per `pulita`, anche una `correzione` che
+// non è testo non deve entrare come "[object Object]".
+test('correzione che non è testo: niente frase', () => {
+  const conv = { id: 's', lingua: 'en', turni: [
+    { ruolo: 'utente', testo: 'I goes', correzione: { x: 1 }, pulita: { text: 'x' } },
+    { ruolo: 'ia', testo: 'Where?' },
+    { ruolo: 'utente', testo: 'Home', correzione: 42 },
+    { ruolo: 'ia', testo: 'Nice.' },
+  ] };
+  assert.deepEqual(testi(ctx.daConv([conv])), ['Where?', 'Nice.']);
+  const sp = { id: 't', lingua: 'sp', turni: [
+    { ruolo: 'utente', testo: 'A magno', correzione: { x: 1 }, correzioneCorretta: true },
+    { ruolo: 'ia', testo: 'Ben!', corretta: true },
+  ] };
+  assert.deepEqual(testi(ctx.daConv([sp])), ['Ben!']);
+});

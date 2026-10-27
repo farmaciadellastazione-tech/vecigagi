@@ -10679,7 +10679,9 @@ function frasiDaConversazioni(conversazioni) {
     if (!c || !c.lingua || !Array.isArray(c.turni)) return;
     const dial = DIALETTI_TTS_ITA.includes(c.lingua);
     const aggiungi = testo => {
-      const t = String(testo || "").trim();
+      // Solo testo: un oggetto entrerebbe come "[object Object]" (code review)
+      if (typeof testo !== "string") return;
+      const t = testo.trim();
       if (t) out.push({
         testo: t,
         cod: c.lingua,
