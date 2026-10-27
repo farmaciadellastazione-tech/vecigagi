@@ -18,6 +18,8 @@ const ctx = vm.createContext({ localStorage: { getItem: () => null, setItem: () 
 ctx.globalThis = ctx;
 vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx);
 vm.runInContext([
+  // riga comune del foglio Contributi (code review: prima era duplicata)
+  tra('const tagliaInvio = ', '\n') + '\n' + tra('function rigaContributi(', '\n}') + '\n}',
   tra('// ── Sinonimi accettati', '\n// ── Archivio frasi da ripassare'),
   'Object.assign(globalThis, { eraGiustaDisponibile, parametriSinonimo });',
 ].join('\n'), ctx);
@@ -115,4 +117,12 @@ test('il ricordo dell\'ultimo errore si azzera in avanti, salta e avvia', () => 
   for (const [da, a] of [['  function avanti() {', '\n  }\n'], ['  function salta() {', '\n  }\n'], ['  function avvia(voc, st, mod', '\n  }\n']]) {
     assert.match(tra(da, a), /erroreRef\.current = null;/, da);
   }
+});
+
+// Code review (2026-10-27): una sola funzione per le colonne del foglio
+// Contributi, usata da correzioni dialetti e sinonimi (l'uscita delle
+// correzioni resta identica: la controlla correzioniIADialetti.test.mjs).
+test('correzioni e sinonimi usano la stessa riga del foglio', () => {
+  assert.match(tra('function parametriCorrezioneIA(', '\n}'), /return rigaContributi\(/);
+  assert.match(tra('function parametriSinonimo(', '\n// Nel dubbio non si accetta'), /return rigaContributi\(/);
 });

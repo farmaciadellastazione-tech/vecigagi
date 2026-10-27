@@ -10520,16 +10520,21 @@ const NOMI_DIALETTI = {
 // corretto; la frase sbagliata dell'IA va nella nota. Testi tagliati: l'invio
 // è un indirizzo web (GET), che non può essere lunghissimo.
 const MAX_CAR_INVIO = 300;
-function parametriCorrezioneIA(cod, errata, corretta, origine, italiano = "") {
-  const taglia = t => String(t || "").trim().slice(0, MAX_CAR_INVIO);
+const tagliaInvio = t => String(t || "").trim().slice(0, MAX_CAR_INVIO);
+// Una riga del foglio "Contributi" (stesse colonne di "Contribuisci con il tuo
+// dialetto"): correzioni IA dei dialetti e sinonimi di "Era giusta?".
+function rigaContributi(parola, lingua, traduzione, note) {
   return {
-    parola: taglia(italiano),
-    dialetto: NOMI_DIALETTI[cod] || cod,
-    traduzione: taglia(corretta),
+    parola: tagliaInvio(parola),
+    dialetto: lingua,
+    traduzione: tagliaInvio(traduzione),
     localita: "",
-    note: `Correzione IA (${origine}) — prima: «${taglia(errata)}»`,
+    note,
     nickname: ""
   };
+}
+function parametriCorrezioneIA(cod, errata, corretta, origine, italiano = "") {
+  return rigaContributi(italiano, NOMI_DIALETTI[cod] || cod, corretta, `Correzione IA (${origine}) — prima: «${tagliaInvio(errata)}»`);
 }
 // Restituisce una Promise<boolean>: se l'invio fallisce la correzione resta
 // comunque nel browser (vale per l'IA di chi l'ha fatta) e lo si dice.
@@ -10779,15 +10784,7 @@ function parametriSinonimo({
   sinonimo,
   accettato
 }) {
-  const taglia = t => String(t || "").trim().slice(0, MAX_CAR_INVIO);
-  return {
-    parola: taglia(italiano),
-    dialetto: nomeLingua,
-    traduzione: taglia(sinonimo),
-    localita: "",
-    note: `${accettato ? "Sinonimo accettato IA" : "Sinonimo segnalato"} — previsto: «${taglia(atteso)}»`,
-    nickname: ""
-  };
+  return rigaContributi(italiano, nomeLingua, sinonimo, `${accettato ? "Sinonimo accettato IA" : "Sinonimo segnalato"} — previsto: «${tagliaInvio(atteso)}»`);
 }
 // Nel dubbio non si accetta: JSON rotto, campo non booleano, errore di rete.
 function estraiGiudizioSinonimo(raw) {
