@@ -338,3 +338,13 @@ test('la schermata passa la lingua al confronto (dettato e traduzione)', () => {
   assert.match(S, /confrontaRipasso\(testoDettatoRipasso\(item\.testo\), r, DIALETTI_TTS_ITA\.includes\(item\.cod\), lingua\(item\.cod\)\.bcp47\)/);
   assert.match(S, /confrontaRipasso\(item\.rif, r, false, lingua\(item\.a\)\.bcp47\)/);
 });
+
+// Quarta code review (2026-10-27): il trattino vale come spazio o come niente
+// in tutti e due i versi (riferimento attaccato, risposta col trattino e viceversa).
+test('trattino simmetrico', () => {
+  assert.equal(ctx.confrontaRipasso('peutetre', 'peut-être'), true);
+  assert.equal(ctx.confrontaRipasso('peut-être', 'peutetre'), true);
+  assert.equal(ctx.confrontaRipasso('peut-être', 'peut être'), true);
+  assert.equal(ctx.confrontaRipasso('peut etre', 'peut-être'), true);
+  assert.equal(ctx.confrontaRipasso('peutetre', 'peut etre'), false); // lo spazio vero conta (come isCorretta)
+});

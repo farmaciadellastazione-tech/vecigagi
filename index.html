@@ -10742,8 +10742,10 @@ function confrontaRipasso(atteso, dato, soloSuono = false, bcp47 = "") {
     const s = normalizza(bcp47 ? convertiNumeri(String(x || ""), bcp47) : String(x || ""));
     return soloSuono ? s.replace(/\s/g, "") : s;
   };
-  const d = n(dato);
-  return !!d && (n(atteso) === d || n(String(atteso || "").replace(/-/g, "")) === d);
+  // Trattino come spazio (normalizza) o come niente, da tutte e due le parti
+  const forme = x => [n(x), n(String(x || "").replace(/-/g, ""))];
+  const d = forme(dato);
+  return !!d[0] && forme(atteso).some(a => d.includes(a));
 }
 // Ciò che la voce legge davvero: parla() salta le parentesi e si ferma al primo "/".
 const testoDettatoRipasso = testo => String(testo || "").replace(/\(.*?\)/g, "").split("/")[0].trim();
