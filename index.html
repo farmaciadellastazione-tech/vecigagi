@@ -10591,6 +10591,41 @@ function CorreggiDialetto({
     className: "text-xs text-red-400"
   }, errore), avvisoInvio);
 }
+// ── Sinonimi accettati ───────────────────────────────────────────────────
+// Richiesta di Dino (2026-10-27): l'app segnava errore per sinonimi assenti
+// dal vocabolario. Con "🤖 Era giusta?" l'IA può accettarli; il sinonimo resta
+// in questo browser e la volta dopo vale subito, senza IA (per tutti vale
+// quando Dino lo aggiunge al vocabolario). Chiave = lingua + risposta attesa
+// normalizzata, non wordKey: voci con lo stesso italiano la condividono.
+const SK_SINONIMI = "qml_v1_sinonimi_accettati"; // {"en|beautiful": ["pretty", ...]}
+const MAX_SINONIMI_PER_VOCE = 10;
+const chiaveSinonimo = (cod, atteso) => cod + "|" + normalizza(String(atteso || ""));
+function caricaSinonimi() {
+  try {
+    const o = JSON.parse(localStorage.getItem(SK_SINONIMI) || "{}");
+    return o && typeof o === "object" && !Array.isArray(o) ? o : {};
+  } catch (e) {
+    return {};
+  }
+}
+function salvaSinonimo(cod, atteso, forma) {
+  const f = normalizza(String(forma || ""));
+  if (!cod || !f || f === normalizza(String(atteso || ""))) return false;
+  const tutti = caricaSinonimi();
+  const k = chiaveSinonimo(cod, atteso);
+  tutti[k] = [...(Array.isArray(tutti[k]) ? tutti[k] : []).filter(x => x !== f), f].slice(-MAX_SINONIMI_PER_VOCE);
+  try {
+    localStorage.setItem(SK_SINONIMI, JSON.stringify(tutti));
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+function sinonimoAccettato(cod, atteso, risposta) {
+  const f = normalizza(String(risposta || ""));
+  const l = caricaSinonimi()[chiaveSinonimo(cod, atteso)];
+  return !!f && Array.isArray(l) && l.includes(f);
+}
 // ── Archivio frasi da ripassare ──────────────────────────────────────────
 // Richiesta di Dino (2026-10-26): le frasi di Frase libera riconosciute giuste
 // dall'IA (quelle che la voce rilegge) restano nel browser per il futuro
@@ -14850,6 +14885,8 @@ function App() {
     // Soggetto di un'altra persona ("du kann" per la 3ª sing.): sbagliata, anche
     // se isCorretta, togliendo qualunque soggetto, l'aveva accettata.
     if (ok && carta.tipo === "coniugazione" && soggettoPersonaSbagliata(risposta, lA?.codice, carta.persona)) ok = false;
+    // Sinonimo già accettato dall'IA con "🤖 Era giusta?" in questo browser
+    if (!ok && carta.tipo !== "coniugazione" && sinonimoAccettato(lA?.codice, atteso, risposta)) ok = true;
     // Giusta ma in un'altra lingua: si segnala e si riprova sulla stessa carta,
     // senza punti, statistiche né elenco delle sbagliate (Non-stop non finisce).
     // Pronuncia esclusa: il microfono ascolta solo nella lingua richiesta.
