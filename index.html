@@ -15078,7 +15078,8 @@ function App() {
     }
     // Soggetto di un'altra persona ("du kann" per la 3ª sing.): sbagliata, anche
     // se isCorretta, togliendo qualunque soggetto, l'aveva accettata.
-    if (ok && carta.tipo === "coniugazione" && soggettoPersonaSbagliata(risposta, lA?.codice, carta.persona)) ok = false;    // Giusta ma in un'altra lingua: si segnala e si riprova sulla stessa carta,
+    if (ok && carta.tipo === "coniugazione" && soggettoPersonaSbagliata(risposta, lA?.codice, carta.persona)) ok = false;
+    // Giusta ma in un'altra lingua: si segnala e si riprova sulla stessa carta,
     // senza punti, statistiche né elenco delle sbagliate (Non-stop non finisce).
     // Pronuncia esclusa: il microfono ascolta solo nella lingua richiesta.
     const modoCarta = modalita === "nonstop" ? carta.sottomodalita || "quiz" : modalita;
