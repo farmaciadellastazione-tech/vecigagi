@@ -88,3 +88,23 @@ test('togliere tutti', () => {
   ctx.togliTuttiSinonimi();
   assert.deepEqual(j(ctx.elencoSinonimi(VOC)), []);
 });
+
+// Passo 2: la pagina, aperta da un'icona 🤝 in Home (solo se ce n'è almeno uno).
+test('la pagina: elenco per coppia di lingue, ✕ per uno, Cancella tutti con conferma', () => {
+  const P = tra('function SchermataSinonimi(', '\nfunction EraGiusta(');
+  assert.match(P, /function SchermataSinonimi\(\{\s*vocabolario,\s*lingue,\s*onHome\s*\}\)/);
+  assert.match(P, /elencoSinonimi\(vocabolario\)/);
+  assert.match(P, /togliSinonimo\(r\.chiave, s\)/);
+  assert.match(P, /if \(!confirm\(/);
+  assert.match(P, /togliTuttiSinonimi\(\)/);
+  assert.match(P, /Era giusta\?/); // spiega da dove vengono
+  assert.match(P, /solo da questo browser/);
+});
+
+test('Home: icona 🤝 solo con almeno un sinonimo; App apre la pagina', () => {
+  const H = tra('function Home(', '\n// ── Modifica parola');
+  assert.match(H, /onSinonimi\s*\}\) \{/);
+  assert.match(H, /Object\.keys\(caricaSinonimi\(\)\)\.length > 0 && \/\*#__PURE__\*\/React\.createElement\("button", \{\s*onClick: onSinonimi,/);
+  assert.match(tra('createElement(Home, {', '});'), /onSinonimi: \(\) => setSchermata\("sinonimi"\)/);
+  assert.match(HTML, /if \(schermata === "sinonimi"\) return \/\*#__PURE__\*\/React\.createElement\(SchermataSinonimi, \{\s*vocabolario: vocabolario,\s*lingue: lingue,\s*onHome: \(\) => setSchermata\("home"\)\s*\}\);/);
+});

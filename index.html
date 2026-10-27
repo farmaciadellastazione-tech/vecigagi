@@ -7880,7 +7880,8 @@ function Home({
   onCambiaLingue,
   onCambiaFiltri,
   onImpostazioniAI,
-  aiSettings
+  aiSettings,
+  onSinonimi
 }) {
   const t = useUI();
   const fileRef = useRef();
@@ -8383,7 +8384,11 @@ function Home({
     onClick: onStatistiche,
     title: "Statistiche",
     className: "text-lg bg-zinc-900 hover:bg-zinc-800 p-2.5 rounded-xl transition"
-  }, "\uD83D\uDCCA"), /*#__PURE__*/React.createElement("button", {
+  }, "\uD83D\uDCCA"), Object.keys(caricaSinonimi()).length > 0 && /*#__PURE__*/React.createElement("button", {
+    onClick: onSinonimi,
+    title: "Sinonimi accettati",
+    className: "text-lg bg-zinc-900 hover:bg-zinc-800 p-2.5 rounded-xl transition"
+  }, "\uD83E\uDD1D"), /*#__PURE__*/React.createElement("button", {
     onClick: onEsporta,
     title: "Salva progressi",
     className: "text-lg bg-zinc-900 hover:bg-zinc-800 p-2.5 rounded-xl transition"
@@ -9920,6 +9925,86 @@ function conGrassetto(s) {
 // la risposta è un sinonimo valido; se sì App la conta giusta (onAccettata),
 // il sinonimo resta in questo browser e arriva a Dino sul foglio Contributi.
 // Nei dialetti l'IA non giudica: "📨 Segnala sinonimo" lo manda a Dino e basta.
+// Pagina "🤝 Sinonimi accettati" (Dino, 2026-10-27): quelli accettati con
+// "🤖 Era giusta?", per coppia di lingue; ✕ ne toglie uno (torna un errore).
+function SchermataSinonimi({
+  vocabolario,
+  lingue,
+  onHome
+}) {
+  const [, aggiorna] = useState(0); // dopo una cancellazione si rilegge l'elenco
+  const righe = elencoSinonimi(vocabolario);
+  const lingua = cod => lingue.find(l => l.codice === cod) || {
+    nome: cod,
+    bandiera: ""
+  };
+  const etichetta = cod => `${lingua(cod).bandiera || ""} ${lingua(cod).nome}`.trim();
+  const coppie = [];
+  righe.forEach(r => {
+    const c = r.da + "|" + r.a;
+    const g = coppie.find(x => x.c === c);
+    if (g) g.righe.push(r);
+    else coppie.push({
+      c,
+      da: r.da,
+      a: r.a,
+      righe: [r]
+    });
+  });
+  function togliTutti() {
+    if (!confirm("Togliere tutti i sinonimi accettati? Torneranno a essere errori.")) return;
+    togliTuttiSinonimi();
+    aggiorna(n => n + 1);
+  }
+  return /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen bg-black p-4",
+    style: {
+      paddingBottom: "80px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-xl mx-auto"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between mb-4"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onHome,
+    className: "text-zinc-500 hover:text-white transition text-sm"
+  }, "← Home"), /*#__PURE__*/React.createElement("span", {
+    className: "text-zinc-600 text-xs"
+  }, "🤝 Sinonimi accettati"), /*#__PURE__*/React.createElement("span", null)), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-500 mb-4"
+  }, "Risposte che l'IA ha accettato con \"🤖 Era giusta?\": in questo browser valgono come giuste. Tocca ✕ per toglierne una: tornerà a essere un errore."), righe.length === 0 && /*#__PURE__*/React.createElement("div", {
+    className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 text-center"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-4xl mb-3"
+  }, "🤝"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-500"
+  }, "Ancora nessuno. Quando il quiz segna errore una parola che secondo te è giusta, \"🤖 Era giusta?\" chiede all'IA se è un sinonimo valido.")), coppie.map(g => /*#__PURE__*/React.createElement("div", {
+    key: g.c,
+    className: "mb-4"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 font-bold mb-2"
+  }, etichetta(g.da), " → ", etichetta(g.a)), g.righe.map(r => /*#__PURE__*/React.createElement("div", {
+    key: r.chiave,
+    className: "bg-zinc-900 border border-zinc-700 rounded-xl p-3 mb-2"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-slate-200 mb-2"
+  }, r.parola, " → ", /*#__PURE__*/React.createElement("strong", null, r.atteso)), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2 flex-wrap"
+  }, r.sinonimi.map(s => /*#__PURE__*/React.createElement("button", {
+    key: s,
+    onClick: () => {
+      togliSinonimo(r.chiave, s);
+      aggiorna(n => n + 1);
+    },
+    title: "Togli", "aria-label": `Togli ${s}`,
+    className: "bg-zinc-800 hover:bg-zinc-700 text-slate-200 text-sm px-3 py-1 rounded-lg transition"
+  }, s, " ✕"))))))), righe.length > 0 && /*#__PURE__*/React.createElement("button", {
+    onClick: togliTutti,
+    className: "w-full text-xs text-zinc-500 hover:text-red-400 transition py-2 mt-2"
+  }, "🗑️ Cancella tutti"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-600 mt-4"
+  }, "Cancellarli li toglie solo da questo browser: quelli già inviati a LinguaeQuiz restano da valutare per il vocabolario.")));
+}
 function EraGiusta({
   carta,
   risposta,
@@ -15732,6 +15817,7 @@ function App() {
     onImpostazioniAI: apriImpostazioniAI,
     aiSettings: aiSettings,
     onStatistiche: () => setSchermata("statistiche"),
+    onSinonimi: () => setSchermata("sinonimi"),
     onRicerca: () => setSchermata("ricerca"),
     onGlossario: () => setSchermata("glossario"),
     onEsporta: handleEsporta,
@@ -15744,6 +15830,11 @@ function App() {
       setFiltri(f);
       saveJSON(SK_FILTRI, f);
     }
+  });
+  if (schermata === "sinonimi") return /*#__PURE__*/React.createElement(SchermataSinonimi, {
+    vocabolario: vocabolario,
+    lingue: lingue,
+    onHome: () => setSchermata("home")
   });
   if (schermata === "glossario") return /*#__PURE__*/React.createElement(Glossario, {
     vocabolario: vocabolario,
