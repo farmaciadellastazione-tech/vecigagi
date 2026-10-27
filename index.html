@@ -10846,18 +10846,28 @@ Rispondi con UN oggetto JSON, senza markdown: {"traduzioni": [{"id": number, "te
     user: items.map((x, i) => `${i}. Da ${x.nomeDa} a ${x.nomeA}: "${x.testo}"`).join("\n") + "\n\nRispondi con il JSON."
   };
 }
-function estraiTraduzioniRipasso(raw) {
+// n: quante traduzioni si aspettano (id 0..n-1). Un id fuori intervallo (l'IA
+// ha numerato da 1 o ne ha saltata una) sposterebbe ogni traduzione sulla
+// frase accanto, salvata per sempre: allora non ci si fida di nessuna.
+function estraiTraduzioniRipasso(raw, n) {
   const out = {};
+  let fuori = false;
   const aggiungi = (idGrezzo, testo) => {
     // L'id arriva spesso come testo ("0"): va accettato, sennò spariscono tutte
     const id = String(idGrezzo ?? "").trim() !== "" ? Number(idGrezzo) : NaN;
-    if (Number.isInteger(id) && String(testo || "").trim()) out[id] = String(testo).trim();
+    if (!Number.isInteger(id)) return;
+    if (n !== undefined && (id < 0 || id >= n)) fuori = true;
+    if (String(testo || "").trim()) out[id] = String(testo).trim();
   };
+  // Tutti gli id del testo, anche di voci troncate (scartate sotto): "id":2 in
+  // una voce tagliata dice comunque che la numerazione è sbagliata.
+  if (n !== undefined) for (const v of String(raw || "").matchAll(/"id"\s*:\s*"?\s*(-?\d+)/g)) if (Number(v[1]) < 0 || Number(v[1]) >= n) fuori = true;
+  const risultato = () => fuori ? {} : out;
   try {
     const m = String(raw || "").match(/\{[\s\S]*\}/);
     const o = JSON.parse(m ? m[0] : "");
     (o.traduzioni || []).forEach(x => x && aggiungi(x.id, x.testo));
-    return out;
+    return risultato();
   } catch (e) {
     // JSON troncato o rovinato (seconda code review): si recuperano le voci
     // complete, chiuse da virgolette e graffa; quella tagliata resta fuori.
@@ -10873,7 +10883,7 @@ function estraiTraduzioniRipasso(raw) {
     };
     for (const v of String(raw || "").matchAll(new RegExp("\\{\\s*" + idRe + "\\s*,\\s*" + testoRe + "\\s*\\}", "g"))) aggiungi(v[1], leggi(v[2]));
     for (const v of String(raw || "").matchAll(new RegExp("\\{\\s*" + testoRe + "\\s*,\\s*" + idRe + "\\s*\\}", "g"))) aggiungi(v[2], leggi(v[1]));
-    return out;
+    return risultato();
   }
 }
 function promptGiudizioRipasso(item, risposta, riferimento) {
@@ -10955,7 +10965,7 @@ function SchermataRipassoFrasi({
       let trad = {};
       try {
         const p = promptTraduzioniRipasso(mancanti);
-        trad = estraiTraduzioniRipasso(await callAI(p.system, p.user, aiSettings));
+        trad = estraiTraduzioniRipasso(await callAI(p.system, p.user, aiSettings), mancanti.length);
       } catch (e) {}
       if (n !== richiesta.current) return;
       mancanti.forEach((x, k) => {

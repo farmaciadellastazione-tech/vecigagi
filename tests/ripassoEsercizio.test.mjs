@@ -293,3 +293,21 @@ test('traduzioni da JSON rovinato a metà (non troncato)', () => {
   const raw = '{"traduzioni":[{"id":0,"testo":"Uno."},{"id":1,"testo":"Due."} {"id":2,"testo":"Tre."}]}';
   assert.deepEqual(j(ctx.estraiTraduzioniRipasso(raw)), { 0: 'Uno.', 1: 'Due.', 2: 'Tre.' });
 });
+
+// Terza code review (2026-10-27): se l'IA numera da 1 (o salta un numero) ogni
+// traduzione finisce sulla frase accanto e resta salvata per sempre. Con un id
+// fuori dall'intervallo atteso (0..n-1) non ci si fida di nessuna.
+test('traduzioni: id fuori intervallo = nessuna traduzione', () => {
+  const ok = '{"traduzioni":[{"id":0,"testo":"Uno."},{"id":1,"testo":"Due."}]}';
+  assert.deepEqual(j(ctx.estraiTraduzioniRipasso(ok, 2)), { 0: 'Uno.', 1: 'Due.' });
+  const da1 = '{"traduzioni":[{"id":1,"testo":"Uno."},{"id":2,"testo":"Due."}]}';
+  assert.deepEqual(j(ctx.estraiTraduzioniRipasso(da1, 2)), {});
+  assert.deepEqual(j(ctx.estraiTraduzioniRipasso('{"traduzioni":[{"id":0,"testo":"A"},{"id":-1,"testo":"B"}]}', 2)), {});
+  // anche dal recupero tollerante
+  assert.deepEqual(j(ctx.estraiTraduzioniRipasso('{"traduzioni":[{"id":1,"testo":"Uno."},{"id":2,"testo":"Du', 2)), {});
+});
+
+test('la schermata passa quante traduzioni si aspetta', () => {
+  const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
+  assert.match(S, /estraiTraduzioniRipasso\(await callAI\(p\.system, p\.user, aiSettings\), mancanti\.length\)/);
+});
