@@ -263,6 +263,8 @@
     html.light .home-modi .border-orange-800 { border-color:#fdba74 !important; }
     html.light .home-modi .bg-cyan-950     { background-color:#cffafe !important; }
     html.light .home-modi .border-cyan-800 { border-color:#67e8f9 !important; }
+    html.light .home-modi .bg-indigo-950   { background-color:#e0e7ff !important; }
+    html.light .home-modi .border-indigo-800 { border-color:#a5b4fc !important; }
     html.light .home-modi .bg-emerald-950  { background-color:#d1fae5 !important; }
     html.light .home-modi .border-emerald-800 { border-color:#6ee7b7 !important; }
     html.light .home-modi .bg-red-950      { background-color:#fee2e2 !important; }
@@ -7942,6 +7944,7 @@ function Home({
     sceltamultipla: null,
     dettato: null,
     letturaGuidata: null,
+    ripassoFrasi: null, // se mancano frasi lo spiega la schermata
     allenamento: { tipo: "viste", soglia: 1 },
     voce: { tipo: "viste", soglia: 1 },
     ascolto: { tipo: "viste", soglia: 1 },
@@ -8030,6 +8033,15 @@ function Home({
     pastelborder: "border-pink-800",
     pastelbadge: "bg-pink-900",
     pasteltext: "text-pink-300"
+  }, {
+    key: "ripassoFrasi",
+    title: "Ripasso frasi",
+    desc: "🔁 Le tue frasi di Frase libera e Conversazione: dettato e traduzione",
+    lv: "",
+    pastelbg: "bg-indigo-950",
+    pastelborder: "border-indigo-800",
+    pastelbadge: "bg-indigo-900",
+    pasteltext: "text-indigo-300"
   }, {
     key: "letturaGuidata",
     title: "Lettura guidata",
@@ -8491,6 +8503,7 @@ function Home({
       ascolto: "🎧",
       fraseLibera: "🤖",
       conversazione: "🎙️",
+      ripassoFrasi: "🔁",
       letturaGuidata: "📖",
       sceltamultipla: "🎯",
       nonstop: "⚡",
@@ -10578,6 +10591,573 @@ function CorreggiDialetto({
     className: "text-xs text-red-400"
   }, errore), avvisoInvio);
 }
+// ── Archivio frasi da ripassare ──────────────────────────────────────────
+// Richiesta di Dino (2026-10-26): le frasi di Frase libera riconosciute giuste
+// dall'IA (quelle che la voce rilegge) restano nel browser per il futuro
+// esercizio "Ripasso frasi". Delle frasi sbagliate si tiene la correzione,
+// ma non nei dialetti: l'IA li conosce poco e si ripasserebbero i suoi errori.
+const SK_FRASI_RIPASSO = "qml_v1_frasi_ripasso";
+const MAX_FRASI_RIPASSO = 200;
+// "Stessa frase", unica regola per archivio, doppioni e statistiche: normalizza
+// come il confronto delle risposte (Dino, 2026-10-27), quindi maiuscole, spazi,
+// punteggiatura, accenti e apostrofi non contano.
+const chiaveFraseRipasso = x => normalizza(String(x || ""));
+function caricaFrasiRipasso() {
+  try {
+    const l = JSON.parse(localStorage.getItem(SK_FRASI_RIPASSO) || "[]");
+    return Array.isArray(l) ? l.filter(f => f && f.testo && f.cod) : [];
+  } catch (e) {
+    return [];
+  }
+}
+// Stessa frase nella stessa lingua: si aggiorna (torna la più recente).
+function salvaFraseRipasso({
+  testo,
+  cod,
+  origine,
+  tema
+}) {
+  const t = String(testo || "").trim();
+  if (!t || !cod) return false;
+  const lista = caricaFrasiRipasso().filter(f => !(f.cod === cod && chiaveFraseRipasso(f.testo) === chiaveFraseRipasso(t)));
+  lista.push({
+    testo: t,
+    cod,
+    origine: origine || "",
+    tema: tema || "",
+    data: new Date().toISOString()
+  });
+  try {
+    localStorage.setItem(SK_FRASI_RIPASSO, JSON.stringify(lista.slice(-MAX_FRASI_RIPASSO)));
+  } catch (e) {
+    return false;
+  }
+  return true;
+}
+// Esito della verifica di Frase libera → cosa archiviare (niente se incerto).
+// Nei dialetti nemmeno il "giusto" dell'IA basta (Dino, 2026-10-27): entrano
+// solo le frasi corrette a mano con ✏️ Correggi (salvaCorretta in Frase libera).
+function salvaFraseDaFeedback(fb, frase, cod, tema) {
+  if (!fb || DIALETTI_TTS_ITA.includes(cod)) return false;
+  if (fb.correct === true) return salvaFraseRipasso({
+    testo: frase,
+    cod,
+    origine: "Frase libera",
+    tema
+  });
+  // Correzione da risposta troncata: forse monca, non è una frase esatta
+  if (fb.correct === false && fb.correction && !fb.tollerante) return salvaFraseRipasso({
+    testo: fb.correction,
+    cod,
+    origine: "Frase libera",
+    tema
+  });
+  return false;
+}
+// ✏️ Correggi salvato in Frase libera: la frase l'ha controllata una persona.
+function salvaFraseLiberaCorretta(testo, carta) {
+  return salvaFraseRipasso({
+    testo,
+    cod: carta?.lingua?.codice,
+    origine: "Frase libera",
+    tema: carta?.entry?.tema
+  });
+}
+// Frasi ripassabili dalle conversazioni salvate: solo frasi ESATTE (Dino,
+// 2026-10-27). Lingue normali: battute dell'IA valide (quelle che la voce
+// legge) e, dello studente, la versione pulita dell'IA (`pulita`, anche gli
+// errori piccoli corretti) o, nelle conversazioni vecchie, la correzione; una
+// frase "senza correzione" può avere errori piccoli: fuori. Dialetti: solo
+// testi corretti a mano (`corretta`, `correzioneCorretta`). La frase dello
+// studente conta solo se l'IA ha risposto davvero (turno dopo valido).
+// callAI segnala i guasti con testi "Errore..."; JSON rotto = risposta grezza.
+// Una battuta troncata (`parziale`) corretta a mano (`corretta`) vale: l'ha controllata una persona.
+const battutaIAValida = x => !!x && x.ruolo === "ia" && (!x.parziale || !!x.corretta) && !!String(x.testo || "").trim() && !/^\s*(Errore|[{[])/.test(x.testo);
+function frasiDaConversazioni(conversazioni) {
+  const out = [];
+  (Array.isArray(conversazioni) ? conversazioni : []).forEach(c => {
+    if (!c || !c.lingua || !Array.isArray(c.turni)) return;
+    const dial = DIALETTI_TTS_ITA.includes(c.lingua);
+    const aggiungi = testo => {
+      // Solo testo: un oggetto entrerebbe come "[object Object]" (code review)
+      if (typeof testo !== "string") return;
+      const t = testo.trim();
+      if (t) out.push({
+        testo: t,
+        cod: c.lingua,
+        origine: "Conversazione",
+        tema: c.tema || ""
+      });
+    };
+    c.turni.forEach((x, k) => {
+      if (!x) return;
+      if (x.ruolo === "ia") {
+        if (battutaIAValida(x) && (!dial || x.corretta)) aggiungi(x.testo);
+      } else if (x.ruolo === "utente" && battutaIAValida(c.turni[k + 1])) {
+        if (dial) {
+          if (x.correzioneCorretta) aggiungi(x.correzione);
+        } else aggiungi(typeof x.pulita === "string" && x.pulita.trim() ? x.pulita : x.correzione);
+      }
+    });
+  });
+  return out;
+}
+// Tutte le frasi da ripassare, senza doppioni per lingua; `chiave` identifica
+// la frase nelle statistiche del ripasso. codiciAttivi: se dato, filtra.
+function frasiDaRipassare(archivio, conversazioni, codiciAttivi) {
+  const viste = new Set();
+  const out = [];
+  [...(archivio || []), ...frasiDaConversazioni(conversazioni)].forEach(f => {
+    if (!f || !f.testo || !f.cod) return;
+    if (codiciAttivi && !codiciAttivi.includes(f.cod)) return;
+    // Stessa normalizzazione del confronto: "Ciao, come stai?" = "ciao come stai"
+    const chiave = f.cod + "|" + chiaveFraseRipasso(f.testo);
+    if (viste.has(chiave)) return;
+    viste.add(chiave);
+    out.push({
+      testo: String(f.testo).trim(),
+      cod: f.cod,
+      origine: f.origine || "",
+      tema: f.tema || "",
+      chiave
+    });
+  });
+  return out;
+}
+// ── Ripasso frasi: l'esercizio ───────────────────────────────────────────
+// 10 frasi a sessione, ognuna con dettato o traduzione scelti a caso. La
+// traduzione va verso un'altra lingua attiva, mai verso un dialetto (l'IA li
+// inventerebbe). I riferimenti si chiedono all'IA tutti insieme a inizio
+// sessione e restano salvati; se la risposta non coincide giudica l'IA.
+// Statistiche per frase a parte: niente SM-2 né "parole apprese".
+const SK_RIPASSO_STATS = "qml_v1_ripasso_stats"; // {chiave: {g, s, ultima, trad: {cod: testo}}}
+const N_FRASI_RIPASSO = 10;
+// Come il resto dell'app (normalizza, Dino 2026-10-27): punteggiatura,
+// maiuscole, accenti latini e apostrofi non contano; il trattino vale come
+// spazio o come niente ("peut-être" = "peut etre" = "peutetre", come isCorretta).
+// soloSuono: per il dettato nei dialetti, dove la voce italiana non fa sentire
+// nemmeno gli spazi della grafia ("a l'è" = "alè"): contano solo le lettere.
+// bcp47: lingua della frase; cifre e parole valgono uguale ("3" = "tre"), perché
+// la voce legge le cifre come parole (come isCorretta, con convertiNumeri).
+function confrontaRipasso(atteso, dato, soloSuono = false, bcp47 = "") {
+  const n = x => {
+    const s = normalizza(bcp47 ? convertiNumeri(String(x || ""), bcp47) : String(x || ""));
+    return soloSuono ? s.replace(/\s/g, "") : s;
+  };
+  // Trattino come spazio (normalizza) o come niente, da tutte e due le parti
+  const forme = x => [n(x), n(String(x || "").replace(/-/g, ""))];
+  const d = forme(dato);
+  return !!d[0] && forme(atteso).some(a => d.includes(a));
+}
+// Ciò che la voce legge davvero: parla() salta le parentesi e si ferma al primo "/".
+const testoDettatoRipasso = testo => String(testo || "").replace(/\(.*?\)/g, "").split("/")[0].trim();
+function caricaStatsRipasso() {
+  try {
+    const o = JSON.parse(localStorage.getItem(SK_RIPASSO_STATS) || "{}");
+    return o && typeof o === "object" && !Array.isArray(o) ? o : {};
+  } catch (e) {
+    return {};
+  }
+}
+function aggiornaStatsRipasso(chiave, fn) {
+  const tutte = caricaStatsRipasso();
+  tutte[chiave] = fn({
+    g: 0,
+    s: 0,
+    ...(tutte[chiave] || {})
+  });
+  try {
+    localStorage.setItem(SK_RIPASSO_STATS, JSON.stringify(tutte));
+  } catch (e) {}
+}
+// I due archivi da cui vengono le frasi si leggono davvero? Assente = vuoto, va
+// bene; rovinato o localStorage in errore = no. Le funzioni di caricamento in
+// quel caso restituiscono [] e la potatura cancellerebbe tutto (code review).
+function archiviRipassoLeggibili() {
+  try {
+    return [SK_FRASI_RIPASSO, SK_CONVERSAZIONI].every(k => {
+      const v = localStorage.getItem(k);
+      return v === null || Array.isArray(JSON.parse(v));
+    });
+  } catch (e) {
+    return false;
+  }
+}
+// Via le statistiche delle frasi non più esistenti (uscite dall'archivio o da
+// conversazioni cancellate). chiaviValide: frasi di TUTTE le lingue, così
+// spegnere una lingua non ne cancella i progressi. Riscrive solo se serve.
+function potaStatsRipasso(chiaviValide) {
+  if (!archiviRipassoLeggibili()) return;
+  const valide = new Set(chiaviValide);
+  const tutte = caricaStatsRipasso();
+  const vecchie = Object.keys(tutte).filter(k => !valide.has(k));
+  if (!vecchie.length) return;
+  vecchie.forEach(k => delete tutte[k]);
+  try {
+    localStorage.setItem(SK_RIPASSO_STATS, JSON.stringify(tutte));
+  } catch (e) {}
+}
+function registraEsitoRipasso(chiave, giusta) {
+  aggiornaStatsRipasso(chiave, st => ({
+    ...st,
+    g: st.g + (giusta ? 1 : 0),
+    s: st.s + (giusta ? 0 : 1),
+    ultima: new Date().toISOString()
+  }));
+}
+function salvaTradRipasso(chiave, cod, testo) {
+  aggiornaStatsRipasso(chiave, st => ({
+    ...st,
+    trad: {
+      ...(st.trad || {}),
+      [cod]: testo
+    }
+  }));
+}
+// Mai vista = 1; ogni errore pesa, ogni risposta giusta alleggerisce.
+const pesoRipasso = st => (1 + 2 * (st?.s || 0)) / (1 + (st?.g || 0));
+// Estrazione pesata senza ripetizioni.
+function scegliFrasiRipasso(frasi, stats, n, rnd) {
+  const pool = frasi.map(f => ({
+    f,
+    p: pesoRipasso(stats[f.chiave])
+  }));
+  const out = [];
+  while (out.length < n && pool.length) {
+    let r = rnd() * pool.reduce((t, x) => t + x.p, 0);
+    let k = 0;
+    while (k < pool.length - 1 && (r -= pool[k].p) >= 0) k++;
+    out.push(pool.splice(k, 1)[0].f);
+  }
+  return out;
+}
+// Per ogni frase: dettato, o traduzione verso una lingua attiva non dialettale
+// diversa dalla sua. Senza IA o senza lingua d'arrivo: dettato.
+function pianoRipasso(frasi, lingue, conIA, rnd) {
+  const nome = cod => lingue.find(l => l.codice === cod)?.nome || cod;
+  return frasi.map(f => {
+    const arrivi = lingue.filter(l => l.attiva && l.codice !== f.cod && !DIALETTI_TTS_ITA.includes(l.codice));
+    const traduci = conIA && arrivi.length > 0 && rnd() >= 0.5;
+    const a = traduci ? arrivi[Math.min(arrivi.length - 1, Math.floor(rnd() * arrivi.length))] : null;
+    return {
+      ...f,
+      nomeDa: nome(f.cod),
+      modo: traduci ? "traduzione" : "dettato",
+      a: a ? a.codice : null,
+      nomeA: a ? a.nome : ""
+    };
+  });
+}
+function promptTraduzioniRipasso(items) {
+  return {
+    system: `Sei un traduttore. Traduci ogni frase nella lingua indicata, in modo naturale e corretto, mantenendo il significato e il registro. In "originale" ricopia esattamente la frase da tradurre.
+Rispondi con UN oggetto JSON, senza markdown: {"traduzioni": [{"id": number, "originale": string, "testo": string}]}`,
+    user: items.map((x, i) => `${i}. Da ${x.nomeDa} a ${x.nomeA}: "${x.testo}"`).join("\n") + "\n\nRispondi con il JSON."
+  };
+}
+// Traduzioni → {indice in items: testo}. Si abbinano per TESTO: l'IA ripete la
+// frase in "originale" (quarta code review). Abbinando per numero, un'IA che
+// numera da 1 o ne salta una spostava ogni traduzione sulla frase accanto,
+// salvata per sempre. L'id serve solo a scegliere tra frasi identiche (stesso
+// testo da due lingue). Senza originale, o con uno che non c'è: scartata.
+function estraiTraduzioniRipasso(raw, items) {
+  const out = {};
+  const voci = [];
+  try {
+    const m = String(raw || "").match(/\{[\s\S]*\}/);
+    voci.push(...(JSON.parse(m ? m[0] : "").traduzioni || []));
+  } catch (e) {
+    // JSON troncato o rovinato (seconda code review): si recuperano le voci
+    // complete, cioè gli oggetti chiusi dalla graffa; quella tagliata resta fuori.
+    for (const v of String(raw || "").matchAll(/\{[^{}]*\}/g)) {
+      try {
+        voci.push(JSON.parse(v[0]));
+      } catch (err) {}
+    }
+  }
+  voci.forEach(x => {
+    if (!x || typeof x.originale !== "string" || typeof x.testo !== "string" || !x.testo.trim()) return;
+    const chiave = chiaveFraseRipasso(x.originale);
+    const libere = (items || []).map((it, k) => k).filter(k => !(k in out) && chiaveFraseRipasso(items[k].testo) === chiave);
+    if (!chiave || !libere.length) return;
+    // L'id arriva spesso come testo ("0"): conta solo come preferenza
+    const id = Number(String(x.id ?? "").trim() || NaN);
+    out[libere.includes(id) ? id : libere[0]] = x.testo.trim();
+  });
+  return out;
+}
+function promptGiudizioRipasso(item, risposta, riferimento) {
+  return {
+    system: `Sei un insegnante di lingue. Lo studente ha tradotto una frase da ${item.nomeDa} a ${item.nomeA}. Valuta se la sua traduzione è corretta e ha lo stesso significato: altre parole o un ordine diverso vanno bene, contano solo errori veri di grammatica, ortografia o significato. Se è sbagliata, in "correction" metti la sua traduzione corretta cambiando il meno possibile, e in "note" una spiegazione brevissima in italiano.
+Rispondi con UN oggetto JSON, senza markdown: {"correct": boolean, "correction": string, "note": string}`,
+    user: `Frase originale (${item.nomeDa}): "${item.testo}"
+Traduzione di riferimento (${item.nomeA}): "${riferimento}"
+Traduzione dello studente: "${risposta}"
+
+Rispondi con il JSON.`
+  };
+}
+function estraiGiudizioRipasso(raw) {
+  try {
+    const m = String(raw || "").match(/\{[\s\S]*\}/);
+    const o = JSON.parse(m ? m[0] : "");
+    return {
+      correct: typeof o.correct === "boolean" ? o.correct : null,
+      correction: String(o.correction || "").trim(),
+      note: String(o.note || "").trim()
+    };
+  } catch (e) {
+    return {
+      correct: null,
+      correction: "",
+      note: ""
+    };
+  }
+}
+function SchermataRipassoFrasi({
+  lingue,
+  aiSettings,
+  onHome
+}) {
+  const conIA = (aiSettings?.apiKey || "").length > 10;
+  const [fase, setFase] = useState("prepara"); // prepara | domanda | verifica | esito | fine | vuoto
+  const [items, setItems] = useState([]);
+  const [i, setI] = useState(0);
+  const [risposta, setRisposta] = useState("");
+  const [esito, setEsito] = useState(null); // {giusta: true|false|null, giustaTesto, correction, note}
+  const [punti, setPunti] = useState(0);
+  // Solo le frasi davvero controllate (senza il 🤔 dell'IA irraggiungibile)
+  const [controllate, setControllate] = useState(0);
+  // Uscendo o ricominciando, una risposta dell'IA in ritardo va ignorata
+  const richiesta = useRef(0);
+  const rispostaRef = useRef(null);
+  const lingua = cod => lingue.find(l => l.codice === cod) || {
+    codice: cod,
+    nome: cod,
+    bandiera: "",
+    bcp47: "it-IT"
+  };
+  async function avvia() {
+    const n = ++richiesta.current;
+    setFase("prepara");
+    setI(0);
+    setPunti(0);
+    setControllate(0);
+    setRisposta("");
+    setEsito(null);
+    const attive = lingue.filter(l => l.attiva).map(l => l.codice);
+    const tutte = frasiDaRipassare(caricaFrasiRipasso(), caricaConversazioni());
+    potaStatsRipasso(tutte.map(f => f.chiave));
+    const frasi = tutte.filter(f => attive.includes(f.cod));
+    if (frasi.length < 3) {
+      setFase("vuoto");
+      return;
+    }
+    const stats = caricaStatsRipasso();
+    const piano = pianoRipasso(scegliFrasiRipasso(frasi, stats, N_FRASI_RIPASSO, Math.random), lingue, conIA, Math.random).map(x => ({
+      ...x,
+      // Dal dialetto l'IA traduce male: il riferimento si richiede ogni volta,
+      // così uno sbagliato non resta per sempre
+      rif: x.modo === "traduzione" && !DIALETTI_TTS_ITA.includes(x.cod) ? stats[x.chiave]?.trad?.[x.a] || "" : ""
+    }));
+    const mancanti = piano.filter(x => x.modo === "traduzione" && !x.rif);
+    if (mancanti.length) {
+      let trad = {};
+      try {
+        const p = promptTraduzioniRipasso(mancanti);
+        trad = estraiTraduzioniRipasso(await callAI(p.system, p.user, aiSettings), mancanti);
+      } catch (e) {}
+      if (n !== richiesta.current) return;
+      mancanti.forEach((x, k) => {
+        if (trad[k]) {
+          x.rif = trad[k];
+          if (!DIALETTI_TTS_ITA.includes(x.cod)) salvaTradRipasso(x.chiave, x.a, trad[k]);
+        } else x.modo = "dettato"; // IA non raggiungibile: la frase si fa a dettato
+      });
+    }
+    setItems(piano);
+    setFase("domanda");
+  }
+  useEffect(() => {
+    avvia();
+    return () => {
+      richiesta.current++;
+      // Uscendo, la frase letta (o in coda in parla) non continua sopra la Home
+      if (_parlaTimer) {
+        clearTimeout(_parlaTimer);
+        _parlaTimer = null;
+      }
+      try {
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+      } catch (e) {}
+    };
+  }, []);
+  const item = items[i];
+  // Il dettato parte da solo a ogni frase nuova
+  useEffect(() => {
+    if (fase === "domanda" && item?.modo === "dettato") parla(item.testo, lingua(item.cod).bcp47);
+    if (fase === "domanda") rispostaRef.current?.focus();
+  }, [fase, i]);
+  function chiudi(giusta, giustaTesto, correction, note) {
+    if (giusta !== null) {
+      registraEsitoRipasso(item.chiave, giusta);
+      setControllate(c => c + 1);
+    }
+    if (giusta) setPunti(p => p + 1);
+    setEsito({
+      giusta,
+      giustaTesto,
+      correction,
+      note
+    });
+    setFase("esito");
+    const testoDaLeggere = item.modo === "dettato" ? item.testo : giusta ? risposta.trim() : correction || giustaTesto;
+    parla(testoDaLeggere, lingua(item.modo === "dettato" ? item.cod : item.a).bcp47);
+  }
+  async function controlla() {
+    const r = risposta.trim();
+    if (!r || !item || fase !== "domanda") return;
+    if (item.modo === "dettato") return chiudi(confrontaRipasso(testoDettatoRipasso(item.testo), r, DIALETTI_TTS_ITA.includes(item.cod), lingua(item.cod).bcp47), testoDettatoRipasso(item.testo), "", "");
+    if (confrontaRipasso(item.rif, r, false, lingua(item.a).bcp47)) return chiudi(true, item.rif, "", "");
+    const n = ++richiesta.current;
+    setFase("verifica");
+    let g = {
+      correct: null,
+      correction: "",
+      note: ""
+    };
+    try {
+      const p = promptGiudizioRipasso(item, r, item.rif);
+      g = estraiGiudizioRipasso(await callAI(p.system, p.user, aiSettings));
+    } catch (e) {}
+    if (n !== richiesta.current) return;
+    chiudi(g.correct, item.rif, g.correct === false ? g.correction : "", g.note);
+  }
+  function avanti() {
+    if (i + 1 >= items.length) {
+      setFase("fine");
+      return;
+    }
+    setI(i + 1);
+    setRisposta("");
+    setEsito(null);
+    setFase("domanda");
+  }
+  const testata = /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between mb-4"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onHome,
+    className: "text-zinc-500 hover:text-white transition text-sm"
+  }, "← Home"), /*#__PURE__*/React.createElement("span", {
+    className: "text-zinc-600 text-xs"
+  }, "🔁 Ripasso frasi", items.length && fase !== "fine" && fase !== "vuoto" && fase !== "prepara" ? ` \xB7 ${i + 1} di ${items.length}` : ""), /*#__PURE__*/React.createElement("span", {
+    className: "text-zinc-600 text-xs"
+  }, fase !== "vuoto" && fase !== "prepara" ? `✅ ${punti}` : ""));
+  const contenitore = (...figli) => /*#__PURE__*/React.createElement("div", {
+    className: "min-h-screen bg-black flex flex-col p-4",
+    style: {
+      paddingBottom: "80px"
+    }
+  }, testata, ...figli);
+  if (fase === "prepara") return contenitore(/*#__PURE__*/React.createElement("div", {
+    className: "flex-1 flex items-center justify-center"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-zinc-500 animate-pulse"
+  }, "🤖 Preparo le frasi...")));
+  if (fase === "vuoto") return contenitore(/*#__PURE__*/React.createElement("div", {
+    className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 text-center"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-4xl mb-3"
+  }, "📭"), /*#__PURE__*/React.createElement("p", {
+    className: "text-base text-zinc-300 mb-2"
+  }, "Ancora poche frasi da ripassare."), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-500"
+  }, "Qui tornano le frasi giuste (o corrette) di Frase libera e Conversazione, nelle lingue attive. Scrivine qualcuna e ritorna!")));
+  if (fase === "fine") return contenitore(/*#__PURE__*/React.createElement("div", {
+    className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 text-center mb-4"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-4xl mb-3"
+  }, controllate > 0 && punti === controllate ? "🏆" : "💪"), /*#__PURE__*/React.createElement("p", {
+    className: "text-2xl font-extrabold text-white mb-1"
+  }, punti, " / ", controllate), controllate < items.length && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mb-1"
+  }, "🤔 ", items.length - controllate, " non controllate: non contano"), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-zinc-500"
+  }, "Le frasi sbagliate torneranno più spesso.")), /*#__PURE__*/React.createElement("button", {
+    onClick: avvia,
+    className: "w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3.5 rounded-xl transition btn-shadow mb-3"
+  }, "🔁 Ancora"), /*#__PURE__*/React.createElement("button", {
+    onClick: onHome,
+    className: "text-zinc-500 text-sm"
+  }, "← Home"));
+  const da = lingua(item.cod);
+  const dettato = item.modo === "dettato";
+  return contenitore(/*#__PURE__*/React.createElement("div", {
+    className: "bg-zinc-900 border border-zinc-700 rounded-2xl p-6 mb-4 text-center"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mb-2"
+  }, dettato ? `✍️ Dettato \xB7 ${da.bandiera || ""} ${da.nome}` : `🌐 Traduci in ${item.nomeA}`), dettato ? /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-center gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => parla(item.testo, da.bcp47),
+    title: "Ascolta", "aria-label": "Ascolta",
+    className: "text-3xl"
+  }, "🔊"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => parla(item.testo, da.bcp47, true),
+    title: "Ascolta lentamente", "aria-label": "Ascolta lentamente",
+    className: "text-3xl"
+  }, "🐢")) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mb-1"
+  }, da.bandiera, " ", da.nome), /*#__PURE__*/React.createElement("p", {
+    className: "text-2xl font-bold text-white"
+  }, item.testo), DIALETTI_TTS_ITA.includes(item.cod) && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-amber-500 mt-2 italic"
+  }, "🍷 L'IA conosce poco i dialetti: la traduzione di riferimento può sbagliare"))), fase === "domanda" && /*#__PURE__*/React.createElement("div", {
+    className: "flex-1"
+  }, /*#__PURE__*/React.createElement("textarea", {
+    ref: rispostaRef,
+    value: risposta,
+    onChange: e => setRisposta(e.target.value),
+    placeholder: dettato ? "Scrivi quello che senti..." : `In ${item.nomeA}...`,
+    className: "w-full bg-zinc-900 border border-zinc-700 rounded-xl px-4 py-3 text-white text-lg resize-none focus:outline-none focus:border-cyan-500 mb-3",
+    rows: 3,
+    onKeyDown: e => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        controlla();
+      }
+    }
+  }), /*#__PURE__*/React.createElement("button", {
+    onClick: controlla,
+    disabled: !risposta.trim(),
+    className: `w-full font-bold py-3.5 rounded-xl transition text-white ${risposta.trim() ? "bg-cyan-600 hover:bg-cyan-500 btn-shadow" : "bg-zinc-800 text-zinc-600 cursor-not-allowed"}`
+  }, "Controlla →")), fase === "verifica" && /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 flex items-center justify-center"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-zinc-500 animate-pulse"
+  }, "🤖 Controllo...")), fase === "esito" && esito && /*#__PURE__*/React.createElement("div", {
+    className: "flex-1"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: `rounded-2xl p-4 mb-3 border ${esito.giusta === true ? "bg-green-950 border-green-800" : esito.giusta === false ? "bg-red-950 border-red-800" : "bg-zinc-900 border-zinc-700"}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-2xl mb-2 text-center"
+  }, esito.giusta === true ? "✅" : esito.giusta === false ? "❌" : "🤔"), /*#__PURE__*/React.createElement("p", {
+    className: "text-base text-zinc-300 mb-2"
+  }, "\"", /*#__PURE__*/React.createElement("span", {
+    className: "text-white font-semibold"
+  }, risposta.trim()), "\""), esito.correction && /*#__PURE__*/React.createElement("p", {
+    className: "text-base text-green-400 mb-2"
+  }, "✏️ ", esito.correction), esito.note && /*#__PURE__*/React.createElement("p", {
+    className: "text-base text-zinc-400 mb-2"
+  }, "📚 ", esito.note), (esito.giusta !== true || !dettato) && /*#__PURE__*/React.createElement("p", {
+    className: "text-base text-cyan-400"
+  }, dettato ? "💬 " : "💬 Riferimento: ", esito.giustaTesto), esito.giusta === null && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mt-2"
+  }, "Non sono riuscito a controllare: questa frase non conta.")), /*#__PURE__*/React.createElement("button", {
+    onClick: avanti,
+    className: "w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-xl text-base transition btn-shadow"
+  }, i + 1 >= items.length ? "Risultato →" : "Avanti →")));
+}
 // ── Aiuto Frase libera ───────────────────────────────────────────────────
 // Per chi parte da zero (richiesta di Dino, 2026-10-15): "💡 Aiutami" traduce
 // una frase scritta nella lingua dei menu, "Dammi un'idea" propone 2-3 frasi.
@@ -10791,6 +11371,8 @@ function SchermataFraseLibera({
     setAiutoStato("idle");
   }
   const lingueAttive = lingue.filter(l => l.attiva && !DIALETTI_TTS_ITA.includes(l.codice));
+  // Frase dialettale corretta a mano: è esatta, va al Ripasso frasi (Dino, 2026-10-27)
+  const salvaCorretta = n => salvaFraseLiberaCorretta(n, carta);
   function nuovaCarta() {
     richiestaFrase.current++;
     const cand = vocabolario.filter(e => lingueAttive.some(l => l.codice !== "it" && e[l.codice]));
@@ -10892,6 +11474,7 @@ Reply with JSON only, all text in ${langName}.` + notaConiugazione(carta.entry);
       setFeedback(fb);
       // Frase giusta: si sente subito com'è detta (ripetibile con 🔊/🐢).
       if (fb.correct === true) parla(frase.trim(), carta.lingua.bcp47);
+      salvaFraseDaFeedback(fb, frase.trim(), carta.lingua.codice, carta.entry?.tema);
     } catch (e) {
       if (n !== richiestaFrase.current) return;
       setFeedback({
@@ -11144,7 +11727,8 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
     origine: "Frase libera",
     testo: aiutoRis.frase,
     italiano: testoAiuto,
-    cod: carta.lingua.codice
+    cod: carta.lingua.codice,
+    onSalvato: salvaCorretta
   }), aiutoRis.parole.length > 0 && /*#__PURE__*/React.createElement("p", {
     className: "text-sm text-zinc-400 mt-2 leading-relaxed select-none"
   }, aiutoRis.parole.map(p => p.w + " = " + p.t).join(" \xB7 ")), /*#__PURE__*/React.createElement("p", {
@@ -11166,7 +11750,8 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
     origine: "Frase libera",
     testo: idea.frase,
     italiano: idea.traduzione,
-    cod: carta.lingua.codice
+    cod: carta.lingua.codice,
+    onSalvato: salvaCorretta
   }))), /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 italic"
   }, "\u270d\ufe0f Scegline una, cambiala come vuoi e riscrivila tu nella casella.")))), stato === "loading" && /*#__PURE__*/React.createElement("div", {
@@ -11196,7 +11781,8 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
   }, "\u270F\uFE0F ", feedback.correction), feedback.correction && /*#__PURE__*/React.createElement(CorreggiDialetto, {
     origine: "Frase libera",
     testo: feedback.correction,
-    cod: carta.lingua.codice
+    cod: carta.lingua.codice,
+    onSalvato: salvaCorretta
   }), !showTrad && /*#__PURE__*/React.createElement(React.Fragment, null, feedback.grammar && !["no", "none", "n/a", "na", "N/A", "-", ""].includes((feedback.grammar || "").trim().toLowerCase()) && /*#__PURE__*/React.createElement("p", {
     className: "text-base text-zinc-400 mb-2"
   }, "\uD83D\uDCDA ", feedback.grammar), feedback.example && /*#__PURE__*/React.createElement("p", {
@@ -11204,7 +11790,8 @@ Reply in ${userLangName}.` + notaConiugazione(carta.entry);
   }, "\uD83D\uDCAC ", feedback.example), feedback.example && /*#__PURE__*/React.createElement(CorreggiDialetto, {
     origine: "Frase libera",
     testo: feedback.example,
-    cod: carta.lingua.codice
+    cod: carta.lingua.codice,
+    onSalvato: salvaCorretta
   })), showTrad && /*#__PURE__*/React.createElement("p", {
     className: "text-base text-amber-300 leading-relaxed whitespace-pre-wrap"
   }, traduzione)), feedback.correct !== true && /*#__PURE__*/React.createElement("button", {
@@ -11772,7 +12359,8 @@ function estraiRispostaConversazione(clean) {
   if (jsonMatch) {
     try {
       const parsed = JSON.parse(jsonMatch[0]);
-      if (parsed && typeof parsed.reply !== "undefined") return parsed;
+      // "clean" solo se è testo: un oggetto entrerebbe nel ripasso come "[object Object]"
+      if (parsed && typeof parsed.reply !== "undefined") return { ...parsed, clean: typeof parsed.clean === "string" ? parsed.clean : "" };
     } catch (e) {
       // JSON malformato/troncato: prova l'estrazione tollerante sotto.
     }
@@ -11780,7 +12368,9 @@ function estraiRispostaConversazione(clean) {
   const reply = estraiCampoStringaJSON(clean, "reply") || clean.slice(0, 300);
   const correction = estraiCampoStringaJSON(clean, "correction") || "";
   const note = estraiCampoStringaJSON(clean, "note") || "";
-  return { reply, correction, note };
+  // Recupero da JSON rotto: i campi possono essere monchi. La frase pulita del
+  // Ripasso frasi vuole frasi esatte, quindi qui non si prende (code review).
+  return { reply, correction, note, clean: "", tollerante: true };
 }
 // ritorno/onRitorno: se si arriva dalla coda delle parole sbagliate di Frase
 // libera, "← Prossima sbagliata" al posto di "← Home" (vedi ritornoDaConversazione).
@@ -11941,8 +12531,12 @@ function SchermataConversazione({
     // contenere il costo: mostriamo per intero la cronologia in UI, ma inviamo
     // all'IA solo un estratto recente.
     const storico = turniConUtente.slice(0, -1).slice(-6).map(x => `${x.ruolo === "ia" ? "IA" : "Studente"}: ${x.testo}`).join("\n") || "(inizio conversazione)";
-    const system = `Sei un amico madrelingua che chiacchiera con uno studente di ${langName} (livello base-intermedio) in una conversazione informale e naturale. Continua il dialogo con UNA sola battuta breve (una o due frasi), in ${langName}. Se la frase dello studente ha un errore importante, mettilo in "correction" (frase corretta in ${langName}) e "note" (spiegazione brevissima in ${linguaNota}); lascia "correction" e "note" vuoti ("") se non serve correggere nulla o l'errore è minore.
-Rispondi con UN oggetto JSON, senza markdown: {"reply": string, "correction": string, "note": string}`;
+    // Per il Ripasso frasi (Dino, 2026-10-27): la frase dello studente con TUTTI
+    // gli errori corretti, anche i minori che "correction" lascia passare. Non si
+    // mostra; nei dialetti non si chiede (lì il ripasso vuole testi corretti a mano).
+    const richiestaPulita = dialetto ? "" : ` In "clean" metti SEMPRE la frase dello studente con tutti gli errori corretti, anche quelli minori (identica se è già perfetta), in ${langName}.`;
+    const system = `Sei un amico madrelingua che chiacchiera con uno studente di ${langName} (livello base-intermedio) in una conversazione informale e naturale. Continua il dialogo con UNA sola battuta breve (una o due frasi), in ${langName}. Se la frase dello studente ha un errore importante, mettilo in "correction" (frase corretta in ${langName}) e "note" (spiegazione brevissima in ${linguaNota}); lascia "correction" e "note" vuoti ("") se non serve correggere nulla o l'errore è minore.${richiestaPulita}
+Rispondi con UN oggetto JSON, senza markdown: {"reply": string, "correction": string, "note": string${dialetto ? "" : ", \"clean\": string"}}`;
     const user = `Cronologia recente:
 ${storico}
 
@@ -11951,14 +12545,15 @@ Nuovo turno dello studente: "${testo}"
 Rispondi con il JSON.`;
     const raw = await callAI(system + istruzioniDialetto(lingua.codice, langName, vocabolario, "") + istruzioniMemoria(), user, aiSettings);
     const clean = raw.replace(/```json|```/g, "").replace(/\n/g, " ").trim();
-    const { reply, correction, note } = estraiRispostaConversazione(clean);
+    const { reply, correction, note, clean: pulitaIA, tollerante } = estraiRispostaConversazione(clean);
     setTurni(prev => {
       const next = [...prev];
       const idx = next.length - 1;
       if (idx >= 0 && next[idx].ruolo === "utente") {
-        next[idx] = { ...next[idx], correzione: correction || null, nota: note || null };
+        next[idx] = { ...next[idx], correzione: correction || null, nota: note || null, pulita: dialetto ? null : pulitaIA || null };
       }
-      if (reply) next.push({ ruolo: "ia", testo: reply });
+      // Battuta da risposta troncata: può essere monca, il Ripasso frasi la salta
+      if (reply) next.push({ ruolo: "ia", testo: reply, ...(tollerante ? { parziale: true } : {}) });
       return next;
     });
     if (reply) parla(reply, lingua.bcp47);
@@ -12096,7 +12691,8 @@ Rispondi con il JSON.`;
     origine: "Conversazione",
     testo: t.testo,
     cod: lingua?.codice,
-    onSalvato: nuovo => setTurni(prev => prev.map((x, k) => k === i ? { ...x, testo: nuovo } : x))
+    // Il segno dice al Ripasso frasi che la battuta dialettale l'ha controllata una persona
+    onSalvato: nuovo => setTurni(prev => prev.map((x, k) => k === i ? { ...x, testo: nuovo, corretta: true } : x))
   }), t.correzione && /*#__PURE__*/React.createElement("div", {
     className: "mt-2 pt-2 border-t border-pink-800 text-sm"
   }, /*#__PURE__*/React.createElement("p", {
@@ -12105,7 +12701,7 @@ Rispondi con il JSON.`;
     origine: "Conversazione",
     testo: t.correzione,
     cod: lingua?.codice,
-    onSalvato: nuovo => setTurni(prev => prev.map((x, k) => k === i ? { ...x, correzione: nuovo } : x))
+    onSalvato: nuovo => setTurni(prev => prev.map((x, k) => k === i ? { ...x, correzione: nuovo, correzioneCorretta: true } : x))
   }), t.nota && /*#__PURE__*/React.createElement("p", {
     className: "text-zinc-500 text-xs mt-1"
   }, t.nota)))))), dialetto && /*#__PURE__*/React.createElement("p", {
@@ -12228,7 +12824,8 @@ function estraiFeedbackFrase(clean) {
   const grammar = estraiCampoStringaJSON(clean, "grammar") || "";
   const example = estraiCampoStringaJSON(clean, "example") || "";
   if (correct !== null || correction || grammar || example) {
-    return { correct, correction, grammar, example };
+    // tollerante: campi da JSON rotto, forse monchi (il Ripasso frasi non ne prende la correzione)
+    return { correct, correction, grammar, example, tollerante: true };
   }
   return { correct: null, correction: "", grammar: clean.slice(0, 200), example: "" };
 }
@@ -14173,6 +14770,10 @@ function App() {
       setSchermata("sceltamultipla");
       return;
     }
+    if (mod === "ripassoFrasi") {
+      setSchermata("ripassoFrasi");
+      return;
+    }
     if (mod === "letturaGuidata") {
       setStoriaIniziale(null); // apertura da Home: nessuna storia preselezionata
       setCaricandoStorie(true);
@@ -14555,6 +15156,11 @@ function App() {
     }
   });
   }
+  if (schermata === "ripassoFrasi") return /*#__PURE__*/React.createElement(SchermataRipassoFrasi, {
+    lingue: lingue,
+    aiSettings: aiSettings,
+    onHome: () => setSchermata("home")
+  });
   if (schermata === "letturaGuidata") return /*#__PURE__*/React.createElement(SchermataLetturaGuidata, {
     lingue: lingue,
     setLingue: setLingue,
