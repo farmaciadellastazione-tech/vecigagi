@@ -29,7 +29,7 @@ vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx);
 vm.runInContext([
   tra('const tagliaInvio = ', '\n') + '\n' + tra('function rigaContributi(', '\n}') + '\n}',
   tra('// ── Sinonimi accettati', '\n// ── Archivio frasi da ripassare'),
-  'Object.assign(globalThis, { voceSinonimo, cartaConLingue, salvaSinonimo, sinonimiAccettati, eraGiustaDisponibile, promptSinonimo });',
+  'Object.assign(globalThis, { voceSinonimo, cartaConLingue, descriviConiugazione, salvaSinonimo, sinonimiAccettati, eraGiustaDisponibile, promptSinonimo });',
 ].join('\n'), ctx);
 const j = x => JSON.parse(JSON.stringify(x));
 
@@ -98,7 +98,24 @@ test('EraGiusta lavora sulla carta con da/a e passa la coniugazione all\'IA', ()
   const C = tra('function EraGiusta(', '\nfunction SpiegaAI(');
   assert.match(C, /carta: cartaProp,/);
   assert.match(C, /const carta = cartaConLingue\(cartaProp\);/);
-  assert.match(C, /coniugazione: carta\.tipo === "coniugazione" \? \{\s*verbo: carta\.verbKey,\s*tempo: carta\.tempoKey,\s*persona: carta\.persona\s*\} : null/);
+  assert.match(C, /const coniug = descriviConiugazione\(carta\);/);
+  assert.match(C, /coniugazione: coniug\s*\}\);/);
   // coniugazione fra due lingue straniere: l'italiano per il foglio da forme
   assert.match(C, /const italiano = soloVisibile\(carta\.entry\?\.it \|\| carta\.forme\?\.it \|\| ""\);/);
+  // al foglio Contributi con verbo, tempo e persona (code review)
+  assert.match(C, /const parolaFoglio = coniug \? `\$\{italiano\} \(\$\{coniug\.verbo\}, \$\{coniug\.tempo\}, \$\{coniug\.persona\}\)` : italiano;/);
+  assert.equal((C.match(/italiano: parolaFoglio,/g) || []).length, 2, 'accettato e segnalato');
+  assert.doesNotMatch(C, /parametriSinonimo\(\{\s*nomeLingua: lA\.nome,\s*italiano,/);
+});
+
+// Code review (2026-10-29): all'IA e al foglio i nomi leggibili, non le chiavi
+// interne (congiuntivoImperfetto), e la persona senza "(io/I/je...)".
+test('descriviConiugazione: nomi del verbo e del tempo da CONIUGAZIONI', () => {
+  ctx.CONIUGAZIONI = { essere: { nome: 'essere', tempi: { congiuntivoImperfetto: { nome: 'Congiuntivo imperfetto' } } } };
+  const d = ctx.descriviConiugazione({ tipo: 'coniugazione', verbKey: 'essere', tempoKey: 'congiuntivoImperfetto', persona: '1ª sing. (io/I/je)' });
+  assert.deepEqual(j(d), { verbo: 'essere', tempo: 'congiuntivo imperfetto', persona: '1ª sing.' });
+  // senza nome: la chiave
+  assert.equal(ctx.descriviConiugazione({ tipo: 'coniugazione', verbKey: 'x', tempoKey: 'futuro', persona: '2ª plur.' }).tempo, 'futuro');
+  assert.equal(ctx.descriviConiugazione({ da: 'it', a: 'en' }), null);
+  assert.equal(ctx.descriviConiugazione(null), null);
 });

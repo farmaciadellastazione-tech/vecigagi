@@ -5216,16 +5216,13 @@ function getOmofoni(parola, bcp47) {
 // Rimuove il soggetto iniziale dalla risposta dell'utente (per coniugazioni)
 // Es. "you loved" -> "loved", "ich liebe" -> "liebe", "j'aime" -> "aime"
 function rimuoviSoggetto(str, codLingua) {
-  // mn: i soggetti sono solo in SOGGETTI_DOMANDA (Dino, 2026-10-29: "tö tèi"
-  // per "tèi" dava errore nel vocabolario)
-  const tabella = SOGGETTI[codLingua] || (codLingua === "mn" ? SOGGETTI_DOMANDA.mn : null);
-  if (!tabella) return str;
+  if (!SOGGETTI[codLingua]) return str;
   const n = normalizza(str);
   // sp: "te"/"a"/"i" sono anche particelle obbligatorie e qui non si sa la
   // persona: il soggetto si toglie solo per persona (PRONOMI_PIENI_DIALETTO).
   if (codLingua === "sp") return n;
   // Prova tutti i soggetti di quella lingua
-  const soggetti = [...Object.values(tabella), ...(SOGGETTI_ALTRI[codLingua] || [])].map(s => normalizza(s));
+  const soggetti = [...Object.values(SOGGETTI[codLingua]), ...(SOGGETTI_ALTRI[codLingua] || [])].map(s => normalizza(s));
   for (const sogg of soggetti) {
     if (!sogg) continue;
     // "you loved" -> rimuove "you "
@@ -6091,22 +6088,39 @@ function togliPronomePienoDialetto(risposta, codLingua, persona) {
   const [primo, ...resto] = risposta.trim().split(/\s+/);
   return resto.length && ammessi.includes(normalizza(primo)) ? resto.join(" ") : risposta;
 }
+// Voci del vocabolario con il soggetto ("tu sei" → mn "tèi", Dino 2026-10-29:
+// "tö tèi" dava errore): la carta non ha persona, la si ricava dal soggetto
+// italiano. Senza soggetto (o col solo pronome) null: niente da togliere, così
+// "tö cà" per "casa" resta sbagliata.
+function personaDaSoggettoItaliano(it) {
+  const [primo, ...resto] = String(it || "").split(/[/|]/)[0].trim().split(/\s+/);
+  if (!resto.length) return null;
+  const p = normalizza(primo);
+  return Object.keys(SOGGETTI.it).find(k => SOGGETTI.it[k] === p) || null;
+}
+// Pronome pieno di quella persona tolto dalla risposta e (alternative in più)
+// da ogni forma prevista: "a partii" vale per "vautri a partii", "mö a partii" no.
+function confrontoSenzaPronome(atteso, risposta, codLingua, persona) {
+  const senza = String(atteso || "").split(SEPARATORI_ALTERNATIVE).map(a => togliPronomePienoDialetto(a.trim(), codLingua, persona));
+  return {
+    atteso: [atteso, ...senza].join("|"),
+    risposta: togliPronomePienoDialetto(risposta, codLingua, persona)
+  };
+}
 // Soggetti ammessi per persona (normalizzati), maschili, femminili e neutri.
 // Cortesia (usted/você/Lei/Sie) solo alla 3ª persona: è lì che concorda il verbo.
 // rimuoviSoggetto toglie qualunque soggetto della lingua senza guardare la
 // persona: soggettoPersonaSbagliata serve a bocciare dopo il giudizio le
 // coniugazioni scritte col soggetto di un'altra persona ("du kann" per "er").
-// mn (2026-10-29): rimuoviSoggetto toglie i suoi soggetti anche nelle
-// coniugazioni, qui si boccia quello di un'altra persona ("tö a sun").
 const SOGGETTI_PER_PERSONA = {
-  "1ª sing.": { it: ["io"], fr: ["je"], es: ["yo"], pt: ["eu"], en: ["i"], de: ["ich"], ia: ["io"], mn: ["mo"] },
-  "2ª sing.": { it: ["tu"], fr: ["tu"], es: ["tu"], pt: ["tu"], en: ["you"], de: ["du"], ia: ["tu"], mn: ["to"] },
-  "3ª sing.": { it: ["lui", "lei", "egli", "ella", "esso", "essa"], fr: ["il", "elle", "on"], es: ["el", "ella", "usted"], pt: ["ele", "ela", "voce"], en: ["he", "she", "it"], de: ["er", "sie", "es"], ia: ["ille", "illa", "il"], mn: ["lu", "glie"] },
-  "3ª sing. f.": { it: ["lei", "ella", "essa"], fr: ["elle"], es: ["ella"], pt: ["ela"], en: ["she"], de: ["sie"], ia: ["illa"], mn: ["glie"] },
-  "1ª plur.": { it: ["noi"], fr: ["nous", "on"], es: ["nosotros", "nosotras"], pt: ["nos"], en: ["we"], de: ["wir"], ia: ["nos"], mn: ["nui"] },
-  "2ª plur.": { it: ["voi"], fr: ["vous"], es: ["vosotros", "vosotras"], pt: ["vos"], en: ["you"], de: ["ihr"], ia: ["vos"], mn: ["vautri"] },
-  "3ª plur.": { it: ["loro", "essi", "esse"], fr: ["ils", "elles"], es: ["ellos", "ellas", "ustedes"], pt: ["eles", "elas", "voces"], en: ["they"], de: ["sie"], ia: ["illes", "illas"], mn: ["lu"] },
-  "3ª plur. f.": { it: ["loro", "esse"], fr: ["elles"], es: ["ellas"], pt: ["elas"], en: ["they"], de: ["sie"], ia: ["illas"], mn: ["lu"] }
+  "1ª sing.": { it: ["io"], fr: ["je"], es: ["yo"], pt: ["eu"], en: ["i"], de: ["ich"], ia: ["io"] },
+  "2ª sing.": { it: ["tu"], fr: ["tu"], es: ["tu"], pt: ["tu"], en: ["you"], de: ["du"], ia: ["tu"] },
+  "3ª sing.": { it: ["lui", "lei", "egli", "ella", "esso", "essa"], fr: ["il", "elle", "on"], es: ["el", "ella", "usted"], pt: ["ele", "ela", "voce"], en: ["he", "she", "it"], de: ["er", "sie", "es"], ia: ["ille", "illa", "il"] },
+  "3ª sing. f.": { it: ["lei", "ella", "essa"], fr: ["elle"], es: ["ella"], pt: ["ela"], en: ["she"], de: ["sie"], ia: ["illa"] },
+  "1ª plur.": { it: ["noi"], fr: ["nous", "on"], es: ["nosotros", "nosotras"], pt: ["nos"], en: ["we"], de: ["wir"], ia: ["nos"] },
+  "2ª plur.": { it: ["voi"], fr: ["vous"], es: ["vosotros", "vosotras"], pt: ["vos"], en: ["you"], de: ["ihr"], ia: ["vos"] },
+  "3ª plur.": { it: ["loro", "essi", "esse"], fr: ["ils", "elles"], es: ["ellos", "ellas", "ustedes"], pt: ["eles", "elas", "voces"], en: ["they"], de: ["sie"], ia: ["illes", "illas"] },
+  "3ª plur. f.": { it: ["loro", "esse"], fr: ["elles"], es: ["ellas"], pt: ["elas"], en: ["they"], de: ["sie"], ia: ["illas"] }
 };
 function soggettoPersonaSbagliata(risposta, codLingua, persona) {
   const p = persona ? persona.replace(/ \(.*\)/, "").trim() : "";
@@ -10081,6 +10095,9 @@ function EraGiusta({
   const atteso = carta.entry?.[carta.a] || "";
   // Coniugazione fra due lingue straniere: l'italiano è nelle forme di tutte le lingue
   const italiano = soloVisibile(carta.entry?.it || carta.forme?.it || "");
+  // Al foglio con verbo, tempo e persona: la sola forma ("sto") non basta a Dino
+  const coniug = descriviConiugazione(carta);
+  const parolaFoglio = coniug ? `${italiano} (${coniug.verbo}, ${coniug.tempo}, ${coniug.persona})` : italiano;
   const dialetto = DIALETTI_TTS_ITA.includes(lA.codice);
   const hasKey = iaConfigurata(aiSettings);
   if (!dialetto && !hasKey) return /*#__PURE__*/React.createElement("button", {
@@ -10102,18 +10119,14 @@ function EraGiusta({
         nomeA: lA.nome,
         atteso,
         risposta,
-        coniugazione: carta.tipo === "coniugazione" ? {
-          verbo: carta.verbKey,
-          tempo: carta.tempoKey,
-          persona: carta.persona
-        } : null
+        coniugazione: coniug
       });
       g = estraiGiudizioSinonimo(await callAI(p.system, p.user, aiSettings));
     } catch (e) {}
     if (n !== richiesta.current) return;
     if (g.accettabile === true) {
       salvaSinonimo(voceSinonimo(carta), risposta);
-      inviaAlFoglio(parametriSinonimo({ nomeLingua: lA.nome, italiano, atteso, sinonimo: risposta, accettato: true }));
+      inviaAlFoglio(parametriSinonimo({ nomeLingua: lA.nome, italiano: parolaFoglio, atteso, sinonimo: risposta, accettato: true }));
       onAccettata({
         key: carta.key,
         risposta
@@ -10126,7 +10139,7 @@ function EraGiusta({
   async function segnala() {
     const n = ++richiesta.current;
     setStato("loading");
-    const ok = await inviaAlFoglio(parametriSinonimo({ nomeLingua: lA.nome, italiano, atteso, sinonimo: risposta, accettato: false }));
+    const ok = await inviaAlFoglio(parametriSinonimo({ nomeLingua: lA.nome, italiano: parolaFoglio, atteso, sinonimo: risposta, accettato: false }));
     if (n !== richiesta.current) return;
     setStato(ok ? "inviato" : "invioFallito");
   }
@@ -10915,6 +10928,17 @@ function cartaConLingue(carta) {
     da: carta.lDA?.codice,
     a: carta.lA?.codice
   } : carta;
+}
+// Verbo, tempo e persona leggibili per l'IA e per il foglio Contributi (non
+// le chiavi interne come "congiuntivoImperfetto"); null fuori dalle coniugazioni.
+function descriviConiugazione(carta) {
+  if (carta?.tipo !== "coniugazione") return null;
+  const v = CONIUGAZIONI[carta.verbKey];
+  return {
+    verbo: v?.nome || carta.verbKey,
+    tempo: String(v?.tempi?.[carta.tempoKey]?.nome || carta.tempoKey || "").toLowerCase(),
+    persona: String(carta.persona || "").replace(/ \(.*\)/, "").trim()
+  };
 }
 function voceSinonimo(cartaProp) {
   const carta = cartaConLingue(cartaProp);
@@ -15565,6 +15589,16 @@ function App() {
       if (senzaPronome !== risposta) {
         rispostaConfronto = senzaPronome;
         ok = isCorretta(attesoConSinonimi, senzaPronome, lA?.bcp47, lA?.codice, carta.tipo === "coniugazione");
+      }
+    }
+    // Vocabolario manarolese con il soggetto ("tö tèi" per "tu sei"): pronome
+    // della persona del soggetto italiano, facoltativo in risposta e soluzione
+    if (!ok && carta.tipo !== "coniugazione" && lA?.codice === "mn") {
+      const persona = personaDaSoggettoItaliano(carta.entry?.it);
+      if (persona) {
+        const c = confrontoSenzaPronome(attesoConSinonimi, risposta, "mn", persona);
+        ok = isCorretta(c.atteso, c.risposta, lA.bcp47, "mn", carta.tipo === "coniugazione");
+        if (c.risposta !== risposta) rispostaConfronto = c.risposta;
       }
     }
     // Soggetto di un'altra persona ("du kann" per la 3ª sing.): sbagliata, anche
