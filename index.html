@@ -5216,13 +5216,16 @@ function getOmofoni(parola, bcp47) {
 // Rimuove il soggetto iniziale dalla risposta dell'utente (per coniugazioni)
 // Es. "you loved" -> "loved", "ich liebe" -> "liebe", "j'aime" -> "aime"
 function rimuoviSoggetto(str, codLingua) {
-  if (!SOGGETTI[codLingua]) return str;
+  // mn: i soggetti sono solo in SOGGETTI_DOMANDA (Dino, 2026-10-29: "tö tèi"
+  // per "tèi" dava errore nel vocabolario)
+  const tabella = SOGGETTI[codLingua] || (codLingua === "mn" ? SOGGETTI_DOMANDA.mn : null);
+  if (!tabella) return str;
   const n = normalizza(str);
   // sp: "te"/"a"/"i" sono anche particelle obbligatorie e qui non si sa la
   // persona: il soggetto si toglie solo per persona (PRONOMI_PIENI_DIALETTO).
   if (codLingua === "sp") return n;
   // Prova tutti i soggetti di quella lingua
-  const soggetti = [...Object.values(SOGGETTI[codLingua]), ...(SOGGETTI_ALTRI[codLingua] || [])].map(s => normalizza(s));
+  const soggetti = [...Object.values(tabella), ...(SOGGETTI_ALTRI[codLingua] || [])].map(s => normalizza(s));
   for (const sogg of soggetti) {
     if (!sogg) continue;
     // "you loved" -> rimuove "you "
@@ -6093,15 +6096,17 @@ function togliPronomePienoDialetto(risposta, codLingua, persona) {
 // rimuoviSoggetto toglie qualunque soggetto della lingua senza guardare la
 // persona: soggettoPersonaSbagliata serve a bocciare dopo il giudizio le
 // coniugazioni scritte col soggetto di un'altra persona ("du kann" per "er").
+// mn (2026-10-29): rimuoviSoggetto toglie i suoi soggetti anche nelle
+// coniugazioni, qui si boccia quello di un'altra persona ("tö a sun").
 const SOGGETTI_PER_PERSONA = {
-  "1ª sing.": { it: ["io"], fr: ["je"], es: ["yo"], pt: ["eu"], en: ["i"], de: ["ich"], ia: ["io"] },
-  "2ª sing.": { it: ["tu"], fr: ["tu"], es: ["tu"], pt: ["tu"], en: ["you"], de: ["du"], ia: ["tu"] },
-  "3ª sing.": { it: ["lui", "lei", "egli", "ella", "esso", "essa"], fr: ["il", "elle", "on"], es: ["el", "ella", "usted"], pt: ["ele", "ela", "voce"], en: ["he", "she", "it"], de: ["er", "sie", "es"], ia: ["ille", "illa", "il"] },
-  "3ª sing. f.": { it: ["lei", "ella", "essa"], fr: ["elle"], es: ["ella"], pt: ["ela"], en: ["she"], de: ["sie"], ia: ["illa"] },
-  "1ª plur.": { it: ["noi"], fr: ["nous", "on"], es: ["nosotros", "nosotras"], pt: ["nos"], en: ["we"], de: ["wir"], ia: ["nos"] },
-  "2ª plur.": { it: ["voi"], fr: ["vous"], es: ["vosotros", "vosotras"], pt: ["vos"], en: ["you"], de: ["ihr"], ia: ["vos"] },
-  "3ª plur.": { it: ["loro", "essi", "esse"], fr: ["ils", "elles"], es: ["ellos", "ellas", "ustedes"], pt: ["eles", "elas", "voces"], en: ["they"], de: ["sie"], ia: ["illes", "illas"] },
-  "3ª plur. f.": { it: ["loro", "esse"], fr: ["elles"], es: ["ellas"], pt: ["elas"], en: ["they"], de: ["sie"], ia: ["illas"] }
+  "1ª sing.": { it: ["io"], fr: ["je"], es: ["yo"], pt: ["eu"], en: ["i"], de: ["ich"], ia: ["io"], mn: ["mo"] },
+  "2ª sing.": { it: ["tu"], fr: ["tu"], es: ["tu"], pt: ["tu"], en: ["you"], de: ["du"], ia: ["tu"], mn: ["to"] },
+  "3ª sing.": { it: ["lui", "lei", "egli", "ella", "esso", "essa"], fr: ["il", "elle", "on"], es: ["el", "ella", "usted"], pt: ["ele", "ela", "voce"], en: ["he", "she", "it"], de: ["er", "sie", "es"], ia: ["ille", "illa", "il"], mn: ["lu", "glie"] },
+  "3ª sing. f.": { it: ["lei", "ella", "essa"], fr: ["elle"], es: ["ella"], pt: ["ela"], en: ["she"], de: ["sie"], ia: ["illa"], mn: ["glie"] },
+  "1ª plur.": { it: ["noi"], fr: ["nous", "on"], es: ["nosotros", "nosotras"], pt: ["nos"], en: ["we"], de: ["wir"], ia: ["nos"], mn: ["nui"] },
+  "2ª plur.": { it: ["voi"], fr: ["vous"], es: ["vosotros", "vosotras"], pt: ["vos"], en: ["you"], de: ["ihr"], ia: ["vos"], mn: ["vautri"] },
+  "3ª plur.": { it: ["loro", "essi", "esse"], fr: ["ils", "elles"], es: ["ellos", "ellas", "ustedes"], pt: ["eles", "elas", "voces"], en: ["they"], de: ["sie"], ia: ["illes", "illas"], mn: ["lu"] },
+  "3ª plur. f.": { it: ["loro", "esse"], fr: ["elles"], es: ["ellas"], pt: ["elas"], en: ["they"], de: ["sie"], ia: ["illas"], mn: ["lu"] }
 };
 function soggettoPersonaSbagliata(risposta, codLingua, persona) {
   const p = persona ? persona.replace(/ \(.*\)/, "").trim() : "";
