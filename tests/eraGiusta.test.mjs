@@ -29,7 +29,9 @@ const CARTA = { key: 'k', da: 'it', a: 'en', entry: { it: 'bello', en: 'beautifu
 test('disponibile solo in Quiz, Allenamento e Risposta vocale, sulle traduzioni', () => {
   for (const m of ['quiz', 'allenamento', 'voce']) assert.equal(ctx.eraGiustaDisponibile(CARTA, m, 'pretty'), true, m);
   for (const m of ['nonstop', 'dettato', 'ascolto', 'pronuncia', 'sceltamultipla']) assert.equal(ctx.eraGiustaDisponibile(CARTA, m, 'pretty'), false, m);
-  assert.equal(ctx.eraGiustaDisponibile({ ...CARTA, tipo: 'coniugazione' }, 'quiz', 'pretty'), false);
+  // Coniugazioni: prima escluse, dal 2026-10-29 sì (richiesta di Dino, vedi
+  // sinonimiConiugazioni.test.mjs)
+  assert.equal(ctx.eraGiustaDisponibile({ ...CARTA, tipo: 'coniugazione' }, 'quiz', 'pretty'), true);
   assert.equal(ctx.eraGiustaDisponibile({ ...CARTA, tipo: 'dettato' }, 'allenamento', 'pretty'), false);
   assert.equal(ctx.eraGiustaDisponibile(CARTA, 'quiz', '—'), false); // "Non lo so"
   assert.equal(ctx.eraGiustaDisponibile(CARTA, 'quiz', 'una frase lunghissima che non è certo un sinonimo di niente'), false);
