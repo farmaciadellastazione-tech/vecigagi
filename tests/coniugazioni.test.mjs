@@ -37,7 +37,9 @@ function estraiConiugazioni(src) {
 const PRONOMI = {
   it: ['io', 'tu', 'lui', 'lei', 'egli', 'ella', 'noi', 'voi', 'loro', 'essi', 'esse'],
   fr: ['je', 'tu', 'il', 'elle', 'on', 'nous', 'vous', 'ils', 'elles'],
-  es: ['yo', 'tú', 'él', 'ella', 'nosotros', 'nosotras', 'vosotros', 'vosotras', 'ellos', 'ellas', 'as', 'os'],
+  // senza "os" (2026-10-29, con l'ok di Dino): è il riflessivo di vosotros,
+  // non un soggetto ("os quedáis" in CONIUGAZIONI.stare)
+  es: ['yo', 'tú', 'él', 'ella', 'nosotros', 'nosotras', 'vosotros', 'vosotras', 'ellos', 'ellas', 'as'],
   pt: ['eu', 'tu', 'ele', 'ela', 'nós', 'vós', 'eles', 'elas'],
   en: ['i', 'you', 'he', 'she', 'it', 'we', 'they'],
   de: ['ich', 'du', 'er', 'sie', 'es', 'wir', 'ihr'],

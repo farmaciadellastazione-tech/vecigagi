@@ -96,7 +96,8 @@ test('archivio rovinato o localStorage bloccato: nessun errore, nessun sinonimo'
 
 test('verificaRisposta: sinonimi tra le risposte previste, solo nelle modalità giuste', () => {
   const V = tra('function verificaRisposta(', '\n  function salta(');
-  assert.match(V, /if \(carta\.tipo !== "coniugazione" && carta\.tipo !== "dettato" && MODALITA_ERA_GIUSTA\.includes\(modoCarta\)\) \{\s*const sin = sinonimiAccettati\(voceSinonimo\(carta\)\);\s*if \(sin\.length\) attesoConSinonimi = \[attesoConfronto, \.\.\.sin\]\.join\("\|"\);\s*\}/);
+  // dal 2026-10-29 anche le coniugazioni (sinonimiConiugazioni.test.mjs)
+  assert.match(V, /if \(carta\.tipo !== "dettato" && MODALITA_ERA_GIUSTA\.includes\(modoCarta\)\) \{\s*const sin = sinonimiAccettati\(voceSinonimo\(carta\)\);\s*if \(sin\.length\) attesoConSinonimi = \[attesoConfronto, \.\.\.sin\]\.join\("\|"\);\s*\}/);
   // prima di isCorretta: passano dallo stesso confronto delle forme del vocabolario
   assert.ok(V.indexOf('sinonimiAccettati(') < V.indexOf('let ok = isCorretta('));
   assert.match(V, /let ok = isCorretta\(attesoConSinonimi, risposta,/);
