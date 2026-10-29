@@ -2318,6 +2318,14 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"animali", livello:"A1", it:"mosca", en:"fly", fr:"mouche", es:"mosca", de:"Fliege", pt:"mosca" },
+      { tema:"valute", livello:"B2", it:"fregatura", en:"rip off", fr:"arnaque", es:"estafa", de:"Abzocke", pt:"golpe" },
+      { tema:"aggettivi", livello:"B1", it:"estremamente", en:"extremely", fr:"extrêmement", es:"extremadamente", de:"extrem", pt:"extremamente" },
+      { tema:"aggettivi", livello:"B1", it:"estremo", en:"extreme", fr:"extrême", es:"extremo", de:"extrem", pt:"extremo" },
+      { tema:"emotivi", livello:"A2", it:"affetto", en:"affection, fondness", fr:"affection", es:"afecto, cariño", de:"Zuneigung", pt:"afeto, carinho" },
+      { tema:"casa", livello:"A2", it:"armadio a muro", en:"built-in wardrobe", fr:"placard", de:"Einbauschrank", pt:"armário embutido" },
+      { tema:"aggettivi", livello:"A1", it:"stesso", en:"same", fr:"même", de:"gleich", pt:"mesmo" },
+      { tema:"aggettivi", livello:"A1", it:"sinistra", en:"left", fr:"gauche", de:"links", pt:"esquerda" },
       { tema:"aggettivi", livello:"A2", it:"divertente", en:"funny", de:"lustig" },
       { tema:"verbi", livello:"B1", it:"concordare", en:"to agree", fr:"concorder", es:"concordar", de:"übereinstimmen", pt:"concordar" },
       { tema:"natura", livello:"B1", it:"sementi", en:"seeds", fr:"graines", es:"semillas", de:"Samen", pt:"sementes" },
@@ -2326,7 +2334,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A2", it:"pozzanghera", en:"puddle", fr:"flaque d'eau", es:"charco", de:"Pfütze", pt:"poça" },
       { tema:"emotivi", livello:"A1", it:"gioia", en:"joy, happiness", fr:"joie", es:"alegría", de:"Freude", pt:"alegria" },
       { tema:"natura", livello:"B1", it:"germogliare", en:"to sprout, to bud, to germinate", fr:"germer, bourgeonner", es:"brotar, germinar", de:"keimen, sprießen", pt:"brotar, germinar", cr:"sboc'ar", ge:"brottâ" },
-      { tema:"verbi", livello:"A1", it:"saltare", en:"to jump, to skip", fr:"sauter", es:"saltar", de:"springen", pt:"saltar" },
+      { tema:"verbi", livello:"A1", it:"saltare", en:"to jump, to skip", fr:"sauter", es:"saltar| brincar", de:"springen", pt:"saltar" },
       { tema:"scuola", livello:"B1", it:"ripassare", en:"to review, to revise", fr:"réviser, revoir", es:"repasar, revisar", de:"wiederholen, durchgehen", pt:"revisar, repassar" },
       { tema:"luoghi", livello:"A2", it:"presso", en:"at, near, by", fr:"chez, près de, à", es:"en, cerca de, junto a", de:"bei, in der Nähe von, an", pt:"em, perto de, junto a" },
       { tema:"astratti", livello:"B2", it:"superstizione", en:"superstition", fr:"superstition", es:"superstición", de:"Aberglaube", pt:"superstição" },
@@ -2368,7 +2376,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"persone", livello:"A1", it:"chi", en:"who", es:"quién" },
       { tema:"verbi", livello:"A1", it:"usare", en:"to use", fr:"utiliser", es:"usar" },
       { tema:"tempo", livello:"A1", it:"pomeriggio", en:"afternoon", sp:"dopodisnà", ge:"poidisnâ, doppodisnâ" },
-      { tema:"corpo", livello:"A1", it:"destra", en:"right", sp:"drita", verif:"sp:g" },
+      { tema:"istruzioni", livello:"A1ÇÇÇÇç", it:"destra", en:"right", fr:"droite", de:"rechts", pt:"direita", sp:"drita", verif:"sp:g" },
       { tema:"natura", livello:"A2", it:"valle", en:"valley", ge:"vallâ" },
       { tema:"astratti", livello:"A1", it:"azione", en:"action", fr:"action", es:"acción", de:"Aktion", pt:"ação", ge:"açion" },
       { tema:"emotivi", livello:"B1", it:"tormento", en:"torment", ge:"tormento" },
@@ -2719,7 +2727,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"calmo", en:"calm", fr:"calme", es:"calmo", de:"ruhig", pt:"calmo", ru:"спокойный", ca:"tranquil", sp:"carmo", mn:"carmu", cr:"calm", ge:"carmo", verif:"mn:g" },
       { tema:"natura", livello:"A1", it:"calore", en:"heat", sp:"calóe", mn:"caùu/cauu", cr:"calor", ge:"calô, cado", verif:"sp:g,mn:g" },
       { tema:"verbi", livello:"B1", it:"calpestare", en:"to trample", sp:"scafolaà'e, scaossigaà'e, baligiae/scafolae, scaossigae, baligiae", mn:"savata'a/savataa", cr:"z'anpicar, pstar, badicar", ge:"calpesta", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g" },
-      { tema:"vestiti", livello:"A1", it:"calza", en:"sock", sp:"cà'ossa/càossa", mn:"kahussa/càusa", cr:"calza", ge:"cäsetta", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g,cr:g" },
+      { tema:"vestiti", livello:"A1", it:"calza", en:"sock", fr:"chaussette", es:"calcetín", de:"Socke", pt:"meia", sp:"cà'ossa/càossa", mn:"kahussa/càusa", cr:"calza", ge:"cäsetta", src:{"sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"sp:g,ge:g,mn:g,cr:g" },
       { tema:"verbi", livello:"B1", it:"camallare|sfacchinare|portare in spalla", en:"to haul", fr:"traîner", es:"acarrear", de:"schleppen", pt:"carregar", ru:"тащить", ca:"arrossegar", sp:"camalà e/camalae", mn:"camalaa", cr:"camalar", ge:"camallâ", ko:"끌다", ar:"سحب", zh:"拖", ja:"担ぐ", ia:"traher", la:"trahere", grc:"ἑλκύω", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g", ro:"a trage" },
       { tema:"verbi", livello:"B1", it:"cambiare", en:"change", fr:"changer", es:"cambiar", de:"ändern", pt:"mudar", ru:"менять", ca:"canviar", sp:"cangiae /cangiae", mn:"cangiaa/cangiaa", cr:"canbiar", ge:"cangiâ", ko:"바꾸다", ar:"يغير", zh:"改变", ja:"変える", ia:"cambiar", la:"mutare", grc:"ἀλλάσσειν", verif:"mn:g,sp:g" },
       { tema:"verbi", livello:"B1", it:"cambiare piani", en:"change plans", fr:"changer de plans", es:"cambiar planes", de:"Pläne ändern", pt:"mudar planos", sp:"cangiae piani", cr:"canbiar pian", ge:"cangiâ cen", verif:"sp:g", nt:["mn"] },
@@ -3384,7 +3392,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"animali", livello:"B1", it:"muggine", en:"mullet", fr:"mulet", es:"mújol", de:"Meeräsche", pt:"tainha", sp:"müzeno", mn:"muzén/müzen", ge:"muzao", verif:"mn:g" },
       { tema:"luoghi", livello:"A2", it:"mulino", en:"mill", sp:"moìn", cr:"mulin", verif:"sp:g" },
       { tema:"animali", livello:"A2", it:"mulo", en:"mule", sp:"müo", mn:"müa", cr:"mul", ge:"mû", verif:"sp:g,mn:g" },
-      { tema:"verbi", livello:"A2", it:"muovere", en:"move", sp:"mève,smève", mn:"smeve/zmévé", cr:"movr", ge:"mesciâ", verif:"mn:g" },
+      { tema:"verbi", livello:"A2", it:"muovere", en:"move", fr:"bouger", es:"mover", de:"bewegen", pt:"mover", sp:"mève,smève", mn:"smeve/zmévé", cr:"movr", ge:"mesciâ", verif:"mn:g" },
       { tema:"mestieri", livello:"A2", it:"muratore", en:"bricklayer", sp:"müadohe, massacàn/müadoe, massacàn", mn:"müaduu |massacàn/müaduu |massacàn", cr:"murator", verif:"mn:g" },
       { tema:"natura", livello:"A2", it:"muschio", en:"moss", es:"musgo", sp:"erbìn", mn:"èrbìn", ge:"pan de bòsco", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"corpo", livello:"B1", it:"muscolo", en:"muscle", fr:"muscle", es:"músculo", de:"Muskel", pt:"músculo|musculo", ca:"múscul", sp:"muscolo, muscoo", cr:"muscl", ge:"moscolo", ko:"근육", ar:"عضلة", zh:"肌肉", ja:"筋肉", ia:"musculo", la:"musculus", grc:"μῦς", verif:"sp:g" },
@@ -3548,7 +3556,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"corpo", livello:"A1", it:"piede", en:"foot", fr:"pied", es:"pie", de:"Fuß", pt:"pé|pe", ru:"нога (ступня)", ca:"peu", sp:"pé", mn:"pié", cr:"pè", ge:"pehe/pê", ko:"발", ar:"قدم", zh:"脚", ja:"足", ia:"pede", la:"pes", grc:"ποῦς", src:{"mn":"🤖 IA","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"verbi", livello:"A2", it:"piegare", en:"bend", fr:"plier", es:"doblar", de:"biegen", pt:"dobrar", ru:"сгибать", ca:"plegar|doblegar", sp:"chinae", mn:"chinaa", cr:"piegar", ge:"cegâ, doggiâ, chinâ", verif:"mn:g,sp:g" },
       { tema:"aggettivi", livello:"A2", it:"pieno", en:"full", ru:"полный", ca:"ple", sp:"cén", mn:"cen/cén", cr:"pien", verif:"mn:g" },
-      { tema:"aggettivi", livello:"A2", it:"pigro", en:"lazy", sp:"pégio", cr:"picagion", verif:"sp:g" },
+      { tema:"aggettivi", livello:"A2", it:"pigro", en:"lazy", fr:"paresseux", es:"perezoso", de:"faul", pt:"preguiçoso", sp:"pégio", cr:"picagion", verif:"sp:g" },
       { tema:"insulti", livello:"B1", it:"scansafatiche", en:"lazybones", sp:"schenadrita", cr:"ganç da nient", verif:"sp:g" },
       { tema:"mestieri", livello:"A2", it:"pilota", en:"pilot", fr:"pilote", es:"piloto", de:"Pilot", pt:"piloto", ru:"пилот", ca:"pilot", sp:"pilota", cr:"pilot", ge:"pilòtto", ko:"조종사", ar:"طيار", zh:"飞行员", ja:"パイロット", ia:"pilota", la:"gubernator", grc:"κυβερνήτης" },
       { tema:"natura", livello:"A1", it:"pioggia", en:"rain", fr:"pluie", es:"lluvia", de:"Regen", pt:"chuva", ru:"дождь", ca:"pluja", sp:"aigua/àigoa", mn:"aigua/àigua", cr:"piogia / aqua", ge:"eigua/ægua", ko:"비", ar:"مطر", zh:"雨", ja:"雨", ia:"pluvia", la:"pluvia", grc:"ὑετός", verif:"mn:g,ge:g,sp:g" },
@@ -4191,7 +4199,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 612;
+const VOC_VERSION = 613;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
