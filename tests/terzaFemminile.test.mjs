@@ -36,7 +36,7 @@ test('i verbi con il femminile ge nei dati hanno la riga 3ª sing. f. nel presen
   const attesi = {
     andare: ['va', 'a va'], potere: ['può', 'a peu'], volere: ['vuole', 'a veu|a eu'],
     stare: ['sta', 'a stà'], tirare: ['tira', 'a tia'], sapere: ['sa', 'a sa'],
-    dare: ['dà', 'a dà'], venire: ['viene', 'a vëgne|a ven'],
+    dare: ['dà', 'a dà'], venire: ['viene', 'a ven|a vëgne'],
   };
   for (const [v, [it, ge]] of Object.entries(attesi)) {
     const f = C[v].tempi.presente.forme.find(x => x.p === F);
