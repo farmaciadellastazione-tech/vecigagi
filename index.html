@@ -5257,6 +5257,9 @@ function isCorretta(atteso, dato, bcp47, codLingua, preciso = false) {
   if (!n) return false;
   // Split on / , ; and | to handle multiple synonyms (| = sinonimi nascosti)
   const rawOps = atteso.split(/[/,;|]/).map(s => s.trim()).filter(Boolean);
+  // Frase con la virgola ("Chi pè pè, chi ne pè va a pé", Dino 2026-11-01): vale
+  // anche intera. Le parti restano valide: la virgola può separare sinonimi veri.
+  rawOps.push(...atteso.split(/[/;|]/).map(s => s.trim()).filter(s => s.includes(",")));
   // Lettere facoltative attaccate alla parola (grc "ἴσασι(ν)"): vale anche la
   // forma CON la lettera; quella senza la dà già la rimozione delle parentesi.
   rawOps.push(...rawOps.filter(s => /[^\s(]\([^)\s]+\)/.test(s)).map(s => s.replace(/([^\s(])\(([^)\s]+)\)/g, "$1$2")));
