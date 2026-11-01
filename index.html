@@ -2318,6 +2318,14 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 // Formato: { it, pt, en, fr, es, de, ko, zh, ja, ar, sp, cr, tema, livello }
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
+      { tema:"casa", livello:"A2", it:"lavastoviglie", en:"dishwasher", fr:"lave-vaisselle", es:"lavavajillas", de:"Geschirrspüler, Spülmaschine", pt:"máquina de lavar louça", ca:"rentaplats", ro:"mașină de spălat vase" },
+      { tema:"natura", livello:"A2", it:"sentiero", en:"path, trail", fr:"sentier, chemin", es:"sendero, camino", de:"Pfad, Weg", pt:"trilha, caminho", ca:"sender, camí", ro:"potecă, cărare" },
+      { tema:"casa", livello:"A1", it:"padella", en:"frying pan", fr:"poêle", es:"sartén", de:"Pfanne", pt:"frigideira", ca:"paella", ro:"tigaie" },
+      { tema:"astratti", livello:"B1", it:"suggerimento", en:"suggestion", fr:"suggestion", es:"sugerencia", de:"Vorschlag", pt:"sugestão", ca:"suggeriment", ro:"sugestie" },
+      { tema:"aggettivi", livello:"A1", it:"semplice", en:"simple", fr:"simple", es:"simple", de:"einfach", pt:"simples", ca:"simple", ro:"simplu" },
+      { tema:"astratti", livello:"B1", it:"soluzione", en:"solution", fr:"solution", es:"solución", de:"Lösung", pt:"solução", ca:"solució", ro:"soluție" },
+      { tema:"verbi", livello:"A2", it:"funzionare", en:"to work", fr:"fonctionner", es:"funcionar", de:"funktionieren", pt:"funcionar", ca:"funcionar", ro:"a funcționa" },
+      { tema:"astratti", livello:"B1", it:"connessione", en:"connection", fr:"connexion", es:"conexión", de:"Verbindung", pt:"conexão", ca:"connexió", ro:"conexiune" },
       { tema:"verbi", livello:"A1", it:"tenere", en:"hold", fr:"tenir", es:"tener", de:"halten", pt:"segurar", ca:"tenir", sp:"tegnie", ro:"a ține" },
       { tema:"oggetti", livello:"A2", it:"gabbia", en:"cage", fr:"cage", es:"jaula", de:"Käfig", pt:"gaiola", ca:"gàbia", sp:"gàgia", ro:"cușcă" },
       { tema:"corpo", livello:"A1", it:"gomito", en:"elbow", fr:"coude", es:"codo", de:"Ellbogen", pt:"cotovelo", ca:"colze", sp:"gómedo", ro:"cot" },
@@ -2350,7 +2358,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A2", it:"pozzanghera", en:"puddle", fr:"flaque d'eau", es:"charco", de:"Pfütze", pt:"poça" },
       { tema:"emotivi", livello:"A1", it:"gioia", en:"joy, happiness", fr:"joie", es:"alegría", de:"Freude", pt:"alegria" },
       { tema:"natura", livello:"B1", it:"germogliare", en:"to sprout, to bud, to germinate", fr:"germer, bourgeonner", es:"brotar, germinar", de:"keimen, sprießen", pt:"brotar, germinar", cr:"sboc'ar", ge:"brottâ" },
-      { tema:"verbi", livello:"A1", it:"saltare", en:"to jump, to skip", fr:"sauter", es:"saltar| brincar", de:"springen", pt:"saltar" },
+      { tema:"verbi", livello:"A1", it:"saltare", en:"to jump, to skip", fr:"sauter", es:"saltar| brincar", de:"springen", pt:"saltar, pular" },
       { tema:"scuola", livello:"B1", it:"ripassare", en:"to review, to revise", fr:"réviser, revoir", es:"repasar, revisar", de:"wiederholen, durchgehen", pt:"revisar, repassar" },
       { tema:"luoghi", livello:"A2", it:"presso", en:"at, near, by", fr:"chez, près de, à", es:"en, cerca de, junto a", de:"bei, in der Nähe von, an", pt:"em, perto de, junto a" },
       { tema:"astratti", livello:"B2", it:"superstizione", en:"superstition", fr:"superstition", es:"superstición", de:"Aberglaube", pt:"superstição" },
@@ -2757,7 +2765,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A1", it:"campagna", en:"countryside", sp:"canpagna", cr:"canpagna", ge:"campagna", src:{"sp":"🔗 dialetti.html"}, verif:"sp:g,cr:g", nt:["mn"] },
       { tema:"oggetti", livello:"A2", it:"campana", en:"bell", fr:"cloche", es:"campana", de:"Glocke", pt:"sino", ru:"колокол", ca:"campana", sp:"canpana", mn:"campana", cr:"canpana", ge:"campaña", verif:"sp:g,mn:g" },
       { tema:"casa", livello:"A2", it:"campanello", en:"doorbell", fr:"sonnette", es:"timbre", de:"Türklingel", pt:"campainha", ru:"дверной звонок", ca:"timbre", sp:"canpanìn", mn:"campaneé/campanéé", cr:"canpaned", ge:"campanin, campanetta", verif:"sp:g,mn:g" },
-      { tema:"sport", livello:"A2", it:"campionato", en:"championship", fr:"championnat", es:"campeonato", de:"Meisterschaft", pt:"campeonato", cr:"canpionat", ko:"챔피언십", ar:"بطولة", zh:"锦标赛", ja:"チャンピオンシップ", ia:"campionato", nt:["sp","mn"] },
+      { tema:"sport", livello:"A2", it:"campionato", en:"championship", fr:"championnat", es:"campeonato", de:"Meisterschaft", pt:"campeonato", ca:"campionat", cr:"canpionat", ko:"챔피언십", ar:"بطولة", zh:"锦标赛", ja:"チャンピオンシップ", ia:"campionato", nt:["sp","mn"], ro:"campionat" },
       { tema:"natura", livello:"A1", it:"campo", en:"field", fr:"champ", es:"campo", de:"Feld", pt:"campo", sp:"canpo", mn:"cian|campu", cr:"canp", ge:"campo", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"natura", livello:"A2", it:"canale", en:"channel", sp:"canao", mn:"canàa/canàa", cr:"canal, btal, gora", ge:"canâ", verif:"sp:g,mn:g" },
       { tema:"animali", livello:"A1", it:"canarino", en:"canary", fr:"canari", es:"canario", de:"Kanarienvogel", pt:"canário", ru:"канарейка", ca:"canari", sp:"canaìn", mn:"canaìn", cr:"canarin", ge:"canäio", ia:"canario", la:"canarius", src:{"mn":"🤖 IA"}, verif:"mn:g,ge:g", ro:"canar" },
@@ -3994,7 +4002,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"trenta", en:"thirty", ru:"тридцать", sp:"trenta", mn:"trënta", ge:"trénta", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"numeri", livello:"A1", it:"trentatre|33", en:"thirty-three", sp:"trentatrei", mn:"trëntatree/trëntatrëë", ge:"tréntatrei", src:{"mn":"🤖 IA"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"A1", it:"triste", en:"sad", fr:"triste", es:"triste", de:"traurig", pt:"triste", ru:"грустный", ca:"trist", ko:"슬픈", ar:"حزين", zh:"悲伤", ja:"悲しい", ia:"triste", la:"tristis", grc:"λυπηρός" },
-      { tema:"grammatica", livello:"A1", it:"troppo", en:"too", mn:"tropu", verif:"mn:g" },
+      { tema:"grammatica", livello:"A1", it:"troppo", en:"too", fr:"trop", es:"demasiado", de:"zu", pt:"demasiado", ca:"massa", mn:"tropu", verif:"mn:g", ro:"prea" },
       { tema:"verbi", livello:"A2", it:"trovare", en:"find", fr:"trouver", es:"encontrar", de:"finden", pt:"encontrar", ru:"находить", ca:"trobar", ko:"발견하다", ar:"يجد", zh:"找到", ja:"見つける", ia:"trovar", la:"invenire", grc:"εὑρίσκειν" },
       { tema:"grammatica", livello:"A2", it:"tu eri", en:"you were", fr:"tu étais", es:"tú eras", de:"du warst", pt:"tu eras", mn:"të t'iei" },
       { tema:"grammatica", livello:"A1", it:"tu sei", en:"you are", fr:"tu es", es:"tú eres", de:"du bist", pt:"tu és", sp:"tèi", mn:"tèi", verif:"sp:g" },
@@ -4214,7 +4222,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 615;
+const VOC_VERSION = 616;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
