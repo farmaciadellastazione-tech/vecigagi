@@ -48,3 +48,7 @@ test('le altre persone non cambiano', () => {
   assert.strictEqual(forma('1ª sing.'), 'vëgno');
   assert.strictEqual(forma('2ª sing.'), 'ti vëgni');
 });
+
+test('solo la parola intera: una forma più lunga non cambia', () => {
+  assert.strictEqual(ctx.testoAudio('vëgnesse', '1ª sing.', 'ge'), 'mi vëgnesse');
+});

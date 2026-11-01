@@ -6211,7 +6211,7 @@ function testoAudio(forma, persona, codLingua) {
   // Solo la parte da leggere: pronuncia nei dialetti ("mi sun/mi son" → "mi
   // sun"), primo sinonimo altrove, mai le alternative nascoste dopo "|".
   const parole = PRONUNCIA_TTS_FORMA[codLingua] || {};
-  const parlato = Object.keys(parole).reduce((s, k) => s.split(k).join(parole[k]), formaTTS(forma) || "");
+  const parlato = String(formaTTS(forma) || "").split(/(\s+)/).map(w => parole[w] || w).join("");
   return formaConSoggetto(parlato, persona, codLingua, true);
 }
 const CONIUGAZIONI = {
