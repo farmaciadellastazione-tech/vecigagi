@@ -28,8 +28,8 @@ vm.runInContext([
 const forma = p => ctx.CONIUGAZIONI.venire.tempi.presente.forme.find(f => f.p === p).ge;
 
 test('audio della 3ª persona: gn unito, col soggetto', () => {
-  assert.strictEqual(ctx.testoAudio(forma('3ª sing.'), '3ª sing.', 'ge'), 'lê o vègne');
-  assert.strictEqual(ctx.testoAudio(forma('3ª sing. f.'), '3ª sing. f.', 'ge'), 'lê a vègne');
+  assert.strictEqual(ctx.testoAudio(forma('3ª sing.'), '3ª sing.', 'ge'), 'lê o vegne');
+  assert.strictEqual(ctx.testoAudio(forma('3ª sing. f.'), '3ª sing. f.', 'ge'), 'lê a vegne');
 });
 
 test('grafia mostrata: resta vëgne', () => {
