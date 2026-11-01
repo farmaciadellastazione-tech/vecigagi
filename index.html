@@ -6179,6 +6179,11 @@ const LINGUE_CON_SOGGETTO = new Set(["fr", "en", "de", "pt", "ia"]);
 const PRONUNCIA_TTS_SOGGETTO = {
   sp: { "lóo": "loho" }
 };
+// Pronunce TTS di una forma coniugata, SOLO per l'audio: grafia e risposte giuste
+// non cambiano. ge "vëgne": sul telefono la voce lo legge "veg-ne", staccato; "vegne" suona come "ti vëgni" (Dino 2026-11-01).
+const PRONUNCIA_TTS_FORMA = {
+  ge: { "vëgne": "vegne" }
+};
 // Forma coniugata con il soggetto davanti (domanda e audio). Non lo aggiunge
 // se la lingua non ha SOGGETTI, se la forma lo contiene già all'inizio (anche
 // dopo "che": ge "che mi amme") o se è un imperativo ("let's go", forme con
@@ -6205,7 +6210,9 @@ function formaConSoggetto(forma, persona, codLingua, perAudio = false) {
 function testoAudio(forma, persona, codLingua) {
   // Solo la parte da leggere: pronuncia nei dialetti ("mi sun/mi son" → "mi
   // sun"), primo sinonimo altrove, mai le alternative nascoste dopo "|".
-  return formaConSoggetto(formaTTS(forma), persona, codLingua, true);
+  const parole = PRONUNCIA_TTS_FORMA[codLingua] || {};
+  const parlato = String(formaTTS(forma) || "").split(/(\s+)/).map(w => parole[w] || w).join("");
+  return formaConSoggetto(parlato, persona, codLingua, true);
 }
 const CONIUGAZIONI = {
   amare: {
