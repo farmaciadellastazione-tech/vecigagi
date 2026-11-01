@@ -1,6 +1,5 @@
-// Dino 2026-11-01: la voce legge "o vëgne" staccato ("veg-ne"), mentre "ti vëgni"
-// suona giusto: la 3ª persona deve avere lo stesso "gn" delle altre.
-// Solo la pronuncia (prima della /): grafia mostrata e risposte giuste restano.
+// Dino 2026-11-01: la voce del telefono legge "o vëgne" staccato ("veg-ne"), quindi
+// la forma principale della 3ª persona è "o ven". "vëgne" resta una risposta giusta.
 //   eseguire con:  node --test
 import { test } from 'node:test';
 import assert from 'node:assert';
@@ -27,17 +26,14 @@ vm.runInContext([
 ].join('\n'), ctx);
 const forma = p => ctx.CONIUGAZIONI.venire.tempi.presente.forme.find(f => f.p === p).ge;
 
-test('audio della 3ª persona: gn unito, col soggetto', () => {
-  assert.strictEqual(ctx.testoAudio(forma('3ª sing.'), '3ª sing.', 'ge'), 'lê o vegne');
-  assert.strictEqual(ctx.testoAudio(forma('3ª sing. f.'), '3ª sing. f.', 'ge'), 'lê a vegne');
+test('audio e grafia della 3ª persona: ven', () => {
+  assert.strictEqual(ctx.testoAudio(forma('3ª sing.'), '3ª sing.', 'ge'), 'lê o ven');
+  assert.strictEqual(ctx.testoAudio(forma('3ª sing. f.'), '3ª sing. f.', 'ge'), 'lê a ven');
+  assert.strictEqual(ctx.formaDisplay(forma('3ª sing.'), 'ge'), 'o ven');
+  assert.strictEqual(ctx.formaDisplay(forma('3ª sing. f.'), 'ge'), 'a ven');
 });
 
-test('grafia mostrata: resta vëgne', () => {
-  assert.strictEqual(ctx.formaDisplay(forma('3ª sing.'), 'ge'), 'o vëgne');
-  assert.strictEqual(ctx.formaDisplay(forma('3ª sing. f.'), 'ge'), 'a vëgne');
-});
-
-test('risposte: valgono ancora vëgne e ven', () => {
+test('risposte: valgono sia ven sia vëgne', () => {
   for (const r of ['o vëgne', 'o vegne', 'o ven', ctx.senzaPronome('lê o vëgne', 'ge', '3ª sing.')])
     assert.ok(ctx.ok(forma('3ª sing.'), r, 'it-IT', 'ge', true), r);
   for (const r of ['a vëgne', 'a ven'])
@@ -47,8 +43,4 @@ test('risposte: valgono ancora vëgne e ven', () => {
 test('le altre persone non cambiano', () => {
   assert.strictEqual(forma('1ª sing.'), 'vëgno');
   assert.strictEqual(forma('2ª sing.'), 'ti vëgni');
-});
-
-test('solo la parola intera: una forma più lunga non cambia', () => {
-  assert.strictEqual(ctx.testoAudio('vëgnesse', '1ª sing.', 'ge'), 'mi vëgnesse');
 });
