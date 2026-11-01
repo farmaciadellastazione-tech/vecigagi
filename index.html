@@ -2319,7 +2319,7 @@ const BANDIERE = ["🇮🇹", "🇬🇧", "🇫🇷", "🇪🇸", "🇩🇪", "�
 const VOCABOLARIO_DEFAULT = [
       // ── VOCABOLARIO ──────────────────────────
       { tema:"verbi", livello:"A1", it:"tenere", en:"hold", fr:"tenir", es:"tener", de:"halten", pt:"segurar", ca:"tenir", sp:"tegnie", ro:"a ține" },
-      { tema:"oggetti", livello:"A1", it:"gabbia", en:"cage", fr:"cage", es:"jaula", de:"Käfig", pt:"gaiola", ca:"gàbia", sp:"gàgia", ro:"cușcă" },
+      { tema:"oggetti", livello:"A2", it:"gabbia", en:"cage", fr:"cage", es:"jaula", de:"Käfig", pt:"gaiola", ca:"gàbia", sp:"gàgia", ro:"cușcă" },
       { tema:"corpo", livello:"A1", it:"gomito", en:"elbow", fr:"coude", es:"codo", de:"Ellbogen", pt:"cotovelo", ca:"colze", sp:"gómedo", ro:"cot" },
       { tema:"cibo", livello:"A1", it:"nocciola", en:"hazelnut", es:"avellana", sp:"nissèa" },
       { tema:"aggettivi", livello:"A2", it:"curioso", en:"curious", es:"curioso", sp:"cüioso" },
@@ -2327,10 +2327,10 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"oggetti", livello:"A1", it:"filo", en:"thread, wire", es:"hilo, cable", sp:"fi" },
       { tema:"vestiti", livello:"A1", it:"mutande", en:"underwear", es:"ropa interior", sp:"miànde, müdánde" },
       { tema:"verbi", livello:"A1", it:"guardare", en:"to look, to watch", es:"mirar", sp:"miae| amiae" },
-      { tema:"verbi", livello:"A1", it:"rifare", en:"to redo, to remake", es:"rehacer", sp:"refae|arefae" },
+      { tema:"verbi", livello:"A2", it:"rifare", en:"to redo, to remake", es:"rehacer", sp:"refae|arefae" },
       { tema:"verbi", livello:"A1", it:"ripetere", en:"to repeat", es:"repetir", sp:"repète|arepète" },
       { tema:"emotivi", livello:"B1", it:"vantarsi", en:"to boast", sp:"vantasse|avantasse" },
-      { tema:"cibo", livello:"A1", it:"mandorla", en:"almond", sp:"amàndoa, màndoa" },
+      { tema:"cibo", livello:"A2", it:"mandorla", en:"almond", sp:"amàndoa, màndoa" },
       { tema:"emotivi", livello:"B1", it:"lamento", en:"lament", sp:"lamento|lastimo|alamento" },
       { tema:"animali", livello:"A2", it:"marmotta", en:"marmot" },
       { tema:"corpo", livello:"A1", it:"gola", en:"throat", sp:"go ah/góa" },
@@ -2392,7 +2392,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"persone", livello:"A1", it:"chi", en:"who", es:"quién" },
       { tema:"verbi", livello:"A1", it:"usare", en:"to use", fr:"utiliser", es:"usar" },
       { tema:"tempo", livello:"A1", it:"pomeriggio", en:"afternoon", sp:"dopodisnà", ge:"poidisnâ, doppodisnâ" },
-      { tema:"istruzioni", livello:"A1ÇÇÇÇç", it:"destra", en:"right", fr:"droite", de:"rechts", pt:"direita", sp:"drita", verif:"sp:g" },
+      { tema:"istruzioni", livello:"A1", it:"destra", en:"right", fr:"droite", de:"rechts", pt:"direita", sp:"drita", verif:"sp:g" },
       { tema:"natura", livello:"A2", it:"valle", en:"valley", ge:"vallâ" },
       { tema:"astratti", livello:"A1", it:"azione", en:"action", fr:"action", es:"acción", de:"Aktion", pt:"ação", ge:"açion" },
       { tema:"emotivi", livello:"B1", it:"tormento", en:"torment", ge:"tormento" },
@@ -4214,7 +4214,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 614;
+const VOC_VERSION = 615;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
@@ -5280,6 +5280,9 @@ function isCorretta(atteso, dato, bcp47, codLingua, preciso = false) {
   if (!n) return false;
   // Split on / , ; and | to handle multiple synonyms (| = sinonimi nascosti)
   const rawOps = atteso.split(/[/,;|]/).map(s => s.trim()).filter(Boolean);
+  // Frase con la virgola ("Chi pè pè, chi ne pè va a pé", Dino 2026-11-01): vale
+  // anche intera. Le parti restano valide: la virgola può separare sinonimi veri.
+  rawOps.push(...atteso.split(/[/;|]/).map(s => s.trim()).filter(s => s.includes(",")));
   // Lettere facoltative attaccate alla parola (grc "ἴσασι(ν)"): vale anche la
   // forma CON la lettera; quella senza la dà già la rimozione delle parentesi.
   rawOps.push(...rawOps.filter(s => /[^\s(]\([^)\s]+\)/.test(s)).map(s => s.replace(/([^\s(])\(([^)\s]+)\)/g, "$1$2")));
@@ -6156,6 +6159,16 @@ function soggettoPersonaSbagliata(risposta, codLingua, persona) {
   let primo = normalizza(parole[0]);
   if (codLingua === "fr" && primo === "j") primo = "je"; // "j'aime"
   return tutti.has(primo) && !ammessi.includes(primo);
+}
+// Carta femminile con la domanda in una lingua che non mostra il genere ("loro
+// hanno", "they have", "sie haben"): non si può sapere quale pronome serva, quindi
+// vale la persona maschile, che li ammette entrambi. Con "elles"/"lei" resta f.
+function personaVistaDallaDomanda(persona, codDomanda) {
+  const p = persona ? persona.replace(/ \(.*\)/, "").trim() : "";
+  if (!p.endsWith(" f.")) return persona;
+  const maschile = p.slice(0, -3);
+  const soggetto = k => SOGGETTI[codDomanda]?.[k] || SOGGETTI_DOMANDA[codDomanda]?.[k];
+  return !soggetto(p) || soggetto(p) === soggetto(maschile) ? maschile : persona;
 }
 // Lingue dove il soggetto è grammaticalmente necessario (o molto utile per audio)
 const LINGUE_CON_SOGGETTO = new Set(["fr", "en", "de", "pt", "ia"]);
@@ -15626,7 +15639,10 @@ function App() {
     }
     // Soggetto di un'altra persona ("du kann" per la 3ª sing.): sbagliata, anche
     // se isCorretta, togliendo qualunque soggetto, l'aveva accettata.
+    const okPrimaDelSoggetto = ok;
     if (ok && carta.tipo === "coniugazione" && soggettoPersonaSbagliata(risposta, lA?.codice, carta.persona)) ok = false;
+    // ...tranne il maschile, se la domanda non mostra il genere ("loro hanno" → "ils ont")
+    if (okPrimaDelSoggetto && !ok && !soggettoPersonaSbagliata(risposta, lA?.codice, personaVistaDallaDomanda(carta.persona, carta.lDA?.codice))) ok = true;
     // Giusta ma in un'altra lingua: si segnala e si riprova sulla stessa carta,
     // senza punti, statistiche né elenco delle sbagliate (Non-stop non finisce).
     // Pronuncia esclusa: il microfono ascolta solo nella lingua richiesta.
