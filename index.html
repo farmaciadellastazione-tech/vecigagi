@@ -6137,6 +6137,16 @@ function soggettoPersonaSbagliata(risposta, codLingua, persona) {
   if (codLingua === "fr" && primo === "j") primo = "je"; // "j'aime"
   return tutti.has(primo) && !ammessi.includes(primo);
 }
+// Carta femminile con la domanda in una lingua che non mostra il genere ("loro
+// hanno", "they have", "sie haben"): non si può sapere quale pronome serva, quindi
+// vale la persona maschile, che li ammette entrambi. Con "elles"/"lei" resta f.
+function personaVistaDallaDomanda(persona, codDomanda) {
+  const p = persona ? persona.replace(/ \(.*\)/, "").trim() : "";
+  if (!p.endsWith(" f.")) return persona;
+  const maschile = p.slice(0, -3);
+  const soggetto = k => SOGGETTI[codDomanda]?.[k] || SOGGETTI_DOMANDA[codDomanda]?.[k];
+  return !soggetto(p) || soggetto(p) === soggetto(maschile) ? maschile : persona;
+}
 // Lingue dove il soggetto è grammaticalmente necessario (o molto utile per audio)
 const LINGUE_CON_SOGGETTO = new Set(["fr", "en", "de", "pt", "ia"]);
 // Pronunce TTS di un soggetto (SOGGETTI) che differiscono dalla grafia corretta.
@@ -15606,7 +15616,10 @@ function App() {
     }
     // Soggetto di un'altra persona ("du kann" per la 3ª sing.): sbagliata, anche
     // se isCorretta, togliendo qualunque soggetto, l'aveva accettata.
+    const okPrimaDelSoggetto = ok;
     if (ok && carta.tipo === "coniugazione" && soggettoPersonaSbagliata(risposta, lA?.codice, carta.persona)) ok = false;
+    // ...tranne il maschile, se la domanda non mostra il genere ("loro hanno" → "ils ont")
+    if (okPrimaDelSoggetto && !ok && !soggettoPersonaSbagliata(risposta, lA?.codice, personaVistaDallaDomanda(carta.persona, carta.lDA?.codice))) ok = true;
     // Giusta ma in un'altra lingua: si segnala e si riprova sulla stessa carta,
     // senza punti, statistiche né elenco delle sbagliate (Non-stop non finisce).
     // Pronuncia esclusa: il microfono ascolta solo nella lingua richiesta.
