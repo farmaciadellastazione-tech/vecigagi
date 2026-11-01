@@ -1,4 +1,5 @@
-// Dino 2026-11-01: in genovese "o vëgne" si dice "veg-ne", non col "gn" italiano.
+// Dino 2026-11-01: la voce legge "o vëgne" staccato ("veg-ne"), mentre "ti vëgni"
+// suona giusto: la 3ª persona deve avere lo stesso "gn" delle altre.
 // Solo la pronuncia (prima della /): grafia mostrata e risposte giuste restano.
 //   eseguire con:  node --test
 import { test } from 'node:test';
@@ -26,9 +27,9 @@ vm.runInContext([
 ].join('\n'), ctx);
 const forma = p => ctx.CONIUGAZIONI.venire.tempi.presente.forme.find(f => f.p === p).ge;
 
-test('audio della 3ª persona: veg-ne, col soggetto', () => {
-  assert.strictEqual(ctx.testoAudio(forma('3ª sing.'), '3ª sing.', 'ge'), 'lê o veg-ne');
-  assert.strictEqual(ctx.testoAudio(forma('3ª sing. f.'), '3ª sing. f.', 'ge'), 'lê a veg-ne');
+test('audio della 3ª persona: gn unito, col soggetto', () => {
+  assert.strictEqual(ctx.testoAudio(forma('3ª sing.'), '3ª sing.', 'ge'), 'lê o vègne');
+  assert.strictEqual(ctx.testoAudio(forma('3ª sing. f.'), '3ª sing. f.', 'ge'), 'lê a vègne');
 });
 
 test('grafia mostrata: resta vëgne', () => {
