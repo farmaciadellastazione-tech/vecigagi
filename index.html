@@ -4549,6 +4549,12 @@ function oggi() {
   const d = new Date();
   return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
 }
+// true se il giorno `giorno` (mezzanotte) è il giorno prima di `g` (mezzanotte).
+// NON giorno === g - 86400000: il giorno del cambio d'ora dura 23 o 25 ore e la
+// serie di giorni consecutivi ripartiva da 1 (fine marzo e fine ottobre).
+function eIeri(giorno, g) {
+  return Math.round((g - giorno) / 86400000) === 1;
+}
 function getCoppia(stats, key) {
   return stats[key] || {
     livello: 0,
@@ -8310,7 +8316,7 @@ function Home({
       lastDay: 0
     };
     const g = oggi();
-    const attivo = str.lastDay === g || str.lastDay === g - 86400000;
+    const attivo = str.lastDay === g || eIeri(str.lastDay, g);
     if (!attivo && str.count === 0) return null;
     const emoji = str.count >= 30 ? "🔥" : str.count >= 7 ? "⚡" : str.count >= 3 ? "✨" : "📅";
     return /*#__PURE__*/React.createElement("div", {
@@ -15361,8 +15367,11 @@ function App() {
       lastDay: 0,
       count: 0
     });
-    const ieri = g - 86400000;
-    const nuovoStreak = s.lastDay === ieri ? {
+    // Giorni arrotondati, non "=== g - 86400000": col cambio d'ora il giorno
+    // dura 23 o 25 ore (stessa regola di eIeri, qui inline: i test eseguono
+    // aggiornaStreak da sola).
+    const ieri = Math.round((g - s.lastDay) / 86400000) === 1;
+    const nuovoStreak = ieri ? {
       lastDay: g,
       count: s.count + 1
     } : s.lastDay === g ? s : {
