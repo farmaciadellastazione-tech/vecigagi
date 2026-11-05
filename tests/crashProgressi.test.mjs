@@ -144,3 +144,31 @@ test('backup impossibile (memoria piena): il reset non cancella la progressione'
   assert.equal(localStorage.map.get('qml_v10_streak'), PROGRESSI.qml_v10_streak);
   assert.equal(localStorage.map.has('qml_v10_filtri'), false, 'il resto del reset avviene comunque');
 });
+
+// ── Dalla 3ª code review ──
+test('un backup mai ripristinato non viene sovrascritto da un azzeramento successivo: i dati si uniscono', () => {
+  const vecchio = JSON.stringify({ t: 1, dati: { qml_v10_stats: '{"a":{"livello":5},"b":{"livello":4}}' } });
+  const { ctx, localStorage } = makeCtx({ qml_v1_backup_progressi: vecchio, qml_v10_stats: '{"c":{"livello":1}}' });
+  vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx);
+  vm.runInContext(tra('function unisciStreak(', '\nfunction esportaProgressi('), ctx);
+  vm.runInContext('resetStorageRecovery();', ctx);
+  const bk = JSON.parse(localStorage.map.get('qml_v1_backup_progressi'));
+  assert.deepEqual(Object.keys(JSON.parse(bk.dati.qml_v10_stats)).sort(), ['a', 'b', 'c']);
+});
+
+test('un backup già ripristinato o chiuso si può sostituire', () => {
+  const vecchio = JSON.stringify({ t: 1, chiuso: 2, dati: { qml_v10_stats: '{"a":{"livello":5}}' } });
+  const { ctx, localStorage } = makeCtx({ qml_v1_backup_progressi: vecchio, qml_v10_stats: '{"c":{"livello":1}}' });
+  vm.runInContext('resetStorageRecovery();', ctx);
+  const bk = JSON.parse(localStorage.map.get('qml_v1_backup_progressi'));
+  assert.equal(bk.dati.qml_v10_stats, '{"c":{"livello":1}}');
+  assert.equal(bk.chiuso, undefined);
+});
+
+test('crash d\'avvio: il link (#storia/..., #glossario/...) viene tolto, così si riparte dalla Home', () => {
+  const { ctx } = makeCtx();
+  let tolto = null;
+  ctx.window = { location: { hash: '#storia/rotta', pathname: '/index.html', search: '' }, history: { replaceState: (a, b, url) => { tolto = url; } } };
+  crash(ctx, false);
+  assert.equal(tolto, '/index.html');
+});

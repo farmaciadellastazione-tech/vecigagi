@@ -76,3 +76,22 @@ test('Home mostra l\'avviso solo con un backup non chiuso; App ripristina e rica
   assert.match(app, /unisciBackupProgressi\(/);
   assert.match(app, /onRipristinaBackup: ripristinaBackup/);
 });
+
+// ── Dalla 3ª code review ──
+test('non si ripristinano preferenze/stato interno (possibili cause del crash) né voci stats rovinate', () => {
+  const r = unisci({}, {
+    qml_v10_stats: j({ a: { livello: 3 }, rotta: { livello: 'x' }, nulla: null }),
+    qml_v10_ndom: j({ quiz: 'boh' }), qml_v1_fase1_temi: j({ indice: -1 }), qml_v11_sm_global: j({ x: 1 }),
+  });
+  assert.deepEqual(JSON.parse(r.qml_v10_stats), { a: { livello: 3 } });
+  assert.equal(r.qml_v10_ndom, undefined);
+  assert.equal(r.qml_v1_fase1_temi, undefined);
+  assert.equal(r.qml_v11_sm_global, undefined);
+});
+
+test('dopo il ripristino il backup libera la memoria; l\'avviso ha un testo neutro', () => {
+  const app = tra('function ripristinaBackup()', '\n  function handleEsporta(');
+  assert.match(app, /dati: null/);
+  const home = tra('function Home({', '\nfunction ');
+  assert.doesNotMatch(home, /si \xE8 riavviata per un errore/);
+});

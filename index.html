@@ -103,6 +103,7 @@
     html.light .hover\:bg-zinc-800:hover { background-color:#e4e4e7 !important; }
     html.light .hover\:bg-zinc-700:hover { background-color:#d4d4d8 !important; }
     html.light .hover\:border-zinc-700:hover { border-color:#d4d4d8 !important; }
+    html.light .hover\:bg-sky-800:hover { background-color:#bae6fd !important; }
     /* Accent backgrounds: dark-950/900 -> light-50/100 */
     html.light .bg-yellow-950 { background-color:#fefce8 !important; }
     html.light .bg-yellow-900 { background-color:#fef9c3 !important; }
@@ -4456,11 +4457,21 @@ function resetStorageRecovery() {
   try {
     const st = localStorage.getItem(SK_STATS);
     if (st && st !== "{}" && st !== "null") {
-      const dati = {};
+      let dati = {};
       progressi.forEach(k => {
         const v = localStorage.getItem(k);
         if (v !== null) dati[k] = v;
       });
+      // Un backup mai ripristinato né chiuso non va perso: si unisce al nuovo
+      // (typeof: i test estraggono questa funzione da sola).
+      try {
+        const prec = JSON.parse(localStorage.getItem(SK_BACKUP_PROGRESSI));
+        if (prec && !prec.chiuso && prec.dati && typeof prec.dati === "object" && typeof unisciBackupProgressi === "function") dati = {
+          ...prec.dati,
+          ...dati,
+          ...unisciBackupProgressi(dati, prec.dati)
+        };
+      } catch (_) {}
       localStorage.setItem(SK_BACKUP_PROGRESSI, JSON.stringify({
         t: Date.now(),
         dati
@@ -4515,10 +4526,17 @@ function gestisciCrash(err, avviata = appAvviata, ora = Date.now()) {
     avviata,
     diFila
   });
-  if (!avviata) saveJSON(SK_CRASH_AVVIO, {
-    n: diFila,
-    t: ora
-  });
+  if (!avviata) {
+    saveJSON(SK_CRASH_AVVIO, {
+      n: diFila,
+      t: ora
+    });
+    // Crash d'avvio da un link (#storia/..., #glossario/...): senza togliere il
+    // link, la ricarica riaprirebbe la stessa schermata rotta. Si riparte dalla Home.
+    try {
+      if (window.location.hash) window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    } catch (_) {}
+  }
   if (diFila === 2) {
     resetStorageRecovery();
     return true;
@@ -4572,7 +4590,7 @@ function unisciBackupProgressi(att, bk) {
       ...oggetto(a)
     };
     Object.entries(oggetto(b)).forEach(([k, v]) => {
-      if (v && typeof v.livello !== "undefined" && (!m[k] || v.livello > (m[k].livello || 0))) m[k] = v;
+      if (v && typeof v === "object" && typeof v.livello === "number" && (!m[k] || v.livello > (m[k].livello || 0))) m[k] = v;
     });
     return m;
   });
@@ -4596,8 +4614,8 @@ function unisciBackupProgressi(att, bk) {
     });
     return m;
   }));
-  // Preferenze e stato interno: valgono quelle di prima dell'azzeramento.
-  [SK_NDOM, SK_FASE_TEMI, "qml_v11_sm_global"].forEach(k => ogni(k, (a, b) => b));
+  // NON si ripristinano SK_NDOM, SK_FASE_TEMI e lo stato della Scelta multipla:
+  // valgono poco e potrebbero essere proprio i dati che hanno causato il crash.
   return out;
 }
 function esportaProgressi(stats, vocabolario, lingue) {
@@ -8419,9 +8437,9 @@ function Home({
       className: "flex-1"
     }, /*#__PURE__*/React.createElement("p", {
       className: "font-bold text-sm"
-    }, "L'app si \xE8 riavviata per un errore", quando ? ` (${quando})` : ""), /*#__PURE__*/React.createElement("p", {
+    }, "Si \xE8 verificato un errore", quando ? ` (${quando})` : ""), /*#__PURE__*/React.createElement("p", {
       className: "text-xs opacity-70"
-    }, "I tuoi progressi sono stati salvati: puoi riportarli indietro")), /*#__PURE__*/React.createElement("button", {
+    }, "I tuoi progressi erano stati salvati: puoi riportarli indietro")), /*#__PURE__*/React.createElement("button", {
       onClick: onRipristinaBackup,
       className: "text-xs font-bold bg-sky-900 hover:bg-sky-800 px-2.5 py-1.5 rounded-lg transition"
     }, "Ripristina"), /*#__PURE__*/React.createElement("button", {
@@ -16151,9 +16169,11 @@ function App() {
       alert("⚠️ Ripristino non riuscito: la memoria del browser è piena o bloccata.");
       return;
     }
-    // Il backup resta salvato (segnato come usato), per sicurezza.
+    // Ripristinato: i dati del backup si liberano (occupano memoria del browser,
+    // e la quota piena farebbe fallire i salvataggi normali).
     chiudiBackup({
-      ripristinato: Date.now()
+      ripristinato: Date.now(),
+      dati: null
     });
     // Ricarica: App rilegge tutto dallo storage, senza sincronizzare a mano
     // ogni stato (stats, lingue, streak, record, vocabolario).
