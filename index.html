@@ -4498,6 +4498,34 @@ function resetStorageRecovery() {
 // L'errore viene sempre registrato in SK_ULTIMO_CRASH.
 const CRASH_SERIE_MS = 5 * 60000;
 let appAvviata = false;
+let componenteCrash = ""; // info.componentStack dell'ultimo crash (ErrorBoundary)
+// Invia a Google Analytics l'ultimo crash registrato, se non è ancora partito.
+// Non al momento del crash: la pagina si ricarica in 100 ms e l'evento andrebbe
+// perso (all'avvio gtag.js non è nemmeno caricato). Lo chiamano App al
+// montaggio e la schermata "non riesce ad avviarsi". Solo dati tecnici.
+// Parametri ≤ 100 caratteri (limite GA4).
+function inviaCrashInSospeso() {
+  const log = loadJSON(SK_ULTIMO_CRASH, null);
+  if (!log || log.inviato !== false) return;
+  try {
+    if (typeof window.gtag !== "function") return;
+    const corto = v => String(v == null ? "" : v).slice(0, 100);
+    window.gtag("event", "app_crash", {
+      messaggio: corto(log.msg),
+      componente: corto(log.componente || "?"),
+      link: corto(log.hash || "-"),
+      all_avvio: log.avviata ? "no" : "si",
+      di_fila: Number(log.diFila) || 0,
+      sito: corto(window.location.hostname)
+    });
+  } catch (_) {
+    return;
+  }
+  saveJSON(SK_ULTIMO_CRASH, {
+    ...log,
+    inviato: true
+  });
+}
 function segnaAvvioRiuscito() {
   if (appAvviata) return;
   appAvviata = true;
@@ -4513,13 +4541,19 @@ function gestisciCrash(err, avviata = appAvviata, ora = Date.now()) {
   try {
     hash = String(window.location.hash || "");
   } catch (_) {}
+  // Componente più interno in cui si è rotto (dal componentStack di React,
+  // impostato dall'ErrorBoundary): il dato più utile per trovare la causa.
+  const mc = /at\s+([A-Za-z_$][\w$]*)/.exec(componenteCrash || "");
+  componenteCrash = "";
   saveJSON(SK_ULTIMO_CRASH, {
     t: ora,
     msg: String(err && err.message || err).slice(0, 500),
     stack: String(err && err.stack || "").slice(0, 2000),
+    componente: mc ? mc[1] : "",
     hash,
     avviata,
-    diFila
+    diFila,
+    inviato: false // a Google Analytics, vedi inviaCrashInSospeso
   });
   if (!avviata) {
     saveJSON(SK_CRASH_AVVIO, {
@@ -15544,6 +15578,10 @@ function App() {
   useEffect(() => {
     saveJSON(SK_STATS, stats);
   }, [stats]);
+  // Crash della volta prima non ancora segnalato: ora gtag ha tempo di inviarlo.
+  useEffect(() => {
+    inviaCrashInSospeso();
+  }, []);
   // Primo tocco dell'utente = l'app funziona: da qui un crash è "dentro una
   // schermata" e non azzera più i dati (vedi gestisciCrash). Non al montaggio:
   // una schermata aperta da un link può crashare subito dopo.
@@ -16473,13 +16511,18 @@ class ErrorBoundary extends React.Component {
       crashed: true
     };
   }
-  componentDidCatch(err) {
+  componentDidCatch(err, info) {
     console.error("LinguaeQuiz crash:", err);
+    componenteCrash = String(info && info.componentStack || "");
     // Recovery a livelli (vedi gestisciCrash): la progressione si azzera solo
     // se l'app non riesce a partire più volte di fila, e comunque dopo un backup.
-    if (gestisciCrash(err)) setTimeout(() => window.location.reload(), 100);else this.setState({
-      bloccata: true
-    });
+    if (gestisciCrash(err)) setTimeout(() => window.location.reload(), 100);else {
+      // Bloccata: la pagina resta aperta, quindi l'evento fa in tempo a partire.
+      inviaCrashInSospeso();
+      this.setState({
+        bloccata: true
+      });
+    }
   }
   render() {
     if (this.state.bloccata) return /*#__PURE__*/React.createElement("div", {
