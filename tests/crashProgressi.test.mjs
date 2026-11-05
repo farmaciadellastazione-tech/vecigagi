@@ -1,12 +1,15 @@
 // Un crash React (ErrorBoundary) non deve più azzerare la progressione
 // (segnalazione di Dino, 2026-11-05: "ripartito da zero parole apprese").
 // Prima: qualunque crash → resetStorageRecovery() → via stats, streak, record.
-// Ora (rivisto dopo la code review):
-// - crash ad app già partita (dentro una schermata): nessun reset dei dati,
-//   solo i filtri; mai la progressione, per quanti crash ci siano;
-// - crash all'avvio: il 1° toglie filtri e versione vocabolario; dal 2° di fila
-//   reset completo con backup; dal 4° di fila niente più ricarica automatica.
-// - il backup non viene sovrascritto da dati vuoti (stats "{}" riscritte da App).
+// Ora (rivisto dopo due code review):
+// - "app avviata" = l'utente l'ha toccata (clic/tasto) dopo il caricamento:
+//   un crash prima di qualsiasi tocco è d'avvio, anche se viene da un link
+//   (#storia/..., #glossario/...) o da un effetto iniziale;
+// - crash dopo un tocco (dentro una schermata): solo i filtri, mai la progressione;
+// - crash d'avvio di fila (entro 5 minuti l'uno dall'altro): al 2° reset
+//   completo con backup, UNA volta sola; dal 4° niente più ricarica automatica;
+// - il backup non viene sovrascritto da dati vuoti; se non si riesce a
+//   scriverlo (memoria piena) la progressione non viene cancellata.
 //   eseguire con:  node --test
 import { test } from 'node:test';
 import assert from 'node:assert';
@@ -46,7 +49,8 @@ function makeCtx(extra = {}) {
   vm.runInContext(blocco, ctx);
   return { ctx, localStorage };
 }
-const crash = (ctx, avviata) => vm.runInContext(`gestisciCrash(new Error("boom"), ${avviata})`, ctx);
+let orologio = 1e12;
+const crash = (ctx, avviata, passo = 1000) => vm.runInContext(`gestisciCrash(new Error("boom"), ${avviata}, ${orologio += passo})`, ctx);
 
 test('crash dentro una schermata (app partita): la progressione resta, anche se ricapita subito', () => {
   const { ctx, localStorage } = makeCtx();
@@ -104,9 +108,39 @@ test('il crash viene registrato (data e messaggio) per capire la causa', () => {
   assert.match(log.msg, /boom nella schermata/);
 });
 
-test('ErrorBoundary usa gestisciCrash; App segna l\'avvio riuscito', () => {
+test('ErrorBoundary usa gestisciCrash; App segna l\'avvio riuscito al primo tocco, non al montaggio', () => {
   const eb = tra('class ErrorBoundary', '\nif (!window.__TEST_MODE__)');
   assert.match(eb, /gestisciCrash\(err\)/);
   assert.doesNotMatch(eb, /resetStorageRecovery\(\)/);
-  assert.match(tra('function App()', '\n// Error boundary'), /useEffect\(\(\) => \{\s*segnaAvvioRiuscito\(\);\s*\}, \[\]\);/);
+  const app = tra('function App()', '\n// Error boundary');
+  assert.match(app, /addEventListener\("pointerdown", segnaAvvioRiuscito/);
+  assert.match(app, /addEventListener\("keydown", segnaAvvioRiuscito/);
+  assert.doesNotMatch(app, /useEffect\(\(\) => \{\s*segnaAvvioRiuscito\(\);/);
+});
+
+test('il reset completo avviene una volta sola: al 3° crash d\'avvio non ricancella (né riscrive il backup)', () => {
+  const { ctx, localStorage } = makeCtx();
+  crash(ctx, false); crash(ctx, false);
+  const bk = localStorage.map.get('qml_v1_backup_progressi');
+  localStorage.setItem('qml_v10_stats', '{"it|nuova":{"livello":1}}'); // App ha riscritto qualcosa
+  crash(ctx, false);
+  assert.equal(localStorage.map.get('qml_v10_stats'), '{"it|nuova":{"livello":1}}');
+  assert.equal(localStorage.map.get('qml_v1_backup_progressi'), bk);
+});
+
+test('crash d\'avvio isolati (a giorni di distanza) non si sommano', () => {
+  const { ctx, localStorage } = makeCtx();
+  crash(ctx, false);
+  crash(ctx, false, 3 * 86400000);
+  assert.equal(localStorage.map.get('qml_v10_stats'), PROGRESSI.qml_v10_stats);
+});
+
+test('backup impossibile (memoria piena): il reset non cancella la progressione', () => {
+  const { ctx, localStorage } = makeCtx();
+  const set = localStorage.setItem;
+  localStorage.setItem = (k, v) => { if (k === 'qml_v1_backup_progressi') throw new Error('QuotaExceededError'); set(k, v); };
+  vm.runInContext('resetStorageRecovery();', ctx);
+  assert.equal(localStorage.map.get('qml_v10_stats'), PROGRESSI.qml_v10_stats);
+  assert.equal(localStorage.map.get('qml_v10_streak'), PROGRESSI.qml_v10_streak);
+  assert.equal(localStorage.map.has('qml_v10_filtri'), false, 'il resto del reset avviene comunque');
 });
