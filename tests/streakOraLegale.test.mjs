@@ -63,3 +63,12 @@ test('nessun confronto della serie con "- 86400000" esatto', () => {
   assert.doesNotMatch(HTML, /str\.lastDay === g - 86400000/);
   assert.doesNotMatch(HTML, /const ieri = g - 86400000/);
 });
+
+// Dalla code review: stesso errore in "rispetto a N giorni fa" (Statistiche)
+test('trovaSnapshotVicino: una settimana dopo il cambio d\'ora trova lo snapshot di 7 giorni fa, non di 8', () => {
+  const ctx = vm.createContext({ oggi: () => mezzanotte(2026, 4, 5) });
+  vm.runInContext(tra('function trovaSnapshotVicino(', '\nfunction contaScadute('), ctx);
+  const storico = [{ d: mezzanotte(2026, 3, 28), n: 10 }, { d: mezzanotte(2026, 3, 29), n: 20 }, { d: mezzanotte(2026, 3, 30), n: 30 }];
+  assert.equal(ctx.trovaSnapshotVicino(storico, 7).n, 20, 'il 29 marzo');
+  assert.equal(ctx.trovaSnapshotVicino(storico, 6).n, 30, 'il 30 marzo');
+});

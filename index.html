@@ -4663,7 +4663,10 @@ function contaParoleApprese(vocabolario, stats, lingue) {
 // lo storico non copre ancora quel periodo (utente nuovo o feature appena
 // introdotta).
 function trovaSnapshotVicino(storico, giorniFa) {
-  const target = oggi() - giorniFa * 86400000;
+  // + mezza giornata di margine: gli snapshot sono a mezzanotte locale e col
+  // cambio d'ora un giorno dura 23 o 25 ore (prima, per una settimana dopo il
+  // cambio, "7 giorni fa" prendeva lo snapshot di 8 giorni fa).
+  const target = oggi() - giorniFa * 86400000 + 43200000;
   const candidati = storico.filter(s => s.d <= target);
   if (candidati.length === 0) return null;
   return candidati.reduce((migliore, s) => s.d > migliore.d ? s : migliore, candidati[0]);
