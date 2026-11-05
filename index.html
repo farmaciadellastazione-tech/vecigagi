@@ -4439,18 +4439,28 @@ function saveJSON(key, val) {
 const SK_RESET_RECOVERY = [SK_VOC, SK_VOC_VER, SK_STATS, SK_LINGUE, SK_ZONA, SK_FILTRI, SK_RECORD, SK_RECORD_PERC, SK_STREAK, SK_NDOM, SK_FASE_TEMI, "qml_v11_sm_global" /* SK_SM, definita dentro SchermataSceltaMultipla */];
 // Progressione dell'utente: prima di ogni reset completo viene copiata in
 // SK_BACKUP_PROGRESSI ({t, dati: {chiave: testo grezzo}}), così non si perde
-// mai del tutto. Il backup si sovrascrive solo se c'è davvero qualcosa da salvare.
+// mai del tutto. Include SK_VOC: contiene solo le voci aggiunte/modificate
+// dall'utente (vedi vociCustom), dati scritti a mano e non ricostruibili.
+// Il backup si scrive solo se ci sono statistiche vere: dopo un reset App
+// riscrive subito stats "{}" e lingue di default, e un nuovo reset (loop che
+// il reset non risolve) sovrascriverebbe il backup buono con dati vuoti.
 const SK_BACKUP_PROGRESSI = "qml_v1_backup_progressi";
-const SK_ULTIMO_CRASH = "qml_v1_ultimo_crash"; // {t, msg, stack, hash, inLoop}: per capire quale schermata si è rotta
+const SK_ULTIMO_CRASH = "qml_v1_ultimo_crash"; // {t, msg, stack, hash, avviata, diFila}: per capire quale schermata si è rotta
+const SK_CRASH_AVVIO = "qml_v1_crash_avvio"; // n. di crash di fila prima che l'app sia partita (azzerato da segnaAvvioRiuscito)
 function resetStorageRecovery() {
   // Backup della progressione (dentro la funzione: i test la estraggono da sola)
   try {
+    let statsVere = false;
+    try {
+      const s = JSON.parse(localStorage.getItem(SK_STATS));
+      statsVere = !!s && typeof s === "object" && Object.keys(s).length > 0;
+    } catch (_) {}
     const dati = {};
-    [SK_STATS, SK_STREAK, SK_RECORD, SK_RECORD_PERC, SK_LINGUE, SK_NDOM, SK_FASE_TEMI, "qml_v11_sm_global"].forEach(k => {
+    [SK_STATS, SK_STREAK, SK_RECORD, SK_RECORD_PERC, SK_LINGUE, SK_NDOM, SK_FASE_TEMI, SK_VOC, "qml_v11_sm_global"].forEach(k => {
       const v = localStorage.getItem(k);
       if (v !== null) dati[k] = v;
     });
-    if (Object.keys(dati).length) localStorage.setItem(SK_BACKUP_PROGRESSI, JSON.stringify({
+    if (statsVere) localStorage.setItem(SK_BACKUP_PROGRESSI, JSON.stringify({
       t: Date.now(),
       dati
     }));
@@ -4462,16 +4472,24 @@ function resetStorageRecovery() {
   });
 }
 // Crash React (ErrorBoundary). Prima ogni crash chiamava resetStorageRecovery()
-// e azzerava tutta la progressione (segnalazione di Dino, 2026-11-05). Ora:
-// - primo crash: via solo vocabolario salvato e filtri (gli unici dati che
-//   possono impedire l'avvio), la progressione resta;
-// - nuovo crash entro CRASH_LOOP_MS (l'app ricrasha subito dopo il reload,
-//   cioè un loop all'avvio): reset completo, con backup della progressione.
+// e azzerava tutta la progressione (segnalazione di Dino, 2026-11-05). Ora il
+// criterio non è il tempo ma SE l'app era partita (primo useEffect di App):
+// - crash ad app partita (dentro una schermata): via solo i filtri, la
+//   progressione mai — anche se l'utente riapre subito la schermata rotta;
+// - crash all'avvio, contati di fila in SK_CRASH_AVVIO: al 1° via filtri e
+//   versione vocabolario; dal 2° reset completo (con backup); dal 4° si smette
+//   di ricaricare, per non girare all'infinito.
+// Ritorna true se l'ErrorBoundary deve ricaricare la pagina.
 // L'errore viene sempre registrato in SK_ULTIMO_CRASH.
-const CRASH_LOOP_MS = 15000;
-function gestisciCrash(err, ora = Date.now()) {
-  const prec = loadJSON(SK_ULTIMO_CRASH, null);
-  const inLoop = !!(prec && typeof prec.t === "number" && ora - prec.t >= 0 && ora - prec.t < CRASH_LOOP_MS);
+let appAvviata = false;
+function segnaAvvioRiuscito() {
+  appAvviata = true;
+  try {
+    localStorage.removeItem(SK_CRASH_AVVIO);
+  } catch (_) {}
+}
+function gestisciCrash(err, avviata = appAvviata, ora = Date.now()) {
+  const diFila = avviata ? 0 : (Number(loadJSON(SK_CRASH_AVVIO, 0)) || 0) + 1;
   let hash = "";
   try {
     hash = String(window.location.hash || "");
@@ -4481,17 +4499,20 @@ function gestisciCrash(err, ora = Date.now()) {
     msg: String(err && err.message || err).slice(0, 500),
     stack: String(err && err.stack || "").slice(0, 2000),
     hash,
-    inLoop
+    avviata,
+    diFila
   });
-  if (inLoop) {
+  if (!avviata) saveJSON(SK_CRASH_AVVIO, diFila);
+  if (diFila >= 2) {
     resetStorageRecovery();
-    return;
+    return diFila < 4;
   }
-  [SK_VOC, SK_VOC_VER, SK_FILTRI].forEach(k => {
+  (avviata ? [SK_FILTRI] : [SK_FILTRI, SK_VOC_VER]).forEach(k => {
     try {
       localStorage.removeItem(k);
     } catch (_) {}
   });
+  return true;
 }
 function esportaProgressi(stats, vocabolario, lingue) {
   const ai = loadJSON(SK_AI, null);
@@ -15388,6 +15409,11 @@ function App() {
   useEffect(() => {
     saveJSON(SK_STATS, stats);
   }, [stats]);
+  // App montata senza crash: da qui un crash è "dentro una schermata" e non
+  // azzera più i dati (vedi gestisciCrash).
+  useEffect(() => {
+    segnaAvvioRiuscito();
+  }, []);
   useEffect(() => {
     // Storico giornaliero delle parole apprese, per il confronto "rispetto a
     // N giorni fa" in Statistiche. Una sola voce per giorno (sovrascritta se
@@ -16254,12 +16280,37 @@ class ErrorBoundary extends React.Component {
   }
   componentDidCatch(err) {
     console.error("LinguaeQuiz crash:", err);
-    // Recovery a due livelli (vedi gestisciCrash): la progressione si azzera
-    // solo se l'app crasha in loop, e comunque dopo un backup.
-    gestisciCrash(err);
-    setTimeout(() => window.location.reload(), 100);
+    // Recovery a livelli (vedi gestisciCrash): la progressione si azzera solo
+    // se l'app non riesce a partire più volte di fila, e comunque dopo un backup.
+    if (gestisciCrash(err)) setTimeout(() => window.location.reload(), 100);else this.setState({
+      bloccata: true
+    });
   }
   render() {
+    if (this.state.bloccata) return /*#__PURE__*/React.createElement("div", {
+      style: {
+        color: "#e2e8f0",
+        textAlign: "center",
+        padding: "35vh 16px 0",
+        background: "#000",
+        minHeight: "100vh"
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "2rem"
+      }
+    }, "⚠️"), /*#__PURE__*/React.createElement("p", null, "L'app non riesce ad avviarsi. Riprova pi\xF9 tardi."), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: () => window.location.reload(),
+      style: {
+        marginTop: "16px",
+        padding: "8px 20px",
+        borderRadius: "8px",
+        border: "1px solid #475569",
+        background: "#1e293b",
+        color: "#e2e8f0"
+      }
+    }, "Riprova"));
     if (this.state.crashed) return /*#__PURE__*/React.createElement("div", {
       style: {
         color: "#e2e8f0",
