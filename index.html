@@ -4531,6 +4531,75 @@ function gestisciCrash(err, avviata = appAvviata, ora = Date.now()) {
   });
   return true;
 }
+// ── Ripristino del backup (avviso in Home dopo un azzeramento di emergenza) ──
+// Unisce come "Importa progressi": non fa perdere quello che l'utente ha fatto
+// dopo l'azzeramento. att/bk = {chiave: testo grezzo di localStorage};
+// ritorna {chiave: testo da scrivere}. Una chiave illeggibile non blocca le altre.
+// Serie di giorni: se dopo l'azzeramento l'utente ha continuato senza saltare
+// giorni, le due serie si ricongiungono; altrimenti vale la più recente.
+function unisciStreak(att, bk) {
+  if (!bk || typeof bk.lastDay !== "number") return att;
+  if (!att || !att.count) return bk;
+  const giorni = Math.round((att.lastDay - bk.lastDay) / 86400000);
+  if (giorni < 0) return bk;
+  if (giorni === 0) return att.count >= bk.count ? att : bk;
+  if (att.count >= giorni) return {
+    lastDay: att.lastDay,
+    count: bk.count + giorni
+  };
+  return att;
+}
+function unisciBackupProgressi(att, bk) {
+  const leggi = (m, k) => {
+    try {
+      return m[k] == null ? null : JSON.parse(m[k]);
+    } catch (_) {
+      return null;
+    }
+  };
+  const out = {};
+  const ogni = (k, f) => {
+    const b = leggi(bk, k);
+    if (b == null) return;
+    try {
+      const r = f(leggi(att, k), b);
+      if (r != null) out[k] = JSON.stringify(r);
+    } catch (_) {}
+  };
+  const oggetto = x => x && typeof x === "object" && !Array.isArray(x) ? x : {};
+  ogni(SK_STATS, (a, b) => {
+    const m = {
+      ...oggetto(a)
+    };
+    Object.entries(oggetto(b)).forEach(([k, v]) => {
+      if (v && typeof v.livello !== "undefined" && (!m[k] || v.livello > (m[k].livello || 0))) m[k] = v;
+    });
+    return m;
+  });
+  ogni(SK_VOC, (a, b) => {
+    const attuali = Array.isArray(a) ? a.filter(e => e && typeof e === "object") : [];
+    const chiavi = new Set(attuali.map(wordKey));
+    return [...attuali, ...(Array.isArray(b) ? b : []).filter(e => e && typeof e === "object" && !chiavi.has(wordKey(e)))];
+  });
+  ogni(SK_LINGUE, (a, b) => {
+    if (!Array.isArray(b)) return null;
+    const codici = new Set(b.map(l => l && l.codice));
+    return [...b, ...(Array.isArray(a) ? a : []).filter(l => l && !codici.has(l.codice))];
+  });
+  ogni(SK_STREAK, (a, b) => unisciStreak(a, b));
+  [SK_RECORD, SK_RECORD_PERC].forEach(k => ogni(k, (a, b) => {
+    const m = {
+      ...oggetto(a)
+    };
+    Object.entries(oggetto(b)).forEach(([c, v]) => {
+      if (typeof v === "number" && !(m[c] >= v)) m[c] = v;
+    });
+    return m;
+  }));
+  // Preferenze e stato interno: valgono quelle di prima dell'azzeramento.
+  [SK_NDOM, SK_FASE_TEMI, "qml_v11_sm_global"].forEach(k => ogni(k, (a, b) => b));
+  return out;
+}
 function esportaProgressi(stats, vocabolario, lingue) {
   const ai = loadJSON(SK_AI, null);
   const streak = loadJSON(SK_STREAK, null);
@@ -8050,6 +8119,9 @@ function Home({
   onGlossario,
   onEsporta,
   onImporta,
+  backupCrash,
+  onRipristinaBackup,
+  onChiudiBackup,
   onCambiaLingue,
   onCambiaFiltri,
   onImpostazioniAI,
@@ -8328,6 +8400,36 @@ function Home({
     onClick: doShareApp,
     className: "w-full mb-3 bg-emerald-800 hover:bg-emerald-700 text-emerald-50 font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 text-sm"
   }, "📤 Invita un amico"), (() => {
+    // Dopo un azzeramento di emergenza: riporta i progressi salvati prima
+    if (!(backupCrash && !backupCrash.chiuso)) return null;
+    let quando = "";
+    try {
+      quando = new Date(backupCrash.t).toLocaleString("it-IT", {
+        day: "numeric",
+        month: "long",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    } catch (e) {}
+    return /*#__PURE__*/React.createElement("div", {
+      className: "bg-orange-950 border-2 border-orange-700 rounded-xl p-3 text-orange-300 flex items-center gap-2 text-left mt-3"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-2xl"
+    }, "⚠️"), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "font-bold text-sm"
+    }, "L'app si \xE8 riavviata per un errore", quando ? ` (${quando})` : ""), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs opacity-70"
+    }, "I tuoi progressi sono stati salvati: puoi riportarli indietro")), /*#__PURE__*/React.createElement("button", {
+      onClick: onRipristinaBackup,
+      className: "text-xs font-bold bg-sky-900 hover:bg-sky-800 px-2.5 py-1.5 rounded-lg transition"
+    }, "Ripristina"), /*#__PURE__*/React.createElement("button", {
+      onClick: onChiudiBackup,
+      title: "Chiudi",
+      className: "text-sky-500 hover:text-sky-300 text-lg leading-none px-1"
+    }, "\xD7"));
+  })(), (() => {
     if (nascondiPromemoriaBackup || apprese < 10) return null;
     let ultimoExport = null;
     try { ultimoExport = Number(localStorage.getItem(SK_LAST_EXPORT)) || null; } catch (e) {}
@@ -16012,6 +16114,51 @@ function App() {
       setLinguaSbagliata(null);
     }
   }
+  // Backup lasciato da un azzeramento di emergenza (vedi resetStorageRecovery):
+  // l'avviso in Home compare solo se c'è e non è ancora stato usato o chiuso.
+  const [backupCrash, setBackupCrash] = useState(() => {
+    const b = loadJSON(SK_BACKUP_PROGRESSI, null);
+    return b && b.dati && typeof b.dati === "object" ? b : null;
+  });
+  function chiudiBackup(extra) {
+    if (!backupCrash) return;
+    const b = {
+      ...backupCrash,
+      chiuso: Date.now(),
+      ...extra
+    };
+    saveJSON(SK_BACKUP_PROGRESSI, b);
+    setBackupCrash(b);
+  }
+  function ripristinaBackup() {
+    if (!backupCrash) return;
+    const att = {};
+    Object.keys(backupCrash.dati).forEach(k => {
+      try {
+        att[k] = localStorage.getItem(k);
+      } catch (_) {}
+    });
+    const nuovi = unisciBackupProgressi(att, backupCrash.dati);
+    let ok = true;
+    Object.entries(nuovi).forEach(([k, v]) => {
+      try {
+        localStorage.setItem(k, v);
+      } catch (_) {
+        ok = false;
+      }
+    });
+    if (!ok) {
+      alert("⚠️ Ripristino non riuscito: la memoria del browser è piena o bloccata.");
+      return;
+    }
+    // Il backup resta salvato (segnato come usato), per sicurezza.
+    chiudiBackup({
+      ripristinato: Date.now()
+    });
+    // Ricarica: App rilegge tutto dallo storage, senza sincronizzare a mano
+    // ogni stato (stats, lingue, streak, record, vocabolario).
+    window.location.reload();
+  }
   function handleEsporta() {
     esportaProgressi(stats, vocabolario, lingue);
     try { localStorage.setItem(SK_LAST_EXPORT, String(Date.now())); } catch (e) {}
@@ -16156,6 +16303,9 @@ function App() {
     onGlossario: () => setSchermata("glossario"),
     onEsporta: handleEsporta,
     onImporta: handleImporta,
+    backupCrash: backupCrash,
+    onRipristinaBackup: ripristinaBackup,
+    onChiudiBackup: () => chiudiBackup(),
     onCambiaLingue: nl => {
       setLingue(nl);
       saveJSON(SK_LINGUE, nl);
