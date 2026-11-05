@@ -103,6 +103,7 @@
     html.light .hover\:bg-zinc-800:hover { background-color:#e4e4e7 !important; }
     html.light .hover\:bg-zinc-700:hover { background-color:#d4d4d8 !important; }
     html.light .hover\:border-zinc-700:hover { border-color:#d4d4d8 !important; }
+    html.light .hover\:bg-sky-800:hover { background-color:#bae6fd !important; }
     /* Accent backgrounds: dark-950/900 -> light-50/100 */
     html.light .bg-yellow-950 { background-color:#fefce8 !important; }
     html.light .bg-yellow-900 { background-color:#fef9c3 !important; }
@@ -4432,12 +4433,185 @@ function saveJSON(key, val) {
 // il boot. Whitelist esplicita: mai toccare chiavi sconosciute, perché
 // edit.html/dialetti.html condividono la stessa origin e salvano le loro.
 const SK_RESET_RECOVERY = [SK_VOC, SK_VOC_VER, SK_STATS, SK_LINGUE, SK_ZONA, SK_FILTRI, SK_RECORD, SK_RECORD_PERC, SK_STREAK, SK_NDOM, SK_FASE_TEMI, "qml_v11_sm_global" /* SK_SM, definita dentro SchermataSceltaMultipla */];
+// Progressione dell'utente: prima di ogni reset completo viene copiata in
+// SK_BACKUP_PROGRESSI ({t, dati: {chiave: testo grezzo}}), così non si perde
+// mai del tutto. Include SK_VOC: contiene solo le voci aggiunte/modificate
+// dall'utente (vedi vociCustom), dati scritti a mano e non ricostruibili.
+// Il backup si scrive solo se ci sono statistiche vere: dopo un reset App
+// riscrive subito stats "{}" e lingue di default, e un nuovo reset (loop che
+// il reset non risolve) sovrascriverebbe il backup buono con dati vuoti.
+const SK_BACKUP_PROGRESSI = "qml_v1_backup_progressi";
+const SK_ULTIMO_CRASH = "qml_v1_ultimo_crash"; // {t, msg, stack, hash, avviata, diFila}: per capire quale schermata si è rotta
+const SK_CRASH_AVVIO = "qml_v1_crash_avvio"; // n. di crash di fila prima che l'app sia partita (azzerato da segnaAvvioRiuscito)
 function resetStorageRecovery() {
+  // Backup della progressione (dentro la funzione: i test la estraggono da sola)
+  // Se il backup non si riesce a scrivere (memoria piena) la progressione NON
+  // viene cancellata: si azzera solo il resto.
+  const progressi = [SK_STATS, SK_STREAK, SK_RECORD, SK_RECORD_PERC, SK_LINGUE, SK_NDOM, SK_FASE_TEMI, SK_VOC, "qml_v11_sm_global"];
+  let backupOk = true;
+  try {
+    const st = localStorage.getItem(SK_STATS);
+    if (st && st !== "{}" && st !== "null") {
+      let dati = {};
+      progressi.forEach(k => {
+        const v = localStorage.getItem(k);
+        if (v !== null) dati[k] = v;
+      });
+      // Un backup mai ripristinato né chiuso non va perso: si unisce al nuovo
+      // (typeof: i test estraggono questa funzione da sola).
+      try {
+        const prec = JSON.parse(localStorage.getItem(SK_BACKUP_PROGRESSI));
+        if (prec && !prec.chiuso && prec.dati && typeof prec.dati === "object" && typeof unisciBackupProgressi === "function") dati = {
+          ...prec.dati,
+          ...dati,
+          ...unisciBackupProgressi(dati, prec.dati)
+        };
+      } catch (_) {}
+      localStorage.setItem(SK_BACKUP_PROGRESSI, JSON.stringify({
+        t: Date.now(),
+        dati
+      }));
+    }
+  } catch (_) {
+    backupOk = false;
+  }
   SK_RESET_RECOVERY.forEach(k => {
+    if (!backupOk && progressi.includes(k)) return;
     try {
       localStorage.removeItem(k);
     } catch (_) {}
   });
+}
+// Crash React (ErrorBoundary). Prima ogni crash chiamava resetStorageRecovery()
+// e azzerava tutta la progressione (segnalazione di Dino, 2026-11-05). Ora il
+// criterio è SE l'app funzionava: "avviata" = l'utente l'ha toccata (primo
+// clic/tasto, vedi App). Non basta il montaggio: una schermata aperta da un
+// link (#storia/..., #glossario/...) o un effetto iniziale crasha DOPO il
+// montaggio, e a ogni ricarica si ripete (dalle code review).
+// - crash ad app avviata (dentro una schermata): via solo i filtri, la
+//   progressione mai — anche se l'utente riapre subito la schermata rotta;
+// - crash d'avvio, contati di fila in SK_CRASH_AVVIO ({n, t}; la serie scade
+//   dopo CRASH_SERIE_MS): al 2° reset completo (con backup), una volta sola;
+//   gli altri tolgono solo filtri e versione vocabolario; dal 4° si smette di
+//   ricaricare, per non girare all'infinito.
+// Ritorna true se l'ErrorBoundary deve ricaricare la pagina.
+// L'errore viene sempre registrato in SK_ULTIMO_CRASH.
+const CRASH_SERIE_MS = 5 * 60000;
+let appAvviata = false;
+function segnaAvvioRiuscito() {
+  if (appAvviata) return;
+  appAvviata = true;
+  try {
+    localStorage.removeItem(SK_CRASH_AVVIO);
+  } catch (_) {}
+}
+function gestisciCrash(err, avviata = appAvviata, ora = Date.now()) {
+  const prec = loadJSON(SK_CRASH_AVVIO, null);
+  const inSerie = !!(prec && typeof prec.n === "number" && typeof prec.t === "number" && ora - prec.t >= 0 && ora - prec.t < CRASH_SERIE_MS);
+  const diFila = avviata ? 0 : (inSerie ? prec.n : 0) + 1;
+  let hash = "";
+  try {
+    hash = String(window.location.hash || "");
+  } catch (_) {}
+  saveJSON(SK_ULTIMO_CRASH, {
+    t: ora,
+    msg: String(err && err.message || err).slice(0, 500),
+    stack: String(err && err.stack || "").slice(0, 2000),
+    hash,
+    avviata,
+    diFila
+  });
+  if (!avviata) {
+    saveJSON(SK_CRASH_AVVIO, {
+      n: diFila,
+      t: ora
+    });
+    // Crash d'avvio da un link (#storia/..., #glossario/...): senza togliere il
+    // link, la ricarica riaprirebbe la stessa schermata rotta. Si riparte dalla Home.
+    try {
+      if (window.location.hash) window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    } catch (_) {}
+  }
+  if (diFila === 2) {
+    resetStorageRecovery();
+    return true;
+  }
+  if (diFila >= 4) return false;
+  (avviata ? [SK_FILTRI] : [SK_FILTRI, SK_VOC_VER]).forEach(k => {
+    try {
+      localStorage.removeItem(k);
+    } catch (_) {}
+  });
+  return true;
+}
+// ── Ripristino del backup (avviso in Home dopo un azzeramento di emergenza) ──
+// Unisce come "Importa progressi": non fa perdere quello che l'utente ha fatto
+// dopo l'azzeramento. att/bk = {chiave: testo grezzo di localStorage};
+// ritorna {chiave: testo da scrivere}. Una chiave illeggibile non blocca le altre.
+// Serie di giorni: se dopo l'azzeramento l'utente ha continuato senza saltare
+// giorni, le due serie si ricongiungono; altrimenti vale la più recente.
+function unisciStreak(att, bk) {
+  if (!bk || typeof bk.lastDay !== "number") return att;
+  if (!att || !att.count) return bk;
+  const giorni = Math.round((att.lastDay - bk.lastDay) / 86400000);
+  if (giorni < 0) return bk;
+  if (giorni === 0) return att.count >= bk.count ? att : bk;
+  if (att.count >= giorni) return {
+    lastDay: att.lastDay,
+    count: bk.count + giorni
+  };
+  return att;
+}
+function unisciBackupProgressi(att, bk) {
+  const leggi = (m, k) => {
+    try {
+      return m[k] == null ? null : JSON.parse(m[k]);
+    } catch (_) {
+      return null;
+    }
+  };
+  const out = {};
+  const ogni = (k, f) => {
+    const b = leggi(bk, k);
+    if (b == null) return;
+    try {
+      const r = f(leggi(att, k), b);
+      if (r != null) out[k] = JSON.stringify(r);
+    } catch (_) {}
+  };
+  const oggetto = x => x && typeof x === "object" && !Array.isArray(x) ? x : {};
+  ogni(SK_STATS, (a, b) => {
+    const m = {
+      ...oggetto(a)
+    };
+    Object.entries(oggetto(b)).forEach(([k, v]) => {
+      if (v && typeof v === "object" && typeof v.livello === "number" && (!m[k] || v.livello > (m[k].livello || 0))) m[k] = v;
+    });
+    return m;
+  });
+  ogni(SK_VOC, (a, b) => {
+    const attuali = Array.isArray(a) ? a.filter(e => e && typeof e === "object") : [];
+    const chiavi = new Set(attuali.map(wordKey));
+    return [...attuali, ...(Array.isArray(b) ? b : []).filter(e => e && typeof e === "object" && !chiavi.has(wordKey(e)))];
+  });
+  ogni(SK_LINGUE, (a, b) => {
+    if (!Array.isArray(b)) return null;
+    const codici = new Set(b.map(l => l && l.codice));
+    return [...b, ...(Array.isArray(a) ? a : []).filter(l => l && !codici.has(l.codice))];
+  });
+  ogni(SK_STREAK, (a, b) => unisciStreak(a, b));
+  [SK_RECORD, SK_RECORD_PERC].forEach(k => ogni(k, (a, b) => {
+    const m = {
+      ...oggetto(a)
+    };
+    Object.entries(oggetto(b)).forEach(([c, v]) => {
+      if (typeof v === "number" && !(m[c] >= v)) m[c] = v;
+    });
+    return m;
+  }));
+  // NON si ripristinano SK_NDOM, SK_FASE_TEMI e lo stato della Scelta multipla:
+  // valgono poco e potrebbero essere proprio i dati che hanno causato il crash.
+  return out;
 }
 function esportaProgressi(stats, vocabolario, lingue) {
   const ai = loadJSON(SK_AI, null);
@@ -4494,6 +4668,12 @@ function coppiaKey(entry, da, a) {
 function oggi() {
   const d = new Date();
   return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+}
+// true se il giorno `giorno` (mezzanotte) è il giorno prima di `g` (mezzanotte).
+// NON giorno === g - 86400000: il giorno del cambio d'ora dura 23 o 25 ore e la
+// serie di giorni consecutivi ripartiva da 1 (fine marzo e fine ottobre).
+function eIeri(giorno, g) {
+  return Math.round((g - giorno) / 86400000) === 1;
 }
 function getCoppia(stats, key) {
   return stats[key] || {
@@ -4582,7 +4762,10 @@ function contaParoleApprese(vocabolario, stats, lingue) {
 // lo storico non copre ancora quel periodo (utente nuovo o feature appena
 // introdotta).
 function trovaSnapshotVicino(storico, giorniFa) {
-  const target = oggi() - giorniFa * 86400000;
+  // + mezza giornata di margine: gli snapshot sono a mezzanotte locale e col
+  // cambio d'ora un giorno dura 23 o 25 ore (prima, per una settimana dopo il
+  // cambio, "7 giorni fa" prendeva lo snapshot di 8 giorni fa).
+  const target = oggi() - giorniFa * 86400000 + 43200000;
   const candidati = storico.filter(s => s.d <= target);
   if (candidati.length === 0) return null;
   return candidati.reduce((migliore, s) => s.d > migliore.d ? s : migliore, candidati[0]);
@@ -7949,6 +8132,9 @@ function Home({
   onGlossario,
   onEsporta,
   onImporta,
+  backupCrash,
+  onRipristinaBackup,
+  onChiudiBackup,
   onCambiaLingue,
   onCambiaFiltri,
   onImpostazioniAI,
@@ -8227,6 +8413,36 @@ function Home({
     onClick: doShareApp,
     className: "w-full mb-3 bg-emerald-800 hover:bg-emerald-700 text-emerald-50 font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 text-sm"
   }, "📤 Invita un amico"), (() => {
+    // Dopo un azzeramento di emergenza: riporta i progressi salvati prima
+    if (!(backupCrash && !backupCrash.chiuso)) return null;
+    let quando = "";
+    try {
+      quando = new Date(backupCrash.t).toLocaleString("it-IT", {
+        day: "numeric",
+        month: "long",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    } catch (e) {}
+    return /*#__PURE__*/React.createElement("div", {
+      className: "bg-orange-950 border-2 border-orange-700 rounded-xl p-3 text-orange-300 flex items-center gap-2 text-left mt-3"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-2xl"
+    }, "⚠️"), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "font-bold text-sm"
+    }, "Si \xE8 verificato un errore", quando ? ` (${quando})` : ""), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs opacity-70"
+    }, "I tuoi progressi erano stati salvati: puoi riportarli indietro")), /*#__PURE__*/React.createElement("button", {
+      onClick: onRipristinaBackup,
+      className: "text-xs font-bold bg-sky-900 hover:bg-sky-800 px-2.5 py-1.5 rounded-lg transition"
+    }, "Ripristina"), /*#__PURE__*/React.createElement("button", {
+      onClick: onChiudiBackup,
+      title: "Chiudi",
+      className: "text-sky-500 hover:text-sky-300 text-lg leading-none px-1"
+    }, "\xD7"));
+  })(), (() => {
     if (nascondiPromemoriaBackup || apprese < 10) return null;
     let ultimoExport = null;
     try { ultimoExport = Number(localStorage.getItem(SK_LAST_EXPORT)) || null; } catch (e) {}
@@ -8256,7 +8472,7 @@ function Home({
       lastDay: 0
     };
     const g = oggi();
-    const attivo = str.lastDay === g || str.lastDay === g - 86400000;
+    const attivo = str.lastDay === g || eIeri(str.lastDay, g);
     if (!attivo && str.count === 0) return null;
     const emoji = str.count >= 30 ? "🔥" : str.count >= 7 ? "⚡" : str.count >= 3 ? "✨" : "📅";
     return /*#__PURE__*/React.createElement("div", {
@@ -15307,8 +15523,11 @@ function App() {
       lastDay: 0,
       count: 0
     });
-    const ieri = g - 86400000;
-    const nuovoStreak = s.lastDay === ieri ? {
+    // Giorni arrotondati, non "=== g - 86400000": col cambio d'ora il giorno
+    // dura 23 o 25 ore (stessa regola di eIeri, qui inline: i test eseguono
+    // aggiornaStreak da sola).
+    const ieri = Math.round((g - s.lastDay) / 86400000) === 1;
+    const nuovoStreak = ieri ? {
       lastDay: g,
       count: s.count + 1
     } : s.lastDay === g ? s : {
@@ -15325,6 +15544,21 @@ function App() {
   useEffect(() => {
     saveJSON(SK_STATS, stats);
   }, [stats]);
+  // Primo tocco dell'utente = l'app funziona: da qui un crash è "dentro una
+  // schermata" e non azzera più i dati (vedi gestisciCrash). Non al montaggio:
+  // una schermata aperta da un link può crashare subito dopo.
+  useEffect(() => {
+    const opz = {
+      capture: true,
+      passive: true
+    };
+    window.addEventListener("pointerdown", segnaAvvioRiuscito, opz);
+    window.addEventListener("keydown", segnaAvvioRiuscito, opz);
+    return () => {
+      window.removeEventListener("pointerdown", segnaAvvioRiuscito, opz);
+      window.removeEventListener("keydown", segnaAvvioRiuscito, opz);
+    };
+  }, []);
   useEffect(() => {
     // Storico giornaliero delle parole apprese, per il confronto "rispetto a
     // N giorni fa" in Statistiche. Una sola voce per giorno (sovrascritta se
@@ -15893,6 +16127,53 @@ function App() {
       setLinguaSbagliata(null);
     }
   }
+  // Backup lasciato da un azzeramento di emergenza (vedi resetStorageRecovery):
+  // l'avviso in Home compare solo se c'è e non è ancora stato usato o chiuso.
+  const [backupCrash, setBackupCrash] = useState(() => {
+    const b = loadJSON(SK_BACKUP_PROGRESSI, null);
+    return b && b.dati && typeof b.dati === "object" ? b : null;
+  });
+  function chiudiBackup(extra) {
+    if (!backupCrash) return;
+    const b = {
+      ...backupCrash,
+      chiuso: Date.now(),
+      ...extra
+    };
+    saveJSON(SK_BACKUP_PROGRESSI, b);
+    setBackupCrash(b);
+  }
+  function ripristinaBackup() {
+    if (!backupCrash) return;
+    const att = {};
+    Object.keys(backupCrash.dati).forEach(k => {
+      try {
+        att[k] = localStorage.getItem(k);
+      } catch (_) {}
+    });
+    const nuovi = unisciBackupProgressi(att, backupCrash.dati);
+    let ok = true;
+    Object.entries(nuovi).forEach(([k, v]) => {
+      try {
+        localStorage.setItem(k, v);
+      } catch (_) {
+        ok = false;
+      }
+    });
+    if (!ok) {
+      alert("⚠️ Ripristino non riuscito: la memoria del browser è piena o bloccata.");
+      return;
+    }
+    // Ripristinato: i dati del backup si liberano (occupano memoria del browser,
+    // e la quota piena farebbe fallire i salvataggi normali).
+    chiudiBackup({
+      ripristinato: Date.now(),
+      dati: null
+    });
+    // Ricarica: App rilegge tutto dallo storage, senza sincronizzare a mano
+    // ogni stato (stats, lingue, streak, record, vocabolario).
+    window.location.reload();
+  }
   function handleEsporta() {
     esportaProgressi(stats, vocabolario, lingue);
     try { localStorage.setItem(SK_LAST_EXPORT, String(Date.now())); } catch (e) {}
@@ -16037,6 +16318,9 @@ function App() {
     onGlossario: () => setSchermata("glossario"),
     onEsporta: handleEsporta,
     onImporta: handleImporta,
+    backupCrash: backupCrash,
+    onRipristinaBackup: ripristinaBackup,
+    onChiudiBackup: () => chiudiBackup(),
     onCambiaLingue: nl => {
       setLingue(nl);
       saveJSON(SK_LINGUE, nl);
@@ -16191,12 +16475,37 @@ class ErrorBoundary extends React.Component {
   }
   componentDidCatch(err) {
     console.error("LinguaeQuiz crash:", err);
-    // Reset mirato: NON usare localStorage.clear() — cancellerebbe anche le
-    // storie private (uniche, solo su questo browser), token GitHub e chiave API.
-    resetStorageRecovery();
-    setTimeout(() => window.location.reload(), 100);
+    // Recovery a livelli (vedi gestisciCrash): la progressione si azzera solo
+    // se l'app non riesce a partire più volte di fila, e comunque dopo un backup.
+    if (gestisciCrash(err)) setTimeout(() => window.location.reload(), 100);else this.setState({
+      bloccata: true
+    });
   }
   render() {
+    if (this.state.bloccata) return /*#__PURE__*/React.createElement("div", {
+      style: {
+        color: "#e2e8f0",
+        textAlign: "center",
+        padding: "35vh 16px 0",
+        background: "#000",
+        minHeight: "100vh"
+      }
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        fontSize: "2rem"
+      }
+    }, "⚠️"), /*#__PURE__*/React.createElement("p", null, "L'app non riesce ad avviarsi. Riprova pi\xF9 tardi."), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: () => window.location.reload(),
+      style: {
+        marginTop: "16px",
+        padding: "8px 20px",
+        borderRadius: "8px",
+        border: "1px solid #475569",
+        background: "#1e293b",
+        color: "#e2e8f0"
+      }
+    }, "Riprova"));
     if (this.state.crashed) return /*#__PURE__*/React.createElement("div", {
       style: {
         color: "#e2e8f0",
