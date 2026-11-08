@@ -383,6 +383,16 @@ function sogliaRetrocessione(nDom) {
   if (nDom > 10) return 80;
   return 50;
 }
+// Ripartenza da 10 (richiesta di Dino, 2026-11-08): arrivare a 20 domande
+// richiede troppo tempo e la revisione degli errori è fondamentale, quindi
+// sopra 10 domande, con meno del 90% di giuste, si torna SUBITO a 10 invece
+// di scendere di un passo. Solo Quiz/Allenamento/Ascolto/Voce/Dettato:
+// Scelta multipla resta con sogliaRetrocessione (scelta di Dino).
+const NDOM_RIPARTENZA = 10;
+const SOGLIA_RIPARTENZA = 90;
+function ripartiDa10(nDom, perc) {
+  return nDom > NDOM_RIPARTENZA && perc < SOGLIA_RIPARTENZA;
+}
 // Esercizio abbandonato a metà (← Home prima della fine): si valuta sulle
 // risposte date. Solo retrocessione (non è finito, quindi niente promozione)
 // e solo con almeno 3 risposte (uscita per sbaglio/interruzione).
@@ -14608,6 +14618,7 @@ function SchermataQuiz({
       if (isNS || nDomandeUsate === 0) return null;
       const inc = modalita === "quiz" ? 5 : 1;
       if (perc === 100) return Math.min(nDomandeUsate + inc, NDOM_MAX);
+      if (ripartiDa10(nDomandeUsate, perc)) return NDOM_RIPARTENZA;
       if (perc < sogliaRetrocessione(nDomandeUsate)) return Math.max(5, nDomandeUsate - inc);
       return nDomandeUsate;
     })();
@@ -16150,7 +16161,7 @@ function App() {
       // avverava mai (stesso bug corretto in Scelta multipla).
       if (modalita !== "nonstop" && nDomandeUsate > 0) {
         const inc = modalita === "quiz" ? 5 : 1;
-        const nDomProssimo = percFin === 100 ? Math.min(nDomandeUsate + inc, NDOM_MAX) : percFin < sogliaRetrocessione(nDomandeUsate) ? Math.max(5, nDomandeUsate - inc) : nDomandeUsate;
+        const nDomProssimo = percFin === 100 ? Math.min(nDomandeUsate + inc, NDOM_MAX) : ripartiDa10(nDomandeUsate, percFin) ? NDOM_RIPARTENZA : percFin < sogliaRetrocessione(nDomandeUsate) ? Math.max(5, nDomandeUsate - inc) : nDomandeUsate;
         if (nDomProssimo !== nDomandeUsate) {
           const ndomMem = loadJSON(SK_NDOM, {});
           saveJSON(SK_NDOM, { ...ndomMem, [modalita]: nDomProssimo });
@@ -16460,7 +16471,9 @@ function App() {
       // ← Home a metà esercizio: retrocessione valutata sulle risposte date
       // (vedi nDomDopoAbbandono). A fine sessione SK_NDOM è già salvato.
       if (!fine && modalita !== "nonstop" && nDomandeUsate > 0) {
-        const nDom = nDomDopoAbbandono(nDomandeUsate, punteggio.giusti, punteggio.giusti + punteggio.sbagliati, modalita === "quiz" ? 5 : 1, 5);
+        // (con ripartenza da 10 se sopra 10 domande e sotto il 90%, vedi ripartiDa10)
+        const risposte = punteggio.giusti + punteggio.sbagliati;
+        const nDom = risposte >= 3 && ripartiDa10(nDomandeUsate, Math.round(punteggio.giusti / risposte * 100)) ? NDOM_RIPARTENZA : nDomDopoAbbandono(nDomandeUsate, punteggio.giusti, risposte, modalita === "quiz" ? 5 : 1, 5);
         if (nDom !== nDomandeUsate) saveJSON(SK_NDOM, { ...loadJSON(SK_NDOM, {}), [modalita]: nDom });
       }
       setSchermata("home");
