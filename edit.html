@@ -1645,10 +1645,28 @@ function escapeAttr(s) { return String(s || '').replace(/&/g, '&amp;').replace(/
 // ==========================================================================
 // EDITING
 // ==========================================================================
+// Quando si edita l'IT, rowKey cambia a ogni tasto: senza questo passaggio
+// ogni versione intermedia ("chiedere (", "chiedere (d", …) restava nei set e
+// il contatore "modifiche non salvate" si gonfiava (24 per due rinomine), e
+// una voce nuova rinominata smetteva di risultare nuova. Sposta il segno dalla
+// chiave vecchia alla nuova; la vecchia resta se un'altra riga (omonimo) la usa.
+function rinominaChiaveRiga(prima, dopo, voce, voc, modSet, newSet) {
+  if (prima === dopo) return;
+  const ancoraUsata = voc.some(x => x !== voce && rowKey(x) === prima);
+  if (newSet.has(prima)) {
+    if (!ancoraUsata) newSet.delete(prima);
+    newSet.add(dopo);
+  } else if (!ancoraUsata) {
+    modSet.delete(prima);
+  }
+}
+
 function onCellEdit(tr, voce, input) {
   const field = input.dataset.field, val = input.value;
+  const keyPrima = rowKey(voce);
   voce[field] = val;
   const key = rowKey(voce);
+  rinominaChiaveRiga(keyPrima, key, voce, vocabolario, modifiedKeys, newKeys);
   if (!newKeys.has(key)) modifiedKeys.add(key);
   if (!tr.classList.contains('new-row')) tr.classList.add('modified');
   if (field === 'it' || currentLangs.includes(field)) {
