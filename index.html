@@ -3302,7 +3302,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"patologie", livello:"B2", it:"ipotiroidismo", en:"hypothyroidism", fr:"hypothyroïdie", es:"hipotiroidismo", de:"Hypothyreose", pt:"hipotireoidismo", ca:"hipotiroïdisme", ko:"갑상선 기능저하증", ar:"قصور الغدة الدرقية", zh:"甲状腺功能减退", ja:"甲状腺機能低下症", nt:["sp"] },
       { tema:"natura", livello:"A2", it:"isola", en:"island", fr:"île", es:"isla", de:"Insel", pt:"ilha", ru:"остров", ca:"illa", sp:"isoa", cr:"isola", ko:"섬", ar:"جزيرة", zh:"岛屿", ja:"島", ia:"insula", la:"insula", grc:"νῆσος", verif:"sp:g,cr:g" },
       { tema:"persone", livello:"B1", it:"ladro", en:"thief", fr:"voleur", es:"ladrón", de:"Dieb", pt:"ladrão", ru:"вор", ca:"lladre", sp:"ladrónh/làdrón", mn:"ladruun/làdrun", cr:"ladr", ge:"laddro", ia:"fur", la:"fur", grc:"κλέπτης", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
-      { tema:"oggetti", livello:"A2", it:"lama", en:"mud", fr:"boue", es:"lodo", de:"Schlamm", pt:"lama", sp:"lama", mn:"lama", cr:"lama", ge:"lamma", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,cr:g" },
       { tema:"casa", livello:"A2", it:"lampada", en:"lamp", fr:"lampe", es:"lámpara", de:"Lampe", pt:"lâmpada|lampada", ru:"лампа", ca:"làmpada", sp:"lanpa", cr:"lum", ko:"램프", ar:"مصباح", zh:"灯", ja:"ランプ", ia:"lampa", la:"lucerna", grc:"λύχνος", verif:"sp:g" },
       { tema:"oggetti", livello:"B1", it:"lana", en:"wool", fr:"laine", es:"lana", de:"Wolle", pt:"lã", ru:"шерсть", ca:"llana", sp:"lana", cr:"lana", ge:"laña", verif:"sp:g,cr:g" },
       { tema:"cibo", livello:"A1", it:"latte", en:"milk", sp:"láte", mn:"late", cr:"lat", ge:"laete", verif:"mn:g,sp:g,ge:g", ro:"lapte" },
@@ -3833,7 +3832,6 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"numeri", livello:"A1", it:"settimo", en:"seventh", fr:"septième", es:"séptimo", de:"siebte", pt:"sétimo", ca:"setè", mn:"sètimu", ge:"sèttimo|settén", ia:"septime", la:"septimus", src:{"mn":"🤖 IA"}, verif:"mn:g", ro:"al șaptelea" },
       { tema:"insulti", livello:"B1", it:"sgarbo", en:"rudeness", fr:"impolitesse, grossièreté", es:"descortesía, grosería", de:"Unhöflichkeit, Grobheit", pt:"descortesia, grosseria", ca:"descortesia, mala educació", mn:"sgarbu/zgàrbu", cr:"sgarb", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"sgraffignare|rubare", en:"to pinch", fr:"piquer", es:"mangar", de:"klauen", pt:"surripiar", ca:"pispar", mn:"sgrafigna a/zgràfignaa/sgràfignaa", cr:"sgrafignar", verif:"mn:g" },
-      { tema:"verbi", livello:"A2", it:"sgusciare", en:"to drip", fr:"s'écouler", es:"gotear", de:"tropfen", pt:"gotejar", ca:"gotejar", mn:"sgüssaaa/zgüssaa", cr:"sgus'ar", verif:"mn:g" },
       { tema:"cosmetica", livello:"A2", it:"shampoo", en:"shampoo", fr:"shampooing", es:"champú", de:"Shampoo", pt:"shampoo", ca:"xampú", ko:"샴푸", ar:"شامبو", zh:"洗发水", ja:"シャンプー", nt:["sp"] },
       { tema:"saluti", livello:"A1", it:"sì", en:"yes", fr:"oui", es:"sí", de:"ja", pt:"sim", ca:"sí", sp:"si", mn:"si", cr:"si", ge:"scì ", la:"ita", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g,sp:g,ge:g", ro:"da" },
       { tema:"natura", livello:"A2", it:"siccità", en:"drought", fr:"sécheresse", es:"sequía", de:"Dürre", pt:"seca", ru:"засуха", ca:"sequera|secada", cr:"as'utor, sec, ars", ko:"가뭄", ar:"جفاف", zh:"干旱", ja:"干ばつ", ia:"siccitate", la:"siccitas", grc:"αὐχμός", nt:["sp"] },
@@ -4217,7 +4215,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 643;
+const VOC_VERSION = 644;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
