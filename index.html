@@ -4794,6 +4794,36 @@ function bilancioSessione(carte, statsPrima, statsDopo, lingue) {
 function contaParoleApprese(vocabolario, stats, lingue) {
   return vocabolario.filter(e => parolaAppresa(e, stats, lingue)).length;
 }
+// Progresso di UNA lingua per il riquadro "Progressi per lingua" (Statistiche).
+// Conta per VOCE, non per coppia: prima il denominatore era voci × ogni altra
+// lingua attiva, e le coppie mai praticate (es. spagnolo↔catalano) davano 2%
+// anche con centinaia di parole apprese. Per ogni voce guarda le direzioni
+// che coinvolgono `codice` (in entrambi i versi) con le altre lingue attive;
+// contano solo quelle praticate (risposte > 0, o livello > 0 per dati vecchi
+// senza contatore). Appresa se ≥75% delle praticate è appresa, come parolaAppresa.
+function progressoLingua(vocabolario, stats, lingue, codice) {
+  let voci = 0,
+    apprese = 0,
+    inCorso = 0,
+    nonIniziate = 0;
+  vocabolario.forEach(e => {
+    const ld = lingueAttiveEntry(e, lingue);
+    if (!ld.includes(codice)) return;
+    voci++;
+    const coppie = [];
+    ld.forEach(a => {
+      if (a !== codice) coppie.push(coppiaKey(e, codice, a), coppiaKey(e, a, codice));
+    });
+    const praticate = coppie.filter(k => {
+      const c = getCoppia(stats, k);
+      return c.risposte > 0 || c.livello > 0;
+    });
+    if (praticate.length === 0) nonIniziate++;
+    else if (praticate.filter(k => isAppresa(stats, k)).length / praticate.length >= 0.75) apprese++;
+    else inCorso++;
+  });
+  return { voci, apprese, inCorso, nonIniziate };
+}
 // Nello storico [{d, n}] (d = timestamp di inizio giornata da oggi()), trova
 // lo snapshot più recente che risale ad almeno `giorniFa` giorni fa. null se
 // lo storico non copre ancora quel periodo (utente nuovo o feature appena
@@ -9873,29 +9903,13 @@ function Statistiche({
 }) {
   const t = useUI();
   const lingueAttive = lingue.filter(l => l.attiva);
-  // Per ogni lingua calcola: totale voci, apprese, in corso, da fare
+  // Per ogni lingua calcola, per voce: totale voci, apprese, in corso, da fare
   const datiLingue = lingueAttive.map(l => {
-    const voci = vocabolario.filter(e => e[l.codice] && e[l.codice].trim() !== "");
-    let apprese = 0,
-      inCorso = 0,
-      nonIniziate = 0;
-    voci.forEach(e => {
-      // Cerca tutte le coppie che coinvolgono questa lingua
-      const altreLingue = lingueAttive.filter(a => a.codice !== l.codice && e[a.codice]);
-      altreLingue.forEach(a => {
-        const key = `${wordKey(e)}__${l.codice}__${a.codice}`;
-        const c = getCoppia(stats, key);
-        if (c.livello >= SOGLIA_APPRESA) apprese++;else if (c.livello > 0) inCorso++;else nonIniziate++;
-      });
-    });
-    const tot = apprese + inCorso + nonIniziate || 1;
+    const p = progressoLingua(vocabolario, stats, lingue, l.codice);
     return {
       l,
-      voci: voci.length,
-      apprese,
-      inCorso,
-      nonIniziate,
-      tot
+      ...p,
+      tot: p.voci || 1
     };
   });
 
