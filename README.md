@@ -227,7 +227,7 @@ The dialect entries in particular represent the work of native speakers and comm
 📬 **[linguaequiz@gmail.com](mailto:linguaequiz@gmail.com)**
 
 - 💬 [Telegram](https://t.me/linguaequiz)
-- 📘 [Facebook](https://www.facebook.com/LinguaeQuiz/)
+- 📘 [Facebook](https://www.facebook.com/profile.php?id=61596624927855)
 
 ---
 
