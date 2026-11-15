@@ -3169,7 +3169,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"natura", livello:"A2", it:"fulmine", en:"lightning", fr:"éclair", es:"relámpago", de:"Blitz", pt:"raio", ca:"llamp", sp:"fùrmine/fürmine", mn:"saëta", cr:"fulmine", ge:"furmine", ko:"번개", ar:"برق", zh:"闪电", ja:"稲妻", ia:"fulmine", la:"fulmen", grc:"κεραυνός", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,cr:g", ro:"fulger" },
       { tema:"verbi", livello:"A2", it:"fumare|fumo", en:"smoke", fr:"fumer|fumée", es:"fumar|humo", de:"rauchen|Rauch", pt:"fumar|fumaça", ru:"курить|дым", ca:"fumar|fum", sp:"fumae", cr:"fumar", ge:"fümmâ", verif:"sp:g" },
       { tema:"cibo", livello:"A2", it:"fungo", en:"mushroom", fr:"champignon", es:"champiñón|seta", de:"Pilz", pt:"cogumelo", ru:"гриб", ca:"bolet", sp:"fünzo", mn:"foonsu/fünzu", cr:"fongh", ge:"fonzo", verif:"mn:g", ro:"ciupercă" },
-      { tema:"natura", livello:"A1", it:"fuoco", en:"fire", fr:"feu", es:"fuego", de:"Feuer", pt:"fogo", ru:"огонь", ca:"foc", sp:"fégo", cr:"foch", ko:"불", ar:"نار", zh:"火", ja:"火", ia:"foco", la:"ignis", grc:"πῦρ", verif:"sp:g" },
+      { tema:"natura", livello:"A1", it:"fuoco", en:"fire", fr:"feu", es:"fuego", de:"Feuer", pt:"fogo", ru:"огонь", ca:"foc", sp:"fégo", cr:"foc", ko:"불", ar:"نار", zh:"火", ja:"火", ia:"foco", la:"ignis", grc:"πῦρ", verif:"sp:g,cr:g" },
       { tema:"luoghi", livello:"A2", it:"fuori", en:"outside", fr:"dehors", es:"fuera", de:"draußen", pt:"fora", sp:"fèa", mn:"fèa", cr:"fora", ge:"feua", src:{"mn":"🔗 dialetti.html","sp":"🔗 dialetti.html","ge":"🔗 dialetti.html"}, verif:"mn:g,sp:g,ge:g" },
       { tema:"luoghi", livello:"A1", it:"fuori", en:"outside", sp:"fèa", mn:"enfé'a/énféa", cr:"fora", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"animali", livello:"A1", it:"gabbiano", en:"seagull", fr:"goéland", es:"gaviota", de:"Möwe", pt:"gaivota", ca:"gavina", sp:"gabiàn|oca de mae|ochin", mn:"aoca, gabiàn", cr:"gabian", ge:"gabbian", ia:"gaviota", la:"larus", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g,ge:g", ro:"pescăruș" },
@@ -4213,7 +4213,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 644;
+const VOC_VERSION = 645;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
