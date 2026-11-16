@@ -144,7 +144,7 @@ test('traduzioni a lotti: richieste piccole, risultati rimessi al loro posto', a
 });
 
 test('traduzioni a lotti: un lotto fallito non fa perdere gli altri', async () => {
-  const piano = Array.from({ length: 8 }, (_, k) => frase('en', 'dettato', null, { testo: `Frase ${k}.`, nomeDa: 'Inglese', ui: '' }));
+  const piano = Array.from({ length: 2 * ctx.LOTTO_TRAD_RIPASSO }, (_, k) => frase('en', 'dettato', null, { testo: `Frase ${k}.`, nomeDa: 'Inglese', ui: '' }));
   const r = ctx.richiesteTradRipasso(piano, 'it', 'Italiano');
   let n = 0;
   const finta = async (system, user) => {
@@ -154,7 +154,8 @@ test('traduzioni a lotti: un lotto fallito non fa perdere gli altri', async () =
   };
   const trad = await ctx.traduciLottiRipasso(r, {}, finta);
   for (let k = 0; k < ctx.LOTTO_TRAD_RIPASSO; k++) assert.equal(trad[k], undefined);
-  assert.equal(trad[7], 'IT Frase 7.');
+  const ultima = 2 * ctx.LOTTO_TRAD_RIPASSO - 1;
+  assert.equal(trad[ultima], `IT Frase ${ultima}.`);
   // anche un lotto che lancia un'eccezione
   const lancia = async () => { throw new Error('rete'); };
   assert.deepEqual(j(await ctx.traduciLottiRipasso(r, {}, lancia)), {});
@@ -170,4 +171,25 @@ test('la schermata: traduzioni a lotti e avviso se la traduzione nei menu manca'
   assert.match(S, /const trad = await traduciLottiRipasso\(mancanti, aiSettings\);/);
   assert.match(S, /if \(x\.campo === "ui"\) x\.item\.tradPersa = true;/);
   assert.match(S, /!item\.ui && item\.tradPersa && /);
+});
+
+// Code review 2026-11-16: se fallisce il riferimento di una traduzione verso la
+// lingua dei menu, la frase passa a dettato senza che nessuno abbia chiesto la
+// traduzione nei menu: niente traduzione e niente avviso (lo stesso sintomo).
+test('riferimento fallito → dettato: avviso anche lì', () => {
+  assert.match(S, /piano\.forEach\(x => \{\s*if \(!x\.ui && serveTradUIRipasso\(x, ui\)\) x\.tradPersa = true;\s*\}\);/);
+  // il caso: fr → it con menu in italiano, diventato dettato
+  assert.equal(ctx.serveTradUIRipasso(frase('fr', 'dettato'), 'it'), true);
+});
+
+// Code review 2026-11-16: anche il modello Groq (gpt-oss) ragiona dentro il tetto.
+test('Groq: ragionamento al minimo quando richiesto', () => {
+  const ai = tra('async function callAI(', '\nfunction ContribuisciDialetto(');
+  assert.match(ai, /\.\.\.\(opts\.senzaRagionamento && aiCfg\?\.provider === "groq" \? \{\s*reasoning_effort: "low"\s*\} : \{\}\)/);
+});
+
+// Code review 2026-11-16: 5 richieste insieme sforavano il limite al minuto di
+// Gemini gratuito; con il ragionamento spento 8 traduzioni stanno nel tetto.
+test('al massimo 3 richieste per una sessione da 10 frasi', () => {
+  assert.ok(Math.ceil(20 / ctx.LOTTO_TRAD_RIPASSO) <= 3);
 });

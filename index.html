@@ -9405,6 +9405,10 @@ ${userPrompt}`
         body: JSON.stringify({
           model: cfg.model,
           max_tokens: AI_MAX_TOKENS,
+          // Anche gpt-oss (Groq) ragiona dentro il tetto di token
+          ...(opts.senzaRagionamento && aiCfg?.provider === "groq" ? {
+            reasoning_effort: "low"
+          } : {}),
           messages: [{
             role: "system",
             content: systemPrompt
@@ -11765,8 +11769,8 @@ function serveTradUIRipasso(item, ui) {
   if (item.modo === "traduzione") return !!item.a && item.a !== ui;
   return !DIALETTI_TTS_ITA.includes(item.cod);
 }
-// Tutte le traduzioni da chiedere all'IA nell'unica richiesta di inizio
-// sessione: riferimenti mancanti (campo "rif") e frasi nella lingua dei menu
+// Tutte le traduzioni da chiedere all'IA a inizio sessione (a lotti, vedi
+// traduciLottiRipasso): riferimenti mancanti (campo "rif") e frasi nella lingua dei menu
 // non ancora salvate (campo "ui"). Ognuna porta la frase in cui scrivere.
 function richiesteTradRipasso(piano, ui, nomeUI) {
   const out = [];
@@ -11800,16 +11804,14 @@ Rispondi con UN oggetto JSON, senza markdown: {"traduzioni": [{"id": number, "or
     user: items.map((x, i) => `${i}. Da ${x.nomeDa} a ${x.nomeA}: "${x.testo}"`).join("\n") + "\n\nRispondi con il JSON."
   };
 }
-// Traduzioni → {indice in items: testo}. Si abbinano per TESTO: l'IA ripete la
-// frase in "originale" (quarta code review). Abbinando per numero, un'IA che
-// numera da 1 o ne salta una spostava ogni traduzione sulla frase accanto,
-// salvata per sempre. L'id serve solo a scegliere tra frasi identiche (stesso
-// testo da due lingue). Senza originale, o con uno che non c'è: scartata.
 // Bug 2026-11-16 (Dino, Gemini): tutte le traduzioni della sessione in una
 // sola richiesta superavano il tetto di token e si perdevano in silenzio.
 // Ora lotti piccoli in parallelo; un lotto fallito non fa perdere gli altri.
 // Risultato: {indice in items: testo}, come estraiTraduzioniRipasso.
-const LOTTO_TRAD_RIPASSO = 4;
+// 8 per lotto (code review): con il ragionamento spento stanno nel tetto, e
+// una sessione da 10 frasi fa al massimo 3 richieste (limite al minuto di
+// Gemini gratuito).
+const LOTTO_TRAD_RIPASSO = 8;
 async function traduciLottiRipasso(items, aiCfg, chiama = callAI) {
   const lotti = [];
   for (let k = 0; k < (items || []).length; k += LOTTO_TRAD_RIPASSO) lotti.push(k);
@@ -11828,6 +11830,11 @@ async function traduciLottiRipasso(items, aiCfg, chiama = callAI) {
   }));
   return out;
 }
+// Traduzioni → {indice in items: testo}. Si abbinano per TESTO: l'IA ripete la
+// frase in "originale" (quarta code review). Abbinando per numero, un'IA che
+// numera da 1 o ne salta una spostava ogni traduzione sulla frase accanto,
+// salvata per sempre. L'id serve solo a scegliere tra frasi identiche (stesso
+// testo da due lingue). Senza originale, o con uno che non c'è: scartata.
 function estraiTraduzioniRipasso(raw, items) {
   const out = {};
   const voci = [];
@@ -11951,8 +11958,13 @@ function SchermataRipassoFrasi({
           x.item[x.campo] = trad[k];
           if (!DIALETTI_TTS_ITA.includes(x.cod)) salvaTradRipasso(x.chiave, x.a, trad[k]);
           // IA non raggiungibile: senza riferimento la frase si fa a dettato;
-          // senza traduzione nei menu semplicemente non si mostra
+          // senza traduzione nei menu, dopo la risposta un avviso
         } else if (x.campo === "rif") x.item.modo = "dettato";else if (x.campo === "ui") x.item.tradPersa = true;
+      });
+      // Riferimento fallito → dettato: la traduzione nei menu non era stata
+      // chiesta (code review), ma l'avviso serve lo stesso
+      piano.forEach(x => {
+        if (!x.ui && serveTradUIRipasso(x, ui)) x.tradPersa = true;
       });
     }
     setItems(piano);
@@ -12197,7 +12209,7 @@ function SchermataRipassoFrasi({
     className: "text-slate-400 text-sm italic"
   }, item.ui)), !item.ui && item.tradPersa && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mt-3"
-  }, "🤖 Traduzione non disponibile: l'IA non ha risposto."), esito.giusta === null && /*#__PURE__*/React.createElement("p", {
+  }, "🤖 Traduzione non disponibile: l'IA non l'ha fornita."), esito.giusta === null && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mt-2"
   }, "Non sono riuscito a controllare: questa frase non conta.")), /*#__PURE__*/React.createElement("button", {
     onClick: avanti,
