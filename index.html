@@ -9334,7 +9334,7 @@ function SchermataSenzaIA({
     onConfigura: onConfigura
   }), extra);
 }
-async function callAI(systemPrompt, userPrompt, aiCfg) {
+async function callAI(systemPrompt, userPrompt, aiCfg, opts = {}) {
   // Solo la chiave vuota: la soglia di iaConfigurata vale per l'interfaccia
   if (!String(aiCfg?.apiKey || "").trim()) return MSG_SENZA_IA;
   const cfg = GROQ_MODELS[aiCfg?.provider] || GROQ_MODELS.gemini;
@@ -9379,7 +9379,15 @@ ${userPrompt}`
             }]
           }],
           generationConfig: {
-            maxOutputTokens: AI_MAX_TOKENS
+            maxOutputTokens: AI_MAX_TOKENS,
+            // Gemini 2.5 "ragiona" prima di rispondere e quei token rientrano
+            // nel tetto: nelle richieste lunghe e semplici (traduzioni del
+            // Ripasso frasi) la risposta arrivava vuota o tagliata.
+            ...(opts.senzaRagionamento ? {
+              thinkingConfig: {
+                thinkingBudget: 0
+              }
+            } : {})
           }
         })
       });
@@ -11797,6 +11805,29 @@ Rispondi con UN oggetto JSON, senza markdown: {"traduzioni": [{"id": number, "or
 // numera da 1 o ne salta una spostava ogni traduzione sulla frase accanto,
 // salvata per sempre. L'id serve solo a scegliere tra frasi identiche (stesso
 // testo da due lingue). Senza originale, o con uno che non c'è: scartata.
+// Bug 2026-11-16 (Dino, Gemini): tutte le traduzioni della sessione in una
+// sola richiesta superavano il tetto di token e si perdevano in silenzio.
+// Ora lotti piccoli in parallelo; un lotto fallito non fa perdere gli altri.
+// Risultato: {indice in items: testo}, come estraiTraduzioniRipasso.
+const LOTTO_TRAD_RIPASSO = 4;
+async function traduciLottiRipasso(items, aiCfg, chiama = callAI) {
+  const lotti = [];
+  for (let k = 0; k < (items || []).length; k += LOTTO_TRAD_RIPASSO) lotti.push(k);
+  const out = {};
+  await Promise.all(lotti.map(async inizio => {
+    const lotto = items.slice(inizio, inizio + LOTTO_TRAD_RIPASSO);
+    try {
+      const p = promptTraduzioniRipasso(lotto);
+      const trad = estraiTraduzioniRipasso(await chiama(p.system, p.user, aiCfg, {
+        senzaRagionamento: true
+      }), lotto);
+      Object.keys(trad).forEach(k => {
+        out[inizio + Number(k)] = trad[k];
+      });
+    } catch (e) {}
+  }));
+  return out;
+}
 function estraiTraduzioniRipasso(raw, items) {
   const out = {};
   const voci = [];
@@ -11913,11 +11944,7 @@ function SchermataRipassoFrasi({
     }));
     const mancanti = richiesteTradRipasso(piano, ui, lingua(ui).nome);
     if (mancanti.length) {
-      let trad = {};
-      try {
-        const p = promptTraduzioniRipasso(mancanti);
-        trad = estraiTraduzioniRipasso(await callAI(p.system, p.user, aiSettings), mancanti);
-      } catch (e) {}
+      const trad = await traduciLottiRipasso(mancanti, aiSettings);
       if (n !== richiesta.current) return;
       mancanti.forEach((x, k) => {
         if (trad[k]) {
@@ -11925,7 +11952,7 @@ function SchermataRipassoFrasi({
           if (!DIALETTI_TTS_ITA.includes(x.cod)) salvaTradRipasso(x.chiave, x.a, trad[k]);
           // IA non raggiungibile: senza riferimento la frase si fa a dettato;
           // senza traduzione nei menu semplicemente non si mostra
-        } else if (x.campo === "rif") x.item.modo = "dettato";
+        } else if (x.campo === "rif") x.item.modo = "dettato";else if (x.campo === "ui") x.item.tradPersa = true;
       });
     }
     setItems(piano);
@@ -12168,7 +12195,9 @@ function SchermataRipassoFrasi({
     className: "text-base"
   }, lingua(getUILang()).bandiera), /*#__PURE__*/React.createElement("p", {
     className: "text-slate-400 text-sm italic"
-  }, item.ui)), esito.giusta === null && /*#__PURE__*/React.createElement("p", {
+  }, item.ui)), !item.ui && item.tradPersa && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mt-3"
+  }, "🤖 Traduzione non disponibile: l'IA non ha risposto."), esito.giusta === null && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mt-2"
   }, "Non sono riuscito a controllare: questa frase non conta.")), /*#__PURE__*/React.createElement("button", {
     onClick: avanti,
