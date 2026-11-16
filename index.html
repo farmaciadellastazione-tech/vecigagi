@@ -2383,7 +2383,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"luoghi", livello:"A2", it:"marciapiede", en:"sidewalk, pavement", fr:"trottoir", es:"acera", de:"Bürgersteig, Gehweg", pt:"calçada", ca:"vorera", sp:"marciapé" },
       { tema:"aggettivi", livello:"A2", it:"noioso", en:"boring, dull", fr:"ennuyeux", es:"aburrido", de:"langweilig", pt:"chato, entediante", ca:"avorrit", sp:"setegoso", cr:"noios" },
       { tema:"oggetti", livello:"A1", it:"parte", en:"part|piece", fr:"partie|pièce", es:"parte|pieza", de:"Teil|Stück", pt:"parte|peça", ca:"part", sp:"parte", cr:"parta" },
-      { tema:"cibo", livello:"A1", it:"fetta", en:"slice", fr:"tranche", es:"rebanada", de:"Scheibe", pt:"fatia", ca:"llesca", cr:"toc, slepa, feta" },
+      { tema:"cibo", livello:"A1", it:"fetta", en:"slice", fr:"tranche", es:"rebanada", de:"Scheibe", pt:"fatia", ca:"llesca", sp:"feta", cr:"toc, slepa, feta" },
       { tema:"sintomi", livello:"A1", it:"tossire", en:"to cough", fr:"tousser", es:"toser", de:"husten", pt:"tossir", ca:"tossir", cr:"tus'ir" },
       { tema:"dialogo", livello:"B1", it:"discutere", en:"to discuss, to debate", fr:"discuter", es:"discutir, debatir", de:"diskutieren, besprechen", pt:"discutir, debater", ca:"discutir", sp:"discüte", cr:"dscutr", ge:"discûtte" },
       { tema:"dialogo", livello:"A2", it:"chiacchierare", en:"to chat, to talk", fr:"bavarder, discuter", es:"charlar, conversar", de:"plaudern, quatschen", pt:"conversar, bater papo", ca:"xerrar", sp:"ciaciaae| ciaciae| ciaitezae", cr:"ciacerar/c'ac'rar" },
@@ -2394,7 +2394,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"cibo", livello:"A1", it:"biscotto", en:"biscuit, cookie", fr:"biscuit", es:"galleta", de:"Keks", pt:"biscoito", sp:"bescòto", cr:"biscot" },
       { tema:"lavoro", livello:"B1", it:"piano d'azione", en:"action plan", fr:"plan d'action", es:"plan de acción", de:"Aktionsplan", pt:"plano de ação", ca:"pla d'acció", ro:"plan de acțiune" },
       { tema:"astratti", livello:"B1", it:"scelta", en:"choice, option", fr:"choix, option", es:"elección, opción", de:"Wahl, Option", pt:"escolha, opção", ca:"elecció" },
-      { tema:"tempo", livello:"A1", it:"festa", en:"party, celebration|holiday", fr:"fête, célébration", es:"fiesta, celebración", de:"Fest, Feier|Feiertag", pt:"festa, celebração", ca:"festa", cr:"festa" },
+      { tema:"tempo", livello:"A1", it:"festa", en:"party, celebration|holiday", fr:"fête, célébration", es:"fiesta, celebración", de:"Fest, Feier|Feiertag", pt:"festa, celebração", ca:"festa", sp:"festa", cr:"festa" },
       { tema:"emotivi", livello:"B1", it:"amato", en:"loved, beloved", fr:"aimé, chéri", es:"amado, querido", de:"geliebt", pt:"amado, querido", sp:"amà", cr:"amat" },
       { tema:"luoghi", livello:"A2", it:"riparo", en:"shelter, refuge", fr:"abri, refuge", es:"refugio, cobijo", de:"Unterschlupf, Schutz", pt:"abrigo, refúgio", ca:"refugi, aixopluc" },
       { tema:"dialogo", livello:"A2", it:"chiacchierata", en:"chat, talk", fr:"bavardage, discussion", es:"charla, conversación", de:"Plauderei, Gespräch", pt:"bate-papo, conversa", ca:"xerrada", sp:"ciaceà", cr:"ciatchrata/c'ac'rata" },
@@ -3897,7 +3897,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"luoghi", livello:"A1", it:"strada", en:"street|road", fr:"rue", es:"calle", de:"Straße", pt:"rua", ru:"улица", ca:"carrer", sp:"strade", mn:"strada", cr:"ruga, via", ge:"stradda", verif:"sp:g,mn:g", ro:"stradă" },
       { tema:"aggettivi", livello:"A2", it:"straniero", en:"foreign", fr:"étranger", es:"extranjero", de:"ausländisch", pt:"estrangeiro", ru:"иностранный", ca:"estranger", cr:"furest, stragner" },
       { tema:"sintomi", livello:"A2", it:"strappo| lacerazione", en:"muscle strain", fr:"claquage musculaire", es:"tirón muscular", de:"Muskelzerrung", pt:"distensão muscular", ca:"esquinç", sp:"sguaro, sbrego/sguàro,sbrégo", mn:"s'gu aru/zguàru", cr:"strap", verif:"mn:g" },
-      { tema:"salute", livello:"A2", it:"ferita", en:"wound", mn:"sbèru/zbèru/sbèru", cr:"ferita, tai", verif:"mn:g" },
+      { tema:"salute", livello:"A2", it:"ferita", en:"wound", sp:"feida, sbrégo", mn:"sbèru/zbèru/sbèru", cr:"ferita, tai", verif:"mn:g" },
       { tema:"natura", livello:"A2", it:"strato", en:"layer", fr:"couche", es:"capa", de:"Schicht", pt:"camada", ca:"capa", sp:"sèo", cr:"strat", verif:"sp:g" },
       { tema:"corpo", livello:"A2", it:"strattone", en:"yank", fr:"secousse", es:"tirón", de:"Ruck", pt:"puxão", ca:"estiró", mn:"s'cian cùn/sciancùn", cr:"straton", verif:"mn:g" },
       { tema:"animali", livello:"B1", it:"struzzo", en:"ostrich", fr:"autruche", es:"avestruz", de:"Strauß", pt:"avestruz", ca:"estruç", nt:["sp"] },
@@ -4211,7 +4211,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 646;
+const VOC_VERSION = 647;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
