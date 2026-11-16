@@ -326,9 +326,15 @@ test('traduzioni da JSON rovinato a metà (non troncato)', () => {
   assert.deepEqual(j(ctx.estraiTraduzioniRipasso(raw, QUATTRO)), { 0: 'Uno.', 1: 'Due.', 2: 'Tre.' });
 });
 
+// Aggiornato il 2026-11-16 con il consenso di Dino: le traduzioni ora vanno a
+// lotti (traduciLottiRipasso) e Gemini senza ragionamento; le frasi da
+// abbinare passano ancora all'estrattore, lotto per lotto. Il comportamento è
+// verificato in ripassoTraduzioneUI.test.mjs (traduzioni a lotti).
 test('la schermata passa le frasi da abbinare', () => {
   const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
-  assert.match(S, /estraiTraduzioniRipasso\(await callAI\(p\.system, p\.user, aiSettings\), mancanti\)/);
+  assert.match(S, /traduciLottiRipasso\(mancanti, aiSettings\)/);
+  const L = tra('async function traduciLottiRipasso(', '\nfunction estraiTraduzioniRipasso(');
+  assert.match(L, /estraiTraduzioniRipasso\(await chiama\(p\.system, p\.user, aiCfg, \{\s*senzaRagionamento: true\s*\}\), lotto\)/);
 });
 
 // Terza code review (2026-10-27): la voce legge le cifre come parole ("Ho 3

@@ -9334,7 +9334,7 @@ function SchermataSenzaIA({
     onConfigura: onConfigura
   }), extra);
 }
-async function callAI(systemPrompt, userPrompt, aiCfg) {
+async function callAI(systemPrompt, userPrompt, aiCfg, opts = {}) {
   // Solo la chiave vuota: la soglia di iaConfigurata vale per l'interfaccia
   if (!String(aiCfg?.apiKey || "").trim()) return MSG_SENZA_IA;
   const cfg = GROQ_MODELS[aiCfg?.provider] || GROQ_MODELS.gemini;
@@ -9379,7 +9379,15 @@ ${userPrompt}`
             }]
           }],
           generationConfig: {
-            maxOutputTokens: AI_MAX_TOKENS
+            maxOutputTokens: AI_MAX_TOKENS,
+            // Gemini 2.5 "ragiona" prima di rispondere e quei token rientrano
+            // nel tetto: nelle richieste lunghe e semplici (traduzioni del
+            // Ripasso frasi) la risposta arrivava vuota o tagliata.
+            ...(opts.senzaRagionamento ? {
+              thinkingConfig: {
+                thinkingBudget: 0
+              }
+            } : {})
           }
         })
       });
@@ -9397,6 +9405,10 @@ ${userPrompt}`
         body: JSON.stringify({
           model: cfg.model,
           max_tokens: AI_MAX_TOKENS,
+          // Anche gpt-oss (Groq) ragiona dentro il tetto di token
+          ...(opts.senzaRagionamento && aiCfg?.provider === "groq" ? {
+            reasoning_effort: "low"
+          } : {}),
           messages: [{
             role: "system",
             content: systemPrompt
@@ -11757,8 +11769,8 @@ function serveTradUIRipasso(item, ui) {
   if (item.modo === "traduzione") return !!item.a && item.a !== ui;
   return !DIALETTI_TTS_ITA.includes(item.cod);
 }
-// Tutte le traduzioni da chiedere all'IA nell'unica richiesta di inizio
-// sessione: riferimenti mancanti (campo "rif") e frasi nella lingua dei menu
+// Tutte le traduzioni da chiedere all'IA a inizio sessione (a lotti, vedi
+// traduciLottiRipasso): riferimenti mancanti (campo "rif") e frasi nella lingua dei menu
 // non ancora salvate (campo "ui"). Ognuna porta la frase in cui scrivere.
 function richiesteTradRipasso(piano, ui, nomeUI) {
   const out = [];
@@ -11791,6 +11803,32 @@ function promptTraduzioniRipasso(items) {
 Rispondi con UN oggetto JSON, senza markdown: {"traduzioni": [{"id": number, "originale": string, "lingua": string, "testo": string}]}`,
     user: items.map((x, i) => `${i}. Da ${x.nomeDa} a ${x.nomeA}: "${x.testo}"`).join("\n") + "\n\nRispondi con il JSON."
   };
+}
+// Bug 2026-11-16 (Dino, Gemini): tutte le traduzioni della sessione in una
+// sola richiesta superavano il tetto di token e si perdevano in silenzio.
+// Ora lotti piccoli in parallelo; un lotto fallito non fa perdere gli altri.
+// Risultato: {indice in items: testo}, come estraiTraduzioniRipasso.
+// 8 per lotto (code review): con il ragionamento spento stanno nel tetto, e
+// una sessione da 10 frasi fa al massimo 3 richieste (limite al minuto di
+// Gemini gratuito).
+const LOTTO_TRAD_RIPASSO = 8;
+async function traduciLottiRipasso(items, aiCfg, chiama = callAI) {
+  const lotti = [];
+  for (let k = 0; k < (items || []).length; k += LOTTO_TRAD_RIPASSO) lotti.push(k);
+  const out = {};
+  await Promise.all(lotti.map(async inizio => {
+    const lotto = items.slice(inizio, inizio + LOTTO_TRAD_RIPASSO);
+    try {
+      const p = promptTraduzioniRipasso(lotto);
+      const trad = estraiTraduzioniRipasso(await chiama(p.system, p.user, aiCfg, {
+        senzaRagionamento: true
+      }), lotto);
+      Object.keys(trad).forEach(k => {
+        out[inizio + Number(k)] = trad[k];
+      });
+    } catch (e) {}
+  }));
+  return out;
 }
 // Traduzioni → {indice in items: testo}. Si abbinano per TESTO: l'IA ripete la
 // frase in "originale" (quarta code review). Abbinando per numero, un'IA che
@@ -11913,19 +11951,20 @@ function SchermataRipassoFrasi({
     }));
     const mancanti = richiesteTradRipasso(piano, ui, lingua(ui).nome);
     if (mancanti.length) {
-      let trad = {};
-      try {
-        const p = promptTraduzioniRipasso(mancanti);
-        trad = estraiTraduzioniRipasso(await callAI(p.system, p.user, aiSettings), mancanti);
-      } catch (e) {}
+      const trad = await traduciLottiRipasso(mancanti, aiSettings);
       if (n !== richiesta.current) return;
       mancanti.forEach((x, k) => {
         if (trad[k]) {
           x.item[x.campo] = trad[k];
           if (!DIALETTI_TTS_ITA.includes(x.cod)) salvaTradRipasso(x.chiave, x.a, trad[k]);
           // IA non raggiungibile: senza riferimento la frase si fa a dettato;
-          // senza traduzione nei menu semplicemente non si mostra
-        } else if (x.campo === "rif") x.item.modo = "dettato";
+          // senza traduzione nei menu, dopo la risposta un avviso
+        } else if (x.campo === "rif") x.item.modo = "dettato";else if (x.campo === "ui") x.item.tradPersa = true;
+      });
+      // Riferimento fallito → dettato: la traduzione nei menu non era stata
+      // chiesta (code review), ma l'avviso serve lo stesso
+      piano.forEach(x => {
+        if (!x.ui && serveTradUIRipasso(x, ui)) x.tradPersa = true;
       });
     }
     setItems(piano);
@@ -12168,7 +12207,9 @@ function SchermataRipassoFrasi({
     className: "text-base"
   }, lingua(getUILang()).bandiera), /*#__PURE__*/React.createElement("p", {
     className: "text-slate-400 text-sm italic"
-  }, item.ui)), esito.giusta === null && /*#__PURE__*/React.createElement("p", {
+  }, item.ui)), !item.ui && item.tradPersa && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-zinc-500 mt-3"
+  }, "🤖 Traduzione non disponibile: l'IA non l'ha fornita."), esito.giusta === null && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mt-2"
   }, "Non sono riuscito a controllare: questa frase non conta.")), /*#__PURE__*/React.createElement("button", {
     onClick: avanti,

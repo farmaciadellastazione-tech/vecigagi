@@ -25,7 +25,7 @@ vm.runInContext(fs.readFileSync(ROOT + '/vocab.js', 'utf8'), ctx);
 vm.runInContext(tra('const NUMERI_PAROLE = {', '\nfunction convertiNumeri(') + '\n' + tra('function convertiNumeri(', '\n}') + '\n}\nglobalThis.convertiNumeri = convertiNumeri;', ctx);
 vm.runInContext([
   tra('// ── Archivio frasi da ripassare', '\n// ── Aiuto Frase libera'),
-  'Object.assign(globalThis, { serveTradUIRipasso, richiesteTradRipasso, promptTraduzioniRipasso, estraiTraduzioniRipasso });',
+  'Object.assign(globalThis, { serveTradUIRipasso, richiesteTradRipasso, promptTraduzioniRipasso, estraiTraduzioniRipasso, traduciLottiRipasso, LOTTO_TRAD_RIPASSO });',
 ].join('\n'), ctx);
 const j = x => JSON.parse(JSON.stringify(x));
 const S = tra('function SchermataRipassoFrasi(', '\n// ── Aiuto Frase libera');
@@ -117,4 +117,79 @@ test('la schermata: cache, richiesta unica, salvataggio, niente senza IA', () =>
 
 test('la schermata: dopo la risposta la frase nella lingua dei menu', () => {
   assert.match(S, /item\.ui && \/\*#__PURE__\*\/React\.createElement\("div", \{[^}]*\}, \/\*#__PURE__\*\/React\.createElement\("span", \{[^}]*\}, lingua\(getUILang\(\)\)\.bandiera\), \/\*#__PURE__\*\/React\.createElement\("p", \{[^}]*\}, item\.ui\)\)/);
+});
+
+// Bug 2026-11-16 (Dino, Gemini dal cellulare): dettato in francese, nessuna
+// traduzione. Tutte le traduzioni della sessione (fino a ~20) andavano in UNA
+// richiesta con tetto di 1000 token, e Gemini 2.5 Flash spende parte del tetto
+// nel "ragionamento": risposta vuota o tagliata, traduzioni perse in silenzio.
+// Ora: richieste piccole (lotti), Gemini senza ragionamento, avviso se manca.
+test('traduzioni a lotti: richieste piccole, risultati rimessi al loro posto', async () => {
+  const piano = Array.from({ length: 10 }, (_, k) => frase('en', 'dettato', null, { testo: `Frase ${k}.`, nomeDa: 'Inglese', ui: '' }));
+  const r = ctx.richiesteTradRipasso(piano, 'it', 'Italiano');
+  assert.equal(r.length, 10);
+  const chiamate = [];
+  const finta = async (system, user, cfg, opts) => {
+    chiamate.push({ user, opts });
+    const righe = [...user.matchAll(/^(\d+)\. Da .*?: "(.*)"$/gm)];
+    return JSON.stringify({ traduzioni: righe.map(m => ({ id: Number(m[1]), originale: m[2], lingua: 'Italiano', testo: 'IT ' + m[2] })) });
+  };
+  const trad = await ctx.traduciLottiRipasso(r, {}, finta);
+  assert.ok(chiamate.length > 1, 'più richieste');
+  chiamate.forEach(c => {
+    assert.ok([...c.user.matchAll(/^\d+\. /gm)].length <= ctx.LOTTO_TRAD_RIPASSO);
+    assert.deepEqual(j(c.opts), { senzaRagionamento: true });
+  });
+  for (let k = 0; k < 10; k++) assert.equal(trad[k], `IT Frase ${k}.`);
+});
+
+test('traduzioni a lotti: un lotto fallito non fa perdere gli altri', async () => {
+  const piano = Array.from({ length: 2 * ctx.LOTTO_TRAD_RIPASSO }, (_, k) => frase('en', 'dettato', null, { testo: `Frase ${k}.`, nomeDa: 'Inglese', ui: '' }));
+  const r = ctx.richiesteTradRipasso(piano, 'it', 'Italiano');
+  let n = 0;
+  const finta = async (system, user) => {
+    if (n++ === 0) return 'Errore risposta AI';
+    const righe = [...user.matchAll(/^(\d+)\. Da .*?: "(.*)"$/gm)];
+    return JSON.stringify({ traduzioni: righe.map(m => ({ id: Number(m[1]), originale: m[2], testo: 'IT ' + m[2] })) });
+  };
+  const trad = await ctx.traduciLottiRipasso(r, {}, finta);
+  for (let k = 0; k < ctx.LOTTO_TRAD_RIPASSO; k++) assert.equal(trad[k], undefined);
+  const ultima = 2 * ctx.LOTTO_TRAD_RIPASSO - 1;
+  assert.equal(trad[ultima], `IT Frase ${ultima}.`);
+  // anche un lotto che lancia un'eccezione
+  const lancia = async () => { throw new Error('rete'); };
+  assert.deepEqual(j(await ctx.traduciLottiRipasso(r, {}, lancia)), {});
+});
+
+test('Gemini senza ragionamento solo quando richiesto', () => {
+  const ai = tra('async function callAI(', '\nfunction ContribuisciDialetto(');
+  assert.match(ai, /async function callAI\(systemPrompt, userPrompt, aiCfg, opts = \{\}\)/);
+  assert.match(ai, /\.\.\.\(opts\.senzaRagionamento \? \{\s*thinkingConfig: \{\s*thinkingBudget: 0\s*\}\s*\} : \{\}\)/);
+});
+
+test('la schermata: traduzioni a lotti e avviso se la traduzione nei menu manca', () => {
+  assert.match(S, /const trad = await traduciLottiRipasso\(mancanti, aiSettings\);/);
+  assert.match(S, /if \(x\.campo === "ui"\) x\.item\.tradPersa = true;/);
+  assert.match(S, /!item\.ui && item\.tradPersa && /);
+});
+
+// Code review 2026-11-16: se fallisce il riferimento di una traduzione verso la
+// lingua dei menu, la frase passa a dettato senza che nessuno abbia chiesto la
+// traduzione nei menu: niente traduzione e niente avviso (lo stesso sintomo).
+test('riferimento fallito → dettato: avviso anche lì', () => {
+  assert.match(S, /piano\.forEach\(x => \{\s*if \(!x\.ui && serveTradUIRipasso\(x, ui\)\) x\.tradPersa = true;\s*\}\);/);
+  // il caso: fr → it con menu in italiano, diventato dettato
+  assert.equal(ctx.serveTradUIRipasso(frase('fr', 'dettato'), 'it'), true);
+});
+
+// Code review 2026-11-16: anche il modello Groq (gpt-oss) ragiona dentro il tetto.
+test('Groq: ragionamento al minimo quando richiesto', () => {
+  const ai = tra('async function callAI(', '\nfunction ContribuisciDialetto(');
+  assert.match(ai, /\.\.\.\(opts\.senzaRagionamento && aiCfg\?\.provider === "groq" \? \{\s*reasoning_effort: "low"\s*\} : \{\}\)/);
+});
+
+// Code review 2026-11-16: 5 richieste insieme sforavano il limite al minuto di
+// Gemini gratuito; con il ragionamento spento 8 traduzioni stanno nel tetto.
+test('al massimo 3 richieste per una sessione da 10 frasi', () => {
+  assert.ok(Math.ceil(20 / ctx.LOTTO_TRAD_RIPASSO) <= 3);
 });
