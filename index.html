@@ -11746,10 +11746,49 @@ const primoTentativoRipasso = it => !!it && (it.tentativo || 1) === 1;
 function esitoVoceRipasso(item, testi, bcp47) {
   return (Array.isArray(testi) ? testi : []).find(t => String(t || "").trim() && confrontaRipasso(testoDettatoRipasso(item.testo), t, false, bcp47)) || null;
 }
+// Dopo la risposta, come in Allenamento (Dino, 2026-11-16): la frase anche
+// nella lingua dei menu, se né la frase né la risposta sono in quella lingua.
+// Dettato e voce si rispondono nella lingua della frase. Con il solo dialetto
+// (dettato, voce) niente: l'IA lo traduce male e chi lo scrive sa cosa
+// significa; se oltre al dialetto c'è una lingua (traduzione) sì (Dino).
+// ui = null senza IA: niente traduzione.
+function serveTradUIRipasso(item, ui) {
+  if (!item || !ui || item.cod === ui) return false;
+  if (item.modo === "traduzione") return !!item.a && item.a !== ui;
+  return !DIALETTI_TTS_ITA.includes(item.cod);
+}
+// Tutte le traduzioni da chiedere all'IA nell'unica richiesta di inizio
+// sessione: riferimenti mancanti (campo "rif") e frasi nella lingua dei menu
+// non ancora salvate (campo "ui"). Ognuna porta la frase in cui scrivere.
+function richiesteTradRipasso(piano, ui, nomeUI) {
+  const out = [];
+  (piano || []).forEach(item => {
+    const base = {
+      item,
+      testo: item.testo,
+      cod: item.cod,
+      chiave: item.chiave,
+      nomeDa: item.nomeDa
+    };
+    if (item.modo === "traduzione" && !item.rif) out.push({
+      ...base,
+      campo: "rif",
+      a: item.a,
+      nomeA: item.nomeA
+    });
+    if (serveTradUIRipasso(item, ui) && !item.ui) out.push({
+      ...base,
+      campo: "ui",
+      a: ui,
+      nomeA: nomeUI
+    });
+  });
+  return out;
+}
 function promptTraduzioniRipasso(items) {
   return {
-    system: `Sei un traduttore. Traduci ogni frase nella lingua indicata, in modo naturale e corretto, mantenendo il significato e il registro. In "originale" ricopia esattamente la frase da tradurre.
-Rispondi con UN oggetto JSON, senza markdown: {"traduzioni": [{"id": number, "originale": string, "testo": string}]}`,
+    system: `Sei un traduttore. Traduci ogni frase nella lingua indicata, in modo naturale e corretto, mantenendo il significato e il registro. In "originale" ricopia esattamente la frase da tradurre, in "lingua" il nome della lingua in cui l'hai tradotta.
+Rispondi con UN oggetto JSON, senza markdown: {"traduzioni": [{"id": number, "originale": string, "lingua": string, "testo": string}]}`,
     user: items.map((x, i) => `${i}. Da ${x.nomeDa} a ${x.nomeA}: "${x.testo}"`).join("\n") + "\n\nRispondi con il JSON."
   };
 }
@@ -11776,8 +11815,13 @@ function estraiTraduzioniRipasso(raw, items) {
   voci.forEach(x => {
     if (!x || typeof x.originale !== "string" || typeof x.testo !== "string" || !x.testo.trim()) return;
     const chiave = chiaveFraseRipasso(x.originale);
-    const libere = (items || []).map((it, k) => k).filter(k => !(k in out) && chiaveFraseRipasso(items[k].testo) === chiave);
+    let libere = (items || []).map((it, k) => k).filter(k => !(k in out) && chiaveFraseRipasso(items[k].testo) === chiave);
     if (!chiave || !libere.length) return;
+    // Stessa frase verso due lingue (riferimento + lingua dei menu): decide la
+    // lingua dichiarata, se corrisponde a una delle richieste
+    const lingua = typeof x.lingua === "string" ? x.lingua.trim().toLowerCase() : "";
+    const perLingua = lingua ? libere.filter(k => String(items[k].nomeA || "").trim().toLowerCase() === lingua) : [];
+    if (perLingua.length) libere = perLingua;
     // L'id arriva spesso come testo ("0"): conta solo come preferenza
     const id = Number(String(x.id ?? "").trim() || NaN);
     out[libere.includes(id) ? id : libere[0]] = x.testo.trim();
@@ -11856,13 +11900,18 @@ function SchermataRipassoFrasi({
       return;
     }
     const stats = caricaStatsRipasso();
+    // Lingua dei menu per la traduzione dopo la risposta (senza IA niente)
+    const ui = conIA ? getUILang() : null;
     const piano = pianoRipasso(scegliFrasiRipasso(frasi, stats, N_FRASI_RIPASSO, Math.random), lingue, conIA, Math.random, !!SR).map(x => ({
       ...x,
       // Dal dialetto l'IA traduce male: il riferimento si richiede ogni volta,
       // così uno sbagliato non resta per sempre
-      rif: x.modo === "traduzione" && !DIALETTI_TTS_ITA.includes(x.cod) ? stats[x.chiave]?.trad?.[x.a] || "" : ""
+      rif: x.modo === "traduzione" && !DIALETTI_TTS_ITA.includes(x.cod) ? stats[x.chiave]?.trad?.[x.a] || "" : "",
+      // Salvata come i riferimenti (una volta sola per frase); dal dialetto
+      // invece si richiede ogni volta, come il riferimento
+      ui: serveTradUIRipasso(x, ui) && !DIALETTI_TTS_ITA.includes(x.cod) ? stats[x.chiave]?.trad?.[ui] || "" : ""
     }));
-    const mancanti = piano.filter(x => x.modo === "traduzione" && !x.rif);
+    const mancanti = richiesteTradRipasso(piano, ui, lingua(ui).nome);
     if (mancanti.length) {
       let trad = {};
       try {
@@ -11872,9 +11921,11 @@ function SchermataRipassoFrasi({
       if (n !== richiesta.current) return;
       mancanti.forEach((x, k) => {
         if (trad[k]) {
-          x.rif = trad[k];
+          x.item[x.campo] = trad[k];
           if (!DIALETTI_TTS_ITA.includes(x.cod)) salvaTradRipasso(x.chiave, x.a, trad[k]);
-        } else x.modo = "dettato"; // IA non raggiungibile: la frase si fa a dettato
+          // IA non raggiungibile: senza riferimento la frase si fa a dettato;
+          // senza traduzione nei menu semplicemente non si mostra
+        } else if (x.campo === "rif") x.item.modo = "dettato";
       });
     }
     setItems(piano);
@@ -12111,7 +12162,13 @@ function SchermataRipassoFrasi({
     className: "text-base text-zinc-400 mb-2"
   }, "📚 ", esito.note), (esito.giusta !== true || !dettato) && /*#__PURE__*/React.createElement("p", {
     className: "text-base text-cyan-400"
-  }, dettato ? "💬 " : "💬 Riferimento: ", esito.giustaTesto), esito.giusta === null && /*#__PURE__*/React.createElement("p", {
+  }, dettato ? "💬 " : "💬 Riferimento: ", esito.giustaTesto), item.ui && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-center gap-2 bg-zinc-900 px-4 py-2 rounded-full border border-zinc-700 mt-3"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-base"
+  }, lingua(getUILang()).bandiera), /*#__PURE__*/React.createElement("p", {
+    className: "text-slate-400 text-sm italic"
+  }, item.ui)), esito.giusta === null && /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-zinc-500 mt-2"
   }, "Non sono riuscito a controllare: questa frase non conta.")), /*#__PURE__*/React.createElement("button", {
     onClick: avanti,
