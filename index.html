@@ -3255,7 +3255,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"dialogo", livello:"A1", it:"Ha la ricetta?", en:"Do you have a prescription?", fr:"Avez-vous une ordonnance?", es:"¿Tiene receta?", de:"Haben Sie ein Rezept?", pt:"Tem a receita?", ca:"Té la recepta?", ko:"처방전이 있으신가요?", ar:"هل معك وصفة طبية؟", zh:"您有处方吗？", ja:"処方箋はありますか？", nt:["mn"] },
       { tema:"dialogo", livello:"B1", it:"Ha una tessera sanitaria?", en:"Do you have a health card?", fr:"Avez-vous une carte Vitale?", es:"¿Tiene tarjeta sanitaria?", de:"Haben Sie eine Krankenversicherungskarte?", pt:"Tem cartão de saúde?|Tem cartao de saude?", ca:"Té una targeta sanitària?", ko:"건강보험 카드가 있으신가요?", ar:"هل معك بطاقة التأمين الصحي؟", zh:"您有医保卡吗？", ja:"健康保険証はありますか？", nt:["mn"] },
       { tema:"dialogo", livello:"A1", it:"ho ... anni", en:"I am ... years old", fr:"J'ai ... ans", es:"Tengo ... años", de:"Ich bin ... Jahre alt", pt:"Tenho ... anos", ca:"Tinc ... anys", mn:"me a gho ... ani", verif:"mn:g", ro:"am ... ani" },
-      { tema:"cibo", livello:"A1", it:"ho fame", en:"I'm hungry", fr:"j'ai faim", es:"tengo hambre", de:"ich habe Hunger", pt:"estou com fome", ca:"tinc gana", sp:"a g'ho fame", mn:"a g'ho fame", ge:"g'ho famme", ia:"io ha fame", la:"esurio", src:{"sp":"sc"}, verif:"mn:g", ro:"mi-e foame", audio:{"sp":"a-gho-fame.mp3"} },
+      { tema:"cibo", livello:"A1", it:"ho fame", en:"I'm hungry", fr:"j'ai faim", es:"tengo hambre", de:"ich habe Hunger", pt:"estou com fome", ca:"tinc gana", sp:"a g'ho fame| me a gh'o fame", mn:"a g'ho fame", ge:"g'ho famme", ia:"io ha fame", la:"esurio", src:{"sp":"sc"}, verif:"mn:g", ro:"mi-e foame", audio:{"sp":"a-gho-fame.mp3"} },
       { tema:"corpo", livello:"A1", it:"ho sete", en:"I'm thirsty", fr:"J'ai soif", es:"Tengo sed", de:"ich habe Durst", pt:"Tenho sede", ca:"Tinc set", sp:"a g'ho sede", mn:"agòh sede/a g'ho séde", ge:"g'ho sae", verif:"mn:g", ro:"mi-e sete" },
       { tema:"citazioni", livello:"B1", it:"i soldi non crescono sugli alberi", en:"Money doesn't grow on trees", fr:"L'argent ne pousse pas sur les arbres", es:"El dinero no crece en los árboles", de:"Geld wächst nicht auf Bäumen", pt:"O dinheiro não cresce em árvores", ca:"Els diners no creixen als arbres", ge:"e palànche no créscian in scî èrboi", src:{"mn":"🤖 IA"}, verif:"mn:r" },
       { tema:"aggettivi", livello:"A2", it:"identico|spiaccicato", en:"identical", mn:"s'ciat à/sciatà", cr:"edentic", verif:"mn:g" },
@@ -4207,7 +4207,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 649;
+const VOC_VERSION = 650;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
