@@ -174,9 +174,26 @@ function variantiSenzaSoggettoDialetto(atteso) {
   return [...new Set(out)];
 }
 
-// Espande contrazioni inglesi comuni
+// Espande contrazioni inglesi comuni. Apostrofo dritto (') o tipografico (’):
+// la tastiera del telefono mette quello tipografico, e "I’m" diventava "im"
+// (Dino 2026-11-20). Solo parole intere: "Hi'm" non diventa "Hi am".
+const CONTRAZIONI_EN = [
+  ["i'll", "i will"], ["i'm", "i am"], ["i've", "i have"], ["i'd", "i would"],
+  ["you'll", "you will"], ["you're", "you are"], ["you've", "you have"], ["you'd", "you would"],
+  ["he'll", "he will"], ["he's", "he is"], ["he'd", "he would"],
+  ["she'll", "she will"], ["she's", "she is"], ["she'd", "she would"],
+  ["we'll", "we will"], ["we're", "we are"], ["we've", "we have"], ["we'd", "we would"],
+  ["they'll", "they will"], ["they're", "they are"], ["they've", "they have"], ["they'd", "they would"],
+  ["won't", "will not"], ["can't", "can not"], ["don't", "do not"], ["doesn't", "does not"],
+  ["didn't", "did not"], ["isn't", "is not"], ["aren't", "are not"], ["wasn't", "was not"],
+  ["weren't", "were not"], ["hadn't", "had not"], ["hasn't", "has not"], ["haven't", "have not"],
+  ["wouldn't", "would not"], ["couldn't", "could not"], ["shouldn't", "should not"],
+  ["it's", "it is"], ["that's", "that is"], ["there's", "there is"], ["what's", "what is"],
+].map(([c, e]) => [new RegExp("\\b" + c.replace("'", "['’]") + "\\b", "gi"), e]);
 function espandiContrazioni(str) {
-  return str.replace(/i'll/gi, "i will").replace(/i'm/gi, "i am").replace(/i've/gi, "i have").replace(/i'd/gi, "i would").replace(/you'll/gi, "you will").replace(/you're/gi, "you are").replace(/you've/gi, "you have").replace(/you'd/gi, "you would").replace(/he'll/gi, "he will").replace(/he's/gi, "he is").replace(/he'd/gi, "he would").replace(/she'll/gi, "she will").replace(/she's/gi, "she is").replace(/she'd/gi, "she would").replace(/we'll/gi, "we will").replace(/we're/gi, "we are").replace(/we've/gi, "we have").replace(/we'd/gi, "we would").replace(/they'll/gi, "they will").replace(/they're/gi, "they are").replace(/they've/gi, "they have").replace(/they'd/gi, "they would").replace(/won't/gi, "will not").replace(/can't/gi, "cannot").replace(/cannot/gi, "can not").replace(/don't/gi, "do not").replace(/doesn't/gi, "does not").replace(/didn't/gi, "did not").replace(/isn't/gi, "is not").replace(/aren't/gi, "are not").replace(/wasn't/gi, "was not").replace(/weren't/gi, "were not").replace(/hadn't/gi, "had not").replace(/hasn't/gi, "has not").replace(/haven't/gi, "have not").replace(/wouldn't/gi, "would not").replace(/couldn't/gi, "could not").replace(/shouldn't/gi, "should not").replace(/it's/gi, "it is").replace(/that's/gi, "that is").replace(/there's/gi, "there is").replace(/what's/gi, "what is");
+  let s = str;
+  for (const [re, e] of CONTRAZIONI_EN) s = s.replace(re, e);
+  return s.replace(/\bcannot\b/gi, "can not");
 }
 
 // Accetta sia "eat" che "to eat" per verbi inglesi
