@@ -189,6 +189,8 @@ const CONTRAZIONI_EN = [
   ["weren't", "were not"], ["hadn't", "had not"], ["hasn't", "has not"], ["haven't", "have not"],
   ["wouldn't", "would not"], ["couldn't", "could not"], ["shouldn't", "should not"],
   ["it's", "it is"], ["that's", "that is"], ["there's", "there is"], ["what's", "what is"],
+  ["let's", "let us"], ["who's", "who is"], ["it'll", "it will"], ["mustn't", "must not"],
+  ["needn't", "need not"], ["here's", "here is"], ["where's", "where is"],
 ].map(([c, e]) => [new RegExp("\\b" + c.replace("'", "['’]") + "\\b", "gi"), e]);
 function espandiContrazioni(str) {
   let s = str;
