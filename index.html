@@ -5534,7 +5534,8 @@ function isCorretta(atteso, dato, bcp47, codLingua, preciso = false) {
   // Anche "cannot" ("can not" nella risposta). Su queste forme espanse il
   // soggetto NON si toglie: "she's tired" non deve accettare "he is tired".
   const nPrimaContrazioni = rawOps.length;
-  if (isEn) rawOps.push(...rawOps.filter(s => /['’]|\bcannot\b/i.test(s)).map(espandiContrazioni));
+  // 's = is/has, 'd = would/had: tutte le letture ("I'd seen" = "I had seen").
+  if (isEn) rawOps.push(...rawOps.filter(s => /['’]|\bcannot\b/i.test(s)).flatMap(variantiContrazioni));
   const ops = rawOps.map(s => {
     const base = normalizza(s.replace(/\(.*?\)/g, "").trim());
     return isEn ? base.startsWith("to ") ? base.slice(3) : base : base;
@@ -5553,7 +5554,9 @@ function isCorretta(atteso, dato, bcp47, codLingua, preciso = false) {
   const nDialetto = isDialetto ? normalizzaDialetto(n) : null;
   const opsDialetto = isDialetto ? ops.map(o => normalizzaDialetto(o)) : [];
   const nFin = isDialetto ? normalizza(datoFin) : n;
-  const candidati = [...new Set([n, nFin, nNoSogg, ...(nDialetto ? [nDialetto] : []), ...omofoniDato])];
+  // Inglese: anche le altre letture delle contrazioni della risposta ("I'd" → "i had")
+  const contrDato = isEn ? variantiContrazioni(datoConv).map(s => { const b = normalizza(s); return b.startsWith("to ") ? b.slice(3) : b; }) : [];
+  const candidati = [...new Set([n, nFin, nNoSogg, ...(nDialetto ? [nDialetto] : []), ...omofoniDato, ...contrDato])];
   return ops.some((op, idx) => {
     if (!op) return false;
     const opNoSogg = opsNoSogg[idx] || op;
