@@ -85,6 +85,43 @@ test('prompt "Era giusta?": la regola delle contrazioni solo per l\'inglese', ()
   assert.doesNotMatch(ctx2.promptSinonimo({ ...caso, nomeA: 'Italiano', codA: 'it' }).system, /contrazion/i);
 });
 
+// Dino 2026-11-20: 's = is/has, 'd = would/had; aiutino anche con contrazioni
+
+test("'s e 'd: valgono tutte e due le letture", () => {
+  assert.strictEqual(ok("I'd seen it", 'I had seen it'), true);
+  assert.strictEqual(ok("I'd like it", 'I would like it'), true);
+  assert.strictEqual(ok("he's got a car", 'he has got a car'), true);
+  assert.strictEqual(ok("he's tired", 'he is tired'), true);
+  assert.strictEqual(ok('I had seen it', "I'd seen it"), true);
+  assert.strictEqual(ok('he has got a car', 'he’s got a car'), true);
+  assert.strictEqual(ok("it's been a long day", 'it has been a long day'), true);
+});
+
+test("varianti: al massimo is/has × would/had, il resto invariato", () => {
+  const v = ctx.variantiContrazioni("he's said I'd go");
+  assert.deepStrictEqual([...v].sort(), ['he has said i had go', 'he has said i would go', 'he is said i had go', 'he is said i would go']);
+  assert.deepStrictEqual([...ctx.variantiContrazioni("I'm")], ['i am']);
+  assert.deepStrictEqual([...ctx.variantiContrazioni('hello')], ['hello']);
+});
+
+test("'s/'d: soggetto sbagliato o forma diversa restano sbagliati", () => {
+  assert.strictEqual(ok("she's tired", 'he has tired'), false);
+  assert.strictEqual(ok("I'd seen it", 'you had seen it'), false);
+  assert.strictEqual(ok("I'd seen it", 'I have seen it'), false);
+});
+
+test('aiutino: compare anche con le contrazioni, nello stile della risposta', () => {
+  assert.deepStrictEqual({ ...ctx.quasiGiusta("I'm tired", "I'm tird", 'en') }, { forma: "I'm tired" });
+  assert.deepStrictEqual({ ...ctx.quasiGiusta("I'm tired", 'I am tird', 'en') }, { forma: 'I am tired' });
+  assert.deepStrictEqual({ ...ctx.quasiGiusta("I'm tired", 'I’m tird', 'en') }, { forma: "I'm tired" });
+  assert.deepStrictEqual({ ...ctx.quasiGiusta('I am tired', "I'm tird", 'en') }, { forma: 'I am tired' });
+  assert.deepStrictEqual({ ...ctx.quasiGiusta("I'd seen it", 'I had sen it', 'en') }, { forma: 'I had seen it' });
+  // giusta (anche espansa): niente aiutino
+  assert.strictEqual(ctx.quasiGiusta("I'm tired", 'I am tired', 'en'), null);
+  // altre lingue invariate
+  assert.deepStrictEqual({ ...ctx.quasiGiusta("l'acqua", "l'acqa", 'it') }, { forma: "l'acqua" });
+});
+
 test('risposte sbagliate restano sbagliate', () => {
   assert.strictEqual(ok('I am', 'I’ve'), false);
   assert.strictEqual(ok('I am', 'you’re'), false);

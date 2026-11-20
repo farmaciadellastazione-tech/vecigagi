@@ -178,24 +178,37 @@ function variantiSenzaSoggettoDialetto(atteso) {
 // la tastiera del telefono mette quello tipografico, e "I’m" diventava "im"
 // (Dino 2026-11-20). Solo parole intere: "Hi'm" non diventa "Hi am".
 const CONTRAZIONI_EN = [
-  ["i'll", "i will"], ["i'm", "i am"], ["i've", "i have"], ["i'd", "i would"],
-  ["you'll", "you will"], ["you're", "you are"], ["you've", "you have"], ["you'd", "you would"],
-  ["he'll", "he will"], ["he's", "he is"], ["he'd", "he would"],
-  ["she'll", "she will"], ["she's", "she is"], ["she'd", "she would"],
-  ["we'll", "we will"], ["we're", "we are"], ["we've", "we have"], ["we'd", "we would"],
-  ["they'll", "they will"], ["they're", "they are"], ["they've", "they have"], ["they'd", "they would"],
+  ["i'll", "i will"], ["i'm", "i am"], ["i've", "i have"],
+  ["you'll", "you will"], ["you're", "you are"], ["you've", "you have"],
+  ["he'll", "he will"], ["she'll", "she will"],
+  ["we'll", "we will"], ["we're", "we are"], ["we've", "we have"],
+  ["they'll", "they will"], ["they're", "they are"], ["they've", "they have"],
   ["won't", "will not"], ["can't", "can not"], ["don't", "do not"], ["doesn't", "does not"],
   ["didn't", "did not"], ["isn't", "is not"], ["aren't", "are not"], ["wasn't", "was not"],
   ["weren't", "were not"], ["hadn't", "had not"], ["hasn't", "has not"], ["haven't", "have not"],
   ["wouldn't", "would not"], ["couldn't", "could not"], ["shouldn't", "should not"],
-  ["it's", "it is"], ["that's", "that is"], ["there's", "there is"], ["what's", "what is"],
-  ["let's", "let us"], ["who's", "who is"], ["it'll", "it will"], ["mustn't", "must not"],
-  ["needn't", "need not"], ["here's", "here is"], ["where's", "where is"],
+  ["let's", "let us"], ["it'll", "it will"], ["mustn't", "must not"],
+  ["needn't", "need not"], ["here's", "here is"],
 ].map(([c, e]) => [new RegExp("\\b" + c.replace("'", "['’]") + "\\b", "gi"), e]);
-function espandiContrazioni(str) {
-  let s = str;
-  for (const [re, e] of CONTRAZIONI_EN) s = s.replace(re, e);
-  return s.replace(/\bcannot\b/gi, "can not");
+// Ambigue (Dino 2026-11-20): 's = is/has ("he's got"), 'd = would/had ("I'd seen")
+const CONTRAZIONE_S = /\b(he|she|it|that|there|what|who|where)['’]s\b/gi;
+const CONTRAZIONE_D = /\b(i|you|he|she|we|they)['’]d\b/gi;
+// Lettura predefinita is/would; variantiContrazioni dà anche has/had.
+function espandiContrazioni(str, s = "is", d = "would") {
+  let r = str.replace(CONTRAZIONE_S, (m, p) => p.toLowerCase() + " " + s)
+    .replace(CONTRAZIONE_D, (m, p) => p.toLowerCase() + " " + d);
+  for (const [re, e] of CONTRAZIONI_EN) r = r.replace(re, e);
+  return r.replace(/\bcannot\b/gi, "can not");
+}
+// Tutte le letture di una frase con contrazioni: al massimo is/has × would/had
+function variantiContrazioni(str) {
+  return [...new Set(["is", "has"].flatMap(s => ["would", "had"].map(d => espandiContrazioni(str, s, d))))];
+}
+// Forma espansa da mostrare (aiutino): "I" maiuscola, e maiuscola iniziale
+// se l'aveva l'originale ("He's tired" → "He is tired").
+function mostraEspansa(espansa, originale) {
+  const r = espansa.replace(/\bi\b/g, "I");
+  return /^\p{Lu}/u.test(originale) ? r.charAt(0).toUpperCase() + r.slice(1) : r;
 }
 
 // Accetta sia "eat" che "to eat" per verbi inglesi
@@ -263,20 +276,30 @@ function quasiGiusta(atteso, dato, codLingua) {
   if (["zh", "ja", "ko"].includes(codLingua)) return null;
   const isEn = codLingua === "en";
   const senzaTo = s => s.startsWith("to ") ? s.slice(3) : s;
-  const nDato = isEn ? normalizzaEn(dato) : normalizza(dato);
-  if (!nDato) return null;
+  const normDato = s => isEn ? senzaTo(normalizza(s)) : normalizza(s);
+  // Inglese: la risposta così com'è e in tutte le letture delle contrazioni
+  // ("I’m tird" → "im tird", "i am tird"), come in isCorretta.
+  const nDati = [...new Set([dato, ...(isEn ? variantiContrazioni(dato) : [])].map(normDato))].filter(Boolean);
+  if (!nDati.length) return null;
   const datoConTo = isEn && normalizza(dato).startsWith("to ");
+  // A parità di distanza, la forma nello stile della risposta: contratta se
+  // l'utente ha contratto, altrimenti intera (Dino 2026-11-20).
+  const datoContratto = isEn && /\p{L}['’]\p{L}/u.test(dato);
   let migliore = null;
   for (const grezza of atteso.split(/[/,;|]/)) {
     let forma = grezza.replace(/\(.*?\)/g, "").trim();
     let nForma = normalizza(forma);
     if (!nForma) continue;
     if (isEn && !datoConTo && nForma.startsWith("to ")) { forma = forma.replace(/^to\s+/i, ""); nForma = senzaTo(nForma); }
-    const nConfronto = isEn ? senzaTo(nForma) : nForma;
-    const dist = distanzaOSA(nConfronto, nDato);
-    if (dist === 0) return null;
-    const soglia = nConfronto.replace(/\s/g, "").length <= 5 ? 1 : 2;
-    if (dist <= soglia && (!migliore || dist < migliore.dist)) migliore = { forma, dist };
+    const espanse = isEn ? variantiContrazioni(forma).map(v => mostraEspansa(v, forma)).filter(v => normalizza(v) !== nForma) : [];
+    const forme = datoContratto ? [forma, ...espanse] : [...espanse, forma];
+    for (const f of forme) {
+      const nConfronto = isEn ? senzaTo(normalizza(f)) : normalizza(f);
+      const dist = Math.min(...nDati.map(d => distanzaOSA(nConfronto, d)));
+      if (dist === 0) return null;
+      const soglia = nConfronto.replace(/\s/g, "").length <= 5 ? 1 : 2;
+      if (dist <= soglia && (!migliore || dist < migliore.dist)) migliore = { forma: f, dist };
+    }
   }
   return migliore ? { forma: migliore.forma } : null;
 }
@@ -313,7 +336,7 @@ function mascheraAiutino(forma, dato) {
 const _exports = {
   DIALETTI_TTS_ITA, DIALETTI_NUMERI, NUMERI_DIALETTO, FRASI_FINE_SP,
   soloVisibile, formaDisplay, formaTTS,
-  normalizza, normalizzaDialetto, espandiContrazioni, normalizzaEn,
+  normalizza, normalizzaDialetto, espandiContrazioni, variantiContrazioni, mostraEspansa, normalizzaEn,
   convertiNumeriDialetto, wordKey, frasaFineSP,
   formaBaseDialetto, variantiBaseDialetto, variantiSenzaSoggettoDialetto,
   distanzaOSA, quasiGiusta, mascheraAiutino,
