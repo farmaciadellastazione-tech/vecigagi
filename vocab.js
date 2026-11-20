@@ -191,8 +191,10 @@ const CONTRAZIONI_EN = [
   ["needn't", "need not"], ["here's", "here is"],
 ].map(([c, e]) => [new RegExp("\\b" + c.replace("'", "['’]") + "\\b", "gi"), e]);
 // Ambigue (Dino 2026-11-20): 's = is/has ("he's got"), 'd = would/had ("I'd seen")
-const CONTRAZIONE_S = /\b(he|she|it|that|there|what|who|where)['’]s\b/gi;
-const CONTRAZIONE_D = /\b(i|you|he|she|we|they)['’]d\b/gi;
+const CONTRAZIONE_S = /\b(he|she|it|that|there|what|who|where|how|when|why)['’]s\b/gi;
+const CONTRAZIONE_D = /\b(i|you|he|she|we|they|it|that|who|there)['’]d\b/gi;
+// C'è qualcosa da espandere? (apostrofo o "cannot"): altrimenti niente regex
+const PUO_CONTRARRE = /['’]|\bcannot\b/i;
 // Lettura predefinita is/would; variantiContrazioni dà anche has/had.
 function espandiContrazioni(str, s = "is", d = "would") {
   let r = str.replace(CONTRAZIONE_S, (m, p) => p.toLowerCase() + " " + s)
@@ -202,6 +204,7 @@ function espandiContrazioni(str, s = "is", d = "would") {
 }
 // Tutte le letture di una frase con contrazioni: al massimo is/has × would/had
 function variantiContrazioni(str) {
+  if (!PUO_CONTRARRE.test(str)) return [str];
   return [...new Set(["is", "has"].flatMap(s => ["would", "had"].map(d => espandiContrazioni(str, s, d))))];
 }
 // Forma espansa da mostrare (aiutino): "I" maiuscola, e maiuscola iniziale
@@ -284,7 +287,8 @@ function quasiGiusta(atteso, dato, codLingua) {
   const datoConTo = isEn && normalizza(dato).startsWith("to ");
   // A parità di distanza, la forma nello stile della risposta: contratta se
   // l'utente ha contratto, altrimenti intera (Dino 2026-11-20).
-  const datoContratto = isEn && /\p{L}['’]\p{L}/u.test(dato);
+  // (solo contrazioni vere: "o'clock", "O'Brien" non contano)
+  const datoContratto = isEn && espandiContrazioni(dato) !== dato;
   let migliore = null;
   for (const grezza of atteso.split(/[/,;|]/)) {
     let forma = grezza.replace(/\(.*?\)/g, "").trim();
@@ -310,7 +314,12 @@ function mascheraAiutino(forma, dato) {
   const chars = [...forma];
   const pos = [], a = [];
   chars.forEach((c, i) => { const b = normalizza(c); if (b) { pos.push(i); a.push(b); } });
-  const b = [...normalizza(dato).replace(/\s/g, "")];
+  // Risposta contratta e forma intera ("I'm tird" per "I am tired"): si
+  // allinea la lettura della risposta più vicina alla forma, altrimenti la "a"
+  // di "am" risulterebbe mancante (code review 2026-11-20).
+  const nForma = a.join("");
+  const letture = [...new Set([dato, ...variantiContrazioni(dato)].map(s => normalizza(s).replace(/\s/g, "")))];
+  const b = [...letture.reduce((m, l) => distanzaOSA(nForma, l) < distanzaOSA(nForma, m) ? l : m)];
   const d = [];
   for (let i = 0; i <= a.length; i++) { d[i] = [i]; }
   for (let j = 0; j <= b.length; j++) d[0][j] = j;

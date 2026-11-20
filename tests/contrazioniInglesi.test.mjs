@@ -122,6 +122,32 @@ test('aiutino: compare anche con le contrazioni, nello stile della risposta', ()
   assert.deepStrictEqual({ ...ctx.quasiGiusta("l'acqua", "l'acqa", 'it') }, { forma: "l'acqua" });
 });
 
+// Code review 2026-11-20 (seconda) ─────────────────────────────────────────
+
+test("altri soggetti con 'd e 's", () => {
+  assert.strictEqual(ok('it would be nice', "it'd be nice"), true);
+  assert.strictEqual(ok("that'd be great", 'that would be great'), true);
+  assert.strictEqual(ok("who'd know", 'who would know'), true);
+  assert.strictEqual(ok("there'd been rain", 'there had been rain'), true);
+  assert.strictEqual(ctx.espandiContrazioni("how's it going"), 'how is it going');
+  assert.strictEqual(ctx.espandiContrazioni("when's dinner"), 'when is dinner');
+  assert.strictEqual(ctx.espandiContrazioni("why's that"), 'why is that');
+});
+
+test('maschera aiutino: la contrazione della risposta non nasconde lettere giuste', () => {
+  // "tird": manca la "e" → "tir_d"; la "a" di "am" resta visibile
+  assert.strictEqual(ctx.mascheraAiutino('I am tired', "I'm tird"), 'I am tir_d');
+  assert.strictEqual(ctx.mascheraAiutino('I am tired', 'I’m tird'), 'I am tir_d');
+  assert.strictEqual(ctx.mascheraAiutino('I had seen it', "I'd sen it"), 'I had s_en it');
+  // invariata senza contrazioni
+  assert.strictEqual(ctx.mascheraAiutino("I'm tired", "I'm tird"), "I'm tir_d");
+});
+
+test('apostrofi che non sono contrazioni non cambiano lo stile dell\'aiutino', () => {
+  assert.deepStrictEqual({ ...ctx.quasiGiusta("I'd go at five o'clock", "I'd go at fiv o'clock", 'en') }, { forma: "I'd go at five o'clock" });
+  assert.deepStrictEqual({ ...ctx.quasiGiusta("I'd go at five o'clock", "I would go at fiv o'clock", 'en') }, { forma: "I would go at five o'clock" });
+});
+
 test('risposte sbagliate restano sbagliate', () => {
   assert.strictEqual(ok('I am', 'I’ve'), false);
   assert.strictEqual(ok('I am', 'you’re'), false);
