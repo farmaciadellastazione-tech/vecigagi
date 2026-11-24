@@ -4103,8 +4103,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"grammatica", livello:"A1", it:"vostre", en:"your", fr:"vos", es:"vuestras", de:"eure", pt:"vossas", ca:"vostres", sp:"vostre", mn:"vostre/vòstré", cr:"vostre", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"grammatica", livello:"A1", it:"vostro", en:"your", fr:"votre", es:"vuestro", de:"euer", pt:"vosso", ca:"vostre", sp:"vostro", mn:"vòstru", cr:"vostr/vostr", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"verbi", livello:"A2", it:"votare", en:"to vote", fr:"voter", es:"votar", de:"wählen", pt:"votar", ca:"votar", mn:"vutaha/vutaa", cr:"votar", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"astratti", livello:"B1", it:"votazioni", en:"votes", fr:"votes", es:"votaciones", de:"Abstimmungen", pt:"votações", ca:"votacions", mn:"vutasciuùn /vutasciùn", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
-      { tema:"astratti", livello:"A2", it:"votazioni", en:"voting", fr:"votations", es:"votaciones", de:"Wahlen", pt:"eleições", ca:"eleccions", mn:"vutasciùun/vutasciùn'", verif:"mn:g" },
+      { tema:"astratti", livello:"A2", it:"votazioni|votazione|voto", en:"voting|vote", fr:"votations", es:"votaciones", de:"Wahlen", pt:"eleições", ca:"eleccions", mn:"vutasciùun/vutasciùn'", verif:"mn:g" },
       { tema:"scuola", livello:"A1", it:"voto", en:"grade", fr:"note", es:"nota", de:"Note", pt:"nota", ca:"nota", cr:"vot", ko:"점수", ar:"درجة", zh:"成绩", ja:"成績", ia:"nota", la:"nota", grc:"βαθμός" },
       { tema:"natura", livello:"A2", it:"vulcano", en:"volcano", fr:"volcan", es:"volcán", de:"Vulkan", pt:"vulcão", ca:"volcà", mn:"vurkàan/vurcàn", src:{"mn":"🔗 dialetti.html"}, verif:"mn:g" },
       { tema:"aggettivi", livello:"A1", it:"vuoto", en:"empty", fr:"vide", es:"vacío", de:"leer", pt:"vazio", ru:"пустой", ca:"buit", sp:"vèito", mn:"vè'i tu/véitu", cr:"vot", ko:"빈", ar:"فارغ", zh:"空", ja:"空の", ia:"vacue", la:"vacuus", grc:"κενός", verif:"sp:g,mn:g" },
@@ -4207,7 +4206,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 655;
+const VOC_VERSION = 656;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
