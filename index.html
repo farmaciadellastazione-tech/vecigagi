@@ -3612,7 +3612,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"aggettivi", livello:"A2", it:"preferito", en:"favourite", fr:"préféré", es:"favorito", de:"Liebling-|bevorzugt", pt:"favorito", ru:"любимый", ca:"preferit", sp:"prefeì", mn:"préferì", cr:"preferit", ge:"ciù cao, prefeìo" },
       { tema:"verbi", livello:"B1", it:"pregare", en:"pray", fr:"prier", es:"rezar", de:"beten", pt:"rezar", sp:"pregae", cr:"prgar", ge:"pregâ", ko:"기도하다", ar:"يصلي", zh:"祈祷", ja:"祈る", ia:"precar", la:"orare", grc:"προσεύχεσθαι" },
       { tema:"saluti", livello:"A1", it:"prego", en:"you're welcome", sp:"figuate, prego, de gnente", mn:"pregu", cr:"figurt, d' gnent, preg", ge:"de ninte", verif:"mn:g", ro:"cu plăcere" },
-      { tema:"verbi", livello:"B1", it:"premere", en:"press", fr:"appuyer|presser", es:"presionar", de:"drücken", pt:"pressionar", ru:"нажимать", ca:"prémer", sp:"schissae, saquarae", cr:"schiz'ar, calcar", ge:"sciaccâ ,schissâ", verif:"sp:g" },
+      { tema:"verbi", livello:"B1", it:"premere", en:"press", fr:"appuyer|presser", es:"presionar", de:"drücken", pt:"pressionar", ru:"нажимать", ca:"prémer", sp:"schissae, saquarae", mn:"carcaa", cr:"schiz'ar, calcar", ge:"sciaccâ ,schissâ", verif:"sp:g" },
       { tema:"verbi", livello:"A1", it:"prendere", en:"take", fr:"prendre", es:"tomar", de:"nehmen", pt:"pegar", ru:"брать", ca:"agafar|prendre", sp:" piae, ciapàe", mn:"pigiaa| ciapaa", cr:"piar", ge:"piggià/piggiâ| acciappâ", ko:"잡다", ar:"يأخذ", zh:"拿", ja:"取る", ia:"prender", la:"capere", grc:"λαμβάνειν", src:{"mn":"🤖 IA"}, verif:"mn:g,cr:g", ro:"a lua" },
       { tema:"verbi", livello:"B1", it:"prendere in prestito", en:"borrow", fr:"emprunter", es:"pedir prestado", de:"ausleihen", pt:"pedir emprestado", ru:"брать взаймы", ca:"manllevar" },
       { tema:"verbi", livello:"B1", it:"preoccuparsi", en:"worry", fr:"s'inquiéter", es:"preocuparse", de:"sich sorgen", pt:"preocupar-se", ru:"беспокоиться", ca:"preocupar-se", sp:"preocüpasse", cr:"preocupars", ge:"preoccupâse" },
@@ -3854,7 +3854,7 @@ const VOCABOLARIO_DEFAULT = [
       { tema:"verbi", livello:"A2", it:"sorridere|sorriso", en:"smile", fr:"sourire", es:"sonreír|sonrisa", de:"lächeln|Lächeln", pt:"sorrir|sorriso", ru:"улыбаться|улыбка", ca:"somriure", cr:"suridr|soris" },
       { tema:"aggettivi", livello:"A2", it:"sottile", en:"thin", fr:"mince", es:"delgado", de:"dünn", pt:"fino", ca:"prim", sp:"sotì| fin", mn:"sutii", cr:"sutil", ge:"sotti", src:{"mn":"🤖 IA"}, verif:"mn:g,sp:g" },
       { tema:"verbi", livello:"B1", it:"sparare", en:"shoot", fr:"tirer|fusiller", es:"disparar", de:"schießen", pt:"atirar|disparar", ru:"стрелять", ca:"disparar|tirar", sp:"spaà'e/spaàe", mn:"spaàa", cr:"sparar", verif:"sp:g,mn:g" },
-      { tema:"verbi", livello:"B1", it:"sparecchiare| sparpagliare", en:"to clear the table", es:"recoger la mesa", sp:"levà'e de tòa/levàe de tòa", cr:"sparpaiar", verif:"sp:g" },
+      { tema:"verbi", livello:"B1", it:"sparecchiare", en:"to clear the table", es:"recoger la mesa", sp:"levà'e de tòa/levàe de tòa", cr:"sparpaiar", verif:"sp:g" },
       { tema:"oggetti", livello:"B1", it:"spauracchio", en:"bogeyman", mn:"spaventagiu", cr:"barbantana", nt:["sp"] },
       { tema:"aggettivi", livello:"A2", it:"spaventato", en:"scared", fr:"effrayé", es:"asustado", de:"ängstlich", pt:"assustado", ru:"испуганный", ca:"espantat", sp:"spaventà", mn:"spaventà", cr:"spavntar", ko:"겁먹은|무서워하는|겁에 질린", ar:"خائف", zh:"害怕", ja:"怖い", ia:"timide", la:"timidus", grc:"ἔμφοβος|περίφοβος|δεδιώς", verif:"sp:g,mn:g" },
       { tema:"cosmetica", livello:"A2", it:"spazzolino", en:"toothbrush", fr:"brosse à dents", es:"cepillo de dientes", de:"Zahnbürste", pt:"escova de dentes", ca:"raspall de dents", sp:"spassedoin", mn:"spassuìn", ko:"칫솔", ar:"فرشاة أسنان", zh:"牙刷", ja:"歯ブラシ", verif:"sp:g" },
@@ -4205,7 +4205,7 @@ function utf8ToB64(str) {
 }
 
 // Versione corrente del vocabolario — incrementa ad ogni aggiornamento
-const VOC_VERSION = 662;
+const VOC_VERSION = 663;
 
 // Le voci che DIFFERISCONO dal VOCABOLARIO_DEFAULT: parole nuove dell'utente
 // (wordKey assente dal default) E voci del default modificate localmente
